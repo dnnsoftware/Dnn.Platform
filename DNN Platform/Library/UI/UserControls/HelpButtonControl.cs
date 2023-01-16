@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -12,7 +14,6 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// HelpButtonControl is a user control that provides all the server code to display
     /// field level help button.
@@ -21,55 +22,40 @@ namespace DotNetNuke.UI.UserControls
     /// To implement help, the control uses the ClientAPI interface.  In particular
     ///  the javascript function __dnn_Help_OnClick().
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     public abstract class HelpButtonControl : UserControl
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Image imgHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlHelp;
-        private string _HelpKey;
-        private string _ResourceKey;
+        private string helpKey;
+        private string resourceKey;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets controlName is the Id of the control that is associated with the label.
-        /// </summary>
+        /// <summary>Gets or sets controlName is the Id of the control that is associated with the label.</summary>
         /// <value>A string representing the id of the associated control.</value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string ControlName { get; set; } // Associated Edit Control for this Label
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets helpKey is the Resource Key for the Help Text.
-        /// </summary>
+        /// <summary>Gets or sets helpKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Help Text.</value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string HelpKey
         {
             get
             {
-                return this._HelpKey;
+                return this.helpKey;
             }
 
             set
             {
-                this._HelpKey = value;
+                this.helpKey = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets helpText is value of the Help Text if no ResourceKey is provided.
-        /// </summary>
+        /// <summary>Gets or sets helpText is value of the Help Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Text.</value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string HelpText
         {
             get
@@ -90,34 +76,22 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets resourceKey is the Resource Key for the Help Text.
-        /// </summary>
+        /// <summary>Gets or sets resourceKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Label Text.</value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string ResourceKey
         {
             get
             {
-                return this._ResourceKey;
+                return this.resourceKey;
             }
 
             set
             {
-                this._ResourceKey = value;
+                this.resourceKey = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -127,24 +101,27 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
-                if (string.IsNullOrEmpty(this._HelpKey))
+                if (string.IsNullOrEmpty(this.helpKey))
                 {
                     // Set Help Key to the Resource Key plus ".Help"
-                    this._HelpKey = this._ResourceKey + ".Help";
+                    this.helpKey = this.ResourceKey + ".Help";
                 }
 
-                string helpText = Localization.GetString(this._HelpKey, this);
+                string helpText = Localization.GetString(this.helpKey, this);
                 if (!string.IsNullOrEmpty(helpText))
                 {
                     this.HelpText = helpText;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdHelp_Click(object sender, EventArgs e)
         {
             this.pnlHelp.Visible = true;

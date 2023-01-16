@@ -17,29 +17,34 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
 
     [ConsoleCommand("list-roles", Constants.RolesCategory, "Prompt_ListRoles_Description")]
+
     public class ListRoles : ConsoleCommandBase
     {
         [FlagParameter("page", "Prompt_ListRoles_FlagPage", "Integer", "1")]
+
         private const string FlagPage = "page";
 
         [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
+
         private const string FlagMax = "max";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int Page { get; set; }
 
         public int Max { get; set; } = 10;
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.Page = this.GetFlagValue(FlagPage, "Page", 1);
             this.Max = this.GetFlagValue(FlagMax, "Max", 10);
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
@@ -48,10 +53,15 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             try
             {
                 int total;
-                var results = RolesController.Instance.GetRoles(this.PortalSettings, -1, string.Empty, out total,
-                    (this.Page > 0 ? this.Page - 1 : 0) * max, max);
+                var results = RolesController.Instance.GetRoles(
+                    this.PortalSettings,
+                    -1,
+                    string.Empty,
+                    out total,
+                    (this.Page > 0 ? this.Page - 1 : 0) * max,
+                    max);
                 roles.AddRange(results.Select(role => new RoleModelBase(role)));
-                var totalPages = total / max + (total % max == 0 ? 0 : 1);
+                var totalPages = (total / max) + (total % max == 0 ? 0 : 1);
                 var pageNo = this.Page > 0 ? this.Page : 1;
                 return new ConsoleResultModel
                 {
@@ -63,9 +73,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                         PageSize = max,
                     },
                     Records = roles.Count,
-                    Output = roles.Count == 0 ? this.LocalizeString("Prompt_NoRoles") : "",
+                    Output = roles.Count == 0 ? this.LocalizeString("Prompt_NoRoles") : string.Empty,
                 };
-
             }
             catch (Exception ex)
             {

@@ -28,12 +28,14 @@ namespace Dnn.ExportImport.Components.Entities
 
         public DateTime CreatedOnDate { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.JobLogId; }
             set { this.JobLogId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.JobLogId = Null.SetNullInteger(dr[nameof(this.JobLogId)]);

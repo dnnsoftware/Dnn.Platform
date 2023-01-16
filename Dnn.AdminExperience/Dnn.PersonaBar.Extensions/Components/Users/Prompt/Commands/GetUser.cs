@@ -15,32 +15,42 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
+
     public class GetUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetUser_FlagId", "Integer")]
+
         private const string FlagId = "id";
 
         [FlagParameter("email", "Prompt_GetUser_FlagEmail", "String")]
+
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_GetUser_FlagUsername", "String")]
+
         private const string FlagUsername = "username";
 
         private const int UserIdZero = 0;
 
-        private IUserValidator _userValidator;
-        private IUserControllerWrapper _userControllerWrapper;
+        private IUserValidator userValidator;
+        private IUserControllerWrapper userControllerWrapper;
 
-        public GetUser() : this(new UserValidator(), new UserControllerWrapper())
+        /// <summary>Initializes a new instance of the <see cref="GetUser"/> class.</summary>
+        public GetUser()
+            : this(new UserValidator(), new UserControllerWrapper())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="GetUser"/> class.</summary>
+        /// <param name="userValidator"></param>
+        /// <param name="userControllerWrapper"></param>
         public GetUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {
-            this._userValidator = userValidator;
-            this._userControllerWrapper = userControllerWrapper;
+            this.userValidator = userValidator;
+            this.userControllerWrapper = userControllerWrapper;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int? UserId { get; set; }
@@ -49,9 +59,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private string Username { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.UserId = this.GetFlagValue<int?>(FlagId, "User Id", null);
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
@@ -79,6 +89,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                         }
                     }
                 }
+
                 if (!this.UserId.HasValue && string.IsNullOrEmpty(this.Email) && string.IsNullOrEmpty(this.Username))
                 {
                     this.AddMessage(this.LocalizeString("Prompt_SearchUserParameterRequired"));
@@ -86,6 +97,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var lst = new List<UserModel>();
@@ -102,33 +114,34 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 if (!userId.HasValue && !string.IsNullOrEmpty(this.Username))
                 {
                     // do username lookup
-                    var searchTerm = this.Username.Replace("%", "").Replace("*", "%");
+                    var searchTerm = this.Username.Replace("%", string.Empty).Replace("*", "%");
 
-                    userId = this._userControllerWrapper.GetUsersByUserName(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
+                    userId = this.userControllerWrapper.GetUsersByUserName(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
+
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
                     {
                         // userId = (UserController.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? UserIdZero;
-                        userId = this._userControllerWrapper.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
+                        userId = this.userControllerWrapper.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
                     }
                 }
                 else if (!userId.HasValue && !string.IsNullOrEmpty(this.Email))
                 {
                     // must be email
-                    var searchTerm = this.Email.Replace("%", "").Replace("*", "%");
+                    var searchTerm = this.Email.Replace("%", string.Empty).Replace("*", "%");
 
-                    userId = this._userControllerWrapper.GetUsersByEmail(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
+                    userId = this.userControllerWrapper.GetUsersByEmail(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
 
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
                     {
-                        userId = this._userControllerWrapper.GetUsersByEmail(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
+                        userId = this.userControllerWrapper.GetUsersByEmail(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
                     }
                 }
 
                 UserInfo userInfo;
                 ConsoleErrorResultModel errorResultModel =
-                    this._userValidator.ValidateUser(userId, this.PortalSettings, this.User, out userInfo);
+                    this.userValidator.ValidateUser(userId, this.PortalSettings, this.User, out userInfo);
 
                 if (errorResultModel != null)
                 {
@@ -157,7 +170,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     "IsDeleted",
                     "IsAuthorized",
                     "IsLockedOut",
-                    "Created"
+                    "Created",
                 },
             };
         }

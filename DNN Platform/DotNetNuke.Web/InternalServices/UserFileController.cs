@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Web.InternalServices
     public class UserFileController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
-        private readonly IFolderManager _folderManager = FolderManager.Instance;
+        private readonly IFolderManager folderManager = FolderManager.Instance;
 
         [DnnAuthorize]
         [HttpGet]
@@ -34,7 +35,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var userFolder = this._folderManager.GetUserFolder(this.UserInfo);
+                var userFolder = this.folderManager.GetUserFolder(this.UserInfo);
                 var extensions = new List<string>();
 
                 if (!string.IsNullOrEmpty(fileExtensions))
@@ -43,15 +44,20 @@ namespace DotNetNuke.Web.InternalServices
                     extensions.AddRange(fileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
                 }
 
-                var folderStructure = new Item
+                var folderStructure = new
                 {
-                    children = this.GetChildren(userFolder, extensions),
-                    folder = true,
                     id = userFolder.FolderID,
                     name = Localization.GetString("UserFolderTitle.Text", Localization.SharedResourceFile),
+                    folder = true,
+                    parentId = 0,
+                    thumb_url = default(string),
+                    type = default(string),
+                    size = default(string),
+                    modified = default(string),
+                    children = this.GetChildren(userFolder, extensions),
                 };
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new List<Item> { folderStructure });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new List<object> { folderStructure });
             }
             catch (Exception exc)
             {
@@ -109,32 +115,36 @@ namespace DotNetNuke.Web.InternalServices
             return fileIcon;
         }
 
-        private List<Item> GetChildren(IFolderInfo folder, ICollection<string> extensions)
+        private List<object> GetChildren(IFolderInfo folder, ICollection<string> extensions)
         {
-            var everything = new List<Item>();
+            var everything = new List<object>();
 
-            var folders = this._folderManager.GetFolders(folder);
+            var folders = this.folderManager.GetFolders(folder);
 
             foreach (var currentFolder in folders)
             {
-                everything.Add(new Item
+                everything.Add(new
                 {
                     id = currentFolder.FolderID,
                     name = currentFolder.DisplayName ?? currentFolder.FolderName,
                     folder = true,
                     parentId = folder.FolderID,
+                    thumb_url = default(string),
+                    type = default(string),
+                    size = default(string),
+                    modified = default(string),
                     children = this.GetChildren(currentFolder, extensions),
                 });
             }
 
-            var files = this._folderManager.GetFiles(folder);
+            var files = this.folderManager.GetFiles(folder);
 
             foreach (var file in files)
             {
                 // list is empty or contains the file extension in question
                 if (extensions.Count == 0 || extensions.Contains(file.Extension.ToLowerInvariant()))
                 {
-                    everything.Add(new Item
+                    everything.Add(new
                     {
                         id = file.FileId,
                         name = file.FileName,
@@ -144,41 +154,12 @@ namespace DotNetNuke.Web.InternalServices
                         type = GetTypeName(file),
                         size = GetFileSize(file.Size),
                         modified = GetModifiedTime(file.LastModificationTime),
+                        children = default(List<object>),
                     });
                 }
             }
 
             return everything;
         }
-
-        private class Item
-        {
-            // ReSharper disable InconsistentNaming
-            // ReSharper disable UnusedAutoPropertyAccessor.Local
-            public int id { get; set; }
-
-            public string name { get; set; }
-
-            public bool folder { get; set; }
-
-            public int parentId { get; set; }
-
-            public string thumb_url { get; set; }
-
-            public string type { get; set; }
-
-            public string size { get; set; }
-
-            public string modified { get; set; }
-
-            public List<Item> children { get; set; }
-
-            // ReSharper restore UnusedAutoPropertyAccessor.Local
-            // ReSharper restore InconsistentNaming
-        }
-
-        // ReSharper disable LoopCanBeConvertedToQuery
-
-        // ReSharper restore LoopCanBeConvertedToQuery
     }
 }

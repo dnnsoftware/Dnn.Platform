@@ -9,9 +9,7 @@ namespace DNN.Integration.Test.Framework.Helpers
 
     public static class ContentItemHelper
     {
-        /// <summary>
-        /// Get a string array representing the tags associated to a content item.
-        /// </summary>
+        /// <summary>Get a string array representing the tags associated to a content item.</summary>
         /// <param name="contentItemId">The id of the content item.</param>
         /// <returns>An array of tags.</returns>
         public static string[] GetTags(int contentItemId)
@@ -24,9 +22,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return tags[0].Values.OfType<string>().Select(HttpUtility.HtmlDecode).ToArray();
         }
 
-        /// <summary>
-        /// Adds a valid Fake Content item.
-        /// </summary>
+        /// <summary>Adds a valid Fake Content item.</summary>
         /// <param name="tabId">The TabId to associate the content item to.</param>
         /// <returns>the ContentItemId of the create content item.</returns>
         public static int AddContentItem(int tabId)
@@ -39,9 +35,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return DatabaseHelper.ExecuteScalar<int>(query);
         }
 
-        /// <summary>
-        /// Removes a content item.
-        /// </summary>
+        /// <summary>Removes a content item.</summary>
         /// <param name="contentItemId">The id of the content item to remove.</param>
         public static void RemoveContentItem(int contentItemId)
         {

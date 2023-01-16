@@ -31,9 +31,7 @@ using System.Runtime.InteropServices;
 
 namespace log4net.Util 
 {
-    /// <summary>
-    /// Represents a native error code and message.
-    /// </summary>
+    /// <summary>Represents a native error code and message.</summary>
     /// <remarks>
     /// <para>
     /// Represents a Win32 platform native error.
@@ -61,9 +59,7 @@ namespace log4net.Util
             this.m_message = message;
         }
 
-        /// <summary>
-        /// Gets the number of the native error.
-        /// </summary>
+        /// <summary>Gets the number of the native error.</summary>
         /// <value>
         /// The number of the native error.
         /// </value>
@@ -77,9 +73,7 @@ namespace log4net.Util
             get { return this.m_number; }
         }
 
-        /// <summary>
-        /// Gets the message of the native error.
-        /// </summary>
+        /// <summary>Gets the message of the native error.</summary>
         /// <value>
         /// The message of the native error.
         /// </value>
@@ -93,9 +87,7 @@ namespace log4net.Util
             get { return this.m_message; }
         }
 
-        /// <summary>
-        /// Create a new instance of the <see cref="NativeError" /> class for the last Windows error.
-        /// </summary>
+        /// <summary>Create a new instance of the <see cref="NativeError" /> class for the last Windows error.</summary>
         /// <returns>
         /// An instance of the <see cref="NativeError" /> class for the last windows error.
         /// </returns>
@@ -117,9 +109,7 @@ namespace log4net.Util
             return new NativeError(number, GetErrorMessage(number));
         }
 
-        /// <summary>
-        /// Create a new instance of the <see cref="NativeError" /> class.
-        /// </summary>
+        /// <summary>Create a new instance of the <see cref="NativeError" /> class.</summary>
         /// <param name="number">the error number for the native error</param>
         /// <returns>
         /// An instance of the <see cref="NativeError" /> class for the specified 
@@ -136,9 +126,7 @@ namespace log4net.Util
             return new NativeError(number, GetErrorMessage(number));
         }
 
-        /// <summary>
-        /// Retrieves the message corresponding with a Win32 message identifier.
-        /// </summary>
+        /// <summary>Retrieves the message corresponding with a Win32 message identifier.</summary>
         /// <param name="messageId">Message identifier for the requested message.</param>
         /// <returns>
         /// The message corresponding with the specified message identifier.
@@ -197,9 +185,7 @@ namespace log4net.Util
             return msgBuf;
         }
 
-        /// <summary>
-        /// Return error information string
-        /// </summary>
+        /// <summary>Return error information string</summary>
         /// <returns>error information string</returns>
         /// <remarks>
         /// <para>
@@ -211,9 +197,7 @@ namespace log4net.Util
             return string.Format(CultureInfo.InvariantCulture, "0x{0:x8}", this.Number) + (this.Message != null ? ": " + this.Message : string.Empty);
         }
 
-        /// <summary>
-        /// Formats a message string.
-        /// </summary>
+        /// <summary>Formats a message string.</summary>
         /// <param name="dwFlags">Formatting options, and how to interpret the <paramref name="lpSource" /> parameter.</param>
         /// <param name="lpSource">Location of the message definition.</param>
         /// <param name="dwMessageId">Message identifier for the requested message.</param>

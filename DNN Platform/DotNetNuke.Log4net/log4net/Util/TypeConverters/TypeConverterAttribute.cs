@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Util.TypeConverters
 {
-    /// <summary>
-    /// Attribute used to associate a type converter
-    /// </summary>
+    /// <summary>Attribute used to associate a type converter</summary>
     /// <remarks>
     /// <para>
     /// Class and Interface level attribute that specifies a type converter
@@ -41,14 +39,10 @@ namespace log4net.Util.TypeConverters
     [AttributeUsage(AttributeTargets.Class|AttributeTargets.Interface|AttributeTargets.Enum)]
     public sealed class TypeConverterAttribute : Attribute
     {
-        /// <summary>
-        /// The string type name of the type converter
-        /// </summary>
+        /// <summary>The string type name of the type converter</summary>
         private string m_typeName = null;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor
@@ -58,9 +52,7 @@ namespace log4net.Util.TypeConverters
         {
         }
 
-        /// <summary>
-        /// Create a new type converter attribute for the specified type name
-        /// </summary>
+        /// <summary>Create a new type converter attribute for the specified type name</summary>
         /// <param name="typeName">The string type name of the type converter</param>
         /// <remarks>
         /// <para>
@@ -73,9 +65,7 @@ namespace log4net.Util.TypeConverters
             this.m_typeName = typeName;
         }
 
-        /// <summary>
-        /// Create a new type converter attribute for the specified type
-        /// </summary>
+        /// <summary>Create a new type converter attribute for the specified type</summary>
         /// <param name="converterType">The type of the type converter</param>
         /// <remarks>
         /// <para>
@@ -88,9 +78,7 @@ namespace log4net.Util.TypeConverters
             this.m_typeName = SystemInfo.AssemblyQualifiedName(converterType);
         }
 
-        /// <summary>
-        /// The string type name of the type converter 
-        /// </summary>
+        /// <summary>The string type name of the type converter </summary>
         /// <value>
         /// The string type name of the type converter 
         /// </value>

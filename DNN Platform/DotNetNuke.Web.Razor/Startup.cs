@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Razor
 
     public class Startup : IDnnStartup
     {
+        /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<RazorModuleControlFactory>();

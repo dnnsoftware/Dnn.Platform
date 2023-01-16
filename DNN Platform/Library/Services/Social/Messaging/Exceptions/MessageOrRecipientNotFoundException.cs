@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.Social.Messaging.Exceptions
     [Serializable]
     public class MessageOrRecipientNotFoundException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.</summary>
         public MessageOrRecipientNotFoundException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.</summary>
         /// <param name="message"></param>
         public MessageOrRecipientNotFoundException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public MessageOrRecipientNotFoundException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.Social.Messaging.Exceptions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MessageOrRecipientNotFoundException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public MessageOrRecipientNotFoundException(SerializationInfo info, StreamingContext context)

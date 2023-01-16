@@ -22,11 +22,11 @@ namespace DotNetNuke.Web.Components.Controllers
     {
         private const string BookmarkModulesTitle = "module";
         private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";
-        private readonly ExtensionPointManager _mef;
+        private readonly ExtensionPointManager mef;
 
         public ControlBarController()
         {
-            this._mef = new ExtensionPointManager();
+            this.mef = new ExtensionPointManager();
         }
 
         /// <inheritdoc/>
@@ -34,11 +34,11 @@ namespace DotNetNuke.Web.Components.Controllers
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
 
-            Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter = category == "All"
+            Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> filter = category == "All"
                 ? (kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm))
                 : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
 
-            var portalModulesList = DesktopModuleController.GetPortalDesktopModules(portalId).Where(Filter);
+            var portalModulesList = DesktopModuleController.GetPortalDesktopModules(portalId).Where(filter);
             return portalModulesList;
         }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <inheritdoc/>
         public IEnumerable<MenuItemViewModel> GetCustomMenuItems()
         {
-            var menuItemsExtensionPoints = this._mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
+            var menuItemsExtensionPoints = this.mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
             return menuItemsExtensionPoints.Select(this.GetMenuItemFromExtensionPoint);
         }
 

@@ -31,22 +31,22 @@ namespace DotNetNuke.Modules.MemberDirectory
 
         private static string templatePath = "~/DesktopModules/MemberDirectory/Templates/";
 
-        private string _defaultSearchField1 = "DisplayName";
-        private string _defaultSearchField2 = "Email";
-        private string _defaultSearchField3 = "City";
-        private string _defaultSearchField4 = "Country";
+        private string defaultSearchField1 = "DisplayName";
+        private string defaultSearchField2 = "Email";
+        private string defaultSearchField3 = "City";
+        private string defaultSearchField4 = "Country";
 
-        private string _defaultSortField = "DisplayName";
-        private string _defaultSortOrder = "ASC";
+        private string defaultSortField = "DisplayName";
+        private string defaultSortOrder = "ASC";
 
-        private string _defaultFilterBy = "None";
-        private string _defaultFilterValue = string.Empty;
+        private string defaultFilterBy = "None";
+        private string defaultFilterValue = string.Empty;
 
-        private string _defaultDisplaySearch = "Both";
-        private string _defaultEnablePopUp = "false";
+        private string defaultDisplaySearch = "Both";
+        private string defaultEnablePopUp = "false";
 
-        private string _filterBy;
-        private string _filterValue;
+        private string filterBy;
+        private string filterValue;
 
         public static string DefaultAlternateItemTemplate
         {
@@ -90,6 +90,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -97,6 +98,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.AutoDataBind = false;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -145,32 +147,33 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.searchField4List.DataSource = propertiesCollection;
                 this.searchField4List.DataBind();
 
-                this.filterBySelector.Select(this._filterBy, false, 0);
+                this.filterBySelector.Select(this.filterBy, false, 0);
 
-                switch (this._filterBy)
+                switch (this.filterBy)
                 {
                     case "Group":
-                        this.groupList.Select(this._filterValue, false, 0);
+                        this.groupList.Select(this.filterValue, false, 0);
                         break;
                     case "Relationship":
-                        this.relationShipList.Select(this._filterValue, false, 0);
+                        this.relationShipList.Select(this.filterValue, false, 0);
                         break;
                     case "ProfileProperty":
-                        this.propertyList.Select(this._filterValue, false, 0);
+                        this.propertyList.Select(this.filterValue, false, 0);
                         break;
                     case "User":
                         break;
                 }
 
-                this.searchField1List.Select(this.GetTabModuleSetting("SearchField1", this._defaultSearchField1));
-                this.searchField2List.Select(this.GetTabModuleSetting("SearchField2", this._defaultSearchField2));
-                this.searchField3List.Select(this.GetTabModuleSetting("SearchField3", this._defaultSearchField3));
-                this.searchField4List.Select(this.GetTabModuleSetting("SearchField4", this._defaultSearchField4));
+                this.searchField1List.Select(this.GetTabModuleSetting("SearchField1", this.defaultSearchField1));
+                this.searchField2List.Select(this.GetTabModuleSetting("SearchField2", this.defaultSearchField2));
+                this.searchField3List.Select(this.GetTabModuleSetting("SearchField3", this.defaultSearchField3));
+                this.searchField4List.Select(this.GetTabModuleSetting("SearchField4", this.defaultSearchField4));
 
                 this.ExcludeHostUsersCheckBox.Checked = bool.Parse(this.GetTabModuleSetting("ExcludeHostUsers", "false"));
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnSettingsLoaded()
         {
             base.OnSettingsLoaded();
@@ -182,21 +185,22 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.itemTemplate.Text = this.GetTabModuleSetting("ItemTemplate", DefaultItemTemplate);
                 this.alternateItemTemplate.Text = this.GetTabModuleSetting("AlternateItemTemplate", DefaultAlternateItemTemplate);
                 this.popUpTemplate.Text = this.GetTabModuleSetting("PopUpTemplate", DefaultPopUpTemplate);
-                this.displaySearchList.Select(this.GetTabModuleSetting("DisplaySearch", this._defaultDisplaySearch));
-                this.enablePopUp.Checked = bool.Parse(this.GetTabModuleSetting("EnablePopUp", this._defaultEnablePopUp));
+                this.displaySearchList.Select(this.GetTabModuleSetting("DisplaySearch", this.defaultDisplaySearch));
+                this.enablePopUp.Checked = bool.Parse(this.GetTabModuleSetting("EnablePopUp", this.defaultEnablePopUp));
 
-                this._filterBy = this.GetModuleSetting("FilterBy", this._defaultFilterBy);
-                this._filterValue = this.GetModuleSetting("FilterValue", this._defaultFilterValue);
+                this.filterBy = this.GetModuleSetting("FilterBy", this.defaultFilterBy);
+                this.filterValue = this.GetModuleSetting("FilterValue", this.defaultFilterValue);
                 this.propertyValue.Text = this.GetModuleSetting("FilterPropertyValue", string.Empty);
 
-                this.sortFieldList.Select(this.GetTabModuleSetting("SortField", this._defaultSortField));
-                this.sortOrderList.Select(this.GetTabModuleSetting("SortOrder", this._defaultSortOrder));
+                this.sortFieldList.Select(this.GetTabModuleSetting("SortField", this.defaultSortField));
+                this.sortOrderList.Select(this.GetTabModuleSetting("SortOrder", this.defaultSortOrder));
 
                 this.pageSize.Text = this.GetTabModuleSetting("PageSize", DefaultPageSize.ToString(CultureInfo.InvariantCulture));
                 this.disablePager.Checked = bool.Parse(this.GetTabModuleSetting("DisablePaging", "False"));
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnSavingSettings()
         {
             this.Model.TabModuleSettings["ItemTemplate"] = this.itemTemplate.Text;
@@ -204,10 +208,10 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.Model.TabModuleSettings["PopUpTemplate"] = this.popUpTemplate.Text;
             this.Model.TabModuleSettings["EnablePopUp"] = this.enablePopUp.Checked.ToString(CultureInfo.InvariantCulture);
 
-            this._filterBy = this.filterBySelector.SelectedValue;
-            this.Model.ModuleSettings["FilterBy"] = this._filterBy;
+            this.filterBy = this.filterBySelector.SelectedValue;
+            this.Model.ModuleSettings["FilterBy"] = this.filterBy;
 
-            switch (this._filterBy)
+            switch (this.filterBy)
             {
                 case "Group":
                     this.Model.ModuleSettings["FilterValue"] = this.groupList.SelectedValue;

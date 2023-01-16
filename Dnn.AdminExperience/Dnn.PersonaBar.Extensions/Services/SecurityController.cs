@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Security.Services
 {
     using System;
@@ -19,11 +18,11 @@ namespace Dnn.PersonaBar.Security.Services
     using System.Web.Http;
     using System.Xml;
 
+    using Dnn.PersonaBar.Extensions.Components.Security.Ssl;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Security.Helper;
     using Dnn.PersonaBar.Security.Services.Dto;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -42,40 +41,37 @@ namespace Dnn.PersonaBar.Security.Services
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
+        private const string BULLETINXMLNODEPATH = "//channel/item";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
-        private readonly Components.SecurityController _controller;
-        private readonly IPortalAliasController _portalAliasController;
-        private readonly IApplicationStatusInfo applicationStatusInfo;
-        private const string BULLETIN_XMLNODE_PATH = "//channel/item";
+        private readonly Components.SecurityController controller;
+        private readonly IPortalAliasController portalAliasController;
 
-        public SecurityController(IApplicationStatusInfo applicationStatusInfo)
+        /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
+        public SecurityController()
             : this(
                 new Components.SecurityController(),
-                applicationStatusInfo,
                 PortalAliasController.Instance)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
+        /// <param name="controller">The security controller.</param>
+        /// <param name="portalAliasController">The portal alias controller.</param>
         internal SecurityController(
             Components.SecurityController controller,
-            IApplicationStatusInfo applicationStatusInfo,
             IPortalAliasController portalAliasController)
         {
-            this._controller = controller;
-            this._portalAliasController = portalAliasController;
-            this.applicationStatusInfo = applicationStatusInfo;
+            this.controller = controller;
+            this.portalAliasController = portalAliasController;
         }
 
-        #region Login Settings
-
         /// GET: api/Security/GetBasicLoginSettings
-        /// <summary>
-        /// Gets portal's basic login settings.
-        /// </summary>
-        /// <param name="cultureCode"></param>
+        /// <summary>Gets portal's basic login settings.</summary>
+        /// <param name="cultureCode">The culture code or <see langword="null"/> or empty to use the current locale.</param>
         /// <returns>Portal's basic login settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
+
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
@@ -97,13 +93,13 @@ namespace Dnn.PersonaBar.Security.Services
                 settings.HideLoginControl = this.PortalSettings.HideLoginControl;
                 settings.cultureCode = cultureCode;
 
-                var authProviders = this._controller.GetAuthenticationProviders().Select(v => new
+                var authProviders = this.controller.GetAuthenticationProviders().Select(v => new
                 {
                     Name = v,
                     Value = v,
                 }).ToList();
 
-                var adminUsers = this._controller.GetAdminUsers(this.PortalId).Select(v => new
+                var adminUsers = this.controller.GetAdminUsers(this.PortalId).Select(v => new
                 {
                     v.UserID,
                     v.FullName,
@@ -116,7 +112,7 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = settings,
                         AuthProviders = authProviders,
-                        Administrators = adminUsers
+                        Administrators = adminUsers,
                     },
                 };
 
@@ -130,11 +126,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateBasicLoginSettings
-        /// <summary>
-        /// Updates an existing log settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates an existing log settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit)]
@@ -171,15 +165,8 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region IP Filters
-
         /// GET: api/Security/GetIpFilters
-        /// <summary>
-        /// Gets list of IP filters.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets list of IP filters.</summary>
         /// <returns>List of IP filters.</returns>
         [HttpGet]
         [RequireHost]
@@ -192,6 +179,7 @@ namespace Dnn.PersonaBar.Security.Services
                     v.IPFilterID,
                     IPFilter = NetworkUtils.FormatAsCidr(v.IPAddress, v.SubnetMask),
                     v.RuleType,
+                    v.Notes,
                 }).ToList();
                 var response = new
                 {
@@ -199,7 +187,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Filters = filters,
-                        EnableIPChecking = Host.EnableIPChecking
+                        Host.EnableIPChecking,
                     },
                 };
 
@@ -213,10 +201,8 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetIpFilter
-        /// <summary>
-        /// Gets an IP filter.
-        /// </summary>
-        /// <param name="filterId"></param>
+        /// <summary>Gets an IP filter.</summary>
+        /// <param name="filterId">The ID of the IP filter to get.</param>
         /// <returns>IP filter.</returns>
         [HttpGet]
         [RequireHost]
@@ -233,7 +219,8 @@ namespace Dnn.PersonaBar.Security.Services
                         filter.IPAddress,
                         filter.IPFilterID,
                         filter.RuleType,
-                        filter.SubnetMask
+                        filter.SubnetMask,
+                        filter.Notes,
                     },
                 };
 
@@ -247,11 +234,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateIpFilter
-        /// <summary>
-        /// Updates an IP filter.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates an IP filter.</summary>
+        /// <param name="request"><see cref="UpdateIpFilterRequest"/>.</param>
+        /// <returns>Ok or BadRequest or InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -263,6 +248,7 @@ namespace Dnn.PersonaBar.Security.Services
                 ipf.IPAddress = request.IPAddress;
                 ipf.SubnetMask = request.SubnetMask;
                 ipf.RuleType = request.RuleType;
+                ipf.Notes = request.Notes;
 
                 if ((ipf.IPAddress == "127.0.0.1" || ipf.IPAddress == "localhost" || ipf.IPAddress == "::1" || ipf.IPAddress == "*") && ipf.RuleType == 2)
                 {
@@ -283,6 +269,7 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     IPFilterController.Instance.AddIPFilter(ipf);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (ArgumentException exc)
@@ -298,11 +285,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/DeleteIpFilter
-        /// <summary>
-        /// Deletes an IP filter.
-        /// </summary>
-        /// <param name="filterId"></param>
-        /// <returns></returns>
+        /// <summary>Deletes an IP filter.</summary>
+        /// <param name="filterId">The filter ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -332,14 +317,8 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region Member Accounts
-
         /// GET: api/Security/GetMemberSettings
-        /// <summary>
-        /// Gets portal's member settings.
-        /// </summary>
+        /// <summary>Gets portal's member settings.</summary>
         /// <returns>Portal's member settings.</returns>
         [HttpGet]
         [RequireHost]
@@ -364,8 +343,8 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.EnableIPChecking,
                             Host.PasswordExpiry,
                             Host.PasswordExpiryReminder,
-                            ForceLogoutAfterPasswordChanged = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged")
-                        }
+                            ForceLogoutAfterPasswordChanged = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged"),
+                        },
                     },
                 };
 
@@ -379,11 +358,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateMemberSettings
-        /// <summary>
-        /// Updates member settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates member settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -413,9 +390,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetRegistrationSettings
-        /// <summary>
-        /// Gets portal's registration settings.
-        /// </summary>
+        /// <summary>Gets portal's registration settings.</summary>
         /// <returns>Portal's registration settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView)]
@@ -478,15 +453,9 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region SSL Settings
-
         /// GET: api/Security/GetSslSettings
-        /// <summary>
-        /// Gets portal's SSL settings.
-        /// </summary>
-        /// <returns>Portal's ssl settings.</returns>
+        /// <summary>Gets portal's SSL settings.</summary>
+        /// <returns>Portal's SSL settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetSslSettings()
@@ -494,14 +463,18 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 dynamic settings = new ExpandoObject();
-                settings.SSLEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
+                settings.SSLSetup = PortalController.GetPortalSettingAsInteger("SSLSetup", this.PortalId, 0);
                 settings.SSLEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
                 settings.SSLURL = PortalController.GetPortalSetting("SSLURL", this.PortalId, Null.NullString);
                 settings.STDURL = PortalController.GetPortalSetting("STDURL", this.PortalId, Null.NullString);
 
+                var portalStats = SslController.Instance.GetPortalStats(this.PortalId);
+                settings.NumberOfSecureTabs = portalStats.NumberOfSecureTabs;
+                settings.NumberOfNonSecureTabs = portalStats.NumberOfNonSecureTabs;
+
                 if (this.UserInfo.IsSuperUser)
                 {
-                    settings.SSLOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
+                    settings.SSLOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
                 }
 
                 var response = new
@@ -509,7 +482,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Success = true,
                     Results = new
                     {
-                        Settings = settings
+                        Settings = settings,
                     },
                 };
 
@@ -523,11 +496,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateRegistrationSettings
-        /// <summary>
-        /// Updates registration settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates registration settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit)]
@@ -573,11 +544,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateSslSettings
-        /// <summary>
-        /// Updates SSL settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates SSL settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -585,7 +554,22 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", request.SSLEnabled.ToString(), false);
+                switch (request.SSLSetup)
+                {
+                    case 0:
+                        request.SSLEnforced = false;
+                        request.SSLURL = string.Empty;
+                        request.STDURL = string.Empty;
+                        break;
+                    case 1:
+                        request.SSLEnforced = false;
+                        request.SSLURL = string.Empty;
+                        request.STDURL = string.Empty;
+                        request.SSLOffloadHeader = string.Empty;
+                        break;
+                }
+
+                PortalController.UpdatePortalSetting(this.PortalId, "SSLSetup", request.SSLSetup.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", request.SSLEnforced.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "SSLURL", this.AddPortalAlias(request.SSLURL, this.PortalId), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "STDURL", this.AddPortalAlias(request.STDURL, this.PortalId), false);
@@ -606,14 +590,28 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region Security Bulletins
+        /// POST: api/Security/SetAllPagesSecure
+        /// <summary>Sets all pages in the portal to be secure.</summary>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage SetAllPagesSecure()
+        {
+            try
+            {
+                DotNetNuke.Data.DataProvider.Instance().SetAllPortalTabsSecure(this.PortalId, true);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
 
         /// GET: api/Security/GetSecurityBulletins
-        /// <summary>
-        /// Gets security bulletins.
-        /// </summary>
+        /// <summary>Gets security bulletins.</summary>
         /// <returns>Security bulletins.</returns>
         [HttpGet]
         [RequireHost]
@@ -622,10 +620,11 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 var plartformVersion = System.Reflection.Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\DotNetNuke.dll").GetName().Version;
-                string sRequest = string.Format("https://dnnplatform.io/security.aspx?type={0}&name={1}&version={2}",
+                string sRequest = string.Format(
+                    "https://dnnplatform.io/security.aspx?type={0}&name={1}&version={2}",
                     DotNetNukeContext.Current.Application.Type,
                     "DNNCORP.CE",
-                    Globals.FormatVersion(plartformVersion, "00", 3, ""));
+                    Globals.FormatVersion(plartformVersion, "00", 3, string.Empty));
 
                 // format for display with "." delimiter
                 string sVersion = Globals.FormatVersion(plartformVersion, "00", 3, ".");
@@ -658,15 +657,15 @@ namespace Dnn.PersonaBar.Security.Services
                 oDoc.LoadXml(oReader.ReadToEnd());
 
                 List<object> items = new List<object>();
-                foreach (XmlNode selectNode in oDoc.SelectNodes(BULLETIN_XMLNODE_PATH))
+                foreach (XmlNode selectNode in oDoc.SelectNodes(BULLETINXMLNODEPATH))
                 {
                     items.Add(new
                     {
-                        Title = selectNode.SelectSingleNode("title") != null ? selectNode.SelectSingleNode("title").InnerText : "",
-                        Link = selectNode.SelectSingleNode("link") != null ? selectNode.SelectSingleNode("link").InnerText : "",
-                        Description = selectNode.SelectSingleNode("description") != null ? selectNode.SelectSingleNode("description").InnerText : "",
-                        Author = selectNode.SelectSingleNode("author") != null ? selectNode.SelectSingleNode("author").InnerText : "",
-                        PubDate = selectNode.SelectSingleNode("pubDate") != null ? selectNode.SelectSingleNode("pubDate").InnerText.Split(' ')[0] : "",
+                        Title = selectNode.SelectSingleNode("title") != null ? selectNode.SelectSingleNode("title").InnerText : string.Empty,
+                        Link = selectNode.SelectSingleNode("link") != null ? selectNode.SelectSingleNode("link").InnerText : string.Empty,
+                        Description = selectNode.SelectSingleNode("description") != null ? selectNode.SelectSingleNode("description").InnerText : string.Empty,
+                        Author = selectNode.SelectSingleNode("author") != null ? selectNode.SelectSingleNode("author").InnerText : string.Empty,
+                        PubDate = selectNode.SelectSingleNode("pubDate") != null ? selectNode.SelectSingleNode("pubDate").InnerText.Split(' ')[0] : string.Empty,
                     });
                 }
 
@@ -676,7 +675,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         PlatformVersion = sVersion,
-                        SecurityBulletins = items
+                        SecurityBulletins = items,
                     },
                 };
 
@@ -689,15 +688,9 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region Other Settings
-
         /// GET: api/Security/GetOtherSettings
-        /// <summary>
-        /// Gets host other settings.
-        /// </summary>
-        /// <returns>Portal's ssl settings.</returns>
+        /// <summary>Gets host other settings.</summary>
+        /// <returns>Portal's other settings.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetOtherSettings()
@@ -719,8 +712,8 @@ namespace Dnn.PersonaBar.Security.Services
                             MaxUploadSize = Config.GetMaxUploadSize() / (1024 * 1024),
                             RangeUploadSize = Config.GetRequestFilterSize(),
                             AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
-                            DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString()
-                        }
+                            DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
+                        },
                     },
                 };
 
@@ -734,11 +727,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateOtherSettings
-        /// <summary>
-        /// Updates other settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates other settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
@@ -756,7 +747,10 @@ namespace Dnn.PersonaBar.Security.Services
                 var newExtensionList = fileExtensions.ToStorageString();
                 HostController.Instance.Update("FileExtensions", newExtensionList, false);
                 if (oldExtensionList != newExtensionList)
+                {
                     PortalSecurity.Instance.CheckAllPortalFileExtensionWhitelists(newExtensionList);
+                }
+
                 var defaultEndUserExtensionWhitelist = new FileExtensionWhitelist(request.DefaultEndUserExtensionWhitelist);
                 defaultEndUserExtensionWhitelist = defaultEndUserExtensionWhitelist.RestrictBy(fileExtensions);
                 HostController.Instance.Update("DefaultEndUserExtensionWhitelist", defaultEndUserExtensionWhitelist.ToStorageString(), false);
@@ -779,14 +773,8 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region Security Analyzer
-
         /// GET: api/Security/GetAuditCheckResults
-        /// <summary>
-        /// Gets audit check results.
-        /// </summary>
+        /// <summary>Gets audit check results.</summary>
         /// <returns>audit check results.</returns>
         [HttpGet]
         [RequireHost]
@@ -794,7 +782,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks(this.applicationStatusInfo);
+                var audit = new Components.AuditChecks();
                 var results = audit.DoChecks(checkAll);
                 var response = new
                 {
@@ -812,9 +800,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetAuditCheckResult?id={id}
-        /// <summary>
-        /// Gets audit check result for a specific checker.
-        /// </summary>
+        /// <summary> Gets audit check result for a specific checker.</summary>
         /// <returns>audit check result.</returns>
         [HttpGet]
         [RequireHost]
@@ -822,7 +808,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks(this.applicationStatusInfo);
+                var audit = new Components.AuditChecks();
                 var result = audit.DoCheck(id);
                 var response = new
                 {
@@ -840,9 +826,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetSuperuserActivities
-        /// <summary>
-        /// Gets super user activities.
-        /// </summary>
+        /// <summary>Gets super user activities.</summary>
         /// <returns>super user activities.</returns>
         [HttpGet]
         [RequireHost]
@@ -867,7 +851,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Success = true,
                     Results = new
                     {
-                        Activities = users
+                        Activities = users,
                     },
                 };
 
@@ -881,10 +865,8 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/SearchFileSystemAndDatabase
-        /// <summary>
-        /// Searchs file system and database.
-        /// </summary>
-        /// <returns>Searchs file system and database.</returns>
+        /// <summary>Searches file system and database.</summary>
+        /// <returns>The search results from files and database.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage SearchFileSystemAndDatabase(string term)
@@ -904,7 +886,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         FoundInFiles = foundinfiles,
-                        FoundInDatabase = foundindb
+                        FoundInDatabase = foundindb,
                     },
                 };
 
@@ -918,9 +900,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetLastModifiedFiles
-        /// <summary>
-        /// Gets recently modified files.
-        /// </summary>
+        /// <summary>Gets recently modified files.</summary>
         /// <returns>last modified files.</returns>
         [HttpGet]
         [RequireHost]
@@ -944,7 +924,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         HighRiskFiles = highRiskFiles,
-                        LowRiskFiles = lowRiskFiles
+                        LowRiskFiles = lowRiskFiles,
                     },
                 };
 
@@ -958,9 +938,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetRecentlyModifiedSettings
-        /// <summary>
-        /// Gets last modified settings.
-        /// </summary>
+        /// <summary>Gets last modified settings.</summary>
         /// <returns>last modified settings.</returns>
         [HttpGet]
         [RequireHost]
@@ -968,7 +946,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var settings = this._controller.GetModifiedSettings();
+                var settings = this.controller.GetModifiedSettings();
                 var portalSettings = (from DataRow dr in settings[0].Rows
                                       select new SettingsDto
                                       {
@@ -1019,7 +997,7 @@ namespace Dnn.PersonaBar.Security.Services
                         PortalSettings = portalSettings,
                         HostSettings = hostSettings,
                         TabSettings = tabSettings,
-                        ModuleSettings = moduleSettings
+                        ModuleSettings = moduleSettings,
                     },
                 };
 
@@ -1032,26 +1010,24 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region Helpers
-
         internal string AddPortalAlias(string portalAlias, int portalId)
         {
-            if (!String.IsNullOrEmpty(portalAlias))
+            if (!string.IsNullOrEmpty(portalAlias))
             {
                 portalAlias = portalAlias.ToLowerInvariant().Trim('/');
                 if (portalAlias.IndexOf("://", StringComparison.Ordinal) != -1)
                 {
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
-                var alias = this._portalAliasController.GetPortalAlias(portalAlias, portalId);
+
+                var alias = this.portalAliasController.GetPortalAlias(portalAlias, portalId);
                 if (alias == null)
                 {
                     alias = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias };
-                    this._portalAliasController.AddPortalAlias(alias);
+                    this.portalAliasController.AddPortalAlias(alias);
                 }
             }
+
             return portalAlias;
         }
 
@@ -1065,12 +1041,12 @@ namespace Dnn.PersonaBar.Security.Services
         {
             if (tabId == Null.NullInteger)
             {
-                return "";
+                return string.Empty;
             }
             else
             {
                 var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabName : "";
+                return tab != null ? tab.TabName : string.Empty;
             }
         }
 
@@ -1078,19 +1054,19 @@ namespace Dnn.PersonaBar.Security.Services
         {
             if (tabId == Null.NullInteger)
             {
-                return "";
+                return string.Empty;
             }
             else
             {
                 var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabPath : "";
+                return tab != null ? tab.TabPath : string.Empty;
             }
         }
 
         private string DisplayDate(DateTime userDate)
         {
             var date = Null.NullString;
-            date = !Null.IsNull(userDate) ? userDate.ToString(CultureInfo.InvariantCulture) : "";
+            date = !Null.IsNull(userDate) ? userDate.ToString(CultureInfo.InvariantCulture) : string.Empty;
             return date;
         }
 
@@ -1099,7 +1075,5 @@ namespace Dnn.PersonaBar.Security.Services
             var path = Regex.Replace(filePath, Regex.Escape(Globals.ApplicationMapPath), string.Empty, RegexOptions.IgnoreCase);
             return path.TrimStart('\\');
         }
-
-        #endregion
     }
 }

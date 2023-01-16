@@ -8,44 +8,42 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Class for managing an OPML feed.
-    /// </summary>
+    /// <summary>  Class for managing an OPML feed.</summary>
     public class Opml
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
-        private DateTime _dateCreated = DateTime.MinValue;
-        private DateTime _dateModified = DateTime.MinValue;
-        private string _docs = string.Empty;
-        private string _expansionState = string.Empty;
-        private OpmlOutlines _outlines;
-        private string _ownerEmail = string.Empty;
-        private string _ownerId = string.Empty;
-        private string _ownerName = string.Empty;
-        private string _title = string.Empty;
-        private DateTime _utcExpiry = DateTime.Now.AddMinutes(180);
-        private string _vertScrollState = string.Empty;
-        private string _windowBottom = string.Empty;
-        private string _windowLeft = string.Empty;
-        private string _windowRight = string.Empty;
-        private string _windowTop = string.Empty;
+        private DateTime dateCreated = DateTime.MinValue;
+        private DateTime dateModified = DateTime.MinValue;
+        private string docs = string.Empty;
+        private string expansionState = string.Empty;
+        private OpmlOutlines outlines;
+        private string ownerEmail = string.Empty;
+        private string ownerId = string.Empty;
+        private string ownerName = string.Empty;
+        private string title = string.Empty;
+        private DateTime utcExpiry = DateTime.Now.AddMinutes(180);
+        private string vertScrollState = string.Empty;
+        private string windowBottom = string.Empty;
+        private string windowLeft = string.Empty;
+        private string windowRight = string.Empty;
+        private string windowTop = string.Empty;
         private XmlDocument opmlDoc;
 
         public Opml()
         {
-            this._outlines = new OpmlOutlines();
+            this.outlines = new OpmlOutlines();
         }
 
         public DateTime UtcExpiry
         {
             get
             {
-                return this._utcExpiry;
+                return this.utcExpiry;
             }
 
             set
             {
-                this._utcExpiry = value;
+                this.utcExpiry = value;
             }
         }
 
@@ -53,12 +51,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._title;
+                return this.title;
             }
 
             set
             {
-                this._title = value;
+                this.title = value;
             }
         }
 
@@ -66,12 +64,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._dateCreated;
+                return this.dateCreated;
             }
 
             set
             {
-                this._dateCreated = value;
+                this.dateCreated = value;
             }
         }
 
@@ -79,12 +77,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._dateModified;
+                return this.dateModified;
             }
 
             set
             {
-                this._dateModified = value;
+                this.dateModified = value;
             }
         }
 
@@ -92,12 +90,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._ownerName;
+                return this.ownerName;
             }
 
             set
             {
-                this._ownerName = value;
+                this.ownerName = value;
             }
         }
 
@@ -105,12 +103,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._ownerEmail;
+                return this.ownerEmail;
             }
 
             set
             {
-                this._ownerEmail = value;
+                this.ownerEmail = value;
             }
         }
 
@@ -118,12 +116,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._ownerId;
+                return this.ownerId;
             }
 
             set
             {
-                this._ownerId = value;
+                this.ownerId = value;
             }
         }
 
@@ -131,12 +129,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._docs;
+                return this.docs;
             }
 
             set
             {
-                this._docs = value;
+                this.docs = value;
             }
         }
 
@@ -144,12 +142,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._expansionState;
+                return this.expansionState;
             }
 
             set
             {
-                this._expansionState = value;
+                this.expansionState = value;
             }
         }
 
@@ -157,12 +155,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._vertScrollState;
+                return this.vertScrollState;
             }
 
             set
             {
-                this._vertScrollState = value;
+                this.vertScrollState = value;
             }
         }
 
@@ -170,12 +168,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._windowTop;
+                return this.windowTop;
             }
 
             set
             {
-                this._windowTop = value;
+                this.windowTop = value;
             }
         }
 
@@ -183,12 +181,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._windowLeft;
+                return this.windowLeft;
             }
 
             set
             {
-                this._windowLeft = value;
+                this.windowLeft = value;
             }
         }
 
@@ -196,12 +194,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._windowBottom;
+                return this.windowBottom;
             }
 
             set
             {
-                this._windowBottom = value;
+                this.windowBottom = value;
             }
         }
 
@@ -209,12 +207,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._windowRight;
+                return this.windowRight;
             }
 
             set
             {
-                this._windowRight = value;
+                this.windowRight = value;
             }
         }
 
@@ -222,12 +220,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._outlines;
+                return this.outlines;
             }
 
             set
             {
-                this._outlines = value;
+                this.outlines = value;
             }
         }
 
@@ -253,7 +251,7 @@ namespace DotNetNuke.Services.Syndication
 
         public static Opml LoadFromXml(XmlDocument doc)
         {
-            var _out = new Opml();
+            var @out = new Opml();
             try
             {
                 // Parse head
@@ -274,67 +272,67 @@ namespace DotNetNuke.Services.Syndication
 
                 if (title != null)
                 {
-                    _out.Title = title.InnerText;
+                    @out.Title = title.InnerText;
                 }
 
                 if (dateCreated != null)
                 {
-                    _out.DateCreated = DateTime.Parse(dateCreated.InnerText);
+                    @out.DateCreated = DateTime.Parse(dateCreated.InnerText);
                 }
 
                 if (dateModified != null)
                 {
-                    _out.DateModified = DateTime.Parse(dateModified.InnerText);
+                    @out.DateModified = DateTime.Parse(dateModified.InnerText);
                 }
 
                 if (ownerName != null)
                 {
-                    _out.OwnerName = ownerName.InnerText;
+                    @out.OwnerName = ownerName.InnerText;
                 }
 
                 if (ownerEmail != null)
                 {
-                    _out.OwnerEmail = ownerEmail.InnerText;
+                    @out.OwnerEmail = ownerEmail.InnerText;
                 }
 
                 if (ownerId != null)
                 {
-                    _out.OwnerId = ownerId.InnerText;
+                    @out.OwnerId = ownerId.InnerText;
                 }
 
                 if (docs != null)
                 {
-                    _out.Docs = docs.InnerText;
+                    @out.Docs = docs.InnerText;
                 }
 
                 if (expansionState != null)
                 {
-                    _out.ExpansionState = expansionState.InnerText;
+                    @out.ExpansionState = expansionState.InnerText;
                 }
 
                 if (vertScrollState != null)
                 {
-                    _out.VertScrollState = vertScrollState.InnerText;
+                    @out.VertScrollState = vertScrollState.InnerText;
                 }
 
                 if (windowTop != null)
                 {
-                    _out.WindowTop = windowTop.InnerText;
+                    @out.WindowTop = windowTop.InnerText;
                 }
 
                 if (windowLeft != null)
                 {
-                    _out.WindowLeft = windowLeft.InnerText;
+                    @out.WindowLeft = windowLeft.InnerText;
                 }
 
                 if (windowBottom != null)
                 {
-                    _out.WindowBottom = windowBottom.InnerText;
+                    @out.WindowBottom = windowBottom.InnerText;
                 }
 
                 if (windowLeft != null)
                 {
-                    _out.WindowLeft = windowLeft.InnerText;
+                    @out.WindowLeft = windowLeft.InnerText;
                 }
 
                 // Parse body
@@ -342,10 +340,10 @@ namespace DotNetNuke.Services.Syndication
                 XmlNodeList outlineList = body.SelectNodes("./outline");
                 foreach (XmlElement outline in outlineList)
                 {
-                    _out.Outlines.Add(ParseXml(outline));
+                    @out.Outlines.Add(ParseXml(outline));
                 }
 
-                return _out;
+                return @out;
             }
             catch
             {
@@ -355,7 +353,7 @@ namespace DotNetNuke.Services.Syndication
 
         public void AddOutline(OpmlOutline item)
         {
-            this._outlines.Add(item);
+            this.outlines.Add(item);
         }
 
         public void AddOutline(string text, string type, Uri xmlUrl, string category)
@@ -371,7 +369,7 @@ namespace DotNetNuke.Services.Syndication
             item.XmlUrl = xmlUrl;
             item.Category = category;
             item.Outlines = outlines;
-            this._outlines.Add(item);
+            this.outlines.Add(item);
         }
 
         public string GetXml()
@@ -459,7 +457,7 @@ namespace DotNetNuke.Services.Syndication
             XmlElement opmlBody = this.opmlDoc.CreateElement("body");
             opml.AppendChild(opmlBody);
 
-            foreach (OpmlOutline outline in this._outlines)
+            foreach (OpmlOutline outline in this.outlines)
             {
                 opmlBody.AppendChild(outline.ToXml);
             }

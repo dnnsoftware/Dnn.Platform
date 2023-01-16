@@ -16,9 +16,7 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Implements the EditScript view logic.
-    /// </summary>
+    /// <summary>Implements the EditScript view logic.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
@@ -26,17 +24,13 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditScript"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EditScript"/> class.</summary>
         public EditScript()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets the razor script file.
-        /// </summary>
+        /// <summary>Gets the razor script file.</summary>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {

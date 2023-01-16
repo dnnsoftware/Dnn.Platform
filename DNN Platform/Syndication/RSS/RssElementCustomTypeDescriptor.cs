@@ -7,73 +7,85 @@ namespace DotNetNuke.Services.Syndication
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    /// <summary>
-    ///   Helper class to enable the data binding logic generate column names at runtime.
-    /// </summary>
+    /// <summary>  Helper class to enable the data binding logic generate column names at runtime.</summary>
     internal class RssElementCustomTypeDescriptor : ICustomTypeDescriptor
     {
-        private readonly Dictionary<string, string> _attributes;
+        private readonly Dictionary<string, string> attributes;
 
+        /// <summary>Initializes a new instance of the <see cref="RssElementCustomTypeDescriptor"/> class.</summary>
+        /// <param name="attributes"></param>
         public RssElementCustomTypeDescriptor(Dictionary<string, string> attributes)
         {
-            this._attributes = attributes;
+            this.attributes = attributes;
         }
 
+        /// <inheritdoc/>
         AttributeCollection ICustomTypeDescriptor.GetAttributes()
         {
             return AttributeCollection.Empty;
         }
 
+        /// <inheritdoc/>
         string ICustomTypeDescriptor.GetClassName()
         {
             return this.GetType().Name;
         }
 
+        /// <inheritdoc/>
         string ICustomTypeDescriptor.GetComponentName()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         TypeConverter ICustomTypeDescriptor.GetConverter()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             return this.GetPropertyDescriptors();
         }
 
+        /// <inheritdoc/>
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
             return this.GetPropertyDescriptors();
         }
 
+        /// <inheritdoc/>
         object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
         {
             return (pd is RssElementCustomPropertyDescriptor) ? this : null;
@@ -81,10 +93,10 @@ namespace DotNetNuke.Services.Syndication
 
         private PropertyDescriptorCollection GetPropertyDescriptors()
         {
-            var propertyDescriptors = new PropertyDescriptor[this._attributes.Count];
+            var propertyDescriptors = new PropertyDescriptor[this.attributes.Count];
             int i = 0;
 
-            foreach (KeyValuePair<string, string> a in this._attributes)
+            foreach (KeyValuePair<string, string> a in this.attributes)
             {
                 propertyDescriptors[i++] = new RssElementCustomPropertyDescriptor(a.Key);
             }
@@ -149,7 +161,7 @@ namespace DotNetNuke.Services.Syndication
                 {
                     string propertyValue;
 
-                    if (element._attributes.TryGetValue(this.Name, out propertyValue))
+                    if (element.attributes.TryGetValue(this.Name, out propertyValue))
                     {
                         return propertyValue;
                     }

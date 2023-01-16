@@ -10,37 +10,43 @@ namespace Dnn.PersonaBar.Library.Helper
 
     public class ContentVerifier : IContentVerifier
     {
-        private IPortalController _portalController;
-        private IPortalGroupController _portalGroupController;
+        private IPortalController portalController;
+        private IPortalGroupController portalGroupController;
 
+        /// <summary>Initializes a new instance of the <see cref="ContentVerifier"/> class.</summary>
         public ContentVerifier()
             : this(PortalController.Instance, PortalGroupController.Instance)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ContentVerifier"/> class.</summary>
+        /// <param name="portalController"></param>
+        /// <param name="portalGroupController"></param>
         public ContentVerifier(IPortalController portalController, IPortalGroupController portalGroupController)
         {
-            this._portalController = portalController;
-            this._portalGroupController = portalGroupController;
+            this.portalController = portalController;
+            this.portalGroupController = portalGroupController;
         }
 
+        /// <inheritdoc/>
         public bool IsContentExistsForRequestedPortal(int contentPortalId, PortalSettings portalSettings, bool checkForSiteGroup = false)
         {
-            var currentPortal = this._portalController.GetCurrentPortalSettings();
+            var currentPortal = this.portalController.GetCurrentPortalSettings();
             return contentPortalId == portalSettings.PortalId
                 || portalSettings == currentPortal
                 || (checkForSiteGroup && this.IsRequestForSiteGroup(contentPortalId, portalSettings.PortalId));
         }
 
+        /// <inheritdoc/>
         public bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)
         {
             const int NO_SITE_GROUPID = -1;
             var isSiteGroupPage = false;
-            var portal = this._portalController.GetPortal(portalIdSiteGroup);
+            var portal = this.portalController.GetPortal(portalIdSiteGroup);
 
             if (portal.PortalGroupID != NO_SITE_GROUPID)
             {
-                isSiteGroupPage = this._portalGroupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == portalId);
+                isSiteGroupPage = this.portalGroupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == portalId);
             }
 
             return isSiteGroupPage;

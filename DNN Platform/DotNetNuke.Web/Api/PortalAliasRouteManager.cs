@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Api
 
     internal class PortalAliasRouteManager : IPortalAliasRouteManager
     {
-        private List<int> _prefixCounts;
+        private List<int> prefixCounts;
 
         // TODO: this method need remove after drop use old api format.
         [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
@@ -85,13 +85,13 @@ namespace DotNetNuke.Web.Api
         /// <inheritdoc/>
         public void ClearCachedData()
         {
-            this._prefixCounts = null;
+            this.prefixCounts = null;
         }
 
         /// <inheritdoc/>
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (this._prefixCounts == null)
+            if (this.prefixCounts == null)
             {
                 // prefixCounts are required for each route that is mapped but they only change
                 // when a new portal is added so cache them until that time
@@ -117,10 +117,10 @@ namespace DotNetNuke.Web.Api
                 }
 
                 IEnumerable<int> segmentCounts = segmentCounts1;
-                this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
+                this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }
 
-            return this._prefixCounts;
+            return this.prefixCounts;
         }
 
         private static int CalcAliasPrefixCount(string alias)

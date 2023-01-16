@@ -38,6 +38,7 @@ namespace DotNetNuke.Web.Mvc
 
         public RequestContext RequestContext { get; private set; }
 
+        /// <inheritdoc/>
         bool IHttpHandler.IsReusable
         {
             get { return this.IsReusable; }
@@ -66,6 +67,7 @@ namespace DotNetNuke.Web.Mvc
             get { return false; }
         }
 
+        /// <inheritdoc/>
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
             this.SetThreadCulture();

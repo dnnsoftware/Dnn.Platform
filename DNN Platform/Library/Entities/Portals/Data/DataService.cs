@@ -10,12 +10,12 @@ namespace DotNetNuke.Entities.Portals.Data
 
     public class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
-        private readonly DataProvider _provider = DataProvider.Instance();
+        private readonly DataProvider provider = DataProvider.Instance();
 
         /// <inheritdoc/>
         public int AddPortalGroup(PortalGroupInfo portalGroup, int createdByUserId)
         {
-            return this._provider.ExecuteScalar<int>(
+            return this.provider.ExecuteScalar<int>(
                 "AddPortalGroup",
                 portalGroup.PortalGroupName,
                 portalGroup.PortalGroupDescription,
@@ -27,19 +27,19 @@ namespace DotNetNuke.Entities.Portals.Data
         /// <inheritdoc/>
         public void DeletePortalGroup(PortalGroupInfo portalGroup)
         {
-            this._provider.ExecuteNonQuery("DeletePortalGroup", portalGroup.PortalGroupId);
+            this.provider.ExecuteNonQuery("DeletePortalGroup", portalGroup.PortalGroupId);
         }
 
         /// <inheritdoc/>
         public IDataReader GetPortalGroups()
         {
-            return this._provider.ExecuteReader("GetPortalGroups");
+            return this.provider.ExecuteReader("GetPortalGroups");
         }
 
         /// <inheritdoc/>
         public void UpdatePortalGroup(PortalGroupInfo portalGroup, int lastModifiedByUserId)
         {
-            this._provider.ExecuteNonQuery(
+            this.provider.ExecuteNonQuery(
                 "UpdatePortalGroup",
                 portalGroup.PortalGroupId,
                 portalGroup.PortalGroupName,
@@ -51,13 +51,13 @@ namespace DotNetNuke.Entities.Portals.Data
         /// <inheritdoc/>
         public IDataReader GetSharedModulesWithPortal(PortalInfo portal)
         {
-            return this._provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
+            return this.provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
         }
 
         /// <inheritdoc/>
         public IDataReader GetSharedModulesByPortal(PortalInfo portal)
         {
-            return this._provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);
+            return this.provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);
         }
     }
 }

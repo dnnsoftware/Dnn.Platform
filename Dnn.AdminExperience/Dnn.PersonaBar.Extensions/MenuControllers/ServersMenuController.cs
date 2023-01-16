@@ -11,9 +11,7 @@ namespace Dnn.PersonaBar.Servers.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the servers menu.
-    /// </summary>
+    /// <summary>Controls the servers menu.</summary>
     public class ServersMenuController : IMenuItemController
     {
         /// <inheritdoc/>

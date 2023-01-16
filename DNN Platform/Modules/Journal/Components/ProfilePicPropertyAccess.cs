@@ -12,17 +12,21 @@ namespace DotNetNuke.Modules.Journal.Components
 
     public class ProfilePicPropertyAccess : IPropertyAccess
     {
-        private readonly int _userId;
+        private readonly int userId;
 
+        /// <summary>Initializes a new instance of the <see cref="ProfilePicPropertyAccess"/> class.</summary>
+        /// <param name="userId"></param>
         public ProfilePicPropertyAccess(int userId)
         {
-            this._userId = userId;
+            this.userId = userId;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability => CacheLevel.notCacheable;
 
         public int Size { get; set; } = 32;
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             if (propertyName.ToLowerInvariant() == "relativeurl")
@@ -33,7 +37,7 @@ namespace DotNetNuke.Modules.Journal.Components
                     this.Size = size;
                 }
 
-                return UserController.Instance.GetUserProfilePictureUrl(this._userId, this.Size, this.Size);
+                return UserController.Instance.GetUserProfilePictureUrl(this.userId, this.Size, this.Size);
             }
 
             propertyNotFound = true;

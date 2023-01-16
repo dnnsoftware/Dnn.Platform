@@ -4,14 +4,10 @@
 
 namespace DotNetNuke.Services.GeneratedImage
 {
-    /// <summary>
-    /// Enumeration that represent the available resize modes.
-    /// </summary>
+    /// <summary>Enumeration that represent the available resize modes.</summary>
     public enum ImageResizeMode
     {
-        /// <summary>
-        /// Resizes the image with the given width or height without maintaining the aspect ratio.
-        /// </summary>
+        /// <summary>Resizes the image with the given width or height without maintaining the aspect ratio.</summary>
         Fill = 0,
 
         /// <summary>

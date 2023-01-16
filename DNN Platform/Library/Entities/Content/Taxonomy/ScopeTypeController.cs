@@ -11,30 +11,24 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Data;
 
-    /// <summary>
-    /// ScopeTypeController provides the business layer of ScopeType.
-    /// </summary>
+    /// <summary>ScopeTypeController provides the business layer of ScopeType.</summary>
     /// <seealso cref="TermController"/>
     public class ScopeTypeController : IScopeTypeController
     {
-        private const int _CacheTimeOut = 20;
-        private readonly IDataService _DataService;
+        private const int CacheTimeOut = 20;
+        private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeTypeController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
         public ScopeTypeController()
             : this(Util.GetDataService())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeTypeController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
         /// <param name="dataService"></param>
         public ScopeTypeController(IDataService dataService)
         {
-            this._DataService = dataService;
+            this.dataService = dataService;
         }
 
         /// <inheritdoc/>
@@ -44,7 +38,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
-            scopeType.ScopeTypeId = this._DataService.AddScopeType(scopeType);
+            scopeType.ScopeTypeId = this.dataService.AddScopeType(scopeType);
 
             // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
@@ -65,7 +59,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
 
-            this._DataService.DeleteScopeType(scopeType);
+            this.dataService.DeleteScopeType(scopeType);
 
             // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
@@ -74,7 +68,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// <inheritdoc/>
         public IQueryable<ScopeType> GetScopeTypes()
         {
-            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
         }
 
         /// <inheritdoc/>
@@ -85,7 +79,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
-            this._DataService.UpdateScopeType(scopeType);
+            this.dataService.UpdateScopeType(scopeType);
 
             // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
@@ -93,7 +87,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
+            return CBO.FillQueryable<ScopeType>(this.dataService.GetScopeTypes()).ToList();
         }
     }
 }

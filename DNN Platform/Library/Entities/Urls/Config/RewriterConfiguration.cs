@@ -18,19 +18,19 @@ namespace DotNetNuke.Entities.Urls.Config
     public class RewriterConfiguration
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RewriterConfiguration));
-        private static readonly object _threadLocker = new object();
-        private RewriterRuleCollection _rules;
+        private static readonly object ThreadLocker = new object();
+        private RewriterRuleCollection rules;
 
         public RewriterRuleCollection Rules
         {
             get
             {
-                return this._rules;
+                return this.rules;
             }
 
             set
             {
-                this._rules = value;
+                this.rules = value;
             }
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Urls.Config
                 config = (RewriterConfiguration)DataCache.GetCache("RewriterConfig");
                 if (config == null)
                 {
-                    lock (_threadLocker)
+                    lock (ThreadLocker)
                     {
                         config = (RewriterConfiguration)DataCache.GetCache("RewriterConfig");
                         if (config == null)

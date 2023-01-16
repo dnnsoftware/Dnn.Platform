@@ -15,26 +15,20 @@ namespace DotNetNuke.Entities.Modules.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Modules instead. Scheduled removal in v10.0.0.")]
     public interface IModuleController
     {
-        /// <summary>
-        /// Gets the module.
-        /// </summary>
+        /// <summary>Gets the module.</summary>
         /// <param name="moduleId">The module ID.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <returns>module info.</returns>
         ModuleInfo GetModule(int moduleId, int tabId);
 
-        /// <summary>
-        /// Adds or updates a module's setting value.
-        /// </summary>
+        /// <summary>Adds or updates a module's setting value.</summary>
         /// <param name="moduleId">ID of the tabmodule, the setting belongs to.</param>
         /// <param name="settingName">name of the setting property.</param>
         /// <param name="settingValue">value of the setting (String).</param>
         /// <remarks>Empty SettingValue will remove the setting.</remarks>
         void UpdateModuleSetting(int moduleId, string settingName, string settingValue);
 
-        /// <summary>
-        /// Adds or updates a tab module's setting value.
-        /// </summary>
+        /// <summary>Adds or updates a tab module's setting value.</summary>
         /// <param name="tabModuleId">ID of the tabmodule, the setting belongs to.</param>
         /// <param name="settingName">name of the setting property.</param>
         /// <param name="settingValue">value of the setting (String).</param>

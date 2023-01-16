@@ -15,17 +15,13 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
+    /// <summary>Controller to manage IP Filters.</summary>
     public class IPFilterController : ComponentBase<IIPFilterController, IPFilterController>, IIPFilterController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IPFilterController));
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPFilterController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="IPFilterController"/> class.</summary>
         internal IPFilterController()
         {
         }
@@ -36,30 +32,34 @@ namespace DotNetNuke.Entities.Host
             Deny = 2,
         }
 
-        /// <summary>
-        /// add a new IP filter.
-        /// </summary>
-        /// <param name="ipFilter">filter details.</param>
-        /// <returns>filter id.</returns>
+        /// <inheritdoc/>
         public int AddIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
             AssertValidIPFilter(ipFilter);
 
-            int id = DataProvider.Instance().AddIPFilter(ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
+            int id = DataProvider.Instance().AddIPFilter(
+                ipFilter.IPAddress,
+                ipFilter.SubnetMask,
+                ipFilter.RuleType,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                ipFilter.Notes);
             return id;
         }
 
-        /// <summary>
-        /// update an existing IP filter.
-        /// </summary>
-        /// <param name="ipFilter">filter details.</param>
+        /// <inheritdoc/>
         public void UpdateIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
             AssertValidIPFilter(ipFilter);
 
-            DataProvider.Instance().UpdateIPFilter(ipFilter.IPFilterID, ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().UpdateIPFilter(
+                ipFilter.IPFilterID,
+                ipFilter.IPAddress,
+                ipFilter.SubnetMask,
+                ipFilter.RuleType,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                ipFilter.Notes);
         }
 
         /// <inheritdoc/>
@@ -69,11 +69,7 @@ namespace DotNetNuke.Entities.Host
             DataProvider.Instance().DeleteIPFilter(ipFilter.IPFilterID);
         }
 
-        /// <summary>
-        /// get an IP filter.
-        /// </summary>
-        /// <param name="ipFilter">filter details.</param>
-        /// <returns>the selected IP filter.</returns>
+        /// <inheritdoc/>
         public IPFilterInfo GetIPFilter(int ipFilter)
         {
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
@@ -89,23 +85,13 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// <summary>
-        /// Check the set of rules to see if an IP address is banned (used on login).
-        /// </summary>
-        /// <param name="ipAddress">IP address.</param>
-        /// <returns>true if banned.</returns>
+        /// <inheritdoc/>
         public bool IsIPBanned(string ipAddress)
         {
             return this.CheckIfBannedIPAddress(ipAddress);
         }
 
-        /// <summary>
-        /// Check if an IP address range can still access based on a set of rules
-        /// note: this set is typically the list of IP filter rules minus a proposed delete.
-        /// </summary>
-        /// <param name="myip">IP address.</param>
-        /// <param name="filterList">list of IP filters.</param>
-        /// <returns>true if IP can access, false otherwise.</returns>
+        /// <inheritdoc/>
         public bool CanIPStillAccess(string myip, IList<IPFilterInfo> filterList)
         {
             var allowAllIPs = false;
@@ -162,12 +148,7 @@ namespace DotNetNuke.Entities.Host
             return false;
         }
 
-        /// <summary>
-        /// Check if a new rule would block the existing IP address.
-        /// </summary>
-        /// <param name="currentIP">current IP address.</param>
-        /// <param name="ipFilter">new propose rule.</param>
-        /// <returns>true if rule would not block current IP, false otherwise.</returns>
+        /// <inheritdoc/>
         public bool IsAllowableDeny(string currentIP, IPFilterInfo ipFilter)
         {
             if (ipFilter.RuleType == (int)FilterType.Allow)
@@ -183,6 +164,12 @@ namespace DotNetNuke.Entities.Host
             return true;
         }
 
+        /// <inheritdoc/>
+        IList<IPFilterInfo> IIPFilterController.GetIPFilters()
+        {
+            return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
+        }
+
         private static void AssertValidIPFilter(IPFilterInfo ipFilter)
         {
             IPAddress parsed;
@@ -196,15 +183,6 @@ namespace DotNetNuke.Entities.Host
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
             }
-        }
-
-        /// <summary>
-        /// get the list of IP filters.
-        /// </summary>
-        /// <returns>list of IP filters.</returns>
-        IList<IPFilterInfo> IIPFilterController.GetIPFilters()
-        {
-            return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
         }
 
         private bool CheckIfBannedIPAddress(string ipAddress)
@@ -241,7 +219,7 @@ namespace DotNetNuke.Entities.Host
         {
             var log = new LogInfo
             {
-                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.IP_LOGIN_BANNED.ToString(),
             };
             log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
             LogController.Instance.AddLog(log);

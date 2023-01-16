@@ -14,6 +14,7 @@ namespace Dnn.EditBar.UI.Controllers
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Hosting;
+
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Application;
@@ -32,8 +33,9 @@ namespace Dnn.EditBar.UI.Controllers
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));
 
-        private static object _threadLocker = new object();
+        private static object threadLocker = new object();
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetConfigurations(int portalId)
         {
             var settings = new Dictionary<string, object>();
@@ -56,12 +58,13 @@ namespace Dnn.EditBar.UI.Controllers
             return settings;
         }
 
+        /// <inheritdoc/>
         public IList<BaseMenuItem> GetMenuItems()
         {
             var menuItems = DataCache.GetCache<IList<BaseMenuItem>>(Constants.MenuItemsCacheKey);
             if (menuItems == null)
             {
-                lock (_threadLocker)
+                lock (threadLocker)
                 {
                     menuItems = DataCache.GetCache<IList<BaseMenuItem>>(Constants.MenuItemsCacheKey);
                     if (menuItems == null)
@@ -80,6 +83,7 @@ namespace Dnn.EditBar.UI.Controllers
                     .ToList();
         }
 
+        /// <inheritdoc/>
         protected override Func<IEditBarController> GetFactory()
         {
             return () => new EditBarController();
@@ -100,7 +104,8 @@ namespace Dnn.EditBar.UI.Controllers
                 {
                     Logger.ErrorFormat(
                         "Unable to create {0} while getting all edit bar menu items. {1}",
-                        type.FullName, e.Message);
+                        type.FullName,
+                        e.Message);
                     menuItem = null;
                 }
 

@@ -16,28 +16,26 @@ namespace DotNetNuke.Services.Search.Internals
 
     internal class SearchSecurityTrimmer : Collector
     {
-        private readonly SecurityCheckerDelegate _securityChecker;
-        private readonly IndexSearcher _searcher;
-        private readonly LuceneQuery _luceneQuery;
-        private readonly SearchQuery _searchQuery;
-        private readonly List<ScoreDoc> _hitDocs;
+        private readonly SecurityCheckerDelegate securityChecker;
+        private readonly IndexSearcher searcher;
+        private readonly LuceneQuery luceneQuery;
+        private readonly SearchQuery searchQuery;
+        private readonly List<ScoreDoc> hitDocs;
 
-        private Scorer _scorer;
-        private int _docBase;
-        private int _totalHits;
-        private List<ScoreDoc> _scoreDocs;
+        private Scorer scorer;
+        private int docBase;
+        private int totalHits;
+        private List<ScoreDoc> scoreDocs;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchSecurityTrimmer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchSecurityTrimmer"/> class.</summary>
         /// <param name="searchContext"></param>
         public SearchSecurityTrimmer(SearchSecurityTrimmerContext searchContext)
         {
-            this._securityChecker = searchContext.SecurityChecker;
-            this._searcher = searchContext.Searcher;
-            this._luceneQuery = searchContext.LuceneQuery;
-            this._searchQuery = searchContext.SearchQuery;
-            this._hitDocs = new List<ScoreDoc>(16);
+            this.securityChecker = searchContext.SecurityChecker;
+            this.searcher = searchContext.Searcher;
+            this.luceneQuery = searchContext.LuceneQuery;
+            this.searchQuery = searchContext.SearchQuery;
+            this.hitDocs = new List<ScoreDoc>(16);
         }
 
         /// <inheritdoc/>
@@ -50,12 +48,12 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (this._scoreDocs == null)
+                if (this.scoreDocs == null)
                 {
                     this.PrepareScoreDocs();
                 }
 
-                return this._totalHits;
+                return this.totalHits;
             }
         }
 
@@ -63,31 +61,31 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (this._scoreDocs == null)
+                if (this.scoreDocs == null)
                 {
                     this.PrepareScoreDocs();
                 }
 
-                return this._scoreDocs;
+                return this.scoreDocs;
             }
         }
 
         /// <inheritdoc/>
         public override void SetNextReader(IndexReader reader, int docBase)
         {
-            this._docBase = docBase;
+            this.docBase = docBase;
         }
 
         /// <inheritdoc/>
         public override void SetScorer(Scorer scorer)
         {
-            this._scorer = scorer;
+            this.scorer = scorer;
         }
 
         /// <inheritdoc/>
         public override void Collect(int doc)
         {
-            this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.Score()));
+            this.hitDocs.Add(new ScoreDoc(doc + this.docBase, this.scorer.Score()));
         }
 
         private string GetStringFromField(Document doc, SortField sortField)
@@ -117,20 +115,20 @@ namespace DotNetNuke.Services.Search.Internals
         {
             int skippedSoFar;
             var collectedSoFar = skippedSoFar = 0;
-            var pageSize = this._luceneQuery.PageSize;
-            var toSkip = this._luceneQuery.PageIndex <= 1 ? 0 : ((this._luceneQuery.PageIndex - 1) * pageSize);
+            var pageSize = this.luceneQuery.PageSize;
+            var toSkip = this.luceneQuery.PageIndex <= 1 ? 0 : ((this.luceneQuery.PageIndex - 1) * pageSize);
             IEnumerable<ScoreDoc> tempDocs = new List<ScoreDoc>();
 
-            this._totalHits = this._hitDocs.Count;
+            this.totalHits = this.hitDocs.Count;
 
             var useRelevance = false;
-            if (ReferenceEquals(Sort.RELEVANCE, this._luceneQuery.Sort))
+            if (ReferenceEquals(Sort.RELEVANCE, this.luceneQuery.Sort))
             {
                 useRelevance = true;
             }
             else
             {
-                var fields = this._luceneQuery.Sort.GetSort();
+                var fields = this.luceneQuery.Sort.GetSort();
                 if (fields == null || fields.Count() != 1)
                 {
                     useRelevance = true;
@@ -142,14 +140,14 @@ namespace DotNetNuke.Services.Search.Internals
                     {
                         if (field.Reverse)
                         {
-                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                            tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
                                        .OrderByDescending(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }
                         else
                         {
-                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                            tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
                                        .OrderBy(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
@@ -159,14 +157,14 @@ namespace DotNetNuke.Services.Search.Internals
                     {
                         if (field.Reverse)
                         {
-                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                            tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
                                            .OrderByDescending(rec => this.GetStringFromField(rec.Document, field))
                                            .ThenByDescending(rec => rec.Document.Boost)
                                            .Select(rec => rec.SDoc);
                         }
                         else
                         {
-                            tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
+                            tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
                                        .OrderBy(rec => this.GetStringFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
@@ -177,15 +175,15 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (useRelevance)
             {
-                tempDocs = this._hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+                tempDocs = this.hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
             }
 
             var scoreDocSize = Math.Min(tempDocs.Count(), pageSize);
-            this._scoreDocs = new List<ScoreDoc>(scoreDocSize);
+            this.scoreDocs = new List<ScoreDoc>(scoreDocSize);
 
             foreach (var scoreDoc in tempDocs)
             {
-                if (this._securityChecker == null || this._securityChecker(this._searcher.Doc(scoreDoc.Doc), this._searchQuery))
+                if (this.securityChecker == null || this.securityChecker(this.searcher.Doc(scoreDoc.Doc), this.searchQuery))
                 {
                     if (skippedSoFar < toSkip)
                     {
@@ -198,12 +196,12 @@ namespace DotNetNuke.Services.Search.Internals
                         continue;
                     }
 
-                    this._scoreDocs.Add(scoreDoc);
+                    this.scoreDocs.Add(scoreDoc);
                     ++collectedSoFar;
                 }
                 else
                 {
-                    this._totalHits--;
+                    this.totalHits--;
                 }
             }
         }

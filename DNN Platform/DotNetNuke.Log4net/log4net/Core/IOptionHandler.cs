@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Interface used to delay activate a configured object.
-    /// </summary>
+    /// <summary>Interface used to delay activate a configured object.</summary>
     /// <remarks>
     /// <para>
     /// This allows an object to defer activation of its options until all
@@ -40,9 +38,7 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public interface IOptionHandler
     {
-        /// <summary>
-        /// Activate the options that were previously set with calls to properties.
-        /// </summary>
+        /// <summary>Activate the options that were previously set with calls to properties.</summary>
         /// <remarks>
         /// <para>
         /// This allows an object to defer activation of its options until all

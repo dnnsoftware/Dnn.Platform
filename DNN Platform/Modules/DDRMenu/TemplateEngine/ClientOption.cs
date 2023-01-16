@@ -25,43 +25,4 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public string Value { get; set; }
     }
-
-    public class ClientString : ClientOption
-    {
-        public ClientString()
-        {
-        }
-
-        public ClientString(string name, string value)
-        {
-            this.Name = name;
-            this.Value = value;
-        }
-    }
-
-    public class ClientNumber : ClientOption
-    {
-        public ClientNumber()
-        {
-        }
-
-        public ClientNumber(string name, string value)
-        {
-            this.Name = name;
-            this.Value = value;
-        }
-    }
-
-    public class ClientBoolean : ClientOption
-    {
-        public ClientBoolean()
-        {
-        }
-
-        public ClientBoolean(string name, string value)
-        {
-            this.Name = name;
-            this.Value = value;
-        }
-    }
 }

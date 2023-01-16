@@ -27,11 +27,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public virtual string DisplayName
         {
-            get
-            {
-                return this.Name;
-            }
-
+            get { return this.Name; }
             set { }
         }
 
@@ -43,11 +39,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public virtual string FirstName
         {
-            get
-            {
-                return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(0, this.Name.IndexOf(" ", StringComparison.Ordinal)) : string.Empty;
-            }
-
+            get { return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(0, this.Name.IndexOf(" ", StringComparison.Ordinal)) : string.Empty; }
             set { this.Name = value + " " + this.LastName; }
         }
 
@@ -56,11 +48,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public virtual string LastName
         {
-            get
-            {
-                return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(this.Name.IndexOf(" ", StringComparison.Ordinal) + 1) : this.Name;
-            }
-
+            get { return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(this.Name.IndexOf(" ", StringComparison.Ordinal) + 1) : this.Name; }
             set { this.Name = this.FirstName + " " + value; }
         }
 
@@ -83,21 +71,5 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         [DataMember(Name = "website")]
         public virtual string Website { get; set; }
-    }
-
-    [DataContract]
-    public class EmailData
-    {
-        [DataMember(Name = "preferred")]
-        public string PreferredEmail { get; set; }
-
-        [DataMember(Name = "account")]
-        public string AccountEmail { get; set; }
-
-        [DataMember(Name = "personal")]
-        public string PersonalEmail { get; set; }
-
-        [DataMember(Name = "business")]
-        public string BusinessEmail { get; set; }
     }
 }

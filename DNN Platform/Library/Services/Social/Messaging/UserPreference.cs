@@ -6,30 +6,20 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     using System;
 
-    /// <summary>
-    /// Represents the  Messaging User Preference.
-    /// </summary>
+    /// <summary>Represents the  Messaging User Preference.</summary>
     [Serializable]
     public class UserPreference
     {
-        /// <summary>
-        /// Gets or sets portal where the preference are applied.
-        /// </summary>
+        /// <summary>Gets or sets portal where the preference are applied.</summary>
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets user Identifier.
-        /// </summary>
+        /// <summary>Gets or sets user Identifier.</summary>
         public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Email Delivery Frequency used for Messages.
-        /// </summary>
+        /// <summary>Gets or sets the Email Delivery Frequency used for Messages.</summary>
         public Frequency MessagesEmailFrequency { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Email Delivery Frequency used for Notifications.
-        /// </summary>
+        /// <summary>Gets or sets the Email Delivery Frequency used for Notifications.</summary>
         public Frequency NotificationsEmailFrequency { get; set; }
     }
 }

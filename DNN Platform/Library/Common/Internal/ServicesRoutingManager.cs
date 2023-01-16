@@ -9,16 +9,12 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
 
-    /// <summary>
-    /// Manages http routes for services (WebAPI, MVC, etc).
-    /// </summary>
+    /// <summary>Manages http routes for services (WebAPI, MVC, etc).</summary>
     public static class ServicesRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
 
-        /// <summary>
-        /// Registers all the service routes.
-        /// </summary>
+        /// <summary>Registers all the service routes.</summary>
         public static void RegisterServiceRoutes()
         {
             const string unableToRegisterServiceRoutes = "Unable to register service routes";
@@ -42,9 +38,7 @@ namespace DotNetNuke.Common.Internal
             }
         }
 
-        /// <summary>
-        /// Re-registers all the routes while the site is still running.
-        /// </summary>
+        /// <summary>Re-registers all the routes while the site is still running.</summary>
         public static void ReRegisterServiceRoutesWhileSiteIsRunning()
         {
             // by clearing a "fake" key on the caching provider we can echo this

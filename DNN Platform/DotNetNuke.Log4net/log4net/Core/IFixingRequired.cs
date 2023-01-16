@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Interface for objects that require fixing.
-    /// </summary>
+    /// <summary>Interface for objects that require fixing.</summary>
     /// <remarks>
     /// <para>
     /// Interface that indicates that the object requires fixing before it
@@ -43,9 +41,7 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public interface IFixingRequired
     {
-        /// <summary>
-        /// Get a portable version of this object
-        /// </summary>
+        /// <summary>Get a portable version of this object</summary>
         /// <returns>the portable instance of this object</returns>
         /// <remarks>
         /// <para>

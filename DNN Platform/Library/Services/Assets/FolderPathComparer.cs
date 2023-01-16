@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Assets
     {
         private readonly Dictionary<int, string> cache;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderPathComparer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderPathComparer"/> class.</summary>
         public FolderPathComparer()
         {
             this.cache = new Dictionary<int, string>();

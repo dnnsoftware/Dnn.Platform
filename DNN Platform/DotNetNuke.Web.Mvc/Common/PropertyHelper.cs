@@ -33,9 +33,7 @@ namespace DotNetNuke.Web.Mvc.Common
 
         public virtual string Name { get; protected set; }
 
-        /// <summary>
-        /// Creates and caches fast property helpers that expose getters for every public get property on the underlying type.
-        /// </summary>
+        /// <summary>Creates and caches fast property helpers that expose getters for every public get property on the underlying type.</summary>
         /// <param name="instance">the instance to extract property accessors for.</param>
         /// <returns>a cached array of all public property getters from the underlying type of this instance.</returns>
         public static PropertyHelper[] GetProperties(object instance)
@@ -43,9 +41,7 @@ namespace DotNetNuke.Web.Mvc.Common
             return GetProperties(instance, CreateInstance, ReflectionCache);
         }
 
-        /// <summary>
-        /// Creates a single fast property getter. The result is not cached.
-        /// </summary>
+        /// <summary>Creates a single fast property getter. The result is not cached.</summary>
         /// <param name="propertyInfo">propertyInfo to extract the getter for.</param>
         /// <returns>a fast getter.</returns>
         /// <remarks>This method is more memory efficient than a dynamically compiled lambda, and about the same speed.</remarks>

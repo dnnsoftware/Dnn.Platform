@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Xml;
@@ -15,108 +16,72 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
-    using ICSharpCode.SharpZipLib.Zip;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageWriter class.</summary>
     public class PackageWriterBase
     {
         private static readonly Regex FileVersionMatchRegex = new Regex(Util.REGEX_Version, RegexOptions.Compiled);
 
-        private readonly Dictionary<string, InstallFile> _AppCodeFiles = new Dictionary<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Assemblies = new Dictionary<string, InstallFile>();
-        private readonly SortedList<string, InstallFile> _CleanUpFiles = new SortedList<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Files = new Dictionary<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Resources = new Dictionary<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Scripts = new Dictionary<string, InstallFile>();
-        private readonly List<string> _Versions = new List<string>();
-        private string _BasePath = Null.NullString;
-        private PackageInfo _Package;
+        private readonly Dictionary<string, InstallFile> appCodeFiles = new Dictionary<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> assemblies = new Dictionary<string, InstallFile>();
+        private readonly SortedList<string, InstallFile> cleanUpFiles = new SortedList<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> files = new Dictionary<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> resources = new Dictionary<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> scripts = new Dictionary<string, InstallFile>();
+        private readonly List<string> versions = new List<string>();
+        private string basePath = Null.NullString;
+        private PackageInfo package;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageWriterBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PackageWriterBase"/> class.</summary>
         /// <param name="package"></param>
         public PackageWriterBase(PackageInfo package)
         {
-            this._Package = package;
-            this._Package.AttachInstallerInfo(new InstallerInfo());
+            this.package = package;
+            this.package.AttachInstallerInfo(new InstallerInfo());
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageWriterBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PackageWriterBase"/> class.</summary>
         protected PackageWriterBase()
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of AppCodeFiles that should be included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of AppCodeFiles that should be included in the Package.</summary>
         public Dictionary<string, InstallFile> AppCodeFiles
         {
             get
             {
-                return this._AppCodeFiles;
+                return this.appCodeFiles;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Assemblies that should be included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of Assemblies that should be included in the Package.</summary>
         public Dictionary<string, InstallFile> Assemblies
         {
             get
             {
-                return this._Assemblies;
+                return this.assemblies;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of CleanUpFiles that should be included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of CleanUpFiles that should be included in the Package.</summary>
         public SortedList<string, InstallFile> CleanUpFiles
         {
             get
             {
-                return this._CleanUpFiles;
+                return this.cleanUpFiles;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Files that should be included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of Files that should be included in the Package.</summary>
         public Dictionary<string, InstallFile> Files
         {
             get
             {
-                return this._Files;
+                return this.files;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to include Assemblies.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether to include Assemblies.</summary>
         public virtual bool IncludeAssemblies
         {
             get
@@ -125,12 +90,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Logger.
-        /// </summary>
-        /// <value>An Logger object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Logger.</summary>
         public Logger Log
         {
             get
@@ -139,117 +99,71 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Resources that should be included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of Resources that should be included in the Package.</summary>
         public Dictionary<string, InstallFile> Resources
         {
             get
             {
-                return this._Resources;
+                return this.resources;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Scripts that should be included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of Scripts that should be included in the Package.</summary>
         public Dictionary<string, InstallFile> Scripts
         {
             get
             {
-                return this._Scripts;
+                return this.scripts;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a List of Versions that should be included in the Package.
-        /// </summary>
-        /// <value>A List(Of String).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a List of Versions that should be included in the Package.</summary>
         public List<string> Versions
         {
             get
             {
-                return this._Versions;
+                return this.versions;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Path for the Package's app code files.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Path for the Package's app code files.</summary>
         public string AppCodePath { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Path for the Package's assemblies.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Path for the Package's assemblies.</summary>
         public string AssemblyPath { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Base Path for the Package.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Base Path for the Package.</summary>
         public string BasePath
         {
             get
             {
-                return this._BasePath;
+                return this.basePath;
             }
 
             set
             {
-                this._BasePath = value;
+                this.basePath = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether a project file is found in the folder.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether a project file is found in the folder.</summary>
         public bool HasProjectFile { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets whether there are any errors in parsing legacy packages.
-        /// </summary>
-        /// <value>
-        /// <placeholder>And sets whether there are any errors in parsing legacy packages</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets or sets whether there are any errors in parsing legacy packages.</summary>
+        /// <value>And sets whether there are any errors in parsing legacy packages.</value>
         public string LegacyError { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Package.
-        /// </summary>
-        /// <value>An PackageInfo object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the associated Package.</summary>
         public PackageInfo Package
         {
             get
             {
-                return this._Package;
+                return this.package;
             }
 
             set
             {
-                this._Package = value;
+                this.package = value;
             }
         }
 
@@ -286,35 +200,35 @@ namespace DotNetNuke.Services.Installer.Writers
             switch (file.Type)
             {
                 case InstallFileType.AppCode:
-                    this._AppCodeFiles[file.FullName.ToLowerInvariant()] = file;
+                    this.appCodeFiles[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.Assembly:
-                    this._Assemblies[file.FullName.ToLowerInvariant()] = file;
+                    this.assemblies[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.CleanUp:
-                    this._CleanUpFiles[file.FullName.ToLowerInvariant()] = file;
+                    this.cleanUpFiles[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.Script:
-                    this._Scripts[file.FullName.ToLowerInvariant()] = file;
+                    this.scripts[file.FullName.ToLowerInvariant()] = file;
                     break;
                 default:
-                    this._Files[file.FullName.ToLowerInvariant()] = file;
+                    this.files[file.FullName.ToLowerInvariant()] = file;
                     break;
             }
 
             if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
             {
                 string version = Path.GetFileNameWithoutExtension(file.Name);
-                if (!this._Versions.Contains(version))
+                if (!this.versions.Contains(version))
                 {
-                    this._Versions.Add(version);
+                    this.versions.Add(version);
                 }
             }
         }
 
         public void AddResourceFile(InstallFile file)
         {
-            this._Resources[file.FullName.ToLowerInvariant()] = file;
+            this.resources[file.FullName.ToLowerInvariant()] = file;
         }
 
         public void CreatePackage(string archiveName, string manifestName, string manifest, bool createManifest)
@@ -334,9 +248,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.GetFiles(includeSource, true);
         }
 
-        /// <summary>
-        /// WriteManifest writes an existing manifest.
-        /// </summary>
+        /// <summary>WriteManifest writes an existing manifest.</summary>
         /// <param name="manifestName">The name of the manifest file.</param>
         /// <param name="manifest">The manifest.</param>
         /// <remarks>This overload takes a package manifest and writes it to a file.</remarks>
@@ -350,9 +262,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// WriteManifest writes a package manifest to an XmlWriter.
-        /// </summary>
+        /// <summary>WriteManifest writes a package manifest to an XmlWriter.</summary>
         /// <param name="writer">The XmlWriter.</param>
         /// <param name="manifest">The manifest.</param>
         /// <remarks>This overload takes a package manifest and writes it to a Writer.</remarks>
@@ -368,13 +278,10 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.Close();
         }
 
-        /// <summary>
-        /// WriteManifest writes the manifest assoicated with this PackageWriter to a string.
-        /// </summary>
+        /// <summary>WriteManifest writes the manifest associated with this PackageWriter to a string.</summary>
         /// <param name="packageFragment">A flag that indicates whether to return the package element
-        /// as a fragment (True) or whether to add the outer dotnetnuke and packages elements (False).</param>
+        /// as a fragment (True) or whether to add the outer <c>dotnetnuke</c> and <c>packages</c> elements (False).</param>
         /// <returns>The manifest as a string.</returns>
-        /// <remarks></remarks>
         public string WriteManifest(bool packageFragment)
         {
             // Create a writer to create the processed manifest
@@ -485,8 +392,9 @@ namespace DotNetNuke.Services.Installer.Writers
                 // Get the Project File in the folder
                 FileInfo[] files = folderInfo.GetFiles("*.??proj");
 
-                if (files.Length == 0) // Assume Dynamic (App_Code based) Module
+                if (files.Length == 0)
                 {
+                    // Assume Dynamic (App_Code based) Module
                     // Add the files in the DesktopModules Folder
                     this.ParseFolder(baseFolder, baseFolder);
 
@@ -497,8 +405,9 @@ namespace DotNetNuke.Services.Installer.Writers
                         this.ParseFolder(appCodeFolder, appCodeFolder);
                     }
                 }
-                else // WAP Project File is present
+                else
                 {
+                    // WAP Project File is present
                     this.HasProjectFile = true;
 
                     // Parse the Project files (probably only one)
@@ -625,7 +534,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        private void AddFilesToZip(ZipOutputStream stream, IDictionary<string, InstallFile> files, string basePath)
+        private void AddFilesToZip(ZipArchive stream, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
             {
@@ -655,30 +564,28 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void CreateZipFile(string zipFileName)
         {
-            int CompressionLevel = 9;
             var zipFile = new FileInfo(zipFileName);
 
-            string ZipFileShortName = zipFile.Name;
+            string zipFileShortName = zipFile.Name;
 
             FileStream strmZipFile = null;
             this.Log.StartJob(Util.WRITER_CreatingPackage);
             try
             {
-                this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, ZipFileShortName));
+                this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, zipFileShortName));
                 strmZipFile = File.Create(zipFileName);
-                ZipOutputStream strmZipStream = null;
+                ZipArchive strmZipStream = null;
                 try
                 {
-                    strmZipStream = new ZipOutputStream(strmZipFile);
-                    strmZipStream.SetLevel(CompressionLevel);
+                    strmZipStream = new ZipArchive(strmZipFile);
 
                     // Add Files To zip
-                    this.AddFilesToZip(strmZipStream, this._Assemblies, string.Empty);
-                    this.AddFilesToZip(strmZipStream, this._AppCodeFiles, this.AppCodePath);
-                    this.AddFilesToZip(strmZipStream, this._Files, this.BasePath);
-                    this.AddFilesToZip(strmZipStream, this._CleanUpFiles, this.BasePath);
-                    this.AddFilesToZip(strmZipStream, this._Resources, this.BasePath);
-                    this.AddFilesToZip(strmZipStream, this._Scripts, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.assemblies, string.Empty);
+                    this.AddFilesToZip(strmZipStream, this.appCodeFiles, this.AppCodePath);
+                    this.AddFilesToZip(strmZipStream, this.files, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.cleanUpFiles, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.resources, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.scripts, this.BasePath);
                 }
                 catch (Exception ex)
                 {
@@ -689,8 +596,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     if (strmZipStream != null)
                     {
-                        strmZipStream.Finish();
-                        strmZipStream.Close();
+                        strmZipStream.Dispose();
                     }
                 }
 

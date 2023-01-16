@@ -43,12 +43,14 @@ namespace Dnn.ExportImport.Components.Entities
 
         public string JobObject { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.JobId; }
             set { this.JobId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.JobId = Null.SetNullInteger(dr[nameof(this.JobId)]);

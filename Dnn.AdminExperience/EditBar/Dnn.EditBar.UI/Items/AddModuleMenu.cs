@@ -20,8 +20,10 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class AddModuleMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "AddModule";
 
+        /// <inheritdoc/>
         public override string Text
         {
             get
@@ -30,6 +32,7 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string CssClass
         {
             get
@@ -38,14 +41,19 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string Template { get; } = string.Empty;
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "AddModule";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 5;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
             var portalSettings = PortalSettings.Current;

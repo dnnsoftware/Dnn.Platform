@@ -26,28 +26,30 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
     public partial class Import : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private TabInfo _tab;
+        private TabInfo tab;
 
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
         public Import()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public TabInfo Tab
         {
             get
             {
-                if (this._tab == null)
+                if (this.tab == null)
                 {
-                    this._tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
+                    this.tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
                 }
 
-                return this._tab;
+                return this.tab;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -58,6 +60,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -72,7 +75,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (!this.Page.IsPostBack)
                 {
-                    this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
+                    this.cmdCancel.NavigateUrl = this.navigationManager.NavigateURL();
                     this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     var folders = FolderManager.Instance.GetFolders(this.UserInfo, "BROWSE, ADD");
                     var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
@@ -233,10 +236,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 switch (this.optRedirect.SelectedValue)
                 {
                     case "VIEW":
-                        this.Response.Redirect(this._navigationManager.NavigateURL(objTab.TabID), true);
+                        this.Response.Redirect(this.navigationManager.NavigateURL(objTab.TabID), true);
                         break;
                     default:
-                        this.Response.Redirect(this._navigationManager.NavigateURL(objTab.TabID, "Tab", "action=edit"), true);
+                        this.Response.Redirect(this.navigationManager.NavigateURL(objTab.TabID, "Tab", "action=edit"), true);
                         break;
                 }
             }

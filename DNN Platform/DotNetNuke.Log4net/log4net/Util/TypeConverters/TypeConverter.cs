@@ -25,9 +25,7 @@ using System.Reflection;
 
 namespace log4net.Util.TypeConverters
 {
-    /// <summary>
-    /// Supports conversion from string to <see cref="Type"/> type.
-    /// </summary>
+    /// <summary>Supports conversion from string to <see cref="Type"/> type.</summary>
     /// <remarks>
     /// <para>
     /// Supports conversion from string to <see cref="Type"/> type.
@@ -39,9 +37,7 @@ namespace log4net.Util.TypeConverters
     /// <author>Nicko Cadell</author>
     internal class TypeConverter : IConvertFrom 
     {
-        /// <summary>
-        /// Can the source type be converted to the type supported by this object
-        /// </summary>
+        /// <summary>Can the source type be converted to the type supported by this object</summary>
         /// <param name="sourceType">the type to convert</param>
         /// <returns>true if the conversion is possible</returns>
         /// <remarks>
@@ -55,9 +51,7 @@ namespace log4net.Util.TypeConverters
             return (sourceType == typeof(string));
         }
 
-        /// <summary>
-        /// Overrides the ConvertFrom method of IConvertFrom.
-        /// </summary>
+        /// <summary>Overrides the ConvertFrom method of IConvertFrom.</summary>
         /// <param name="source">the object to convert to a Type</param>
         /// <returns>the Type</returns>
         /// <remarks>

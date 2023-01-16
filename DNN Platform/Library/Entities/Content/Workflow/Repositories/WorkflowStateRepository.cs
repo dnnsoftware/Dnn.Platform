@@ -111,8 +111,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
         {
             return rep.Find(
-                "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
-                state.StateName, state.WorkflowID, state.StateID).SingleOrDefault() != null;
+                           "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
+                           state.StateName,
+                           state.WorkflowID,
+                           state.StateID)
+                       .SingleOrDefault() != null;
         }
 
         private static string GetWorkflowStateKey(int stateId)

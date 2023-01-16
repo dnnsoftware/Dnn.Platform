@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -24,37 +26,73 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public abstract class DnnUrlControl : UserControlBase
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel ErrorRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel FileRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel ImagesRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel TabRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel TypeRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel URLRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel UserRow;
+
+        // ReSharper restore InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboImages;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnPageDropDownList cboTabs;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboUrls;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkLog;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkNewWindow;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkTrack;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAdd;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdDelete;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdSelect;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblImages;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblMessage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblTab;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblURL;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblURLType;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUser;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButtonList optType;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtUrl;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtUser;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFilePickerUploader ctlFile;
-        private bool _doChangeURL;
-        private bool _doRenderTypeControls;
-        private bool _doRenderTypes;
-        private string _localResourceFile;
-        private PortalInfo _objPortal;
+        private bool doChangeURL;
+        private bool doRenderTypeControls;
+        private bool doRenderTypes;
+        private string localResourceFile;
+        private PortalInfo objPortal;
 
         public bool Log
         {
@@ -123,7 +161,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["IncludeActiveTab"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypeControls = true;
+                    this.doRenderTypeControls = true;
                 }
             }
         }
@@ -133,13 +171,13 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLControl.ascx";
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -147,7 +185,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -206,7 +244,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["Required"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypeControls = true;
+                    this.doRenderTypeControls = true;
                 }
             }
         }
@@ -230,7 +268,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowFiles"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypes = true;
+                    this.doRenderTypes = true;
                 }
             }
         }
@@ -254,7 +292,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowImages"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypes = true;
+                    this.doRenderTypes = true;
                 }
             }
         }
@@ -304,7 +342,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowNone"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypes = true;
+                    this.doRenderTypes = true;
                 }
             }
         }
@@ -328,7 +366,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowTabs"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypes = true;
+                    this.doRenderTypes = true;
                 }
             }
         }
@@ -365,7 +403,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowUpLoad"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypeControls = true;
+                    this.doRenderTypeControls = true;
                 }
             }
         }
@@ -389,7 +427,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowUrls"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypes = true;
+                    this.doRenderTypes = true;
                 }
             }
         }
@@ -413,7 +451,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["ShowUsers"] = value;
                 if (this.IsTrackingViewState)
                 {
-                    this._doRenderTypes = true;
+                    this.doRenderTypes = true;
                 }
             }
         }
@@ -488,7 +526,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     case "M":
                         if (!string.IsNullOrEmpty(this.txtUser.Text))
                         {
-                            UserInfo objUser = UserController.GetCachedUser(this._objPortal.PortalID, this.txtUser.Text);
+                            UserInfo objUser = UserController.GetCachedUser(this.objPortal.PortalID, this.txtUser.Text);
                             if (objUser != null)
                             {
                                 r = "UserID=" + objUser.UserID;
@@ -514,7 +552,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 if (this.IsTrackingViewState)
                 {
-                    this._doChangeURL = true;
+                    this.doChangeURL = true;
                 }
             }
         }
@@ -533,7 +571,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.ViewState["UrlType"] = value;
                     if (this.IsTrackingViewState)
                     {
-                        this._doChangeURL = true;
+                        this.doChangeURL = true;
                     }
                 }
             }
@@ -590,11 +628,11 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
+                    this.objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
 
                 if (this.ViewState["IsUrlControlLoaded"] == null)
@@ -603,15 +641,15 @@ namespace DotNetNuke.Web.UI.WebControls
                     // let's make at least an initialization
                     // The type radio button must be initialized
                     // The url must be initialized no matter its value
-                    this._doRenderTypes = true;
-                    this._doChangeURL = true;
+                    this.doRenderTypes = true;
+                    this.doChangeURL = true;
                     ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
 
                     // The following line was mover to the pre-render event to ensure render for the first time
                     // ViewState("IsUrlControlLoaded") = "Loaded"
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -624,19 +662,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
             try
             {
-                if (this._doRenderTypes)
+                if (this.doRenderTypes)
                 {
                     this.DoRenderTypes();
                 }
 
-                if (this._doChangeURL)
+                if (this.doChangeURL)
                 {
                     this.DoChangeURL();
                 }
 
                 this.DoCorrectRadioButtonList();
 
-                if (this._doRenderTypeControls)
+                if (this.doRenderTypeControls)
                 {
                     this.DoRenderTypeControls();
                 }
@@ -653,6 +691,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = false;
@@ -660,32 +701,38 @@ namespace DotNetNuke.Web.UI.WebControls
             this.txtUrl.Visible = true;
             this.cmdAdd.Visible = false;
             this.cmdDelete.Visible = false;
-            this._doRenderTypeControls = false; // Must not render on this postback
-            this._doRenderTypes = false;
-            this._doChangeURL = false;
+            this.doRenderTypeControls = false; // Must not render on this postback
+            this.doRenderTypes = false;
+            this.doChangeURL = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
             if (this.cboUrls.SelectedItem != null)
             {
                 var objUrls = new UrlController();
-                objUrls.DeleteUrl(this._objPortal.PortalID, this.cboUrls.SelectedItem.Value);
+                objUrls.DeleteUrl(this.objPortal.PortalID, this.cboUrls.SelectedItem.Value);
                 this.LoadUrls(); // we must reload the url list
             }
 
-            this._doRenderTypeControls = false; // Must not render on this postback
-            this._doRenderTypes = false;
-            this._doChangeURL = false;
+            this.doRenderTypeControls = false; // Must not render on this postback
+            this.doRenderTypes = false;
+            this.doChangeURL = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdSelect_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = true;
             this.cmdSelect.Visible = false;
             this.txtUrl.Visible = false;
             this.cmdAdd.Visible = true;
-            this.cmdDelete.Visible = PortalSecurity.IsInRole(this._objPortal.AdministratorRoleName);
+            this.cmdDelete.Visible = PortalSecurity.IsInRole(this.objPortal.AdministratorRoleName);
             this.LoadUrls();
             if (this.cboUrls.Items.FindByValue(this.txtUrl.Text) != null)
             {
@@ -693,59 +740,62 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
             }
 
-            this._doRenderTypeControls = false; // Must not render on this postback
-            this._doRenderTypes = false;
-            this._doChangeURL = false;
+            this.doRenderTypeControls = false; // Must not render on this postback
+            this.doRenderTypes = false;
+            this.doChangeURL = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Type changed, render the correct control set
             this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
-            this._doRenderTypeControls = true;
+            this.doRenderTypeControls = true;
         }
 
         private void LoadUrls()
         {
             var objUrls = new UrlController();
             this.cboUrls.Items.Clear();
-            this.cboUrls.DataSource = objUrls.GetUrls(this._objPortal.PortalID);
+            this.cboUrls.DataSource = objUrls.GetUrls(this.objPortal.PortalID);
             this.cboUrls.DataBind();
         }
 
         private void DoChangeURL()
         {
-            string _Url = Convert.ToString(this.ViewState["Url"]);
-            string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
-            if (!string.IsNullOrEmpty(_Url))
+            string url = Convert.ToString(this.ViewState["Url"]);
+            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            if (!string.IsNullOrEmpty(url))
             {
                 var objUrls = new UrlController();
-                string TrackingUrl = _Url;
+                string trackingUrl = url;
 
-                _Urltype = Globals.GetURLType(_Url).ToString("g").Substring(0, 1);
-                if (_Urltype == "U" && _Url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase))
+                urltype = Globals.GetURLType(url).ToString("g").Substring(0, 1);
+                if (urltype == "U" && url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    _Urltype = "I";
+                    urltype = "I";
                 }
 
-                this.ViewState["UrlType"] = _Urltype;
-                if (_Urltype == "F")
+                this.ViewState["UrlType"] = urltype;
+                if (urltype == "F")
                 {
-                    if (_Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
+                    if (url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        TrackingUrl = _Url;
-                        var objFile = FileManager.Instance.GetFile(int.Parse(_Url.Substring(7)));
+                        trackingUrl = url;
+                        var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
                         if (objFile != null)
                         {
-                            _Url = objFile.Folder + objFile.FileName;
+                            url = objFile.Folder + objFile.FileName;
                         }
                     }
                     else
                     {
                         // to handle legacy scenarios before the introduction of the FileServerHandler
-                        var fileName = Path.GetFileName(_Url);
-                        var folderPath = _Url.Substring(0, _Url.LastIndexOf(fileName));
-                        var folder = FolderManager.Instance.GetFolder(this._objPortal.PortalID, folderPath);
+                        var fileName = Path.GetFileName(url);
+                        var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                        var folder = FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
                         var fileId = -1;
                         if (folder != null)
                         {
@@ -756,45 +806,46 @@ namespace DotNetNuke.Web.UI.WebControls
                             }
                         }
 
-                        TrackingUrl = "FileID=" + fileId.ToString();
+                        trackingUrl = "FileID=" + fileId.ToString();
                     }
                 }
 
-                if (_Urltype == "M")
+                if (urltype == "M")
                 {
-                    if (_Url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
+                    if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        UserInfo objUser = UserController.GetUserById(this._objPortal.PortalID, int.Parse(_Url.Substring(7)));
+                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7)));
                         if (objUser != null)
                         {
-                            _Url = objUser.Username;
+                            url = objUser.Username;
                         }
                     }
                 }
 
-                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this._objPortal.PortalID, TrackingUrl, this.ModuleID);
+                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.objPortal.PortalID, trackingUrl, this.ModuleID);
                 if (objUrlTracking != null)
                 {
                     this.chkNewWindow.Checked = objUrlTracking.NewWindow;
                     this.chkTrack.Checked = objUrlTracking.TrackClicks;
                     this.chkLog.Checked = objUrlTracking.LogActivity;
                 }
-                else // the url does not exist in the tracking table
+                else
                 {
+                    // the url does not exist in the tracking table
                     this.chkTrack.Checked = false;
                     this.chkLog.Checked = false;
                 }
 
-                this.ViewState["Url"] = _Url;
+                this.ViewState["Url"] = url;
             }
             else
             {
-                if (!string.IsNullOrEmpty(_Urltype))
+                if (!string.IsNullOrEmpty(urltype))
                 {
                     this.optType.ClearSelection();
-                    if (this.optType.Items.FindByValue(_Urltype) != null)
+                    if (this.optType.Items.FindByValue(urltype) != null)
                     {
-                        this.optType.Items.FindByValue(_Urltype).Selected = true;
+                        this.optType.Items.FindByValue(urltype).Selected = true;
                     }
                     else
                     {
@@ -816,7 +867,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             // Url type changed, then we must draw the controlos for that type
-            this._doRenderTypeControls = true;
+            this.doRenderTypeControls = true;
         }
 
         private void DoRenderTypes()
@@ -930,13 +981,13 @@ namespace DotNetNuke.Web.UI.WebControls
                     else
                     {
                         this.optType.Items[0].Selected = true;
-                        this._doRenderTypeControls = true; // Type changed, re-draw
+                        this.doRenderTypeControls = true; // Type changed, re-draw
                     }
                 }
                 else
                 {
                     this.optType.Items[0].Selected = true;
-                    this._doRenderTypeControls = true; // Type changed, re-draw
+                    this.doRenderTypeControls = true; // Type changed, re-draw
                 }
 
                 this.TypeRow.Visible = this.optType.Items.Count > 1;
@@ -949,39 +1000,39 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void DoCorrectRadioButtonList()
         {
-            string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string urltype = Convert.ToString(this.ViewState["UrlType"]);
 
             if (this.optType.Items.Count > 0)
             {
                 this.optType.ClearSelection();
-                if (!string.IsNullOrEmpty(_Urltype))
+                if (!string.IsNullOrEmpty(urltype))
                 {
-                    if (this.optType.Items.FindByValue(_Urltype) != null)
+                    if (this.optType.Items.FindByValue(urltype) != null)
                     {
-                        this.optType.Items.FindByValue(_Urltype).Selected = true;
+                        this.optType.Items.FindByValue(urltype).Selected = true;
                     }
                     else
                     {
                         this.optType.Items[0].Selected = true;
-                        _Urltype = this.optType.Items[0].Value;
-                        this.ViewState["UrlType"] = _Urltype;
+                        urltype = this.optType.Items[0].Value;
+                        this.ViewState["UrlType"] = urltype;
                     }
                 }
                 else
                 {
                     this.optType.Items[0].Selected = true;
-                    _Urltype = this.optType.Items[0].Value;
-                    this.ViewState["UrlType"] = _Urltype;
+                    urltype = this.optType.Items[0].Value;
+                    this.ViewState["UrlType"] = urltype;
                 }
             }
         }
 
         private void DoRenderTypeControls()
         {
-            string _Url = Convert.ToString(this.ViewState["Url"]);
-            string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string url = Convert.ToString(this.ViewState["Url"]);
+            string urltype = Convert.ToString(this.ViewState["UrlType"]);
             var objUrls = new UrlController();
-            if (!string.IsNullOrEmpty(_Urltype))
+            if (!string.IsNullOrEmpty(urltype))
             {
                 // load listitems
                 switch (this.optType.SelectedItem.Value)
@@ -1009,7 +1060,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
                         }
 
-                        ListItem selecteItem = this.cboImages.Items.FindByValue(_Url.ToLowerInvariant());
+                        ListItem selecteItem = this.cboImages.Items.FindByValue(url.ToLowerInvariant());
                         if (selecteItem != null)
                         {
                             selecteItem.Selected = true;
@@ -1025,7 +1076,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.ImagesRow.Visible = false;
                         if (string.IsNullOrEmpty(this.txtUrl.Text))
                         {
-                            this.txtUrl.Text = _Url;
+                            this.txtUrl.Text = url;
                         }
 
                         if (string.IsNullOrEmpty(this.txtUrl.Text))
@@ -1054,11 +1105,11 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.cboTabs.DisabledNotSelectable = true;
                         this.cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
-                        if (!string.IsNullOrEmpty(_Url))
+                        if (!string.IsNullOrEmpty(url))
                         {
-                            PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
-                            var tabId = int.Parse(_Url);
-                            var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
+                            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                            var tabId = int.Parse(url);
+                            var page = TabController.Instance.GetTab(tabId, settings.PortalId);
                             this.cboTabs.SelectedPage = page;
                         }
 
@@ -1072,36 +1123,36 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         // select folder
                         // We Must check if selected folder has changed because of a property change (Secure, Database)
-                        string FileName = string.Empty;
-                        string FolderPath = string.Empty;
-                        string LastFileName = string.Empty;
-                        string LastFolderPath = string.Empty;
+                        string fileName = string.Empty;
+                        string folderPath = string.Empty;
+                        string lastFileName = string.Empty;
+                        string lastFolderPath = string.Empty;
 
                         // Let's try to remember last selection
                         if (this.ViewState["LastFolderPath"] != null)
                         {
-                            LastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
+                            lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
                         }
 
                         if (this.ViewState["LastFileName"] != null)
                         {
-                            LastFileName = Convert.ToString(this.ViewState["LastFileName"]);
+                            lastFileName = Convert.ToString(this.ViewState["LastFileName"]);
                         }
 
-                        if (_Url != string.Empty)
+                        if (url != string.Empty)
                         {
                             // Let's use the new URL
-                            FileName = _Url.Substring(_Url.LastIndexOf("/") + 1);
-                            FolderPath = _Url.Replace(FileName, string.Empty);
+                            fileName = url.Substring(url.LastIndexOf("/") + 1);
+                            folderPath = url.Replace(fileName, string.Empty);
                         }
                         else
                         {
                             // Use last settings
-                            FileName = LastFileName;
-                            FolderPath = LastFolderPath;
+                            fileName = lastFileName;
+                            folderPath = lastFolderPath;
                         }
 
-                        this.ctlFile.FilePath = FolderPath + FileName;
+                        this.ctlFile.FilePath = folderPath + fileName;
 
                         this.txtUrl.Visible = false;
                         break;
@@ -1113,7 +1164,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.ImagesRow.Visible = false;
                         if (string.IsNullOrEmpty(this.txtUser.Text))
                         {
-                            this.txtUser.Text = _Url;
+                            this.txtUser.Text = url;
                         }
 
                         break;

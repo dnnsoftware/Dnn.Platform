@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 
     public class DnnViewResult : ViewResult, IDnnViewResult
     {
+        /// <inheritdoc/>
         public void ExecuteResult(ControllerContext context, TextWriter writer)
         {
             Requires.NotNull("context", context);

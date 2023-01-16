@@ -19,14 +19,10 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// <summary>
-    /// Implements the logic for the default view.
-    /// </summary>
+    /// <summary>Implements the logic for the default view.</summary>
     public partial class View : PortalModuleBase
     {
-        /// <summary>
-        /// Gets the user id from the request parameters.
-        /// </summary>
+        /// <summary>Gets the user id from the request parameters.</summary>
         public int ProfileUserId
         {
             get
@@ -41,9 +37,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        /// <summary>
-        /// Gets a string indicating whether attachements are allowed "true" or not "false".
-        /// </summary>
+        /// <summary>Gets a string indicating whether attachements are allowed "true" or not "false".</summary>
         public string ShowAttachments
         {
             get
@@ -53,9 +47,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the subscriptions tab should be shown.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the subscriptions tab should be shown.</summary>
         public bool ShowSubscriptionTab
         {
             get
@@ -65,9 +57,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the private messaging should be disabled.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the private messaging should be disabled.</summary>
         public bool DisablePrivateMessage
         {
             get

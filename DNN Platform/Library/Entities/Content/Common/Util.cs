@@ -7,14 +7,10 @@ namespace DotNetNuke.Entities.Content.Common
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Content.Taxonomy;
 
-    /// <summary>
-    /// Utility Methods for Content.
-    /// </summary>
+    /// <summary>Utility Methods for Content.</summary>
     public static class Util
     {
-        /// <summary>
-        /// Gets the data service.
-        /// </summary>
+        /// <summary>Gets the data service.</summary>
         /// <returns>data service instance from ComponentFactory.</returns>
         public static IDataService GetDataService()
         {
@@ -29,9 +25,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ds;
         }
 
-        /// <summary>
-        /// Gets the content controller.
-        /// </summary>
+        /// <summary>Gets the content controller.</summary>
         /// <returns>ContentController from ComponentFactory.</returns>
         public static IContentController GetContentController()
         {
@@ -46,9 +40,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ctl;
         }
 
-        /// <summary>
-        /// Gets the scope type controller.
-        /// </summary>
+        /// <summary>Gets the scope type controller.</summary>
         /// <returns>ScopeTypeController from ComponentFactory.</returns>
         public static IScopeTypeController GetScopeTypeController()
         {
@@ -63,9 +55,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ctl;
         }
 
-        /// <summary>
-        /// Gets the term controller.
-        /// </summary>
+        /// <summary>Gets the term controller.</summary>
         /// <returns>TermController from ComponentFactory.</returns>
         public static ITermController GetTermController()
         {
@@ -80,9 +70,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ctl;
         }
 
-        /// <summary>
-        /// Gets the vocabulary controller.
-        /// </summary>
+        /// <summary>Gets the vocabulary controller.</summary>
         /// <returns>VocabularyController from ComponentFactory.</returns>
         public static IVocabularyController GetVocabularyController()
         {

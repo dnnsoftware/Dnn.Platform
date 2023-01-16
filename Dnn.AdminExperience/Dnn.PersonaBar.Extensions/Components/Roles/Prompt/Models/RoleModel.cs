@@ -4,16 +4,22 @@
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Security.Roles;
 
     public class RoleModel : RoleModelBase
     {
+        /// <summary>Initializes a new instance of the <see cref="RoleModel"/> class.</summary>
         public RoleModel()
         {
         }
 
-        public RoleModel(RoleInfo role) : base(role)
+        /// <summary>Initializes a new instance of the <see cref="RoleModel"/> class.</summary>
+        /// <param name="role"></param>
+        public RoleModel(RoleInfo role)
+            : base(role)
         {
             this.ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
             this.CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
@@ -21,6 +27,9 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
             this.Description = role.Description;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __CreatedBy => $"get-user {this.CreatedBy}";
 
         public string Description { get; set; }

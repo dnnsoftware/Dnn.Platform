@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PayPalSubscription));
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -28,6 +29,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -111,8 +113,9 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 strPayPalURL += "&amount=" + Globals.HTTPPOSTEncode(strService);
                                 strPayPalURL += "&currency_code=" + Globals.HTTPPOSTEncode(this.PortalSettings.Currency);
                             }
-                            else // recurring payments
+                            else
                             {
+                                // recurring payments
                                 // build the subscription PayPal URL
                                 strPayPalURL += "&redirect_cmd=_xclick-subscriptions&business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                                 strPayPalURL += "&item_name=" +
@@ -210,7 +213,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     this.Response.Redirect(strPayPalURL, true);
                 }
             }
-            catch (Exception exc) // Page failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessPageLoadException(exc);
             }
@@ -220,9 +223,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
         }
 
-        /// <summary>
-        /// This methods return the text description of the Frequency value.
-        /// </summary>
+        /// <summary>This methods return the text description of the Frequency value.</summary>
         /// <param name="value">value of the Frequency.</param>
         /// <returns>text of the Frequency.</returns>
         private string GetBillingFrequencyText(string value)

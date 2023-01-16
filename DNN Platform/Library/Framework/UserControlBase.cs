@@ -9,7 +9,6 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserControlBase class defines a custom base class inherited by all
     /// user controls within the Portal.

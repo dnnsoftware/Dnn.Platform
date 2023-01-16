@@ -27,9 +27,7 @@ using log4net.Core;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// A very simple layout
-    /// </summary>
+    /// <summary>A very simple layout</summary>
     /// <remarks>
     /// <para>
     /// SimpleLayout consists of the level of the log statement,
@@ -43,17 +41,13 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class SimpleLayout : LayoutSkeleton
     {
-        /// <summary>
-        /// Constructs a SimpleLayout
-        /// </summary>
+        /// <summary>Constructs a SimpleLayout</summary>
         public SimpleLayout()
         {
             this.IgnoresException = true;
         }
 
-        /// <summary>
-        /// Initialize layout options
-        /// </summary>
+        /// <summary>Initialize layout options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -72,9 +66,7 @@ namespace log4net.Layout
             // nothing to do.
         }
 
-        /// <summary>
-        /// Produces a simple formatted output.
-        /// </summary>
+        /// <summary>Produces a simple formatted output.</summary>
         /// <param name="loggingEvent">the event being logged</param>
         /// <param name="writer">The TextWriter to write the formatted event to</param>
         /// <remarks>

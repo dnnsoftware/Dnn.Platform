@@ -1,4 +1,8 @@
-﻿namespace Dnn.PersonaBar.Security.Components.Checks
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace Dnn.PersonaBar.Security.Components.Checks
 {
     using System;
     using System.Linq;
@@ -26,36 +30,26 @@
     /// </summary>
     public class CheckUserProfilePage : BaseCheck
     {
-        /// <summary>
-        /// The default "Activity Feed" tab path.
-        /// </summary>
+        /// <summary>The default "Activity Feed" tab path.</summary>
         public const string ActivityFeedTabPath = "//ActivityFeed";
 
-        /// <summary>
-        /// The default "My Profile" tab path.
-        /// </summary>
+        /// <summary>The default "My Profile" tab path.</summary>
         public const string MyProfileTabPath = "//ActivityFeed//MyProfile";
 
-        /// <summary>
-        /// Name of the "View Tab" permission.
-        /// </summary>
+        /// <summary>Name of the "View Tab" permission.</summary>
         public const string ViewTab = "View Tab";
 
         private readonly ITabController tabController;
         private readonly IPagesController pagesController;
         private readonly Lazy<IPortalSettings> portalSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
         public CheckUserProfilePage()
             : this(PortalController.Instance, TabController.Instance, PagesController.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
         /// <param name="portalController">An instance of the <see cref="IPortalController"/> interface.</param>
         /// <param name="tabController">An instance of the <see cref="ITabController"/> interface.</param>
         /// <param name="pagesController">An instance of the <see cref="IPagesController"/> interface.</param>

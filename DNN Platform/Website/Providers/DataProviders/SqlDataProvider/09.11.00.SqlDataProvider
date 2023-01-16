@@ -1,0 +1,267 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingName = 'SSLSetup'
+WHERE SettingName = 'SSLEnabled'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingValue = '0'
+WHERE SettingName = 'SSLSetup' AND SettingValue = 'False'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingValue = '2'
+WHERE SettingName = 'SSLSetup'
+ AND SettingValue = 'True'
+GO
+
+
+/*    Add scheduled task to delete expired auth cookies       */
+/************************************************************/
+
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Security.Cookies.PurgeAuthCookiesTask, DOTNETNUKE')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
+	VALUES ('DotNetNuke.Security.Cookies.PurgeAuthCookiesTask, DOTNETNUKE', 1, 'h', 30, 'm', 10, '', 0, 1, '', NULL, NULL, GETDATE(), NULL, GETDATE(), N'Purge Expired Authentication Cookies')
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+/*    Ensure that the AuthCookies doesn't time out          */
+/************************************************************/
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+	@CutoffDate   datetime -- in UTC
+AS
+BEGIN
+	DELETE TOP(10000) FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE ExpiresOn < @CutoffDate
+END
+GO
+
+/*    Set IsSecure to true for all tabs of a portal         */
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]
+@PortalId INT,
+@Secure BIT
+AS
+UPDATE {databaseOwner}[{objectQualifier}Tabs]
+SET IsSecure=@Secure
+WHERE PortalId=@PortalId
+GO
+
+/*    Add PortalPermissions table and procedures            */
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PortalPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}PortalPermission](
+	    	[PortalPermissionId] [INT] IDENTITY(1,1) NOT NULL,
+			[PortalId] [INT] NULL,
+	        [PermissionId] [INT] NOT NULL,
+            [AllowAccess] [BIT] NOT NULL,
+            [RoleID] [INT] NULL,
+            [UserID] [INT] NULL,
+	        [CreatedByUserID] [INT] NULL,
+	        [CreatedOnDate] [DATETIME] NULL,
+	        [LastModifiedByUserID] [INT] NULL,
+	        [LastModifiedOnDate] [DATETIME] NULL,
+        CONSTRAINT [PK_{objectQualifier}PortalPermission] PRIMARY KEY CLUSTERED ([PortalPermissionId] ASC),
+        CONSTRAINT [FK_{objectQualifier}PortalPermission_PortalId] FOREIGN KEY([PortalId]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalId]),
+        CONSTRAINT [FK_{objectQualifier}PortalPermission_PermissionId] FOREIGN KEY([PermissionId]) REFERENCES {databaseOwner}[{objectQualifier}Permission] ([PermissionId]),
+        CONSTRAINT [FK_{objectQualifier}PortalPermission_RoleId] FOREIGN KEY([RoleId]) REFERENCES {databaseOwner}[{objectQualifier}Roles] ([RoleId]),
+        CONSTRAINT [FK_{objectQualifier}PortalPermission_UserId] FOREIGN KEY([UserId]) REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserId])
+    )
+END
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}PortalPermission_Roles] ON {databaseOwner}[{objectQualifier}PortalPermission] ([RoleID] ASC,[PortalID] ASC,[PermissionID] ASC) INCLUDE([AllowAccess]) WHERE ([RoleID] IS NOT NULL)
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}PortalPermission_Users] ON {databaseOwner}[{objectQualifier}PortalPermission] ([UserID] ASC,[PortalID] ASC,[PermissionID] ASC) INCLUDE([AllowAccess]) WHERE ([UserID] IS NOT NULL)
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}PortalPermission_Portals] ON {databaseOwner}[{objectQualifier}PortalPermission] ([PortalID] ASC,[PermissionID] ASC, [RoleID] ASC, [UserID] ASC) INCLUDE([AllowAccess])
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}PortalPermission_Permission] ON {databaseOwner}[{objectQualifier}PortalPermission] ([PermissionID] ASC)
+
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalPermissions]
+AS
+SELECT  PP.PortalPermissionID,
+        PP.PortalId,
+        P.PermissionID,
+        PP.RoleID,
+        R.RoleName,
+        PP.AllowAccess,
+        PP.UserID,
+        U.Username,
+        U.DisplayName,
+        P.PermissionCode,
+        P.ModuleDefID,
+        P.PermissionKey,
+        P.PermissionName,
+        PP.CreatedByUserID,
+        PP.CreatedOnDate,
+        PP.LastModifiedByUserID,
+        PP.LastModifiedOnDate
+FROM        {databaseOwner}[{objectQualifier}PortalPermission] AS PP
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]       AS P  ON PP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]            AS R  ON PP.RoleID       = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON PP.UserID       = U.UserID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPortalPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalPermission
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalPermission]
+
+	@PortalPermissionId INT
+
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_PortalPermissions
+WHERE PortalPermissionId = @PortalPermissionId
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalPermissionsByPortal]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalPermissionsByPortal
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}GetPortalPermissionsByPortal
+	
+	@PortalID int
+
+AS
+
+	IF @PortalID is not null
+		BEGIN 
+			SELECT *
+				FROM {databaseOwner}{objectQualifier}vw_PortalPermissions
+				WHERE PortalID = @PortalID
+		END
+	ELSE
+		BEGIN
+			SELECT *
+				FROM {databaseOwner}{objectQualifier}vw_PortalPermissions
+				WHERE PortalID IS NULL 
+		END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePortalPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePortalPermission
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SavePortalPermission
+	@PortalId		    INT,
+	@PermissionKey		VARCHAR(50),
+    @RoleId             INT,
+    @UserId             INT,
+    @AllowAccess        BIT,
+	@CurrentUserId	    INT
+AS
+    DECLARE @PortalPermissionId INT;
+    SELECT @PortalPermissionId = PortalPermissionId FROM {databaseOwner}[{objectQualifier}vw_PortalPermissions]
+        WHERE ((@PortalId IS NULL AND PortalId IS NULL) OR PortalId = @PortalId) AND PermissionKey = @PermissionKey AND ((@RoleId IS NULL AND RoleId IS NULL) OR RoleId = @RoleId) AND ((@UserId IS NULL AND UserId IS NULL) OR UserId = @UserId)
+    IF (@PortalPermissionId IS NOT NULL)
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}PortalPermission] SET
+	        [AllowAccess] = @AllowAccess,
+	        [LastModifiedByUserID] = @CurrentUserId,
+	        [LastModifiedOnDate] = GETDATE()
+        WHERE ((@PortalId IS NULL AND PortalId IS NULL) OR PortalId = @PortalId) AND PortalPermissionId = @PortalPermissionId AND ((@RoleId IS NULL AND RoleId IS NULL) OR RoleId = @RoleId) AND ((@UserId IS NULL AND UserId IS NULL) OR UserId = @UserId)
+
+        SELECT PortalPermissionId FROM {databaseOwner}[{objectQualifier}PortalPermission]
+            WHERE ((@PortalId IS NULL AND PortalId IS NULL) OR PortalId = @PortalId) AND PortalPermissionId = @PortalPermissionId AND ((@RoleId IS NULL AND RoleId IS NULL) OR RoleId = @RoleId) AND ((@UserId IS NULL AND UserId IS NULL) OR UserId = @UserId)
+    END
+    ELSE
+    BEGIN
+        DECLARE @PermissionId INT;
+        SELECT @PermissionId = PermissionId FROM {databaseOwner}[{objectQualifier}Permission]
+            WHERE PermissionKey = @PermissionKey
+        IF (@PermissionId IS NOT NULL)
+        BEGIN
+	        INSERT INTO {databaseOwner}[{objectQualifier}PortalPermission] (
+		        [PortalId],
+	            [PermissionId],
+	            [AllowAccess],
+                [RoleId],
+                [UserId],
+		        [CreatedByUserID],
+		        [CreatedOnDate],
+		        [LastModifiedByUserID],
+		        [LastModifiedOnDate]
+	        ) VALUES (
+		        @PortalId,
+	            @PermissionId,
+	            @AllowAccess,
+                @RoleId,
+                @UserId,
+		        @CurrentUserId,
+		        GETDATE(),
+		        @CurrentUserId,
+		        GETDATE()
+	        )
+
+	        SELECT SCOPE_IDENTITY()
+	    END
+    END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePortalPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePortalPermission
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalPermission]
+    @PortalPermissionId           INT
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalPermission] 
+        WHERE PortalPermissionId = @PortalPermissionId 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePortalPermissionsByPortalID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePortalPermissionsByPortalID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalPermissionsByPortalID]
+    @PortalId           INT
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalPermission] 
+        WHERE PortalId = @PortalId
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePortalPermissionsByUserID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePortalPermissionsByUserID
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalPermissionsByUserID]
+    @PortalId           INT,
+    @UserId             INT
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalPermission] 
+        WHERE PortalId = @PortalId AND UserId = @UserId
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES ('SYSTEM_PORTAL', -1, 'ADDTOPLEVELPAGE', 'Add Top Level Page', 9999, -1, GETDATE(), -1, GETDATE())
+INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES ('SYSTEM_PORTAL', -1, 'PAGEADMIN', 'Page Admin', 9999, -1, GETDATE(), -1, GETDATE())
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

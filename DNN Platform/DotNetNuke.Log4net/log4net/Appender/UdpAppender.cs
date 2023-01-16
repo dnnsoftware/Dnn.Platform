@@ -107,9 +107,7 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class UdpAppender : AppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UdpAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UdpAppender" /> class.</summary>
         /// <remarks>
         /// The default constructor initializes all fields to their default values.
         /// </remarks>
@@ -224,9 +222,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets or sets the TCP port number from which the underlying <see cref="UdpClient" /> will communicate.
-        /// </summary>
+        /// <summary>Gets or sets the TCP port number from which the underlying <see cref="UdpClient" /> will communicate.</summary>
         /// <value>
         /// An integer value in the range <see cref="IPEndPoint.MinPort" /> to <see cref="IPEndPoint.MaxPort" /> 
         /// indicating the TCP port number from which the underlying <see cref="UdpClient" /> will communicate.
@@ -261,9 +257,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets or sets <see cref="Encoding"/> used to write the packets.
-        /// </summary>
+        /// <summary>Gets or sets <see cref="Encoding"/> used to write the packets.</summary>
         /// <value>
         /// The <see cref="Encoding"/> used to write the packets.
         /// </value>
@@ -278,9 +272,7 @@ namespace log4net.Appender
             set { this.m_encoding = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the underlying <see cref="UdpClient" />.
-        /// </summary>
+        /// <summary>Gets or sets the underlying <see cref="UdpClient" />.</summary>
         /// <value>
         /// The underlying <see cref="UdpClient" />.
         /// </value>
@@ -297,9 +289,7 @@ namespace log4net.Appender
             set { this.m_client = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the cached remote endpoint to which the logging events should be sent.
-        /// </summary>
+        /// <summary>Gets or sets the cached remote endpoint to which the logging events should be sent.</summary>
         /// <value>
         /// The cached remote endpoint to which the logging events will be sent.
         /// </value>
@@ -314,9 +304,7 @@ namespace log4net.Appender
             set { this.m_remoteEndPoint = value; }
         }
 
-        /// <summary>
-        /// Initialize the appender based on the options set.
-        /// </summary>
+        /// <summary>Initialize the appender based on the options set.</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -367,9 +355,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
-        /// </summary>
+        /// <summary>This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
@@ -402,9 +388,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -436,9 +420,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Initializes the underlying  <see cref="UdpClient" /> connection.
-        /// </summary>
+        /// <summary>Initializes the underlying  <see cref="UdpClient" /> connection.</summary>
         /// <remarks>
         /// <para>
         /// The underlying <see cref="UdpClient"/> is initialized and binds to the 
@@ -493,14 +475,10 @@ namespace log4net.Appender
         /// </summary>
         private int m_remotePort;
 
-        /// <summary>
-        /// The cached remote endpoint to which the logging events will be sent.
-        /// </summary>
+        /// <summary>The cached remote endpoint to which the logging events will be sent.</summary>
         private IPEndPoint m_remoteEndPoint;
 
-        /// <summary>
-        /// The TCP port number from which the <see cref="UdpClient" /> will communicate.
-        /// </summary>
+        /// <summary>The TCP port number from which the <see cref="UdpClient" /> will communicate.</summary>
         private int m_localPort;
 
         /// <summary>
@@ -509,9 +487,7 @@ namespace log4net.Appender
         /// </summary>
         private UdpClient m_client;
 
-        /// <summary>
-        /// The encoding to use for the packet.
-        /// </summary>
+        /// <summary>The encoding to use for the packet.</summary>
 #if NETSTANDARD
         private Encoding m_encoding = Encoding.Unicode;
 #else

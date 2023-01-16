@@ -8,12 +8,10 @@ namespace DotNetNuke.Services.Authentication
 
     using DotNetNuke.Common;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationConfigBase class provides base configuration class for the
     /// Authentication providers.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class AuthenticationConfigBase
     {

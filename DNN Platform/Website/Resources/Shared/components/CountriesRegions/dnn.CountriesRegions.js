@@ -13,7 +13,7 @@ function CountryRegionService($) {
 				success(data);
 			}
 		}).fail(function (xhr, status) {
-			alert(eval("(" + xhr.responseText + ")").ExceptionMessage);
+			alert(JSON.parse(xhr.responseText).ExceptionMessage);
 		});
 	};
 
@@ -27,7 +27,7 @@ function CountryRegionService($) {
 				success(data);
 			}
 		}).fail(function (xhr, status) {
-			alert(eval("(" + xhr.responseText + ")").ExceptionMessage);
+			alert(JSON.parse(xhr.responseText).ExceptionMessage);
 		});
 	};
 

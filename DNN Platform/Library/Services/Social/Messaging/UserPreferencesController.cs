@@ -16,17 +16,13 @@ namespace DotNetNuke.Services.Social.Messaging
     {
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserPreferencesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserPreferencesController"/> class.</summary>
         public UserPreferencesController()
             : this(DataService.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserPreferencesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserPreferencesController"/> class.</summary>
         /// <param name="dataService"></param>
         public UserPreferencesController(IDataService dataService)
         {

@@ -11,10 +11,10 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     [Serializable]
     public class AzureBlob
     {
-        private readonly string _relativePath = string.Empty;
-        private readonly DateTime _lastModifiedUtc = DateTime.MinValue;
-        private readonly long _length = -1;
-        private readonly string _etag = string.Empty;
+        private readonly string relativePath = string.Empty;
+        private readonly DateTime lastModifiedUtc = DateTime.MinValue;
+        private readonly long length = -1;
+        private readonly string etag = string.Empty;
 
         public AzureBlob(CloudBlob blob)
         {
@@ -23,18 +23,18 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 return;
             }
 
-            this._relativePath = blob.RelativePath();
-            this._lastModifiedUtc = blob.Properties.LastModified.GetValueOrDefault(DateTimeOffset.MinValue).UtcDateTime;
-            this._length = blob.Properties.Length;
-            this._etag = blob.Properties.ETag;
+            this.relativePath = blob.RelativePath();
+            this.lastModifiedUtc = blob.Properties.LastModified.GetValueOrDefault(DateTimeOffset.MinValue).UtcDateTime;
+            this.length = blob.Properties.Length;
+            this.etag = blob.Properties.ETag;
         }
 
-        public string RelativePath => this._relativePath;
+        public string RelativePath => this.relativePath;
 
-        public DateTime LastModifiedUtc => this._lastModifiedUtc;
+        public DateTime LastModifiedUtc => this.lastModifiedUtc;
 
-        public long Length => this._length;
+        public long Length => this.length;
 
-        public string ETag => this._etag;
+        public string ETag => this.etag;
     }
 }

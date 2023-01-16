@@ -4,19 +4,13 @@
 
 namespace DotNetNuke.Modules.CoreMessaging.ViewModels
 {
-    /// <summary>
-    /// The view model for totals (messages and notifications).
-    /// </summary>
+    /// <summary>The view model for totals (messages and notifications).</summary>
     public class TotalsViewModel
     {
-        /// <summary>
-        /// Gets or sets the number of unread messages.
-        /// </summary>
+        /// <summary>Gets or sets the number of unread messages.</summary>
         public int TotalUnreadMessages { get; set; }
 
-        /// <summary>
-        /// Gets or sets the number of new notifications.
-        /// </summary>
+        /// <summary>Gets or sets the number of new notifications.</summary>
         public int TotalNotifications { get; set; }
     }
 }

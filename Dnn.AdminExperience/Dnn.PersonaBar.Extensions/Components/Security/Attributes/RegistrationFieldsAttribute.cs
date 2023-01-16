@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Security.Attributes
     using DotNetNuke.Services.Registration;
 
     [AttributeUsage(AttributeTargets.Property)]
-    class RegistrationFieldsAttribute : ValidationAttribute
+    internal class RegistrationFieldsAttribute : ValidationAttribute
     {
         public RegistrationFieldsAttribute(string registrationFormType, string requireUniqueDisplayName, string displayNameFormat)
         {
@@ -29,6 +29,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 
         public string DisplayNameFormatPropertyName { get; private set; }
 
+        /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var registrationFormTypeValue = string.Empty;
@@ -49,7 +50,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 
             int registrationFormType;
 
-            if (!Int32.TryParse(registrationFormTypeValue, out registrationFormType))
+            if (!int.TryParse(registrationFormTypeValue, out registrationFormType))
             {
                 return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
             }

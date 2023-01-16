@@ -51,9 +51,7 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class SmtpPickupDirAppender : BufferingAppenderSkeleton
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor
@@ -64,9 +62,7 @@ namespace log4net.Appender
             this.m_fileExtension = string.Empty; // Default to empty string, not null
         }
 
-        /// <summary>
-        /// Gets or sets a semicolon-delimited list of recipient e-mail addresses.
-        /// </summary>
+        /// <summary>Gets or sets a semicolon-delimited list of recipient e-mail addresses.</summary>
         /// <value>
         /// A semicolon-delimited list of e-mail addresses.
         /// </value>
@@ -81,9 +77,7 @@ namespace log4net.Appender
             set { this.m_to = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the e-mail address of the sender.
-        /// </summary>
+        /// <summary>Gets or sets the e-mail address of the sender.</summary>
         /// <value>
         /// The e-mail address of the sender.
         /// </value>
@@ -98,9 +92,7 @@ namespace log4net.Appender
             set { this.m_from = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the subject line of the e-mail message.
-        /// </summary>
+        /// <summary>Gets or sets the subject line of the e-mail message.</summary>
         /// <value>
         /// The subject line of the e-mail message.
         /// </value>
@@ -115,9 +107,7 @@ namespace log4net.Appender
             set { this.m_subject = value; }
         }
   
-        /// <summary>
-        /// Gets or sets the path to write the messages to.
-        /// </summary>
+        /// <summary>Gets or sets the path to write the messages to.</summary>
         /// <remarks>
         /// <para>
         /// Gets or sets the path to write the messages to. This should be the same
@@ -130,9 +120,7 @@ namespace log4net.Appender
             set { this.m_pickupDir = value; }
         }
 
-         /// <summary>
-        /// Gets or sets the file extension for the generated files
-        /// </summary>
+         /// <summary>Gets or sets the file extension for the generated files</summary>
         /// <value>
         /// The file extension for the generated files
         /// </value>
@@ -163,9 +151,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="SecurityContext"/> used to write to the pickup directory.
-        /// </summary>
+        /// <summary>Gets or sets the <see cref="SecurityContext"/> used to write to the pickup directory.</summary>
         /// <value>
         /// The <see cref="SecurityContext"/> used to write to the pickup directory.
         /// </value>
@@ -183,9 +169,7 @@ namespace log4net.Appender
             set { this.m_securityContext = value; }
         }
 
-        /// <summary>
-        /// Sends the contents of the cyclic buffer as an e-mail message.
-        /// </summary>
+        /// <summary>Sends the contents of the cyclic buffer as an e-mail message.</summary>
         /// <param name="events">The logging events to send.</param>
         /// <remarks>
         /// <para>
@@ -251,9 +235,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Activate the options on this appender. 
-        /// </summary>
+        /// <summary>Activate the options on this appender. </summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -282,9 +264,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -296,9 +276,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Convert a path into a fully qualified path.
-        /// </summary>
+        /// <summary>Convert a path into a fully qualified path.</summary>
         /// <param name="path">The path to convert.</param>
         /// <returns>The fully qualified path.</returns>
         /// <remarks>
@@ -320,9 +298,7 @@ namespace log4net.Appender
         private string m_pickupDir;
         private string m_fileExtension;
 
-        /// <summary>
-        /// The security context to use for privileged calls
-        /// </summary>
+        /// <summary>The security context to use for privileged calls</summary>
         private SecurityContext m_securityContext;
     }
 }

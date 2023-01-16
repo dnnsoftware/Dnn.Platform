@@ -18,14 +18,14 @@ namespace DotNetNuke.Web.Mvc
     {
         private readonly IServiceProvider serviceProvider;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnMvcDependencyResolver"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
         public DnnMvcDependencyResolver(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        /// <summary>
-        /// Returns the specified service from the scope.
-        /// </summary>
+        /// <summary>Returns the specified service from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>
@@ -44,9 +44,7 @@ namespace DotNetNuke.Web.Mvc
             throw new InvalidOperationException("IServiceScope not provided");
         }
 
-        /// <summary>
-        /// Returns the specified services from the scope.
-        /// </summary>
+        /// <summary>Returns the specified services from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>

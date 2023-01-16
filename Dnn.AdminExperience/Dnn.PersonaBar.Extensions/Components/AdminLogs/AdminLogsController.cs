@@ -24,16 +24,16 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
     public class AdminLogsController
     {
-        private Dictionary<string, LogTypeInfo> _logTypeDictionary;
+        private Dictionary<string, LogTypeInfo> logTypeDictionary;
 
-        private PortalSettings _portalSettings;
+        private PortalSettings portalSettings;
 
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary
         {
             get
             {
-                this._logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
-                return this._logTypeDictionary;
+                this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
+                return this.logTypeDictionary;
             }
         }
 
@@ -41,8 +41,8 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             get
             {
-                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return this._portalSettings;
+                this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                return this.portalSettings;
             }
         }
 
@@ -55,6 +55,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 logType = new LogTypeInfo();
             }
+
             return logType;
         }
 
@@ -81,13 +82,16 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                                    HttpUtility.HtmlEncode(ldi.PropertyValue) + "</p>");
                     }
                 }
+
                 if (!string.IsNullOrEmpty(objLogInfo.Exception.ExceptionHash))
                 {
                     str.Append(objLogInfo.Exception);
                 }
+
                 str.Append("<p>" + Localization.GetString("ServerName", Constants.LocalResourcesFile) +
                            HttpUtility.HtmlEncode(objLogInfo.LogServerName) + "</p>");
             }
+
             return str.ToString();
         }
 
@@ -96,11 +100,12 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             LogController.Instance.ClearLog();
 
             // add entry to log recording it was cleared
-            EventLogController.Instance.AddLog(Localization.GetString("LogCleared", Constants.LocalResourcesFile),
-                               Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
-                               this.PortalSettings,
-                               -1,
-                               EventLogController.EventLogType.ADMIN_ALERT);
+            EventLogController.Instance.AddLog(
+                Localization.GetString("LogCleared", Constants.LocalResourcesFile),
+                Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
+                this.PortalSettings,
+                -1,
+                EventLogController.EventLogType.ADMIN_ALERT);
         }
 
         public Dictionary<string, string> GetKeepMostRecentOptions()
@@ -112,15 +117,18 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 if (item == 1)
                 {
-                    options.Add(item + Localization.GetString("LogEntry", Constants.LocalResourcesFile),
+                    options.Add(
+                        item + Localization.GetString("LogEntry", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    options.Add(item + Localization.GetString("LogEntries", Constants.LocalResourcesFile),
+                    options.Add(
+                        item + Localization.GetString("LogEntries", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
             }
+
             return options;
         }
 
@@ -132,15 +140,18 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 if (item == 1)
                 {
-                    thresholds.Add(item + Localization.GetString("Occurence", Constants.LocalResourcesFile),
+                    thresholds.Add(
+                        item + Localization.GetString("Occurence", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    thresholds.Add(item + Localization.GetString("Occurences", Constants.LocalResourcesFile),
+                    thresholds.Add(
+                        item + Localization.GetString("Occurences", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
             }
+
             return thresholds;
         }
 
@@ -152,12 +163,14 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 if (item == 1)
                 {
-                    thresholds.Add(item + Localization.GetString("Occurence", Constants.LocalResourcesFile),
+                    thresholds.Add(
+                        item + Localization.GetString("Occurence", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    thresholds.Add(item + Localization.GetString("Occurences", Constants.LocalResourcesFile),
+                    thresholds.Add(
+                        item + Localization.GetString("Occurences", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
             }
@@ -250,6 +263,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 returnMsg = string.Format(Localization.GetString("InavlidEmailAddress", Constants.LocalResourcesFile), fromEmailAddress);
                 error = Localization.GetString("EmailFailure", Constants.LocalResourcesFile);
             }
+
             return returnMsg;
         }
 

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
@@ -31,13 +30,10 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private const string UseSSLKey = "UseSSLForCacheSync";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
-        private readonly PerformanceController _performanceController = new PerformanceController();
+        private readonly PerformanceController performanceController = new PerformanceController();
 
         /// GET: api/Servers/GetPerformanceSettings
-        /// <summary>
-        /// Gets performance settings.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets performance settings.</summary>
         /// <returns>performance settings.</returns>
         [HttpGet]
         public HttpResponseMessage GetPerformanceSettings()
@@ -49,7 +45,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     PortalName = PortalSettings.Current.PortalName,
 
-                    CachingProvider = this._performanceController.GetCachingProvider(),
+                    CachingProvider = this.performanceController.GetCachingProvider(),
                     PageStatePersistence = Host.PageStatePersister,
                     ModuleCacheProvider = Host.ModuleCachingMethod,
                     PageCacheProvider = Host.PageCachingMethod,
@@ -69,13 +65,13 @@ namespace Dnn.PersonaBar.Servers.Services
                     PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
 
                     // Options
-                    CachingProviderOptions = this._performanceController.GetCachingProviderOptions(),
-                    PageStatePersistenceOptions = this._performanceController.GetPageStatePersistenceOptions(),
-                    ModuleCacheProviders = this._performanceController.GetModuleCacheProviders(),
-                    PageCacheProviders = this._performanceController.GetPageCacheProviders(),
-                    CacheSettingOptions = this._performanceController.GetCacheSettingOptions(),
-                    AuthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
-                    UnauthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
+                    CachingProviderOptions = this.performanceController.GetCachingProviderOptions(),
+                    PageStatePersistenceOptions = this.performanceController.GetPageStatePersistenceOptions(),
+                    ModuleCacheProviders = this.performanceController.GetModuleCacheProviders(),
+                    PageCacheProviders = this.performanceController.GetPageCacheProviders(),
+                    CacheSettingOptions = this.performanceController.GetCacheSettingOptions(),
+                    AuthCacheabilityOptions = this.performanceController.GetCacheabilityOptions(),
+                    UnauthCacheabilityOptions = this.performanceController.GetCacheabilityOptions(),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, perfSettings);
             }
@@ -87,10 +83,8 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         /// POST: api/Servers/IncrementPortalVersion
-        /// <summary>
-        /// Increment portal resources management version.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Increment portal resources management version.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage IncrementPortalVersion()
@@ -112,10 +106,8 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         /// POST: api/Servers/IncrementHostVersion
-        /// <summary>
-        /// Increment host resources management version.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Increment host resources management version.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage IncrementHostVersion()
@@ -137,11 +129,9 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         /// POST: api/Servers/UpdatePerformanceSettings
-        /// <summary>
-        /// Updates performance settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates performance settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdatePerformanceSettings(UpdatePerfSettingsRequest request)
@@ -152,10 +142,11 @@ namespace Dnn.PersonaBar.Servers.Services
                 this.SaveCachingProvider(request.CachingProvider);
                 HostController.Instance.Update("PageStatePersister", request.PageStatePersistence);
                 HostController.Instance.Update("ModuleCaching", request.ModuleCacheProvider, false);
-                if (this._performanceController.GetPageCacheProviders().Any())
+                if (this.performanceController.GetPageCacheProviders().Any())
                 {
                     HostController.Instance.Update("PageCaching", request.PageCacheProvider, false);
                 }
+
                 HostController.Instance.Update("PerformanceSetting", request.CacheSetting, false);
 
                 Globals.PerformanceSettings perfSetting;

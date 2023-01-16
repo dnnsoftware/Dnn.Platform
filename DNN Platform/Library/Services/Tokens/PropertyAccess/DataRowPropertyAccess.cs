@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly DataRow dr;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.</summary>
         /// <param name="row"></param>
         public DataRowPropertyAccess(DataRow row)
         {
@@ -32,7 +30,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             if (this.dr == null)
             {
@@ -40,10 +38,10 @@ namespace DotNetNuke.Services.Tokens
             }
 
             object valueObject = this.dr[propertyName];
-            string OutputFormat = format;
+            string outputFormat = format;
             if (string.IsNullOrEmpty(format))
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
 
             if (valueObject != null)
@@ -59,14 +57,14 @@ namespace DotNetNuke.Services.Tokens
                     case "Single":
                     case "Int32":
                     case "Int64":
-                        return ((IFormattable)valueObject).ToString(OutputFormat, formatProvider);
+                        return ((IFormattable)valueObject).ToString(outputFormat, formatProvider);
                     default:
                         return PropertyAccess.FormatString(valueObject.ToString(), format);
                 }
             }
             else
             {
-                PropertyNotFound = true;
+                propertyNotFound = true;
                 return string.Empty;
             }
         }

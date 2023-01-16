@@ -15,104 +15,74 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Services.Tokens;
 
-    /// <summary>
-    /// This control is used for displaying a template based list of users based upon various filter and sorting capabilities.
-    /// </summary>
+    /// <summary>This control is used for displaying a template based list of users based upon various filter and sorting capabilities.</summary>
     [ToolboxData("<{0}:DnnMemberListControl runat=\"server\"></{0}:DnnMemberListControl>")]
     public class DnnMemberListControl : WebControl
     {
-        private UserInfo _currentUser;
-        private RelationshipController _relationshipController;
+        private UserInfo currentUser;
+        private RelationshipController relationshipController;
 
-        /// <summary>
-        /// Gets or sets the template for displaying the header section of a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the template for displaying the header section of a DnnMemberListControl object.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string HeaderTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for the row header.
-        /// </summary>
+        /// <summary>Gets or sets the template for the row header.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowHeaderTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for displaying an item in a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the template for displaying an item in a DnnMemberListControl object.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string ItemTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for the row footer.
-        /// </summary>
+        /// <summary>Gets or sets the template for the row footer.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowFooterTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for displaying the alternating row headers in a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the template for displaying the alternating row headers in a DnnMemberListControl object.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string AlternatingRowHeaderTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for displaying the alternating items in a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the template for displaying the alternating items in a DnnMemberListControl object.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string AlternatingItemTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for displaying the alternating row footers in a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the template for displaying the alternating row footers in a DnnMemberListControl object.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string AlternatingRowFooterTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template for displaying the footer section of a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the template for displaying the footer section of a DnnMemberListControl object.</summary>
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string FooterTemplate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the index of the currently displayed page.
-        /// </summary>
+        /// <summary>Gets or sets the index of the currently displayed page.</summary>
         [DefaultValue(1)]
         public int PageIndex { get; set; }
 
-        /// <summary>
-        /// Gets or sets the number of records to display on a page in a DnnMemberListControl object.
-        /// </summary>
+        /// <summary>Gets or sets the number of records to display on a page in a DnnMemberListControl object.</summary>
         [DefaultValue(10)]
         public int PageSize { get; set; }
 
-        /// <summary>
-        /// Gets or sets the number of items displayed on each row.
-        /// </summary>
+        /// <summary>Gets or sets the number of items displayed on each row.</summary>
         [DefaultValue(1)]
         public int RowSize { get; set; }
 
-        /// <summary>
-        /// Gets or sets the property value to sort by.
-        /// </summary>
+        /// <summary>Gets or sets the property value to sort by.</summary>
         [DefaultValue("UserId")]
         public string SortBy { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the sort direction.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets the sort direction.</summary>
         [DefaultValue(true)]
         public bool SortAscending { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of filters to apply when getting the list of members.
-        /// </summary>
+        /// <summary>Gets or sets the collection of filters to apply when getting the list of members.</summary>
         /// <remarks>
         /// Posible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
         /// </remarks>
@@ -123,8 +93,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            this._currentUser = UserController.Instance.GetCurrentUserInfo();
-            this._relationshipController = new RelationshipController();
+            this.currentUser = UserController.Instance.GetCurrentUserInfo();
+            this.relationshipController = new RelationshipController();
         }
 
         /// <inheritdoc/>
@@ -151,7 +121,7 @@ namespace DotNetNuke.Web.UI.WebControls
             additionalFilters.Add("SortAscending", this.SortAscending.ToString());
 
             // Currently Not Used by the SPROC
-            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this._currentUser.PortalID };
+            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this.currentUser.PortalID };
             var role = this.Filters.ContainsKey("RoleId") && this.Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(this.Filters["RoleId"]) } : null;
             var relationship = this.Filters.ContainsKey("RelationshipTypeId") && this.Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(this.Filters["RelationshipTypeId"]) } : null;
 

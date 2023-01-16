@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnFormTextBoxItem : DnnFormItemBase
     {
-        private TextBox _textBox;
+        private TextBox textBox;
 
         public AutoCompleteType AutoCompleteType { get; set; }
 
@@ -36,39 +36,37 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public TextBoxMode TextMode { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.</summary>
         public bool ClearContentInPasswordMode { get; set; }
 
         /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
-            this._textBox = new TextBox { ID = this.ID + "_TextBox" };
+            this.textBox = new TextBox { ID = this.ID + "_TextBox" };
 
-            this._textBox.Rows = this.Rows;
-            this._textBox.Columns = this.Columns;
-            this._textBox.TextMode = this.TextMode;
-            this._textBox.CssClass = this.TextBoxCssClass;
-            this._textBox.AutoCompleteType = this.AutoCompleteType;
-            this._textBox.TextChanged += this.TextChanged;
-            this._textBox.Attributes.Add("aria-label", this.DataField);
+            this.textBox.Rows = this.Rows;
+            this.textBox.Columns = this.Columns;
+            this.textBox.TextMode = this.TextMode;
+            this.textBox.CssClass = this.TextBoxCssClass;
+            this.textBox.AutoCompleteType = this.AutoCompleteType;
+            this.textBox.TextChanged += this.TextChanged;
+            this.textBox.Attributes.Add("aria-label", this.DataField);
 
             // Load from ControlState
-            this._textBox.Text = Convert.ToString(this.Value);
+            this.textBox.Text = Convert.ToString(this.Value);
             if (this.TextMode == TextBoxMode.Password)
             {
-                this._textBox.Attributes.Add("autocomplete", "off");
+                this.textBox.Attributes.Add("autocomplete", "off");
             }
 
             if (this.MaxLength > 0)
             {
-                this._textBox.MaxLength = this.MaxLength;
+                this.textBox.MaxLength = this.MaxLength;
             }
 
-            container.Controls.Add(this._textBox);
+            container.Controls.Add(this.textBox);
 
-            return this._textBox;
+            return this.textBox;
         }
 
         /// <inheritdoc/>
@@ -78,13 +76,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.TextMode == TextBoxMode.Password && !this.ClearContentInPasswordMode)
             {
-                this._textBox.Attributes.Add("value", Convert.ToString(this.Value));
+                this.textBox.Attributes.Add("value", Convert.ToString(this.Value));
             }
         }
 
         private void TextChanged(object sender, EventArgs e)
         {
-            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
+            this.UpdateDataSource(this.Value, this.textBox.Text, this.DataField);
         }
     }
 }

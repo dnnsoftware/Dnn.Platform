@@ -24,9 +24,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed.</param>
         /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing.</param>
         /// <returns>The number of documents indexed.</returns>
-        public virtual int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public virtual int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             throw new NotImplementedException();
         }

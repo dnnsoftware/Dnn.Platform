@@ -27,9 +27,7 @@ using System.Xml;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Class to register for the log4net section of the configuration file
-    /// </summary>
+    /// <summary>Class to register for the log4net section of the configuration file</summary>
     /// <remarks>
     /// The log4net section of the configuration file needs to have a section
     /// handler registered. This is the section handler used. It simply returns
@@ -52,9 +50,7 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public class Log4NetConfigurationSectionHandler : IConfigurationSectionHandler
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetConfigurationSectionHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Log4NetConfigurationSectionHandler"/> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -64,9 +60,7 @@ namespace log4net.Config
         {
         }
 
-        /// <summary>
-        /// Parses the configuration section.
-        /// </summary>
+        /// <summary>Parses the configuration section.</summary>
         /// <param name="parent">The configuration settings in a corresponding parent configuration section.</param>
         /// <param name="configContext">The configuration context when called from the ASP.NET configuration system. Otherwise, this parameter is reserved and is a null reference.</param>
         /// <param name="section">The <see cref="XmlNode" /> for the log4net section.</param>

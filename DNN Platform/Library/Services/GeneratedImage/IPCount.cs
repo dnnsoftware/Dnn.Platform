@@ -19,9 +19,9 @@ namespace DotNetNuke.Services.GeneratedImage
         private const string CacheAppRelativePath = @"~\App_Data\_ipcount\";
         private static readonly object PurgeQueuedLock = new object();
         private static readonly object FileLock = new object();
-        private static string _cachePath;
-        private static bool _purgeQueued;
-        private static TimeSpan _purgeInterval;
+        private static string cachePath;
+        private static bool purgeQueued;
+        private static TimeSpan purgeInterval;
 
         static IPCount()
         {
@@ -32,7 +32,10 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public static string CachePath
         {
-            get { return _cachePath; }
+            get
+            {
+                return cachePath;
+            }
 
             set
             {
@@ -46,7 +49,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     Directory.CreateDirectory(value);
                 }
 
-                _cachePath = value;
+                cachePath = value;
             }
         }
 
@@ -54,7 +57,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _purgeInterval;
+                return purgeInterval;
             }
 
             set
@@ -69,7 +72,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _purgeInterval = value;
+                purgeInterval = value;
             }
         }
 
@@ -102,13 +105,13 @@ namespace DotNetNuke.Services.GeneratedImage
         public static bool CheckIp(string ipAddress)
         {
             var now = DateTime.Now;
-            if (!_purgeQueued && now.Subtract(LastPurge) > PurgeInterval)
+            if (!purgeQueued && now.Subtract(LastPurge) > PurgeInterval)
             {
                 lock (PurgeQueuedLock)
                 {
-                    if (!_purgeQueued)
+                    if (!purgeQueued)
                     {
-                        _purgeQueued = true;
+                        purgeQueued = true;
 
                         var files = new DirectoryInfo(CachePath).GetFiles();
                         var threshold = DateTime.Now.Subtract(PurgeInterval);
@@ -143,7 +146,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         LastPurge = DateTime.Now;
 
-                        _purgeQueued = false;
+                        purgeQueued = false;
                     }
                 }
             }
@@ -171,9 +174,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        /// <summary>
-        /// method to get Client ip address.
-        /// </summary>
+        /// <summary>method to get Client ip address.</summary>
         /// <returns>IP Address of visitor.</returns>
         [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
         public static string GetVisitorIPAddress(HttpContextBase context)

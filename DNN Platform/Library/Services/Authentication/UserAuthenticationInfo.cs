@@ -18,9 +18,7 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public class UserAuthenticationInfo : BaseEntityInfo, IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserAuthenticationInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserAuthenticationInfo"/> class.</summary>
         public UserAuthenticationInfo()
         {
             this.AuthenticationToken = Null.NullString;
@@ -28,40 +26,20 @@ namespace DotNetNuke.Services.Authentication
             this.UserAuthenticationID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the ID of the User Record in the Authentication System.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the ID of the User Record in the Authentication System.</summary>
         public int UserAuthenticationID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the PackageID for the Authentication System.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the PackageID for the Authentication System.</summary>
         public int UserID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID).
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID).</summary>
         public string AuthenticationType { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the url for the Logoff Control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the url for the Logoff Control.</summary>
         public string AuthenticationToken { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {
             get
@@ -75,12 +53,8 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a UserAuthenticationInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a UserAuthenticationInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
             this.UserAuthenticationID = Null.SetNullInteger(dr["UserAuthenticationID"]);

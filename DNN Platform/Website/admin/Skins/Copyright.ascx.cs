@@ -7,17 +7,14 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Copyright : SkinObjectBase
     {
         private const string MyFileName = "Copyright.ascx";
 
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

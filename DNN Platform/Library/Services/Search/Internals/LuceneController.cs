@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Low-level APIs to manage Lucene Layer. This is an Internal class and should not be used outside of Core.
-    /// </summary>
+    /// <summary>Low-level APIs to manage Lucene Layer. This is an Internal class and should not be used outside of Core.</summary>
     internal class LuceneController : ServiceLocator<ILuceneController, LuceneController>
     {
         /// <inheritdoc/>

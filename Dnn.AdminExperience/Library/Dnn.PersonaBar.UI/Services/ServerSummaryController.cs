@@ -39,10 +39,8 @@ namespace Dnn.PersonaBar.UI.Services
             Critical = 2,
         }
 
-        /// <summary>
-        /// Return server info.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Return server info.</summary>
+        /// <returns>A response with server info.</returns>
         [HttpGet]
         public HttpResponseMessage GetServerInfo()
         {
@@ -69,11 +67,10 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
-        /// <summary>
-        /// Returns update information about current framework version.
-        /// </summary>
+        /// <summary>Returns update information about current framework version.</summary>
         /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetUpdateInfo()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());

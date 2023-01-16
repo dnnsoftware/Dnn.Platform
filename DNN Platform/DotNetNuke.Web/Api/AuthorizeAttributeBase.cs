@@ -11,14 +11,10 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Common;
 
-    /// <summary>
-    /// Provides Dnn specific details for authorization filter.
-    /// </summary>
+    /// <summary>Provides Dnn specific details for authorization filter.</summary>
     public abstract class AuthorizeAttributeBase : AuthorizationFilterAttribute
     {
-        /// <summary>
-        /// Checks if the <see cref="AllowAnonymousAttribute"/> is present.
-        /// </summary>
+        /// <summary>Checks if the <see cref="AllowAnonymousAttribute"/> is present.</summary>
         /// <param name="actionContext">The HTTP action context.</param>
         /// <returns>A value indicating whether the <see cref="AllowAnonymousAttribute"/> is present.</returns>
         public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
@@ -28,16 +24,12 @@ namespace DotNetNuke.Web.Api
                          && actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().All(t => t is SupportedModulesAttribute));
         }
 
-        /// <summary>
-        /// Tests if the request passes the authorization requirements.
-        /// </summary>
+        /// <summary>Tests if the request passes the authorization requirements.</summary>
         /// <param name="context">The auth filter context.</param>
         /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
-        /// <summary>
-        /// Called by framework at start of Auth process, check if auth should be skipped and handles auth failure.  Should rarely need to be overridden.
-        /// </summary>
+        /// <summary>Called by framework at start of Auth process, check if auth should be skipped and handles auth failure.  Should rarely need to be overridden.</summary>
         /// <param name="actionContext">The HTTP action context.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
@@ -56,9 +48,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        /// <summary>
-        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.
-        /// </summary>
+        /// <summary>Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.</summary>
         /// <param name="actionContext">The HTTP Action Context.</param>
         /// <returns>A value indicating whether to skip the authorization.</returns>
         protected virtual bool SkipAuthorization(HttpActionContext actionContext)

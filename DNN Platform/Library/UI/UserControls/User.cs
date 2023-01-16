@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -11,63 +12,93 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The User UserControl is used to manage User Details.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The User UserControl is used to manage User Details.</summary>
     public abstract class User : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected HtmlTableRow ConfirmPasswordRow;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected HtmlTableRow PasswordRow;
+
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUsername;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUsernameAsterisk;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plConfirm;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plEmail;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plFirstName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plIM;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plLastName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plPassword;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plUserName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plWebsite;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtConfirm;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtEmail;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtFirstName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtIM;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtLastName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtPassword;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtUsername;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtWebsite;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valConfirm1;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CompareValidator valConfirm2;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valEmail1;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RegularExpressionValidator valEmail2;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valFirstName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valLastName;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valPassword;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valUsername;
-        private string MyFileName = "User.ascx";
-        private string _Confirm;
-        private string _ControlColumnWidth = string.Empty;
-        private string _Email;
-        private string _FirstName;
-        private string _IM;
-        private string _LabelColumnWidth = string.Empty;
-        private string _LastName;
-        private int _ModuleId;
-        private string _Password;
-        private bool _ShowPassword;
-        private int _StartTabIndex = 1;
-        private string _UserName;
-        private string _Website;
+        private string myFileName = "User.ascx";
+        private string confirm;
+        private string controlColumnWidth = string.Empty;
+        private string email;
+        private string firstName;
+        private string im;
+        private string labelColumnWidth = string.Empty;
+        private string lastName;
+        private int moduleId;
+        private string password;
+        private bool showPassword;
+        private int startTabIndex = 1;
+        private string userName;
+        private string website;
 
         public string LocalResourceFile
         {
             get
             {
-                return Localization.GetResourceFile(this, this.MyFileName);
+                return Localization.GetResourceFile(this, this.myFileName);
             }
         }
 
@@ -80,7 +111,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._ModuleId = value;
+                this.moduleId = value;
             }
         }
 
@@ -93,7 +124,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._LabelColumnWidth = value;
+                this.labelColumnWidth = value;
             }
         }
 
@@ -106,7 +137,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._ControlColumnWidth = value;
+                this.controlColumnWidth = value;
             }
         }
 
@@ -119,7 +150,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._FirstName = value;
+                this.firstName = value;
             }
         }
 
@@ -132,7 +163,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._LastName = value;
+                this.lastName = value;
             }
         }
 
@@ -145,7 +176,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._UserName = value;
+                this.userName = value;
             }
         }
 
@@ -158,7 +189,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._Password = value;
+                this.password = value;
             }
         }
 
@@ -171,7 +202,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._Confirm = value;
+                this.confirm = value;
             }
         }
 
@@ -184,7 +215,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._Email = value;
+                this.email = value;
             }
         }
 
@@ -197,7 +228,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._Website = value;
+                this.website = value;
             }
         }
 
@@ -210,7 +241,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._IM = value;
+                this.im = value;
             }
         }
 
@@ -218,7 +249,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._StartTabIndex = value;
+                this.startTabIndex = value;
             }
         }
 
@@ -226,17 +257,11 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._ShowPassword = value;
+                this.showPassword = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -244,36 +269,36 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.Page.IsPostBack == false)
                 {
-                    this.txtFirstName.TabIndex = Convert.ToInt16(this._StartTabIndex);
-                    this.txtLastName.TabIndex = Convert.ToInt16(this._StartTabIndex + 1);
-                    this.txtUsername.TabIndex = Convert.ToInt16(this._StartTabIndex + 2);
-                    this.txtPassword.TabIndex = Convert.ToInt16(this._StartTabIndex + 3);
-                    this.txtConfirm.TabIndex = Convert.ToInt16(this._StartTabIndex + 4);
-                    this.txtEmail.TabIndex = Convert.ToInt16(this._StartTabIndex + 5);
-                    this.txtWebsite.TabIndex = Convert.ToInt16(this._StartTabIndex + 6);
-                    this.txtIM.TabIndex = Convert.ToInt16(this._StartTabIndex + 7);
-                    this.txtFirstName.Text = this._FirstName;
-                    this.txtLastName.Text = this._LastName;
-                    this.txtEmail.Text = this._Email;
-                    this.txtUsername.Text = this._UserName;
-                    this.lblUsername.Text = this._UserName;
-                    this.txtPassword.Text = this._Password;
-                    this.txtConfirm.Text = this._Confirm;
-                    this.txtWebsite.Text = this._Website;
-                    this.txtIM.Text = this._IM;
-                    if (!string.IsNullOrEmpty(this._ControlColumnWidth))
+                    this.txtFirstName.TabIndex = Convert.ToInt16(this.startTabIndex);
+                    this.txtLastName.TabIndex = Convert.ToInt16(this.startTabIndex + 1);
+                    this.txtUsername.TabIndex = Convert.ToInt16(this.startTabIndex + 2);
+                    this.txtPassword.TabIndex = Convert.ToInt16(this.startTabIndex + 3);
+                    this.txtConfirm.TabIndex = Convert.ToInt16(this.startTabIndex + 4);
+                    this.txtEmail.TabIndex = Convert.ToInt16(this.startTabIndex + 5);
+                    this.txtWebsite.TabIndex = Convert.ToInt16(this.startTabIndex + 6);
+                    this.txtIM.TabIndex = Convert.ToInt16(this.startTabIndex + 7);
+                    this.txtFirstName.Text = this.FirstName;
+                    this.txtLastName.Text = this.LastName;
+                    this.txtEmail.Text = this.Email;
+                    this.txtUsername.Text = this.UserName;
+                    this.lblUsername.Text = this.UserName;
+                    this.txtPassword.Text = this.Password;
+                    this.txtConfirm.Text = this.Confirm;
+                    this.txtWebsite.Text = this.Website;
+                    this.txtIM.Text = this.IM;
+                    if (!string.IsNullOrEmpty(this.ControlColumnWidth))
                     {
-                        this.txtFirstName.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtLastName.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtUsername.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtPassword.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtConfirm.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtWebsite.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtIM.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtFirstName.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtLastName.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtEmail.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtUsername.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtPassword.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtConfirm.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtWebsite.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtIM.Width = Unit.Parse(this.ControlColumnWidth);
                     }
 
-                    if (!this._ShowPassword)
+                    if (!this.showPassword)
                     {
                         this.valPassword.Enabled = false;
                         this.valConfirm1.Enabled = false;
@@ -298,9 +323,9 @@ namespace DotNetNuke.UI.UserControls
                         this.ConfirmPasswordRow.Visible = true;
                     }
 
-                    this.ViewState["ModuleId"] = Convert.ToString(this._ModuleId);
-                    this.ViewState["LabelColumnWidth"] = this._LabelColumnWidth;
-                    this.ViewState["ControlColumnWidth"] = this._ControlColumnWidth;
+                    this.ViewState["ModuleId"] = Convert.ToString(this.ModuleId);
+                    this.ViewState["LabelColumnWidth"] = this.LabelColumnWidth;
+                    this.ViewState["ControlColumnWidth"] = this.ControlColumnWidth;
                 }
 
                 this.txtPassword.Attributes.Add("value", this.txtPassword.Text);

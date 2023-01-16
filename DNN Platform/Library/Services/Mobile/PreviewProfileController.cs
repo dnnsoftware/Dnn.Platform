@@ -17,9 +17,7 @@ namespace DotNetNuke.Services.Mobile
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// The business of mobile preview profiles.
-    /// </summary>
+    /// <summary>The business of mobile preview profiles.</summary>
     public class PreviewProfileController : IPreviewProfileController
     {
         /// <summary>
@@ -54,9 +52,7 @@ namespace DotNetNuke.Services.Mobile
             this.ClearCache(profile.PortalId);
         }
 
-        /// <summary>
-        /// delete a preview profile.
-        /// </summary>
+        /// <summary>delete a preview profile.</summary>
         /// <param name="portalId">Portal's id.</param>
         /// <param name="id">the profile's id.</param>
         public void Delete(int portalId, int id)
@@ -79,9 +75,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// get a preview profiles list for portal.
-        /// </summary>
+        /// <summary>get a preview profiles list for portal.</summary>
         /// <param name="portalId">portal id.</param>
         /// <returns>List of preview profile.</returns>
         public IList<IPreviewProfile> GetProfilesByPortal(int portalId)
@@ -89,9 +83,7 @@ namespace DotNetNuke.Services.Mobile
             return this.GetProfilesByPortal(portalId, true);
         }
 
-        /// <summary>
-        /// get a specific preview profile by id.
-        /// </summary>
+        /// <summary>get a specific preview profile by id.</summary>
         /// <param name="portalId">the profile belong's portal.</param>
         /// <param name="id">profile's id.</param>
         /// <returns>profile object.</returns>

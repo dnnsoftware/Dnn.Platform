@@ -8,14 +8,12 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Application;
     using DotNetNuke.Entities.Host;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class DotNetNukeControl : SkinObjectBase
     {
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -23,6 +21,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

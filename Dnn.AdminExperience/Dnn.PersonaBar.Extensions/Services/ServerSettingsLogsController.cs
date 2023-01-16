@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -21,9 +21,10 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerSettingsLogsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsLogsController));
-        private readonly LogController _logController = new LogController();
+        private readonly LogController logController = new LogController();
 
         [HttpGet]
+
         public HttpResponseMessage GetLogs()
         {
             try
@@ -33,8 +34,8 @@ namespace Dnn.PersonaBar.Servers.Services
                     Success = true,
                     Results = new
                     {
-                        LogList = this._logController.GetLogFilesList(),
-                        UpgradeLogList = this._logController.GetUpgradeLogList(),
+                        LogList = this.logController.GetLogFilesList(),
+                        UpgradeLogList = this.logController.GetUpgradeLogList(),
                     },
                     TotalResults = 1,
                 };
@@ -48,11 +49,13 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetLogFile(string fileName)
         {
             try
             {
-                var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
+                var cleanedFileName = Path.GetFileName(fileName);
+                var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", cleanedFileName);
                 return this.CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
@@ -67,12 +70,14 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetUpgradeLogFile(string logName)
         {
             try
             {
                 var providerPath = DataProvider.Instance().GetProviderPath();
-                var logFilePath = Path.Combine(providerPath, logName);
+                var cleanedLogName = Path.GetFileName(logName);
+                var logFilePath = Path.Combine(providerPath, cleanedLogName);
                 return this.CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
@@ -87,6 +92,7 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [NonAction]
+
         private static void ValidateFilePath(string physicalPath)
         {
             var fileInfo = new FileInfo(physicalPath);
@@ -97,13 +103,13 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [NonAction]
+
         private HttpResponseMessage CreateLogFileResponse(string logFilePath)
         {
             ValidateFilePath(logFilePath);
             if (!File.Exists(logFilePath))
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
-
             }
 
             using (var reader = File.OpenText(logFilePath))

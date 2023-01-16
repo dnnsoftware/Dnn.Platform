@@ -17,29 +17,38 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("new-user", Constants.UsersCategory, "Prompt_NewUser_Description")]
+
     public class NewUser : ConsoleCommandBase
     {
         [FlagParameter("email", "Prompt_NewUser_FlagEmail", "String", true)]
+
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_NewUser_FlagUsername", "String", true)]
+
         private const string FlagUsername = "username";
 
         [FlagParameter("firstname", "Prompt_NewUser_FlagFirstname", "String", true)]
+
         private const string FlagFirstname = "firstname";
 
         [FlagParameter("lastname", "Prompt_NewUser_FlagLastname", "String", true)]
+
         private const string FlagLastname = "lastname";
 
         [FlagParameter("password", "Prompt_NewUser_FlagPassword", "String", "auto-generated")]
+
         private const string FlagPassword = "password";
 
         [FlagParameter("approved", "Prompt_NewUser_FlagApproved", "Boolean", "true")]
+
         private const string FlagApproved = "approved";
 
         [FlagParameter("notify", "Prompt_NewUser_FlagNotify", "Boolean", "false")]
+
         private const string FlagNotify = "notify";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
@@ -56,9 +65,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private bool Notify { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty, true);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty, true);
             this.FirstName = this.GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
@@ -66,7 +75,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             this.Password = this.GetFlagValue(FlagPassword, "Password", string.Empty);
             this.Approved = this.GetFlagValue(FlagApproved, "Approved", true);
             this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
-            if (string.IsNullOrEmpty(this.Email)) return;
+            if (string.IsNullOrEmpty(this.Email))
+            {
+                return;
+            }
+
             var emailVal = new EmailValidator();
             if (!emailVal.IsValid(this.Email))
             {
@@ -74,6 +87,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var settings = new RegisterationDetails

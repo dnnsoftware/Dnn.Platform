@@ -6,15 +6,11 @@ namespace DotNetNuke.Entities.Tabs
 {
     using System;
 
-    /// <summary>
-    /// Class to represent a TabUrl object.
-    /// </summary>
+    /// <summary>Class to represent a TabUrl object.</summary>
     [Serializable] // 584 support sql session state
     public class TabUrlInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabUrlInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabUrlInfo"/> class.</summary>
         public TabUrlInfo()
         {
             this.PortalAliasUsage = PortalAliasUsageType.Default;

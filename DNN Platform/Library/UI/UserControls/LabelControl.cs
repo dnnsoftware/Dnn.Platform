@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -23,19 +24,21 @@ namespace DotNetNuke.UI.UserControls
     /// </remarks>
     public abstract class LabelControl : UserControl
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl label;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblLabel;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblNoHelpLabel;
 
-        /// <summary>
-        /// Gets or sets controlName is the Id of the control that is associated with the label.
-        /// </summary>
+        /// <summary>Gets or sets controlName is the Id of the control that is associated with the label.</summary>
         /// <value>A string representing the id of the associated control.</value>
-        /// <remarks>
-        /// </remarks>
         public string ControlName { get; set; }
 
         /// <summary>
@@ -44,28 +47,16 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         public string AssociateFormat { get; set; }
 
-        /// <summary>
-        /// Gets or sets css style applied to the asp:label control.
-        /// </summary>
+        /// <summary>Gets or sets css style applied to the asp:label control.</summary>
         /// <value>A string representing css class name.</value>
-        /// <remarks>
-        /// </remarks>
         public string CssClass { get; set; }
 
-        /// <summary>
-        /// Gets or sets helpKey is the Resource Key for the Help Text.
-        /// </summary>
+        /// <summary>Gets or sets helpKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Help Text.</value>
-        /// <remarks>
-        /// </remarks>
         public string HelpKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets helpText is value of the Help Text if no ResourceKey is provided.
-        /// </summary>
+        /// <summary>Gets or sets helpText is value of the Help Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Text.</value>
-        /// <remarks>
-        /// </remarks>
         public string HelpText
         {
             get
@@ -92,28 +83,16 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets resourceKey is the Resource Key for the Label Text.
-        /// </summary>
+        /// <summary>Gets or sets resourceKey is the Resource Key for the Label Text.</summary>
         /// <value>A string representing the Resource Key for the Label Text.</value>
-        /// <remarks>
-        /// </remarks>
         public string ResourceKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets suffix is Optional Text that appears after the Localized Label Text.
-        /// </summary>
+        /// <summary>Gets or sets suffix is Optional Text that appears after the Localized Label Text.</summary>
         /// <value>A string representing the Optional Text.</value>
-        /// <remarks>
-        /// </remarks>
         public string Suffix { get; set; }
 
-        /// <summary>
-        /// Gets or sets text is value of the Label Text if no ResourceKey is provided.
-        /// </summary>
+        /// <summary>Gets or sets text is value of the Label Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Text.</value>
-        /// <remarks>
-        /// </remarks>
         public string Text
         {
             get
@@ -127,12 +106,8 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets width is value of the Label Width.
-        /// </summary>
+        /// <summary>Gets or sets width is value of the Label Width.</summary>
         /// <value>A string representing the Text.</value>
-        /// <remarks>
-        /// </remarks>
         public Unit Width
         {
             get
@@ -146,11 +121,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -158,7 +129,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.RegisterClientDependencies();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <summary>How long a user needs to wait before user is allowed sending the next message.</summary>
         /// <returns>Time in seconds. Returns zero if user has never sent a message.</returns>
         /// <param name="sender">Sender's UserInfo.</param>
+        /// <exception cref="System.ArgumentNullException">When <paramref name="sender"/> is <see langword="null"/>.</exception>
         int WaitTimeForNextMessage(UserInfo sender);
 
         /// <summary>Last message sent by the User.</summary>
@@ -57,12 +58,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         /// <summary>Whether or not to includes the attachment in the email message.</summary>
         /// <param name="portalId">The portal identifier.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if attachments are configured to be included for the given portal, otherwise <see langword="false"/>.</returns>
         bool IncludeAttachments(int portalId);
 
         /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>
         /// <param name="portalId">Portal Id.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the private messages are disabled in the given portal, otherwise <see langword="false"/>.</returns>
         bool DisablePrivateMessage(int portalId);
 
         /// <summary>Converts the legacy messages.</summary>

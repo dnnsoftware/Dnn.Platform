@@ -27,10 +27,12 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 if (this.CultureCode == portalSettings.DefaultLanguage)
+                {
                     return Localization.GetString("Default.Text", this.LocalResourceFile);
+                }
 
                 return IsLanguagePublished(portalSettings.PortalId, this.CultureCode)
-                    ? ""
+                    ? string.Empty
                     : Localization.GetString("NotActive.Text", this.LocalResourceFile);
             }
         }
@@ -78,6 +80,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             {
                 isPublished = enabledLanguage.IsPublished;
             }
+
             return isPublished;
         }
     }

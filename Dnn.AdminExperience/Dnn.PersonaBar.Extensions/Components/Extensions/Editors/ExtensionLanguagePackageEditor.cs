@@ -21,6 +21,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
 
+        /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
         public ExtensionLanguagePackageEditor()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -28,6 +29,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
@@ -38,7 +40,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
                 DependentPackageId = languagePack.DependentPackageID,
-                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, "", "Locale={0}"),
+                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, string.Empty, "Locale={0}"),
             };
 
             if (languagePack.PackageType == LanguagePackType.Extension)
@@ -50,6 +52,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
+        /// <inheritdoc/>
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -73,7 +76,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     changed = true;
                 }
 
-                if (changed) LanguagePackController.SaveLanguagePack(languagePack);
+                if (changed)
+                {
+                    LanguagePackController.SaveLanguagePack(languagePack);
+                }
+
                 return true;
             }
             catch (Exception ex)

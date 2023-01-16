@@ -3,7 +3,7 @@
   <settings>
     <logofile>Images/Logo.png</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
-    <userregistration>1</userregistration>
+    <userregistration>0</userregistration>
     <banneradvertising>0</banneradvertising>
     <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
     <skinsrc>[G]Skins/Xcillion/Inner.ascx</skinsrc>
@@ -286,7 +286,7 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <portalDesktopModule>
-      <friendlyname>Digital Asset Management</friendlyname>
+      <friendlyname>ResourceManager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
           <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
@@ -679,7 +679,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -1023,7 +1023,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1097,7 +1097,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1434,7 +1434,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -1479,7 +1479,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1713,7 +1713,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1781,7 +1781,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1855,7 +1855,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1952,7 +1952,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -1997,7 +1997,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2231,7 +2231,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2299,7 +2299,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2373,7 +2373,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2469,7 +2469,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -2514,7 +2514,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2748,7 +2748,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2816,7 +2816,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -3125,7 +3125,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>File Management</title>
+              <title>Resource Manager</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>7cf1c967-f148-4c69-9c71-977044fd389d</uniqueId>
               <visibility>Maximized</visibility>
@@ -3139,8 +3139,8 @@
                   <settingvalue>True</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>DotNetNuke.Modules.DigitalAssets</definition>
-              <moduledefinition>Digital Asset Management</moduledefinition>
+              <definition>ResourceManager</definition>
+              <moduledefinition>ResourceManager</moduledefinition>
             </module>
           </modules>
         </pane>

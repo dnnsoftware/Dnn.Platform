@@ -40,18 +40,18 @@ namespace DotNetNuke.Web.InternalServices
 
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private int HtmlModuleDefitionId;
+        private int htmlModuleDefitionId;
 
         public SearchServiceController()
         {
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
-            this.HtmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
+            this.htmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
         }
 
         // this constructor is for unit tests
         internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
         {
-            this.HtmlModuleDefitionId = htmlModuleDefitionId;
+            this.htmlModuleDefitionId = htmlModuleDefitionId;
 
             // _tabController = newtabController;
             // _moduleController = newmoduleController;
@@ -284,8 +284,9 @@ namespace DotNetNuke.Web.InternalServices
                         }
                     }
                 }
-                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
+                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.htmlModuleDefitionId)
                 {
+                    // special handling for Html module
                     var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
@@ -425,8 +426,9 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (configuredList.Count > 0)
                 {
-                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName))) // in configured list
+                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)))
                     {
+                        // in configured list
                         list.Add(contentSource.SearchTypeId);
                     }
                 }
@@ -458,8 +460,9 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (configuredList.Count > 0)
                 {
-                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0) // in configured list
+                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0)
                     {
+                        // in configured list
                         list.Add(contentSource.ModuleDefinitionId);
                     }
                 }
@@ -609,8 +612,9 @@ namespace DotNetNuke.Web.InternalServices
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
-            if (result.ModuleDefId > 0 && result.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
+            if (result.ModuleDefId > 0 && result.ModuleDefId == this.htmlModuleDefitionId)
             {
+                // special handling for Html module
                 var tabTitle = this.GetTabTitleFromModuleId(result.ModuleId);
                 if (!string.IsNullOrEmpty(tabTitle))
                 {

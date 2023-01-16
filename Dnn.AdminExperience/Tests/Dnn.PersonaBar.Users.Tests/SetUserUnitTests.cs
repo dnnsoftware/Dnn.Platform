@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Users.Tests
     using NUnit.Framework;
 
     [TestFixture]
+
     public class SetUserUnitTests : CommandTests<SetUser>
     {
         private Mock<IUserValidator> _userValidatorMock;
@@ -21,6 +22,7 @@ namespace Dnn.PersonaBar.Users.Tests
         protected override string CommandName => "Set-User";
 
         [Test]
+
         public void Run_UserIdNull_ReturnErrorResponse()
         {
             // Arrange
@@ -42,6 +44,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [TestCase("--username", "user4pmt")]
         [TestCase("--displayname", "user4displayname")]
         [TestCase("--approved", "true")]
+
         public void Run_ValidCommand_ReturnSuccessResponse(string attributeName, string attributeValue)
         {
             // Arrange

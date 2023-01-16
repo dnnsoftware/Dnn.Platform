@@ -263,6 +263,12 @@
   <data name="lblResizeWidth.Text" xml:space="preserve">
     <value>Default Image Resize Width:</value>
   </data>
+  <data name="lblResizeHeightUpload.Text" xml:space="preserve">
+    <value>Image Resize Height On Upload:</value>
+  </data>
+  <data name="lblResizeWidthUpload.Text" xml:space="preserve">
+    <value>Image Resize Width On Upload:</value>
+  </data>
   <data name="lnkExport.Text" xml:space="preserve">
     <value>Export</value>
   </data>
@@ -511,5 +517,20 @@
   </data>
   <data name="HostNoSettingLabel.Text" xml:space="preserve">
     <value>Contains No Host Settings</value>
+  </data>
+  <data name="BrowserRootFolderForImg.Text" xml:space="preserve">
+    <value>Browser Root Folder for images</value>
+  </data>
+  <data name="HostBrowserRootFolder.Text" xml:space="preserve">
+    <value>Browser Root Folder Name for all portals (overrides setting below)</value>
+  </data>
+  <data name="HostBrowserRootFolderForImg.Text" xml:space="preserve">
+    <value>Browser Images Root Folder Name for all portals (overrides setting below)</value>
+  </data>
+  <data name="HostUploadFolderLabel.Text" xml:space="preserve">
+    <value>Default Upload Folder for all portals (overrides setting below)</value>
+  </data>
+  <data name="HostUploadFolderLabelForImg.Text" xml:space="preserve">
+    <value>Default Upload Folder for images for all portals (overrides setting below)</value>
   </data>
 </root>

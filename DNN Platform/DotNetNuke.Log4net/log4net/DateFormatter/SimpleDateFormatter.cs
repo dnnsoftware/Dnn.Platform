@@ -23,9 +23,7 @@ using System.IO;
 
 namespace log4net.DateFormatter
 {
-    /// <summary>
-    /// Formats the <see cref="DateTime"/> using the <see cref="M:DateTime.ToString(string, IFormatProvider)"/> method.
-    /// </summary>
+    /// <summary>Formats the <see cref="DateTime"/> using the <see cref="M:DateTime.ToString(string, IFormatProvider)"/> method.</summary>
     /// <remarks>
     /// <para>
     /// Formats the <see cref="DateTime"/> using the <see cref="DateTime"/> <see cref="M:DateTime.ToString(string, IFormatProvider)"/> method.
@@ -35,9 +33,7 @@ namespace log4net.DateFormatter
     /// <author>Gert Driesen</author>
     public class SimpleDateFormatter : IDateFormatter
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="format">The format string.</param>
         /// <remarks>
         /// <para>
@@ -54,9 +50,7 @@ namespace log4net.DateFormatter
             this.m_formatString = format;
         }
 
-        /// <summary>
-        /// Formats the date using <see cref="M:DateTime.ToString(string, IFormatProvider)"/>.
-        /// </summary>
+        /// <summary>Formats the date using <see cref="M:DateTime.ToString(string, IFormatProvider)"/>.</summary>
         /// <param name="dateToFormat">The date to convert to a string.</param>
         /// <param name="writer">The writer to write to.</param>
         /// <remarks>
@@ -70,9 +64,7 @@ namespace log4net.DateFormatter
             writer.Write(dateToFormat.ToString(this.m_formatString, System.Globalization.DateTimeFormatInfo.InvariantInfo));
         }
 
-        /// <summary>
-        /// The format string used to format the <see cref="DateTime" />.
-        /// </summary>
+        /// <summary>The format string used to format the <see cref="DateTime" />.</summary>
         /// <remarks>
         /// <para>
         /// The format string must be compatible with the options

@@ -26,9 +26,7 @@ namespace Dnn.AuthServices.Jwt.Auth
 
         private readonly IJwtController jwtController = JwtController.Instance;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JwtAuthMessageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JwtAuthMessageHandler"/> class.</summary>
         /// <param name="includeByDefault">A value indicating whether this handler should be inlcuded by default on all API endpoints.</param>
         /// <param name="forceSsl">A value indicating whether this handler should enforce SSL usage.</param>
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
@@ -46,9 +44,7 @@ namespace Dnn.AuthServices.Jwt.Auth
         /// <inheritdoc/>
         public override bool BypassAntiForgeryToken => true;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this handler is enabled.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether this handler is enabled.</summary>
         internal static bool IsEnabled { get; set; }
 
         /// <inheritdoc/>

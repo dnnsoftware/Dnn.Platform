@@ -18,7 +18,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         {
         }
 
-        public ModulePackageDetailDto(int portalId, PackageInfo package, DesktopModuleInfo desktopModule) : base(portalId, package)
+        public ModulePackageDetailDto(int portalId, PackageInfo package, DesktopModuleInfo desktopModule)
+            : base(portalId, package)
         {
             this.DesktopModuleId = desktopModule.DesktopModuleID;
             this.ModuleName = desktopModule.ModuleName;

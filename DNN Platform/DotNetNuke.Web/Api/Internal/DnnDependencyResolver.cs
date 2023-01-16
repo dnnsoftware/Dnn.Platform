@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Api.Internal
     using System;
     using System.Collections.Generic;
     using System.Web.Http.Dependencies;
+
     using DotNetNuke.Services.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +17,7 @@ namespace DotNetNuke.Web.Api.Internal
     /// </summary>
     internal class DnnDependencyResolver : IDependencyResolver
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnDependencyResolver"/> class.
@@ -27,25 +28,21 @@ namespace DotNetNuke.Web.Api.Internal
         /// </param>
         public DnnDependencyResolver(IServiceProvider serviceProvider)
         {
-            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        /// <summary>
-        /// Starts a new resolution scope.
-        /// </summary>
+        /// <summary>Starts a new resolution scope.</summary>
         /// <returns>
         /// The dependency scope.
         /// </returns>
         public IDependencyScope BeginScope()
         {
-            var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
+            var accessor = this.serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             return new DnnDependencyResolver(scope.ServiceProvider);
         }
 
-        /// <summary>
-        /// Returns the specified service from the scope.
-        /// </summary>
+        /// <summary>Returns the specified service from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>
@@ -54,12 +51,10 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public object GetService(Type serviceType)
         {
-            return this._serviceProvider.GetService(serviceType);
+            return this.serviceProvider.GetService(serviceType);
         }
 
-        /// <summary>
-        /// Returns the specified services from the scope.
-        /// </summary>
+        /// <summary>Returns the specified services from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>
@@ -68,7 +63,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return this._serviceProvider.GetServices(serviceType);
+            return this.serviceProvider.GetServices(serviceType);
         }
 
         /// <summary>

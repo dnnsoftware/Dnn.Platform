@@ -12,9 +12,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
     using DotNetNuke.Web.Mvp;
 
-    /// <summary>
-    /// View control for selecting an HTML provider.
-    /// </summary>
+    /// <summary>View control for selecting an HTML provider.</summary>
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public partial class ProviderConfiguration : ModuleView<ProviderConfigurationViewModel>, IProviderConfigurationView
     {

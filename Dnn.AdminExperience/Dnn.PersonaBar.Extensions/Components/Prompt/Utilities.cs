@@ -60,7 +60,10 @@ namespace Dnn.PersonaBar.Prompt.Components
         public static string FormatSkinName(string skin)
         {
             if (string.IsNullOrEmpty(skin))
+            {
                 return skin;
+            }
+
             var match = Regex.Match(skin, "skins\\/(\\w*)\\/(.*)\\.ascx", RegexOptions.IgnoreCase);
             if (match.Success)
             {
@@ -69,6 +72,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             else
             {
                 return skin;
+
                 // unable to find a match
             }
         }
@@ -76,7 +80,10 @@ namespace Dnn.PersonaBar.Prompt.Components
         public static string FormatContainerName(string container)
         {
             if (string.IsNullOrEmpty(container))
+            {
                 return container;
+            }
+
             var r = new Regex("containers\\/(\\w*)\\/(.*)\\.ascx", RegexOptions.IgnoreCase);
             var match = r.Match(container);
             if (match.Success)
@@ -86,13 +93,13 @@ namespace Dnn.PersonaBar.Prompt.Components
             else
             {
                 return container;
+
                 // unable to find a match
             }
         }
 
         internal static string GetSuggestedCommand(string cmdName)
         {
-
             var match = Regex.Match(cmdName, "(\\w+)\\-(\\w+)");
             if (match.Success)
             {
@@ -111,6 +118,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "ROLE":
                                 return "new-role";
                         }
+
                         break;
                     case "LOAD":
                     case "FIND":
@@ -126,6 +134,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "ROLES":
                                 return TranslateToCommandOptionText("get-role", "list-roles");
                         }
+
                         break;
                     case "UPDATE":
                     case "CHANGE":
@@ -138,6 +147,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "PASSWORD":
                                 return "reset-password";
                         }
+
                         break;
                     case "SET":
                         switch (component)
@@ -145,6 +155,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "PASSWORD":
                                 return "reset-password";
                         }
+
                         break;
                     case "GET":
                         switch (component)
@@ -158,6 +169,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "MODULES":
                                 return TranslateToCommandOptionText("get-module", "list-modules");
                         }
+
                         break;
                     case "LIST":
                         switch (component)
@@ -171,6 +183,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "Module":
                                 return "list-modules";
                         }
+
                         break;
                     case "RECOVER":
                         switch (component)
@@ -178,6 +191,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "USER":
                                 return "restore-user";
                         }
+
                         break;
                     case "REMOVE":
                         switch (component)
@@ -185,6 +199,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                             case "USER":
                                 return TranslateToCommandOptionText("delete-user", "purge-user");
                         }
+
                         break;
                 }
             }
@@ -198,5 +213,3 @@ namespace Dnn.PersonaBar.Prompt.Components
         }
     }
 }
-
-

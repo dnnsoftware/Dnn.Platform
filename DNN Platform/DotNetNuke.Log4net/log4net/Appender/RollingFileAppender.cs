@@ -42,9 +42,7 @@ namespace log4net.Appender
     /// write access please ensure that read and delete share modes are enabled.
 #endif
 
-    /// <summary>
-    /// Appender that rolls log files based on size or date or both.
-    /// </summary>
+    /// <summary>Appender that rolls log files based on size or date or both.</summary>
     /// <remarks>
     /// <para>
     /// RollingFileAppender can roll log files based on size or date or both
@@ -126,9 +124,7 @@ namespace log4net.Appender
     /// <author>Edward Smit</author>
     public class RollingFileAppender : FileAppender
     {
-        /// <summary>
-        /// Style of rolling to use
-        /// </summary>
+        /// <summary>Style of rolling to use</summary>
         /// <remarks>
         /// <para>
         /// Style of rolling to use
@@ -136,9 +132,7 @@ namespace log4net.Appender
         /// </remarks>
         public enum RollingMode
         {
-            /// <summary>
-            /// Roll files once per program execution
-            /// </summary>
+            /// <summary>Roll files once per program execution</summary>
             /// <remarks>
             /// <para>
             /// Roll files once per program execution.
@@ -153,25 +147,17 @@ namespace log4net.Appender
             /// </remarks>
             Once		= 0,
 
-            /// <summary>
-            /// Roll files based only on the size of the file
-            /// </summary>
+            /// <summary>Roll files based only on the size of the file</summary>
             Size		= 1,
 
-            /// <summary>
-            /// Roll files based only on the date
-            /// </summary>
+            /// <summary>Roll files based only on the date</summary>
             Date		= 2,
 
-            /// <summary>
-            /// Roll files based on both the size and date of the file
-            /// </summary>
+            /// <summary>Roll files based on both the size and date of the file</summary>
             Composite	= 3
         }
 
-        /// <summary>
-        /// The code assumes that the following 'time' constants are in a increasing sequence.
-        /// </summary>
+        /// <summary>The code assumes that the following 'time' constants are in a increasing sequence.</summary>
         /// <remarks>
         /// <para>
         /// The code assumes that the following 'time' constants are in a increasing sequence.
@@ -179,45 +165,29 @@ namespace log4net.Appender
         /// </remarks>
         protected enum RollPoint
         {
-            /// <summary>
-            /// Roll the log not based on the date
-            /// </summary>
+            /// <summary>Roll the log not based on the date</summary>
             InvalidRollPoint	=-1,
 
-            /// <summary>
-            /// Roll the log for each minute
-            /// </summary>
+            /// <summary>Roll the log for each minute</summary>
             TopOfMinute			= 0,
 
-            /// <summary>
-            /// Roll the log for each hour
-            /// </summary>
+            /// <summary>Roll the log for each hour</summary>
             TopOfHour			= 1,
 
-            /// <summary>
-            /// Roll the log twice a day (midday and midnight)
-            /// </summary>
+            /// <summary>Roll the log twice a day (midday and midnight)</summary>
             HalfDay				= 2,
 
-            /// <summary>
-            /// Roll the log each day (midnight)
-            /// </summary>
+            /// <summary>Roll the log each day (midnight)</summary>
             TopOfDay			= 3,
 
-            /// <summary>
-            /// Roll the log each week
-            /// </summary>
+            /// <summary>Roll the log each week</summary>
             TopOfWeek			= 4,
 
-            /// <summary>
-            /// Roll the log each month
-            /// </summary>
+            /// <summary>Roll the log each month</summary>
             TopOfMonth			= 5
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RollingFileAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RollingFileAppender" /> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -227,9 +197,7 @@ namespace log4net.Appender
         {
         }
 
-        /// <summary>
-        /// Cleans up all resources used by this appender.
-        /// </summary>
+        /// <summary>Cleans up all resources used by this appender.</summary>
         ~RollingFileAppender()
         {
 #if !NETCF
@@ -401,9 +369,7 @@ namespace log4net.Appender
             set { this.m_maxFileSize = OptionConverter.ToFileSize(value, this.m_maxFileSize + 1); }
         }
 
-        /// <summary>
-        /// Gets or sets the rolling file count direction. 
-        /// </summary>
+        /// <summary>Gets or sets the rolling file count direction. </summary>
         /// <value>
         /// The rolling file count direction.
         /// </value>
@@ -430,9 +396,7 @@ namespace log4net.Appender
             set { this.m_countDirection = value; }
         }
   
-        /// <summary>
-        /// Gets or sets the rolling style.
-        /// </summary>
+        /// <summary>Gets or sets the rolling style.</summary>
         /// <value>The rolling style.</value>
         /// <remarks>
         /// <para>
@@ -478,9 +442,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to preserve the file name extension when rolling.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to preserve the file name extension when rolling.</summary>
         /// <value>
         /// <c>true</c> if the file name extension should be preserved.
         /// </value>
@@ -523,18 +485,14 @@ namespace log4net.Appender
             set { this.m_staticLogFileName = value; }
         }
 
-        /// <summary>
-        /// The fully qualified type of the RollingFileAppender class.
-        /// </summary>
+        /// <summary>The fully qualified type of the RollingFileAppender class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(RollingFileAppender);
 
-        /// <summary>
-        /// Sets the quiet writer being used.
-        /// </summary>
+        /// <summary>Sets the quiet writer being used.</summary>
         /// <remarks>
         /// This method can be overridden by sub classes.
         /// </remarks>
@@ -544,9 +502,7 @@ namespace log4net.Appender
             this.QuietWriter = new CountingQuietTextWriter(writer, this.ErrorHandler);
         }
 
-        /// <summary>
-        /// Write out a logging event.
-        /// </summary>
+        /// <summary>Write out a logging event.</summary>
         /// <param name="loggingEvent">the event to write to file.</param>
         /// <remarks>
         /// <para>
@@ -561,9 +517,7 @@ namespace log4net.Appender
             base.Append(loggingEvent);
         }
   
-         /// <summary>
-        /// Write out an array of logging events.
-        /// </summary>
+         /// <summary>Write out an array of logging events.</summary>
         /// <param name="loggingEvents">the events to write to file.</param>
         /// <remarks>
         /// <para>
@@ -578,9 +532,7 @@ namespace log4net.Appender
             base.Append(loggingEvents);
         }
 
-        /// <summary>
-        /// Performs any required rolling before outputting the next event
-        /// </summary>
+        /// <summary>Performs any required rolling before outputting the next event</summary>
         /// <remarks>
         /// <para>
         /// Handles append time behavior for RollingFileAppender.  This checks
@@ -688,9 +640,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Get the current output file name
-        /// </summary>
+        /// <summary>Get the current output file name</summary>
         /// <param name="fileName">the base file name</param>
         /// <returns>the output file name</returns>
         /// <remarks>
@@ -720,9 +670,7 @@ namespace log4net.Appender
             return fileName;
         }
 
-        /// <summary>
-        ///     Determines curSizeRollBackups (only within the current roll point)
-        /// </summary>
+        /// <summary>    Determines curSizeRollBackups (only within the current roll point)</summary>
         private void DetermineCurSizeRollBackups()
         {
             this.m_curSizeRollBackups = 0;
@@ -800,9 +748,7 @@ namespace log4net.Appender
             return alFiles;
         }
 
-        /// <summary>
-        /// Initiates a roll over if needed for crossing a date boundary since the last run.
-        /// </summary>
+        /// <summary>Initiates a roll over if needed for crossing a date boundary since the last run.</summary>
         private void RollOverIfDateBoundaryCrossing()
         {
             if (this.m_staticLogFileName && this.m_rollDate) 
@@ -837,9 +783,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Initializes based on existing conditions at time of <see cref="ActivateOptions"/>.
-        /// </summary>
+        /// <summary>Initializes based on existing conditions at time of <see cref="ActivateOptions"/>.</summary>
         /// <remarks>
         /// <para>
         /// Initializes based on existing conditions at time of <see cref="ActivateOptions"/>.
@@ -1027,9 +971,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Calculates the RollPoint for the datePattern supplied.
-        /// </summary>
+        /// <summary>Calculates the RollPoint for the datePattern supplied.</summary>
         /// <param name="datePattern">the date pattern to calculate the check period for</param>
         /// <returns>The RollPoint that is most accurate for the date pattern supplied</returns>
         /// <remarks>
@@ -1068,9 +1010,7 @@ namespace log4net.Appender
             return RollPoint.InvalidRollPoint; // Deliberately head for trouble...
         }
 
-        /// <summary>
-        /// Initialize the appender based on the options set
-        /// </summary>
+        /// <summary>Initialize the appender based on the options set</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -1171,9 +1111,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Rollover the file(s) to date/time tagged file(s).
-        /// </summary>
+        /// <summary>Rollover the file(s) to date/time tagged file(s).</summary>
         /// <param name="fileIsOpen">set to true if the file to be rolled is currently open</param>
         /// <remarks>
         /// <para>
@@ -1233,9 +1171,7 @@ namespace log4net.Appender
             }
         }
   
-        /// <summary>
-        /// Renames file <paramref name="fromFile"/> to file <paramref name="toFile"/>.
-        /// </summary>
+        /// <summary>Renames file <paramref name="fromFile"/> to file <paramref name="toFile"/>.</summary>
         /// <param name="fromFile">Name of existing file to roll.</param>
         /// <param name="toFile">New name for file.</param>
         /// <remarks>
@@ -1271,9 +1207,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Test if a file exists at a specified path
-        /// </summary>
+        /// <summary>Test if a file exists at a specified path</summary>
         /// <param name="path">the path to the file</param>
         /// <returns>true if the file exists</returns>
         /// <remarks>
@@ -1289,9 +1223,7 @@ namespace log4net.Appender
             }
         }
   
-        /// <summary>
-        /// Deletes the specified file if it exists.
-        /// </summary>
+        /// <summary>Deletes the specified file if it exists.</summary>
         /// <param name="fileName">The file to delete.</param>
         /// <remarks>
         /// <para>
@@ -1351,9 +1283,7 @@ namespace log4net.Appender
             }
         }
   
-        /// <summary>
-        /// Implements file roll base on file size.
-        /// </summary>
+        /// <summary>Implements file roll base on file size.</summary>
         /// <remarks>
         /// <para>
         /// If the maximum number of size based backups is reached
@@ -1397,9 +1327,7 @@ namespace log4net.Appender
             this.SafeOpenFile(this.m_baseFileName, false);
         }
 
-        /// <summary>
-        /// Implements file roll.
-        /// </summary>
+        /// <summary>Implements file roll.</summary>
         /// <param name="baseFileName">the base name to rename</param>
         /// <remarks>
         /// <para>
@@ -1501,9 +1429,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Get the start time of the next window for the current rollpoint
-        /// </summary>
+        /// <summary>Get the start time of the next window for the current rollpoint</summary>
         /// <param name="currentDateTime">the current date</param>
         /// <param name="rollPoint">the type of roll point we are working with</param>
         /// <returns>the start time for the next roll point an interval after the currentDateTime date</returns>
@@ -1603,87 +1529,55 @@ namespace log4net.Appender
         /// </summary>
         private string m_scheduledFilename = null;
   
-        /// <summary>
-        /// The timestamp when we shall next recompute the filename.
-        /// </summary>
+        /// <summary>The timestamp when we shall next recompute the filename.</summary>
         private DateTime m_nextCheck = DateTime.MaxValue;
   
-        /// <summary>
-        /// Holds date of last roll over
-        /// </summary>
+        /// <summary>Holds date of last roll over</summary>
         private DateTime m_now;
   
-        /// <summary>
-        /// The type of rolling done
-        /// </summary>
+        /// <summary>The type of rolling done</summary>
         private RollPoint m_rollPoint;
   
-        /// <summary>
-        /// The default maximum file size is 10MB
-        /// </summary>
+        /// <summary>The default maximum file size is 10MB</summary>
         private long m_maxFileSize = 10*1024*1024;
   
-        /// <summary>
-        /// There is zero backup files by default
-        /// </summary>
+        /// <summary>There is zero backup files by default</summary>
         private int m_maxSizeRollBackups  = 0;
 
-        /// <summary>
-        /// How many sized based backups have been made so far
-        /// </summary>
+        /// <summary>How many sized based backups have been made so far</summary>
         private int m_curSizeRollBackups = 0;
   
-        /// <summary>
-        /// The rolling file count direction. 
-        /// </summary>
+        /// <summary>The rolling file count direction. </summary>
         private int m_countDirection = -1;
   
-        /// <summary>
-        /// The rolling mode used in this appender.
-        /// </summary>
+        /// <summary>The rolling mode used in this appender.</summary>
         private RollingMode m_rollingStyle = RollingMode.Composite;
 
-        /// <summary>
-        /// Cache flag set if we are rolling by date.
-        /// </summary>
+        /// <summary>Cache flag set if we are rolling by date.</summary>
         private bool m_rollDate = true;
 
-        /// <summary>
-        /// Cache flag set if we are rolling by size.
-        /// </summary>
+        /// <summary>Cache flag set if we are rolling by size.</summary>
         private bool m_rollSize = true;
   
-        /// <summary>
-        /// Value indicating whether to always log to the same file.
-        /// </summary>
+        /// <summary>Value indicating whether to always log to the same file.</summary>
         private bool m_staticLogFileName = true;
   
-           /// <summary>
-        /// Value indicating whether to preserve the file name extension when rolling.
-        /// </summary>
+           /// <summary>Value indicating whether to preserve the file name extension when rolling.</summary>
         private bool m_preserveLogFileNameExtension = false;
 
 
-        /// <summary>
-        /// FileName provided in configuration.  Used for rolling properly
-        /// </summary>
+        /// <summary>FileName provided in configuration.  Used for rolling properly</summary>
         private string m_baseFileName;
 
 #if !NETCF
-        /// <summary>
-        /// A mutex that is used to lock rolling of files.
-        /// </summary>
+        /// <summary>A mutex that is used to lock rolling of files.</summary>
         private Mutex m_mutexForRolling;
 #endif
 
-        /// <summary>
-        /// The 1st of January 1970 in UTC
-        /// </summary>
+        /// <summary>The 1st of January 1970 in UTC</summary>
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
 
-        /// <summary>
-        /// This interface is used to supply Date/Time information to the <see cref="RollingFileAppender"/>.
-        /// </summary>
+        /// <summary>This interface is used to supply Date/Time information to the <see cref="RollingFileAppender"/>.</summary>
         /// <remarks>
         /// This interface is used to supply Date/Time information to the <see cref="RollingFileAppender"/>.
         /// Used primarily to allow test classes to plug themselves in so they can
@@ -1691,9 +1585,7 @@ namespace log4net.Appender
         /// </remarks>
         public interface IDateTime
         {
-            /// <summary>
-            /// Gets the <i>current</i> time.
-            /// </summary>
+            /// <summary>Gets the <i>current</i> time.</summary>
             /// <value>The <i>current</i> time.</value>
             /// <remarks>
             /// <para>
@@ -1703,14 +1595,10 @@ namespace log4net.Appender
             DateTime Now { get; }
         }
 
-        /// <summary>
-        /// Default implementation of <see cref="IDateTime"/> that returns the current time.
-        /// </summary>
+        /// <summary>Default implementation of <see cref="IDateTime"/> that returns the current time.</summary>
         private class LocalDateTime : IDateTime
         {
-            /// <summary>
-            /// Gets the <b>current</b> time.
-            /// </summary>
+            /// <summary>Gets the <b>current</b> time.</summary>
             /// <value>The <b>current</b> time.</value>
             /// <remarks>
             /// <para>
@@ -1724,14 +1612,10 @@ namespace log4net.Appender
         }
 
 #if !NET_1_0 && !CLI_1_0 && !NETCF
-        /// <summary>
-        /// Implementation of <see cref="IDateTime"/> that returns the current time as the coordinated universal time (UTC).
-        /// </summary>
+        /// <summary>Implementation of <see cref="IDateTime"/> that returns the current time as the coordinated universal time (UTC).</summary>
         private class UniversalDateTime : IDateTime
         {
-            /// <summary>
-            /// Gets the <b>current</b> time.
-            /// </summary>
+            /// <summary>Gets the <b>current</b> time.</summary>
             /// <value>The <b>current</b> time.</value>
             /// <remarks>
             /// <para>

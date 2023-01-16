@@ -25,14 +25,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
 
-    /// <summary>
-    /// Settings Base Helper Class.
-    /// </summary>
+    /// <summary>Settings Base Helper Class.</summary>
     public class SettingsUtil
     {
-        /// <summary>
-        /// Checks the exists portal or page settings.
-        /// </summary>
+        /// <summary>Checks the exists portal or page settings.</summary>
         /// <param name="editorHostSettings">The editor host settings.</param>
         /// <param name="key">The key.</param>
         /// <returns>
@@ -54,9 +50,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks there are any Module Settings.
-        /// </summary>
+        /// <summary>Checks there are any Module Settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -72,9 +66,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks the exists of the module instance settings.
-        /// </summary>
+        /// <summary>Checks the exists of the module instance settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -91,9 +83,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Loads the portal or page settings.
-        /// </summary>
+        /// <summary>Loads the portal or page settings.</summary>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>
@@ -722,6 +712,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIR))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIR))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostBrowserRootDir = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRID))))
             {
                 var settingValue =
@@ -743,6 +747,55 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIRFORIMG))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIRFORIMG))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostBrowserRootDirForImg = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.BrowserRootDirForImgId = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.BrowserRootDirForImgId = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIR))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIR))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostUploadDir = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID))))
             {
                 var settingValue =
@@ -758,6 +811,83 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     catch (Exception)
                     {
                         currentSettings.UploadDirId = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIRFORIMG))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIRFORIMG))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostUploadDirForImg = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.UploadDirForImgId = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.UploadDirForImgId = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.ResizeWidthUpload = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.ResizeWidthUpload = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.ResizeHeightUpload = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.ResizeHeightUpload = -1;
                     }
                 }
             }
@@ -807,9 +937,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Loads the module settings.
-        /// </summary>
+        /// <summary>Loads the module settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="key">The module key.</param>
@@ -1218,6 +1346,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID)]))
+            {
+                try
+                {
+                    currentSettings.BrowserRootDirForImgId = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.BrowserRootDirForImgId = -1;
+                }
+            }
+
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID)]))
             {
                 try
@@ -1227,6 +1367,42 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 catch (Exception)
                 {
                     currentSettings.UploadDirId = -1;
+                }
+            }
+
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID)]))
+            {
+                try
+                {
+                    currentSettings.UploadDirForImgId = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.UploadDirForImgId = -1;
+                }
+            }
+
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD)]))
+            {
+                try
+                {
+                    currentSettings.ResizeWidthUpload = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.ResizeWidthUpload = -1;
+                }
+            }
+
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD)]))
+            {
+                try
+                {
+                    currentSettings.ResizeHeightUpload = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.ResizeHeightUpload = -1;
                 }
             }
 
@@ -1257,9 +1433,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
+        /// <summary>Gets the default settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="alternateSubFolder">The alternate Sub Folder.</param>
@@ -1413,9 +1587,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return settings;
         }
 
-        /// <summary>
-        /// Creates the default settings file.
-        /// </summary>
+        /// <summary>Creates the default settings file.</summary>
         internal static void CreateDefaultSettingsFile()
         {
             var newSettings = new EditorProviderSettings();
@@ -1435,9 +1607,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             textWriter.Close();
         }
 
-        /// <summary>
-        /// Gets the editor config properties.
-        /// </summary>
+        /// <summary>Gets the editor config properties.</summary>
         /// <returns>Returns the EditorConfig Properties.</returns>
         internal static IEnumerable<PropertyInfo> GetEditorConfigProperties()
         {
@@ -1462,9 +1632,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
-        /// <summary>
-        /// Imports the old SettingsBase Xml File.
-        /// </summary>
+        /// <summary>Imports the old SettingsBase Xml File.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="isDefaultXmlFile">if set to <c>true</c> [is default XML file].</param>
         internal static void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile = false)
@@ -1503,7 +1671,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 SubDirs = oldDefaultSettings.bSubDirs,
                 InjectSyntaxJs = oldDefaultSettings.injectSyntaxJs,
                 BrowserRootDirId = oldDefaultSettings.BrowserRootDirId,
+                BrowserRootDirForImgId = oldDefaultSettings.BrowserRootDirForImgId,
                 UploadDirId = oldDefaultSettings.UploadDirId,
+                UploadDirForImgId = oldDefaultSettings.UploadDirForImgId,
+                ResizeHeightUpload = oldDefaultSettings.iResizeHeightUpload,
+                ResizeWidthUpload = oldDefaultSettings.iResizeWidthUpload,
                 ResizeHeight = oldDefaultSettings.iResizeHeight,
                 ResizeWidth = oldDefaultSettings.iResizeWidth,
                 ToolBarRoles = oldDefaultSettings.listToolbRoles,
@@ -1581,9 +1753,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets the size of the current user upload.
-        /// </summary>
+        /// <summary>Gets the size of the current user upload.</summary>
         /// <param name="settings">The settings.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="httpRequest">The HTTP request.</param>

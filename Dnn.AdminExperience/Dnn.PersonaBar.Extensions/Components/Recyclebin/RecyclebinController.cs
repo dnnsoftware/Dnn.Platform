@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -29,37 +29,40 @@ namespace Dnn.PersonaBar.Recyclebin.Components
     public class RecyclebinController : ServiceLocator<IRecyclebinController, RecyclebinController>,
         IRecyclebinController
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
-        private readonly ITabController _tabController;
-        private readonly ITabVersionSettings _tabVersionSettings;
-        private readonly ITabChangeSettings _tabChangeSettings;
-        private readonly ITabWorkflowSettings _tabWorkflowSettings;
-        private readonly IModuleController _moduleController;
+        private readonly ITabController tabController;
+        private readonly ITabVersionSettings tabVersionSettings;
+        private readonly ITabChangeSettings tabChangeSettings;
+        private readonly ITabWorkflowSettings tabWorkflowSettings;
+        private readonly IModuleController moduleController;
 
         public RecyclebinController()
         {
-            this._tabController = TabController.Instance;
-            this._tabVersionSettings = TabVersionSettings.Instance;
-            this._tabWorkflowSettings = TabWorkflowSettings.Instance;
-            this._moduleController = ModuleController.Instance;
-            this._tabChangeSettings = TabChangeSettings.Instance;
+            this.tabController = TabController.Instance;
+            this.tabVersionSettings = TabVersionSettings.Instance;
+            this.tabWorkflowSettings = TabWorkflowSettings.Instance;
+            this.moduleController = ModuleController.Instance;
+            this.tabChangeSettings = TabChangeSettings.Instance;
         }
 
         private static PortalSettings PortalSettings => PortalSettings.Current;
 
+        /// <inheritdoc/>
         public string LocalizeString(string key)
         {
             return Localization.GetString(key, Constants.LocalResourcesFile);
         }
 
+        /// <inheritdoc/>
         public void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false)
         {
             if (tabs != null)
             {
                 foreach (var tab in tabs.OrderByDescending(t => t.Level))
                 {
-                    var tabInfo = this._tabController.GetTab(tab.Id, PortalSettings.PortalId);
+                    var tabInfo = this.tabController.GetTab(tab.Id, PortalSettings.PortalId);
                     if (tabInfo == null)
                     {
                         errors.AppendFormat(this.LocalizeString("PageNotFound"), tab.Id);
@@ -72,13 +75,14 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false)
         {
             if (tabs != null)
             {
                 foreach (var tab in tabs.OrderByDescending(t => t.Level))
                 {
-                    var tabInfo = this._tabController.GetTab(tab.TabID, PortalSettings.PortalId);
+                    var tabInfo = this.tabController.GetTab(tab.TabID, PortalSettings.PortalId);
                     if (tabInfo == null)
                     {
                         errors.AppendFormat(this.LocalizeString("PageNotFound"), tab.TabID);
@@ -91,6 +95,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors)
         {
             if (modules != null)
@@ -110,18 +115,20 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors)
         {
             modules?.ForEach(mod => this.HardDeleteModule(mod, errors));
         }
 
+        /// <inheritdoc/>
         public bool RestoreTab(TabInfo tab, out string resultmessage)
         {
-            var changeControlStateForTab = this._tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
+            var changeControlStateForTab = this.tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
             if (changeControlStateForTab.IsChangeControlEnabledForTab)
             {
-                this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
-                this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+                this.tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
+                this.tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
 
             var success = true;
@@ -137,7 +144,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             else
             {
-                this._tabController.RestoreTab(tab, PortalSettings);
+                this.tabController.RestoreTab(tab, PortalSettings);
 
                 // restore modules in this tab
                 var tabdeletedModules = this.GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
@@ -149,20 +156,25 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
                 if (changeControlStateForTab.IsChangeControlEnabledForTab)
                 {
-                    this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID,
+                    this.tabVersionSettings.SetEnabledVersioningForTab(
+                        tab.TabID,
                         changeControlStateForTab.IsVersioningEnabledForTab);
-                    this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
+                    this.tabWorkflowSettings.SetWorkflowEnabled(
+                        tab.PortalID,
+                        tab.TabID,
                         changeControlStateForTab.IsWorkflowEnabledForTab);
                 }
             }
+
             return success;
         }
 
+        /// <inheritdoc/>
         public bool RestoreModule(int moduleId, int tabId, out string errorMessage)
         {
             errorMessage = null;
-            // restore module
 
+            // restore module
             KeyValuePair<HttpStatusCode, string> message;
             var module = ModulesController.Instance.GetModule(PortalSettings, moduleId, tabId, out message);
 
@@ -175,12 +187,17 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     var title = !string.IsNullOrEmpty(module.ModuleTitle)
                         ? module.ModuleTitle
                         : module.DesktopModule.FriendlyName;
-                    errorMessage = string.Format(this.LocalizeString("Service_RestoreModuleError"), title,
+                    errorMessage = string.Format(
+                        this.LocalizeString("Service_RestoreModuleError"),
+                        title,
                         deletedTabs.SingleOrDefault().TabName);
                     return false;
                 }
+
                 if (module.IsDeleted)
-                    this._moduleController.RestoreModule(module);
+                {
+                    this.moduleController.RestoreModule(module);
+                }
                 else
                 {
                     errorMessage = string.Format(this.LocalizeString("ModuleNotSoftDeleted"), moduleId);
@@ -192,9 +209,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                 errorMessage = string.Format(this.LocalizeString("ModuleNotFound"), moduleId, tabId);
                 return false;
             }
+
             return true;
         }
 
+        /// <inheritdoc/>
         public List<TabInfo> GetDeletedTabs(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
             var adminTabId = PortalSettings.AdminTabId;
@@ -205,9 +224,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return pageIndex == -1 || pageSize == -1 ? deletedtabs.ToList() : deletedtabs.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
+        /// <inheritdoc/>
         public List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
-            var deletedModules = this._moduleController.GetModules(PortalSettings.PortalId)
+            var deletedModules = this.moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
                 .Where(module => module.IsDeleted && (
                     TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
@@ -216,6 +236,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return pageIndex == -1 || pageSize == -1 ? deletedModules.ToList() : deletedModules.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
+        /// <inheritdoc/>
         public string GetTabStatus(TabInfo tab)
         {
             if (tab.DisableLink)
@@ -226,6 +247,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return tab.IsVisible ? "Visible" : "Hidden";
         }
 
+        /// <inheritdoc/>
         public List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
             var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(this.CanManageUser);
@@ -233,10 +255,15 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return pageIndex == -1 || pageSize == -1 ? deletedusers.ToList() : deletedusers.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
+        /// <inheritdoc/>
         public void DeleteUsers(IEnumerable<UserInfo> users)
         {
             var userInfos = users as IList<UserInfo> ?? users.ToList();
-            if (users == null || !userInfos.Any()) return;
+            if (users == null || !userInfos.Any())
+            {
+                return;
+            }
+
             foreach (
                 var user in
                     userInfos.Select(u => UserController.GetUserById(u.PortalID, u.UserID))
@@ -244,16 +271,20 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                         .Where(user => user.IsDeleted))
             {
                 if (this.CanManageUser(user))
+                {
                     UserController.RemoveUser(user);
+                }
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteUsers(IEnumerable<UserItem> users)
         {
             var userInfos = users.Select(x => new UserInfo { PortalID = x.PortalId, UserID = x.Id });
             this.DeleteUsers(userInfos);
         }
 
+        /// <inheritdoc/>
         public bool RestoreUser(UserInfo user, out string errorMessage)
         {
             errorMessage = null;
@@ -263,10 +294,12 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                 UserController.RestoreUser(ref user);
                 return true;
             }
+
             errorMessage = string.Format(this.LocalizeString("Service_RestoreUserError"));
             return false;
         }
 
+        /// <inheritdoc/>
         protected override Func<IRecyclebinController> GetFactory()
         {
             return () => new RecyclebinController();
@@ -281,22 +314,23 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     errors.Append(string.Format(this.LocalizeString("Service_RemoveTabWithChildError"), tab.TabName));
                     return;
                 }
+
                 // get tab modules before deleting page
-                var tabModules = this._moduleController.GetTabModules(tab.TabID);
+                var tabModules = this.moduleController.GetTabModules(tab.TabID);
 
                 // hard delete the tab
-                this._tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
+                this.tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
 
                 // delete modules that do not have other instances
                 foreach (var kvp in tabModules)
                 {
                     // check if all modules instances have been deleted
-                    var delModule = this._moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
+                    var delModule = this.moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
                     if (delModule == null || delModule.TabID == Null.NullInteger)
                     {
                         try
                         {
-                            this._moduleController.DeleteModule(kvp.Value.ModuleID);
+                            this.moduleController.DeleteModule(kvp.Value.ModuleID);
                         }
                         catch (Exception exc)
                         {
@@ -317,7 +351,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 if (ModulePermissionController.CanDeleteModule(module) && module.IsDeleted)
                 {
-                    this._moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+                    this.moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
                 }
                 else
                 {
@@ -328,14 +362,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 Logger.Error(exc);
             }
+
             // hard-delete Tab Module Instance
         }
 
-        /// <summary>
-        /// Checks if the current user has enough rights to manage the provided user or not.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <summary>Checks if the current user has enough rights to manage the provided user or not.</summary>
+        /// <param name="user">The user to check.</param>
+        /// <returns><see langword="true"/> if the current user can managed the given <paramref name="user"/>, otherwise <see langword="false"/>.</returns>
         private bool CanManageUser(UserInfo user)
         {
             if (PortalSettings.UserInfo.IsSuperUser ||
@@ -345,6 +378,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 return true;
             }
+
             return false;
         }
     }

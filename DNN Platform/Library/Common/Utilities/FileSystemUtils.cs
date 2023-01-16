@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Threading;
     using System.Web;
@@ -25,12 +26,8 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a File to a Zip File.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
+        /// <summary>Adds a File to a Zip File.</summary>
+        public static void AddToZip(ref ZipArchive zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
             try
@@ -45,19 +42,23 @@ namespace DotNetNuke.Common.Utilities
                 if (len != fs.Length)
                 {
                     Logger.ErrorFormat(
-                        "Reading from " + filePath + " didn't read all data in buffer. " +
-                                      "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
+                        "Reading from " +
+                        filePath +
+                        " didn't read all data in buffer. " +
+                        "Requested to read {0} bytes, but was read {1} bytes",
+                        fs.Length,
+                        len);
                 }
 
                 // Create Zip Entry
-                var entry = new ZipEntry(Path.Combine(folder, fileName));
-                entry.DateTime = DateTime.Now;
-                entry.Size = fs.Length;
-                fs.Close();
+                var entry = zipFile.CreateEntry(Path.Combine(folder, fileName));
+                entry.LastWriteTime = DateTime.Now;
+                using (var zipStream = entry.Open())
+                {
+                    fs.CopyToStream(zipStream, 25000);
+                }
 
-                // Compress file and add to Zip file
-                ZipFile.PutNextEntry(entry);
-                ZipFile.Write(buffer, 0, buffer.Length);
+                fs.Close();
             }
             finally
             {
@@ -69,13 +70,9 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tries to copy a file in the file system.
-        /// </summary>
+        /// <summary>Tries to copy a file in the file system.</summary>
         /// <param name="sourceFileName">The name of the source file.</param>
         /// <param name="destFileName">The name of the destination file.</param>
-        /// -----------------------------------------------------------------------------
         public static void CopyFile(string sourceFileName, string destFileName)
         {
             if (File.Exists(destFileName))
@@ -86,18 +83,14 @@ namespace DotNetNuke.Common.Utilities
             File.Copy(sourceFileName, destFileName, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
+        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging).
         /// This solves file concurrency issues under heavy load.
         /// </summary>
-        /// <param name="fileName">String.</param>
-        /// <param name="waitInMilliseconds">Int16.</param>
-        /// <param name="maxAttempts">Int16.</param>
-        /// <returns>Boolean.</returns>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <param name="fileName">The file name.</param>
+        /// <param name="waitInMilliseconds">The number of milliseconds to wait.</param>
+        /// <param name="maxAttempts">The maximum number of attempts.</param>
+        /// <returns>Whether the file is deleted.</returns>
         public static bool DeleteFileWithWait(string fileName, short waitInMilliseconds, short maxAttempts)
         {
             fileName = FixPath(fileName);
@@ -140,12 +133,8 @@ namespace DotNetNuke.Common.Utilities
             return fileDeleted;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tries to delete a file from the file system.
-        /// </summary>
+        /// <summary>Tries to delete a file from the file system.</summary>
         /// <param name="fileName">The name of the file.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName)
         {
             fileName = FixPath(fileName);
@@ -177,23 +166,21 @@ namespace DotNetNuke.Common.Utilities
             return fileContent;
         }
 
-        public static void UnzipResources(ZipInputStream zipStream, string destPath)
+        public static void UnzipResources(ZipArchive zipStream, string destPath)
         {
             try
             {
-                var zipEntry = zipStream.GetNextEntry();
-                while (zipEntry != null)
+                foreach (var zipEntry in zipStream.FileEntries())
                 {
-                    zipEntry.CheckZipEntry();
                     HtmlUtils.WriteKeepAlive();
-                    var localFileName = zipEntry.Name;
-                    var relativeDir = Path.GetDirectoryName(zipEntry.Name);
+                    var localFileName = zipEntry.FullName;
+                    var relativeDir = Path.GetDirectoryName(zipEntry.FullName);
                     if (!string.IsNullOrEmpty(relativeDir) && (!Directory.Exists(Path.Combine(destPath, relativeDir))))
                     {
                         Directory.Create(Path.Combine(destPath, relativeDir), true);
                     }
 
-                    if (!zipEntry.IsDirectory && (!string.IsNullOrEmpty(localFileName)))
+                    if (!string.IsNullOrEmpty(localFileName))
                     {
                         var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
                         try
@@ -209,14 +196,7 @@ namespace DotNetNuke.Common.Utilities
                             {
                                 File.Create(fileNamePath);
                                 objFileStream = File.Open(fileNamePath);
-                                int intSize = 2048;
-                                var arrData = new byte[2048];
-                                intSize = zipStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objFileStream.Write(arrData, 0, intSize);
-                                    intSize = zipStream.Read(arrData, 0, arrData.Length);
-                                }
+                                zipEntry.Open().CopyToStream(objFileStream, 25000);
                             }
                             finally
                             {
@@ -232,15 +212,12 @@ namespace DotNetNuke.Common.Utilities
                             Logger.Error(ex);
                         }
                     }
-
-                    zipEntry = zipStream.GetNextEntry();
                 }
             }
             finally
             {
                 if (zipStream != null)
                 {
-                    zipStream.Close();
                     zipStream.Dispose();
                 }
             }
@@ -373,6 +350,40 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <summary>Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.</summary>
+        /// <param name="path">The root folder path.</param>
+        public static void DeleteEmptyFoldersRecursive(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+            {
+                Logger.Info(path + " does not exist.");
+                return;
+            }
+
+            // first take care of folders
+            foreach (var folder in Directory.EnumerateDirectoryPaths(path))
+            {
+                DeleteEmptyFoldersRecursive(folder);
+            }
+
+            // if any files or folders left, return
+            if (Directory.EnumerateFileSystemEntries(path).Any())
+            {
+                return;
+            }
+
+            try
+            {
+                // delete this empty folder
+                Directory.SetAttributes(path, FileAttributes.Normal);
+                Directory.Delete(path);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
         public static string FixPath(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -381,6 +392,120 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return input.Trim().Replace("/", "\\");
+        }
+
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        public static void AddToZip(ref ZipOutputStream zipFile, string filePath, string fileName, string folder)
+        {
+            FileStream fs = null;
+            try
+            {
+                // Open File Stream
+                fs = File.OpenRead(FixPath(filePath));
+
+                // Read file into byte array buffer
+                var buffer = new byte[fs.Length];
+
+                var len = fs.Read(buffer, 0, buffer.Length);
+                if (len != fs.Length)
+                {
+                    Logger.ErrorFormat(
+                        "Reading from " +
+                        filePath +
+                        " didn't read all data in buffer. " +
+                        "Requested to read {0} bytes, but was read {1} bytes",
+                        fs.Length,
+                        len);
+                }
+
+                // Create Zip Entry
+                var entry = new ZipEntry(Path.Combine(folder, fileName));
+                entry.DateTime = DateTime.Now;
+                entry.Size = fs.Length;
+                fs.Close();
+
+                // Compress file and add to Zip file
+                zipFile.PutNextEntry(entry);
+                zipFile.Write(buffer, 0, buffer.Length);
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                    fs.Dispose();
+                }
+            }
+        }
+
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        public static void UnzipResources(ZipInputStream zipStream, string destPath)
+        {
+            try
+            {
+                var zipEntry = zipStream.GetNextEntry();
+                while (zipEntry != null)
+                {
+                    zipEntry.CheckZipEntry();
+                    HtmlUtils.WriteKeepAlive();
+                    var localFileName = zipEntry.Name;
+                    var relativeDir = Path.GetDirectoryName(zipEntry.Name);
+                    if (!string.IsNullOrEmpty(relativeDir) && (!Directory.Exists(Path.Combine(destPath, relativeDir))))
+                    {
+                        Directory.Create(Path.Combine(destPath, relativeDir), true);
+                    }
+
+                    if (!zipEntry.IsDirectory && (!string.IsNullOrEmpty(localFileName)))
+                    {
+                        var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
+                        try
+                        {
+                            if (File.Exists(fileNamePath))
+                            {
+                                File.SetAttributes(fileNamePath, FileAttributes.Normal);
+                                File.Delete(fileNamePath);
+                            }
+
+                            FileStream objFileStream = null;
+                            try
+                            {
+                                File.Create(fileNamePath);
+                                objFileStream = File.Open(fileNamePath);
+                                int intSize = 2048;
+                                var arrData = new byte[2048];
+                                intSize = zipStream.Read(arrData, 0, arrData.Length);
+                                while (intSize > 0)
+                                {
+                                    objFileStream.Write(arrData, 0, intSize);
+                                    intSize = zipStream.Read(arrData, 0, arrData.Length);
+                                }
+                            }
+                            finally
+                            {
+                                if (objFileStream != null)
+                                {
+                                    objFileStream.Close();
+                                    objFileStream.Dispose();
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                        }
+                    }
+
+                    zipEntry = zipStream.GetNextEntry();
+                }
+            }
+            finally
+            {
+                if (zipStream != null)
+                {
+                    zipStream.Close();
+                    zipStream.Dispose();
+                }
+            }
         }
 
         private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
@@ -418,12 +543,8 @@ namespace DotNetNuke.Common.Utilities
             return strMessage;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the filename for a file path.
-        /// </summary>
+        /// <summary>Gets the filename for a file path.</summary>
         /// <param name="filePath">The full name of the file.</param>
-        /// -----------------------------------------------------------------------------
         private static string GetFileName(string filePath)
         {
             return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
@@ -434,31 +555,25 @@ namespace DotNetNuke.Common.Utilities
             return (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
         }
 
-        private static void RemoveOrphanedFiles(FolderInfo folder, int PortalId)
+        private static void RemoveOrphanedFiles(FolderInfo folder, int portalId)
         {
-            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID)
+            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(portalId, "Database").FolderMappingID)
             {
                 foreach (FileInfo objFile in FolderManager.Instance.GetFiles(folder))
                 {
-                    RemoveOrphanedFile(objFile, PortalId);
+                    RemoveOrphanedFile(objFile, portalId);
                 }
             }
         }
 
-        private static void RemoveOrphanedFile(FileInfo objFile, int PortalId)
+        private static void RemoveOrphanedFile(FileInfo objFile, int portalId)
         {
             FileManager.Instance.DeleteFile(objFile);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a Stream to the appropriate File Storage.
-        /// </summary>
+        /// <summary>Writes a Stream to the appropriate File Storage.</summary>
         /// <param name="objResponse">The Id of the File.</param>
         /// <param name="objStream">The Input Stream.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static void WriteStream(HttpResponse objResponse, Stream objStream)
         {
             // Buffer to read 10K bytes in chunk:

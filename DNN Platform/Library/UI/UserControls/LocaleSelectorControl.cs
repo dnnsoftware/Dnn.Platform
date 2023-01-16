@@ -4,25 +4,27 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   LocaleSelectorControl is a user control that provides all the server code to manage
     ///   localisation selection.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList ddlPortalDefaultLanguage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Literal litStatus;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButtonList rbViewType;
-        private string MyFileName = "LocaleSelectorControl.ascx";
-        private string _ViewType = string.Empty;
+        private string myFileName = "LocaleSelectorControl.ascx";
+        private string viewType = string.Empty;
 
         public string CultureCode
         {
@@ -52,17 +54,17 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._ViewType))
+                if (string.IsNullOrEmpty(this.viewType))
                 {
-                    this._ViewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
+                    this.viewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
                 }
 
-                if (string.IsNullOrEmpty(this._ViewType))
+                if (string.IsNullOrEmpty(this.viewType))
                 {
-                    this._ViewType = "NATIVE";
+                    this.viewType = "NATIVE";
                 }
 
-                return this._ViewType;
+                return this.viewType;
             }
         }
 
@@ -79,20 +81,20 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            this.rbViewType.SelectedIndexChanged += this.rbViewType_SelectedIndexChanged;
+            this.rbViewType.SelectedIndexChanged += this.RbViewType_SelectedIndexChanged;
 
             if (!this.Page.IsPostBack)
             {
                 ListItem item = default(ListItem);
 
-                item = new ListItem(Localization.GetString("NativeName.Text", Localization.GetResourceFile(this, this.MyFileName)), "NATIVE");
+                item = new ListItem(Localization.GetString("NativeName.Text", Localization.GetResourceFile(this, this.myFileName)), "NATIVE");
                 this.rbViewType.Items.Add(item);
                 if (this.ViewType == "NATIVE")
                 {
                     item.Selected = true;
                 }
 
-                item = new ListItem(Localization.GetString("EnglishName.Text", Localization.GetResourceFile(this, this.MyFileName)), "ENGLISH");
+                item = new ListItem(Localization.GetString("EnglishName.Text", Localization.GetResourceFile(this, this.myFileName)), "ENGLISH");
                 this.rbViewType.Items.Add(item);
                 if (this.ViewType == "ENGLISH")
                 {
@@ -112,9 +114,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        private void rbViewType_SelectedIndexChanged(object sender, EventArgs e)
+        private void RbViewType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this._ViewType = this.rbViewType.SelectedValue;
+            this.viewType = this.rbViewType.SelectedValue;
         }
     }
 }

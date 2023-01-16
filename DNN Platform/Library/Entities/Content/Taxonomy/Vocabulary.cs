@@ -12,47 +12,39 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
 
-    /// <summary>
-    /// Class of Vocabulary.
-    /// </summary>
+    /// <summary>Class of Vocabulary.</summary>
     /// <seealso cref="TermController"/>
     [Serializable]
     public class Vocabulary : BaseEntityInfo, IHydratable
     {
         private static readonly PortalSecurity Security = PortalSecurity.Instance;
 
-        private string _Description;
-        private bool _IsSystem;
-        private string _Name;
-        private int _ScopeId;
-        private ScopeType _ScopeType;
-        private int _ScopeTypeId;
-        private List<Term> _Terms;
-        private VocabularyType _Type;
-        private int _VocabularyId;
+        private string description;
+        private bool isSystem;
+        private string name;
+        private int scopeId;
+        private ScopeType scopeType;
+        private int scopeTypeId;
+        private List<Term> terms;
+        private VocabularyType type;
+        private int vocabularyId;
 
-        private int _Weight;
+        private int weight;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         public Vocabulary()
             : this(Null.NullString, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="name"></param>
         public Vocabulary(string name)
             : this(name, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
         public Vocabulary(string name, string description)
@@ -60,18 +52,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="type"></param>
         public Vocabulary(VocabularyType type)
             : this(Null.NullString, Null.NullString, type)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="type"></param>
@@ -99,12 +87,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                if (this._ScopeType == null)
+                if (this.scopeType == null)
                 {
-                    this._ScopeType = this.GetScopeType(this._ScopeTypeId);
+                    this.scopeType = this.GetScopeType(this.scopeTypeId);
                 }
 
-                return this._ScopeType;
+                return this.scopeType;
             }
         }
 
@@ -112,12 +100,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                if (this._Terms == null)
+                if (this.terms == null)
                 {
-                    this._Terms = this.GetTerms(this._VocabularyId);
+                    this.terms = this.GetTerms(this.vocabularyId);
                 }
 
-                return this._Terms;
+                return this.terms;
             }
         }
 
@@ -125,12 +113,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._Description;
+                return this.description;
             }
 
             set
             {
-                this._Description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this.description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -138,12 +126,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._IsSystem;
+                return this.isSystem;
             }
 
             set
             {
-                this._IsSystem = value;
+                this.isSystem = value;
             }
         }
 
@@ -151,7 +139,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._Name;
+                return this.name;
             }
 
             set
@@ -161,7 +149,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                     value = System.Net.WebUtility.HtmlDecode(value);
                 }
 
-                this._Name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this.name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -169,12 +157,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._ScopeId;
+                return this.scopeId;
             }
 
             set
             {
-                this._ScopeId = value;
+                this.scopeId = value;
             }
         }
 
@@ -182,12 +170,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._ScopeTypeId;
+                return this.scopeTypeId;
             }
 
             set
             {
-                this._ScopeTypeId = value;
+                this.scopeTypeId = value;
             }
         }
 
@@ -195,12 +183,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._Type;
+                return this.type;
             }
 
             set
             {
-                this._Type = value;
+                this.type = value;
             }
         }
 
@@ -208,12 +196,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._VocabularyId;
+                return this.vocabularyId;
             }
 
             set
             {
-                this._VocabularyId = value;
+                this.vocabularyId = value;
             }
         }
 
@@ -221,12 +209,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._Weight;
+                return this.weight;
             }
 
             set
             {
-                this._Weight = value;
+                this.weight = value;
             }
         }
 

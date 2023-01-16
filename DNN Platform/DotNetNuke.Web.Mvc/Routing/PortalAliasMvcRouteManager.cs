@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.Mvc.Routing
     {
         private List<int> prefixCounts;
 
+        /// <inheritdoc/>
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -26,6 +27,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.10.0. Scheduled for removal in v11.0.0, use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead.")]
         public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
         {
@@ -48,6 +50,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.10.0. Scheduled for removal in v11.0.0, use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead.")]
         public RouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
         {
@@ -75,6 +78,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return allRouteValues;
         }
 
+        /// <inheritdoc/>
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
@@ -83,11 +87,13 @@ namespace DotNetNuke.Web.Mvc.Routing
             return $"{GeneratePrefixString(count)}DesktopModules/MVC/{moduleFolderName}/{url}";
         }
 
+        /// <inheritdoc/>
         public void ClearCachedData()
         {
             this.prefixCounts = null;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<int> GetRoutePrefixCounts()
         {
             if (this.prefixCounts != null)

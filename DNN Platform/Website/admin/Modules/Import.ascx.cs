@@ -26,21 +26,22 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     public partial class Import : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private new int ModuleId = -1;
-        private ModuleInfo _module;
+        private int moduleId = -1;
+        private ModuleInfo module;
 
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
         public Import()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private ModuleInfo Module
         {
             get
             {
-                return this._module ?? (this._module = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false));
+                return this.module ?? (this.module = ModuleController.Instance.GetModule(this.moduleId, this.TabId, false));
             }
         }
 
@@ -48,17 +49,18 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             if (this.Request.QueryString["moduleid"] != null)
             {
-                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                int.TryParse(this.Request.QueryString["moduleid"], out this.moduleId);
             }
 
             // Verify that the current user has access to edit this module
@@ -68,6 +70,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -223,7 +226,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     // DNN26810 if rootnode = "content", import only content(the old way)
                                     if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
                                     {
-                                        ((IPortable)objObject).ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
+                                        ((IPortable)objObject).ImportModule(this.moduleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
                                     }
 
                                     // otherwise (="module") import the new way
@@ -232,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                         ModuleController.DeserializeModule(xmlDoc.DocumentElement, this.Module, this.PortalId, this.TabId);
                                     }
 
-                                    this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                                    this.Response.Redirect(this.navigationManager.NavigateURL(), true);
                                 }
                                 else
                                 {

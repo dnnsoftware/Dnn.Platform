@@ -10,17 +10,17 @@ namespace DotNetNuke.Web.Validators
 
     public class ValidationResult
     {
-        private readonly IEnumerable<ValidationError> _Errors;
+        private readonly IEnumerable<ValidationError> errors;
 
         public ValidationResult()
         {
-            this._Errors = Enumerable.Empty<ValidationError>();
+            this.errors = Enumerable.Empty<ValidationError>();
         }
 
         public ValidationResult(IEnumerable<ValidationError> errors)
         {
             Requires.NotNull("errors", errors);
-            this._Errors = errors;
+            this.errors = errors;
         }
 
         public static ValidationResult Successful
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.Validators
         {
             get
             {
-                return this._Errors;
+                return this.errors;
             }
         }
 
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Validators
         {
             get
             {
-                return this._Errors.Count() == 0;
+                return this.errors.Count() == 0;
             }
         }
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.Validators
             Requires.NotNull("other", other);
 
             // Just concatenate the errors collection
-            return new ValidationResult(this._Errors.Concat(other.Errors));
+            return new ValidationResult(this.errors.Concat(other.Errors));
         }
     }
 }

@@ -11,38 +11,32 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinPackageInfo
     ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///     Handles the Business Object for Skins.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>    Handles the Business Object for Skins.</summary>
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable
     {
-        private int _PackageID = Null.NullInteger;
-        private int _PortalID = Null.NullInteger;
-        private string _SkinName;
-        private int _SkinPackageID = Null.NullInteger;
-        private string _SkinType;
-        private Dictionary<int, string> _Skins = new Dictionary<int, string>();
+        private int packageID = Null.NullInteger;
+        private int portalID = Null.NullInteger;
+        private string skinName;
+        private int skinPackageID = Null.NullInteger;
+        private string skinType;
+        private Dictionary<int, string> skins = new Dictionary<int, string>();
 
         public int PackageID
         {
             get
             {
-                return this._PackageID;
+                return this.packageID;
             }
 
             set
             {
-                this._PackageID = value;
+                this.packageID = value;
             }
         }
 
@@ -50,12 +44,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._SkinPackageID;
+                return this.skinPackageID;
             }
 
             set
             {
-                this._SkinPackageID = value;
+                this.skinPackageID = value;
             }
         }
 
@@ -63,12 +57,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._PortalID;
+                return this.portalID;
             }
 
             set
             {
-                this._PortalID = value;
+                this.portalID = value;
             }
         }
 
@@ -76,26 +70,27 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._SkinName;
+                return this.skinName;
             }
 
             set
             {
-                this._SkinName = value;
+                this.skinName = value;
             }
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<int, string> Skins
         {
             get
             {
-                return this._Skins;
+                return this.skins;
             }
 
             set
             {
-                this._Skins = value;
+                this.skins = value;
             }
         }
 
@@ -103,12 +98,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._SkinType;
+                return this.skinType;
             }
 
             set
             {
-                this._SkinType = value;
+                this.skinType = value;
             }
         }
 
@@ -144,7 +139,7 @@ namespace DotNetNuke.UI.Skins
                     int skinID = Null.SetNullInteger(dr["SkinID"]);
                     if (skinID > Null.NullInteger)
                     {
-                        this._Skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
+                        this.skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
                     }
                 }
             }

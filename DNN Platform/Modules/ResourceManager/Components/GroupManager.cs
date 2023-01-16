@@ -9,9 +9,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Framework;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Manages groups.
-    /// </summary>
+    /// <summary>Manages groups.</summary>
     public class GroupManager : ServiceLocator<IGroupManager, GroupManager>, IGroupManager
     {
         /// <inheritdoc/>

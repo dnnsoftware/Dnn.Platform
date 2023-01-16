@@ -11,8 +11,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnLabel : Label, ILocalizable
     {
-        private bool _localize = true;
+        private bool localize = true;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnLabel"/> class.</summary>
         public DnnLabel()
         {
             this.CssClass = "dnnFormLabel";
@@ -23,12 +24,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return !this.DesignMode && this._localize;
+                return !this.DesignMode && this.localize;
             }
 
             set
             {
-                this._localize = value;
+                this.localize = value;
             }
         }
 

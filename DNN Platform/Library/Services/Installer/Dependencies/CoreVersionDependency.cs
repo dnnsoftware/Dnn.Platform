@@ -7,13 +7,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     using System.Reflection;
     using System.Xml.XPath;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The CoreVersionDependency determines whether the CoreVersion is correct.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The CoreVersionDependency determines whether the CoreVersion is correct.</summary>
     public class CoreVersionDependency : DependencyBase
     {
         private Version minVersion;
@@ -32,13 +26,13 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                bool _IsValid = true;
+                bool isValid = true;
                 if (Assembly.GetExecutingAssembly().GetName().Version < this.minVersion)
                 {
-                    _IsValid = false;
+                    isValid = false;
                 }
 
-                return _IsValid;
+                return isValid;
             }
         }
 

@@ -11,9 +11,9 @@ namespace DotNetNuke.Services.Syndication
 
     public class SyndicationHandlerBase : GenericRssHttpHandlerBase
     {
-        private int _moduleId = Null.NullInteger;
+        private int moduleId = Null.NullInteger;
 
-        private int _tabId = Null.NullInteger;
+        private int tabId = Null.NullInteger;
 
         public PortalSettings Settings
         {
@@ -27,15 +27,15 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                if (this._tabId == Null.NullInteger && this.Request.QueryString["tabid"] != null)
+                if (this.tabId == Null.NullInteger && this.Request.QueryString["tabid"] != null)
                 {
-                    if (!int.TryParse(this.Request.QueryString["tabid"], out this._tabId))
+                    if (!int.TryParse(this.Request.QueryString["tabid"], out this.tabId))
                     {
-                        this._tabId = Null.NullInteger;
+                        this.tabId = Null.NullInteger;
                     }
                 }
 
-                return this._tabId;
+                return this.tabId;
             }
         }
 
@@ -43,15 +43,15 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                if (this._moduleId == Null.NullInteger && this.Request.QueryString["moduleid"] != null)
+                if (this.moduleId == Null.NullInteger && this.Request.QueryString["moduleid"] != null)
                 {
-                    if (!int.TryParse(this.Request.QueryString["moduleid"], out this._moduleId))
+                    if (!int.TryParse(this.Request.QueryString["moduleid"], out this.moduleId))
                     {
-                        this._moduleId = Null.NullInteger;
+                        this.moduleId = Null.NullInteger;
                     }
                 }
 
-                return this._moduleId;
+                return this.moduleId;
             }
         }
 

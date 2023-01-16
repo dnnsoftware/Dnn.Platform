@@ -17,21 +17,21 @@ namespace DotNetNuke.UI.Modules
     internal class ModuleInjectionManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInjectionManager));
-        private static NaiveLockingList<IModuleInjectionFilter> _filters;
+        private static NaiveLockingList<IModuleInjectionFilter> filters;
 
         public static void RegisterInjectionFilters()
         {
-            _filters = new NaiveLockingList<IModuleInjectionFilter>();
+            filters = new NaiveLockingList<IModuleInjectionFilter>();
 
             foreach (IModuleInjectionFilter filter in GetFilters())
             {
-                _filters.Add(filter);
+                filters.Add(filter);
             }
         }
 
         public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
         {
-            return _filters.All(filter => filter.CanInjectModule(module, portalSettings));
+            return filters.All(filter => filter.CanInjectModule(module, portalSettings));
         }
 
         internal static bool IsValidModuleInjectionFilter(Type t)
@@ -53,8 +53,7 @@ namespace DotNetNuke.UI.Modules
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering module injection filters.  {1}", filterType.FullName,
-                                 e.Message);
+                    Logger.ErrorFormat("Unable to create {0} while registering module injection filters.  {1}", filterType.FullName, e.Message);
                     filter = null;
                 }
 

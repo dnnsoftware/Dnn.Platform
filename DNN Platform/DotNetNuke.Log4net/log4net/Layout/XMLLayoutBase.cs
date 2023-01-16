@@ -28,9 +28,7 @@ using log4net.Core;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Layout that formats the log events as XML elements.
-    /// </summary>
+    /// <summary>Layout that formats the log events as XML elements.</summary>
     /// <remarks>
     /// <para>
     /// This is an abstract class that must be subclassed by an implementation 
@@ -44,9 +42,7 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public abstract class XmlLayoutBase : LayoutSkeleton
     {
-        /// <summary>
-        /// Protected constructor to support subclasses
-        /// </summary>
+        /// <summary>Protected constructor to support subclasses</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="XmlLayoutBase" /> class
@@ -58,9 +54,7 @@ namespace log4net.Layout
             this.IgnoresException = false;
         }
 
-        /// <summary>
-        /// Protected constructor to support subclasses
-        /// </summary>
+        /// <summary>Protected constructor to support subclasses</summary>
         /// <remarks>
         /// <para>
         /// The <paramref name="locationInfo" /> parameter determines whether 
@@ -125,9 +119,7 @@ namespace log4net.Layout
             set { this.m_invalidCharReplacement = value;}
         }
 
-        /// <summary>
-        /// Initialize layout options
-        /// </summary>
+        /// <summary>Initialize layout options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -146,9 +138,7 @@ namespace log4net.Layout
             // nothing to do
         }
 
-        /// <summary>
-        /// Gets the content type output by this layout. 
-        /// </summary>
+        /// <summary>Gets the content type output by this layout. </summary>
         /// <value>
         /// As this is the XML layout, the value is always <c>"text/xml"</c>.
         /// </value>
@@ -162,9 +152,7 @@ namespace log4net.Layout
             get { return "text/xml"; }
         }
 
-        /// <summary>
-        /// Produces a formatted string.
-        /// </summary>
+        /// <summary>Produces a formatted string.</summary>
         /// <param name="loggingEvent">The event being logged.</param>
         /// <param name="writer">The TextWriter to write the formatted event to</param>
         /// <remarks>
@@ -209,9 +197,7 @@ namespace log4net.Layout
             // -> Dispose from using var will close & flush
         }
 
-        /// <summary>
-        /// Does the actual writing of the XML.
-        /// </summary>
+        /// <summary>Does the actual writing of the XML.</summary>
         /// <param name="writer">The writer to use to output the event to.</param>
         /// <param name="loggingEvent">The event to write.</param>
         /// <remarks>
@@ -228,9 +214,7 @@ namespace log4net.Layout
         /// </summary>
         private bool m_locationInfo = false;
 
-        /// <summary>
-        /// The string to replace invalid chars with
-        /// </summary>
+        /// <summary>The string to replace invalid chars with</summary>
         private string m_invalidCharReplacement = "?";
     }
 }

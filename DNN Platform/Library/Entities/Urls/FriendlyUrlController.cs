@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
@@ -35,7 +35,6 @@ namespace DotNetNuke.Entities.Urls
         private static readonly string MobileViewSiteCookieName = ConfigurationManager.AppSettings[name: "MobileViewSiteCookieName"] ?? "dnn_IsMobile";
         private static readonly string DisableMobileViewCookieName = ConfigurationManager.AppSettings[name: "DisableMobileViewSiteCookieName"] ?? "dnn_NoMobile";
 
-
         // <summary>Gets the Friendly URL Settings for the given portal.</summary>
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
         {
@@ -43,9 +42,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /*
-/// <summary>
-/// Determines if the tab is excluded from FriendlyUrl Processing
-/// </summary>
+/// <summary>Determines if the tab is excluded from FriendlyUrl Processing</summary>
 /// <param name="tab"></param>
 /// <param name="settings"></param>
 /// <param name="rewriting">If true, we are checking for rewriting purposes, if false, we are checking for friendly Url Generating.</param>
@@ -69,9 +66,7 @@ private static void SetExclusionProperties(TabInfo tab, FriendlyUrlSettings sett
     tab.UseBaseFriendlyUrls = settings.UseBaseFriendlyUrls != null && settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
 }
 
-/// <summary>
-/// Builds up a collection of the Friendly Urls for a tab
-/// </summary>
+/// <summary>Builds up a collection of the Friendly Urls for a tab</summary>
 /// <param name="tab">The TabInfoEx object</param>
 /// <param name="includeStdUrls">Whether to add in the redirects for the 'standard' DNN urls</param>
 /// <param name="portalSettings"></param>
@@ -352,9 +347,7 @@ private static void BuildFriendlyUrls(TabInfo tab, bool includeStdUrls, PortalSe
     }
 }
 
-/// <summary>
-/// A reflection based call to the Friendly Url provider to get the 'base' (dnn standard) urls
-/// </summary>
+/// <summary>A reflection based call to the Friendly Url provider to get the 'base' (dnn standard) urls</summary>
 /// <param name="tab"></param>
 /// <param name="path"></param>
 /// <param name="defaultPage"></param>
@@ -382,9 +375,7 @@ internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string d
                                   out messages);
 }
 
-/// <summary>
-/// A reflection based call to the friendly URl Provider object.  Done like this to avoid a circular reference
-/// </summary>
+/// <summary>A reflection based call to the friendly URl Provider object.  Done like this to avoid a circular reference</summary>
 /// <param name="tab"></param>
 /// <param name="path"></param>
 /// <param name="defaultPage"></param>
@@ -441,9 +432,7 @@ internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string d
     return "";
 }
 /*
-/// <summary>
-/// A reflection based called to the Friendly Url Provider object.  Done like this to avoid circular references
-/// </summary>
+/// <summary>A reflection based called to the Friendly Url Provider object.  Done like this to avoid circular references</summary>
 /// <param name="tab"></param>
 /// <param name="replaceCharacter"></param>
 /// <param name="replaceWith"></param>
@@ -650,11 +639,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             return tabs;
         }
 
-        /// <summary>
-        /// Returns a list of http alias values where that alias is associated with a tab as a custom alias.
-        /// </summary>
+        /// <summary>Returns a list of http alias values where that alias is associated with a tab as a custom alias.</summary>
         /// <remarks>Aliases returned are all in lower case only.</remarks>
-        /// <returns></returns>
+        /// <returns>A <see cref="List{T}"/> of alias strings.</returns>
         public static List<string> GetCustomAliasesForTabs()
         {
             var aliases = new List<string>();
@@ -810,12 +797,10 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             return result.ToString();
         }
 
-        /// <summary>
-        /// Ensures that the path starts with the leading character.
-        /// </summary>
+        /// <summary>Ensures that the path starts with the leading character.</summary>
         /// <param name="leading"></param>
         /// <param name="path"></param>
-        /// <returns></returns>
+        /// <returns>The <paramref name="path"/> with <paramref name="leading"/> at the start.</returns>
         public static string EnsureLeadingChar(string leading, string path)
         {
             if (leading != null && path != null
@@ -930,7 +915,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     // no, can't do it
                     canUseMobileDevice = false;
                     var cookie = new HttpCookie(DisableMobileViewCookieName)
-
                     {
                         Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     };
@@ -945,7 +929,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     {
                         // if exists, expire cookie to allow redirect
                         cookie = new HttpCookie(DisableMobileViewCookieName)
-
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
                             Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
@@ -954,8 +937,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     }
 
                     // check the DotNetNuke cookies for allowed
+                    // check for cookie
                     if (request.Cookies[DisableMobileRedirectCookieName] != null
-                        && request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
+                        && request.Cookies[DisableRedirectPresistCookieName] != null)
                     {
                         // cookies exist, can't use mobile device
                         canUseMobileDevice = false;
@@ -976,13 +960,10 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             return canUseMobileDevice;
         }
 
-        /// <summary>
-        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.
-        /// </summary>
+        /// <summary>Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.</summary>
         /// <param name="tabPath">The path of the tab //admin//someothername.</param>
         /// <param name="settings"></param>
-        /// <remarks>Duplicated in RewriteController.cs.</remarks>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the page is an admin page, otherwise <see langword="false"/>.</returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
             return RewriteController.IsAdminTab(portalId, tabPath, settings);
@@ -996,8 +977,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
         {
             var resultingCh = new StringBuilder(ch.Length);
-            foreach (char c in ch) // ch could contain several chars from the pre-defined replacement list
+            foreach (char c in ch)
             {
+                // ch could contain several chars from the pre-defined replacement list
                 if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
                 {
                     replacedUnwantedChars = true;

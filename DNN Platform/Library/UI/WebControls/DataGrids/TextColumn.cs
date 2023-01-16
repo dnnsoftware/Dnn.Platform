@@ -6,46 +6,25 @@ namespace DotNetNuke.UI.WebControls
     using System.Web;
     using System.Web.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      TextColumn
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The TextColumn control provides a custom Text Column.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The TextColumn control provides a custom Text Column.</summary>
     public class TextColumn : TemplateColumn
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Data Field is the field that binds to the Text Column.
-        /// </summary>
+        /// <summary>Gets or sets the Data Field is the field that binds to the Text Column.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string DataField { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Text (for Header/Footer Templates).
-        /// </summary>
+        /// <summary>Gets or sets the Text (for Header/Footer Templates).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Width of the Column.
-        /// </summary>
+        /// <summary>Gets or sets the Width of the Column.</summary>
         /// <value>A Unit.</value>
-        /// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Initialises the Column.</summary>
         public override void Initialize()
         {
             this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
@@ -63,12 +42,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates a TextColumnTemplate.
-        /// </summary>
+        /// <summary>Creates a TextColumnTemplate.</summary>
         /// <returns>A TextColumnTemplate.</returns>
-        /// -----------------------------------------------------------------------------
         private TextColumnTemplate CreateTemplate(ListItemType type)
         {
             bool isDesignMode = false;

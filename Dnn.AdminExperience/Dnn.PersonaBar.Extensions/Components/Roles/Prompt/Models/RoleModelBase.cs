@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Security.Roles;
 
@@ -25,12 +27,18 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
             this.UserCount = role.UserCount;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable InconsistentNaming
         public string __ModifiedBy => $"get-user {this.ModifiedBy}";
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         public string __RoleId => $"get-role {this.RoleId}";
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         public string __UserCount => $"list-users --role '{this.RoleName}'";
 
+        // ReSharper restore InconsistentNaming
         public int RoleId { get; set; }
 
         public int RoleGroupId { get; set; }

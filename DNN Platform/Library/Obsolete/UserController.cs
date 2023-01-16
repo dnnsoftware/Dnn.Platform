@@ -11,9 +11,7 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// The UserController class provides Business Layer methods for Users.
-    /// </summary>
+    /// <summary>The UserController class provides Business Layer methods for Users.</summary>
     /// <remarks>
     /// DotNetNuke user management is base on asp.net membership provider, but  the default implementation of these providers
     /// do not satisfy the broad set of use cases which we need to support in DotNetNuke. so The dependency of DotNetNuke on the
@@ -33,7 +31,6 @@ namespace DotNetNuke.Entities.Users
     /// </list>
     /// </remarks>
     /// <seealso cref="DotNetNuke.Security.Membership.MembershipProvider"/>
-    /// -----------------------------------------------------------------------------
     public partial class UserController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

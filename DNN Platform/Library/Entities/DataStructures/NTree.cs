@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.DataStructures
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     [Serializable]
@@ -13,14 +14,14 @@ namespace DotNetNuke.Entities.DataStructures
     public class NTree<T>
     {
         [DataMember(Name = "data")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public T Data;
 
         [DataMember(Name = "children")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public List<NTree<T>> Children;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NTree{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NTree{T}"/> class.</summary>
         public NTree()
         {
             this.Children = new List<NTree<T>>();

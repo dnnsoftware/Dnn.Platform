@@ -5,16 +5,10 @@ namespace DotNetNuke.Services.FileSystem
 {
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.</summary>
     public class FolderTypeConfig
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderTypeConfig"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderTypeConfig"/> class.</summary>
         public FolderTypeConfig()
         {
             this.Settings = new List<FolderTypeSettingConfig>();

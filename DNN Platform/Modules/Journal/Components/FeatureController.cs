@@ -1,21 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Modules.Journal.Components
 {
-    /*
-' Copyright (c) 2011 DotNetNuke Corporation
-'  All rights reserved.
-'
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-' DEALINGS IN THE SOFTWARE.
-'
-*/
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -36,14 +23,10 @@ namespace DotNetNuke.Modules.Journal.Components
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Controller class for Journal.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
-    // uncomment the interfaces to add the support.
+    /// <summary>The Controller class for Journal.</summary>
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
+        /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         public FeatureController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -51,13 +34,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
         protected INavigationManager NavigationManager { get; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ExportModule implements the IPortable ExportModule Interface.
-        /// </summary>
-        /// <param name="moduleID">The Id of the module to be exported.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc cref="IPortable.ExportModule" />
         public string ExportModule(int moduleID)
         {
             // string strXML = "";
@@ -80,15 +57,7 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ImportModule implements the IPortable ImportModule Interface.
-        /// </summary>
-        /// <param name="moduleID">The Id of the module to be imported.</param>
-        /// <param name="content">The content to be imported.</param>
-        /// <param name="version">The version of the module to be imported.</param>
-        /// <param name="userId">The Id of the user performing the import.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc cref="IPortable.ImportModule" />
         public void ImportModule(int moduleID, string content, string version, int userId)
         {
             // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
@@ -103,18 +72,13 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpgradeModule implements the IUpgradeable Interface.
-        /// </summary>
-        /// <param name="version">The current version of the module.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc cref="IUpgradeable.UpgradeModule" />
         public string UpgradeModule(string version)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
+        /// <inheritdoc/>
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new Dictionary<string, SearchDocument>();
@@ -123,9 +87,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 while (true)
                 {
-                    using (var reader = DataProvider.Instance()
-                                                    .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
-                                                        moduleInfo.TabModuleID, beginDateUtc, lastJournalId, Constants.SearchBatchSize))
+                    using (var reader = DataProvider.Instance().ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID, moduleInfo.TabModuleID, beginDateUtc, lastJournalId, Constants.SearchBatchSize))
                     {
                         var journalIds = new Dictionary<int, int>();
 
@@ -201,6 +163,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return searchDocuments.Values.ToList();
         }
 
+        /// <inheritdoc/>
         public bool HasViewPermission(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
@@ -257,6 +220,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return false;
         }
 
+        /// <inheritdoc/>
         public string GetDocUrl(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))

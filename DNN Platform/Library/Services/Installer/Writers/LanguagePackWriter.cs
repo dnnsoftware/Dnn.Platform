@@ -15,30 +15,22 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The LanguagePackWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The LanguagePackWriter class.</summary>
     public class LanguagePackWriter : PackageWriterBase
     {
-        private bool _IsCore = Null.NullBoolean;
-        private Locale _Language;
-        private LanguagePackInfo _LanguagePack;
+        private bool isCore = Null.NullBoolean;
+        private Locale language;
+        private LanguagePackInfo languagePack;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
         /// <param name="package"></param>
         public LanguagePackWriter(PackageInfo package)
             : base(package)
         {
-            this._LanguagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
+            this.languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
             if (this.LanguagePack != null)
             {
-                this._Language = LocaleController.Instance.GetLocale(this._LanguagePack.LanguageID);
+                this.language = LocaleController.Instance.GetLocale(this.languagePack.LanguageID);
                 if (this.LanguagePack.PackageType == LanguagePackType.Core)
                 {
                     this.BasePath = Null.NullString;
@@ -57,18 +49,16 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
         /// <param name="manifestNav"></param>
         /// <param name="installer"></param>
         public LanguagePackWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
-            this._Language = new Locale();
+            this.language = new Locale();
             XPathNavigator cultureNav = manifestNav.SelectSingleNode("Culture");
-            this._Language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
-            this._Language.Code = Util.ReadAttribute(cultureNav, "Code");
-            this._Language.Fallback = Localization.SystemLocale;
+            this.language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
+            this.language.Code = Util.ReadAttribute(cultureNav, "Code");
+            this.language.Fallback = Localization.SystemLocale;
 
             // Create a Package
             this.Package = new PackageInfo(installer);
@@ -80,7 +70,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
             this.ReadLegacyManifest(manifestNav);
 
-            if (this._IsCore)
+            if (this.isCore)
             {
                 this.Package.PackageType = "CoreLanguagePack";
             }
@@ -92,15 +82,13 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Null.NullString;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
         /// <param name="language"></param>
         /// <param name="package"></param>
         public LanguagePackWriter(Locale language, PackageInfo package)
             : base(package)
         {
-            this._Language = language;
+            this.language = language;
             this.BasePath = Null.NullString;
         }
 
@@ -113,41 +101,33 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Language.
-        /// </summary>
+        /// <summary>Gets or sets the associated Language.</summary>
         /// <value>An Locale object.</value>
-        /// -----------------------------------------------------------------------------
         public Locale Language
         {
             get
             {
-                return this._Language;
+                return this.language;
             }
 
             set
             {
-                this._Language = value;
+                this.language = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Language Pack.
-        /// </summary>
+        /// <summary>Gets or sets the associated Language Pack.</summary>
         /// <value>An LanguagePackInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {
             get
             {
-                return this._LanguagePack;
+                return this.languagePack;
             }
 
             set
             {
-                this._LanguagePack = value;
+                this.languagePack = value;
             }
         }
 
@@ -228,13 +208,13 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     case "GlobalResource":
                         filePath = "App_GlobalResources";
-                        this._IsCore = true;
+                        this.isCore = true;
                         break;
                     case "ControlResource":
                         filePath = "Controls\\App_LocalResources";
                         break;
                     case "AdminResource":
-                        this._IsCore = true;
+                        this.isCore = true;
                         switch (moduleName)
                         {
                             case "authentication":
@@ -526,10 +506,10 @@ namespace DotNetNuke.Services.Installer.Writers
                         // Two assumptions are made here
                         // 1. Core files appear in the package before extension files
                         // 2. Module packages only include one module
-                        if (!this._IsCore && this._LanguagePack == null)
+                        if (!this.isCore && this.languagePack == null)
                         {
                             // Check if language is installed
-                            Locale locale = LocaleController.Instance.GetLocale(this._Language.Code);
+                            Locale locale = LocaleController.Instance.GetLocale(this.language.Code);
                             if (locale == null)
                             {
                                 this.LegacyError = "CoreLanguageError";
@@ -546,14 +526,14 @@ namespace DotNetNuke.Services.Installer.Writers
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
                                         this.Package.Name += "_" + dependentPackage.Name;
                                         this.Package.FriendlyName += " " + dependentPackage.FriendlyName;
-                                        this._LanguagePack = new LanguagePackInfo();
-                                        this._LanguagePack.DependentPackageID = dependentPackage.PackageID;
-                                        this._LanguagePack.LanguageID = locale.LanguageId;
+                                        this.languagePack = new LanguagePackInfo();
+                                        this.languagePack.DependentPackageID = dependentPackage.PackageID;
+                                        this.languagePack.LanguageID = locale.LanguageId;
                                         break;
                                     }
                                 }
 
-                                if (this._LanguagePack == null)
+                                if (this.languagePack == null)
                                 {
                                     this.LegacyError = "DependencyError";
                                 }

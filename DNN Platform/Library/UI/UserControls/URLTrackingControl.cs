@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -19,45 +20,78 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class URLTrackingControl : UserControlBase
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label1;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label2;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label3;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label4;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label5;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label6;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label Label7;
+
+        // ReSharper restore InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdDisplay;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HyperLink cmdEndCalendar;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HyperLink cmdStartCalendar;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DataGrid grdLog;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblClicks;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblCreatedDate;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblLastClick;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblLogURL;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblTrackingURL;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblURL;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlLog;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlTrack;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtEndDate;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtStartDate;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CompareValidator valEndDate;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CompareValidator valStartDate;
-        private string _FormattedURL = string.Empty;
-        private int _ModuleID = -2;
-        private string _TrackingURL = string.Empty;
-        private string _URL = string.Empty;
-        private string _localResourceFile;
+        private string formattedURL = string.Empty;
+        private int moduleID = -2;
+        private string trackingURL = string.Empty;
+        private string url = string.Empty;
+        private string localResourceFile;
 
         public string FormattedURL
         {
             get
             {
-                return this._FormattedURL;
+                return this.formattedURL;
             }
 
             set
             {
-                this._FormattedURL = value;
+                this.formattedURL = value;
             }
         }
 
@@ -65,12 +99,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._TrackingURL;
+                return this.trackingURL;
             }
 
             set
             {
-                this._TrackingURL = value;
+                this.trackingURL = value;
             }
         }
 
@@ -78,12 +112,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._URL;
+                return this.url;
             }
 
             set
             {
-                this._URL = value;
+                this.url = value;
             }
         }
 
@@ -91,7 +125,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                int moduleID = this._ModuleID;
+                int moduleID = this.ModuleID;
                 if (moduleID == -2)
                 {
                     if (this.Request.QueryString["mid"] != null)
@@ -105,7 +139,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._ModuleID = value;
+                this.moduleID = value;
             }
         }
 
@@ -114,13 +148,13 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLTrackingControl.ascx";
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -128,7 +162,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -137,7 +171,7 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            this.cmdDisplay.Click += this.cmdDisplay_Click;
+            this.cmdDisplay.Click += this.CmdDisplay_Click;
 
             try
             {
@@ -146,16 +180,16 @@ namespace DotNetNuke.UI.UserControls
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
                 {
-                    if (!string.IsNullOrEmpty(this._URL))
+                    if (!string.IsNullOrEmpty(this.URL))
                     {
                         this.lblLogURL.Text = this.URL; // saved for loading Log grid
-                        TabType URLType = Globals.GetURLType(this._URL);
-                        if (URLType == TabType.File && this._URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                        TabType urlType = Globals.GetURLType(this.URL);
+                        if (urlType == TabType.File && this.URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                         {
                             // to handle legacy scenarios before the introduction of the FileServerHandler
-                            var fileName = Path.GetFileName(this._URL);
+                            var fileName = Path.GetFileName(this.URL);
 
-                            var folderPath = this._URL.Substring(0, this._URL.LastIndexOf(fileName));
+                            var folderPath = this.URL.Substring(0, this.URL.LastIndexOf(fileName));
                             var folder = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, folderPath);
 
                             var file = FileManager.Instance.GetFile(folder, fileName);
@@ -167,7 +201,7 @@ namespace DotNetNuke.UI.UserControls
                         UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID);
                         if (objUrlTracking != null)
                         {
-                            if (string.IsNullOrEmpty(this._FormattedURL))
+                            if (string.IsNullOrEmpty(this.FormattedURL))
                             {
                                 this.lblURL.Text = Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, false);
                                 if (!this.lblURL.Text.StartsWith("http") && !this.lblURL.Text.StartsWith("mailto"))
@@ -177,7 +211,7 @@ namespace DotNetNuke.UI.UserControls
                             }
                             else
                             {
-                                this.lblURL.Text = this._FormattedURL;
+                                this.lblURL.Text = this.FormattedURL;
                             }
 
                             this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
@@ -185,7 +219,7 @@ namespace DotNetNuke.UI.UserControls
                             if (objUrlTracking.TrackClicks)
                             {
                                 this.pnlTrack.Visible = true;
-                                if (string.IsNullOrEmpty(this._TrackingURL))
+                                if (string.IsNullOrEmpty(this.TrackingURL))
                                 {
                                     if (!this.URL.StartsWith("http"))
                                     {
@@ -196,7 +230,7 @@ namespace DotNetNuke.UI.UserControls
                                 }
                                 else
                                 {
-                                    this.lblTrackingURL.Text = this._TrackingURL;
+                                    this.lblTrackingURL.Text = this.TrackingURL;
                                 }
 
                                 this.lblClicks.Text = objUrlTracking.Clicks.ToString();
@@ -221,13 +255,13 @@ namespace DotNetNuke.UI.UserControls
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void cmdDisplay_Click(object sender, EventArgs e)
+        private void CmdDisplay_Click(object sender, EventArgs e)
         {
             try
             {
@@ -250,7 +284,7 @@ namespace DotNetNuke.UI.UserControls
                 this.grdLog.DataSource = objUrls.GetUrlLog(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
                 this.grdLog.DataBind();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

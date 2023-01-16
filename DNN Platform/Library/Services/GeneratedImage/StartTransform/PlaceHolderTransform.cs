@@ -8,14 +8,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     using System.Drawing.Drawing2D;
     using System.Drawing.Text;
 
-    /// <summary>
-    /// Placeholder ImageTransform class.
-    /// </summary>
+    /// <summary>Placeholder ImageTransform class.</summary>
     public class PlaceholderTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlaceholderTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PlaceholderTransform"/> class.</summary>
         public PlaceholderTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -29,39 +25,25 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             this.Text = string.Empty;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for the image transformation.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for the image transformation.</summary>
         public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
 
-        /// <summary>
-        /// Gets or sets the width of the placeholder image.
-        /// </summary>
+        /// <summary>Gets or sets the width of the placeholder image.</summary>
         public int Width { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Height of the placeholder image.
-        /// </summary>
+        /// <summary>Gets or sets the Height of the placeholder image.</summary>
         public int Height { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Color of the border and text element.
-        /// </summary>
+        /// <summary>Gets or sets the Color of the border and text element.</summary>
         public Color Color { get; set; }
 
-        /// <summary>
-        /// Gets or sets the backcolor of the placeholder element.
-        /// </summary>
+        /// <summary>Gets or sets the backcolor of the placeholder element.</summary>
         public Color BackColor { get; set; }
 
-        /// <summary>
-        /// Gets or sets the text of the placeholder image. if blank dimension will be used.
-        /// </summary>
+        /// <summary>Gets or sets the text of the placeholder image. if blank dimension will be used.</summary>
         public string Text { get; set; }
 
-        /// <summary>
-        /// Processes an input image returning a placeholder image.
-        /// </summary>
+        /// <summary>Processes an input image returning a placeholder image.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)

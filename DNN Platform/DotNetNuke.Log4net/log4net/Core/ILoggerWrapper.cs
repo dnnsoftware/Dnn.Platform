@@ -26,9 +26,7 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Base interface for all wrappers
-    /// </summary>
+    /// <summary>Base interface for all wrappers</summary>
     /// <remarks>
     /// <para>
     /// Base interface for all wrappers.
@@ -40,9 +38,7 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public interface ILoggerWrapper
     {
-        /// <summary>
-        /// Get the implementation behind this wrapper object.
-        /// </summary>
+        /// <summary>Get the implementation behind this wrapper object.</summary>
         /// <value>
         /// The <see cref="ILogger"/> object that in implementing this object.
         /// </value>

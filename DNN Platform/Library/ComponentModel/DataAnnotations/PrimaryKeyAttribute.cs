@@ -7,18 +7,14 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
     public class PrimaryKeyAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrimaryKeyAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PrimaryKeyAttribute"/> class.</summary>
         /// <param name="columnName"></param>
         public PrimaryKeyAttribute(string columnName)
             : this(columnName, columnName)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrimaryKeyAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PrimaryKeyAttribute"/> class.</summary>
         /// <param name="columnName"></param>
         /// <param name="propertyName"></param>
         public PrimaryKeyAttribute(string columnName, string propertyName)

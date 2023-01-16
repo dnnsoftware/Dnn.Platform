@@ -12,18 +12,14 @@ namespace DotNetNuke.Collections.Internal
         private bool disposed;
         private ReaderWriterLockSlim @lock;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReaderWriterSlimLock"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ReaderWriterSlimLock"/> class.</summary>
         /// <param name="lock">The reference to <see cref="ReaderWriterLockSlim"/>.</param>
         public ReaderWriterSlimLock(ReaderWriterLockSlim @lock)
         {
             this.@lock = @lock;
         }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="ReaderWriterSlimLock"/> class.
-        /// </summary>
+        /// <summary>Finalizes an instance of the <see cref="ReaderWriterSlimLock"/> class.</summary>
         ~ReaderWriterSlimLock()
         {
             this.Dispose(false);
@@ -37,9 +33,7 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Disposes this instance resources.
-        /// </summary>
+        /// <summary>Disposes this instance resources.</summary>
         /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {

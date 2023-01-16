@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -530,5 +530,17 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   </data>
   <data name="DotNetVersion472Required.Text" xml:space="preserve">
     <value>.Net Framework 4.7.2 is required. Check for Windows updates before proceeding.</value>
+  </data>
+  <data name="WebsiteSsl.Help" xml:space="preserve">
+    <value>Website will be configured to run on HTTPS</value>
+  </data>
+  <data name="WebsiteSsl.Text" xml:space="preserve">
+    <value>HTTPS</value>
+  </data>
+  <data name="InstallingSslStep.Text" xml:space="preserve">
+    <value>Checking HTTPS for site {0}</value>
+  </data>
+  <data name="InstallingSslStepSiteNotFound.Text" xml:space="preserve">
+    <value>Could not find site {0} to set HTTPS</value>
   </data>
 </root>

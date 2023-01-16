@@ -18,9 +18,7 @@ namespace DotNetNuke.Entities.Tabs.Internal
     {
         void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 
-        /// <summary>
-        /// Gets the tab.
-        /// </summary>
+        /// <summary>Gets the tab.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
         /// <returns>tab info.</returns>

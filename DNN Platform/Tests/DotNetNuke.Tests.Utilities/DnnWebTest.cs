@@ -2,16 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Application;
-using DotNetNuke.Application;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Web;
-using DotNetNuke.Web.Common;
-
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Tests.Utilities
 {
     using System;
@@ -21,10 +11,15 @@ namespace DotNetNuke.Tests.Utilities
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.HTMLEditorProvider;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.Security.Membership;
@@ -41,6 +36,9 @@ namespace DotNetNuke.Tests.Utilities
     using DotNetNuke.Services.Search;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Url.FriendlyUrl;
+    using DotNetNuke.Web;
+    using DotNetNuke.Web.Common;
+    using Microsoft.Extensions.DependencyInjection;
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
     using RoleProvider = DotNetNuke.Security.Roles.RoleProvider;

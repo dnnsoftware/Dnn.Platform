@@ -14,46 +14,56 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("delete-user", Constants.UsersCategory, "Prompt_DeleteUser_Description")]
+
     public class DeleteUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_DeleteUser_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
+
         private const string FlagNotify = "notify";
 
-        private IUserValidator _userValidator;
-        private IUserControllerWrapper _userControllerWrapper;
+        private IUserValidator userValidator;
+        private IUserControllerWrapper userControllerWrapper;
 
-        public DeleteUser() : this(new UserValidator(), new UserControllerWrapper())
+        /// <summary>Initializes a new instance of the <see cref="DeleteUser"/> class.</summary>
+        public DeleteUser()
+            : this(new UserValidator(), new UserControllerWrapper())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DeleteUser"/> class.</summary>
+        /// <param name="userValidator"></param>
+        /// <param name="userControllerWrapper"></param>
         public DeleteUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {
-            this._userValidator = userValidator;
-            this._userControllerWrapper = userControllerWrapper;
+            this.userValidator = userValidator;
+            this.userControllerWrapper = userControllerWrapper;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
 
         private bool Notify { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
             this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
 
-            if ((errorResultModel = this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
+            if ((errorResultModel = this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
             {
                 return errorResultModel;
             }
@@ -67,7 +77,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             var validPortalId = userInfo.PortalID;
 
-            if (!this._userControllerWrapper.DeleteUserAndClearCache(ref userInfo, this.Notify, false))
+            if (!this.userControllerWrapper.DeleteUserAndClearCache(ref userInfo, this.Notify, false))
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserDeletionFailed"))
                 {
@@ -76,7 +86,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
 
             // attempt to retrieve the user from the dB
-            userInfo = this._userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
+            userInfo = this.userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
             return new ConsoleResultModel(this.LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };
         }

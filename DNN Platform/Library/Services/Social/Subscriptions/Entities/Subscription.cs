@@ -6,30 +6,20 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
 {
     using System;
 
-    /// <summary>
-    /// This class represents a Subscription instance.
-    /// </summary>
+    /// <summary>This class represents a Subscription instance.</summary>
     [Serializable]
     public class Subscription
     {
-        /// <summary>
-        /// Gets or sets the subscription identifier.
-        /// </summary>
+        /// <summary>Gets or sets the subscription identifier.</summary>
         public int SubscriptionId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user the subscription is associated with.
-        /// </summary>
+        /// <summary>Gets or sets the user the subscription is associated with.</summary>
         public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the site the subscription is associated with.
-        /// </summary>
+        /// <summary>Gets or sets the site the subscription is associated with.</summary>
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the type of subscription.
-        /// </summary>
+        /// <summary>Gets or sets the type of subscription.</summary>
         public int SubscriptionTypeId { get; set; }
 
         /// <summary>
@@ -44,14 +34,10 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
         /// </summary>
         public string ObjectData { get; set; }
 
-        /// <summary>
-        /// Gets or sets description of the content which user is subscribed to.
-        /// </summary>
+        /// <summary>Gets or sets description of the content which user is subscribed to.</summary>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date the user subscribed.
-        /// </summary>
+        /// <summary>Gets or sets the date the user subscribed.</summary>
         public DateTime CreatedOnDate { get; set; }
 
         /// <summary>

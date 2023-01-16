@@ -20,6 +20,7 @@ namespace Dnn.ExportImport.Services
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage Export(ExportDto exportDto)
         {
             var controller = new ExportController();
@@ -30,6 +31,7 @@ namespace Dnn.ExportImport.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage Import(ImportDto importDto)
         {
             var controller = new ImportController();
@@ -44,6 +46,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage VerifyImportPackage(string packageId)
         {
             var controller = new ImportController();
@@ -63,6 +66,7 @@ namespace Dnn.ExportImport.Services
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
         /// <returns>An <see cref="HttpResponseMessage"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0, int pageSize = 10)
         {
             var controller = new ImportController();
@@ -75,6 +79,7 @@ namespace Dnn.ExportImport.Services
         // this is POST so users can't cancel using a simple browser link
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage CancelProcess([FromUri] int jobId)
         {
             var controller = new BaseController();
@@ -86,6 +91,7 @@ namespace Dnn.ExportImport.Services
         // this is POST so users can't remove a job using a browser link
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage RemoveJob([FromUri] int jobId)
         {
             var controller = new BaseController();
@@ -95,6 +101,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage LastJobTime(int portal, JobType jobType)
         {
             if (!this.UserInfo.IsSuperUser && portal != this.PortalSettings.PortalId)
@@ -118,6 +125,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage AllJobs(int portal, int? pageSize = 10, int? pageIndex = 0, int? jobType = null, string keywords = null)
         {
             if (!this.UserInfo.IsSuperUser && portal != this.PortalSettings.PortalId)
@@ -133,6 +141,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage JobDetails(int jobId)
         {
             var controller = new BaseController();

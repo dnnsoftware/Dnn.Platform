@@ -8,52 +8,40 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.UI.Modules;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageEditorBase class provides a Base Classs for Package Editors.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageEditorBase class provides a Base Classs for Package Editors.</summary>
     public class PackageEditorBase : ModuleUserControlBase, IPackageEditor
     {
-        private bool _IsWizard = Null.NullBoolean;
-        private PackageInfo _Package;
-        private int _PackageID = Null.NullInteger;
+        private bool isWizard = Null.NullBoolean;
+        private PackageInfo package;
+        private int packageID = Null.NullInteger;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Package ID.
-        /// </summary>
+        /// <summary>Gets or sets the Package ID.</summary>
         /// <value>An Integer.</value>
-        /// -----------------------------------------------------------------------------
         public int PackageID
         {
             get
             {
-                return this._PackageID;
+                return this.packageID;
             }
 
             set
             {
-                this._PackageID = value;
+                this.packageID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Editor is in the Wizard.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the Editor is in the Wizard.</summary>
         /// <value>An Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool IsWizard
         {
             get
             {
-                return this._IsWizard;
+                return this.isWizard;
             }
 
             set
             {
-                this._IsWizard = value;
+                this.isWizard = value;
             }
         }
 
@@ -79,29 +67,21 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                if (this._Package == null)
+                if (this.package == null)
                 {
-                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
+                    this.package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
                 }
 
-                return this._Package;
+                return this.package;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Used to Initialize the Control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Used to Initialize the Control.</summary>
         public virtual void Initialize()
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Used to Update the Package.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Used to Update the Package.</summary>
         public virtual void UpdatePackage()
         {
         }

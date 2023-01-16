@@ -1,46 +1,44 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Abstractions.Prompt;
-using DotNetNuke.Abstractions.Users;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Prompt;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-
 namespace DotNetNuke.Entities.Modules.Prompt
 {
-    /// <summary>
-    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Abstractions.Users;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Prompt;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
+    /// <summary>This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.</summary>
     [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
+
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
         [ConsoleCommandParameter("name", "Prompt_AddModule_FlagModuleName", true)]
         public string ModuleName { get; set; }
 
         [ConsoleCommandParameter("pageid", "Prompt_AddModule_FlagPageId", true)]
-        public int PageId { get; set; }    // the page on which to add the module
+        public int PageId { get; set; } // the page on which to add the module
 
         [ConsoleCommandParameter("pane", "Prompt_AddModule_FlagPane", "ContentPane")]
         public string Pane { get; set; }
 
         [ConsoleCommandParameter("title", "Prompt_AddModule_FlagModuleTitle")]
-        public string ModuleTitle { get; set; }   // title for the new module. defaults to friendly name
+        public string ModuleTitle { get; set; } // title for the new module. defaults to friendly name
 
         /// <inheritdoc/>
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
@@ -60,13 +58,14 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_DesktopModuleNotFound"), this.ModuleName));
                 }
 
-                var message = new KeyValuePair<HttpStatusCode, string>();
+                var message = default(KeyValuePair<HttpStatusCode, string>);
                 var page = TabController.Instance.GetTab(this.PageId, this.PortalSettings.PortalId);
                 if (page == null)
                 {
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", this.LocalResourceFile), this.PageId));
                     return null;
                 }
+
                 if (!TabPermissionController.CanManagePage(page))
                 {
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, Localization.GetString("Prompt_InsufficientPermissions", this.LocalResourceFile));
@@ -92,8 +91,10 @@ namespace DotNetNuke.Entities.Modules.Prompt
                         if (this.PortalSettings.DefaultModuleId > Null.NullInteger &&
                             this.PortalSettings.DefaultTabId > Null.NullInteger)
                         {
-                            var defaultModule = ModuleController.Instance.GetModule(this.PortalSettings.DefaultModuleId,
-                                this.PortalSettings.DefaultTabId, true);
+                            var defaultModule = ModuleController.Instance.GetModule(
+                                this.PortalSettings.DefaultModuleId,
+                                this.PortalSettings.DefaultTabId,
+                                true);
                             if (defaultModule != null)
                             {
                                 objModule.CacheTime = defaultModule.CacheTime;
@@ -119,6 +120,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     {
                         objModule.CultureCode = Null.NullString;
                     }
+
                     objModule.AllTabs = false;
                     objModule.Alignment = null;
 
@@ -133,8 +135,12 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 {
                     return new ConsoleErrorResultModel(message.Value);
                 }
+
                 if (moduleList.Count == 0)
+                {
                     return new ConsoleErrorResultModel(this.LocalizeString("Prompt_NoModulesAdded"));
+                }
+
                 var modules = moduleList.Select(newModule => ModuleController.Instance.GetTabModule(newModule.TabModuleID)).ToList();
 
                 return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ModuleAdded"), modules.Count, moduleList.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
@@ -145,6 +151,5 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_AddModuleError"));
             }
         }
-
     }
 }

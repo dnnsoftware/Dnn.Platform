@@ -12,33 +12,31 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds.
-    /// </summary>
+    /// <summary>  Helper class that provides memory and disk caching of the downloaded feeds.</summary>
     internal class RssDownloadManager
     {
-        private const string RSS_Dir = "/RSS/";
+        private const string RSSDir = "/RSS/";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
-        private static readonly RssDownloadManager _theManager = new RssDownloadManager();
+        private static readonly RssDownloadManager TheManager = new RssDownloadManager();
 
-        private readonly Dictionary<string, RssChannelDom> _cache;
-        private readonly int _defaultTtlMinutes;
-        private readonly string _directoryOnDisk;
+        private readonly Dictionary<string, RssChannelDom> cache;
+        private readonly int defaultTtlMinutes;
+        private readonly string directoryOnDisk;
 
         private RssDownloadManager()
         {
             // create in-memory cache
-            this._cache = new Dictionary<string, RssChannelDom>();
+            this.cache = new Dictionary<string, RssChannelDom>();
 
-            this._defaultTtlMinutes = 2;
+            this.defaultTtlMinutes = 2;
 
             // prepare disk directory
-            this._directoryOnDisk = PrepareTempDir();
+            this.directoryOnDisk = PrepareTempDir();
         }
 
         public static RssChannelDom GetChannel(string url)
         {
-            return _theManager.GetChannelDom(url);
+            return TheManager.GetChannelDom(url);
         }
 
         private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
@@ -64,7 +62,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + RSS_Dir);
+                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + RSSDir);
 
                 if (!Directory.Exists(d))
                 {
@@ -117,7 +115,7 @@ namespace DotNetNuke.Services.Syndication
             // set expiry
             string ttlString = null;
             dom.Channel.TryGetValue("ttl", out ttlString);
-            int ttlMinutes = GetTtlFromString(ttlString, this._defaultTtlMinutes);
+            int ttlMinutes = GetTtlFromString(ttlString, this.defaultTtlMinutes);
             DateTime utcExpiry = DateTime.UtcNow.AddMinutes(ttlMinutes);
             dom.SetExpiry(utcExpiry);
 
@@ -129,7 +127,7 @@ namespace DotNetNuke.Services.Syndication
 
         private RssChannelDom TryLoadFromDisk(string url)
         {
-            if (this._directoryOnDisk == null)
+            if (this.directoryOnDisk == null)
             {
                 return null; // no place to cache
             }
@@ -138,7 +136,7 @@ namespace DotNetNuke.Services.Syndication
             // looking for the one matching url that is not expired
             // removing expired (or invalid) ones
             string pattern = GetTempFileNamePrefixFromUrl(url) + "_*.rss.resources";
-            string[] files = Directory.GetFiles(this._directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(this.directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
 
             foreach (string rssFilename in files)
             {
@@ -207,7 +205,7 @@ namespace DotNetNuke.Services.Syndication
 
         private void TrySaveToDisk(XmlDocument doc, string url, DateTime utcExpiry)
         {
-            if (this._directoryOnDisk == null)
+            if (this.directoryOnDisk == null)
             {
                 return;
             }
@@ -218,7 +216,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                doc.Save(Path.Combine(this._directoryOnDisk, fileName));
+                doc.Save(Path.Combine(this.directoryOnDisk, fileName));
             }
             catch
             {
@@ -230,13 +228,13 @@ namespace DotNetNuke.Services.Syndication
         {
             RssChannelDom dom = null;
 
-            lock (this._cache)
+            lock (this.cache)
             {
-                if (this._cache.TryGetValue(url, out dom))
+                if (this.cache.TryGetValue(url, out dom))
                 {
                     if (DateTime.UtcNow > dom.UtcExpiry)
                     {
-                        this._cache.Remove(url);
+                        this.cache.Remove(url);
                         dom = null;
                     }
                 }
@@ -246,9 +244,9 @@ namespace DotNetNuke.Services.Syndication
             {
                 dom = this.DownloadChannelDom(url);
 
-                lock (this._cache)
+                lock (this.cache)
                 {
-                    this._cache[url] = dom;
+                    this.cache[url] = dom;
                 }
             }
 

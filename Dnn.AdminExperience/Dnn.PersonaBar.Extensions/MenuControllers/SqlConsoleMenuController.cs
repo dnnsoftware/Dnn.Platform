@@ -11,9 +11,7 @@ namespace Dnn.PersonaBar.SqlConsole.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the sql console menu.
-    /// </summary>
+    /// <summary>Controls the sql console menu.</summary>
     public class SqlConsoleMenuController : IMenuItemController
     {
         /// <inheritdoc/>

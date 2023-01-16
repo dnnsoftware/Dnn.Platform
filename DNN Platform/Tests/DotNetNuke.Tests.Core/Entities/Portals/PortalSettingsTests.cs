@@ -42,6 +42,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_PortalId_When_Passed_PortalId()
         {
             // Arrange
@@ -57,6 +58,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_PortalId_When_Passed_PortalAlias()
         {
             // Arrange
@@ -74,6 +76,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_PortalAlias_When_Passed_PortalAlias()
         {
             // Arrange
@@ -91,6 +94,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_PortalId_When_Passed_Portal()
         {
             // Arrange
@@ -106,6 +110,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Does_Not_Set_PortalId_When_Passed_Null_Portal()
         {
             // Arrange
@@ -121,6 +126,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalController_GetPortal_When_Passed_PortalId()
         {
             // Arrange
@@ -136,6 +142,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalController_GetPortal_When_Passed_PortalAlias()
         {
             // Arrange
@@ -153,6 +160,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Portal()
         {
             // Arrange
@@ -168,6 +176,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Valid_PortalAlias()
         {
             // Arrange
@@ -188,6 +197,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Does_Not_Call_PortalSettingsController_LoadPortal_When_Portal_Is_Null()
         {
             // Arrange
@@ -201,6 +211,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Does_Not_Call_PortalSettingsController_LoadPortal_When_Passed_InValid_PortalAlias()
         {
             // Arrange
@@ -221,6 +232,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_PortalId()
         {
             // Arrange
@@ -236,6 +248,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_Portal()
         {
             // Arrange
@@ -253,6 +266,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_PortalAlias()
         {
             // Arrange
@@ -270,6 +284,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_GetActiveTab_When_Passed_Portal()
         {
             // Arrange
@@ -285,6 +300,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Calls_PortalSettingsController_GetActiveTab_When_Passed_Valid_PortalAlias()
         {
             // Arrange
@@ -305,6 +321,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Does_Not_Call_PortalSettingsController_GetActiveTab_When_Portal_Is_Null()
         {
             // Arrange
@@ -318,6 +335,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Does_Not_Call_PortalSettingsController_GetActiveTab_When_Passed_InValid_PortalAlias()
         {
             // Arrange
@@ -338,6 +356,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_PortalId()
         {
             // Arrange
@@ -358,6 +377,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_ActiveTab_Property_To_Null_If_InValid_TabId_And_PortalId()
         {
             // Arrange
@@ -378,6 +398,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_Portal()
         {
             // Arrange
@@ -395,6 +416,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_PortalAlias()
         {
             // Arrange

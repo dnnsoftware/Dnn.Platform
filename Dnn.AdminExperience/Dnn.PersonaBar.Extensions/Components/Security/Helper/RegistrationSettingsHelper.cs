@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Security.Helper
 
     using DotNetNuke.Services.Localization;
 
-    class RegistrationSettingsHelper
+    internal class RegistrationSettingsHelper
     {
         internal static List<KeyValuePair<string, int>> GetUserRegistrationOptions()
         {

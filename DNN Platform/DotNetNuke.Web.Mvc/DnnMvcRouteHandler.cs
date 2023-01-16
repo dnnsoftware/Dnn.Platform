@@ -13,15 +13,19 @@ namespace DotNetNuke.Web.Mvc
     {
         private readonly IControllerFactory controllerFactory;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnMvcRouteHandler"/> class.</summary>
         public DnnMvcRouteHandler()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DnnMvcRouteHandler"/> class.</summary>
+        /// <param name="controllerFactory">The controller factory.</param>
         public DnnMvcRouteHandler(IControllerFactory controllerFactory)
         {
             this.controllerFactory = controllerFactory;
         }
 
+        /// <inheritdoc/>
         IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
         {
             return this.GetHttpHandler(requestContext);

@@ -31,9 +31,7 @@ using log4net.ObjectRenderer;
 
 namespace log4net.Repository.Hierarchy
 {
-    /// <summary>
-    /// Initializes the log4net environment using an XML DOM.
-    /// </summary>
+    /// <summary>Initializes the log4net environment using an XML DOM.</summary>
     /// <remarks>
     /// <para>
     /// Configures a <see cref="Hierarchy"/> using an XML DOM.
@@ -49,9 +47,7 @@ namespace log4net.Repository.Hierarchy
             Overwrite
         }
 
-        /// <summary>
-        /// Construct the configurator for a hierarchy
-        /// </summary>
+        /// <summary>Construct the configurator for a hierarchy</summary>
         /// <param name="hierarchy">The hierarchy to build.</param>
         /// <remarks>
         /// <para>
@@ -65,9 +61,7 @@ namespace log4net.Repository.Hierarchy
             this.m_appenderBag = new Hashtable();
         }
 
-        /// <summary>
-        /// Configure the hierarchy by parsing a DOM tree of XML elements.
-        /// </summary>
+        /// <summary>Configure the hierarchy by parsing a DOM tree of XML elements.</summary>
         /// <param name="element">The root element to parse.</param>
         /// <remarks>
         /// <para>
@@ -218,9 +212,7 @@ namespace log4net.Repository.Hierarchy
             // Done reading config
         }
 
-        /// <summary>
-        /// Parse appenders by IDREF.
-        /// </summary>
+        /// <summary>Parse appenders by IDREF.</summary>
         /// <param name="appenderRef">The appender ref element.</param>
         /// <returns>The instance of the appender that the ref refers to.</returns>
         /// <remarks>
@@ -272,9 +264,7 @@ namespace log4net.Repository.Hierarchy
             } 
         }
 
-        /// <summary>
-        /// Parses an appender element.
-        /// </summary>
+        /// <summary>Parses an appender element.</summary>
         /// <param name="appenderElement">The appender element.</param>
         /// <returns>The appender instance or <c>null</c> when parsing failed.</returns>
         /// <remarks>
@@ -352,9 +342,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Parses a logger element.
-        /// </summary>
+        /// <summary>Parses a logger element.</summary>
         /// <param name="loggerElement">The logger element.</param>
         /// <remarks>
         /// <para>
@@ -382,9 +370,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Parses the root logger element.
-        /// </summary>
+        /// <summary>Parses the root logger element.</summary>
         /// <param name="rootElement">The root element.</param>
         /// <remarks>
         /// <para>
@@ -401,9 +387,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Parses the children of a logger element.
-        /// </summary>
+        /// <summary>Parses the children of a logger element.</summary>
         /// <param name="catElement">The category element.</param>
         /// <param name="log">The logger instance.</param>
         /// <param name="isRoot">Flag to indicate if the logger is the root logger.</param>
@@ -456,9 +440,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Parses an object renderer.
-        /// </summary>
+        /// <summary>Parses an object renderer.</summary>
         /// <param name="element">The renderer element.</param>
         /// <remarks>
         /// <para>
@@ -494,9 +476,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Parses a level element.
-        /// </summary>
+        /// <summary>Parses a level element.</summary>
         /// <param name="element">The level element.</param>
         /// <param name="log">The logger object to set the level on.</param>
         /// <param name="isRoot">Flag to indicate if the logger is the root logger.</param>
@@ -542,9 +522,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Sets a parameter on an object.
-        /// </summary>
+        /// <summary>Sets a parameter on an object.</summary>
         /// <param name="element">The parameter element.</param>
         /// <param name="target">The object to set the parameter on.</param>
         /// <remarks>
@@ -827,9 +805,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Test if an element has no attributes or child elements
-        /// </summary>
+        /// <summary>Test if an element has no attributes or child elements</summary>
         /// <param name="element">the element to inspect</param>
         /// <returns><c>true</c> if the element has any attributes or child elements, <c>false</c> otherwise</returns>
         private bool HasAttributesOrElements(XmlElement element)
@@ -844,9 +820,7 @@ namespace log4net.Repository.Hierarchy
             return false;
         }
 
-        /// <summary>
-        /// Test if a <see cref="Type"/> is constructible with <c>Activator.CreateInstance</c>.
-        /// </summary>
+        /// <summary>Test if a <see cref="Type"/> is constructible with <c>Activator.CreateInstance</c>.</summary>
         /// <param name="type">the type to inspect</param>
         /// <returns><c>true</c> if the type is creatable using a default constructor, <c>false</c> otherwise</returns>
         private static bool IsTypeConstructible(Type type)
@@ -867,9 +841,7 @@ namespace log4net.Repository.Hierarchy
             return false;
         }
 
-        /// <summary>
-        /// Look for a method on the <paramref name="targetType"/> that matches the <paramref name="name"/> supplied
-        /// </summary>
+        /// <summary>Look for a method on the <paramref name="targetType"/> that matches the <paramref name="name"/> supplied</summary>
         /// <param name="targetType">the type that has the method</param>
         /// <param name="name">the name of the method</param>
         /// <returns>the method info found</returns>
@@ -910,9 +882,7 @@ namespace log4net.Repository.Hierarchy
             return null;
         }
 
-        /// <summary>
-        /// Converts a string value to a target type.
-        /// </summary>
+        /// <summary>Converts a string value to a target type.</summary>
         /// <param name="type">The type of object to convert the string to.</param>
         /// <param name="value">The string value to use as the value of the object.</param>
         /// <returns>
@@ -939,9 +909,7 @@ namespace log4net.Repository.Hierarchy
             return OptionConverter.ConvertStringTo(type, value);
         }
 
-        /// <summary>
-        /// Creates an object as specified in XML.
-        /// </summary>
+        /// <summary>Creates an object as specified in XML.</summary>
         /// <param name="element">The XML element that contains the definition of the object.</param>
         /// <param name="defaultTargetType">The object type to use if not explicitly specified.</param>
         /// <param name="typeConstraint">The type that the returned object must be or must inherit from.</param>
@@ -1119,19 +1087,13 @@ namespace log4net.Repository.Hierarchy
         // flag used on the level element
         private const string INHERITED = "inherited";
 
-        /// <summary>
-        /// key: appenderName, value: appender.
-        /// </summary>
+        /// <summary>key: appenderName, value: appender.</summary>
         private Hashtable m_appenderBag;
 
-        /// <summary>
-        /// The Hierarchy being configured.
-        /// </summary>
+        /// <summary>The Hierarchy being configured.</summary>
         private readonly Hierarchy m_hierarchy;
 
-        /// <summary>
-        /// The fully qualified type of the XmlHierarchyConfigurator class.
-        /// </summary>
+        /// <summary>The fully qualified type of the XmlHierarchyConfigurator class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

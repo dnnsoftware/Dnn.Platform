@@ -29,9 +29,7 @@ using log4net.Util.TypeConverters;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// A convenience class to convert property values to specific types.
-    /// </summary>
+    /// <summary>A convenience class to convert property values to specific types.</summary>
     /// <remarks>
     /// <para>
     /// Utility functions for converting types and parsing values.
@@ -41,9 +39,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class OptionConverter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OptionConverter" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OptionConverter" /> class. </summary>
         /// <remarks>
         /// <para>
         /// Uses a private access modifier to prevent instantiation of this class.
@@ -126,9 +122,7 @@ namespace log4net.Util
 //			return buf.ToString();
 //		}
 
-        /// <summary>
-        /// Converts a string to a <see cref="bool" /> value.
-        /// </summary>
+        /// <summary>Converts a string to a <see cref="bool" /> value.</summary>
         /// <param name="argValue">String to convert.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The <see cref="bool" /> value of <paramref name="argValue" />.</returns>
@@ -184,9 +178,7 @@ namespace log4net.Util
 //			return defaultValue;
 //		}
 
-        /// <summary>
-        /// Parses a file size into a number.
-        /// </summary>
+        /// <summary>Parses a file size into a number.</summary>
         /// <param name="argValue">String to parse.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The <see cref="long" /> value of <paramref name="argValue" />.</returns>
@@ -244,9 +236,7 @@ namespace log4net.Util
             return defaultValue;
         }
 
-        /// <summary>
-        /// Converts a string to an object.
-        /// </summary>
+        /// <summary>Converts a string to an object.</summary>
         /// <param name="target">The target type to convert to.</param>
         /// <param name="txt">The string to convert to an object.</param>
         /// <returns>
@@ -332,9 +322,7 @@ namespace log4net.Util
 //			return converter;
 //		}
 
-        /// <summary>
-        /// Checks if there is an appropriate type conversion from the source type to the target type.
-        /// </summary>
+        /// <summary>Checks if there is an appropriate type conversion from the source type to the target type.</summary>
         /// <param name="sourceType">The type to convert from.</param>
         /// <param name="targetType">The type to convert to.</param>
         /// <returns><c>true</c> if there is a conversion from the source type to the target type.</returns>
@@ -379,9 +367,7 @@ namespace log4net.Util
             return false;
         }
 
-        /// <summary>
-        /// Converts an object to the target type.
-        /// </summary>
+        /// <summary>Converts an object to the target type.</summary>
         /// <param name="sourceInstance">The object to convert to the target type.</param>
         /// <param name="targetType">The type to convert to.</param>
         /// <returns>The converted object.</returns>
@@ -455,9 +441,7 @@ namespace log4net.Util
 //			}	
 //		}
 
-        /// <summary>
-        /// Instantiates an object given a class name.
-        /// </summary>
+        /// <summary>Instantiates an object given a class name.</summary>
         /// <param name="className">The fully qualified class name of the object to instantiate.</param>
         /// <param name="superClass">The class to which the new object should belong.</param>
         /// <param name="defaultValue">The object to return in case of non-fulfillment.</param>
@@ -639,9 +623,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// The fully qualified type of the OptionConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the OptionConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

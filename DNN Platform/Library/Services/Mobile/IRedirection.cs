@@ -7,19 +7,13 @@ namespace DotNetNuke.Services.Mobile
 
     public interface IRedirection
     {
-        /// <summary>
-        /// Gets primary ID.
-        /// </summary>
+        /// <summary>Gets primary ID.</summary>
         int Id { get; }
 
-        /// <summary>
-        /// Gets or sets portal Id.
-        /// </summary>
+        /// <summary>Gets or sets portal Id.</summary>
         int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection name.
-        /// </summary>
+        /// <summary>Gets or sets redirection name.</summary>
         string Name { get; set; }
 
         /// <summary>
@@ -40,29 +34,19 @@ namespace DotNetNuke.Services.Mobile
         /// </summary>
         RedirectionType Type { get; set; }
 
-        /// <summary>
-        /// Gets or sets request match rules.
-        /// </summary>
+        /// <summary>Gets or sets request match rules.</summary>
         IList<IMatchRule> MatchRules { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection target type.
-        /// </summary>
+        /// <summary>Gets or sets redirection target type.</summary>
         TargetType TargetType { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection target value, can a portal id, tab id or a specific url.
-        /// </summary>
+        /// <summary>Gets or sets redirection target value, can a portal id, tab id or a specific url.</summary>
         object TargetValue { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether enabled the Redirection.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether enabled the Redirection.</summary>
         bool Enabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection's Order.
-        /// </summary>
+        /// <summary>Gets or sets redirection's Order.</summary>
         int SortOrder { get; set; }
     }
 }

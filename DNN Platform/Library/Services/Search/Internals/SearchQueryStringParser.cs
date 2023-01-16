@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Class responsible to parse the Search Query String parameter.
-    /// </summary>
+    /// <summary>Class responsible to parse the Search Query String parameter.</summary>
     public class SearchQueryStringParser
                             : ServiceLocator<ISearchQueryStringParser, SearchQueryStringParser>,
                             ISearchQueryStringParser
@@ -25,9 +23,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static readonly Regex TypeRegex = new Regex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        /// <summary>
-        /// Gets the list of tags parsing the search keywords.
-        /// </summary>
+        /// <summary>Gets the list of tags parsing the search keywords.</summary>
         /// <param name="keywords">search keywords.</param>
         /// <param name="outputKeywords">output keywords removing the tags.</param>
         /// <returns>List of tags.</returns>
@@ -58,9 +54,7 @@ namespace DotNetNuke.Services.Search.Internals
             return tags;
         }
 
-        /// <summary>
-        /// Gets the Last Modified Date parsing the search keywords.
-        /// </summary>
+        /// <summary>Gets the Last Modified Date parsing the search keywords.</summary>
         /// <param name="keywords">search keywords.</param>
         /// <param name="outputKeywords">output keywords removing the last modified date.</param>
         /// <returns>Last Modified Date.</returns>
@@ -100,9 +94,7 @@ namespace DotNetNuke.Services.Search.Internals
             return result;
         }
 
-        /// <summary>
-        /// Gets the list of Search Types parsing the search keywords.
-        /// </summary>
+        /// <summary>Gets the list of Search Types parsing the search keywords.</summary>
         /// <param name="keywords">search keywords.</param>
         /// <param name="outputKeywords">output keywords removing the Search Type.</param>
         /// <returns>List of Search Types.</returns>

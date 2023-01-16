@@ -17,30 +17,24 @@ namespace DotNetNuke.Common
 
     internal class NavigationManager : INavigationManager
     {
-        private readonly IPortalController _portalController;
+        private readonly IPortalController portalController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NavigationManager"/> class.</summary>
         /// <param name="portalController">An <see cref="IPortalController"/> instance.</param>
         public NavigationManager(IPortalController portalController)
         {
-            this._portalController = portalController;
+            this.portalController = portalController;
         }
 
-        /// <summary>
-        /// Gets the URL to the current page.
-        /// </summary>
+        /// <summary>Gets the URL to the current page.</summary>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL()
         {
-            PortalSettings portalSettings = this._portalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
             return this.NavigateURL(portalSettings.ActiveTab.TabID, Null.NullString);
         }
 
-        /// <summary>
-        /// Gets the URL to the given page.
-        /// </summary>
+        /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID)
@@ -48,22 +42,18 @@ namespace DotNetNuke.Common
             return this.NavigateURL(tabID, Null.NullString);
         }
 
-        /// <summary>
-        /// Gets the URL to the given page.
-        /// </summary>
+        /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            IPortalSettings _portalSettings = this._portalController.GetCurrentSettings();
-            string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, _portalSettings);
-            return this.NavigateURL(tabID, isSuperTab, _portalSettings, Null.NullString, cultureCode);
+            IPortalSettings portalSettings = this.portalController.GetCurrentSettings();
+            string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, portalSettings);
+            return this.NavigateURL(tabID, isSuperTab, portalSettings, Null.NullString, cultureCode);
         }
 
-        /// <summary>
-        /// Gets the URL to show the control associated with the given control key.
-        /// </summary>
+        /// <summary>Gets the URL to show the control associated with the given control key.</summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(string controlKey)
@@ -74,51 +64,43 @@ namespace DotNetNuke.Common
             }
             else
             {
-                PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-                return this.NavigateURL(_portalSettings.ActiveTab.TabID, controlKey);
+                PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+                return this.NavigateURL(portalSettings.ActiveTab.TabID, controlKey);
             }
         }
 
-        /// <summary>
-        /// Gets the URL to show the control associated with the given control key.
-        /// </summary>
+        /// <summary>Gets the URL to show the control associated with the given control key.</summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(_portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+            return this.NavigateURL(portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the control associated with the given control key on the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the control associated with the given control key on the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, string controlKey)
         {
-            PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(tabID, _portalSettings, controlKey, null);
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+            return this.NavigateURL(tabID, portalSettings, controlKey, null);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(tabID, _portalSettings, controlKey, additionalParameters);
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+            return this.NavigateURL(tabID, portalSettings, controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
@@ -131,9 +113,7 @@ namespace DotNetNuke.Common
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
@@ -146,9 +126,7 @@ namespace DotNetNuke.Common
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, cultureCode, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
@@ -161,9 +139,7 @@ namespace DotNetNuke.Common
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, language, Globals.glbDefaultPage, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>

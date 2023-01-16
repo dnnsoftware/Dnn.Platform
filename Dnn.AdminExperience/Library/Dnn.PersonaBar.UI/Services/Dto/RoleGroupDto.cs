@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
     [DataContract]
     public class RoleGroupDto
     {
+        /// <summary>Initializes a new instance of the <see cref="RoleGroupDto"/> class.</summary>
         public RoleGroupDto()
         {
             this.Id = -2;

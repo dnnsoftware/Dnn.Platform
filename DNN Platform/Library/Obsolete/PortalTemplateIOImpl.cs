@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Xml;
 
     using DotNetNuke.Common;
 
@@ -56,6 +57,31 @@ namespace DotNetNuke.Entities.Portals.Internal
         public TextReader OpenTextReader(string filePath)
         {
             return new StreamReader(File.Open(filePath, FileMode.Open));
+        }
+
+        /// <inheritdoc/>
+        public (string, List<string>) GetTemplateLanguages(string templateFilePath)
+        {
+            var defaultLanguage = string.Empty;
+            var locales = new List<string>();
+            var templateXml = new XmlDocument() { XmlResolver = null };
+            templateXml.Load(templateFilePath);
+            var node = templateXml.SelectSingleNode("//settings/defaultlanguage");
+            if (node != null)
+            {
+                defaultLanguage = node.InnerText;
+            }
+
+            node = templateXml.SelectSingleNode("//locales");
+            if (node != null)
+            {
+                foreach (XmlNode lnode in node.SelectNodes("//locale"))
+                {
+                    locales.Add(lnode.InnerText);
+                }
+            }
+
+            return (defaultLanguage, locales);
         }
 
         private static string CheckFilePath(string path)

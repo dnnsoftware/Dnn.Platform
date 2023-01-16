@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
     internal class CompareMenuPermissions : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             return ((MenuPermissionInfo)x).MenuPermissionId.CompareTo(((MenuPermissionInfo)y).MenuPermissionId);

@@ -7,13 +7,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The DependencyBase is a base class for Installer Dependencies.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The DependencyBase is a base class for Installer Dependencies.</summary>
     public abstract class DependencyBase : IDependency
     {
         /// <inheritdoc/>

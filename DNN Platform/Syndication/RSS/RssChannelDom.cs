@@ -6,29 +6,27 @@ namespace DotNetNuke.Services.Syndication
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    ///   Internal representation of parsed RSS channel.
-    /// </summary>
+    /// <summary>  Internal representation of parsed RSS channel.</summary>
     internal class RssChannelDom
     {
-        private readonly Dictionary<string, string> _channel;
-        private readonly Dictionary<string, string> _image;
-        private readonly List<Dictionary<string, string>> _items;
-        private DateTime _utcExpiry;
+        private readonly Dictionary<string, string> channel;
+        private readonly Dictionary<string, string> image;
+        private readonly List<Dictionary<string, string>> items;
+        private DateTime utcExpiry;
 
         internal RssChannelDom(Dictionary<string, string> channel, Dictionary<string, string> image, List<Dictionary<string, string>> items)
         {
-            this._channel = channel;
-            this._image = image;
-            this._items = items;
-            this._utcExpiry = DateTime.MaxValue;
+            this.channel = channel;
+            this.image = image;
+            this.items = items;
+            this.utcExpiry = DateTime.MaxValue;
         }
 
         internal Dictionary<string, string> Channel
         {
             get
             {
-                return this._channel;
+                return this.channel;
             }
         }
 
@@ -36,7 +34,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._image;
+                return this.image;
             }
         }
 
@@ -44,7 +42,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._items;
+                return this.items;
             }
         }
 
@@ -52,13 +50,13 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._utcExpiry;
+                return this.utcExpiry;
             }
         }
 
         internal void SetExpiry(DateTime utcExpiry)
         {
-            this._utcExpiry = utcExpiry;
+            this.utcExpiry = utcExpiry;
         }
     }
 }

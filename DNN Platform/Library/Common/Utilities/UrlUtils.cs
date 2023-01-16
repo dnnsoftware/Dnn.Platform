@@ -18,7 +18,7 @@ namespace DotNetNuke.Common.Utilities
 
     public class UrlUtils
     {
-        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
         public static string Combine(string baseUrl, string relativeUrl)
         {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Common.Utilities
         /// either, the portalid param is not allowed when the tab is a supertab
         /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The query-string parameters collection in <c>"key=value"</c> format.</returns>
         public static string[] GetQSParamsForNavigateURL()
         {
             string returnValue = string.Empty;
@@ -393,16 +393,14 @@ namespace DotNetNuke.Common.Utilities
             return url.IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
-        /// <summary>
-        /// Redirect current response to 404 error page or output 404 content if error page not defined.
-        /// </summary>
+        /// <summary>Redirect current response to 404 error page or output 404 content if error page not defined.</summary>
         /// <param name="response"></param>
         /// <param name="portalSetting"></param>
         public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {
-                response.Redirect(_navigationManager.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+                response.Redirect(NavigationManager.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
             }
             else
             {

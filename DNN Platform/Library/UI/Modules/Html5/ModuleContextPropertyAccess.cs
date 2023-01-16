@@ -12,15 +12,13 @@ namespace DotNetNuke.UI.Modules.Html5
 
     public class ModuleContextPropertyAccess : IPropertyAccess
     {
-        private readonly ModuleInstanceContext _moduleContext;
+        private readonly ModuleInstanceContext moduleContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleContextPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleContextPropertyAccess"/> class.</summary>
         /// <param name="moduleContext"></param>
         public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
         {
-            this._moduleContext = moduleContext;
+            this.moduleContext = moduleContext;
         }
 
         /// <inheritdoc/>
@@ -35,21 +33,21 @@ namespace DotNetNuke.UI.Modules.Html5
             switch (propertyName.ToLowerInvariant())
             {
                 case "moduleid":
-                    return this._moduleContext.ModuleId.ToString();
+                    return this.moduleContext.ModuleId.ToString();
                 case "tabmoduleid":
-                    return this._moduleContext.TabModuleId.ToString();
+                    return this.moduleContext.TabModuleId.ToString();
                 case "tabid":
-                    return this._moduleContext.TabId.ToString();
+                    return this.moduleContext.TabId.ToString();
                 case "portalid":
-                    return this._moduleContext.Configuration.OwnerPortalID.ToString();
+                    return this.moduleContext.Configuration.OwnerPortalID.ToString();
                 case "issuperuser":
-                    return this._moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
+                    return this.moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
                 case "editmode":
-                    return this._moduleContext.EditMode.ToString();
+                    return this.moduleContext.EditMode.ToString();
                 default:
-                    if (this._moduleContext.Settings.ContainsKey(propertyName))
+                    if (this.moduleContext.Settings.ContainsKey(propertyName))
                     {
-                        return (string)this._moduleContext.Settings[propertyName];
+                        return (string)this.moduleContext.Settings[propertyName];
                     }
 
                     break;

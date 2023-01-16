@@ -14,9 +14,7 @@ namespace DotNetNuke.Entities.Urls
 
     internal class FriendlyUrlPathController
     {
-        /// <summary>
-        /// This method checks the list of rules for parameter replacement and modifies the parameter path accordingly.
-        /// </summary>
+        /// <summary>This method checks the list of rules for parameter replacement and modifies the parameter path accordingly.</summary>
         /// <param name="parameterPath"></param>
         /// <param name="tab"></param>
         /// <param name="settings"></param>
@@ -25,7 +23,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="messages"></param>
         /// <param name="changeToSiteRoot"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if a replacement was made, otherwise <see langword="false"/>.</returns>
         internal static bool CheckParameterRegexReplacement(
             string parameterPath,
             TabInfo tab,
@@ -56,9 +54,10 @@ namespace DotNetNuke.Entities.Urls
                     parmReplaces = replaceActions[tabId];
                 }
 
-                // check for 'all tabs' replaceions
-                if (replaceActions.ContainsKey(-1)) // -1 means 'all tabs' - replacing across all tabs
+                // check for 'all tabs' replace action
+                if (replaceActions.ContainsKey(-1))
                 {
+                    // -1 means 'all tabs' - replacing across all tabs
                     // initialise to empty collection if there are no specific tab replaces
                     if (parmReplaces == null)
                     {
@@ -137,8 +136,9 @@ namespace DotNetNuke.Entities.Urls
             // determine if this url should be converted to a userprofile url by checking the saved rules matching the tab/portalid
             if (portalSettings != null && tab.PortalID == portalSettings.PortalId &&
                     (tab.TabID == portalSettings.UserTabId || portalSettings.UserTabId == -1 ||
-                        tab.ParentId == portalSettings.UserTabId)) // -1 == all tabs in portal
+                        tab.ParentId == portalSettings.UserTabId))
             {
+                // -1 == all tabs in portal
                 int userId;
                 string rawUserId, remainingPath;
 
@@ -231,9 +231,7 @@ namespace DotNetNuke.Entities.Urls
             return urlWasChanged;
         }
 
-        /// <summary>
-        /// Splits out the userid value from the supplied Friendly Url Path.
-        /// </summary>
+        /// <summary>Splits out the userid value from the supplied Friendly Url Path.</summary>
         /// <param name="parmName"></param>
         /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied).</param>
         /// <param name="rawUserId"></param>

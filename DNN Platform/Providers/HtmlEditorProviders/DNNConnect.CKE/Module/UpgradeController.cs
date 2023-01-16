@@ -13,14 +13,10 @@ namespace DNNConnect.CKEditorProvider.Module
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>
-    /// Add Settings Module to Host -> Html Editor Manager Page.
-    /// </summary>
+    /// <summary>Add Settings Module to Host -> Html Editor Manager Page.</summary>
     public class UpgradeController : IUpgradeable
     {
-        /// <summary>
-        /// Upgrades the module.
-        /// </summary>
+        /// <summary>Upgrades the module.</summary>
         /// <param name="version">The <paramref name="version"/> number string.</param>
         /// <returns>Returns if Upgrade was Success fully or not.</returns>
         public string UpgradeModule(string version)
@@ -65,9 +61,7 @@ namespace DNNConnect.CKEditorProvider.Module
             return "Success";
         }
 
-        /// <summary>
-        /// Gets the module definition ID.
-        /// </summary>
+        /// <summary>Gets the module definition ID.</summary>
         /// <returns>Returns the module definition ID.</returns>
         private static int GetModuleDefinitionID()
         {

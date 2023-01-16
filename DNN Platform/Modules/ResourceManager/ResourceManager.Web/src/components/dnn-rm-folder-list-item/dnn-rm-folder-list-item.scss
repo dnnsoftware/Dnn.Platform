@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  font-weight: normal;
+  color: black;
+  transition: all 300ms ease-in-out;
+}
+:host(.selected){
+  .item-name{
+    font-weight: bolder;
+    color: var(--dnn-color-primary-dark, #0D569E);
+  }
+}
+
+button{
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  gap: 0.5em;
+  cursor: pointer;
+}
+dnn-collapsible{
+  position: fixed;
+  display: none;
+  border: 1px solid lightgray;
+  box-shadow: 2px 2px 4px -2px;
+  background-color: white;
+  z-index: 1;
+}

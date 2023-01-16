@@ -5,9 +5,7 @@ namespace DotNetNuke.Application
 {
     using System;
 
-    /// <summary>
-    /// The enumeration of release mode.
-    /// </summary>
+    /// <summary>The enumeration of release mode.</summary>
     /// <value>
     /// <list type="bullet">
     ///         <item>None: Not specified for the current release.</item>
@@ -23,35 +21,23 @@ namespace DotNetNuke.Application
     /// </value>
     public enum ReleaseMode
     {
-        /// <summary>
-        /// Not assigned
-        /// </summary>
+        /// <summary>Not assigned</summary>
         None = 0,
 
-        /// <summary>
-        /// Alpha release
-        /// </summary>
+        /// <summary>Alpha release</summary>
         Alpha = 1,
 
-        /// <summary>
-        /// Beta release
-        /// </summary>
+        /// <summary>Beta release</summary>
         Beta = 2,
 
-        /// <summary>
-        /// Release candidate
-        /// </summary>
+        /// <summary>Release candidate</summary>
         RC = 3,
 
-        /// <summary>
-        /// Stable release version
-        /// </summary>
+        /// <summary>Stable release version</summary>
         Stable = 4,
     }
 
-    /// <summary>
-    /// The status of current assembly.
-    /// </summary>
+    /// <summary>The status of current assembly.</summary>
     /// <example>
     /// [assembly: AssemblyStatus(ReleaseMode.Stable)].
     /// </example>
@@ -60,18 +46,14 @@ namespace DotNetNuke.Application
     {
         private readonly ReleaseMode releaseMode;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyStatusAttribute" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AssemblyStatusAttribute" /> class.</summary>
         /// <param name="releaseMode">The release mode.</param>
         public AssemblyStatusAttribute(ReleaseMode releaseMode)
         {
             this.releaseMode = releaseMode;
         }
 
-        /// <summary>
-        /// Gets status of current assembly.
-        /// </summary>
+        /// <summary>Gets status of current assembly.</summary>
         public ReleaseMode Status
         {
             get

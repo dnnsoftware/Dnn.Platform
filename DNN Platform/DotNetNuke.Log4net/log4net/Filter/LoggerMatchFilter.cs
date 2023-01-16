@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// Simple filter to match a string in the event's logger name.
-    /// </summary>
+    /// <summary>Simple filter to match a string in the event's logger name.</summary>
     /// <remarks>
     /// <para>
     /// The works very similar to the <see cref="LevelMatchFilter"/>. It admits two 
@@ -43,26 +41,18 @@ namespace log4net.Filter
     /// <author>Daniel Cazzulino</author>
     public class LoggerMatchFilter : FilterSkeleton
     {
-        /// <summary>
-        /// Flag to indicate the behavior when we have a match
-        /// </summary>
+        /// <summary>Flag to indicate the behavior when we have a match</summary>
         private bool m_acceptOnMatch = true;
 
-        /// <summary>
-        /// The logger name string to substring match against the event
-        /// </summary>
+        /// <summary>The logger name string to substring match against the event</summary>
         private string m_loggerToMatch;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         public LoggerMatchFilter()
         {
         }
 
-        /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="LoggerToMatch"/>
-        /// </summary>
+        /// <summary><see cref="FilterDecision.Accept"/> when matching <see cref="LoggerToMatch"/></summary>
         /// <remarks>
         /// <para>
         /// The <see cref="AcceptOnMatch"/> property is a flag that determines
@@ -80,9 +70,7 @@ namespace log4net.Filter
             set { this.m_acceptOnMatch = value; }
         }
 
-        /// <summary>
-        /// The <see cref="LoggingEvent.LoggerName"/> that the filter will match
-        /// </summary>
+        /// <summary>The <see cref="LoggingEvent.LoggerName"/> that the filter will match</summary>
         /// <remarks>
         /// <para>
         /// This filter will attempt to match this value against logger name in
@@ -98,9 +86,7 @@ namespace log4net.Filter
             set { this.m_loggerToMatch = value; }
         }
 
-        /// <summary>
-        /// Check if this filter should allow the event to be logged
-        /// </summary>
+        /// <summary>Check if this filter should allow the event to be logged</summary>
         /// <param name="loggingEvent">the event being logged</param>
         /// <returns>see remarks</returns>
         /// <remarks>

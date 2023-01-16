@@ -72,6 +72,9 @@ class IpFilterRow extends Component {
                             <div className="ip-filter-item item-row-ipAddress">
                                 {props.ipFilter}
                             </div>
+                            <div className="ip-filter-item item-row-notes">
+                                {props.notes}
+                            </div>
                             {props.id !== "add" && !props.readOnly &&
                                 <div className="ip-filter-item item-row-editButton">
                                     <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: deleteIcon }} onClick={this.props.onDelete.bind(this) }></div>
@@ -91,6 +94,7 @@ class IpFilterRow extends Component {
 IpFilterRow.propTypes = {
     ipFilterId: PropTypes.number,
     ipFilter: PropTypes.string,
+    notes: PropTypes.string,
     ruleType: PropTypes.number,
     OpenCollapse: PropTypes.func,
     Collapse: PropTypes.func,

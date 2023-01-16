@@ -10,14 +10,14 @@ namespace Dnn.PersonaBar.Security.Components
     using System.Web;
 
     using Dnn.PersonaBar.Security.Components.Checks;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
 
     public class AuditChecks
     {
-        private readonly IEnumerable<IAuditCheck> _auditChecks;
+        private readonly IEnumerable<IAuditCheck> auditChecks;
 
-        public AuditChecks(IApplicationStatusInfo applicationStatusInfo)
+        /// <summary>Initializes a new instance of the <see cref="AuditChecks"/> class.</summary>
+        public AuditChecks()
         {
             var checks = new List<IAuditCheck>
             {
@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Security.Components
                 new CheckSqlRisk(),
                 new CheckAllowableFileExtensions(),
                 new CheckHiddenSystemFiles(),
-                new CheckTelerikPresence(applicationStatusInfo),
+                new CheckTelerikPresence(),
                 new CheckUserProfilePage(),
             };
 
@@ -44,13 +44,13 @@ namespace Dnn.PersonaBar.Security.Components
                 checks.Insert(2, new CheckViewstatemac());
             }
 
-            this._auditChecks = checks.AsReadOnly();
+            this.auditChecks = checks.AsReadOnly();
         }
 
         public List<CheckResult> DoChecks(bool checkAll = false)
         {
             var results = new List<CheckResult>();
-            foreach (var check in this._auditChecks)
+            foreach (var check in this.auditChecks)
             {
                 try
                 {
@@ -64,6 +64,7 @@ namespace Dnn.PersonaBar.Security.Components
                     results.Add(result);
                 }
             }
+
             return results;
         }
 
@@ -71,7 +72,7 @@ namespace Dnn.PersonaBar.Security.Components
         {
             try
             {
-                var check = this._auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+                var check = this.auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
                 return check?.Execute();
             }
             catch (Exception)

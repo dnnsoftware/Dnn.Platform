@@ -14,9 +14,7 @@ namespace Dnn.PersonaBar.Library.DTO
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// Persona Bar Settings For User.
-    /// </summary>
+    /// <summary>Persona Bar Settings For User.</summary>
     [DataContract]
     public class UserSettings : Dictionary<string, object>, IXmlSerializable
     {
@@ -34,11 +32,13 @@ namespace Dnn.PersonaBar.Library.DTO
             }
         }
 
+        /// <inheritdoc/>
         public XmlSchema GetSchema()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public void ReadXml(XmlReader reader)
         {
             bool wasEmpty = reader.IsEmptyElement;
@@ -60,6 +60,7 @@ namespace Dnn.PersonaBar.Library.DTO
             }
         }
 
+        /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("data");
