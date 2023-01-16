@@ -13,15 +13,11 @@ namespace Dnn.PersonaBar.Library.AppEvents
     /// </summary>
     public interface IAppEvents
     {
-        /// <summary>
-        /// Method called after the application starts to perform any required startup actions by the implemetor.
-        /// </summary>
+        /// <summary>Method called after the application starts to perform any required startup actions by the implemetor.</summary>
         /// <remarks>This method must not used multi-threading and must perform it's task as fast as possible.</remarks>
         void ApplicationBegin();
 
-        /// <summary>
-        /// Method called before the application stops to perform any required shutdown actions by the implemetor.
-        /// </summary>
+        /// <summary>Method called before the application stops to perform any required shutdown actions by the implemetor.</summary>
         /// <remarks>This method must not used multi-threading and must perform it's task as fast as possible.</remarks>
         void ApplicationEnd();
     }

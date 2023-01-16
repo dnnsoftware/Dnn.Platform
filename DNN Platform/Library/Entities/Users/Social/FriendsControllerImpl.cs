@@ -19,12 +19,8 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         // {
         // }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AcceptFriend - Current User accepts a Friend Request to the Target User.
-        /// </summary>
+        /// <summary>AcceptFriend - Current User accepts a Friend Request to the Target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
-        /// -----------------------------------------------------------------------------
         public void AcceptFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
@@ -39,31 +35,23 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship, initiatingUser.PortalID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddFriend - Current User initiates a Friend Request to the Target User.
-        /// </summary>
+        /// <summary>AddFriend - Current User initiates a Friend Request to the Target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void AddFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
             this.AddFriend(initiatingUser, targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddFriend - Initiating User initiates a Friend Request to the Target User.
-        /// </summary>
+        /// <summary>AddFriend - Initiating User initiates a Friend Request to the Target User.</summary>
         /// <param name="initiatingUser">UserInfo for Initiating User.</param>
         /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void AddFriend(UserInfo initiatingUser, UserInfo targetUser)
         {
             Requires.NotNull("user1", initiatingUser);
@@ -88,25 +76,17 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             EventManager.Instance.OnFriendshipRequested(new RelationshipEventArgs(userRelationship, initiatingUser.PortalID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteFriend - Current User deletes a friend relationship with the target User.
-        /// </summary>
+        /// <summary>DeleteFriend - Current User deletes a friend relationship with the target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
-        /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
             this.DeleteFriend(initiatingUser, targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteFriend - Initiating User deletes a friend relationship with the target User.
-        /// </summary>
+        /// <summary>DeleteFriend - Initiating User deletes a friend relationship with the target User.</summary>
         /// <param name="initiatingUser">UserInfo for Initiating User.</param>
         /// <param name="targetUser">UserInfo for Target User.</param>
-        /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo initiatingUser, UserInfo targetUser)
         {
             Requires.NotNull("user1", initiatingUser);

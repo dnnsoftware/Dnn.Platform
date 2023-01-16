@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Business Layer to manage Messaging. Also contains CRUD methods.
-    /// </summary>
+    /// <summary>Business Layer to manage Messaging. Also contains CRUD methods.</summary>
     public class InternalMessagingController : ServiceLocator<IInternalMessagingController, InternalMessagingController>
     {
         /// <inheritdoc/>

@@ -23,9 +23,7 @@ using System.IO;
 
 namespace log4net.DateFormatter
 {
-    /// <summary>
-    /// Render a <see cref="DateTime"/> as a string.
-    /// </summary>
+    /// <summary>Render a <see cref="DateTime"/> as a string.</summary>
     /// <remarks>
     /// <para>
     /// Interface to abstract the rendering of a <see cref="DateTime"/>
@@ -40,9 +38,7 @@ namespace log4net.DateFormatter
     /// <author>Gert Driesen</author>
     public interface IDateFormatter
     {
-        /// <summary>
-        /// Formats the specified date as a string.
-        /// </summary>
+        /// <summary>Formats the specified date as a string.</summary>
         /// <param name="dateToFormat">The date to format.</param>
         /// <param name="writer">The writer to write to.</param>
         /// <remarks>

@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.OutputCache
     {
         private Stream captureStream;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.</summary>
         /// <param name="filterChain"></param>
         /// <param name="cacheKey"></param>
         /// <param name="cacheDuration"></param>

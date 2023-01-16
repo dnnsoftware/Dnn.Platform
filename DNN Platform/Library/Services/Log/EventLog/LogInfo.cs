@@ -15,9 +15,7 @@ namespace DotNetNuke.Services.Log.EventLog
     [Serializable]
     public partial class LogInfo : ILogInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LogInfo"/> class.</summary>
         public LogInfo()
         {
             ((ILogInfo)this).LogGuid = Guid.NewGuid().ToString();
@@ -31,9 +29,7 @@ namespace DotNetNuke.Services.Log.EventLog
             this.Exception = new ExceptionInfo();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LogInfo"/> class.</summary>
         /// <param name="content"></param>
         public LogInfo(string content)
             : this()

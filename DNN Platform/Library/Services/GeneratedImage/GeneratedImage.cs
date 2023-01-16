@@ -19,17 +19,13 @@ namespace DotNetNuke.Services.GeneratedImage
         private string timestamp;
         private string imageHandlerUrl;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeneratedImage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GeneratedImage"/> class.</summary>
         public GeneratedImage()
         {
             this.Parameters = new List<ImageParameter>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeneratedImage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GeneratedImage"/> class.</summary>
         /// <param name="context"></param>
         /// <param name="bindingContainer"></param>
         internal GeneratedImage(HttpContextBase context, Control bindingContainer)

@@ -22,9 +22,7 @@ using System.IO;
 
 namespace log4net.Util.PatternStringConverters
 {
-    /// <summary>
-    /// Property pattern converter
-    /// </summary>
+    /// <summary>Property pattern converter</summary>
     /// <remarks>
     /// <para>
     /// This pattern converter reads the thread and global properties.
@@ -42,9 +40,7 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal sealed class PropertyPatternConverter : PatternConverter 
     {
-        /// <summary>
-        /// Write the property value to the output
-        /// </summary>
+        /// <summary>Write the property value to the output</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="state">null, state is not set</param>
         /// <remarks>

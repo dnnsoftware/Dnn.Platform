@@ -11,12 +11,10 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   LocaleSelectorControl is a user control that provides all the server code to manage
     ///   localisation selection.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

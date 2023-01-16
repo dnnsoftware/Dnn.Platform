@@ -18,9 +18,7 @@ namespace Dnn.ExportImport.Components.Services
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
-    /// <summary>
-    /// Service to export/import portal data.
-    /// </summary>
+    /// <summary>Service to export/import portal data.</summary>
     public class PortalExportService : BasePortableService
     {
         /// <inheritdoc/>

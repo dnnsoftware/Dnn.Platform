@@ -4,19 +4,13 @@
 
 namespace DNNConnect.CKEditorProvider.Constants
 {
-    /// <summary>
-    /// Image Browser Mode.
-    /// </summary>
+    /// <summary>Image Browser Mode.</summary>
     public enum ImageButtonType
     {
-        /// <summary>
-        /// The standard button.
-        /// </summary>
+        /// <summary>The standard button.</summary>
         StandardButton = 0,
 
-        /// <summary>
-        /// easy image button
-        /// </summary>
+        /// <summary>easy image button</summary>
         EasyImageButton = 1,
     }
 }

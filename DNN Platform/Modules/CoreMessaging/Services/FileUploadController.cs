@@ -18,18 +18,14 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Web.Api.Internal;
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Provides a file upload web service.
-    /// </summary>
+    /// <summary>Provides a file upload web service.</summary>
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private readonly IFileManager fileManager = FileManager.Instance;
         private readonly IFolderManager folderManager = FolderManager.Instance;
 
-        /// <summary>
-        /// Attempts to upload a file.
-        /// </summary>
+        /// <summary>Attempts to upload a file.</summary>
         /// <returns>A collection of <see cref="FilesStatus"/>.</returns>
         [DnnAuthorize]
         [HttpPost]

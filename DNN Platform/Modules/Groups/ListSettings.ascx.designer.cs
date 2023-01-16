@@ -15,97 +15,73 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class ListSettings {
-        /// <summary>
-        /// chkUserGroups control.
-        /// </summary>
+        /// <summary>chkUserGroups control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkUserGroups;
-        /// <summary>
-        /// drpRoleGroup control.
-        /// </summary>
+        /// <summary>drpRoleGroup control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpRoleGroup;
-        /// <summary>
-        /// drpViewMode control.
-        /// </summary>
+        /// <summary>drpViewMode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpViewMode;
-        /// <summary>
-        /// drpGroupViewPage control.
-        /// </summary>
+        /// <summary>drpGroupViewPage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpGroupViewPage;
-        /// <summary>
-        /// txtListTemplate control.
-        /// </summary>
+        /// <summary>txtListTemplate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtListTemplate;
-        /// <summary>
-        /// txtViewTemplate control.
-        /// </summary>
+        /// <summary>txtViewTemplate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtViewTemplate;
-        /// <summary>
-        /// lstSortField control.
-        /// </summary>
+        /// <summary>lstSortField control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList lstSortField;
-        /// <summary>
-        /// radSortDirection control.
-        /// </summary>
+        /// <summary>radSortDirection control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList radSortDirection;
-        /// <summary>
-        /// txtPageSize control.
-        /// </summary>
+        /// <summary>txtPageSize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPageSize;
-        /// <summary>
-        /// rangePageSize control.
-        /// </summary>
+        /// <summary>rangePageSize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rangePageSize;
-        /// <summary>
-        /// chkEnableSearch control.
-        /// </summary>
+        /// <summary>chkEnableSearch control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkEnableSearch;
-        /// <summary>
-        /// chkGroupModeration control.
-        /// </summary>
+        /// <summary>chkGroupModeration control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

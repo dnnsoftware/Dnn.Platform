@@ -16,9 +16,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for DataCacheTests.
-    /// </summary>
+    /// <summary>  Summary description for DataCacheTests.</summary>
     [TestFixture]
     public class DataCacheTests
     {

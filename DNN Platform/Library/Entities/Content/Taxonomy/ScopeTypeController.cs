@@ -11,26 +11,20 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Data;
 
-    /// <summary>
-    /// ScopeTypeController provides the business layer of ScopeType.
-    /// </summary>
+    /// <summary>ScopeTypeController provides the business layer of ScopeType.</summary>
     /// <seealso cref="TermController"/>
     public class ScopeTypeController : IScopeTypeController
     {
         private const int CacheTimeOut = 20;
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeTypeController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
         public ScopeTypeController()
             : this(Util.GetDataService())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeTypeController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
         /// <param name="dataService"></param>
         public ScopeTypeController(IDataService dataService)
         {

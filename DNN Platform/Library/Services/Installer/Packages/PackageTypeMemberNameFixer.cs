@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Installer.Packages
     [Serializable]
     public class PackageTypeMemberNameFixer
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageTypeMemberNameFixer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PackageTypeMemberNameFixer"/> class.</summary>
         public PackageTypeMemberNameFixer()
         {
             this.PackageType = string.Empty;

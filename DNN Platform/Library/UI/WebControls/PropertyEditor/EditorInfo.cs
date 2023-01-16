@@ -10,22 +10,13 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      EditorInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The EditorInfo class provides a helper class for the Property Editor.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The EditorInfo class provides a helper class for the Property Editor.</summary>
     public class EditorInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EditorInfo"/> class.</summary>
         public EditorInfo()
         {
             this.Visible = true;
@@ -61,14 +52,9 @@ namespace DotNetNuke.UI.WebControls
 
         public ProfileVisibility ProfileVisibility { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetEditor gets the appropriate Editor based on ID
-        /// properties.
-        /// </summary>
+        /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
         /// <param name="editorType">The Id of the Editor.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The non-localized name of the editor.</returns>
         public static string GetEditor(int editorType)
         {
             string editor = "UseSystemType";

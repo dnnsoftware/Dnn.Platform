@@ -7,17 +7,12 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ContainerComponentWriter class handles creating the manifest for Container
     /// Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ContainerComponentWriter : SkinComponentWriter
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainerComponentWriter"/> class.
         /// Constructs the ContainerComponentWriter.
@@ -26,18 +21,13 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">The Base Path for the files.</param>
         /// <param name="files">A Dictionary of files.</param>
         /// <param name="package"></param>
-        /// -----------------------------------------------------------------------------
         public ContainerComponentWriter(string containerName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(containerName, basePath, files, package)
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("containerFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("containerFiles").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -46,12 +36,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("Skin").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Skin").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get
@@ -60,12 +46,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("containerFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("containerFile").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -74,12 +56,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the SkinName Node ("containerName").
-        /// </summary>
+        /// <summary>Gets the name of the SkinName Node ("containerName").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string SkinNameNodeName
         {
             get

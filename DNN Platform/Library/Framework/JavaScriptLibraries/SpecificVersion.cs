@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
-    /// <summary>
-    /// determine which version of a script is to be used.
-    /// </summary>
+    /// <summary>determine which version of a script is to be used.</summary>
     public enum SpecificVersion
     {
         /// <summary>The most recent version</summary>

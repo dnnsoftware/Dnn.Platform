@@ -6,9 +6,7 @@ namespace DotNetNuke.Services.Syndication
     using System.ComponentModel;
     using System.Web.UI;
 
-    /// <summary>
-    ///   RSS data source control implementation, including the designer.
-    /// </summary>
+    /// <summary>  RSS data source control implementation, including the designer.</summary>
     [DefaultProperty("Url")]
     public class RssDataSource : DataSourceControl
     {

@@ -14,9 +14,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
     using DotNetNuke.Prompt;
     using DotNetNuke.Security.Permissions;
 
-    /// <summary>
-    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
-    /// </summary>
+    /// <summary>This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.</summary>
     [ConsoleCommand("list-modules", Constants.CommandCategoryKeys.Modules, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommand
     {

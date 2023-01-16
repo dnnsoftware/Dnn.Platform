@@ -33,12 +33,7 @@ namespace DotNetNuke.UI.UserControls
         private string myFileName = "Help.ascx";
         private string key;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -122,12 +117,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdCancel_Click runs when the cancel Button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>cmdCancel_Click runs when the cancel Button is clicked.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming

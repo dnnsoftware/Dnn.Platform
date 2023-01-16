@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Tokenattributes;
 
-    /// <summary>
-    /// SynonymFilter.
-    /// </summary>
+    /// <summary>SynonymFilter.</summary>
     /// <remarks>Implementation is inspired by sample code in Manning Lucene In Action 2nd Edition, pg. 133.</remarks>
     internal sealed class SynonymFilter : TokenFilter
     {
@@ -24,9 +22,7 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly PositionIncrementAttribute posIncrAtt;
         private State current;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SynonymFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SynonymFilter"/> class.</summary>
         /// <param name="input"></param>
         public SynonymFilter(TokenStream input)
             : base(input)

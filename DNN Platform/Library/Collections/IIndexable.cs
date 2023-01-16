@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Collections
 {
-    /// <summary>
-    /// This interface is used to make a class indexable.
-    /// </summary>
+    /// <summary>This interface is used to make a class indexable.</summary>
     /// <example>
     /// <code>
     /// var phone = userInfo.Profile["Telephone"];
@@ -14,9 +12,7 @@ namespace DotNetNuke.Collections
     /// </example>
     internal interface IIndexable
     {
-        /// <summary>
-        /// Returns an object that depends on the string provided for the index.
-        /// </summary>
+        /// <summary>Returns an object that depends on the string provided for the index.</summary>
         /// <param name="name">The string that represents the index value.</param>
         /// <returns>An object.</returns>
         object this[string name] { get; set; }

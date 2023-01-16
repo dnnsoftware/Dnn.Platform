@@ -14,14 +14,10 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// The process image.
-    /// </summary>
+    /// <summary>The process image.</summary>
     public class ProcessImage : IHttpHandler
     {
-        /// <summary>
-        /// Gets a value indicating whether IsReusable.
-        /// </summary>
+        /// <summary>Gets a value indicating whether IsReusable.</summary>
         public bool IsReusable
         {
             get
@@ -30,9 +26,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>
-        /// The get thumb abort.
-        /// </summary>
+        /// <summary>The get thumb abort.</summary>
         /// <returns>
         /// Returns abort.
         /// </returns>
@@ -41,9 +35,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             return false;
         }
 
-        /// <summary>
-        /// The process request.
-        /// </summary>
+        /// <summary>The process request.</summary>
         /// <param name="context">
         /// The context.
         /// </param>
@@ -164,9 +156,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             img.Dispose();
         }
 
-        /// <summary>
-        /// Generates the New File Path.
-        /// </summary>
+        /// <summary>Generates the New File Path.</summary>
         /// <param name="file">
         /// The Original Image.
         /// </param>
@@ -196,9 +186,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             return sNewFilePath;
         }
 
-        /// <summary>
-        /// The image copy.
-        /// </summary>
+        /// <summary>The image copy.</summary>
         /// <param name="srcBitmap">
         /// The src bitmap.
         /// </param>
@@ -238,9 +226,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             return bmp;
         }
 
-        /// <summary>
-        /// Method to rotate an image either clockwise or counter-clockwise.
-        /// </summary>
+        /// <summary>Method to rotate an image either clockwise or counter-clockwise.</summary>
         /// <param name="img">
         /// the image to be rotated.
         /// </param>
@@ -284,9 +270,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             return FolderPermissionController.HasFolderPermission(portalId, relativePath, "WRITE");
         }
 
-        /// <summary>
-        /// The resize image.
-        /// </summary>
+        /// <summary>The resize image.</summary>
         /// <param name="img">
         /// The img.
         /// </param>

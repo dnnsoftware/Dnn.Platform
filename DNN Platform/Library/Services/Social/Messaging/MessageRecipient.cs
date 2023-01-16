@@ -12,23 +12,16 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging
     /// Class:      MessageRecipient
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The MessageRecipient class is used to store the details of all recipients of a particular message.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The MessageRecipient class is used to store the details of all recipients of a particular message.</summary>
     [Serializable]
     public class MessageRecipient : BaseEntityInfo, IHydratable
     {
         private int recipientID = -1;
 
-        /// <summary>
-        /// Gets or sets recipientID - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets recipientID - The primary key.</summary>
         [XmlAttribute]
         public int RecipientID
         {
@@ -43,33 +36,23 @@ namespace DotNetNuke.Services.Social.Messaging
             }
         }
 
-        /// <summary>
-        /// Gets or sets the messageID of who sent the message to this recipient.
-        /// </summary>
+        /// <summary>Gets or sets the messageID of who sent the message to this recipient.</summary>
         [XmlAttribute]
         public int MessageID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the UserID of the user receiving the message.
-        /// </summary>
+        /// <summary>Gets or sets the UserID of the user receiving the message.</summary>
         [XmlAttribute]
         public int UserID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is Message read. True: Yes, False: No.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether is Message read. True: Yes, False: No.</summary>
         [XmlAttribute]
         public bool Read { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is Message archived. True: Yes, False: No.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether is Message archived. True: Yes, False: No.</summary>
         [XmlAttribute]
         public bool Archived { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -85,9 +68,7 @@ namespace DotNetNuke.Services.Social.Messaging
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

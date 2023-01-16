@@ -22,9 +22,7 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         public string ValidationMessage { get; private set; }
 
-        /// <summary>
-        /// Gets resource key for the result html.
-        /// </summary>
+        /// <summary>Gets resource key for the result html.</summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
         protected IPortalSettings PortalSettings { get; private set; }

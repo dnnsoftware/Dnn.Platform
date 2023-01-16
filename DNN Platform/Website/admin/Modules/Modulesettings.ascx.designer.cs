@@ -15,761 +15,571 @@ namespace DotNetNuke.Modules.Admin.Modules {
     
     
     public partial class ModuleSettingsPage {
-        /// <summary>
-        /// specificSettingsTab control.
-        /// </summary>
+        /// <summary>specificSettingsTab control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl specificSettingsTab;
-        /// <summary>
-        /// hlSpecificSettings control.
-        /// </summary>
+        /// <summary>hlSpecificSettings control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hlSpecificSettings;
-        /// <summary>
-        /// cultureRow control.
-        /// </summary>
+        /// <summary>cultureRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cultureRow;
-        /// <summary>
-        /// cultureLabel control.
-        /// </summary>
+        /// <summary>cultureLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl cultureLabel;
-        /// <summary>
-        /// cultureLanguageLabel control.
-        /// </summary>
+        /// <summary>cultureLanguageLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLanguageLabel cultureLanguageLabel;
-        /// <summary>
-        /// plFriendlyName control.
-        /// </summary>
+        /// <summary>plFriendlyName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFriendlyName;
-        /// <summary>
-        /// txtFriendlyName control.
-        /// </summary>
+        /// <summary>txtFriendlyName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFriendlyName;
-        /// <summary>
-        /// plTitle control.
-        /// </summary>
+        /// <summary>plTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTitle;
-        /// <summary>
-        /// txtTitle control.
-        /// </summary>
+        /// <summary>txtTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
-        /// <summary>
-        /// plTags control.
-        /// </summary>
+        /// <summary>plTags control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTags;
-        /// <summary>
-        /// termsSelector control.
-        /// </summary>
+        /// <summary>termsSelector control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.TermsSelector termsSelector;
-        /// <summary>
-        /// rowAllTabs control.
-        /// </summary>
+        /// <summary>rowAllTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rowAllTabs;
-        /// <summary>
-        /// plAllTabs control.
-        /// </summary>
+        /// <summary>plAllTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAllTabs;
-        /// <summary>
-        /// chkAllTabs control.
-        /// </summary>
+        /// <summary>chkAllTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAllTabs;
-        /// <summary>
-        /// trnewPages control.
-        /// </summary>
+        /// <summary>trnewPages control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl trnewPages;
-        /// <summary>
-        /// plNewTabs control.
-        /// </summary>
+        /// <summary>plNewTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plNewTabs;
-        /// <summary>
-        /// chkNewTabs control.
-        /// </summary>
+        /// <summary>chkNewTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNewTabs;
-        /// <summary>
-        /// allowIndexRow control.
-        /// </summary>
+        /// <summary>allowIndexRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl allowIndexRow;
-        /// <summary>
-        /// AllowIndexLabel control.
-        /// </summary>
+        /// <summary>AllowIndexLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl AllowIndexLabel;
-        /// <summary>
-        /// chkAllowIndex control.
-        /// </summary>
+        /// <summary>chkAllowIndex control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAllowIndex;
-        /// <summary>
-        /// isShareableRow control.
-        /// </summary>
+        /// <summary>isShareableRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl isShareableRow;
-        /// <summary>
-        /// isShareableLabel control.
-        /// </summary>
+        /// <summary>isShareableLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl isShareableLabel;
-        /// <summary>
-        /// isShareableCheckBox control.
-        /// </summary>
+        /// <summary>isShareableCheckBox control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox isShareableCheckBox;
-        /// <summary>
-        /// isShareableViewOnlyLabel control.
-        /// </summary>
+        /// <summary>isShareableViewOnlyLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl isShareableViewOnlyLabel;
-        /// <summary>
-        /// isShareableViewOnlyCheckBox control.
-        /// </summary>
+        /// <summary>isShareableViewOnlyCheckBox control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox isShareableViewOnlyCheckBox;
-        /// <summary>
-        /// plAdminBorder control.
-        /// </summary>
+        /// <summary>plAdminBorder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAdminBorder;
-        /// <summary>
-        /// chkAdminBorder control.
-        /// </summary>
+        /// <summary>chkAdminBorder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAdminBorder;
-        /// <summary>
-        /// plHeader control.
-        /// </summary>
+        /// <summary>plHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plHeader;
-        /// <summary>
-        /// txtHeader control.
-        /// </summary>
+        /// <summary>txtHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHeader;
-        /// <summary>
-        /// plFooter control.
-        /// </summary>
+        /// <summary>plFooter control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFooter;
-        /// <summary>
-        /// txtFooter control.
-        /// </summary>
+        /// <summary>txtFooter control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFooter;
-        /// <summary>
-        /// plStartDate control.
-        /// </summary>
+        /// <summary>plStartDate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plStartDate;
-        /// <summary>
-        /// startDatePicker control.
-        /// </summary>
+        /// <summary>startDatePicker control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker startDatePicker;
-        /// <summary>
-        /// plEndDate control.
-        /// </summary>
+        /// <summary>plEndDate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plEndDate;
-        /// <summary>
-        /// endDatePicker control.
-        /// </summary>
+        /// <summary>endDatePicker control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker endDatePicker;
-        /// <summary>
-        /// plMoniker control.
-        /// </summary>
+        /// <summary>plMoniker control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plMoniker;
-        /// <summary>
-        /// txtMoniker control.
-        /// </summary>
+        /// <summary>txtMoniker control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMoniker;
-        /// <summary>
-        /// dgOnTabs control.
-        /// </summary>
+        /// <summary>dgOnTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgOnTabs;
-        /// <summary>
-        /// permissionsRow control.
-        /// </summary>
+        /// <summary>permissionsRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl permissionsRow;
-        /// <summary>
-        /// dgPermissions control.
-        /// </summary>
+        /// <summary>dgPermissions control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Security.Permissions.Controls.ModulePermissionsGrid dgPermissions;
-        /// <summary>
-        /// chkInheritPermissions control.
-        /// </summary>
+        /// <summary>chkInheritPermissions control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkInheritPermissions;
-        /// <summary>
-        /// plIcon control.
-        /// </summary>
+        /// <summary>plIcon control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plIcon;
-        /// <summary>
-        /// ctlIcon control.
-        /// </summary>
+        /// <summary>ctlIcon control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
-        /// <summary>
-        /// plAlign control.
-        /// </summary>
+        /// <summary>plAlign control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAlign;
-        /// <summary>
-        /// cboAlign control.
-        /// </summary>
+        /// <summary>cboAlign control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList cboAlign;
-        /// <summary>
-        /// plColor control.
-        /// </summary>
+        /// <summary>plColor control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plColor;
-        /// <summary>
-        /// txtColor control.
-        /// </summary>
+        /// <summary>txtColor control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtColor;
-        /// <summary>
-        /// plBorder control.
-        /// </summary>
+        /// <summary>plBorder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plBorder;
-        /// <summary>
-        /// txtBorder control.
-        /// </summary>
+        /// <summary>txtBorder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBorder;
-        /// <summary>
-        /// valBorder control.
-        /// </summary>
+        /// <summary>valBorder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valBorder;
-        /// <summary>
-        /// plVisibility control.
-        /// </summary>
+        /// <summary>plVisibility control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plVisibility;
-        /// <summary>
-        /// cboVisibility control.
-        /// </summary>
+        /// <summary>cboVisibility control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList cboVisibility;
-        /// <summary>
-        /// plDisplayTitle control.
-        /// </summary>
+        /// <summary>plDisplayTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDisplayTitle;
-        /// <summary>
-        /// chkDisplayTitle control.
-        /// </summary>
+        /// <summary>chkDisplayTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisplayTitle;
-        /// <summary>
-        /// plDisplayPrint control.
-        /// </summary>
+        /// <summary>plDisplayPrint control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDisplayPrint;
-        /// <summary>
-        /// chkDisplayPrint control.
-        /// </summary>
+        /// <summary>chkDisplayPrint control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisplayPrint;
-        /// <summary>
-        /// plDisplaySyndicate control.
-        /// </summary>
+        /// <summary>plDisplaySyndicate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDisplaySyndicate;
-        /// <summary>
-        /// chkDisplaySyndicate control.
-        /// </summary>
+        /// <summary>chkDisplaySyndicate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisplaySyndicate;
-        /// <summary>
-        /// plWebSlice control.
-        /// </summary>
+        /// <summary>plWebSlice control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSlice;
-        /// <summary>
-        /// chkWebSlice control.
-        /// </summary>
+        /// <summary>chkWebSlice control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkWebSlice;
-        /// <summary>
-        /// webSliceTitle control.
-        /// </summary>
+        /// <summary>webSliceTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl webSliceTitle;
-        /// <summary>
-        /// plWebSliceTitle control.
-        /// </summary>
+        /// <summary>plWebSliceTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSliceTitle;
-        /// <summary>
-        /// txtWebSliceTitle control.
-        /// </summary>
+        /// <summary>txtWebSliceTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWebSliceTitle;
-        /// <summary>
-        /// webSliceExpiry control.
-        /// </summary>
+        /// <summary>webSliceExpiry control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl webSliceExpiry;
-        /// <summary>
-        /// plWebSliceExpiry control.
-        /// </summary>
+        /// <summary>plWebSliceExpiry control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSliceExpiry;
-        /// <summary>
-        /// diWebSliceExpiry control.
-        /// </summary>
+        /// <summary>diWebSliceExpiry control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker diWebSliceExpiry;
-        /// <summary>
-        /// valWebSliceExpiry control.
-        /// </summary>
+        /// <summary>valWebSliceExpiry control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valWebSliceExpiry;
-        /// <summary>
-        /// webSliceTTL control.
-        /// </summary>
+        /// <summary>webSliceTTL control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl webSliceTTL;
-        /// <summary>
-        /// plWebSliceTTL control.
-        /// </summary>
+        /// <summary>plWebSliceTTL control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSliceTTL;
-        /// <summary>
-        /// txtWebSliceTTL control.
-        /// </summary>
+        /// <summary>txtWebSliceTTL control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWebSliceTTL;
-        /// <summary>
-        /// valWebSliceTTL control.
-        /// </summary>
+        /// <summary>valWebSliceTTL control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valWebSliceTTL;
-        /// <summary>
-        /// plModuleContainer control.
-        /// </summary>
+        /// <summary>plModuleContainer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plModuleContainer;
-        /// <summary>
-        /// moduleContainerCombo control.
-        /// </summary>
+        /// <summary>moduleContainerCombo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnSkinComboBox moduleContainerCombo;
-        /// <summary>
-        /// lblCacheProvider control.
-        /// </summary>
+        /// <summary>lblCacheProvider control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheProvider;
-        /// <summary>
-        /// cboCacheProvider control.
-        /// </summary>
+        /// <summary>cboCacheProvider control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboCacheProvider;
-        /// <summary>
-        /// lblCacheInherited control.
-        /// </summary>
+        /// <summary>lblCacheInherited control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCacheInherited;
-        /// <summary>
-        /// divCacheDuration control.
-        /// </summary>
+        /// <summary>divCacheDuration control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCacheDuration;
-        /// <summary>
-        /// cacheWarningRow control.
-        /// </summary>
+        /// <summary>cacheWarningRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel cacheWarningRow;
-        /// <summary>
-        /// lblCacheDurationWarning control.
-        /// </summary>
+        /// <summary>lblCacheDurationWarning control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCacheDurationWarning;
-        /// <summary>
-        /// lblCacheDuration control.
-        /// </summary>
+        /// <summary>lblCacheDuration control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheDuration;
-        /// <summary>
-        /// txtCacheDuration control.
-        /// </summary>
+        /// <summary>txtCacheDuration control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCacheDuration;
-        /// <summary>
-        /// valCacheTime control.
-        /// </summary>
+        /// <summary>valCacheTime control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valCacheTime;
-        /// <summary>
-        /// plDefault control.
-        /// </summary>
+        /// <summary>plDefault control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDefault;
-        /// <summary>
-        /// chkDefault control.
-        /// </summary>
+        /// <summary>chkDefault control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDefault;
-        /// <summary>
-        /// plAllModules control.
-        /// </summary>
+        /// <summary>plAllModules control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAllModules;
-        /// <summary>
-        /// chkAllModules control.
-        /// </summary>
+        /// <summary>chkAllModules control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAllModules;
-        /// <summary>
-        /// rowTab control.
-        /// </summary>
+        /// <summary>rowTab control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rowTab;
-        /// <summary>
-        /// plTab control.
-        /// </summary>
+        /// <summary>plTab control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTab;
-        /// <summary>
-        /// cboTab control.
-        /// </summary>
+        /// <summary>cboTab control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboTab;
-        /// <summary>
-        /// fsSpecific control.
-        /// </summary>
+        /// <summary>fsSpecific control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl fsSpecific;
-        /// <summary>
-        /// pnlSpecific control.
-        /// </summary>
+        /// <summary>pnlSpecific control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSpecific;
-        /// <summary>
-        /// cmdUpdate control.
-        /// </summary>
+        /// <summary>cmdUpdate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        /// <summary>
-        /// cmdDelete control.
-        /// </summary>
+        /// <summary>cmdDelete control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
-        /// <summary>
-        /// cancelHyperLink control.
-        /// </summary>
+        /// <summary>cancelHyperLink control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink cancelHyperLink;
-        /// <summary>
-        /// ctlAudit control.
-        /// </summary>
+        /// <summary>ctlAudit control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

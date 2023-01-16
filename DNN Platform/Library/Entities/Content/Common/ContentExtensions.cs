@@ -13,15 +13,11 @@ namespace DotNetNuke.Entities.Content.Common
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Taxonomy;
 
-    /// <summary>
-    /// Extension methods for Term, Vocabulary, ContentItem.
-    /// </summary>
+    /// <summary>Extension methods for Term, Vocabulary, ContentItem.</summary>
     /// <seealso cref="Term"/>
     public static class ContentExtensions
     {
-        /// <summary>
-        /// Toes the delimitted string.
-        /// </summary>
+        /// <summary>Toes the delimitted string.</summary>
         /// <param name="terms">The terms.</param>
         /// <param name="delimitter">The delimitter.</param>
         /// <returns>terms' name as a string and split with the given delimitter order by name A-Z.</returns>
@@ -44,9 +40,7 @@ namespace DotNetNuke.Entities.Content.Common
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Toes the delimitted string.
-        /// </summary>
+        /// <summary>Toes the delimitted string.</summary>
         /// <param name="terms">The terms.</param>
         /// <param name="format">The format.</param>
         /// <param name="delimitter">The delimitter.</param>
@@ -70,9 +64,7 @@ namespace DotNetNuke.Entities.Content.Common
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Gets the child terms.
-        /// </summary>
+        /// <summary>Gets the child terms.</summary>
         /// <param name="term1">The term.</param>
         /// <param name="termId">The term id.</param>
         /// <param name="vocabularyId">The vocabulary id.</param>
@@ -86,9 +78,7 @@ namespace DotNetNuke.Entities.Content.Common
             return terms.ToList();
         }
 
-        /// <summary>
-        /// Gets the vocabulary.
-        /// </summary>
+        /// <summary>Gets the vocabulary.</summary>
         /// <param name="term">The term.</param>
         /// <param name="vocabularyId">The vocabulary id.</param>
         /// <returns>Vocabulary.</returns>
@@ -99,9 +89,7 @@ namespace DotNetNuke.Entities.Content.Common
             return (from v in ctl.GetVocabularies() where v.VocabularyId == vocabularyId select v).SingleOrDefault();
         }
 
-        /// <summary>
-        /// Gets the type of the scope.
-        /// </summary>
+        /// <summary>Gets the type of the scope.</summary>
         /// <param name="voc">The voc.</param>
         /// <param name="scopeTypeId">The scope type id.</param>
         /// <returns>scope type.</returns>
@@ -112,9 +100,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ctl.GetScopeTypes().Where(s => s.ScopeTypeId == scopeTypeId).SingleOrDefault();
         }
 
-        /// <summary>
-        /// Gets the terms by vocabularyId.
-        /// </summary>
+        /// <summary>Gets the terms by vocabularyId.</summary>
         /// <param name="voc">The voc.</param>
         /// <param name="vocabularyId">The vocabulary id.</param>
         /// <returns>term collection.</returns>
@@ -125,9 +111,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ctl.GetTermsByVocabulary(vocabularyId).ToList();
         }
 
-        /// <summary>
-        /// Gets the meta data.
-        /// </summary>
+        /// <summary>Gets the meta data.</summary>
         /// <param name="item">The item.</param>
         /// <param name="contentItemId">The content item id.</param>
         /// <returns>meta data collection.</returns>
@@ -148,9 +132,7 @@ namespace DotNetNuke.Entities.Content.Common
             return metaData;
         }
 
-        /// <summary>
-        /// Gets the terms by content item id.
-        /// </summary>
+        /// <summary>Gets the terms by content item id.</summary>
         /// <param name="item">The item.</param>
         /// <param name="contentItemId">The content item id.</param>
         /// <returns>term collection.</returns>

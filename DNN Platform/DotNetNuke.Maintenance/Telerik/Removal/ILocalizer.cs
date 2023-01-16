@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Removal
 {
-    /// <summary>
-    /// Utility interface to support simple localization.
-    /// </summary>
+    /// <summary>Utility interface to support simple localization.</summary>
     internal interface ILocalizer
     {
         /// <summary>

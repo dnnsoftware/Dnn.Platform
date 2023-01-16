@@ -6,17 +6,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System.Security.Cryptography;
 
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Project:    DotNetNuke
-    /// Class:      CryptographyUtils
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// CryptographyUtils is a Utility class that provides Cryptography Utility constants.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>CryptographyUtils is a Utility class that provides Cryptography Utility constants.</summary>
     public static class CryptographyUtils
     {
         private const string SHA1Cng = "System.Security.Cryptography.SHA1Cng";

@@ -28,9 +28,7 @@ using System.Xml;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// String keyed object map that is read only.
-    /// </summary>
+    /// <summary>String keyed object map that is read only.</summary>
     /// <remarks>
     /// <para>
     /// This collection is readonly and cannot be modified.
@@ -49,14 +47,10 @@ namespace log4net.Util
     [Serializable] public class ReadOnlyPropertiesDictionary : ISerializable, IDictionary
 #endif
     {
-        /// <summary>
-        /// The Hashtable used to store the properties data
-        /// </summary>
+        /// <summary>The Hashtable used to store the properties data</summary>
         private readonly Hashtable m_hashtable = new Hashtable();
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary" /> class.
@@ -66,9 +60,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Copy Constructor
-        /// </summary>
+        /// <summary>Copy Constructor</summary>
         /// <param name="propertiesDictionary">properties to copy</param>
         /// <remarks>
         /// <para>
@@ -84,9 +76,7 @@ namespace log4net.Util
         }
 
 #if !NETCF
-        /// <summary>
-        /// Deserialization constructor
-        /// </summary>
+        /// <summary>Deserialization constructor</summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
         /// <remarks>
@@ -105,9 +95,7 @@ namespace log4net.Util
         }
 #endif
 
-        /// <summary>
-        /// Gets the key names.
-        /// </summary>
+        /// <summary>Gets the key names.</summary>
         /// <returns>An array of all the keys.</returns>
         /// <remarks>
         /// <para>
@@ -121,9 +109,7 @@ namespace log4net.Util
             return keys;
         }
 
-        /// <summary>
-        /// Gets or sets the value of the  property with the specified key.
-        /// </summary>
+        /// <summary>Gets or sets the value of the  property with the specified key.</summary>
         /// <value>
         /// The value of the property with the specified key.
         /// </value>
@@ -141,9 +127,7 @@ namespace log4net.Util
             set { throw new NotSupportedException("This is a Read Only Dictionary and can not be modified"); }
         }
 
-        /// <summary>
-        /// Test if the dictionary contains a specified key
-        /// </summary>
+        /// <summary>Test if the dictionary contains a specified key</summary>
         /// <param name="key">the key to look for</param>
         /// <returns>true if the dictionary contains the specified key</returns>
         /// <remarks>
@@ -156,9 +140,7 @@ namespace log4net.Util
             return this.InnerHashtable.Contains(key);
         }
 
-        /// <summary>
-        /// The hashtable used to store the properties
-        /// </summary>
+        /// <summary>The hashtable used to store the properties</summary>
         /// <value>
         /// The internal collection used to store the properties
         /// </value>
@@ -173,9 +155,7 @@ namespace log4net.Util
         }
 
 #if !NETCF
-        /// <summary>
-        /// Serializes this object into the <see cref="SerializationInfo" /> provided.
-        /// </summary>
+        /// <summary>Serializes this object into the <see cref="SerializationInfo" /> provided.</summary>
         /// <param name="info">The <see cref="SerializationInfo" /> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         /// <remarks>
@@ -225,26 +205,20 @@ namespace log4net.Util
         }
 #endif
 
-        /// <summary>
-        /// See <see cref="IDictionary.GetEnumerator"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.GetEnumerator"/></summary>
         IDictionaryEnumerator IDictionary.GetEnumerator()
         {
             return this.InnerHashtable.GetEnumerator();
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.Remove"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.Remove"/></summary>
         /// <param name="key"></param>
         void IDictionary.Remove(object key)
         {
             throw new NotSupportedException("This is a Read Only Dictionary and can not be modified");
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.Contains"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.Contains"/></summary>
         /// <param name="key"></param>
         /// <returns></returns>
         bool IDictionary.Contains(object key)
@@ -252,17 +226,13 @@ namespace log4net.Util
             return this.InnerHashtable.Contains(key);
         }
 
-        /// <summary>
-        /// Remove all properties from the properties collection
-        /// </summary>
+        /// <summary>Remove all properties from the properties collection</summary>
         public virtual void Clear()
         {
             throw new NotSupportedException("This is a Read Only Dictionary and can not be modified");
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.Add"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.Add"/></summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         void IDictionary.Add(object key, object value)
@@ -270,17 +240,13 @@ namespace log4net.Util
             throw new NotSupportedException("This is a Read Only Dictionary and can not be modified");
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.IsReadOnly"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.IsReadOnly"/></summary>
         bool IDictionary.IsReadOnly
         {
             get { return true; }
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.this[object]"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.this[object]"/></summary>
         object IDictionary.this[object key]
         {
             get
@@ -298,33 +264,25 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.Values"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.Values"/></summary>
         ICollection IDictionary.Values
         {
             get { return this.InnerHashtable.Values; }
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.Keys"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.Keys"/></summary>
         ICollection IDictionary.Keys
         {
             get { return this.InnerHashtable.Keys; }
         }
 
-        /// <summary>
-        /// See <see cref="IDictionary.IsFixedSize"/>
-        /// </summary>
+        /// <summary>See <see cref="IDictionary.IsFixedSize"/></summary>
         bool IDictionary.IsFixedSize
         {
             get { return this.InnerHashtable.IsFixedSize; }
         }
 
-        /// <summary>
-        /// See <see cref="ICollection.CopyTo"/>
-        /// </summary>
+        /// <summary>See <see cref="ICollection.CopyTo"/></summary>
         /// <param name="array"></param>
         /// <param name="index"></param>
         void ICollection.CopyTo(Array array, int index)
@@ -332,33 +290,25 @@ namespace log4net.Util
             this.InnerHashtable.CopyTo(array, index);
         }
 
-        /// <summary>
-        /// See <see cref="ICollection.IsSynchronized"/>
-        /// </summary>
+        /// <summary>See <see cref="ICollection.IsSynchronized"/></summary>
         bool ICollection.IsSynchronized
         {
             get { return this.InnerHashtable.IsSynchronized; }
         }
 
-        /// <summary>
-        /// The number of properties in this collection
-        /// </summary>
+        /// <summary>The number of properties in this collection</summary>
         public int Count
         {
             get { return this.InnerHashtable.Count; }
         }
 
-        /// <summary>
-        /// See <see cref="ICollection.SyncRoot"/>
-        /// </summary>
+        /// <summary>See <see cref="ICollection.SyncRoot"/></summary>
         object ICollection.SyncRoot
         {
             get { return this.InnerHashtable.SyncRoot; }
         }
 
-        /// <summary>
-        /// See <see cref="IEnumerable.GetEnumerator"/>
-        /// </summary>
+        /// <summary>See <see cref="IEnumerable.GetEnumerator"/></summary>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)this.InnerHashtable).GetEnumerator();

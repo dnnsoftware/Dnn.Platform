@@ -23,9 +23,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
-    /// </summary>
+    /// <summary>Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.</summary>
     public class NotificationsController
                         : ServiceLocator<INotificationsController, NotificationsController>,
                         INotificationsController

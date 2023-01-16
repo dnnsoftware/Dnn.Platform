@@ -7,17 +7,13 @@ namespace DotNetNuke.Services.Syndication
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>
-    ///   RssHyperLink control - works with RssHttpHandler.
-    /// </summary>
+    /// <summary>  RssHyperLink control - works with RssHttpHandler.</summary>
     public class RssHyperLink : HyperLink
     {
         private string channelName;
         private bool includeUserName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RssHyperLink"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RssHyperLink"/> class.</summary>
         public RssHyperLink()
         {
             this.Text = "RSS";

@@ -14,9 +14,7 @@ namespace DotNetNuke.Web.Prompt
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
-    /// </summary>
+    /// <summary>This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.</summary>
     [ConsoleCommand("list-services", "Prompt_DebugCategory", "Prompt_ListServices_Description")]
     public class ListServices : ConsoleCommand
     {

@@ -13,9 +13,7 @@ namespace DotNetNuke.Entities.Urls
 
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// The UrlAction class keeps state of the current Request throughout the rewriting process.
-    /// </summary>
+    /// <summary>The UrlAction class keeps state of the current Request throughout the rewriting process.</summary>
     public class UrlAction
     {
         private List<string> licensedProviders;
@@ -23,9 +21,7 @@ namespace DotNetNuke.Entities.Urls
 
         // 829 add in constructor that works around physical path length restriction
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UrlAction"/> class.</summary>
         /// <param name="request"></param>
         public UrlAction(HttpRequest request)
         {
@@ -55,9 +51,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UrlAction"/> class.</summary>
         /// <param name="scheme"></param>
         /// <param name="applicationPath"></param>
         /// <param name="physicalPath"></param>
@@ -236,9 +230,7 @@ namespace DotNetNuke.Entities.Urls
             return this.licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
-        /// <summary>
-        /// Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).
-        /// </summary>
+        /// <summary>Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).</summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>
         public void SetOriginalPath(string path, FriendlyUrlSettings settings)

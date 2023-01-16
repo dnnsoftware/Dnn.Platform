@@ -15,9 +15,7 @@ namespace Dnn.PersonaBar.UI.UserControls {
     
     
     public partial class PersonaBarContainer {
-        /// <summary>
-        /// PersonaBarPanel control.
-        /// </summary>
+        /// <summary>PersonaBarPanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

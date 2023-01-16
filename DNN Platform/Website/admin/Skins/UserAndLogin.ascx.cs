@@ -32,9 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
         public bool ShowInErrorPage { get; set; }
 
         protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(this.PortalSettings.UserId, 32, 32);

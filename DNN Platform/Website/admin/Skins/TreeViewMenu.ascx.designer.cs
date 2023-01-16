@@ -15,41 +15,31 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class TreeViewMenu {
-        /// <summary>
-        /// tblMain control.
-        /// </summary>
+        /// <summary>tblMain control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tblMain;
-        /// <summary>
-        /// cellHeader control.
-        /// </summary>
+        /// <summary>cellHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableCell cellHeader;
-        /// <summary>
-        /// tblHeader control.
-        /// </summary>
+        /// <summary>tblHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tblHeader;
-        /// <summary>
-        /// lblHeader control.
-        /// </summary>
+        /// <summary>lblHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHeader;
-        /// <summary>
-        /// cellBody control.
-        /// </summary>
+        /// <summary>cellBody control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

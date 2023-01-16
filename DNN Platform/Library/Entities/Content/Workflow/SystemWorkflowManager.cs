@@ -20,9 +20,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowRepository workflowRepository;
         private readonly IWorkflowStateRepository workflowStateRepository;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SystemWorkflowManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SystemWorkflowManager"/> class.</summary>
         public SystemWorkflowManager()
         {
             this.workflowRepository = WorkflowRepository.Instance;

@@ -25,9 +25,7 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
-    /// <summary>
-    /// Services used for common components.
-    /// </summary>
+    /// <summary>Services used for common components.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ComponentsController : PersonaBarApiController
     {

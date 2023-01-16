@@ -22,9 +22,7 @@ using log4net.Repository;
 
 namespace log4net.Plugin
 {
-    /// <summary>
-    /// Interface implemented by logger repository plugins.
-    /// </summary>
+    /// <summary>Interface implemented by logger repository plugins.</summary>
     /// <remarks>
     /// <para>
     /// Plugins define additional behavior that can be associated
@@ -42,9 +40,7 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public interface IPlugin
     {
-        /// <summary>
-        /// Gets the name of the plugin.
-        /// </summary>
+        /// <summary>Gets the name of the plugin.</summary>
         /// <value>
         /// The name of the plugin.
         /// </value>
@@ -57,9 +53,7 @@ namespace log4net.Plugin
         /// </remarks>
         string Name { get; }
 
-        /// <summary>
-        /// Attaches the plugin to the specified <see cref="ILoggerRepository"/>.
-        /// </summary>
+        /// <summary>Attaches the plugin to the specified <see cref="ILoggerRepository"/>.</summary>
         /// <param name="repository">The <see cref="ILoggerRepository"/> that this plugin should be attached to.</param>
         /// <remarks>
         /// <para>
@@ -71,9 +65,7 @@ namespace log4net.Plugin
         /// </remarks>
         void Attach(ILoggerRepository repository);
 
-        /// <summary>
-        /// Is called when the plugin is to shutdown.
-        /// </summary>
+        /// <summary>Is called when the plugin is to shutdown.</summary>
         /// <remarks>
         /// <para>
         /// This method is called to notify the plugin that 

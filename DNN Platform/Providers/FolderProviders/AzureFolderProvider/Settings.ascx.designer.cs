@@ -15,193 +15,145 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider {
     
     
     public partial class Settings {
-        /// <summary>
-        /// plAccountName control.
-        /// </summary>
+        /// <summary>plAccountName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plAccountName;
-        /// <summary>
-        /// tbAccountName control.
-        /// </summary>
+        /// <summary>tbAccountName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbAccountName;
-        /// <summary>
-        /// valAccountName control.
-        /// </summary>
+        /// <summary>valAccountName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valAccountName;
-        /// <summary>
-        /// plAccountKey control.
-        /// </summary>
+        /// <summary>plAccountKey control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plAccountKey;
-        /// <summary>
-        /// tbAccountKey control.
-        /// </summary>
+        /// <summary>tbAccountKey control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbAccountKey;
-        /// <summary>
-        /// valAccountKey control.
-        /// </summary>
+        /// <summary>valAccountKey control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valAccountKey;
-        /// <summary>
-        /// plContainerName control.
-        /// </summary>
+        /// <summary>plContainerName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plContainerName;
-        /// <summary>
-        /// SelectContainerPanel control.
-        /// </summary>
+        /// <summary>SelectContainerPanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel SelectContainerPanel;
-        /// <summary>
-        /// ddlContainers control.
-        /// </summary>
+        /// <summary>ddlContainers control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlContainers;
-        /// <summary>
-        /// btnNewContainer control.
-        /// </summary>
+        /// <summary>btnNewContainer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNewContainer;
-        /// <summary>
-        /// CreateContainerPanel control.
-        /// </summary>
+        /// <summary>CreateContainerPanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel CreateContainerPanel;
-        /// <summary>
-        /// tbContainerName control.
-        /// </summary>
+        /// <summary>tbContainerName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbContainerName;
-        /// <summary>
-        /// btnSelectExistingContainer control.
-        /// </summary>
+        /// <summary>btnSelectExistingContainer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSelectExistingContainer;
-        /// <summary>
-        /// valContainerName control.
-        /// </summary>
+        /// <summary>valContainerName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator valContainerName;
-        /// <summary>
-        /// plUseHttps control.
-        /// </summary>
+        /// <summary>plUseHttps control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plUseHttps;
-        /// <summary>
-        /// chkUseHttps control.
-        /// </summary>
+        /// <summary>chkUseHttps control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkUseHttps;
-        /// <summary>
-        /// plDirectLink control.
-        /// </summary>
+        /// <summary>plDirectLink control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plDirectLink;
-        /// <summary>
-        /// chkDirectLink control.
-        /// </summary>
+        /// <summary>chkDirectLink control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDirectLink;
-        /// <summary>
-        /// plCustomDomain control.
-        /// </summary>
+        /// <summary>plCustomDomain control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plCustomDomain;
-        /// <summary>
-        /// tbCustomDomain control.
-        /// </summary>
+        /// <summary>tbCustomDomain control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbCustomDomain;
-        /// <summary>
-        /// rgBlobEndpoint control.
-        /// </summary>
+        /// <summary>rgBlobEndpoint control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator rgBlobEndpoint;
-        /// <summary>
-        /// plSyncBatchSize control.
-        /// </summary>
+        /// <summary>plSyncBatchSize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plSyncBatchSize;
-        /// <summary>
-        /// tbSyncBatchSize control.
-        /// </summary>
+        /// <summary>tbSyncBatchSize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbSyncBatchSize;
-        /// <summary>
-        /// rgInteger control.
-        /// </summary>
+        /// <summary>rgInteger control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

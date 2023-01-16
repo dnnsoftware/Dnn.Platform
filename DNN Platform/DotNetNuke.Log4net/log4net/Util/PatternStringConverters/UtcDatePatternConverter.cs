@@ -28,9 +28,7 @@ using log4net.DateFormatter;
 
 namespace log4net.Util.PatternStringConverters
 {
-    /// <summary>
-    /// Write the UTC date time to the output
-    /// </summary>
+    /// <summary>Write the UTC date time to the output</summary>
     /// <remarks>
     /// <para>
     /// Date pattern converter, uses a <see cref="IDateFormatter"/> to format 
@@ -44,9 +42,7 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal class UtcDatePatternConverter : DatePatternConverter
     {
-        /// <summary>
-        /// Write the current date and time to the output
-        /// </summary>
+        /// <summary>Write the current date and time to the output</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="state">null, state is not set</param>
         /// <remarks>
@@ -71,9 +67,7 @@ namespace log4net.Util.PatternStringConverters
             }
         }
 
-        /// <summary>
-        /// The fully qualified type of the UtcDatePatternConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the UtcDatePatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

@@ -5,19 +5,12 @@ namespace DotNetNuke.UI.Containers.EventListeners
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ContainerEventArgs provides a custom EventARgs class for Container Events.
-    /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ContainerEventArgs provides a custom EventARgs class for Container Events.</summary>
     public class ContainerEventArgs : EventArgs
     {
         private readonly Container container;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContainerEventArgs"/> class.</summary>
         /// <param name="container"></param>
         public ContainerEventArgs(Container container)
         {

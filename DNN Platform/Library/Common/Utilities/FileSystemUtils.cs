@@ -26,11 +26,7 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a File to a Zip File.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Adds a File to a Zip File.</summary>
         public static void AddToZip(ref ZipArchive zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
@@ -74,13 +70,9 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tries to copy a file in the file system.
-        /// </summary>
+        /// <summary>Tries to copy a file in the file system.</summary>
         /// <param name="sourceFileName">The name of the source file.</param>
         /// <param name="destFileName">The name of the destination file.</param>
-        /// -----------------------------------------------------------------------------
         public static void CopyFile(string sourceFileName, string destFileName)
         {
             if (File.Exists(destFileName))
@@ -91,18 +83,14 @@ namespace DotNetNuke.Common.Utilities
             File.Copy(sourceFileName, destFileName, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
+        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging).
         /// This solves file concurrency issues under heavy load.
         /// </summary>
-        /// <param name="fileName">String.</param>
-        /// <param name="waitInMilliseconds">Int16.</param>
-        /// <param name="maxAttempts">Int16.</param>
-        /// <returns>Boolean.</returns>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <param name="fileName">The file name.</param>
+        /// <param name="waitInMilliseconds">The number of milliseconds to wait.</param>
+        /// <param name="maxAttempts">The maximum number of attempts.</param>
+        /// <returns>Whether the file is deleted.</returns>
         public static bool DeleteFileWithWait(string fileName, short waitInMilliseconds, short maxAttempts)
         {
             fileName = FixPath(fileName);
@@ -145,12 +133,8 @@ namespace DotNetNuke.Common.Utilities
             return fileDeleted;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tries to delete a file from the file system.
-        /// </summary>
+        /// <summary>Tries to delete a file from the file system.</summary>
         /// <param name="fileName">The name of the file.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName)
         {
             fileName = FixPath(fileName);
@@ -366,9 +350,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
-        /// </summary>
+        /// <summary>Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.</summary>
         /// <param name="path">The root folder path.</param>
         public static void DeleteEmptyFoldersRecursive(string path)
         {
@@ -561,12 +543,8 @@ namespace DotNetNuke.Common.Utilities
             return strMessage;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the filename for a file path.
-        /// </summary>
+        /// <summary>Gets the filename for a file path.</summary>
         /// <param name="filePath">The full name of the file.</param>
-        /// -----------------------------------------------------------------------------
         private static string GetFileName(string filePath)
         {
             return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
@@ -593,15 +571,9 @@ namespace DotNetNuke.Common.Utilities
             FileManager.Instance.DeleteFile(objFile);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a Stream to the appropriate File Storage.
-        /// </summary>
+        /// <summary>Writes a Stream to the appropriate File Storage.</summary>
         /// <param name="objResponse">The Id of the File.</param>
         /// <param name="objStream">The Input Stream.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static void WriteStream(HttpResponse objResponse, Stream objStream)
         {
             // Buffer to read 10K bytes in chunk:

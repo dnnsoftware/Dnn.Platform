@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.Assets
 
     public class AssetManagerException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssetManagerException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AssetManagerException"/> class.</summary>
         /// <param name="message"></param>
         public AssetManagerException(string message)
             : base(message)

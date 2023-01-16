@@ -32,9 +32,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ContentItemTests.
-    /// </summary>
+    /// <summary>  Summary description for ContentItemTests.</summary>
     [TestFixture]
     public class ContentControllerTests
     {

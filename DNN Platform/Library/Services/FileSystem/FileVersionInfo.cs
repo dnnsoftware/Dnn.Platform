@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FileVersionInfo : BaseEntityInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileVersionInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileVersionInfo"/> class.</summary>
         public FileVersionInfo()
         {
             this.Version = 1;

@@ -23,9 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.owner = owner;
         }
 
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
-        /// </summary>
+        /// <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
         /// <returns>
         /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
@@ -37,9 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</summary>
         /// <returns>
         /// true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
         /// </returns>
@@ -51,9 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the element at the specified index.
-        /// </summary>
+        /// <summary>Gets or sets the element at the specified index.</summary>
         /// <returns>
         /// The element at the specified index.
         /// </returns>
@@ -84,9 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.owner.Controls.AddAt(index, childControl);
         }
 
-        /// <summary>
-        /// Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.
-        /// </summary>
+        /// <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.</summary>
         /// <returns>
         /// The index of <paramref name="item" /> if found in the list; otherwise, -1.
         /// </returns>
@@ -98,9 +90,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.owner.Controls.IndexOf(item);
         }
 
-        /// <summary>
-        /// Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at the specified index.
-        /// </summary>
+        /// <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at the specified index.</summary>
         /// <param name="index">
         /// The zero-based index at which <paramref name="item" /> should be inserted.
         /// </param>
@@ -117,9 +107,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.owner.Controls.AddAt(index, item);
         }
 
-        /// <summary>
-        /// Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the specified index.
-        /// </summary>
+        /// <summary>Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the specified index.</summary>
         /// <param name="index">
         /// The zero-based index of the item to remove.
         /// </param>
@@ -133,9 +121,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.owner.Controls.RemoveAt(index);
         }
 
-        /// <summary>
-        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
-        /// </summary>
+        /// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
         /// <returns>
         /// true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
@@ -151,9 +137,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return true;
         }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
@@ -167,9 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
-        /// </summary>
+        /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
         /// <exception cref="T:System.NotSupportedException">
         /// The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
         /// </exception>
@@ -181,9 +163,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
-        /// </summary>
+        /// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
         /// <param name="item">
         /// The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </param>
@@ -195,9 +175,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.owner.Controls.Add(item);
         }
 
-        /// <summary>
-        /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
-        /// </summary>
+        /// <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
         /// <param name="array">
         /// The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.
         /// </param>
@@ -225,9 +203,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
-        /// </summary>
+        /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
         /// <returns>
         /// true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
         /// </returns>
@@ -245,9 +221,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.EnumerableGetEnumerator();
         }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         /// </returns>

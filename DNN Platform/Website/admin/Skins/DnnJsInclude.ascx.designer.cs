@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class DnnJsInclude {
-        /// <summary>
-        /// ctlInclude control.
-        /// </summary>
+        /// <summary>ctlInclude control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

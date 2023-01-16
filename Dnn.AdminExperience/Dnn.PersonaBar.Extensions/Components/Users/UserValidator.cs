@@ -19,17 +19,13 @@ namespace Dnn.PersonaBar.Users.Components
         private IUserControllerWrapper userControllerWrapper;
         private IContentVerifier contentVerifier;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserValidator"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserValidator"/> class.</summary>
         public UserValidator()
             : this(PortalController.Instance, new UserControllerWrapper(), new ContentVerifier())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserValidator"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserValidator"/> class.</summary>
         /// <param name="portalController"></param>
         /// <param name="userControllerWrapper"></param>
         /// <param name="contentVerifier"></param>

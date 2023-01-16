@@ -36,9 +36,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private readonly INavigationManager navigationManager;
         private string ipAddress;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordReset"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
         public PasswordReset()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -164,9 +162,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// After a successful password change will redirect the user to requested returnurl OR the login page.
-        /// </summary>
+        /// <summary>After a successful password change will redirect the user to requested returnurl OR the login page.</summary>
         protected void RedirectAfterPasswordChange()
         {
             var redirectUrl = string.Empty;

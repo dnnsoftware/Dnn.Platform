@@ -10,13 +10,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The FileComponentWriter class handles creating the manifest for File Component(s).
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The FileComponentWriter class handles creating the manifest for File Component(s).</summary>
     public class FileComponentWriter
     {
         private readonly string basePath;
@@ -25,7 +19,6 @@ namespace DotNetNuke.Services.Installer.Writers
         private int installOrder = Null.NullInteger;
         private int unInstallOrder = Null.NullInteger;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="FileComponentWriter"/> class.
         /// Constructs the FileComponentWriter.
@@ -33,7 +26,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">The Base Path for the files.</param>
         /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
-        /// -----------------------------------------------------------------------------
         public FileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
         {
             this.files = files;
@@ -67,12 +59,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("files").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("files").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual string CollectionNodeName
         {
             get
@@ -81,12 +69,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("File").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("File").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual string ComponentType
         {
             get
@@ -95,12 +79,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("file").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("file").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual string ItemNodeName
         {
             get
@@ -109,12 +89,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Logger.
-        /// </summary>
+        /// <summary>Gets the Logger.</summary>
         /// <value>A Logger.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual Logger Log
         {
             get
@@ -123,12 +99,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Package.
-        /// </summary>
+        /// <summary>Gets the Package.</summary>
         /// <value>A PackageInfo.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual PackageInfo Package
         {
             get
@@ -176,13 +148,11 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteEndElement();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The WriteCustomManifest method writes the custom manifest items (that subclasses
         /// of FileComponentWriter may need).
         /// </summary>
         /// <param name="writer">The Xmlwriter to use.</param>
-        /// -----------------------------------------------------------------------------
         protected virtual void WriteCustomManifest(XmlWriter writer)
         {
         }

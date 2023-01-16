@@ -10,9 +10,7 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly bool required;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequiredAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequiredAttribute"/> class.</summary>
         public RequiredAttribute(bool required)
         {
             this.required = required;

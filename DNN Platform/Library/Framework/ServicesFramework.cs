@@ -8,9 +8,7 @@ namespace DotNetNuke.Framework
 
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Enables modules to support Services Framework features.
-    /// </summary>
+    /// <summary>Enables modules to support Services Framework features.</summary>
     public class ServicesFramework : ServiceLocator<IServicesFramework, ServicesFramework>
     {
         public static string GetServiceFrameworkRoot()

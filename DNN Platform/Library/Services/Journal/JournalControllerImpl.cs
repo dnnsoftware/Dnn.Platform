@@ -34,9 +34,7 @@ namespace DotNetNuke.Services.Journal
         private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
         private readonly IJournalDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalControllerImpl"/> class.</summary>
         public JournalControllerImpl()
         {
             this.dataService = JournalDataService.Instance;
@@ -406,9 +404,7 @@ namespace DotNetNuke.Services.Journal
 
         // Delete Journal Items
 
-        /// <summary>
-        /// HARD deletes journal items.
-        /// </summary>
+        /// <summary>HARD deletes journal items.</summary>
         /// <param name="portalId"></param>
         /// <param name="currentUserId"></param>
         /// <param name="journalId"></param>
@@ -417,9 +413,7 @@ namespace DotNetNuke.Services.Journal
             this.DeleteJournalItem(portalId, currentUserId, journalId, false);
         }
 
-        /// <summary>
-        /// HARD deletes journal items based on item key.
-        /// </summary>
+        /// <summary>HARD deletes journal items based on item key.</summary>
         /// <param name="portalId"></param>
         /// <param name="objectKey"></param>
         public void DeleteJournalItemByKey(int portalId, string objectKey)
@@ -427,9 +421,7 @@ namespace DotNetNuke.Services.Journal
             this.dataService.Journal_DeleteByKey(portalId, objectKey);
         }
 
-        /// <summary>
-        /// HARD deletes journal items based on group Id.
-        /// </summary>
+        /// <summary>HARD deletes journal items based on group Id.</summary>
         /// <param name="portalId"></param>
         /// <param name="groupId"></param>
         public void DeleteJournalItemByGroupId(int portalId, int groupId)
@@ -437,9 +429,7 @@ namespace DotNetNuke.Services.Journal
             this.dataService.Journal_DeleteByGroupId(portalId, groupId);
         }
 
-        /// <summary>
-        /// SOFT deletes journal items.
-        /// </summary>
+        /// <summary>SOFT deletes journal items.</summary>
         /// <param name="portalId"></param>
         /// <param name="currentUserId"></param>
         /// <param name="journalId"></param>
@@ -448,9 +438,7 @@ namespace DotNetNuke.Services.Journal
             this.DeleteJournalItem(portalId, currentUserId, journalId, true);
         }
 
-        /// <summary>
-        /// SOFT deletes journal items based on item key.
-        /// </summary>
+        /// <summary>SOFT deletes journal items based on item key.</summary>
         /// <param name="portalId"></param>
         /// <param name="objectKey"></param>
         public void SoftDeleteJournalItemByKey(int portalId, string objectKey)
@@ -458,9 +446,7 @@ namespace DotNetNuke.Services.Journal
             this.dataService.Journal_SoftDeleteByKey(portalId, objectKey);
         }
 
-        /// <summary>
-        /// SOFT deletes journal items based on group Id.
-        /// </summary>
+        /// <summary>SOFT deletes journal items based on group Id.</summary>
         /// <param name="portalId"></param>
         /// <param name="groupId"></param>
         public void SoftDeleteJournalItemByGroupId(int portalId, int groupId)

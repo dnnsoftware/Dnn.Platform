@@ -19,9 +19,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         private static readonly string HostGuid = HostSettingsHelper.GetHostSettingValue("GUID");
         private static IWebApiConnector _anonymousConnector;
 
-        /// <summary>
-        /// Returns a coonector to access the default site annonymously.
-        /// </summary>
+        /// <summary>Returns a coonector to access the default site annonymously.</summary>
         /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector GetAnnonymousConnector(string url = null)
         {
@@ -71,9 +69,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return userConnector;
         }
 
-        /// <summary>
-        /// Register a user by using the Registration form.
-        /// </summary>
+        /// <summary>Register a user by using the Registration form.</summary>
         /// <returns></returns>
         public static HttpWebResponse Register(string userName, string password, string displayName, string email,
             string url = null, bool encriptFieldsNames = true)
@@ -169,18 +165,14 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return connector;
         }
 
-        /// <summary>
-        /// Logs in Host.
-        /// </summary>
+        /// <summary>Logs in Host.</summary>
         /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector LoginHost()
         {
             return LoginUser(AppConfigHelper.HostUserName);
         }
 
-        /// <summary>
-        /// Logs in an already registered user (regardless of the user's role).
-        /// </summary>
+        /// <summary>Logs in an already registered user (regardless of the user's role).</summary>
         /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector LoginUser(string username, string url = null)
         {
@@ -207,9 +199,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return 0;
         }
 
-        /// <summary>
-        /// Logs in as host and clears host cache.
-        /// </summary>
+        /// <summary>Logs in as host and clears host cache.</summary>
         /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector ClearHostCache()
         {
@@ -220,18 +210,14 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return connector;
         }
 
-        /// <summary>
-        /// Logs in as host and recycle the application.
-        /// </summary>
+        /// <summary>Logs in as host and recycle the application.</summary>
         public static void RecycleApplication()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
             connector.PostJson("API/internalservices/controlbar/RecycleApplicationPool ", null);
         }
 
-        /// <summary>
-        /// Returns TabId and ModuleId headers for a Page to be passed in a Post WebApi call.
-        /// </summary>
+        /// <summary>Returns TabId and ModuleId headers for a Page to be passed in a Post WebApi call.</summary>
         /// <param name="tabPath">double-slashed prefixed page name, e.g. //Home or //Groups//GroupSpaces//Members.</param>
         /// <returns></returns>
         public static Dictionary<string, string> GetTabModuleHeaders(string tabPath)
@@ -246,9 +232,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             };
         }
 
-        /// <summary>
-        /// Returns TabId and ModuleId headers for a Page and Module to be passed in a Post WebApi call.
-        /// </summary>
+        /// <summary>Returns TabId and ModuleId headers for a Page and Module to be passed in a Post WebApi call.</summary>
         /// <param name="moduleFriendlyName">Module's friendly name, e.g. Wiki or Activity Stream.</param>
         /// <param name="tabPath">double-slashed prefixed page name, e.g. //Home or //Groups//GroupSpaces//Members.</param>
         /// <returns></returns>

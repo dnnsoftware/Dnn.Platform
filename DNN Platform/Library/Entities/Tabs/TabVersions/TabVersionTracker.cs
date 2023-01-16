@@ -14,9 +14,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
     internal class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
     {
-        /// <summary>
-        /// Tracks a version detail when a module is added to a page.
-        /// </summary>
+        /// <summary>Tracks a version detail when a module is added to a page.</summary>
         /// <param name="module">Module which tracks the version detail.</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
         /// <param name="userId">User Id who provokes the version detail.</param>
@@ -36,9 +34,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        /// <summary>
-        /// Tracks a version detail when a module is modified on a page.
-        /// </summary>
+        /// <summary>Tracks a version detail when a module is modified on a page.</summary>
         /// <param name="module">Module which tracks the version detail.</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
         /// <param name="userId">User Id who provokes the version detail.</param>
@@ -84,9 +80,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        /// <summary>
-        /// Tracks a version detail when a module is deleted from a page.
-        /// </summary>
+        /// <summary>Tracks a version detail when a module is deleted from a page.</summary>
         /// <param name="module">Module which tracks the version detail.</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
         /// <param name="userId">User Id who provokes the version detail.</param>
@@ -106,9 +100,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        /// <summary>
-        /// Tracks a version detail when a module is copied from an exisitng page.
-        /// </summary>
+        /// <summary>Tracks a version detail when a module is copied from an exisitng page.</summary>
         /// <param name="module">Module which tracks the version detail.</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
         /// <param name="originalTabId">Tab Id where the module originally is.</param>
@@ -134,9 +126,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        /// <summary>
-        /// Tracks a version detail when a copied module is deleted from an exisitng page.
-        /// </summary>
+        /// <summary>Tracks a version detail when a copied module is deleted from an exisitng page.</summary>
         /// <param name="module">Module which tracks the version detail.</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail.</param>
         /// <param name="originalTabId">Tab Id where the module originally is.</param>

@@ -6,9 +6,7 @@ namespace DotNetNuke.HttpModules.Compression
     using System.IO;
     using System.Web;
 
-    /// <summary>
-    /// Base for any HttpFilter that performing compression.
-    /// </summary>
+    /// <summary>Base for any HttpFilter that performing compression.</summary>
     /// <remarks>
     /// When implementing this class, you need to implement a <see cref="HttpOutputFilter"/>
     /// along with a <see cref="CompressingFilter.ContentEncoding"/>.  The latter corresponds to a
@@ -29,18 +27,14 @@ namespace DotNetNuke.HttpModules.Compression
         {
         }
 
-        /// <summary>
-        /// Gets the name of the content-encoding that's being implemented.
-        /// </summary>
+        /// <summary>Gets the name of the content-encoding that's being implemented.</summary>
         /// <remarks>
         /// See http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5 for more
         /// details on content codings.
         /// </remarks>
         public abstract string ContentEncoding { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether keeps track of whether or not we're written the compression headers.
-        /// </summary>
+        /// <summary>Gets a value indicating whether keeps track of whether or not we're written the compression headers.</summary>
         protected bool HasWrittenHeaders
         {
             get
@@ -49,9 +43,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
-        /// <summary>
-        /// Writes out the compression-related headers.  Subclasses should call this once before writing to the output stream.
-        /// </summary>
+        /// <summary>Writes out the compression-related headers.  Subclasses should call this once before writing to the output stream.</summary>
         internal void WriteHeaders()
         {
             // this is dangerous.  if Response.End is called before the filter is used, directly or indirectly,

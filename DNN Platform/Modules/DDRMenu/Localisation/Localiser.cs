@@ -10,18 +10,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
     using MenuNode = DotNetNuke.Web.DDRMenu.MenuNode;
 
-    /// <summary>
-    /// Implements the localization logic for all providers.
-    /// </summary>
+    /// <summary>Implements the localization logic for all providers.</summary>
     public class Localiser
     {
         private static bool apiChecked;
         private static ILocalisation localisationApi;
         private readonly int portalId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Localiser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Localiser"/> class.</summary>
         /// <param name="portalId">The id of the portal on which the menu is displayed.</param>
         public Localiser(int portalId)
         {
@@ -52,9 +48,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             }
         }
 
-        /// <summary>
-        /// Localizes the menu nodes.
-        /// </summary>
+        /// <summary>Localizes the menu nodes.</summary>
         /// <param name="nodes">The collection of nodes to localize.</param>
         /// <returns>The localized collection of nodes.</returns>
         public static DNNNodeCollection LocaliseDNNNodeCollection(DNNNodeCollection nodes)
@@ -62,9 +56,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return (LocalisationApi == null) ? nodes : (LocalisationApi.LocaliseNodes(nodes) ?? nodes);
         }
 
-        /// <summary>
-        /// Localizes a single node.
-        /// </summary>
+        /// <summary>Localizes a single node.</summary>
         /// <param name="node">The node to localize.</param>
         public void LocaliseNode(MenuNode node)
         {

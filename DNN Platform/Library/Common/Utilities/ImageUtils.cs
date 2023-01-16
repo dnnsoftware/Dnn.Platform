@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utilities
 {
     using System;
@@ -14,6 +13,9 @@ namespace DotNetNuke.Common.Utilities
 
     public class ImageUtils
     {
+        /// <summary>return height of image.</summary>
+        /// <param name="sPath">file path of image.</param>
+        /// <returns>The image size in pixels.</returns>
         public static Size GetSize(string sPath)
         {
             Image g = Image.FromFile(sPath);
@@ -22,11 +24,9 @@ namespace DotNetNuke.Common.Utilities
             return s;
         }
 
-        /// <summary>
-        /// return height of image.
-        /// </summary>
+        /// <summary>return height of image.</summary>
         /// <param name="sPath">file path of image.</param>
-        /// <returns></returns>
+        /// <returns>The image height in pixels.</returns>
         public static int GetHeight(string sPath)
         {
             Image g = Image.FromFile(sPath);
@@ -35,11 +35,9 @@ namespace DotNetNuke.Common.Utilities
             return h;
         }
 
-        /// <summary>
-        /// return width of image.
-        /// </summary>
+        /// <summary>return width of image.</summary>
         /// <param name="sPath">file path of image.</param>
-        /// <returns></returns>
+        /// <returns>The image width in pixels.</returns>
         public static int GetWidth(string sPath)
         {
             Image g = Image.FromFile(sPath);
@@ -48,11 +46,9 @@ namespace DotNetNuke.Common.Utilities
             return w;
         }
 
-        /// <summary>
-        /// return height of image.
-        /// </summary>
+        /// <summary>return height of image.</summary>
         /// <param name="sFile">Stream of image.</param>
-        /// <returns></returns>
+        /// <returns>The image height in pixels.</returns>
         public static int GetHeightFromStream(Stream sFile)
         {
             Image g = Image.FromStream(sFile, true);
@@ -61,11 +57,9 @@ namespace DotNetNuke.Common.Utilities
             return h;
         }
 
-        /// <summary>
-        /// width of image.
-        /// </summary>
+        /// <summary>width of image.</summary>
         /// <param name="sFile">Steam of image.</param>
-        /// <returns></returns>
+        /// <returns>The image width in pixels.</returns>
         public static int GetWidthFromStream(Stream sFile)
         {
             Image g = Image.FromStream(sFile, true);
@@ -74,11 +68,9 @@ namespace DotNetNuke.Common.Utilities
             return w;
         }
 
-        /// <summary>
-        /// create an image.
-        /// </summary>
+        /// <summary>create an image.</summary>
         /// <param name="sFile">path of load image file - will be resized according to height and width set.</param>
-        /// <returns></returns>
+        /// <returns>The path of the created image.</returns>
         public static string CreateImage(string sFile)
         {
             Image g = Image.FromFile(sFile);
@@ -88,13 +80,11 @@ namespace DotNetNuke.Common.Utilities
             return CreateImage(sFile, h, w);
         }
 
-        /// <summary>
-        /// create an image.
-        /// </summary>
+        /// <summary>create an image.</summary>
         /// <param name="sFile">path of image file.</param>
         /// <param name="intHeight">height.</param>
         /// <param name="intWidth">width.</param>
-        /// <returns></returns>
+        /// <returns>The path of the created image.</returns>
         public static string CreateImage(string sFile, int intHeight, int intWidth)
         {
             var fi = new FileInfo(sFile);
@@ -231,13 +221,11 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// create a JPG image.
-        /// </summary>
+        /// <summary>create a JPG image.</summary>
         /// <param name="sFile">name of image.</param>
         /// <param name="img">bitmap of image.</param>
         /// <param name="compressionLevel">image quality.</param>
-        /// <returns></returns>
+        /// <returns>The path of the created image.</returns>
         public static string CreateJPG(string sFile, Bitmap img, int compressionLevel)
         {
             Graphics bmpOutput = Graphics.FromImage(img);
@@ -271,9 +259,7 @@ namespace DotNetNuke.Common.Utilities
             return sFile;
         }
 
-        /// <summary>
-        /// create an image based on a stream (read from a database).
-        /// </summary>
+        /// <summary>create an image based on a stream (read from a database).</summary>
         /// <param name="sFile">image name.</param>
         /// <param name="intHeight">height.</param>
         /// <param name="intWidth">width.</param>
@@ -324,11 +310,9 @@ namespace DotNetNuke.Common.Utilities
             return newStream;
         }
 
-        /// <summary>
-        /// return the approriate encoded for the mime-type of the image being created.
-        /// </summary>
+        /// <summary>return the appropriate encoded for the mime-type of the image being created.</summary>
         /// <param name="myMimeType">mime type (e.g jpg/png).</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="ImageCodecInfo"/> or <see langword="null"/>.</returns>
         public static ImageCodecInfo GetEncoderInfo(string myMimeType)
         {
             try
@@ -351,14 +335,12 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// scale an image based on existing dimensions and updated requirement.
-        /// </summary>
+        /// <summary>scale an image based on existing dimensions and updated requirement.</summary>
         /// <param name="currentWidth">current width.</param>
         /// <param name="currentHeight">current height.</param>
         /// <param name="newWidth">new width.</param>
         /// <param name="newHeight">new height.</param>
-        /// <returns>updated calculated height/width minesions.</returns>
+        /// <returns>updated calculated height/width dimensions.</returns>
         public static Size NewImageSize(int currentWidth, int currentHeight, int newWidth, int newHeight)
         {
             decimal decScale = ((decimal)currentWidth / (decimal)newWidth) > ((decimal)currentHeight / (decimal)newHeight) ? Convert.ToDecimal((decimal)currentWidth / (decimal)newWidth) : Convert.ToDecimal((decimal)currentHeight / (decimal)newHeight);

@@ -5,9 +5,7 @@ namespace DotNetNuke.Entities.Tabs
 {
     public class TabExistsException : TabException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabExistsException"/> class.</summary>
         /// <param name="tabId"></param>
         /// <param name="message"></param>
         public TabExistsException(int tabId, string message)

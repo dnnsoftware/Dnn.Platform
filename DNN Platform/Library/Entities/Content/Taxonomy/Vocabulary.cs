@@ -12,9 +12,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
 
-    /// <summary>
-    /// Class of Vocabulary.
-    /// </summary>
+    /// <summary>Class of Vocabulary.</summary>
     /// <seealso cref="TermController"/>
     [Serializable]
     public class Vocabulary : BaseEntityInfo, IHydratable
@@ -33,26 +31,20 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private int weight;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         public Vocabulary()
             : this(Null.NullString, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="name"></param>
         public Vocabulary(string name)
             : this(name, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
         public Vocabulary(string name, string description)
@@ -60,18 +52,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="type"></param>
         public Vocabulary(VocabularyType type)
             : this(Null.NullString, Null.NullString, type)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="type"></param>

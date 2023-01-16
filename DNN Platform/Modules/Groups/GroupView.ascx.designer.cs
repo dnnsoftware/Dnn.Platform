@@ -15,9 +15,7 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class GroupView {
-        /// <summary>
-        /// litOutput control.
-        /// </summary>
+        /// <summary>litOutput control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

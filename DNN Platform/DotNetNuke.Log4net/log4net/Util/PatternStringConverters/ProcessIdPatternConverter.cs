@@ -23,9 +23,7 @@ using System.IO;
 
 namespace log4net.Util.PatternStringConverters
 {
-    /// <summary>
-    /// Write the current process ID to the output
-    /// </summary>
+    /// <summary>Write the current process ID to the output</summary>
     /// <remarks>
     /// <para>
     /// Write the current process ID to the output writer
@@ -34,9 +32,7 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal sealed class ProcessIdPatternConverter : PatternConverter 
     {
-        /// <summary>
-        /// Write the current process ID to the output
-        /// </summary>
+        /// <summary>Write the current process ID to the output</summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="state">null, state is not set</param>
         /// <remarks>
@@ -68,9 +64,7 @@ namespace log4net.Util.PatternStringConverters
 #endif
         }
 
-        /// <summary>
-        /// The fully qualified type of the ProcessIdPatternConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the ProcessIdPatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

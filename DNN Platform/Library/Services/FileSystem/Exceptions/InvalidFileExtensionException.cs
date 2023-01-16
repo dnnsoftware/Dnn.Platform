@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class InvalidFileExtensionException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.</summary>
         public InvalidFileExtensionException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.</summary>
         /// <param name="message"></param>
         public InvalidFileExtensionException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public InvalidFileExtensionException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidFileExtensionException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public InvalidFileExtensionException(SerializationInfo info, StreamingContext context)

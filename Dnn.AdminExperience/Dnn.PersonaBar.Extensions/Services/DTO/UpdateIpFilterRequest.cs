@@ -3,19 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Security.Services.Dto
 {
-    /// <summary>
-    /// Data-transfer object to save an IP filter.
-    /// </summary>
+    /// <summary>Data-transfer object to save an IP filter.</summary>
     public class UpdateIpFilterRequest
     {
-        /// <summary>
-        /// Gets or sets the IP Address for the filter.
-        /// </summary>
+        /// <summary>Gets or sets the IP Address for the filter.</summary>
         public string IPAddress { get; set; }
 
-        /// <summary>
-        /// Gets or sets the subnet mask for an IP range.
-        /// </summary>
+        /// <summary>Gets or sets the subnet mask for an IP range.</summary>
         public string SubnetMask { get; set; }
 
         /// <summary>
@@ -24,14 +18,10 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         /// </summary>
         public int RuleType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the filter.
-        /// </summary>
+        /// <summary>Gets or sets the ID of the filter.</summary>
         public int IPFilterID { get; set; }
 
-        /// <summary>
-        /// Gets or sets notes about this filter.
-        /// </summary>
+        /// <summary>Gets or sets notes about this filter.</summary>
         public string Notes { get; set; }
     }
 }

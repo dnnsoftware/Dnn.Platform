@@ -27,14 +27,10 @@ namespace DotNetNuke.Services.Mail
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// SendTokenizedBulkEmail Class is a class to manage the sending of bulk mails
     /// that contains tokens, which might be replaced with individual user properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
@@ -62,9 +58,7 @@ namespace DotNetNuke.Services.Mail
         private string strSenderLanguage;
         private bool isDisposed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
         public SendTokenizedBulkEmail()
         {
             this.ReportRecipients = true;
@@ -75,9 +69,7 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
         /// <param name="addressedRoles"></param>
         /// <param name="addressedUsers"></param>
         /// <param name="removeDuplicates"></param>
@@ -98,17 +90,13 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="SendTokenizedBulkEmail"/> class.
-        /// </summary>
+        /// <summary>Finalizes an instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
         ~SendTokenizedBulkEmail()
         {
             this.Dispose(false);
         }
 
-        /// <summary>
-        /// Addressing Methods (personalized or hidden).
-        /// </summary>
+        /// <summary>Addressing Methods (personalized or hidden).</summary>
         // ReSharper disable InconsistentNaming
         // Existing public API
         public enum AddressMethods
@@ -118,20 +106,14 @@ namespace DotNetNuke.Services.Mail
             Send_Relay = 3,
         }
 
-        /// <summary>
-        /// Gets or sets priority of emails to be sent.
-        /// </summary>
+        /// <summary>Gets or sets priority of emails to be sent.</summary>
         public MailPriority Priority { get; set; }
 
-        /// <summary>
-        /// Gets or sets subject of the emails to be sent.
-        /// </summary>
+        /// <summary>Gets or sets subject of the emails to be sent.</summary>
         /// <remarks>may contain tokens.</remarks>
         public string Subject { get; set; }
 
-        /// <summary>
-        /// Gets or sets body text of the email to be sent.
-        /// </summary>
+        /// <summary>Gets or sets body text of the email to be sent.</summary>
         /// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically.</remarks>
         public string Body
         {
@@ -554,7 +536,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="startedAt">date/time, sendout started.</param>
         /// <param name="mailErrors">mail error texts.</param>
         /// <param name="recipientList">List of recipients as formatted string.</param>
-        /// <remarks></remarks>
         private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
         {
             // send confirmation, use resource string like:

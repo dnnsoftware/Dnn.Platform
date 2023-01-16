@@ -10,11 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Help : SkinObjectBase
     {
         public string CssClass { get; set; }

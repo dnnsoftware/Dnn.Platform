@@ -9,9 +9,7 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Represents information about an IP Filter.
-    /// </summary>
+    /// <summary>Represents information about an IP Filter.</summary>
     [Serializable]
     public class IPFilterInfo : BaseEntityInfo, IHydratable
     {
@@ -29,9 +27,7 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = ruleType;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPFilterInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="IPFilterInfo"/> class.</summary>
         public IPFilterInfo()
         {
             this.IPAddress = string.Empty;
@@ -39,29 +35,19 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = -1;
         }
 
-        /// <summary>
-        /// Gets or sets the IP of the IP filter.
-        /// </summary>
+        /// <summary>Gets or sets the IP of the IP filter.</summary>
         public int IPFilterID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the IP Adress for this filter.
-        /// </summary>
+        /// <summary>Gets or sets the IP Adress for this filter.</summary>
         public string IPAddress { get; set; }
 
-        /// <summary>
-        /// Gets or sets the subnet mask if this filter is for a range.
-        /// </summary>
+        /// <summary>Gets or sets the subnet mask if this filter is for a range.</summary>
         public string SubnetMask { get; set; }
 
-        /// <summary>
-        /// Gets or sets the type of filter (1 to allow, 2 to deny).
-        /// </summary>
+        /// <summary>Gets or sets the type of filter (1 to allow, 2 to deny).</summary>
         public int RuleType { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>KeyId of the IHydratable.Key.</returns>
         /// <remarks><seealso cref="Fill"></seealso>.</remarks>
         public int KeyID
@@ -77,14 +63,10 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// <summary>
-        /// Gets or sets some notes about this IP filter.
-        /// </summary>
+        /// <summary>Gets or sets some notes about this IP filter.</summary>
         public string Notes { get; set; }
 
-        /// <summary>
-        /// Fills an IPFilterInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills an IPFilterInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         /// <remarks>Standard IHydratable.Fill implementation.
         /// <seealso cref="KeyID"></seealso></remarks>

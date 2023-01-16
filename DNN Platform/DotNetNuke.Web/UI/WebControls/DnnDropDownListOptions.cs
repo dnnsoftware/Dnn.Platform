@@ -41,9 +41,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private List<string> onClientSelectionChanged;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnDropDownListOptions"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnDropDownListOptions"/> class.</summary>
         public DnnDropDownListOptions()
         {
             this.SelectedItemCss = "selected-item";

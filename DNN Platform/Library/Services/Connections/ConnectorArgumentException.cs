@@ -8,25 +8,19 @@ namespace DotNetNuke.Services.Connections
 
     public class ConnectorArgumentException : ApplicationException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectorArgumentException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConnectorArgumentException"/> class.</summary>
         public ConnectorArgumentException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectorArgumentException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConnectorArgumentException"/> class.</summary>
         /// <param name="message"></param>
         public ConnectorArgumentException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectorArgumentException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConnectorArgumentException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
         public ConnectorArgumentException(string message, Exception innerException)

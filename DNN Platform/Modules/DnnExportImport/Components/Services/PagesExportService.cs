@@ -40,9 +40,7 @@ namespace Dnn.ExportImport.Components.Services
     using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
     using Util = Dnn.ExportImport.Components.Common.Util;
 
-    /// <summary>
-    /// Service to export/import pages/tabs.
-    /// </summary>
+    /// <summary>Service to export/import pages/tabs.</summary>
     public class PagesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
@@ -526,9 +524,7 @@ namespace Dnn.ExportImport.Components.Services
             this.ReportImportTotals();
         }
 
-        /// <summary>
-        /// Updates the default language unique identifier for the local page.
-        /// </summary>
+        /// <summary>Updates the default language unique identifier for the local page.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="localTab">The local tab.</param>
         /// <param name="exportedTab">The exported tab.</param>

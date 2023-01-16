@@ -5,24 +5,16 @@ namespace DotNetNuke.Abstractions.Prompt
 {
     using DotNetNuke.Abstractions.Users;
 
-    /// <summary>
-    /// Interface implemented by all commands.
-    /// </summary>
+    /// <summary>Interface implemented by all commands.</summary>
     public interface IConsoleCommand
     {
-        /// <summary>
-        /// Gets the validation message for the user input. If the user input is invalid, specify what is wrong with it.
-        /// </summary>
+        /// <summary>Gets the validation message for the user input. If the user input is invalid, specify what is wrong with it.</summary>
         string ValidationMessage { get; }
 
-        /// <summary>
-        /// Gets the local resx file to use to retrieve command description, help text and parameter descriptions.
-        /// </summary>
+        /// <summary>Gets the local resx file to use to retrieve command description, help text and parameter descriptions.</summary>
         string LocalResourceFile { get; }
 
-        /// <summary>
-        /// Gets the help text for the command. This is used when retrieving help for the command.
-        /// </summary>
+        /// <summary>Gets the help text for the command. This is used when retrieving help for the command.</summary>
         string ResultHtml { get; }
 
         /// <summary>
@@ -35,15 +27,11 @@ namespace DotNetNuke.Abstractions.Prompt
         /// <param name="activeTabId">Current page/tab.</param>
         void Initialize(string[] args, Portals.IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId);
 
-        /// <summary>
-        /// The main method of the command which executes it.
-        /// </summary>
+        /// <summary>The main method of the command which executes it.</summary>
         /// <returns>A class used by the client to display results.</returns>
         IConsoleResultModel Run();
 
-        /// <summary>
-        /// Specify whether the user input for the command is valid.
-        /// </summary>
+        /// <summary>Specify whether the user input for the command is valid.</summary>
         /// <returns>True is the command can execute.</returns>
         bool IsValid();
     }

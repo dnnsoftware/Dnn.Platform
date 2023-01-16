@@ -7,21 +7,11 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The WidgetInstaller installs Widget Components to a DotNetNuke site.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The WidgetInstaller installs Widget Components to a DotNetNuke site.</summary>
     public class WidgetInstaller : FileInstaller
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
@@ -30,12 +20,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("widgetFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("widgetFiles").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -44,12 +30,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("widgetFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("widgetFiles").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -58,12 +40,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the PhysicalBasePath for the widget files.
-        /// </summary>
+        /// <summary>Gets the PhysicalBasePath for the widget files.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
             get

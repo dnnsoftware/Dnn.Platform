@@ -16,9 +16,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    /// <see cref="ConfigConsoleController"/> unit tests.
-    /// </summary>
+    /// <summary><see cref="ConfigConsoleController"/> unit tests.</summary>
     [TestFixture]
     public class ConfigConsoleControllerTests
     {
@@ -26,9 +24,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
         private const string BadConfigXml = "<configuration1></configuration1>";
         private const string BadXml = "<configuration></configuration1>";
 
-        /// <summary>
-        /// Method that is called immediately before each test is run.
-        /// </summary>
+        /// <summary>Method that is called immediately before each test is run.</summary>
         [SetUp]
         public static void Setup()
         {
@@ -45,9 +41,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        /// <summary>
-        /// Unit test for <see cref="ConfigConsoleController.ValidateConfigFile(string, string)"/>.
-        /// </summary>
+        /// <summary>Unit test for <see cref="ConfigConsoleController.ValidateConfigFile(string, string)"/>.</summary>
         /// <param name="fileName">File name to test.</param>
         /// <param name="fileContent">File content to test.</param>
         /// <param name="expectedErrorCount">Expected number of validation errors.</param>

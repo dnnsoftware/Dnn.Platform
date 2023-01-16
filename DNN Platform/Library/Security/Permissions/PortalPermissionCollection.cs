@@ -11,48 +11,37 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PortalPermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// PortalPermissionCollection provides the a custom collection for PortalPermissionInfo
     /// objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("portalpermissions")]
     public class PortalPermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
         public PortalPermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
         /// <param name="portalPermissions"></param>
         public PortalPermissionCollection(ArrayList portalPermissions)
         {
             this.AddRange(portalPermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
         /// <param name="portalPermissions"></param>
         public PortalPermissionCollection(PortalPermissionCollection portalPermissions)
         {
             this.AddRange(portalPermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
         /// <param name="portalPermissions"></param>
         /// <param name="portalId"></param>
         public PortalPermissionCollection(ArrayList portalPermissions, int portalId)

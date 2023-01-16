@@ -21,9 +21,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly Func<PackageInfo, string, IInstaller> installerFactory;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UninstallPackageStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UninstallPackageStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="packageController">An instance of <see cref="IPackageController"/>.</param>

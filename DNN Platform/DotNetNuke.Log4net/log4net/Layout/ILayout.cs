@@ -26,9 +26,7 @@ using log4net.Core;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Interface implemented by layout objects
-    /// </summary>
+    /// <summary>Interface implemented by layout objects</summary>
     /// <remarks>
     /// <para>
     /// An <see cref="ILayout"/> object is used to format a <see cref="LoggingEvent"/>
@@ -44,9 +42,7 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public interface ILayout
     {
-        /// <summary>
-        /// Implement this method to create your own layout format.
-        /// </summary>
+        /// <summary>Implement this method to create your own layout format.</summary>
         /// <param name="writer">The TextWriter to write the formatted event to</param>
         /// <param name="loggingEvent">The event to format</param>
         /// <remarks>
@@ -67,9 +63,7 @@ namespace log4net.Layout
         /// </remarks>
         void Format(TextWriter writer, LoggingEvent loggingEvent);
 
-        /// <summary>
-        /// The content type output by this layout. 
-        /// </summary>
+        /// <summary>The content type output by this layout. </summary>
         /// <value>The content type</value>
         /// <remarks>
         /// <para>
@@ -81,9 +75,7 @@ namespace log4net.Layout
         /// </remarks>
         string ContentType { get; }
 
-        /// <summary>
-        /// The header for the layout format.
-        /// </summary>
+        /// <summary>The header for the layout format.</summary>
         /// <value>the layout header</value>
         /// <remarks>
         /// <para>
@@ -93,9 +85,7 @@ namespace log4net.Layout
         /// </remarks>
         string Header { get; }
 
-        /// <summary>
-        /// The footer for the layout format.
-        /// </summary>
+        /// <summary>The footer for the layout format.</summary>
         /// <value>the layout footer</value>
         /// <remarks>
         /// <para>
@@ -105,9 +95,7 @@ namespace log4net.Layout
         /// </remarks>
         string Footer { get; }
 
-        /// <summary>
-        /// Flag indicating if this layout handle exceptions
-        /// </summary>
+        /// <summary>Flag indicating if this layout handle exceptions</summary>
         /// <value><c>false</c> if this layout handles exceptions</value>
         /// <remarks>
         /// <para>

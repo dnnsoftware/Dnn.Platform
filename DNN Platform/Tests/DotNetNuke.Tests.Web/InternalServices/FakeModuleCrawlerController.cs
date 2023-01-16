@@ -8,10 +8,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Entities;
 
-    /// <summary>
-    /// Search Crawler for Module Content.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Search Crawler for Module Content.</summary>
     public class FakeResultController : BaseResultController
     {
         public override bool HasViewPermission(SearchResult searchResult)

@@ -8,9 +8,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
     using System.IO;
     using System.Web.Hosting;
 
-    /// <summary>
-    /// Used to simulate an HttpRequest.
-    /// </summary>
+    /// <summary>Used to simulate an HttpRequest.</summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
         private readonly string _host;
@@ -36,18 +34,14 @@ namespace DotNetNuke.Tests.Instance.Utilities
             this._host = host;
         }
 
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
+        /// <summary>Gets the name of the server.</summary>
         /// <returns></returns>
         public override string GetServerName()
         {
             return this._host;
         }
 
-        /// <summary>
-        /// Maps the path to a filesystem path.
-        /// </summary>
+        /// <summary>Maps the path to a filesystem path.</summary>
         /// <param name="virtualPath">Virtual path.</param>
         /// <returns></returns>
         public override string MapPath(string virtualPath)

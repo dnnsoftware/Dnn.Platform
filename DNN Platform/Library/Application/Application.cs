@@ -18,9 +18,7 @@ namespace DotNetNuke.Application
     {
         private static NewReleaseMode status = NewReleaseMode.None;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Application"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Application"/> class.</summary>
         public Application()
         {
         }
@@ -88,9 +86,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the status of the DotnetNuke application.
-        /// </summary>
+        /// <summary>Gets the status of the DotnetNuke application.</summary>
         /// <remarks>
         /// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
         /// </remarks>

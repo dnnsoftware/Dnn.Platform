@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Appenders may delegate their error handling to an <see cref="IErrorHandler" />.
-    /// </summary>
+    /// <summary>Appenders may delegate their error handling to an <see cref="IErrorHandler" />.</summary>
     /// <remarks>
     /// <para>
     /// Error handling is a particularly tedious to get right because by
@@ -50,9 +48,7 @@ namespace log4net.Core
         /// </remarks>
         void Error(string message, Exception e, ErrorCode errorCode);
 
-        /// <summary>
-        /// Prints the error message passed as a parameter.
-        /// </summary>
+        /// <summary>Prints the error message passed as a parameter.</summary>
         /// <param name="message">The message associated with the error.</param>
         /// <param name="e">The <see cref="Exception" /> that was thrown when the error occurred.</param>
         /// <remarks>
@@ -62,9 +58,7 @@ namespace log4net.Core
         /// </remarks>
         void Error(string message, Exception e);
 
-        /// <summary>
-        /// Prints the error message passed as a parameter.
-        /// </summary>
+        /// <summary>Prints the error message passed as a parameter.</summary>
         /// <param name="message">The message associated with the error.</param>
         /// <remarks>
         /// <para>

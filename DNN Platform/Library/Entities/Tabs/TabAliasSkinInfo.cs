@@ -9,9 +9,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Class to represent a TabAliasSkinInfo object.
-    /// </summary>
+    /// <summary>Class to represent a TabAliasSkinInfo object.</summary>
     [Serializable]
     public class TabAliasSkinInfo : BaseEntityInfo, IHydratable
     {

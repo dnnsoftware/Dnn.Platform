@@ -14,9 +14,7 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Standard;
 
-    /// <summary>
-    /// This is responsible for the filters chain that analyzes search documents/queries.
-    /// </summary>
+    /// <summary>This is responsible for the filters chain that analyzes search documents/queries.</summary>
     internal class SynonymAnalyzer : Analyzer
     {
         /// <inheritdoc/>

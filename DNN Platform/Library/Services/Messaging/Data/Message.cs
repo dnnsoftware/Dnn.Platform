@@ -10,12 +10,7 @@ namespace DotNetNuke.Services.Messaging.Data
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Info class for Messaging.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  The Info class for Messaging.</summary>
     [Serializable]
     public class Message : IHydratable
     {
@@ -40,9 +35,7 @@ namespace DotNetNuke.Services.Messaging.Data
         private Guid emailSchedulerInstance;
         private DateTime emailSentDate;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Message"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Message"/> class.</summary>
         public Message()
         {
             this.Conversation = Guid.Empty;

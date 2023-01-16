@@ -20,9 +20,7 @@
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// A class to hold the key and data for a property set in the config file
-    /// </summary>
+    /// <summary>A class to hold the key and data for a property set in the config file</summary>
     /// <remarks>
     /// <para>
     /// A class to hold the key and data for a property set in the config file
@@ -33,9 +31,7 @@ namespace log4net.Util
         private string m_key = null;
         private object m_value = null;
 
-        /// <summary>
-        /// Property Key
-        /// </summary>
+        /// <summary>Property Key</summary>
         /// <value>
         /// Property Key
         /// </value>
@@ -50,9 +46,7 @@ namespace log4net.Util
             set { this.m_key = value; }
         }
 
-        /// <summary>
-        /// Property Value
-        /// </summary>
+        /// <summary>Property Value</summary>
         /// <value>
         /// Property Value
         /// </value>
@@ -67,9 +61,7 @@ namespace log4net.Util
             set { this.m_value = value; }
         }
 
-        /// <summary>
-        /// Override <c>Object.ToString</c> to return sensible debug info
-        /// </summary>
+        /// <summary>Override <c>Object.ToString</c> to return sensible debug info</summary>
         /// <returns>string info about this object</returns>
         public override string ToString()
         {

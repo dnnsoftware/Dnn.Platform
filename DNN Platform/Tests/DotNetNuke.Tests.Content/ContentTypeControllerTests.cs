@@ -25,9 +25,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ContentTypeTests.
-    /// </summary>
+    /// <summary>  Summary description for ContentTypeTests.</summary>
     [TestFixture]
     public class ContentTypeControllerTests
     {

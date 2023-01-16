@@ -14,16 +14,14 @@ namespace DotNetNuke.Entities.Urls
 
     internal static class CustomUrlDictController
     {
-        /// <summary>
-        /// returns a tabId indexed dictionary of Friendly Urls.
-        /// </summary>
+        /// <summary>returns a tabId indexed dictionary of Friendly Urls.</summary>
         /// <param name="portalId"></param>
         /// <param name="forceRebuild"></param>
         /// <param name="bypassCache"></param>
         /// <param name="settings"></param>
         /// <param name="customAliasForTabs"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="SharedDictionary{TKey,TValue}"/> where the key is a tab ID and the value is a <see cref="SharedDictionary{TKey,TValue}"/> with keys of URL culture and values of URLs.</returns>
         internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(
             int portalId,
             bool forceRebuild,
@@ -92,7 +90,7 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>
         /// Returns a list of tab and redirects from the database, for the specified portal
-        /// Assumes that the dictionary should have any existing items replaced if the portalid is specified
+        /// Assumes that the dictionary should have any existing items replaced if the portal ID is specified
         /// and the portal tabs already exist in the dictionary.
         /// </summary>
         /// <param name="existingTabs"></param>
@@ -103,7 +101,7 @@ namespace DotNetNuke.Entities.Urls
         ///    Each dictionary entry in the return value is a complex data type of another dictionary that is indexed by the url culture.  If there is
         ///    only one culture for the Url, it will be that culture.
         /// </remarks>
-        /// <returns></returns>
+        /// <returns>A <see cref="SharedDictionary{TKey,TValue}"/> where the key is a tab ID and the value is a <see cref="SharedDictionary{TKey,TValue}"/> with keys of URL culture and values of URLs.</returns>
         private static SharedDictionary<int, SharedDictionary<string, string>> BuildUrlDictionary(
             SharedDictionary<int, SharedDictionary<string, string>> existingTabs,
             int portalId,

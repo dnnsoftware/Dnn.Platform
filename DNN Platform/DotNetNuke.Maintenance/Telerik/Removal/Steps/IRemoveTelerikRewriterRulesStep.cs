@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Removes any Telerik references found in the Config/SiteUrls.config file.
-    /// </summary>
+    /// <summary>Removes any Telerik references found in the Config/SiteUrls.config file.</summary>
     internal interface IRemoveTelerikRewriterRulesStep : IStep
     {
     }

@@ -5,9 +5,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Comparer class used to perform the sorting of the query parameters.
-    /// </summary>
+    /// <summary>Comparer class used to perform the sorting of the query parameters.</summary>
     internal class QueryParameterComparer : IComparer<QueryParameter>
     {
         /// <inheritdoc/>

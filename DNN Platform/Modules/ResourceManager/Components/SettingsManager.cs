@@ -18,17 +18,13 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using static Dnn.Modules.ResourceManager.Components.Constants;
 
-    /// <summary>
-    /// Manages module settings.
-    /// </summary>
+    /// <summary>Manages module settings.</summary>
     public class SettingsManager
     {
         private readonly Hashtable moduleSettingsDictionary;
         private readonly int groupId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SettingsManager"/> class.</summary>
         /// <param name="moduleId">The id of the module.</param>
         /// <param name="groupId">The id of the group.</param>
         public SettingsManager(
@@ -43,19 +39,13 @@ namespace Dnn.Modules.ResourceManager.Components
             this.LoadSettings();
         }
 
-        /// <summary>
-        /// Gets or sets the id of the home folder.
-        /// </summary>
+        /// <summary>Gets or sets the id of the home folder.</summary>
         public int HomeFolderId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the home folder.
-        /// </summary>
+        /// <summary>Gets or sets the name of the home folder.</summary>
         public string HomeFolderName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the module mode, <see cref="Constants.ModuleModes"/>.
-        /// </summary>
+        /// <summary>Gets or sets the module mode, <see cref="Constants.ModuleModes"/>.</summary>
         public int Mode { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the folder is in the host portal (i.e. <c>_default</c>, "Global Resources"), rather than the current portal.</summary>

@@ -6,9 +6,7 @@ namespace DotNetNuke.Services.Cache
     using System;
     using System.Web.Caching;
 
-    /// <summary>
-    /// DNNCacheDependency provides dependency policies of cache system.
-    /// </summary>
+    /// <summary>DNNCacheDependency provides dependency policies of cache system.</summary>
     /// <remarks>
     /// The CacheDependency class monitors the dependency relationships so that when any of them changes, the cached item will be automatically removed.
     /// </remarks>
@@ -20,27 +18,21 @@ namespace DotNetNuke.Services.Cache
         private string[] fileNames;
         private CacheDependency systemCacheDependency;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class.</summary>
         /// <param name="systemCacheDependency">The system cache dependency.</param>
         public DNNCacheDependency(CacheDependency systemCacheDependency)
         {
             this.systemCacheDependency = systemCacheDependency;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.</summary>
         /// <param name="filename"></param>
         public DNNCacheDependency(string filename)
         {
             this.fileNames = new[] { filename };
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories) for changes.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories) for changes.</summary>
         /// <param name="filenames">set the cache depend on muti files.</param>
         public DNNCacheDependency(string[] filenames)
         {
@@ -71,9 +63,7 @@ namespace DotNetNuke.Services.Cache
             this.cacheKeys = cachekeys;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.</summary>
         /// <param name="filename">The filename.</param>
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string filename, DateTime start)
@@ -130,9 +120,7 @@ namespace DotNetNuke.Services.Cache
             this.cacheDependency = dependency;
         }
 
-        /// <summary>
-        /// Gets the cache keys.
-        /// </summary>
+        /// <summary>Gets the cache keys.</summary>
         public string[] CacheKeys
         {
             get
@@ -141,9 +129,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets the file names.
-        /// </summary>
+        /// <summary>Gets the file names.</summary>
         public string[] FileNames
         {
             get
@@ -152,9 +138,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance has changed.
-        /// </summary>
+        /// <summary>Gets a value indicating whether this instance has changed.</summary>
         /// <value>
         ///     <c>true</c> if this instance has changed; otherwise, <c>false</c>.
         /// </value>
@@ -166,9 +150,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets the cache dependency.
-        /// </summary>
+        /// <summary>Gets the cache dependency.</summary>
         public DNNCacheDependency CacheDependency
         {
             get
@@ -177,9 +159,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets the start time.
-        /// </summary>
+        /// <summary>Gets the start time.</summary>
         public DateTime StartTime
         {
             get
@@ -188,9 +168,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets the system cache dependency.
-        /// </summary>
+        /// <summary>Gets the system cache dependency.</summary>
         public CacheDependency SystemCacheDependency
         {
             get
@@ -211,9 +189,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets the UTC last modified.
-        /// </summary>
+        /// <summary>Gets the UTC last modified.</summary>
         public DateTime UtcLastModified
         {
             get
@@ -222,9 +198,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
             this.Dispose(true);

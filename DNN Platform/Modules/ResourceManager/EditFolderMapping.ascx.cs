@@ -19,26 +19,20 @@ namespace Dnn.Modules.ResourceManager
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Provides editing capabilities for a folder mapping.
-    /// </summary>
+    /// <summary>Provides editing capabilities for a folder mapping.</summary>
     public partial class EditFolderMapping : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
         private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
         private int folderMappingID = Null.NullInteger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditFolderMapping"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EditFolderMapping"/> class.</summary>
         public EditFolderMapping()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets the portalId for the folder.
-        /// </summary>
+        /// <summary>Gets the portalId for the folder.</summary>
         public int FolderPortalID
         {
             get
@@ -47,9 +41,7 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
-        /// <summary>
-        /// Gets the id of the folder mapping.
-        /// </summary>
+        /// <summary>Gets the id of the folder mapping.</summary>
         public int FolderMappingID
         {
             get
@@ -121,9 +113,7 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
-        /// <summary>
-        /// Handles the folder providers selection change.
-        /// </summary>
+        /// <summary>Handles the folder providers selection change.</summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event arguments.</param>
         protected void CboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)

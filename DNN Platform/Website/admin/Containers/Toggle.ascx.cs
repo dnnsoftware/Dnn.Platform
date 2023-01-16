@@ -11,10 +11,7 @@ namespace DotNetNuke.UI.Containers.Controls
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     [ParseChildren(false)]
     [PersistChildren(true)]
     public partial class Toggle : SkinObjectBase

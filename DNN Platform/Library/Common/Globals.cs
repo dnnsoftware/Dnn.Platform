@@ -55,9 +55,7 @@ namespace DotNetNuke.Common
 
     using DataCache = DotNetNuke.UI.Utilities.DataCache;
 
-    /// <summary>
-    /// The global instance of DotNetNuke. all basic functions and properties are defined in this instance.
-    /// </summary>
+    /// <summary>The global instance of DotNetNuke. all basic functions and properties are defined in this instance.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "StyleCop.CSharp.NamingRules",
         "SA1303:Const field names should begin with upper-case letter",
@@ -69,198 +67,130 @@ namespace DotNetNuke.Common
     [StandardModule]
     public sealed class Globals
     {
-        /// <summary>
-        /// Global role id for all users.
-        /// </summary>
+        /// <summary>Global role id for all users.</summary>
         /// <value>-1.</value>
         public const string glbRoleAllUsers = "-1";
 
-        /// <summary>
-        /// Global role id for super user.
-        /// </summary>
+        /// <summary>Global role id for super user.</summary>
         /// <value>-2.</value>
         public const string glbRoleSuperUser = "-2";
 
-        /// <summary>
-        /// Global role id for unauthenticated users.
-        /// </summary>
+        /// <summary>Global role id for unauthenticated users.</summary>
         /// <value>-3.</value>
         public const string glbRoleUnauthUser = "-3";
 
-        /// <summary>
-        /// Global role id by default.
-        /// </summary>
+        /// <summary>Global role id by default.</summary>
         /// <value>-4.</value>
         public const string glbRoleNothing = "-4";
 
-        /// <summary>
-        /// Global role name for all users.
-        /// </summary>
+        /// <summary>Global role name for all users.</summary>
         /// <value>All Users.</value>
         public const string glbRoleAllUsersName = "All Users";
 
-        /// <summary>
-        /// Global ro name for super user.
-        /// </summary>
+        /// <summary>Global ro name for super user.</summary>
         /// <value>Superuser.</value>
         public const string glbRoleSuperUserName = "Superuser";
 
-        /// <summary>
-        /// Global role name for unauthenticated users.
-        /// </summary>
+        /// <summary>Global role name for unauthenticated users.</summary>
         /// <value>Unauthenticated Users.</value>
         public const string glbRoleUnauthUserName = "Unauthenticated Users";
 
-        /// <summary>
-        /// Default page name.
-        /// </summary>
+        /// <summary>Default page name.</summary>
         /// <value>Default.aspx.</value>
         public const string glbDefaultPage = "Default.aspx";
 
-        /// <summary>
-        /// Default host skin folder.
-        /// </summary>
+        /// <summary>Default host skin folder.</summary>
         /// <value>_default.</value>
         public const string glbHostSkinFolder = "_default";
 
-        /// <summary>
-        /// Default control panel.
-        /// </summary>
+        /// <summary>Default control panel.</summary>
         /// <value>Admin/ControlPanel/IconBar.ascx.</value>
         public const string glbDefaultControlPanel = "Admin/ControlPanel/IconBar.ascx";
 
-        /// <summary>
-        /// Default setting to determine if selected control panel is loaded to evaluate visibility.
-        /// </summary>
+        /// <summary>Default setting to determine if selected control panel is loaded to evaluate visibility.</summary>
         /// <value>false.</value>
         public const bool glbAllowControlPanelToDetermineVisibility = false;
 
-        /// <summary>
-        /// Default pane name.
-        /// </summary>
+        /// <summary>Default pane name.</summary>
         /// <value>ContentPane.</value>
         public const string glbDefaultPane = "ContentPane";
 
-        /// <summary>
-        /// Config files folder.
-        /// </summary>
+        /// <summary>Config files folder.</summary>
         /// <value>\Config\.</value>
         public const string glbConfigFolder = "\\Config\\";
 
-        /// <summary>
-        /// About page name.
-        /// </summary>
+        /// <summary>About page name.</summary>
         /// <value>about.htm.</value>
         public const string glbAboutPage = "about.htm";
 
-        /// <summary>
-        /// DotNetNuke config file.
-        /// </summary>
+        /// <summary>DotNetNuke config file.</summary>
         /// <value>DotNetNuke.config.</value>
         public const string glbDotNetNukeConfig = "DotNetNuke.config";
 
-        /// <summary>
-        /// Default portal id for super user.
-        /// </summary>
+        /// <summary>Default portal id for super user.</summary>
         /// <value>-1.</value>
         public const int glbSuperUserAppName = -1;
 
-        /// <summary>
-        /// extension of protected files.
-        /// </summary>
+        /// <summary>extension of protected files.</summary>
         /// <value>.resources.</value>
         public const string glbProtectedExtension = ".resources";
 
-        /// <summary>
-        /// Default container folder.
-        /// </summary>
+        /// <summary>Default container folder.</summary>
         /// <value>Portals/_default/Containers/.</value>
         public const string glbContainersPath = "Portals/_default/Containers/";
 
-        /// <summary>
-        /// Default skin folder.
-        /// </summary>
+        /// <summary>Default skin folder.</summary>
         /// <value>Portals/_default/Skins/.</value>
         public const string glbSkinsPath = "Portals/_default/Skins/";
 
-        /// <summary>
-        /// Email address regex pattern.
-        /// </summary>
+        /// <summary>Email address regex pattern.</summary>
         /// <value><![CDATA[^[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])$]]></value>
         public const string glbEmailRegEx =
             @"^\s*[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])\s*$";
 
-        /// <summary>
-        /// User Name regex pattern.
-        /// </summary>
+        /// <summary>User Name regex pattern.</summary>
         /// <value></value>
         public const string glbUserNameRegEx = @"";
 
-        /// <summary>
-        /// User Name default minimum length.
-        /// </summary>
+        /// <summary>User Name default minimum length.</summary>
         /// <value></value>
         public const int glbUserNameMinLength = 5;
 
-        /// <summary>
-        /// Format of a script tag.
-        /// </summary>
+        /// <summary>Format of a script tag.</summary>
         /// <value><![CDATA[<script type=\"text/javascript\" src=\"{0}\" ></script>]]></value>
         public const string glbScriptFormat = "<script type=\"text/javascript\" src=\"{0}\" ></script>";
 
-        /// <summary>
-        /// Validates for a valid email address.
-        /// </summary>
+        /// <summary>Validates for a valid email address.</summary>
         public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
 
-        /// <summary>
-        /// Finds non-alphanumeric characters.
-        /// </summary>
+        /// <summary>Finds non-alphanumeric characters.</summary>
         public static readonly Regex NonAlphanumericCharacters = new Regex("[^A-Za-z0-9]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        /// <summary>
-        /// Finds any character that is not a letter, a number, an underscore or a dash.
-        /// </summary>
+        /// <summary>Finds any character that is not a letter, a number, an underscore or a dash.</summary>
         public static readonly Regex InvalidCharacters = new Regex("[^A-Za-z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        /// <summary>
-        /// Validates if the first character is a letter.
-        /// </summary>
+        /// <summary>Validates if the first character is a letter.</summary>
         public static readonly Regex InvalidInitialCharacters = new Regex("^[^A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        /// <summary>
-        /// Validates if the string contains only numbers.
-        /// </summary>
+        /// <summary>Validates if the string contains only numbers.</summary>
         public static readonly Regex NumberMatchRegex = new Regex(@"^\d+$", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Validates if a tag is an html 'base' tag.
-        /// </summary>
+        /// <summary>Validates if a tag is an html 'base' tag.</summary>
         public static readonly Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        /// <summary>
-        /// Finds common file escaping characters.
-        /// </summary>
+        /// <summary>Finds common file escaping characters.</summary>
         public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Checks if a string is a valid Windows file extension.
-        /// </summary>
+        /// <summary>Checks if a string is a valid Windows file extension.</summary>
         public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Checks if a string is a valid Windows filename.
-        /// </summary>
+        /// <summary>Checks if a string is a valid Windows filename.</summary>
         public static readonly Regex FileValidNameRegex = new Regex(@"^(?!(?:PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d)(?:\..+)?$)[^\x00-\x1F\xA5\\?*:\"";|\/<>]+(?<![\s.])$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        /// <summary>
-        /// Checks if a url part is a valid services framework url.
-        /// </summary>
+        /// <summary>Checks if a url part is a valid services framework url.</summary>
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        /// <summary>
-        /// Checks for invalid usernames.
-        /// </summary>
+        /// <summary>Checks for invalid usernames.</summary>
         public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
 
         private const string tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
@@ -284,9 +214,7 @@ namespace DotNetNuke.Common
 
         // global constants for the life of the application ( set in Application_Start )
 
-        /// <summary>
-        /// Enumeration of site performance setting, say by another way that means how to set the cache.
-        /// </summary>
+        /// <summary>Enumeration of site performance setting, say by another way that means how to set the cache.</summary>
         /// <remarks>
         /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
         /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
@@ -303,30 +231,20 @@ namespace DotNetNuke.Common
         /// </remarks>
         public enum PerformanceSettings
         {
-            /// <summary>
-            /// No Caching
-            /// </summary>
+            /// <summary>No Caching</summary>
             NoCaching = 0,
 
-            /// <summary>
-            /// Caching for a short time
-            /// </summary>
+            /// <summary>Caching for a short time</summary>
             LightCaching = 1,
 
-            /// <summary>
-            /// Caching for moderate time
-            /// </summary>
+            /// <summary>Caching for moderate time</summary>
             ModerateCaching = 3,
 
-            /// <summary>
-            /// Caching for a long time
-            /// </summary>
+            /// <summary>Caching for a long time</summary>
             HeavyCaching = 6,
         }
 
-        /// <summary>
-        /// Enumeration Of Registration Type for portal.
-        /// </summary>
+        /// <summary>Enumeration Of Registration Type for portal.</summary>
         /// <remarks>
         /// <para>NoRegistration: Disabled registration in portal.</para>
         /// <para>PrivateRegistration: Once user's account information has been submitted,
@@ -340,62 +258,40 @@ namespace DotNetNuke.Common
         /// </remarks>
         public enum PortalRegistrationType
         {
-            /// <summary>
-            /// Disabled Registration
-            /// </summary>
+            /// <summary>Disabled Registration</summary>
             NoRegistration = 0,
 
-            /// <summary>
-            /// Account need be approved by portal's administrator.
-            /// </summary>
+            /// <summary>Account need be approved by portal's administrator.</summary>
             PrivateRegistration = 1,
 
-            /// <summary>
-            /// Account will be available after post registration data successful.
-            /// </summary>
+            /// <summary>Account will be available after post registration data successful.</summary>
             PublicRegistration = 2,
 
-            /// <summary>
-            /// Account will be available by verify code.
-            /// </summary>
+            /// <summary>Account will be available by verify code.</summary>
             VerifiedRegistration = 3,
         }
 
-        /// <summary>
-        /// Enumeration Of Application upgrade status.
-        /// </summary>
+        /// <summary>Enumeration Of Application upgrade status.</summary>
         public enum UpgradeStatus
         {
-            /// <summary>
-            /// The application need update to a higher version.
-            /// </summary>
+            /// <summary>The application need update to a higher version.</summary>
             Upgrade = 0,
 
-            /// <summary>
-            /// The application need to install itself.
-            /// </summary>
+            /// <summary>The application need to install itself.</summary>
             Install = 1,
 
-            /// <summary>
-            /// The application is normal running.
-            /// </summary>
+            /// <summary>The application is normal running.</summary>
             None = 2,
 
-            /// <summary>
-            /// The application occur error when running.
-            /// </summary>
+            /// <summary>The application occur error when running.</summary>
             Error = 3,
 
-            /// <summary>
-            /// The application status is unknown,
-            /// </summary>
+            /// <summary>The application status is unknown,</summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
             Unknown = 4,
         }
 
-        /// <summary>
-        /// Gets the application path.
-        /// </summary>
+        /// <summary>Gets the application path.</summary>
         public static string ApplicationPath
         {
             get
@@ -416,18 +312,14 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the application map path.
-        /// </summary>
+        /// <summary>Gets the application map path.</summary>
         /// <value>
         /// The application map path.
         /// </value>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static string ApplicationMapPath => applicationStatusInfo.ApplicationMapPath;
 
-        /// <summary>
-        /// Gets the desktop module path.
-        /// </summary>
+        /// <summary>Gets the desktop module path.</summary>
         /// <value>ApplicationPath + "/DesktopModules/".</value>
         public static string DesktopModulePath
         {
@@ -442,9 +334,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the image path.
-        /// </summary>
+        /// <summary>Gets the image path.</summary>
         /// <value>ApplicationPath + "/Images/".</value>
         public static string ImagePath
         {
@@ -459,15 +349,11 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the database version.
-        /// </summary>
+        /// <summary>Gets the database version.</summary>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static Version DataBaseVersion { get => applicationStatusInfo.DatabaseVersion; }
 
-        /// <summary>
-        /// Gets the host map path.
-        /// </summary>
+        /// <summary>Gets the host map path.</summary>
         /// <value>ApplicationMapPath + "Portals\_default\".</value>
         public static string HostMapPath
         {
@@ -482,9 +368,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the host path.
-        /// </summary>
+        /// <summary>Gets the host path.</summary>
         /// <value>ApplicationPath + "/Portals/_default/".</value>
         public static string HostPath
         {
@@ -499,9 +383,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the install map path.
-        /// </summary>
+        /// <summary>Gets the install map path.</summary>
         /// <value>server map path of InstallPath.</value>
         public static string InstallMapPath
         {
@@ -516,9 +398,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the install path.
-        /// </summary>
+        /// <summary>Gets the install path.</summary>
         /// <value>ApplicationPath + "/Install/".</value>
         public static string InstallPath
         {
@@ -533,16 +413,12 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the status of application.
-        /// </summary>
+        /// <summary>Gets the status of application.</summary>
         /// <seealso cref="GetStatus"/>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
-        /// <summary>
-        /// Gets image file types.
-        /// </summary>
+        /// <summary>Gets image file types.</summary>
         /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
         [Obsolete("Deprecated in v9.8.1, use ImageFileTypes instead, scheduled for removal in v11.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -551,9 +427,7 @@ namespace DotNetNuke.Common
             Justification = "Kept to prevent a breaking change, new overload created.")]
         public static string glbImageFileTypes => ImageFileTypes;
 
-        /// <summary>
-        /// Gets image file types.
-        /// </summary>
+        /// <summary>Gets image file types.</summary>
         /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
         public static string ImageFileTypes
         {
@@ -570,9 +444,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating for how long the application has been running.
-        /// </summary>
+        /// <summary>Gets a value indicating for how long the application has been running.</summary>
         public static TimeSpan ElapsedSinceAppStart
         {
             get
@@ -581,49 +453,37 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets or sets the name of the IIS app.
-        /// </summary>
+        /// <summary>Gets or sets the name of the IIS app.</summary>
         /// <value>
         /// request.ServerVariables["APPL_MD_PATH"].
         /// </value>
         public static string IISAppName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the server.
-        /// </summary>
+        /// <summary>Gets or sets the name of the server.</summary>
         /// <value>
         /// server name in config file or the server's marchine name.
         /// </value>
         public static string ServerName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the operating system version.
-        /// </summary>
+        /// <summary>Gets or sets the operating system version.</summary>
         /// <value>
         /// The operating system version.
         /// </value>
         public static Version OperatingSystemVersion { get; set; }
 
-        /// <summary>
-        /// Gets or sets the NET framework version.
-        /// </summary>
+        /// <summary>Gets or sets the NET framework version.</summary>
         /// <value>
         /// The NET framework version.
         /// </value>
         public static Version NETFrameworkVersion { get; set; }
 
-        /// <summary>
-        /// Gets or sets the database engine version.
-        /// </summary>
+        /// <summary>Gets or sets the database engine version.</summary>
         /// <value>
         /// The database engine version.
         /// </value>
         public static Version DatabaseEngineVersion { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Dependency Service.
-        /// </summary>
+        /// <summary>Gets or sets the Dependency Service.</summary>
         /// <value>
         /// The Dependency Service.
         /// </value>
@@ -644,9 +504,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Redirects the specified URL.
-        /// </summary>
+        /// <summary>Redirects the specified URL.</summary>
         /// <param name="url">The URL.</param>
         /// <param name="endResponse">if set to <c>true</c> [end response].</param>
         public static void Redirect(string url, bool endResponse)
@@ -666,18 +524,14 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Checks if incremental sqlDataProvider files exist.
-        /// </summary>
+        /// <summary>Checks if incremental sqlDataProvider files exist.</summary>
         /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
         /// <returns>A value indicating whether any incremental sql script file exists.</returns>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
-        /// <summary>
-        /// Builds the cross tab dataset.
-        /// </summary>
+        /// <summary>Builds the cross tab dataset.</summary>
         /// <param name="dataSetName">Name of the data set.</param>
         /// <param name="result">The result.</param>
         /// <param name="fixedColumns">The fixed columns.</param>
@@ -703,9 +557,7 @@ namespace DotNetNuke.Common
             return BuildCrossTabDataSet(dataSetName, result, fixedColumns, variableColumns, keyColumn, fieldColumn, fieldTypeColumn, stringValueColumn, numericValueColumn, CultureInfo.CurrentCulture);
         }
 
-        /// <summary>
-        /// converts a data reader with serialized fields into a typed data set.
-        /// </summary>
+        /// <summary>converts a data reader with serialized fields into a typed data set.</summary>
         /// <param name="dataSetName">Name of the dataset to be created.</param>
         /// <param name="result">Data reader that contains all field values serialized.</param>
         /// <param name="fixedColumns">List of fixed columns, delimited by commas. Columns must be contained in DataReader.</param>
@@ -874,9 +726,7 @@ namespace DotNetNuke.Common
             return crosstab;
         }
 
-        /// <summary>
-        /// Converts the datareader to dataset.
-        /// </summary>
+        /// <summary>Converts the datareader to dataset.</summary>
         /// <param name="reader">The reader.</param>
         /// <returns>the dataset instance.</returns>
         public static DataSet ConvertDataReaderToDataSet(IDataReader reader)
@@ -900,9 +750,7 @@ namespace DotNetNuke.Common
             return objDataSet;
         }
 
-        /// <summary>
-        /// Converts the datareader to datatable.
-        /// </summary>
+        /// <summary>Converts the datareader to datatable.</summary>
         /// <param name="reader">The reader.</param>
         /// <returns>the datatable instance.</returns>
         public static DataTable ConvertDataReaderToDataTable(IDataReader reader)
@@ -910,9 +758,7 @@ namespace DotNetNuke.Common
             return ConvertDataReaderToDataTable(reader, true);
         }
 
-        /// <summary>
-        /// Converts the datareader to datatable.
-        /// </summary>
+        /// <summary>Converts the datareader to datatable.</summary>
         /// <param name="reader">The reader.</param>
         /// <param name="closeReader">Whether close reader.</param>
         /// <returns>the datatable instance.</returns>
@@ -950,9 +796,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the absolute server path.
-        /// </summary>
+        /// <summary>Gets the absolute server path.</summary>
         /// <param name="request">The request.</param>
         /// <returns>absolute server path.</returns>
         public static string GetAbsoluteServerPath(HttpRequest request)
@@ -967,9 +811,7 @@ namespace DotNetNuke.Common
             return strServerPath;
         }
 
-        /// <summary>
-        /// Gets the ApplicationName for the MemberRole API.
-        /// </summary>
+        /// <summary>Gets the ApplicationName for the MemberRole API.</summary>
         /// <remarks>
         /// This overload is used to get the current ApplcationName.  The Application
         /// Name is in the form Prefix_Id, where Prefix is the object qualifier
@@ -1000,9 +842,7 @@ namespace DotNetNuke.Common
             return appName;
         }
 
-        /// <summary>
-        /// Gets the ApplicationName for the MemberRole API.
-        /// </summary>
+        /// <summary>Gets the ApplicationName for the MemberRole API.</summary>
         /// <remarks>
         /// This overload is used to build the Application Name from the Portal Id.
         /// </remarks>
@@ -1029,9 +869,7 @@ namespace DotNetNuke.Common
             return appName;
         }
 
-        /// <summary>
-        /// Finds the database version.
-        /// </summary>
+        /// <summary>Finds the database version.</summary>
         /// <param name="major">The major.</param>
         /// <param name="minor">The minor.</param>
         /// <param name="build">The build.</param>
@@ -1060,34 +898,26 @@ namespace DotNetNuke.Common
             return version;
         }
 
-        /// <summary>
-        /// Updates the database version.
-        /// </summary>
+        /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
 
-        /// <summary>
-        /// Updates the database version.
-        /// </summary>
+        /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment (revision) number.</param>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static void UpdateDataBaseVersionIncrement(Version version, int increment) =>
             applicationStatusInfo.UpdateDatabaseVersionIncrement(version, increment);
 
-        /// <summary>
-        /// Gets the last applied iteration (revision).
-        /// </summary>
+        /// <summary>Gets the last applied iteration (revision).</summary>
         /// <param name="version">The version for which to check the last revision.</param>
         /// <returns>The last applied iteration (revision) for the requested version.</returns>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static int GetLastAppliedIteration(Version version) =>
             applicationStatusInfo.GetLastAppliedIteration(version);
 
-        /// <summary>
-        /// Adds the port.
-        /// </summary>
+        /// <summary>Adds the port.</summary>
         /// <param name="httpAlias">The HTTP alias.</param>
         /// <param name="originalUrl">The original URL.</param>
         /// <returns>url with port if the post number is not 80.</returns>
@@ -1104,9 +934,7 @@ namespace DotNetNuke.Common
             return httpAlias;
         }
 
-        /// <summary>
-        /// Gets the name of the domain.
-        /// </summary>
+        /// <summary>Gets the name of the domain.</summary>
         /// <param name="request">The request.</param>
         /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequest request)
@@ -1114,9 +942,7 @@ namespace DotNetNuke.Common
             return GetDomainName(new HttpRequestWrapper(request), false);
         }
 
-        /// <summary>
-        /// Gets the name of the domain.
-        /// </summary>
+        /// <summary>Gets the name of the domain.</summary>
         /// <param name="request">The request.</param>
         /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequestBase request)
@@ -1124,9 +950,7 @@ namespace DotNetNuke.Common
             return GetDomainName(request, false);
         }
 
-        /// <summary>
-        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).
-        /// </summary>
+        /// <summary>returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).</summary>
         /// <param name="request">The request.</param>
         /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
         /// <returns>domain name.</returns>
@@ -1135,9 +959,7 @@ namespace DotNetNuke.Common
             return GetDomainName(new HttpRequestWrapper(request), parsePortNumber);
         }
 
-        /// <summary>
-        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).
-        /// </summary>
+        /// <summary>returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).</summary>
         /// <param name="request">The request.</param>
         /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
         /// <returns>domain name.</returns>
@@ -1146,9 +968,7 @@ namespace DotNetNuke.Common
             return TestableGlobals.Instance.GetDomainName(request.Url, parsePortNumber);
         }
 
-        /// <summary>
-        /// Determin whether use port number by the value in config file.
-        /// </summary>
+        /// <summary>Determin whether use port number by the value in config file.</summary>
         /// <returns>
         /// <c>true</c> if use port number, otherwise, return <c>false</c>.
         /// </returns>
@@ -1163,18 +983,14 @@ namespace DotNetNuke.Common
             return usePort;
         }
 
-        /// <summary>
-        /// Gets the file list.
-        /// </summary>
+        /// <summary>Gets the file list.</summary>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList()
         {
             return GetFileList(-1, string.Empty, true, string.Empty, false);
         }
 
-        /// <summary>
-        /// Gets the file list.
-        /// </summary>
+        /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId)
@@ -1182,9 +998,7 @@ namespace DotNetNuke.Common
             return GetFileList(portalId, string.Empty, true, string.Empty, false);
         }
 
-        /// <summary>
-        /// Gets the file list.
-        /// </summary>
+        /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
         /// <returns>file list.</returns>
@@ -1193,9 +1007,7 @@ namespace DotNetNuke.Common
             return GetFileList(portalId, strExtensions, true, string.Empty, false);
         }
 
-        /// <summary>
-        /// Gets the file list.
-        /// </summary>
+        /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
         /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
@@ -1205,9 +1017,7 @@ namespace DotNetNuke.Common
             return GetFileList(portalId, strExtensions, noneSpecified, string.Empty, false);
         }
 
-        /// <summary>
-        /// Gets the file list.
-        /// </summary>
+        /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
         /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
@@ -1218,9 +1028,7 @@ namespace DotNetNuke.Common
             return GetFileList(portalId, strExtensions, noneSpecified, folder, false);
         }
 
-        /// <summary>
-        /// Gets the file list.
-        /// </summary>
+        /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
         /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
@@ -1284,9 +1092,7 @@ namespace DotNetNuke.Common
             return arrFileList;
         }
 
-        /// <summary>
-        /// Gets the host portal settings.
-        /// </summary>
+        /// <summary>Gets the host portal settings.</summary>
         /// <returns>Host portal settings.</returns>
         public static PortalSettings GetHostPortalSettings()
         {
@@ -1308,9 +1114,7 @@ namespace DotNetNuke.Common
             return new PortalSettings(tabId, objPortalAliasInfo as PortalAliasInfo);
         }
 
-        /// <summary>
-        /// Gets the portal domain name.
-        /// </summary>
+        /// <summary>Gets the portal domain name.</summary>
         /// <param name="strPortalAlias">The portal alias.</param>
         /// <param name="request">The request or <c>null</c>.</param>
         /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
@@ -1347,9 +1151,7 @@ namespace DotNetNuke.Common
             return strDomainName;
         }
 
-        /// <summary>
-        /// Gets the portal settings.
-        /// </summary>
+        /// <summary>Gets the portal settings.</summary>
         /// <returns>Portal settings.</returns>
         public static PortalSettings GetPortalSettings()
         {
@@ -1370,9 +1172,7 @@ namespace DotNetNuke.Common
             return portalSettings;
         }
 
-        /// <summary>
-        /// Returns the folder path under the root for the portal.
-        /// </summary>
+        /// <summary>Returns the folder path under the root for the portal.</summary>
         /// <param name="strFileNamePath">The folder the absolute path.</param>
         /// <param name="portalId">Portal Id.</param>
         /// <returns>A string containing the subfolder path.</returns>
@@ -1393,10 +1193,8 @@ namespace DotNetNuke.Common
             return strFolderpath.Substring(parentFolderName.Length).Replace("\\", "/");
         }
 
-        /// <summary>
-        /// The GetTotalRecords method gets the number of Records returned.
-        /// </summary>
-        /// <param name="dr">An <see cref="IDataReader"/> containing the Total no of records.</param>
+        /// <summary>The GetTotalRecords method gets the number of Records returned.</summary>
+        /// <param name="dr">An <see cref="IDataReader"/> containing the Total number of records.</param>
         /// <returns>The total number of records in the data reader.</returns>
         public static int GetTotalRecords(ref IDataReader dr)
         {
@@ -1417,9 +1215,7 @@ namespace DotNetNuke.Common
             return total;
         }
 
-        /// <summary>
-        /// Sets the status.
-        /// </summary>
+        /// <summary>Sets the status.</summary>
         /// <param name="status">The status.</param>
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         public static void SetStatus(UpgradeStatus status) =>
@@ -1455,9 +1251,7 @@ namespace DotNetNuke.Common
             return strUrl;
         }
 
-        /// <summary>
-        /// Encode the post url.
-        /// </summary>
+        /// <summary>Encode the post url.</summary>
         /// <param name="strPost">The post url.</param>
         /// <returns>encoded value.</returns>
         public static string HTTPPOSTEncode(string strPost)
@@ -1468,9 +1262,7 @@ namespace DotNetNuke.Common
             return strPost;
         }
 
-        /// <summary>
-        /// Sets the ApplicationName for the MemberRole API.
-        /// </summary>
+        /// <summary>Sets the ApplicationName for the MemberRole API.</summary>
         /// <remarks>
         /// This overload takes a the PortalId.
         /// </remarks>
@@ -1480,23 +1272,17 @@ namespace DotNetNuke.Common
             HttpContext.Current.Items["ApplicationName"] = GetApplicationName(portalId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets the ApplicationName for the MemberRole API.
-        /// </summary>
+        /// <summary>Sets the ApplicationName for the MemberRole API.</summary>
         /// <remarks>
         /// This overload takes a the PortalId.
         /// </remarks>
         /// <param name="applicationName">The Application Name to set.</param>
-        /// -----------------------------------------------------------------------------
         public static void SetApplicationName(string applicationName)
         {
             HttpContext.Current.Items["ApplicationName"] = applicationName;
         }
 
-        /// <summary>
-        /// Formats the address on a single line ( ie. Unit, Street, City, Region, Country, PostalCode ).
-        /// </summary>
+        /// <summary>Formats the address on a single line ( ie. Unit, Street, City, Region, Country, PostalCode ).</summary>
         /// <param name="unit">The unit.</param>
         /// <param name="street">The street.</param>
         /// <param name="city">The city.</param>
@@ -1563,9 +1349,7 @@ namespace DotNetNuke.Common
             return strAddress;
         }
 
-        /// <summary>
-        /// Formats the system.version into the standard format nn.nn.nn.
-        /// </summary>
+        /// <summary>Formats the system.version into the standard format nn.nn.nn.</summary>
         /// <param name="version">The version.</param>
         /// <returns>Formatted  version as string.</returns>
         public static string FormatVersion(Version version)
@@ -1573,9 +1357,7 @@ namespace DotNetNuke.Common
             return FormatVersion(version, false);
         }
 
-        /// <summary>
-        /// Formats the version.
-        /// </summary>
+        /// <summary>Formats the version.</summary>
         /// <param name="version">The version.</param>
         /// <param name="includeBuild">if set to <c>true</c> [include build].</param>
         /// <returns>Formatted version as string.</returns>
@@ -1596,9 +1378,7 @@ namespace DotNetNuke.Common
             return strVersion;
         }
 
-        /// <summary>
-        /// Formats  a version into the standard format nn.nn.nn.
-        /// </summary>
+        /// <summary>Formats  a version into the standard format nn.nn.nn.</summary>
         /// <param name="version">The version to be formatted.</param>
         /// <param name="fieldFormat">The field format.</param>
         /// <param name="fieldCount">The field count.</param>
@@ -1665,9 +1445,7 @@ namespace DotNetNuke.Common
             return strVersion;
         }
 
-        /// <summary>
-        /// Cloaks the text, obfuscate sensitive data to prevent collection by robots and spiders and crawlers.
-        /// </summary>
+        /// <summary>Cloaks the text, obfuscate sensitive data to prevent collection by robots and spiders and crawlers.</summary>
         /// <param name="personalInfo">The personal info.</param>
         /// <returns>obfuscated sensitive data by hustling ASCII characters.</returns>
         public static string CloakText(string personalInfo)
@@ -1689,9 +1467,7 @@ namespace DotNetNuke.Common
             return string.Format(Script, string.Join(",", characterCodes.ToArray()));
         }
 
-        /// <summary>
-        /// Gets the medium date by current culture.
-        /// </summary>
+        /// <summary>Gets the medium date by current culture.</summary>
         /// <param name="strDate">The date.</param>
         /// <returns>return formatted content of the date if paramter isn't empty, else return the parameter.</returns>
         /// <example>
@@ -1713,9 +1489,7 @@ namespace DotNetNuke.Common
             return strDate;
         }
 
-        /// <summary>
-        /// Gets the short date.
-        /// </summary>
+        /// <summary>Gets the short date.</summary>
         /// <param name="strDate">The date.</param>
         /// <returns>short date content of the input.</returns>
         public static string GetShortDate(string strDate)
@@ -1732,9 +1506,7 @@ namespace DotNetNuke.Common
             return strDate;
         }
 
-        /// <summary>
-        /// Determines whether current request contains admin control information.
-        /// </summary>
+        /// <summary>Determines whether current request contains admin control information.</summary>
         /// <returns>
         ///   <c>true</c> if current request contains admin control information; otherwise, <c>false</c>.
         /// </returns>
@@ -1749,9 +1521,7 @@ namespace DotNetNuke.Common
             return (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) || (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
-        /// <summary>
-        /// Determines whether current request use admin skin.
-        /// </summary>
+        /// <summary>Determines whether current request use admin skin.</summary>
         /// <returns>
         ///   <c>true</c> if current request use admin skin; otherwise, <c>false</c>.
         /// </returns>
@@ -1780,27 +1550,21 @@ namespace DotNetNuke.Common
             return isAdminSkin;
         }
 
-        /// <summary>
-        /// Returns whether the current tab is in EditMode.
-        /// </summary>
+        /// <summary>Returns whether the current tab is in EditMode.</summary>
         /// <returns><c>true</c> if the tab is in Edit mode; otherwise <c>false</c>.</returns>
         public static bool IsEditMode()
         {
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
-        /// <summary>
-        /// Returns whether the current tab is in LayoutMode.
-        /// </summary>
+        /// <summary>Returns whether the current tab is in LayoutMode.</summary>
         /// <returns><c>true</c> if the current tab is in layout mode; otherwise <c>false</c>.</returns>
         public static bool IsLayoutMode()
         {
             return TabPermissionController.CanAddContentToPage() && Personalization.GetUserMode() == PortalSettings.Mode.Layout;
         }
 
-        /// <summary>
-        /// Creates the RSS.
-        /// </summary>
+        /// <summary>Creates the RSS.</summary>
         /// <param name="dr">The dr.</param>
         /// <param name="titleField">The title field.</param>
         /// <param name="urlField">The URL field.</param>
@@ -1885,9 +1649,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// injects the upload directory into raw HTML for src and background tags.
-        /// </summary>
+        /// <summary>injects the upload directory into raw HTML for src and background tags.</summary>
         /// <param name="strHTML">raw HTML text.</param>
         /// <param name="strUploadDirectory">path of portal image directory.</param>
         /// <returns>HTML with paths for images and background corrected.</returns>
@@ -1897,9 +1659,7 @@ namespace DotNetNuke.Common
             return ManageTokenUploadDirectory(strHTML, strUploadDirectory, "background");
         }
 
-        /// <summary>
-        /// Injects the upload directory into raw HTML for a single token.
-        /// </summary>
+        /// <summary>Injects the upload directory into raw HTML for a single token.</summary>
         /// <param name="strHTML">The raw HTML text.</param>
         /// <param name="strUploadDirectory">The path of portal image directory.</param>
         /// <param name="strToken">The token to be replaced.</param>
@@ -1954,9 +1714,7 @@ namespace DotNetNuke.Common
             return sbBuff.ToString();
         }
 
-        /// <summary>
-        /// Finds the control recursive from child to parent.
-        /// </summary>
+        /// <summary>Finds the control recursive from child to parent.</summary>
         /// <param name="objControl">current control.</param>
         /// <param name="strControlName">the control name which want to find out.</param>
         /// <returns>control which'name is strControlName, or else return null if didn't match any control.</returns>
@@ -1979,9 +1737,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Searches control hierarchy from top down to find a control matching the passed in name.
-        /// </summary>
+        /// <summary>Searches control hierarchy from top down to find a control matching the passed in name.</summary>
         /// <param name="objParent">Root control to begin searching.</param>
         /// <param name="strControlName">Name of control to look for.</param>
         /// <returns>The found control or null.</returns>
@@ -2009,9 +1765,7 @@ namespace DotNetNuke.Common
             return objCtl;
         }
 
-        /// <summary>
-        /// Sets the form focus.
-        /// </summary>
+        /// <summary>Sets the form focus.</summary>
         /// <param name="control">The control.</param>
         public static void SetFormFocus(Control control)
         {
@@ -2060,9 +1814,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the external request.
-        /// </summary>
+        /// <summary>Gets the external request.</summary>
         /// <param name="address">The address.</param>
         /// <returns>Web request.</returns>
         public static HttpWebRequest GetExternalRequest(string address)
@@ -2103,9 +1855,7 @@ namespace DotNetNuke.Common
             return objRequest;
         }
 
-        /// <summary>
-        /// Gets the external request.
-        /// </summary>
+        /// <summary>Gets the external request.</summary>
         /// <param name="address">The address.</param>
         /// <param name="credentials">The credentials.</param>
         /// <returns>Web request.</returns>
@@ -2152,18 +1902,14 @@ namespace DotNetNuke.Common
             return objRequest;
         }
 
-        /// <summary>
-        /// Deletes the folder recursive, include the folder itself will be deleted.
-        /// </summary>
+        /// <summary>Deletes the folder recursive, include the folder itself will be deleted.</summary>
         /// <param name="strRoot">The root.</param>
         public static void DeleteFolderRecursive(string strRoot)
         {
             FileSystemUtils.DeleteFolderRecursive(strRoot);
         }
 
-        /// <summary>
-        /// Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.
-        /// </summary>
+        /// <summary>Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.</summary>
         /// <param name="strRoot">The root.</param>
         /// <param name="filter">The filter.</param>
         public static void DeleteFilesRecursive(string strRoot, string filter)
@@ -2171,9 +1917,7 @@ namespace DotNetNuke.Common
             FileSystemUtils.DeleteFilesRecursive(strRoot, filter);
         }
 
-        /// <summary>
-        /// Cleans the name of the file.
-        /// </summary>
+        /// <summary>Cleans the name of the file.</summary>
         /// <param name="fileName">Name of the file.</param>
         /// <returns>clean name.</returns>
         public static string CleanFileName(string fileName)
@@ -2181,9 +1925,7 @@ namespace DotNetNuke.Common
             return CleanFileName(fileName, string.Empty, string.Empty);
         }
 
-        /// <summary>
-        /// Cleans the name of the file.
-        /// </summary>
+        /// <summary>Cleans the name of the file.</summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="badChars">The bad chars.</param>
         /// <returns>clean name.</returns>
@@ -2192,9 +1934,7 @@ namespace DotNetNuke.Common
             return CleanFileName(fileName, badChars, string.Empty);
         }
 
-        /// <summary>
-        /// Cleans the name of the file.
-        /// </summary>
+        /// <summary>Cleans the name of the file.</summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="badChars">The bad chars.</param>
         /// <param name="replaceChar">The replace char.</param>
@@ -2247,8 +1987,8 @@ namespace DotNetNuke.Common
         ///   from <see>CreateValidID</see> which replaces invalid characters with an underscore
         ///   and replaces the first letter with an 'A' if it is not alphabetic.
         /// </summary>
-        /// <param name = "inputValue">String to use to create the class value.</param>
-        /// <param name = "validateFirstChar">If set true, validate whether the first character
+        /// <param name="inputValue">String to use to create the class value.</param>
+        /// <param name="validateFirstChar">If set true, validate whether the first character
         ///   is alphabetic and, if not, prepend the letter 'A' to the returned value.</param>
         /// <returns>A string suitable for use as a class value.</returns>
         public static string CreateValidClass(string inputValue, bool validateFirstChar)
@@ -2303,10 +2043,8 @@ namespace DotNetNuke.Common
             return returnValue;
         }
 
-        /// <summary>
-        ///   Creates the valid ID.
-        /// </summary>
-        /// <param name = "inputValue">The input value.</param>
+        /// <summary>  Creates the valid ID.</summary>
+        /// <param name="inputValue">The input value.</param>
         /// <returns>String with a valid ID.</returns>
         public static string CreateValidID(string inputValue)
         {
@@ -2353,18 +2091,14 @@ namespace DotNetNuke.Common
             return returnValue;
         }
 
-        /// <summary>
-        /// Get the URL to show the "access denied" message.
-        /// </summary>
+        /// <summary>Get the URL to show the "access denied" message.</summary>
         /// <returns>URL to access denied view.</returns>
         public static string AccessDeniedURL()
         {
             return AccessDeniedURL(string.Empty);
         }
 
-        /// <summary>
-        /// Get the URL to show the "access denied" message.
-        /// </summary>
+        /// <summary>Get the URL to show the "access denied" message.</summary>
         /// <param name="message">The message to display.</param>
         /// <returns>URL to access denied view.</returns>
         public static string AccessDeniedURL(string message)
@@ -2396,9 +2130,7 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-        /// <summary>
-        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified.
-        /// </summary>
+        /// <summary>Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified.</summary>
         /// <param name="strURL">The URL.</param>
         /// <returns>The formatted URL.</returns>
         public static string AddHTTP(string strURL)
@@ -2414,9 +2146,7 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-        /// <summary>
-        /// Generates the Application root url (including the tab/page).
-        /// </summary>
+        /// <summary>Generates the Application root url (including the tab/page).</summary>
         /// <remarks>
         /// This overload assumes the current page.
         /// </remarks>
@@ -2432,9 +2162,7 @@ namespace DotNetNuke.Common
             return ApplicationURL(-1);
         }
 
-        /// <summary>
-        /// Generates the Application root url (including the tab/page).
-        /// </summary>
+        /// <summary>Generates the Application root url (including the tab/page).</summary>
         /// <remarks>
         /// This overload takes the tabid (page id) as a parameter.
         /// </remarks>
@@ -2451,9 +2179,7 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-        /// <summary>
-        /// Formats the help URL, adding query-string parameters and a protocol (if missing).
-        /// </summary>
+        /// <summary>Formats the help URL, adding query-string parameters and a protocol (if missing).</summary>
         /// <param name="helpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
         /// <param name="name">The name of the module.</param>
@@ -2463,9 +2189,7 @@ namespace DotNetNuke.Common
             return FormatHelpUrl(helpUrl, objPortalSettings, name, string.Empty);
         }
 
-        /// <summary>
-        /// Formats the help URL, adding query-string parameters and a protocol (if missing).
-        /// </summary>
+        /// <summary>Formats the help URL, adding query-string parameters and a protocol (if missing).</summary>
         /// <param name="helpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
         /// <param name="name">The name of the module.</param>
@@ -2505,9 +2229,7 @@ namespace DotNetNuke.Common
             return AddHTTP(strURL);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly URL.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly URL.</summary>
         /// <remarks>
         /// Assumes Default.aspx, and that portalsettings are saved to Context.
         /// </remarks>
@@ -2519,9 +2241,7 @@ namespace DotNetNuke.Common
             return FriendlyUrl(tab, path, glbDefaultPage);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly URL.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly URL.</summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url.
         /// </remarks>
@@ -2535,9 +2255,7 @@ namespace DotNetNuke.Common
             return FriendlyUrl(tab, path, pageName, portalSettings);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly URL.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly URL.</summary>
         /// <remarks>
         /// This overload includes the portal settings for the site.
         /// </remarks>
@@ -2551,9 +2269,7 @@ namespace DotNetNuke.Common
             return FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly URL.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly URL.</summary>
         /// <remarks>
         /// This overload includes the portal settings for the site.
         /// </remarks>
@@ -2566,9 +2282,7 @@ namespace DotNetNuke.Common
             return FriendlyUrl(tab, path, glbDefaultPage, settings);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly URL.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly URL.</summary>
         /// <remarks>
         /// This overload includes an optional page to include in the URL, and the portal
         /// settings for the site.
@@ -2584,9 +2298,7 @@ namespace DotNetNuke.Common
             return FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly URL.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly URL.</summary>
         /// <remarks>
         /// This overload includes an optional page to include in the URL, and the portal
         /// settings for the site.
@@ -2601,9 +2313,7 @@ namespace DotNetNuke.Common
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, settings);
         }
 
-        /// <summary>
-        /// Generates the correctly formatted friendly url.
-        /// </summary>
+        /// <summary>Generates the correctly formatted friendly url.</summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url, and the portal
         /// alias for the site.
@@ -2618,9 +2328,7 @@ namespace DotNetNuke.Common
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, portalAlias);
         }
 
-        /// <summary>
-        /// Returns the type of URl (T=other tab, F=file, U=URL, N=normal).
-        /// </summary>
+        /// <summary>Returns the type of URl (T=other tab, F=file, U=URL, N=normal).</summary>
         /// <param name="url">The url.</param>
         /// <returns>The url type.</returns>
         public static TabType GetURLType(string url)
@@ -2733,9 +2441,7 @@ namespace DotNetNuke.Common
             return strUrl;
         }
 
-        /// <summary>
-        /// Gets the login URL.
-        /// </summary>
+        /// <summary>Gets the login URL.</summary>
         /// <param name="returnUrl">The URL to redirect to after logging in.</param>
         /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <returns>Formatted URL.</returns>
@@ -2744,9 +2450,7 @@ namespace DotNetNuke.Common
             return LoginURL(returnUrl, overrideSetting, PortalController.Instance.GetCurrentSettings());
         }
 
-        /// <summary>
-        /// Gets the login URL.
-        /// </summary>
+        /// <summary>Gets the login URL.</summary>
         /// <param name="returnUrl">The URL to redirect to after logging in.</param>
         /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
@@ -2757,9 +2461,7 @@ namespace DotNetNuke.Common
             return LoginURL(returnUrl, overrideSetting, (IPortalSettings)portalSettings);
         }
 
-        /// <summary>
-        /// Gets the login URL.
-        /// </summary>
+        /// <summary>Gets the login URL.</summary>
         /// <param name="returnUrl">The URL to redirect to after logging in.</param>
         /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
@@ -2809,9 +2511,7 @@ namespace DotNetNuke.Common
             return loginUrl;
         }
 
-        /// <summary>
-        /// Gets User profile URL.
-        /// </summary>
+        /// <summary>Gets User profile URL.</summary>
         /// <param name="userId">The user id.</param>
         /// <returns>Formatted url.</returns>
         public static string UserProfileURL(int userId)
@@ -2824,9 +2524,7 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-        /// <summary>
-        /// Gets the URL to the current page.
-        /// </summary>
+        /// <summary>Gets the URL to the current page.</summary>
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -2836,9 +2534,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL();
         }
 
-        /// <summary>
-        /// Gets the URL to the given page.
-        /// </summary>
+        /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
@@ -2849,9 +2545,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID);
         }
 
-        /// <summary>
-        /// Gets the URL to the given page.
-        /// </summary>
+        /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
@@ -2863,9 +2557,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, isSuperTab);
         }
 
-        /// <summary>
-        /// Gets the URL to show the control associated with the given control key.
-        /// </summary>
+        /// <summary>Gets the URL to show the control associated with the given control key.</summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
@@ -2876,9 +2568,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(controlKey);
         }
 
-        /// <summary>
-        /// Gets the URL to show the control associated with the given control key.
-        /// </summary>
+        /// <summary>Gets the URL to show the control associated with the given control key.</summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
         /// <returns>Formatted URL.</returns>
@@ -2890,9 +2580,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the control associated with the given control key on the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the control associated with the given control key on the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
@@ -2904,9 +2592,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, controlKey);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
@@ -2919,9 +2605,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
@@ -2935,9 +2619,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
@@ -2952,9 +2634,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
@@ -2968,9 +2648,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
-        /// <summary>
-        /// Gets the URL to show the given page.
-        /// </summary>
+        /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
@@ -2985,9 +2663,7 @@ namespace DotNetNuke.Common
             return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
-        /// <summary>
-        /// UrlEncode query string.
-        /// </summary>
+        /// <summary>UrlEncode query string.</summary>
         /// <param name="queryString">The query string.</param>
         /// <returns>Encoded content.</returns>
         public static string QueryStringEncode(string queryString)
@@ -2996,9 +2672,7 @@ namespace DotNetNuke.Common
             return queryString;
         }
 
-        /// <summary>
-        /// UrlDecode query string.
-        /// </summary>
+        /// <summary>UrlDecode query string.</summary>
         /// <param name="queryString">The query string.</param>
         /// <returns>Decoded content.</returns>
         public static string QueryStringDecode(string queryString)
@@ -3023,9 +2697,7 @@ namespace DotNetNuke.Common
             return queryString;
         }
 
-        /// <summary>
-        /// Gets Register URL.
-        /// </summary>
+        /// <summary>Gets Register URL.</summary>
         /// <param name="returnURL">The return URL.</param>
         /// <param name="originalURL">The original URL.</param>
         /// <returns>Formatted url.</returns>
@@ -3058,9 +2730,7 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-        /// <summary>
-        /// Generates the correctly formatted url.
-        /// </summary>
+        /// <summary>Generates the correctly formatted url.</summary>
         /// <param name="url">The url to format.</param>
         /// <returns>The formatted (resolved) url.</returns>
         public static string ResolveUrl(string url)
@@ -3109,9 +2779,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Encodes the reserved characters.
-        /// </summary>
+        /// <summary>Encodes the reserved characters.</summary>
         /// <param name="queryString">The query string.</param>
         /// <returns>Encoded content.</returns>
         [Obsolete("Deprecated in v9.8.1, use System.Net.WebUtility.UrlEncode instead, scheduled removal in v11.")]
@@ -3130,9 +2798,7 @@ namespace DotNetNuke.Common
             return queryString;
         }
 
-        /// <summary>
-        /// Dates to string.
-        /// </summary>
+        /// <summary>Dates to string.</summary>
         /// <param name="dateValue">The date value.</param>
         /// <returns>return value of input with SortableDateTimePattern.</returns>
         [Obsolete(@"Deprecated in 9.8.1, use DateTime.ToString(""s"") instead, schedule removal in v11.")]
@@ -3157,9 +2823,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets the hash value.
-        /// </summary>
+        /// <summary>Gets the hash value.</summary>
         /// <param name="hashObject">The hash object.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>HashOject's value or DefaultValue if HashObject is null.</returns>
@@ -3183,9 +2847,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Gets Link click url.
-        /// </summary>
+        /// <summary>Gets Link click url.</summary>
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
@@ -3195,9 +2857,7 @@ namespace DotNetNuke.Common
             return LinkClick(link, tabId, moduleId, true, string.Empty);
         }
 
-        /// <summary>
-        /// Gets Link click url.
-        /// </summary>
+        /// <summary>Gets Link click url.</summary>
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
@@ -3208,9 +2868,7 @@ namespace DotNetNuke.Common
             return LinkClick(link, tabId, moduleId, trackClicks, string.Empty);
         }
 
-        /// <summary>
-        /// Gets Link click url.
-        /// </summary>
+        /// <summary>Gets Link click url.</summary>
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
@@ -3222,9 +2880,7 @@ namespace DotNetNuke.Common
             return LinkClick(link, tabId, moduleId, trackClicks, !string.IsNullOrEmpty(contentType));
         }
 
-        /// <summary>
-        /// Gets Link click url.
-        /// </summary>
+        /// <summary>Gets Link click url.</summary>
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
@@ -3237,9 +2893,7 @@ namespace DotNetNuke.Common
             return LinkClick(link, tabId, moduleId, trackClicks, forceDownload, portalSettings.PortalId, portalSettings.EnableUrlLanguage, portalSettings.GUID.ToString());
         }
 
-        /// <summary>
-        /// Gets Link click url.
-        /// </summary>
+        /// <summary>Gets Link click url.</summary>
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
@@ -3329,9 +2983,7 @@ namespace DotNetNuke.Common
             return strLink;
         }
 
-        /// <summary>
-        /// Gets the name of the role.
-        /// </summary>
+        /// <summary>Gets the name of the role.</summary>
         /// <param name="roleId">The role ID.</param>
         /// <returns>Role Name.</returns>
         public static string GetRoleName(int roleId)
@@ -3370,9 +3022,7 @@ namespace DotNetNuke.Common
             return Convert.ToString(htRoles[roleId]);
         }
 
-        /// <summary>
-        /// Gets the content.
-        /// </summary>
+        /// <summary>Gets the content.</summary>
         /// <param name="content">The content.</param>
         /// <param name="contentType">Type of the content.</param>
         /// <returns>specific node by content type of the whole document.</returns>
@@ -3390,9 +3040,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// GenerateTabPath generates the TabPath used in Friendly URLS.
-        /// </summary>
+        /// <summary>GenerateTabPath generates the TabPath used in Friendly URLS.</summary>
         /// <param name="parentId">The Id of the Parent Tab.</param>
         /// <param name="tabName">The Name of the current Tab.</param>
         /// <returns>The TabPath.</returns>
@@ -3417,9 +3065,7 @@ namespace DotNetNuke.Common
             return strTabPath;
         }
 
-        /// <summary>
-        /// Gets the help text.
-        /// </summary>
+        /// <summary>Gets the help text.</summary>
         /// <param name="moduleControlId">The module control id.</param>
         /// <returns>help text.</returns>
         public static string GetHelpText(int moduleControlId)
@@ -3439,9 +3085,7 @@ namespace DotNetNuke.Common
             return helpText;
         }
 
-        /// <summary>
-        /// Gets the online help url or the host configured help url if no url provided.
-        /// </summary>
+        /// <summary>Gets the online help url or the host configured help url if no url provided.</summary>
         /// <param name="helpUrl">The help URL.</param>
         /// <param name="moduleConfig">The module config.</param>
         /// <returns>The help url.</returns>
@@ -3451,9 +3095,7 @@ namespace DotNetNuke.Common
             return GetOnLineHelp(helpUrl);
         }
 
-        /// <summary>
-        /// Gets the online help url or the host configured help url if no url provided.
-        /// </summary>
+        /// <summary>Gets the online help url or the host configured help url if no url provided.</summary>
         /// <param name="helpUrl">The help URL.</param>
         /// <returns>The help url.</returns>
         public static string GetOnLineHelp(string helpUrl)
@@ -3466,9 +3108,7 @@ namespace DotNetNuke.Common
             return helpUrl;
         }
 
-        /// <summary>
-        /// Check whether the tab contains "Account Login" module.
-        /// </summary>
+        /// <summary>Check whether the tab contains "Account Login" module.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <returns><c>true</c> if the tab contains "Account Login" module, otherwise, <c>false</c>.</returns>
         public static bool ValidateLoginTabID(int tabId)
@@ -3476,9 +3116,7 @@ namespace DotNetNuke.Common
             return ValidateModuleInTab(tabId, "Account Login");
         }
 
-        /// <summary>
-        /// Check whether the tab contains specific module.
-        /// </summary>
+        /// <summary>Check whether the tab contains specific module.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="moduleName">The module need to check.</param>
         /// <returns><c>true</c> if the tab contains the module, otherwise, <c>false</c>.</returns>
@@ -3502,9 +3140,7 @@ namespace DotNetNuke.Common
             return hasModule;
         }
 
-        /// <summary>
-        /// DeserializeHashTableBase64 deserializes a Hashtable using Binary Formatting.
-        /// </summary>
+        /// <summary>DeserializeHashTableBase64 deserializes a Hashtable using Binary Formatting.</summary>
         /// <remarks>
         /// While this method of serializing is no longer supported (due to Medium Trust
         /// issue, it is still required for upgrade purposes.
@@ -3543,9 +3179,7 @@ namespace DotNetNuke.Common
             return objHashTable;
         }
 
-        /// <summary>
-        /// DeserializeHashTableXml deserializes a Hashtable using Xml Serialization.
-        /// </summary>
+        /// <summary>DeserializeHashTableXml deserializes a Hashtable using Xml Serialization.</summary>
         /// <remarks>
         /// This is the preferred method of serialization under Medium Trust.
         /// </remarks>
@@ -3557,9 +3191,7 @@ namespace DotNetNuke.Common
             return XmlUtils.DeSerializeHashtable(source, "profile");
         }
 
-        /// <summary>
-        /// SerializeHashTableBase64 serializes a Hashtable using Binary Formatting.
-        /// </summary>
+        /// <summary>SerializeHashTableBase64 serializes a Hashtable using Binary Formatting.</summary>
         /// <remarks>
         /// While this method of serializing is no longer supported (due to Medium Trust
         /// issue, it is still required for upgrade purposes.
@@ -3598,9 +3230,7 @@ namespace DotNetNuke.Common
             return strString;
         }
 
-        /// <summary>
-        /// SerializeHashTableXml serializes a Hashtable using Xml Serialization.
-        /// </summary>
+        /// <summary>SerializeHashTableXml serializes a Hashtable using Xml Serialization.</summary>
         /// <remarks>
         /// This is the preferred method of serialization under Medium Trust.
         /// </remarks>
@@ -3612,9 +3242,7 @@ namespace DotNetNuke.Common
             return XmlUtils.SerializeDictionary(source, "profile");
         }
 
-        /// <summary>
-        /// Check whether the specific page is a host page.
-        /// </summary>
+        /// <summary>Check whether the specific page is a host page.</summary>
         /// <param name="tabId">The tab ID.</param>
         /// <returns>if <c>true</c> the tab is a host page; otherwise, it is not a host page.</returns>
         public static bool IsHostTab(int tabId)
@@ -3630,9 +3258,7 @@ namespace DotNetNuke.Common
             return isHostTab;
         }
 
-        /// <summary>
-        /// Return User Profile Picture Formatted Url. UserId, width and height can be passed to build a formatted Avatar Url.
-        /// </summary>
+        /// <summary>Return User Profile Picture Formatted Url. UserId, width and height can be passed to build a formatted Avatar Url.</summary>
         /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&amp;userid={0}&amp;h={1}&amp;w={2}.
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
@@ -3658,9 +3284,7 @@ namespace DotNetNuke.Common
             return avatarUrl;
         }
 
-        /// <summary>
-        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
-        /// </summary>
+        /// <summary>Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.</summary>
         /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal.
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
@@ -3672,9 +3296,7 @@ namespace DotNetNuke.Common
             return UserProfilePicRelativeUrl(true);
         }
 
-        /// <summary>
-        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
-        /// </summary>
+        /// <summary>Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.</summary>
         /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
         /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal.
         /// </returns>
@@ -3703,9 +3325,7 @@ namespace DotNetNuke.Common
             return ApplicationPath + childPortalAlias + query + cdv;
         }
 
-        /// <summary>
-        /// Formats an email address as a cloacked html link.
-        /// </summary>
+        /// <summary>Formats an email address as a cloacked html link.</summary>
         /// <param name="email">The formatted email address.</param>
         /// <returns>A cloacked html link.</returns>
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
@@ -3714,9 +3334,7 @@ namespace DotNetNuke.Common
             return HtmlUtils.FormatEmail(email);
         }
 
-        /// <summary>
-        /// Formats a domain name including link.
-        /// </summary>
+        /// <summary>Formats a domain name including link.</summary>
         /// <param name="website">The domain name to format.</param>
         /// <returns>The formatted domain name.</returns>
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatWebsite. Scheduled removal in v11.0.0.")]
@@ -3725,9 +3343,7 @@ namespace DotNetNuke.Common
             return HtmlUtils.FormatWebsite(website);
         }
 
-        /// <summary>
-        /// Xml encodes an html string.
-        /// </summary>
+        /// <summary>Xml encodes an html string.</summary>
         /// <param name="html">The html to encode.</param>
         /// <returns>The encoded html for usage in xml.</returns>
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode. Scheduled removal in v11.0.0.")]
@@ -3736,9 +3352,7 @@ namespace DotNetNuke.Common
             return XmlUtils.XMLEncode(html);
         }
 
-        /// <summary>
-        /// Gets the database connection string.
-        /// </summary>
+        /// <summary>Gets the database connection string.</summary>
         /// <returns>The database connection string.</returns>
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString. Scheduled removal in v11.0.0.")]
         public static string GetDBConnectionString()
@@ -3746,9 +3360,7 @@ namespace DotNetNuke.Common
             return Config.GetConnectionString();
         }
 
-        /// <summary>
-        /// Gets a file list.
-        /// </summary>
+        /// <summary>Gets a file list.</summary>
         /// <param name="currentDirectory">The current directory.</param>
         /// <param name="strExtensions">The extensions to filter for.</param>
         /// <param name="noneSpecified">If true, adds 'None Specified' to the list.</param>
@@ -3789,9 +3401,7 @@ namespace DotNetNuke.Common
             return arrFileList;
         }
 
-        /// <summary>
-        /// Gets the subfolder path for a give filename path.
-        /// </summary>
+        /// <summary>Gets the subfolder path for a give filename path.</summary>
         /// <param name="strFileNamePath">The filename full path.</param>
         /// <returns>The subfolder name.</returns>
         [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer). Scheduled removal in v11.0.0.")]
@@ -3814,9 +3424,7 @@ namespace DotNetNuke.Common
             return strFolderpath.Substring(parentFolderName.Length).Replace("\\", "/");
         }
 
-        /// <summary>
-        /// Gets a LinkClick url for tracking purposes.
-        /// </summary>
+        /// <summary>Gets a LinkClick url for tracking purposes.</summary>
         /// <param name="link">The actual link the LinkClick handler should point to.</param>
         /// <returns>The formatted LinkClick url.</returns>
         [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs. Scheduled removal in v11.0.0.")]
@@ -3826,9 +3434,7 @@ namespace DotNetNuke.Common
             return LinkClick(link, portalSettings.ActiveTab.TabID, -1, false);
         }
 
-        /// <summary>
-        /// Helps prevent sql injection in certain scenarios.
-        /// </summary>
+        /// <summary>Helps prevent sql injection in certain scenarios.</summary>
         /// <remarks>IMPORTANT: It is highly recommended to use other forms of sql injection protection such as using SqlParameters or ORMs.</remarks>
         /// <param name="strSQL">The string to filter.</param>
         /// <returns>The filtered string.</returns>
@@ -3838,9 +3444,7 @@ namespace DotNetNuke.Common
             return PortalSecurity.Instance.InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
 
-        /// <summary>
-        /// Looks at various file artifacts to determine if DotNetNuke has already been installed.
-        /// </summary>
+        /// <summary>Looks at various file artifacts to determine if DotNetNuke has already been installed.</summary>
         /// <returns>true if installed else false.</returns>
         /// <remarks>
         /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
@@ -3851,9 +3455,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
         internal static bool IsInstalled() => applicationStatusInfo.IsInstalled();
 
-        /// <summary>
-        /// Gets the culture code of the tab.
-        /// </summary>
+        /// <summary>Gets the culture code of the tab.</summary>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> [is super tab].</param>
         /// <param name="settings">The settings.</param>
@@ -3878,17 +3480,13 @@ namespace DotNetNuke.Common
             return cultureCode;
         }
 
-        /// <summary>
-        /// Resets the application started timer.
-        /// </summary>
+        /// <summary>Resets the application started timer.</summary>
         internal static void ResetAppStartElapseTime()
         {
             AppStopwatch.Restart();
         }
 
-        /// <summary>
-        /// Check whether the Filename matches extensions.
-        /// </summary>
+        /// <summary>Check whether the Filename matches extensions.</summary>
         /// <param name="filename">The filename.</param>
         /// <param name="strExtensions">The valid extensions.</param>
         /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>

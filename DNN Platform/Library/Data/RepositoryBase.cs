@@ -17,9 +17,7 @@ namespace DotNetNuke.Data
     public abstract class RepositoryBase<T> : IRepository<T>
         where T : class
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.</summary>
         protected RepositoryBase()
         {
             this.InitializeInternal();

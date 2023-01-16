@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Represents one item in the scheduler.
-    /// </summary>
+    /// <summary>Represents one item in the scheduler.</summary>
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
@@ -21,9 +19,7 @@ namespace DotNetNuke.Services.Scheduling
         private DateTime? nextStart;
         private Hashtable scheduleItemSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScheduleItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScheduleItem"/> class.</summary>
         public ScheduleItem()
         {
             this.ScheduleID = Null.NullInteger;
@@ -43,34 +39,22 @@ namespace DotNetNuke.Services.Scheduling
             this.ScheduleStartDate = Null.NullDate;
         }
 
-        /// <summary>
-        /// Gets or sets the the event this item attaches to.
-        /// </summary>
+        /// <summary>Gets or sets the the event this item attaches to.</summary>
         public string AttachToEvent { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether cath-up is enabled.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether cath-up is enabled.</summary>
         public bool CatchUpEnabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the item is enabled.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the item is enabled.</summary>
         public bool Enabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets the schedule start date.
-        /// </summary>
+        /// <summary>Gets or sets the schedule start date.</summary>
         public DateTime ScheduleStartDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the friednly name for the item.
-        /// </summary>
+        /// <summary>Gets or sets the friednly name for the item.</summary>
         public string FriendlyName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the next start date.
-        /// </summary>
+        /// <summary>Gets or sets the next start date.</summary>
         public virtual DateTime NextStart
         {
             get
@@ -89,64 +73,40 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <summary>
-        /// Gets or sets the object dependencies.
-        /// </summary>
+        /// <summary>Gets or sets the object dependencies.</summary>
         public string ObjectDependencies { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating how many history items to keep.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating how many history items to keep.</summary>
         public int RetainHistoryNum { get; set; }
 
-        /// <summary>
-        /// Gets or sets the retry time lapse value.
-        /// </summary>
+        /// <summary>Gets or sets the retry time lapse value.</summary>
         public int RetryTimeLapse { get; set; }
 
-        /// <summary>
-        /// Gets or sets the unit of measure for the retry time lapse value.
-        /// </summary>
+        /// <summary>Gets or sets the unit of measure for the retry time lapse value.</summary>
         public string RetryTimeLapseMeasurement { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the scheduled item.
-        /// </summary>
+        /// <summary>Gets or sets the ID of the scheduled item.</summary>
         public int ScheduleID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the servers this task should run on.
-        /// </summary>
+        /// <summary>Gets or sets the servers this task should run on.</summary>
         public string Servers { get; set; }
 
-        /// <summary>
-        /// Gets or sets the recurrence time lapse value.
-        /// </summary>
+        /// <summary>Gets or sets the recurrence time lapse value.</summary>
         public int TimeLapse { get; set; }
 
-        /// <summary>
-        /// Gets or sets the unit of measure for the recurrence time lapse value.
-        /// </summary>
+        /// <summary>Gets or sets the unit of measure for the recurrence time lapse value.</summary>
         public string TimeLapseMeasurement { get; set; }
 
-        /// <summary>
-        /// Gets or sets the full type name.
-        /// </summary>
+        /// <summary>Gets or sets the full type name.</summary>
         public string TypeFullName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the process group.
-        /// </summary>
+        /// <summary>Gets or sets the process group.</summary>
         public int ProcessGroup { get; set; }
 
-        /// <summary>
-        /// Gets or sets the <see cref="ScheduleSource"/>.
-        /// </summary>
+        /// <summary>Gets or sets the <see cref="ScheduleSource"/>.</summary>
         public ScheduleSource ScheduleSource { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the running thread.
-        /// </summary>
+        /// <summary>Gets or sets the ID of the running thread.</summary>
         public int ThreadID { get; set; }
 
         /// <inheritdoc/>
@@ -169,9 +129,7 @@ namespace DotNetNuke.Services.Scheduling
             this.FillInternal(dr);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the item has object dependencies.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the item has object dependencies.</summary>
         /// <param name="strObjectDependencies">A string representing the name of the object dependencies.</param>
         /// <returns>A value indicating whether the item has object dependencies.</returns>
         public bool HasObjectDependencies(string strObjectDependencies)
@@ -197,9 +155,7 @@ namespace DotNetNuke.Services.Scheduling
             return false;
         }
 
-        /// <summary>
-        /// Adds a schedule item setting value.
-        /// </summary>
+        /// <summary>Adds a schedule item setting value.</summary>
         /// <param name="key">The setting key.</param>
         /// <param name="value">The value of the setting.</param>
         public void AddSetting(string key, string value)
@@ -207,9 +163,7 @@ namespace DotNetNuke.Services.Scheduling
             this.scheduleItemSettings.Add(key, value);
         }
 
-        /// <summary>
-        /// Gets a specific setting.
-        /// </summary>
+        /// <summary>Gets a specific setting.</summary>
         /// <param name="key">The key of the setting to get.</param>
         /// <returns>The value of the setting.</returns>
         public virtual string GetSetting(string key)
@@ -229,9 +183,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <summary>
-        /// Gets all the item settings.
-        /// </summary>
+        /// <summary>Gets all the item settings.</summary>
         /// <returns>An <see cref="Hashtable"/> of all the settings.</returns>
         public virtual Hashtable GetSettings()
         {

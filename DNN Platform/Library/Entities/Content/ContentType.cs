@@ -10,9 +10,7 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Content type of a content item.
-    /// </summary>
+    /// <summary>Content type of a content item.</summary>
     /// <remarks>
     /// Content Types, simply put, are a way of telling the framework what module/functionality is associated with a Content Item.
     /// Each product (ie. module) that wishes to allow categorization of data (via Taxonomy or Folksonomy) for it's content items
@@ -29,17 +27,13 @@ namespace DotNetNuke.Entities.Content
         private static ContentType module;
         private static ContentType tab;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentType"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentType"/> class.</summary>
         public ContentType()
             : this(Null.NullString)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentType"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentType"/> class.</summary>
         /// <param name="contentType"></param>
         public ContentType(string contentType)
         {
@@ -71,17 +65,13 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Gets or sets the content type id.
-        /// </summary>
+        /// <summary>Gets or sets the content type id.</summary>
         /// <value>
         /// The content type id.
         /// </value>
         public int ContentTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
+        /// <summary>Gets or sets the key ID.</summary>
         /// <value>
         /// ContentTypeID.
         /// </value>
@@ -98,9 +88,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Fill this content object will the information from data reader.
-        /// </summary>
+        /// <summary>Fill this content object will the information from data reader.</summary>
         /// <param name="dr">The data reader.</param>
         /// <seealso cref="IHydratable.Fill"/>
         public void Fill(IDataReader dr)
@@ -109,9 +97,7 @@ namespace DotNetNuke.Entities.Content
             this.ContentType = Null.SetNullString(dr["ContentType"]);
         }
 
-        /// <summary>
-        /// override ToString to return content type.
-        /// </summary>
+        /// <summary>override ToString to return content type.</summary>
         /// <returns>
         /// property ContentType's value.
         /// </returns>

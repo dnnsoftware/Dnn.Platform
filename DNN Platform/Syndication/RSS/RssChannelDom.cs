@@ -6,9 +6,7 @@ namespace DotNetNuke.Services.Syndication
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    ///   Internal representation of parsed RSS channel.
-    /// </summary>
+    /// <summary>  Internal representation of parsed RSS channel.</summary>
     internal class RssChannelDom
     {
         private readonly Dictionary<string, string> channel;

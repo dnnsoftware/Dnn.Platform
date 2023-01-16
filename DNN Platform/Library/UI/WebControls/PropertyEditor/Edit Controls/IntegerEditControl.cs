@@ -9,40 +9,29 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      IntegerEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The IntegerEditControl control provides a standard UI component for editing
     /// integer properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
     public class IntegerEditControl : EditControl
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="IntegerEditControl"/> class.
         /// Constructs an IntegerEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public IntegerEditControl()
         {
             this.SystemType = "System.Int32";
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets integerValue returns the Integer representation of the Value.
-        /// </summary>
+        /// <summary>Gets integerValue returns the Integer representation of the Value.</summary>
         /// <value>An integer representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected int IntegerValue
         {
             get
@@ -65,12 +54,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets oldIntegerValue returns the Integer representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets oldIntegerValue returns the Integer representation of the OldValue.</summary>
         /// <value>An integer representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
         protected int OldIntegerValue
         {
             get
@@ -90,12 +75,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
@@ -110,12 +91,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -125,12 +104,8 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.ControlStyle.AddAttributesToRender(writer);

@@ -10,9 +10,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Tools.VSTest;
     using Cake.Frosting;
 
-    /// <summary>
-    /// Runs units tests on solution. Make sure to build the solution before running this task.
-    /// </summary>
+    /// <summary>Runs units tests on solution. Make sure to build the solution before running this task.</summary>
     public sealed class UnitTests : FrostingTask<Context>
     {
         /// <inheritdoc/>

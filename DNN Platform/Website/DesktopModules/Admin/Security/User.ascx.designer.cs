@@ -15,321 +15,241 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class User {
-        /// <summary>
-        /// userForm control.
-        /// </summary>
+        /// <summary>userForm control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormEditor userForm;
-        /// <summary>
-        /// userNameReadOnly control.
-        /// </summary>
+        /// <summary>userNameReadOnly control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem userNameReadOnly;
-        /// <summary>
-        /// userName control.
-        /// </summary>
+        /// <summary>userName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem userName;
-        /// <summary>
-        /// renameUserName control.
-        /// </summary>
+        /// <summary>renameUserName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem renameUserName;
-        /// <summary>
-        /// firstName control.
-        /// </summary>
+        /// <summary>firstName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem firstName;
-        /// <summary>
-        /// lastName control.
-        /// </summary>
+        /// <summary>lastName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem lastName;
-        /// <summary>
-        /// displayName control.
-        /// </summary>
+        /// <summary>displayName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem displayName;
-        /// <summary>
-        /// displayNameReadOnly control.
-        /// </summary>
+        /// <summary>displayNameReadOnly control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem displayNameReadOnly;
-        /// <summary>
-        /// email control.
-        /// </summary>
+        /// <summary>email control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem email;
-        /// <summary>
-        /// renameUserPortals control.
-        /// </summary>
+        /// <summary>renameUserPortals control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl renameUserPortals;
-        /// <summary>
-        /// numSites control.
-        /// </summary>
+        /// <summary>numSites control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl numSites;
-        /// <summary>
-        /// cboSites control.
-        /// </summary>
+        /// <summary>cboSites control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboSites;
-        /// <summary>
-        /// pnlAddUser control.
-        /// </summary>
+        /// <summary>pnlAddUser control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlAddUser;
-        /// <summary>
-        /// AuthorizeNotify control.
-        /// </summary>
+        /// <summary>AuthorizeNotify control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl AuthorizeNotify;
-        /// <summary>
-        /// plAuthorize control.
-        /// </summary>
+        /// <summary>plAuthorize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAuthorize;
-        /// <summary>
-        /// chkAuthorize control.
-        /// </summary>
+        /// <summary>chkAuthorize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAuthorize;
-        /// <summary>
-        /// plNotify control.
-        /// </summary>
+        /// <summary>plNotify control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plNotify;
-        /// <summary>
-        /// chkNotify control.
-        /// </summary>
+        /// <summary>chkNotify control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNotify;
-        /// <summary>
-        /// Password control.
-        /// </summary>
+        /// <summary>Password control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Password;
-        /// <summary>
-        /// lblPasswordHelp control.
-        /// </summary>
+        /// <summary>lblPasswordHelp control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPasswordHelp;
-        /// <summary>
-        /// randomRow control.
-        /// </summary>
+        /// <summary>randomRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl randomRow;
-        /// <summary>
-        /// plRandom control.
-        /// </summary>
+        /// <summary>plRandom control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plRandom;
-        /// <summary>
-        /// chkRandom control.
-        /// </summary>
+        /// <summary>chkRandom control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkRandom;
-        /// <summary>
-        /// plPassword control.
-        /// </summary>
+        /// <summary>plPassword control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plPassword;
-        /// <summary>
-        /// passwordContainer control.
-        /// </summary>
+        /// <summary>passwordContainer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel passwordContainer;
-        /// <summary>
-        /// txtPassword control.
-        /// </summary>
+        /// <summary>txtPassword control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
-        /// <summary>
-        /// plConfirm control.
-        /// </summary>
+        /// <summary>plConfirm control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plConfirm;
-        /// <summary>
-        /// txtConfirm control.
-        /// </summary>
+        /// <summary>txtConfirm control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtConfirm;
-        /// <summary>
-        /// ComparePasswordsValidator control.
-        /// </summary>
+        /// <summary>ComparePasswordsValidator control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator ComparePasswordsValidator;
-        /// <summary>
-        /// questionRow control.
-        /// </summary>
+        /// <summary>questionRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl questionRow;
-        /// <summary>
-        /// plQuestion control.
-        /// </summary>
+        /// <summary>plQuestion control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plQuestion;
-        /// <summary>
-        /// txtQuestion control.
-        /// </summary>
+        /// <summary>txtQuestion control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtQuestion;
-        /// <summary>
-        /// answerRow control.
-        /// </summary>
+        /// <summary>answerRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl answerRow;
-        /// <summary>
-        /// plAnswer control.
-        /// </summary>
+        /// <summary>plAnswer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAnswer;
-        /// <summary>
-        /// txtAnswer control.
-        /// </summary>
+        /// <summary>txtAnswer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnswer;
-        /// <summary>
-        /// actionsRow control.
-        /// </summary>
+        /// <summary>actionsRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl actionsRow;
-        /// <summary>
-        /// cmdUpdate control.
-        /// </summary>
+        /// <summary>cmdUpdate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        /// <summary>
-        /// cmdDelete control.
-        /// </summary>
+        /// <summary>cmdDelete control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
-        /// <summary>
-        /// cmdRemove control.
-        /// </summary>
+        /// <summary>cmdRemove control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdRemove;
-        /// <summary>
-        /// cmdRestore control.
-        /// </summary>
+        /// <summary>cmdRestore control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

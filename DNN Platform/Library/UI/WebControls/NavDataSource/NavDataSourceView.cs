@@ -11,9 +11,7 @@ namespace DotNetNuke.UI.WebControls
         private readonly string sKey;
         private string sNamespace = "MyNS";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavDataSourceView"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NavDataSourceView"/> class.</summary>
         /// <param name="viewPath"></param>
         public NavDataSourceView(string viewPath)
         {
@@ -50,8 +48,7 @@ namespace DotNetNuke.UI.WebControls
         /// objects, add them all to the PageHierarchicalEnumerable,
         /// and return the list.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>A collection of navigation nodes.</returns>
         public override IHierarchicalEnumerable Select()
         {
             var objPages = new NavDataPageHierarchicalEnumerable();

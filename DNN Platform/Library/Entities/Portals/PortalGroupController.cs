@@ -24,17 +24,13 @@ namespace DotNetNuke.Entities.Portals
         private readonly IDataService dataService;
         private readonly IPortalController portalController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalGroupController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalGroupController"/> class.</summary>
         public PortalGroupController()
             : this(DataService.Instance, PortalController.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalGroupController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalGroupController"/> class.</summary>
         /// <param name="dataService"></param>
         /// <param name="portalController"></param>
         public PortalGroupController(IDataService dataService, IPortalController portalController)

@@ -6,16 +6,13 @@ namespace DotNetNuke.HttpModules.Compression
     using System;
     using System.Collections.Specialized;
     using System.IO;
-    using System.Text.RegularExpressions;
     using System.Xml.XPath;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Cache;
 
-    /// <summary>
-    /// This class encapsulates the settings for an HttpCompressionModule.
-    /// </summary>
+    /// <summary>This class encapsulates the settings for an HttpCompressionModule.</summary>
     [Serializable]
     public class Settings
     {
@@ -28,9 +25,7 @@ namespace DotNetNuke.HttpModules.Compression
             this.excludedPaths = new StringCollection();
         }
 
-        /// <summary>
-        /// Gets the default settings.  Deflate + normal.
-        /// </summary>
+        /// <summary>Gets the default settings.  Deflate + normal.</summary>
         public static Settings Default
         {
             get
@@ -39,9 +34,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
-        /// <summary>
-        /// Gets the preferred algorithm to use for compression.
-        /// </summary>
+        /// <summary>Gets the preferred algorithm to use for compression.</summary>
         public Algorithms PreferredAlgorithm
         {
             get
@@ -50,10 +43,8 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
-        /// <summary>
-        /// Get the current settings from the xml config file.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Get the current settings from the xml config file.</summary>
+        /// <returns>A <see cref="Settings"/> instance.</returns>
         public static Settings GetSettings()
         {
             var settings = (Settings)DataCache.GetCache("CompressionConfig");
@@ -93,9 +84,7 @@ namespace DotNetNuke.HttpModules.Compression
             return settings;
         }
 
-        /// <summary>
-        /// Looks for a given path in the list of paths excluded from compression.
-        /// </summary>
+        /// <summary>Looks for a given path in the list of paths excluded from compression.</summary>
         /// <param name="relUrl">the relative url to check.</param>
         /// <returns>true if excluded, false if not.</returns>
         public bool IsExcludedPath(string relUrl)

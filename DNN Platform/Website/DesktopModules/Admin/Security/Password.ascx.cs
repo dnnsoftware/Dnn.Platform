@@ -30,12 +30,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Password UserModuleBase is used to manage Users Passwords.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Password UserModuleBase is used to manage Users Passwords.</summary>
     public partial class Password : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
@@ -46,10 +41,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the UserMembership associated with this control.
-        /// </summary>
+        /// <summary>Gets the UserMembership associated with this control.</summary>
         public UserMembership Membership
         {
             get
@@ -72,10 +64,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Raises the PasswordUpdated Event.
-        /// </summary>
+        /// <summary>Raises the PasswordUpdated Event.</summary>
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -89,10 +78,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Raises the PasswordQuestionAnswerUpdated Event.
-        /// </summary>
+        /// <summary>Raises the PasswordQuestionAnswerUpdated Event.</summary>
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -106,10 +92,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
+        /// <summary>DataBind binds the data to the controls.</summary>
         public override void DataBind()
         {
             this.lblLastChanged.Text = this.User.Membership.LastPasswordChangeDate.ToLongDateString();
@@ -542,12 +525,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the Update Question and Answer  Button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>cmdUpdate_Click runs when the Update Question and Answer  Button is clicked.</summary>
         private void CmdUpdateQA_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -580,14 +558,12 @@ namespace DotNetNuke.Modules.Admin.Users
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The PasswordUpdatedEventArgs class provides a customised EventArgs class for
         /// the PasswordUpdated Event.
         /// </summary>
         public class PasswordUpdatedEventArgs
         {
-            /// -----------------------------------------------------------------------------
             /// <summary>
             /// Initializes a new instance of the <see cref="PasswordUpdatedEventArgs"/> class.
             /// Constructs a new PasswordUpdatedEventArgs.
@@ -598,10 +574,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.UpdateStatus = status;
             }
 
-            /// -----------------------------------------------------------------------------
-            /// <summary>
-            /// Gets or sets and sets the Update Status.
-            /// </summary>
+            /// <summary>Gets or sets the Update Status.</summary>
             public PasswordUpdateStatus UpdateStatus { get; set; }
         }
     }

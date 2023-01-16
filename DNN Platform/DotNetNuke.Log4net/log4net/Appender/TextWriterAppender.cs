@@ -27,9 +27,7 @@ using log4net.Core;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Sends logging events to a <see cref="TextWriter"/>.
-    /// </summary>
+    /// <summary>Sends logging events to a <see cref="TextWriter"/>.</summary>
     /// <remarks>
     /// <para>
     /// An Appender that writes to a <see cref="TextWriter"/>.
@@ -45,9 +43,7 @@ namespace log4net.Appender
     /// <author>Douglas de la Torre</author>
     public class TextWriterAppender : AppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextWriterAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TextWriterAppender" /> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -124,9 +120,7 @@ namespace log4net.Appender
             set { this.m_immediateFlush = value; }
         }
 
-        /// <summary>
-        /// Sets the <see cref="TextWriter"/> where the log output will go.
-        /// </summary>
+        /// <summary>Sets the <see cref="TextWriter"/> where the log output will go.</summary>
         /// <remarks>
         /// <para>
         /// The specified <see cref="TextWriter"/> must be open and writable.
@@ -156,9 +150,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This method determines if there is a sense in attempting to append.
-        /// </summary>
+        /// <summary>This method determines if there is a sense in attempting to append.</summary>
         /// <remarks>
         /// <para>
         /// This method checks if an output target has been set and if a
@@ -241,9 +233,7 @@ namespace log4net.Appender
             } 
         }
 
-        /// <summary>
-        /// Close this appender instance. The underlying stream or writer is also closed.
-        /// </summary>
+        /// <summary>Close this appender instance. The underlying stream or writer is also closed.</summary>
         /// <remarks>
         /// Closed appenders cannot be reused.
         /// </remarks>
@@ -285,9 +275,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -299,9 +287,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Writes the footer and closes the underlying <see cref="TextWriter"/>.
-        /// </summary>
+        /// <summary>Writes the footer and closes the underlying <see cref="TextWriter"/>.</summary>
         /// <remarks>
         /// <para>
         /// Writes the footer and closes the underlying <see cref="TextWriter"/>.
@@ -313,9 +299,7 @@ namespace log4net.Appender
             this.CloseWriter();
         }
 
-        /// <summary>
-        /// Closes the underlying <see cref="TextWriter"/>.
-        /// </summary>
+        /// <summary>Closes the underlying <see cref="TextWriter"/>.</summary>
         /// <remarks>
         /// <para>
         /// Closes the underlying <see cref="TextWriter"/>.
@@ -353,9 +337,7 @@ namespace log4net.Appender
             this.m_qtw = null;
         }
 
-        /// <summary>
-        /// Writes a footer as produced by the embedded layout's <see cref="ILayout.Footer"/> property.
-        /// </summary>
+        /// <summary>Writes a footer as produced by the embedded layout's <see cref="ILayout.Footer"/> property.</summary>
         /// <remarks>
         /// <para>
         /// Writes a footer as produced by the embedded layout's <see cref="ILayout.Footer"/> property.
@@ -373,9 +355,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Writes a header produced by the embedded layout's <see cref="ILayout.Header"/> property.
-        /// </summary>
+        /// <summary>Writes a header produced by the embedded layout's <see cref="ILayout.Header"/> property.</summary>
         /// <remarks>
         /// <para>
         /// Writes a header produced by the embedded layout's <see cref="ILayout.Header"/> property.
@@ -393,9 +373,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Called to allow a subclass to lazily initialize the writer
-        /// </summary>
+        /// <summary>Called to allow a subclass to lazily initialize the writer</summary>
         /// <remarks>
         /// <para>
         /// This method is called when an event is logged and the <see cref="Writer"/> or
@@ -450,18 +428,14 @@ namespace log4net.Appender
         /// </remarks>
         private bool m_immediateFlush = true;
 
-        /// <summary>
-        /// The fully qualified type of the TextWriterAppender class.
-        /// </summary>
+        /// <summary>The fully qualified type of the TextWriterAppender class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(TextWriterAppender);
 
-        /// <summary>
-            /// Flushes any buffered log data.
-            /// </summary>
+        /// <summary>Flushes any buffered log data.</summary>
             /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
             /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
             public override bool Flush(int millisecondsTimeout)

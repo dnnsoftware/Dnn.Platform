@@ -21,9 +21,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderMappingsConfigController));
         private static readonly string DefaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderMappingsConfigController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderMappingsConfigController"/> class.</summary>
         public FolderMappingsConfigController()
         {
             this.FolderMappings = new Dictionary<string, string>();

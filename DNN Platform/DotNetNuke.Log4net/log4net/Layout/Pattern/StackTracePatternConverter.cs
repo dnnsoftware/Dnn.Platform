@@ -27,9 +27,7 @@ using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Write the caller stack frames to the output
-    /// </summary>
+    /// <summary>Write the caller stack frames to the output</summary>
     /// <remarks>
     /// <para>
     /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer, using format:
@@ -41,9 +39,7 @@ namespace log4net.Layout.Pattern
     {
         private int m_stackFrameLevel = 1;
         
-        /// <summary>
-        /// Initialize the converter
-        /// </summary>
+        /// <summary>Initialize the converter</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -86,9 +82,7 @@ namespace log4net.Layout.Pattern
             }
         }
         
-        /// <summary>
-        /// Write the strack frames to the output
-        /// </summary>
+        /// <summary>Write the strack frames to the output</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">the event being logged</param>
         /// <remarks>
@@ -125,9 +119,7 @@ namespace log4net.Layout.Pattern
             }
         }
 
-                /// <summary>
-        /// Returns the Name of the method
-        /// </summary>
+                /// <summary>Returns the Name of the method</summary>
         /// <param name="method"></param>
         /// <remarks>This method was created, so this class could be used as a base class for StackTraceDetailPatternConverter</remarks>
         /// <returns>string</returns>
@@ -136,9 +128,7 @@ namespace log4net.Layout.Pattern
             return method.Name;
         }
 
-                /// <summary>
-        /// The fully qualified type of the StackTracePatternConverter class.
-        /// </summary>
+                /// <summary>The fully qualified type of the StackTracePatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

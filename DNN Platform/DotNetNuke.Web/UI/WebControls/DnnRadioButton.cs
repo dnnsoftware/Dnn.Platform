@@ -13,9 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private bool localize = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnRadioButton"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnRadioButton"/> class.</summary>
         public DnnRadioButton()
         {
             this.CssClass = "SubHead dnnLabel";

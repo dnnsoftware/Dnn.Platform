@@ -10,18 +10,13 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
     /// Class    : ActionCommandButton
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ActionCommandButton provides a button for a single action.
-    /// </summary>
+    /// <summary>ActionCommandButton provides a button for a single action.</summary>
     /// <remarks>
     /// ActionBase inherits from CommandButton, and implements the IActionControl Interface.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ActionCommandButton : CommandButton, IActionControl
     {
         private ActionManager actionManager;
@@ -30,12 +25,8 @@ namespace DotNetNuke.UI.Containers
         /// <inheritdoc/>
         public event ActionEventHandler Action;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
+        /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>
-        /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
             get
@@ -49,12 +40,8 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ModuleAction for this Action control.
-        /// </summary>
+        /// <summary>Gets or sets the ModuleAction for this Action control.</summary>
         /// <returns>A ModuleAction object.</returns>
-        /// -----------------------------------------------------------------------------
         public ModuleAction ModuleAction
         {
             get
@@ -73,19 +60,11 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control.
-        /// </summary>
+        /// <summary>Gets or sets the ModuleControl instance for this Action control.</summary>
         /// <returns>An IModuleControl object.</returns>
-        /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateChildControls builds the control tree.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>CreateChildControls builds the control tree.</summary>
         protected override void CreateChildControls()
         {
             // Call base class method to ensure Control Tree is built
@@ -96,11 +75,7 @@ namespace DotNetNuke.UI.Containers
             this.EnableViewState = false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnAction raises the Action Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnAction raises the Action Event.</summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -109,11 +84,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnButtonClick runs when the underlying CommandButton is clicked.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnButtonClick runs when the underlying CommandButton is clicked.</summary>
         protected override void OnButtonClick(EventArgs e)
         {
             base.OnButtonClick(e);
@@ -123,11 +94,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnPreRender runs when just before the Render phase of the Page Lifecycle.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnPreRender runs when just before the Render phase of the Page Lifecycle.</summary>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

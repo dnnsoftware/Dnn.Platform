@@ -23,9 +23,7 @@ using System.Collections;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// An always empty <see cref="IDictionaryEnumerator"/>.
-    /// </summary>
+    /// <summary>An always empty <see cref="IDictionaryEnumerator"/>.</summary>
     /// <remarks>
     /// <para>
     /// A singleton implementation of the <see cref="IDictionaryEnumerator"/> over a collection
@@ -36,9 +34,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class NullDictionaryEnumerator : IDictionaryEnumerator
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NullDictionaryEnumerator" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NullDictionaryEnumerator" /> class. </summary>
         /// <remarks>
         /// <para>
         /// Uses a private access modifier to enforce the singleton pattern.
@@ -48,9 +44,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Gets the singleton instance of the <see cref="NullDictionaryEnumerator" />.
-        /// </summary>
+        /// <summary>Gets the singleton instance of the <see cref="NullDictionaryEnumerator" />.</summary>
         /// <returns>The singleton instance of the <see cref="NullDictionaryEnumerator" />.</returns>
         /// <remarks>
         /// <para>
@@ -62,9 +56,7 @@ namespace log4net.Util
             get { return s_instance; }
         }
 
-        /// <summary>
-        /// Gets the current object from the enumerator.
-        /// </summary>
+        /// <summary>Gets the current object from the enumerator.</summary>
         /// <remarks>
         /// Throws an <see cref="InvalidOperationException" /> because the 
         /// <see cref="NullDictionaryEnumerator" /> never has a current value.
@@ -83,9 +75,7 @@ namespace log4net.Util
             get	{ throw new InvalidOperationException(); }
         }
   
-        /// <summary>
-        /// Test if the enumerator can advance, if so advance.
-        /// </summary>
+        /// <summary>Test if the enumerator can advance, if so advance.</summary>
         /// <returns><c>false</c> as the <see cref="NullDictionaryEnumerator" /> cannot advance.</returns>
         /// <remarks>
         /// <para>
@@ -99,9 +89,7 @@ namespace log4net.Util
             return false;
         }
   
-        /// <summary>
-        /// Resets the enumerator back to the start.
-        /// </summary>
+        /// <summary>Resets the enumerator back to the start.</summary>
         /// <remarks>
         /// <para>
         /// As the enumerator is over an empty collection <see cref="Reset"/> does nothing.
@@ -111,9 +99,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Gets the current key from the enumerator.
-        /// </summary>
+        /// <summary>Gets the current key from the enumerator.</summary>
         /// <remarks>
         /// Throws an exception because the <see cref="NullDictionaryEnumerator" />
         /// never has a current value.
@@ -132,9 +118,7 @@ namespace log4net.Util
             get	{ throw new InvalidOperationException(); }
         }
 
-        /// <summary>
-        /// Gets the current value from the enumerator.
-        /// </summary>
+        /// <summary>Gets the current value from the enumerator.</summary>
         /// <value>The current value from the enumerator.</value>
         /// <remarks>
         /// Throws an <see cref="InvalidOperationException" /> because the 
@@ -154,9 +138,7 @@ namespace log4net.Util
             get	{ throw new InvalidOperationException(); }
         }
 
-        /// <summary>
-        /// Gets the current entry from the enumerator.
-        /// </summary>
+        /// <summary>Gets the current entry from the enumerator.</summary>
         /// <remarks>
         /// Throws an <see cref="InvalidOperationException" /> because the 
         /// <see cref="NullDictionaryEnumerator" /> never has a current entry.
@@ -175,9 +157,7 @@ namespace log4net.Util
             get	{ throw new InvalidOperationException(); }
         }
 
-        /// <summary>
-        /// The singleton instance of the <see cref="NullDictionaryEnumerator" />.
-        /// </summary>
+        /// <summary>The singleton instance of the <see cref="NullDictionaryEnumerator" />.</summary>
         private static readonly NullDictionaryEnumerator s_instance = new NullDictionaryEnumerator();
     }
 }

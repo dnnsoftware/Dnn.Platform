@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utils
 {
     using System;
@@ -12,27 +11,21 @@ namespace DotNetNuke.Common.Utils
 
     using DotNetNuke.Services.UserRequest;
 
-    /// <summary>
-    /// Enumeration of IP address types.
-    /// </summary>
+    /// <summary>Enumeration of IP address types.</summary>
     public enum AddressType
     {
         IPv4 = 0,
         IPv6 = 1,
     }
 
-    /// <summary>
-    /// Utility functions for network information.
-    /// </summary>
+    /// <summary>Utility functions for network information.</summary>
     public class NetworkUtils
     {
-        /// <summary>
-        /// Gets the address.
-        /// </summary>
+        /// <summary>Gets the address.</summary>
         /// <param name="host">The host.</param>
         /// <param name="addressFormat">The address format.</param>
         /// <returns>Returns IP address.</returns>
-        /// <remarks><seealso cref="AddressType"></seealso></remarks>
+        /// <seealso cref="AddressType" />
         public static string GetAddress(string host, AddressType addressFormat)
         {
             AddressFamily addrFamily = AddressFamily.InterNetwork;
@@ -63,9 +56,7 @@ namespace DotNetNuke.Common.Utils
             return string.Empty;
         }
 
-        /// <summary>
-        /// Convert IP address to long integer.
-        /// </summary>
+        /// <summary>Convert IP address to long integer.</summary>
         /// <param name="ip">The ip address.</param>
         /// <returns>IP Address in long.</returns>
         public static long IPtoLong(IPAddress ip)
@@ -85,9 +76,7 @@ namespace DotNetNuke.Common.Utils
             return addr;
         }
 
-        /// <summary>
-        /// Longs to ip address.
-        /// </summary>
+        /// <summary>Longs to ip address.</summary>
         /// <param name="ip">The ip address.</param>
         /// <returns>IP Number as formatted string.</returns>
         public static string LongToIp(long ip)
@@ -116,9 +105,7 @@ namespace DotNetNuke.Common.Utils
             return addr.TrimEnd('.');
         }
 
-        /// <summary>
-        /// Formats as cidr.
-        /// </summary>
+        /// <summary>Formats as cidr.</summary>
         /// <param name="startIP">The start ip.</param>
         /// <param name="subnetMask">The subnet mask.</param>
         /// <returns>Classless Inter-Domain Routing.</returns>
@@ -157,9 +144,7 @@ namespace DotNetNuke.Common.Utils
             return answer;
         }
 
-        /// <summary>
-        /// Network2s the ip range.
-        /// </summary>
+        /// <summary>Network2s the ip range.</summary>
         /// <param name="sNetwork">The network name.</param>
         /// <param name="startIP">The start ip.</param>
         /// <param name="endIP">The end ip.</param>
@@ -197,9 +182,7 @@ namespace DotNetNuke.Common.Utils
             }
         }
 
-        /// <summary>
-        /// Convert IP to Integer.
-        /// </summary>
+        /// <summary>Convert IP to Integer.</summary>
         /// <param name="ipNumber">The ip number.</param>
         /// <returns>IP number as integer.</returns>
         public static uint IP2Int(string ipNumber)
@@ -217,12 +200,10 @@ namespace DotNetNuke.Common.Utils
             return ip;
         }
 
-        /// <summary>
-        /// Determines whether ip is in range.
-        /// </summary>
+        /// <summary>Determines whether ip is in range.</summary>
         /// <param name="currentIP">The current ip.</param>
         /// <param name="startIP">The start ip.</param>
-        /// <param name="subnetmask">The subnetmask.</param>
+        /// <param name="subnetmask">The subnet mask.</param>
         /// <returns>True or False.</returns>
         public static bool IsIPInRange(string currentIP, string startIP, string subnetmask)
         {
@@ -263,9 +244,7 @@ namespace DotNetNuke.Common.Utils
             return false;
         }
 
-        /// <summary>
-        /// Gets the Client IP address of the current request, from server variables if available, otherwise returns Request.UserHostAddress.
-        /// </summary>
+        /// <summary>Gets the Client IP address of the current request, from server variables if available, otherwise returns Request.UserHostAddress.</summary>
         /// <param name="request">The current http request.</param>
         /// <returns>The current client ip address.</returns>
         public static string GetClientIpAddress(HttpRequest request)
@@ -282,11 +261,9 @@ namespace DotNetNuke.Common.Utils
             return ipAddress;
         }
 
-        /// <summary>
-        /// Masks from cidr.
-        /// </summary>
+        /// <summary>Masks from cidr.</summary>
         /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
-        /// <returns></returns>
+        /// <returns>The mask value.</returns>
         private static long MaskFromCidr(int cidr)
         {
             return Convert.ToInt64(Math.Pow(2, 32 - cidr) - 1) ^ 4294967295L;

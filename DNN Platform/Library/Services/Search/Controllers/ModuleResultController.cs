@@ -24,10 +24,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Search Result Controller for Module Crawler.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Search Result Controller for Module Crawler.</summary>
     [Serializable]
     public class ModuleResultController : BaseResultController
     {

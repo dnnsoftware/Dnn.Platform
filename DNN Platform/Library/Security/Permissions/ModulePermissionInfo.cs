@@ -11,15 +11,10 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : ModulePermissionInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ModulePermissionInfo provides the Entity Layer for Module Permissions.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ModulePermissionInfo provides the Entity Layer for Module Permissions.</summary>
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
@@ -28,25 +23,21 @@ namespace DotNetNuke.Security.Permissions
         // local property declarations
         private int modulePermissionID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
         /// Constructs a new ModulePermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public ModulePermissionInfo()
         {
             this.modulePermissionID = Null.NullInteger;
             this.moduleID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
         /// Constructs a new ModulePermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public ModulePermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -57,12 +48,8 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Module Permission ID.
-        /// </summary>
+        /// <summary>Gets or sets the Module Permission ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("modulepermissionid")]
         public int ModulePermissionID
         {
@@ -77,12 +64,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Module ID.
-        /// </summary>
+        /// <summary>Gets or sets the Module ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("moduleid")]
         public int ModuleID
         {
@@ -97,12 +80,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -118,12 +97,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a ModulePermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a ModulePermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -131,10 +106,7 @@ namespace DotNetNuke.Security.Permissions
             this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Compares if two ModulePermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two ModulePermissionInfo objects are equivalent/equal.</summary>
         /// <param name="other">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
@@ -144,7 +116,6 @@ namespace DotNetNuke.Security.Permissions
         /// ModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public bool Equals(ModulePermissionInfo other)
         {
             if (ReferenceEquals(null, other))
@@ -160,10 +131,7 @@ namespace DotNetNuke.Security.Permissions
             return (this.AllowAccess == other.AllowAccess) && (this.ModuleID == other.ModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Compares if two ModulePermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two ModulePermissionInfo objects are equivalent/equal.</summary>
         /// <param name="obj">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
@@ -173,7 +141,6 @@ namespace DotNetNuke.Security.Permissions
         /// ModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))

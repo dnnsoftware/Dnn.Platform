@@ -12,9 +12,7 @@ namespace DotNetNuke.Entities.Users
     {
         private readonly UserInfo objUser;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MembershipPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MembershipPropertyAccess"/> class.</summary>
         /// <param name="user"></param>
         public MembershipPropertyAccess(UserInfo user)
         {

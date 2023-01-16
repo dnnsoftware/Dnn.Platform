@@ -17,11 +17,9 @@ namespace DotNetNuke.Services.Exceptions
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : ErrorPage
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Trapped errors are redirected to this universal error page, resulting in a
     /// graceful display.
@@ -32,7 +30,6 @@ namespace DotNetNuke.Services.Exceptions
     /// 'add to a placeholder and place on page
     /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {
         /// <inheritdoc/>

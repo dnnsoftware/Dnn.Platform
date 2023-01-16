@@ -15,16 +15,12 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserBasicDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
         public UserBasicDto()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserBasicDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
         /// <param name="user"></param>
         public UserBasicDto(UserInfo user)
         {

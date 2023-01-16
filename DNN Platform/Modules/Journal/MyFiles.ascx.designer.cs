@@ -15,25 +15,19 @@ namespace DotNetNuke.Modules.Journal {
     
     
     public partial class MyFiles {
-        /// <summary>
-        /// fileUp control.
-        /// </summary>
+        /// <summary>fileUp control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload fileUp;
-        /// <summary>
-        /// btnUp control.
-        /// </summary>
+        /// <summary>btnUp control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnUp;
-        /// <summary>
-        /// litOut control.
-        /// </summary>
+        /// <summary>litOut control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

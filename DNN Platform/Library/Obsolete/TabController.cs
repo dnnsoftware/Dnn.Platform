@@ -13,9 +13,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// TabController provides all operation to tabinfo.
-    /// </summary>
+    /// <summary>TabController provides all operation to tabinfo.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
     /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information

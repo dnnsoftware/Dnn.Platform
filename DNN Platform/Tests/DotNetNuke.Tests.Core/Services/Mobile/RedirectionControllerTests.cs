@@ -34,9 +34,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for RedirectionControllerTests.
-    /// </summary>
+    /// <summary>  Summary description for RedirectionControllerTests.</summary>
     [TestFixture]
     public class RedirectionControllerTests
     {

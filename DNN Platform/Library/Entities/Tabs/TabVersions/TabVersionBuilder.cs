@@ -28,9 +28,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private readonly ITabVersionDetailController tabVersionDetailController;
         private readonly PortalSettings portalSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabVersionBuilder"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         public TabVersionBuilder()
         {
             this.tabController = TabController.Instance;

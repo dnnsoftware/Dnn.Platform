@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Services
 {
     using System;
@@ -26,10 +25,8 @@ namespace DotNetNuke.Web.Services
     {
         private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
-        /// <summary>
-        /// Gets the various defined monikers for the various tab modules in the system.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets the various defined monikers for the various tab modules in the system.</summary>
+        /// <returns>A response with a list of objects containing <c>tabModuleId</c> and <c>moniker</c> fields.</returns>
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)
         {

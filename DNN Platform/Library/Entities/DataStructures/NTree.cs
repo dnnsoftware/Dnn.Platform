@@ -21,9 +21,7 @@ namespace DotNetNuke.Entities.DataStructures
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public List<NTree<T>> Children;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NTree{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NTree{T}"/> class.</summary>
         public NTree()
         {
             this.Children = new List<NTree<T>>();

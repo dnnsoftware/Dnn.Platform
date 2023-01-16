@@ -9,11 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Exceptions;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class HostName : SkinObjectBase
     {
         public string CssClass { get; set; }

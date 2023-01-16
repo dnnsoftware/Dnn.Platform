@@ -28,34 +28,24 @@ namespace DotNetNuke.Services.Search.Entities
             this.SearchContext = new Dictionary<string, string>();
         }
 
-        /// <summary>
-        /// Gets time when Content was last modified (in friendly format).
-        /// </summary>
+        /// <summary>Gets time when Content was last modified (in friendly format).</summary>
         public string DisplayModifiedTime
         {
             get { return DateUtils.CalculateDateForDisplay(this.ModifiedTimeUtc); }
         }
 
-        /// <summary>
-        /// Gets or sets highlighted snippet from document.
-        /// </summary>
+        /// <summary>Gets or sets highlighted snippet from document.</summary>
         public string Snippet { get; set; }
 
-        /// <summary>
-        /// Gets or sets optional: Display Name of the Author.
-        /// </summary>
+        /// <summary>Gets or sets optional: Display Name of the Author.</summary>
         /// <remarks>This may be different form current Display Name when Index was run prior to change in Display Name.</remarks>
         public string AuthorName { get; set; }
 
-        /// <summary>
-        /// Gets or sets lucene's original Score. The score of this document for the query.
-        /// </summary>
+        /// <summary>Gets or sets lucene's original Score. The score of this document for the query.</summary>
         /// <remarks>This field may not be reliable as most of the time it contains Nan. Use DisplayScore instead.</remarks>
         public float Score { get; set; }
 
-        /// <summary>
-        /// Gets or sets lucene's original Score in String format, e.g. 1.45678 or 0.87642. The score of this document for the query.
-        /// </summary>
+        /// <summary>Gets or sets lucene's original Score in String format, e.g. 1.45678 or 0.87642. The score of this document for the query.</summary>
         /// <remarks>This field is more reliable than the float version of Score.</remarks>
         public string DisplayScore { get; set; }
 

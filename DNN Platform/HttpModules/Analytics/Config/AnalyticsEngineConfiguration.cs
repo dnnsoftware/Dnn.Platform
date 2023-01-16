@@ -13,18 +13,13 @@ namespace DotNetNuke.HttpModules.Config
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.HttpModules.Analytics
     /// Project:    HttpModules
     /// Module:     AnalyticsEngineConfiguration
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Class definition for AnalyticsEngineConfiguration which is used to create
     /// an AnalyticsEngineCollection.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("AnalyticsEngineConfig")]
     public class AnalyticsEngineConfiguration

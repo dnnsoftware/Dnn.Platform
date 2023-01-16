@@ -10,9 +10,7 @@ namespace Dnn.PersonaBar.ConfigConsole.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the config console menu.
-    /// </summary>
+    /// <summary>Controls the config console menu.</summary>
     public class ConfigConsoleMenuController : IMenuItemController
     {
         /// <inheritdoc/>

@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Installer.Blocker
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// This class ...
-    /// </summary>
+    /// <summary>This class ...</summary>
     public class InstallBlocker : ServiceLocator<IInstallBlocker, InstallBlocker>, IInstallBlocker
     {
         private const string InstallBlockerFile = "\\installBlocker.lock";

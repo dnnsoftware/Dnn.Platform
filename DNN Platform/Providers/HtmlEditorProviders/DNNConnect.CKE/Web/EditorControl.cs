@@ -43,9 +43,7 @@ namespace DNNConnect.CKEditorProvider.Web
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// The CKEditor control.
-    /// </summary>
+    /// <summary>The CKEditor control.</summary>
     public class EditorControl : WebControl, IPostBackDataHandler
     {
         private const string ProviderType = "htmlEditor";
@@ -58,9 +56,7 @@ namespace DNNConnect.CKEditorProvider.Web
         private PortalModuleBase portalModule;
         private int parentModulId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EditorControl"/> class.</summary>
         public EditorControl()
         {
             this.navigationManager = this.Context.GetScope().ServiceProvider.GetRequiredService<INavigationManager>();
@@ -68,14 +64,10 @@ namespace DNNConnect.CKEditorProvider.Web
             this.Init += this.CKEditorInit;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether CKEditor is rendered.
-        /// </summary>
+        /// <summary>Gets a value indicating whether CKEditor is rendered.</summary>
         public bool IsRendered { get; private set; }
 
-        /// <summary>
-        /// Gets the editor settings.
-        /// </summary>
+        /// <summary>Gets the editor settings.</summary>
         public NameValueCollection Settings
         {
             get
@@ -609,9 +601,7 @@ namespace DNNConnect.CKEditorProvider.Web
             }
         }
 
-        /// <summary>
-        ///  Gets or sets The ToolBarName defined in config to override all other Toolbars.
-        /// </summary>
+        /// <summary> Gets or sets The ToolBarName defined in config to override all other Toolbars.</summary>
         public string ToolBarName
         {
             get
@@ -625,9 +615,7 @@ namespace DNNConnect.CKEditorProvider.Web
             }
         }
 
-        /// <summary>
-        /// Gets or sets Value.
-        /// </summary>
+        /// <summary>Gets or sets Value.</summary>
         [DefaultValue("")]
         public string Value
         {
@@ -654,9 +642,7 @@ namespace DNNConnect.CKEditorProvider.Web
             }
         }
 
-        /// <summary>
-        /// Finds the module instance.
-        /// </summary>
+        /// <summary>Finds the module instance.</summary>
         /// <param name="editorControl">The editor control.</param>
         /// <returns>The Instances found.</returns>
         public static Control FindModuleInstance(Control editorControl)
@@ -693,9 +679,7 @@ namespace DNNConnect.CKEditorProvider.Web
             return selectedCtl;
         }
 
-        /// <summary>
-        /// Checks if the text area was rendered.
-        /// </summary>
+        /// <summary>Checks if the text area was rendered.</summary>
         /// <param name="control">The control to ckeck.</param>
         /// <returns>Returns a value indicating whether the text area has rendered.</returns>
         public bool HasRenderedTextArea(Control control)
@@ -708,9 +692,7 @@ namespace DNNConnect.CKEditorProvider.Web
             return control.Controls.Cast<Control>().Any(this.HasRenderedTextArea);
         }
 
-        /// <summary>
-        /// Loads the post data.
-        /// </summary>
+        /// <summary>Loads the post data.</summary>
         /// <param name="postDataKey">The post data key.</param>
         /// <param name="postCollection">The post collection.</param>
         /// <returns>A value indicating whether the PostData has loaded.</returns>
@@ -758,9 +740,7 @@ namespace DNNConnect.CKEditorProvider.Web
             return false;
         }
 
-        /// <summary>
-        /// Taises post data changed event.
-        /// </summary>
+        /// <summary>Taises post data changed event.</summary>
         public void RaisePostDataChangedEvent()
         {
             // Do nothing
@@ -776,9 +756,7 @@ namespace DNNConnect.CKEditorProvider.Web
             base.OnPreRender(e);
         }
 
-        /// <summary>
-        /// Renders the control.
-        /// </summary>
+        /// <summary>Renders the control.</summary>
         /// <param name="outWriter">The Writer to render to.</param>
         protected override void Render(HtmlTextWriter outWriter)
         {
@@ -934,9 +912,7 @@ namespace DNNConnect.CKEditorProvider.Web
             }
         }
 
-        /// <summary>
-        /// Load Portal/Page/Module Settings.
-        /// </summary>
+        /// <summary>Load Portal/Page/Module Settings.</summary>
         private void LoadAllSettings()
         {
             var settingsDictionary = EditorController.GetEditorHostSettings();
@@ -1027,9 +1003,7 @@ namespace DNNConnect.CKEditorProvider.Web
             this.currentEditorSettings.SettingMode = SettingsMode.ModuleInstance;
         }
 
-        /// <summary>
-        /// Format the URL from FileID to File Path URL.
-        /// </summary>
+        /// <summary>Format the URL from FileID to File Path URL.</summary>
         /// <param name="inputUrl">The Input URL.</param>
         /// <returns>The formatted URL.</returns>
         private string FormatUrl(string inputUrl)
@@ -1061,9 +1035,7 @@ namespace DNNConnect.CKEditorProvider.Web
             return formattedUrl;
         }
 
-        /// <summary>
-        /// Load the Settings from the web.config file.
-        /// </summary>
+        /// <summary>Load the Settings from the web.config file.</summary>
         private void LoadConfigSettings()
         {
             this.settings = new NameValueCollection();

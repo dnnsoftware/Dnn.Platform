@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using EaloTabInfo = effority.Ealo.Specialized.TabInfo;
     using TabInfo = DotNetNuke.Entities.Tabs.TabInfo;
 
-    /// <summary>
-    /// Deprecated Ealo localization support.
-    /// </summary>
+    /// <summary>Deprecated Ealo localization support.</summary>
     [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
     public class Ealo : ILocalisation
     {

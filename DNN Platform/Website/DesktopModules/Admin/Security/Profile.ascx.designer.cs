@@ -15,25 +15,19 @@ namespace DesktopModules.Admin.Security {
     
     
     public partial class DNNProfile {
-        /// <summary>
-        /// ProfileProperties control.
-        /// </summary>
+        /// <summary>ProfileProperties control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.ProfileEditorControl ProfileProperties;
-        /// <summary>
-        /// actionsRow control.
-        /// </summary>
+        /// <summary>actionsRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl actionsRow;
-        /// <summary>
-        /// cmdUpdate control.
-        /// </summary>
+        /// <summary>cmdUpdate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

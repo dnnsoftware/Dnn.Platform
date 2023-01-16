@@ -20,9 +20,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
     public class LinkMenuController : IMenuItemController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LinkMenuController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LinkMenuController"/> class.</summary>
         public LinkMenuController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

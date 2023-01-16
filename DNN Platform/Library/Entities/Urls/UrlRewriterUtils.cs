@@ -15,11 +15,9 @@ namespace DotNetNuke.Entities.Urls
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UrlRewriterUtils));
 
-        /// <summary>
-        /// Return a FriendlyUrlOptions object from the provider settings.
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <summary>Return a FriendlyUrlOptions object from the provider settings.</summary>
+        /// <param name="settings">The settings.</param>
+        /// <returns>A new <see cref="FriendlyUrlOptions"/> instance.</returns>
         public static FriendlyUrlOptions GetOptionsFromSettings(FriendlyUrlSettings settings)
         {
             var options = new FriendlyUrlOptions
@@ -42,11 +40,9 @@ namespace DotNetNuke.Entities.Urls
             return options;
         }
 
-        /// <summary>
-        /// Return an extended FriendlyUrlOptions object for Custom URLs checkings.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <summary>Return an extended FriendlyUrlOptions object for Custom URLs checkings.</summary>
+        /// <param name="options">The original options.</param>
+        /// <returns>The extended options.</returns>
         public static FriendlyUrlOptions ExtendOptionsForCustomURLs(FriendlyUrlOptions options)
         {
             var result = new FriendlyUrlOptions
@@ -65,12 +61,10 @@ namespace DotNetNuke.Entities.Urls
             return result;
         }
 
-        /// <summary>
-        /// Logs the 404 error to a table for later checking.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="settings"></param>
-        /// <param name="result"></param>
+        /// <summary>Logs the 404 error to a table for later checking.</summary>
+        /// <param name="request">The request.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="result">The result.</param>
         public static void Log404(HttpRequest request, FriendlyUrlSettings settings, UrlAction result)
         {
             var log = new LogInfo
@@ -109,12 +103,10 @@ namespace DotNetNuke.Entities.Urls
             LogController.Instance.AddLog(log);
         }
 
-        /// <summary>
-        /// logs an exception once per cache-lifetime.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="status"></param>
-        /// <param name="result"></param>
+        /// <summary>logs an exception once per cache-lifetime.</summary>
+        /// <param name="ex">The exception.</param>
+        /// <param name="status">The HTTP status.</param>
+        /// <param name="result">The result.</param>
         public static void LogExceptionInRequest(Exception ex, string status, UrlAction result)
         {
             if (ex != null)
@@ -185,13 +177,11 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        /// <summary>
-        /// Clean Page name to remove page extension.
-        /// </summary>
+        /// <summary>Clean Page name to remove page extension.</summary>
         /// <param name="value">page name.</param>
         /// <param name="settings">friendly url settings.</param>
         /// <param name="langParms">language.</param>
-        /// <returns></returns>
+        /// <returns><paramref name="value"/> without the extension.</returns>
         public static string CleanExtension(string value, FriendlyUrlSettings settings, string langParms)
         {
             bool replaced;

@@ -7,9 +7,7 @@ namespace DotNetNuke.Maintenance.Shims
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// An implementation of <see cref="IInstaller"/> that relies on the <see cref="Installer"/> class.
-    /// </summary>
+    /// <summary>An implementation of <see cref="IInstaller"/> that relies on the <see cref="Installer"/> class.</summary>
     internal class InstallerShim : IInstaller
     {
         private Installer installer;

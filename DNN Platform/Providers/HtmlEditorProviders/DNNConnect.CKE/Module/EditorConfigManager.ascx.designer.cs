@@ -11,193 +11,145 @@ namespace DNNConnect.CKEditorProvider.Module {
     
     
     public partial class EditorConfigManager {
-        /// <summary>
-        /// ModuleHeader control.
-        /// </summary>
+        /// <summary>ModuleHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ModuleHeader;
-        /// <summary>
-        /// PortalOnlyLabel control.
-        /// </summary>
+        /// <summary>PortalOnlyLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PortalOnlyLabel;
-        /// <summary>
-        /// PortalOnly control.
-        /// </summary>
+        /// <summary>PortalOnly control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox PortalOnly;
-        /// <summary>
-        /// PortalTabsAndModulesTree control.
-        /// </summary>
+        /// <summary>PortalTabsAndModulesTree control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TreeView PortalTabsAndModulesTree;
-        /// <summary>
-        /// IconLegendLabel control.
-        /// </summary>
+        /// <summary>IconLegendLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label IconLegendLabel;
-        /// <summary>
-        /// HostHasSettingImage control.
-        /// </summary>
+        /// <summary>HostHasSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image HostHasSettingImage;
-        /// <summary>
-        /// HostHasSettingLabel control.
-        /// </summary>
+        /// <summary>HostHasSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label HostHasSettingLabel;
-        /// <summary>
-        /// HostNoSettingImage control.
-        /// </summary>
+        /// <summary>HostNoSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image HostNoSettingImage;
-        /// <summary>
-        /// HostNoSettingLabel control.
-        /// </summary>
+        /// <summary>HostNoSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label HostNoSettingLabel;
-        /// <summary>
-        /// PortalHasSettingImage control.
-        /// </summary>
+        /// <summary>PortalHasSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image PortalHasSettingImage;
-        /// <summary>
-        /// PortalHasSettingLabel control.
-        /// </summary>
+        /// <summary>PortalHasSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PortalHasSettingLabel;
-        /// <summary>
-        /// PortalNoSettingImage control.
-        /// </summary>
+        /// <summary>PortalNoSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image PortalNoSettingImage;
-        /// <summary>
-        /// PortalNoSettingLabel control.
-        /// </summary>
+        /// <summary>PortalNoSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PortalNoSettingLabel;
-        /// <summary>
-        /// PageHasSettingImage control.
-        /// </summary>
+        /// <summary>PageHasSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image PageHasSettingImage;
-        /// <summary>
-        /// PageHasSettingLabel control.
-        /// </summary>
+        /// <summary>PageHasSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PageHasSettingLabel;
-        /// <summary>
-        /// PageNoSettingImage control.
-        /// </summary>
+        /// <summary>PageNoSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image PageNoSettingImage;
-        /// <summary>
-        /// PageNoSettingLabel control.
-        /// </summary>
+        /// <summary>PageNoSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PageNoSettingLabel;
-        /// <summary>
-        /// ModuleHasSettingImage control.
-        /// </summary>
+        /// <summary>ModuleHasSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image ModuleHasSettingImage;
-        /// <summary>
-        /// ModuleHasSettingLabel control.
-        /// </summary>
+        /// <summary>ModuleHasSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ModuleHasSettingLabel;
-        /// <summary>
-        /// ModuleNoSettingImage control.
-        /// </summary>
+        /// <summary>ModuleNoSettingImage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image ModuleNoSettingImage;
-        /// <summary>
-        /// ModuleNoSettingLabel control.
-        /// </summary>
+        /// <summary>ModuleNoSettingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ModuleNoSettingLabel;
-        /// <summary>
-        /// OptionsPlaceHolder control.
-        /// </summary>
+        /// <summary>OptionsPlaceHolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder OptionsPlaceHolder;
-        /// <summary>
-        /// ModuleInstanceInfoPlaceHolder control.
-        /// </summary>
+        /// <summary>ModuleInstanceInfoPlaceHolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ModuleInstanceInfoPlaceHolder;
-        /// <summary>
-        /// ModuleInstanceInfo control.
-        /// </summary>
+        /// <summary>ModuleInstanceInfo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

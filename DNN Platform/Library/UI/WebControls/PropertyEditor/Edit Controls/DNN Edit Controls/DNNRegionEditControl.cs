@@ -18,16 +18,13 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNRegionEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
@@ -39,17 +36,13 @@ namespace DotNetNuke.UI.WebControls
 
         private List<ListEntryInfo> listEntries;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         public DNNRegionEditControl()
         {
             this.Init += this.DnnRegionControl_Init;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="type"></param>
         public DNNRegionEditControl(string type)
         {
@@ -57,9 +50,7 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = type;
         }
 
-        /// <summary>
-        /// Gets or sets the parent key of the List to display.
-        /// </summary>
+        /// <summary>Gets or sets the parent key of the List to display.</summary>
         public string ParentKey { get; set; }
 
         protected string OldStringValue
@@ -67,9 +58,7 @@ namespace DotNetNuke.UI.WebControls
             get { return Convert.ToString(this.OldValue); }
         }
 
-        /// <summary>
-        /// Gets the ListEntryInfo objects associated witht the control.
-        /// </summary>
+        /// <summary>Gets the ListEntryInfo objects associated witht the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
@@ -166,11 +155,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnAttributesChanged runs when the CustomAttributes property has changed.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnAttributesChanged runs when the CustomAttributes property has changed.</summary>
         protected override void OnAttributesChanged()
         {
             // Get the List settings out of the "Attributes"

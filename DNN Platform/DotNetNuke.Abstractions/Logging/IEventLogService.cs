@@ -12,20 +12,14 @@ namespace DotNetNuke.Abstractions.Logging
     /// </summary>
     public interface IEventLogService : IEventLogger
     {
-        /// <summary>
-        /// Clears the Event Log.
-        /// </summary>
+        /// <summary>Clears the Event Log.</summary>
         void ClearLog();
 
-        /// <summary>
-        /// Deletes a specific Event Log.
-        /// </summary>
+        /// <summary>Deletes a specific Event Log.</summary>
         /// <param name="logInfo">the log info.</param>
         void DeleteLog(ILogInfo logInfo);
 
-        /// <summary>
-        /// Get the Event Log.
-        /// </summary>
+        /// <summary>Get the Event Log.</summary>
         /// <param name="portalID">The portal id.</param>
         /// <param name="logType">The log type.</param>
         /// <param name="pageSize">The page size.</param>
@@ -34,16 +28,12 @@ namespace DotNetNuke.Abstractions.Logging
         /// <returns>The logs.</returns>
         IEnumerable<ILogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
 
-        /// <summary>
-        /// Retrieves a single event log via the Log Guid.
-        /// </summary>
+        /// <summary>Retrieves a single event log via the Log Guid.</summary>
         /// <param name="logGuid">A string reprenstation of the log Guid.</param>
         /// <returns>The <see cref="ILogInfo"/>.</returns>
         ILogInfo GetLog(string logGuid);
 
-        /// <summary>
-        /// Purge the log buffer.
-        /// </summary>
+        /// <summary>Purge the log buffer.</summary>
         void PurgeLogBuffer();
     }
 }

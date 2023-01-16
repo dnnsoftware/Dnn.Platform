@@ -10,22 +10,16 @@ namespace DotNetNuke.Web.DDRMenu
 
     using DotNetNuke.Web.DDRMenu.DNNCommon;
 
-    /// <summary>
-    /// DDR Menu WebControl.
-    /// </summary>
+    /// <summary>DDR Menu WebControl.</summary>
     internal class DDRMenuControl : WebControl, IPostBackEventHandler
     {
         private MenuBase menu;
 
-        /// <summary>
-        /// Handles a click on the menu.
-        /// </summary>
+        /// <summary>Handles a click on the menu.</summary>
         /// <param name="id">The id of the menu item beeing clicked.</param>
         public delegate void MenuClickEventHandler(string id);
 
-        /// <summary>
-        /// Handles a click on a node of the menu.
-        /// </summary>
+        /// <summary>Handles a click on a node of the menu.</summary>
         public event MenuClickEventHandler NodeClick;
 
         /// <inheritdoc/>
@@ -35,19 +29,13 @@ namespace DotNetNuke.Web.DDRMenu
             set { }
         }
 
-        /// <summary>
-        /// Gets or sets the menu root node.
-        /// </summary>
+        /// <summary>Gets or sets the menu root node.</summary>
         internal MenuNode RootNode { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to skip the localization.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to skip the localization.</summary>
         internal bool SkipLocalisation { get; set; }
 
-        /// <summary>
-        /// Gets or sets the menu settings.
-        /// </summary>
+        /// <summary>Gets or sets the menu settings.</summary>
         internal Settings MenuSettings { get; set; }
 
         /// <inheritdoc/>

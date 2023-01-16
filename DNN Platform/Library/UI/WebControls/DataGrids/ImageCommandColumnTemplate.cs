@@ -10,15 +10,10 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.UI.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      ImageCommandColumnTemplate
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ImageCommandColumnTemplate provides a Template for the ImageCommandColumn.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ImageCommandColumnTemplate provides a Template for the ImageCommandColumn.</summary>
     public class ImageCommandColumnTemplate : ITemplate
     {
         private ImageCommandColumnEditMode mEditMode = ImageCommandColumnEditMode.Command;
@@ -26,45 +21,29 @@ namespace DotNetNuke.UI.WebControls
         private bool mShowImage = true;
         private bool mVisible = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.</summary>
         public ImageCommandColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.</summary>
         /// <param name="itemType"></param>
         public ImageCommandColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the CommandName for the Column.
-        /// </summary>
+        /// <summary>Gets or sets the CommandName for the Column.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string CommandName { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the CommandName for the Column.
-        /// </summary>
+        /// <summary>Gets or sets the CommandName for the Column.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public ImageCommandColumnEditMode EditMode
         {
             get
@@ -78,20 +57,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the URL of the Image.
-        /// </summary>
+        /// <summary>Gets or sets the URL of the Image.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string ImageURL { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the type of Template to Create.
-        /// </summary>
+        /// <summary>Gets or sets the type of Template to Create.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public ListItemType ItemType
         {
             get
@@ -105,45 +76,25 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Key Field that provides a Unique key to the data Item.
-        /// </summary>
+        /// <summary>Gets or sets the Key Field that provides a Unique key to the data Item.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string KeyField { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the URL of the Link (unless DataBinding through KeyField).
-        /// </summary>
+        /// <summary>Gets or sets the URL of the Link (unless DataBinding through KeyField).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string NavigateURL { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the URL Formatting string.
-        /// </summary>
+        /// <summary>Gets or sets the URL Formatting string.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string NavigateURLFormatString { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets javascript text to attach to the OnClick Event.
-        /// </summary>
+        /// <summary>Gets or sets javascript text to attach to the OnClick Event.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string OnClickJS { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether an Image is displayed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets whether an Image is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool ShowImage
         {
             get
@@ -157,22 +108,16 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Text (for Header/Footer Templates).
-        /// </summary>
+        /// <summary>Gets or sets the Text (for Header/Footer Templates).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether an flag that indicates whether the buttons are visible (this is overridden if
         /// the VisibleField is set)
         /// changed.
         /// </summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool Visible
         {
             get
@@ -186,22 +131,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets an flag that indicates whether the buttons are visible.
-        /// </summary>
+        /// <summary>Gets or sets an flag that indicates whether the buttons are visible.</summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public string VisibleField { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// InstantiateIn instantiates the template (implementation of ITemplate).
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>InstantiateIn instantiates the template (implementation of ITemplate).</summary>
         /// <param name="container">The parent container (DataGridItem).</param>
-        /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
             switch (this.ItemType)
@@ -286,12 +221,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether theButton is visible.
-        /// </summary>
+        /// <summary>Gets whether theButton is visible.</summary>
         /// <param name="container">The parent container (DataGridItem).</param>
-        /// -----------------------------------------------------------------------------
         private bool GetIsVisible(DataGridItem container)
         {
             bool isVisible;
@@ -307,12 +238,8 @@ namespace DotNetNuke.UI.WebControls
             return isVisible;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the key.
-        /// </summary>
+        /// <summary>Gets the value of the key.</summary>
         /// <param name="container">The parent container (DataGridItem).</param>
-        /// -----------------------------------------------------------------------------
         private int GetValue(DataGridItem container)
         {
             int keyValue = Null.NullInteger;
@@ -324,15 +251,9 @@ namespace DotNetNuke.UI.WebControls
             return keyValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Item_DataBinding runs when an Item of type ListItemType.Item is being data-bound.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Item_DataBinding runs when an Item of type ListItemType.Item is being data-bound.</summary>
         /// <param name="sender"> The object that triggers the event.</param>
         /// <param name="e">An EventArgs object.</param>
-        /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {
             DataGridItem container;

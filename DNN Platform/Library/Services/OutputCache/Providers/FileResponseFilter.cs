@@ -10,17 +10,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into files.
-    /// </summary>
+    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into files.</summary>
     public class FileResponseFilter : OutputCacheResponseFilter
     {
         // Private _content As StringBuilder
         private DateTime cacheExpiration;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileResponseFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileResponseFilter"/> class.</summary>
         /// <param name="itemId"></param>
         /// <param name="maxVaryByCount"></param>
         /// <param name="filterChain"></param>

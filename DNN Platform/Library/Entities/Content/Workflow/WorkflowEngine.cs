@@ -42,9 +42,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowLogger workflowLogger;
         private readonly ISystemWorkflowManager systemWorkflowManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowEngine"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowEngine"/> class.</summary>
         public WorkflowEngine()
         {
             this.contentController = Util.GetContentController();

@@ -12,9 +12,7 @@ namespace DotNetNuke.ComponentModel
         private readonly string name;
         private readonly Type type;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransientComponentBuilder"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TransientComponentBuilder"/> class.</summary>
         /// <param name="name">The name of the component.</param>
         /// <param name="type">The type of the component.</param>
         public TransientComponentBuilder(string name, Type type)

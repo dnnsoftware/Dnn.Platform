@@ -13,17 +13,13 @@ namespace Dnn.PersonaBar.Library.Helper
         private IPortalController portalController;
         private IPortalGroupController portalGroupController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentVerifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentVerifier"/> class.</summary>
         public ContentVerifier()
             : this(PortalController.Instance, PortalGroupController.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentVerifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentVerifier"/> class.</summary>
         /// <param name="portalController"></param>
         /// <param name="portalGroupController"></param>
         public ContentVerifier(IPortalController portalController, IPortalGroupController portalGroupController)

@@ -12,17 +12,12 @@ namespace DotNetNuke.Services.Tokens
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Property Access to Objects using Relection.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Property Access to Objects using Reflection.</summary>
     public class PropertyAccess : IPropertyAccess
     {
         private readonly object obj;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PropertyAccess"/> class.</summary>
         /// <param name="tokenSource"></param>
         public PropertyAccess(object tokenSource)
         {
@@ -46,26 +41,20 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <summary>
-        /// Boolean2LocalizedYesNo returns the translated string for "yes" or "no" against a given boolean value.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="formatProvider"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Boolean2LocalizedYesNo returns the translated string for "yes" or "no" against a given boolean value.</summary>
+        /// <param name="value">The value to localize.</param>
+        /// <param name="formatProvider">The culture info.</param>
+        /// <returns><c>"Yes"</c> or <c>"No"</c> localized into the given culture.</returns>
         public static string Boolean2LocalizedYesNo(bool value, CultureInfo formatProvider)
         {
             string strValue = Convert.ToString(value ? "Yes" : "No");
             return Localization.GetString(strValue, null, formatProvider.ToString());
         }
 
-        /// <summary>
-        /// Returns a formatted String if a format is given, otherwise it returns the unchanged value.
-        /// </summary>
+        /// <summary>Returns a formatted String if a format is given, otherwise it returns the unchanged value.</summary>
         /// <param name="value">string to be formatted.</param>
         /// <param name="format">format specification.</param>
         /// <returns>formatted string.</returns>
-        /// <remarks></remarks>
         public static string FormatString(string value, string format)
         {
             if (format.Trim() == string.Empty)
@@ -82,16 +71,13 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <summary>
-        ///     Returns the localized property of any object as string using reflection.
-        /// </summary>
+        /// <summary>Returns the localized property of any object as string using reflection.</summary>
         /// <param name="objObject">Object to access.</param>
         /// <param name="strPropertyName">Name of property.</param>
         /// <param name="strFormat">Format String.</param>
         /// <param name="formatProvider">specify formatting.</param>
         /// <param name="propertyNotFound">out: specifies, whether property was found.</param>
         /// <returns>Localized Property.</returns>
-        /// <remarks></remarks>
         public static string GetObjectProperty(object objObject, string strPropertyName, string strFormat, CultureInfo formatProvider, ref bool propertyNotFound)
         {
             PropertyInfo objProperty = null;

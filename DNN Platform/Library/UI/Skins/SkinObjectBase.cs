@@ -10,19 +10,13 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.UI.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SkinObject class defines a custom base class inherited by all
     /// skin and container objects within the Portal.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class SkinObjectBase : UserControl, ISkinControl
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the portal Settings for this Skin Control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the portal Settings for this Skin Control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
@@ -34,11 +28,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether we are in Admin Mode.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether we are in Admin Mode.</summary>
         public bool AdminMode
         {
             get
@@ -47,11 +37,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the associated ModuleControl for this SkinControl.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the associated ModuleControl for this SkinControl.</summary>
         public IModuleControl ModuleControl { get; set; }
     }
 }

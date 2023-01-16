@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ConnectionConfig - A class that represents Install/DotNetNuke.Install.Config/Connection.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ConnectionConfig - A class that represents Install/DotNetNuke.Install.Config/Connection.</summary>
     public class ConnectionConfig
     {
         public string Server { get; set; }

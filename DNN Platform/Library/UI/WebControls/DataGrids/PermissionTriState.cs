@@ -29,9 +29,7 @@ namespace DotNetNuke.UI.WebControls.Internal
         private readonly string denyAltText;
         private readonly string nullAltText;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionTriState"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionTriState"/> class.</summary>
         public PermissionTriState()
         {
             // kind of ugly to lookup this data each time, but doesn't seem worth the effort to

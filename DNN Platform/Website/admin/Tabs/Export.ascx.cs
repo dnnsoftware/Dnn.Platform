@@ -26,9 +26,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private readonly INavigationManager navigationManager;
         private TabInfo tab;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Export"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Export"/> class.</summary>
         public Export()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -142,13 +140,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Serializes the Tab.
-        /// </summary>
+        /// <summary>Serializes the Tab.</summary>
         /// <param name="xmlTemplate">Reference to XmlDocument context.</param>
         /// <param name="nodeTabs">Node to add the serialized objects.</param>
-        /// -----------------------------------------------------------------------------
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
             var xmlTab = new XmlDocument { XmlResolver = null };

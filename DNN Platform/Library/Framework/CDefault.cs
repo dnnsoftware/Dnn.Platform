@@ -60,12 +60,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Allows the scroll position on the page to be moved to the top of the passed in control.
-        /// </summary>
+        /// <summary>Allows the scroll position on the page to be moved to the top of the passed in control.</summary>
         /// <param name="objControl">Control to scroll to.</param>
-        /// -----------------------------------------------------------------------------
         public void ScrollToControl(Control objControl)
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))

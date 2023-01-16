@@ -47,9 +47,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                     pageId, PortalId));
         }
 
-        /// <summary>
-        /// Returns all the tab related columns from vw_tabinfo.
-        /// </summary>
+        /// <summary>Returns all the tab related columns from vw_tabinfo.</summary>
         /// <returns></returns>
         public static dynamic GetTabInfo(int tabId)
         {
@@ -57,9 +55,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             return DatabaseHelper.ExecuteDynamicQuery(sql)[0];
         }
 
-        /// <summary>
-        /// Gets list of all modules on a page.
-        /// </summary>
+        /// <summary>Gets list of all modules on a page.</summary>
         /// <param name="pageId">Id of the page.</param>
         /// <returns>List of all the modules on a page.</returns>
         public static List<int> GetAllModuleIdInsidePage(int pageId)
@@ -81,9 +77,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             return listOfModules;
         }
 
-        /// <summary>
-        /// Gets ModuleID of the first module on a page (any pane).
-        /// </summary>
+        /// <summary>Gets ModuleID of the first module on a page (any pane).</summary>
         /// <param name="pageId">id of the tab.</param>
         /// <returns>Returns ModuleID of the first module (top(1)) on a page.</returns>
         public static int GetModuleIdInsidePageAnyPane(int pageId)
@@ -142,9 +136,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                     WHERE TabID = {0} AND ModuleID = {1};", tabId, moduledId));
         }
 
-        /// <summary>
-        /// Returns all the tab urls.
-        /// </summary>
+        /// <summary>Returns all the tab urls.</summary>
         /// <returns></returns>
         public static IList<dynamic> GetTabUrls(int tabId)
         {
@@ -152,18 +144,14 @@ namespace DNN.Integration.Test.Framework.Controllers
             return DatabaseHelper.ExecuteDynamicQuery(sql);
         }
 
-        /// <summary>
-        /// Adds tab setting. Deletes existing setting first.
-        /// </summary>
+        /// <summary>Adds tab setting. Deletes existing setting first.</summary>
         public static void SaveTabSetting(int tabId, string settingName, string settingValue)
         {
             DeleteTabSetting(tabId, settingName);
             AddTabSetting(tabId, settingName, settingValue);
         }
 
-        /// <summary>
-        /// Adds tab setting. Does not delete existing setting first.
-        /// </summary>
+        /// <summary>Adds tab setting. Does not delete existing setting first.</summary>
         public static void AddTabSetting(int tabId, string settingName, string settingValue)
         {
             DatabaseHelper.ExecuteStoredProcedure(
@@ -174,9 +162,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 1); // CreatedByUserID
         }
 
-        /// <summary>
-        /// Deletes tab setting.
-        /// </summary>
+        /// <summary>Deletes tab setting.</summary>
         public static void DeleteTabSetting(int tabId, string settingName)
         {
             DatabaseHelper.ExecuteStoredProcedure("DeleteTabSetting", tabId, settingName);

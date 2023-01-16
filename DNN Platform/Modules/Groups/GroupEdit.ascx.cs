@@ -19,9 +19,7 @@ namespace DotNetNuke.Modules.Groups
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GroupEdit"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GroupEdit"/> class.</summary>
         public GroupEdit()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

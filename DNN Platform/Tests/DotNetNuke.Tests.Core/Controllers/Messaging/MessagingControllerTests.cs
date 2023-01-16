@@ -37,9 +37,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of MessagingController.
-    /// </summary>
+    /// <summary> Testing various aspects of MessagingController.</summary>
     [TestFixture]
     public class MessagingControllerTests
     {

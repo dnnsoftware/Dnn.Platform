@@ -16,9 +16,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     {
         private readonly IWorkflowLogRepository workflowLogRepository;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowLogger"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowLogger"/> class.</summary>
         public WorkflowLogger()
         {
             this.workflowLogRepository = WorkflowLogRepository.Instance;

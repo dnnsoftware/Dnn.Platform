@@ -5,9 +5,7 @@ namespace DotNetNuke.Collections.Internal
 {
     using System;
 
-    /// <summary>
-    /// Thrown when a write lock is requested but cannot be obtained.
-    /// </summary>
+    /// <summary>Thrown when a write lock is requested but cannot be obtained.</summary>
     public class WriteLockRequiredException : Exception
     {
     }

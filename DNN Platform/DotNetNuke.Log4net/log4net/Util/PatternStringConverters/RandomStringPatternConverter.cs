@@ -28,9 +28,7 @@ using log4net.Core;
 
 namespace log4net.Util.PatternStringConverters
 {
-    /// <summary>
-    /// A Pattern converter that generates a string of random characters
-    /// </summary>
+    /// <summary>A Pattern converter that generates a string of random characters</summary>
     /// <remarks>
     /// <para>
     /// The converter generates a string of random characters. By default
@@ -48,19 +46,13 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal sealed class RandomStringPatternConverter : PatternConverter, IOptionHandler
     {
-        /// <summary>
-        /// Shared random number generator
-        /// </summary>
+        /// <summary>Shared random number generator</summary>
         private static readonly Random s_random = new Random();
 
-        /// <summary>
-        /// Length of random string to generate. Default length 4.
-        /// </summary>
+        /// <summary>Length of random string to generate. Default length 4.</summary>
         private int m_length = 4;
 
-        /// <summary>
-        /// Initialize the converter options
-        /// </summary>
+        /// <summary>Initialize the converter options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -91,9 +83,7 @@ namespace log4net.Util.PatternStringConverters
             }
         }
 
-        /// <summary>
-        /// Write a randoim string to the output
-        /// </summary>
+        /// <summary>Write a randoim string to the output</summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="state">null, state is not set</param>
         /// <remarks>
@@ -137,9 +127,7 @@ namespace log4net.Util.PatternStringConverters
             }
         }
 
-        /// <summary>
-        /// The fully qualified type of the RandomStringPatternConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the RandomStringPatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
