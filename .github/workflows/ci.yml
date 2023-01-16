@@ -49,6 +49,10 @@ jobs:
         uses: actions/setup-node@v3.5.1
         with:
           node-version-file: ".node-version"
+          cache: "npm"
+          cache-dependency-path: |
+            DeployClient/package-lock.json
+            PolyDeploy/package-lock.json
 
       - name: Install npm modules
         run: |
