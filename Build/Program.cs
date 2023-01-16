@@ -16,7 +16,7 @@ namespace DotNetNuke.Build
         internal const string MicrosoftTestPlatformVersion = "16.11.0";
 
         /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
-        internal const string NUnit3TestAdapterVersion = "4.2.1";
+        internal const string NUnit3TestAdapterVersion = "4.3.1";
 
         /// <summary>Runs the build process.</summary>
         /// <param name="args">The arguments from the command line.</param>
