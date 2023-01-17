@@ -5367,9 +5367,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"admin_logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web":
+"admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web":
   version: 0.0.0-use.local
-  resolution: "admin_logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
+  resolution: "admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.0.0
@@ -19694,8 +19694,6 @@ fsevents@^1.2.7:
     throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     webpack: ^4.31.0
-    webpack-bundle-analyzer: ^4.4.1
-    webpack-bundle-size-analyzer: 3.0.0
     webpack-cli: ^3.1.2
     webpack-dev-server: ^3.1.14
   languageName: unknown
@@ -21831,7 +21829,6 @@ resolve@^1.20.0:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    i18n-webpack-plugin: 1.0.0
     jwt-decode: 2.2.0
     less: 4.1.2
     less-loader: 5.0.0
@@ -22080,9 +22077,9 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"security_settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web":
+"security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web":
   version: 0.0.0-use.local
-  resolution: "security_settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
+  resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
     "@babel/core": ^7.2.0
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
@@ -22572,9 +22569,9 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"site_import_export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web":
+"site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web":
   version: 0.0.0-use.local
-  resolution: "site_import_export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
+  resolution: "site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
@@ -22627,9 +22624,9 @@ resolve@^1.20.0:
   languageName: unknown
   linkType: soft
 
-"site_settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web":
+"site-settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web":
   version: 0.0.0-use.local
-  resolution: "site_settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web"
+  resolution: "site-settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
@@ -23712,9 +23709,9 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"task_scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web":
+"task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web":
   version: 0.0.0-use.local
-  resolution: "task_scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
+  resolution: "task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0

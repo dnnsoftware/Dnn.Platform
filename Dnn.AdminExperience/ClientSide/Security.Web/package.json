@@ -1,5 +1,5 @@
 {
-  "name": "security_settings",
+  "name": "security-settings",
   "version": "9.11.0",
   "private": true,
   "scripts": {

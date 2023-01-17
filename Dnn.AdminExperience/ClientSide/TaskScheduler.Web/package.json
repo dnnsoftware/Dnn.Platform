@@ -1,5 +1,5 @@
 {
-  "name": "task_scheduler",
+  "name": "task-scheduler",
   "version": "9.11.0",
   "private": true,
   "scripts": {
