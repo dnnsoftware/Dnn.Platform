@@ -172,16 +172,6 @@ class RegistrationSettingsPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const { props, state } = this;
-        const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
-        const RedirectAfterRegistrationParameters = {
-            portalId: -2,
-            cultureCode: "",
-            isMultiLanguage: false,
-            excludeAdminTabs: false,
-            disabledNotSelectable: false,
-            roles: "1;-1",
-            sortOrder: 0
-        };
         const ToolTipStyle = {
             padding: "5px 0",
             float: "left"
