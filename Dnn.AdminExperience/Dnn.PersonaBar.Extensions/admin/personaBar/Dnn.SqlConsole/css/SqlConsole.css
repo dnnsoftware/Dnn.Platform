@@ -161,7 +161,7 @@
 .sqlconsolePanel .form-item.item-query div select {
     width: 100%;
 }
-.sqlconsolePanel .form-item #monaco-editor{ height: 220px;}
+.sqlconsolePanel .form-item #monaco-editor-sql{ height: 220px;}
 
 .sqlconsolePanel .actions {
     text-align: center;
