@@ -1,5 +1,5 @@
 {
-  "name": "task_scheduler",
+  "name": "task-scheduler",
   "version": "9.11.0",
   "private": true,
   "scripts": {
@@ -36,8 +36,8 @@
     "less-loader": "5.0.0",
     "prop-types": "^15.6.2",
     "raw-loader": "2.0.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-hot-loader": "4.8.5",
     "react-modal": "3.6.1",
     "style-loader": "^0.23.1",

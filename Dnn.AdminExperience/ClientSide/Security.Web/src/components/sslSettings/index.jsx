@@ -183,7 +183,7 @@ class SslSettingsPanelBody extends Component {
                         />
                     </InputGroup>
                     {warningBox}
-                    {state.sslSettings.SSLSetup == 2 && (
+                    {Number.parseInt(state.sslSettings.SSLSetup) === 2 && (
                         <>
                             <InputGroup>
                                 <div className="sslSettings-row_switch">

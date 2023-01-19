@@ -52,7 +52,7 @@
     "lodash": "4.17.11",
     "raw-loader": "2.0.0",
     "react-custom-scrollbars": "4.2.1",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.14.0",
     "react-hot-loader": "4.8.5",
     "react-test-renderer": "^17.0.2",
     "react-widgets": "4.4.7",
@@ -70,7 +70,7 @@
     "dayjs": "^1.10.4",
     "promise": "^8.0.2",
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
+    "react": "^16.14.0",
     "react-day-picker": "^7.2.4",
     "url-parse": "^1.2.0"
   }
