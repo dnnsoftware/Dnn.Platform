@@ -191,4 +191,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(UserTable);
+export default connect(mapStateToProps, null, null, { withRef: true, forwardRef: true, })(UserTable);
