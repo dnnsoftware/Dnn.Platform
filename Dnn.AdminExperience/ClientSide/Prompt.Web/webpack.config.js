@@ -90,7 +90,7 @@ module.exports = (env, argv) => {
                     }),
                 new webpack.SourceMapDevToolPlugin({
                     filename: "prompt-bundle.js.map",
-                    append: "\r\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/scripts/bundles/prompt-bundle.js.map",
+                    append: "\r\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/scripts/bundles/prompt-bundle.js.map",
                 }),
             ],
         devtool: false,

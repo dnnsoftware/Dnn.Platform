@@ -99,7 +99,7 @@ module.exports = (env, argv) => {
                 }),
             new webpack.SourceMapDevToolPlugin({
                 filename: "pages.bundle.js.map",
-                append: "\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Pages/scripts/bundles/pages.bundle.js.map",
+                append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Pages/scripts/bundles/pages.bundle.js.map",
             }),
             ],
         devtool: false,

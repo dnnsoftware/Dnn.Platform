@@ -94,7 +94,7 @@ module.exports = (env, argv) => {
                     }),
                 new webpack.SourceMapDevToolPlugin({
                     filename: "vocabulary-bundle.js.map",
-                    append: "\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Vocabularies/scripts/bundles/vocabulary-bundle.js.map",
+                    append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Vocabularies/scripts/bundles/vocabulary-bundle.js.map",
                 })
             ],
         devtool: false,

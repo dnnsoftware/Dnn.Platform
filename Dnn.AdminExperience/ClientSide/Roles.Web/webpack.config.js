@@ -85,7 +85,7 @@ module.exports = (env, argv) => {
                     }),
                 new webpack.SourceMapDevToolPlugin({
                     filename: "roles-bundle.js.map",
-                    append: "\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Roles/scripts/bundles/roles-bundle.js.map",
+                    append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Roles/scripts/bundles/roles-bundle.js.map",
                 }),
             ],
         devtool: false,

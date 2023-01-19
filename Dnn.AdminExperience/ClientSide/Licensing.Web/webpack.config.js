@@ -93,7 +93,7 @@ module.exports = (env, argv) => {
                     }),
                 new webpack.SourceMapDevToolPlugin({
                     filename: "licensing.bundle.js.map",
-                    append: "\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Licensing/scripts/bundles/licensing.bundle.js.map",
+                    append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Licensing/scripts/bundles/licensing.bundle.js.map",
                 }),
             ],
         devtool: false,
