@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu
 {
     using System;
@@ -9,6 +8,8 @@ namespace DotNetNuke.Web.DDRMenu
     using System.ComponentModel;
     using System.Web.UI;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI;
     using DotNetNuke.UI.Skins;
@@ -16,9 +17,26 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class SkinObject : SkinObjectBase
     {
+        private readonly ILocaliser localiser;
         private MenuBase menu;
+
+        /// <summary>Initializes a new instance of the <see cref="SkinObject"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
+        public SkinObject()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SkinObject"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        public SkinObject(ILocaliser localiser)
+        {
+            this.localiser = localiser ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ILocaliser>() ?? Globals.DependencyProvider.GetRequiredService<ILocaliser>();
+        }
 
         public string MenuStyle { get; set; }
 
@@ -53,7 +71,7 @@ namespace DotNetNuke.Web.DDRMenu
                 {
                     base.OnPreRender(e);
 
-                    this.menu = MenuBase.Instantiate(this.MenuStyle);
+                    this.menu = MenuBase.Instantiate(this.localiser, this.MenuStyle);
                     this.menu.ApplySettings(
                         new Settings
                         {
@@ -73,7 +91,7 @@ namespace DotNetNuke.Web.DDRMenu
                     {
                         this.menu.RootNode =
                             new MenuNode(
-                                Localiser.LocaliseDNNNodeCollection(
+                                this.localiser.LocaliseDNNNodeCollection(
                                     Navigation.GetNavigationNodes(
                                         this.ClientID,
                                         Navigation.ToolTipSource.None,

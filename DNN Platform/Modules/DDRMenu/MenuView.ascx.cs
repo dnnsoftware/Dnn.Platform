@@ -1,20 +1,38 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu
 {
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class MenuView : ModuleBase
     {
+        private readonly ILocaliser localiser;
         private MenuBase menu;
+
+        /// <summary>Initializes a new instance of the <see cref="MenuView"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
+        public MenuView()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MenuView"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        public MenuView(ILocaliser localiser)
+        {
+            this.localiser = localiser ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ILocaliser>() ?? Globals.DependencyProvider.GetRequiredService<ILocaliser>();
+        }
 
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
@@ -53,7 +71,7 @@ namespace DotNetNuke.Web.DDRMenu
                     {
                         rootNode =
                             new MenuNode(
-                                Localiser.LocaliseDNNNodeCollection(
+                                this.localiser.LocaliseDNNNodeCollection(
                                     Navigation.GetNavigationNodes(
                                         this.ClientID,
                                         Navigation.ToolTipSource.None,
@@ -62,7 +80,7 @@ namespace DotNetNuke.Web.DDRMenu
                                         DNNAbstract.GetNavNodeOptions(true))));
                     }
 
-                    this.menu = MenuBase.Instantiate(menuStyle);
+                    this.menu = MenuBase.Instantiate(this.localiser, menuStyle);
                     this.menu.RootNode = rootNode;
                     this.menu.ApplySettings(menuSettings);
 
