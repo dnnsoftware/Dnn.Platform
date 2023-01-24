@@ -171,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.CountryName.Text = this.StringValue;
             int countryId = -1;
-            string countryCode = this.StringValue;
+            string countryCode = CountryLookup.CodeByName(this.StringValue);
             if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out countryId))
             {
                 var listController = new ListController();
