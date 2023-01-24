@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Build": {
+      "commandName": "Project"
+    },
+    "UnitTests": {
+      "commandName": "Project",
+      "commandLineArgs": "--target UnitTests"
+    }
+  }
+}
