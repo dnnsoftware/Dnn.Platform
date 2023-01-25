@@ -84,7 +84,7 @@ module.exports = (env, argv) => {
                     }),
                 new webpack.SourceMapDevToolPlugin({
                     filename: "site-groups.bundle.js.map",
-                    append: "\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.SiteGroups/scripts/bundles/site-groups.bundle.js.map",
+                    append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.SiteGroups/scripts/bundles/site-groups.bundle.js.map",
                 }),
             ],
         devtool: false,

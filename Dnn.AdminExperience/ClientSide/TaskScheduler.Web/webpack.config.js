@@ -92,7 +92,7 @@ module.exports = (env, argv) => {
                     }),
                 new webpack.SourceMapDevToolPlugin({
                     filename: "task-scheduler-bundle.js.map",
-                    append: "\r\n//# sourceMappingURL=DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/scripts/bundles/task-scheduler-bundle.js.map"
+                    append: "\r\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/scripts/bundles/task-scheduler-bundle.js.map"
                 })
             ],
         devtool: false,
