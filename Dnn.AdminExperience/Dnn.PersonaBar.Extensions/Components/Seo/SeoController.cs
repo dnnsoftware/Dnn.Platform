@@ -83,14 +83,15 @@ namespace Dnn.PersonaBar.Seo.Components
         {
             if (!string.IsNullOrEmpty(verification) && verification.EndsWith(".html"))
             {
-                if (!File.Exists(Globals.ApplicationMapPath + "\\" + verification))
+                var fileName = Path.GetFullPath(Path.Combine($"{Globals.ApplicationMapPath}\\", verification));
+                if (!File.Exists(fileName)
                 {
                     string portalAlias = !string.IsNullOrEmpty(this.portalSettings.DefaultPortalAlias)
                                         ? this.portalSettings.DefaultPortalAlias
                                         : this.portalSettings.PortalAlias.HTTPAlias;
 
                     // write SiteMap verification file
-                    var objStream = File.CreateText(Globals.ApplicationMapPath + "\\" + verification);
+                    var objStream = File.CreateText(fileName);
                     objStream.WriteLine("Google SiteMap Verification File");
                     objStream.WriteLine(" - " + Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx");
                     objStream.WriteLine(" - " + UserController.Instance.GetCurrentUserInfo().DisplayName);
