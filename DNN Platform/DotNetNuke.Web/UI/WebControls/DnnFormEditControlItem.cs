@@ -3,23 +3,42 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Framework;
     using DotNetNuke.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class DnnFormEditControlItem : DnnFormItemBase
     {
+        private readonly IServiceProvider serviceProvider;
         private EditControl control;
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormEditControlItem"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public DnnFormEditControlItem()
+            : this(HttpContextSource.Current?.GetScope()?.ServiceProvider ?? Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormEditControlItem"/> class.</summary>
+        /// <param name="serviceProvider">The DI container scope.</param>
+        public DnnFormEditControlItem(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         public string ControlType { get; set; }
 
         /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
-            this.control = Reflection.CreateObject(this.ControlType, this.ControlType) as EditControl;
-
+            this.control = ActivatorUtilities.CreateInstance(this.serviceProvider, Reflection.CreateType(this.ControlType)) as EditControl;
             if (this.control != null)
             {
                 this.control.ID = this.ID + "_Control";

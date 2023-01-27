@@ -15,24 +15,35 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
-    /// <summary>
-    /// The PropertyEditorControl control provides a way to display and edit any
-    /// properties of any Info class.
-    /// </summary>
+    using Globals = DotNetNuke.Common.Globals;
+
+    /// <summary>The PropertyEditorControl control provides a way to display and edit any properties of any Info class.</summary>
     public class PropertyEditorControl : WebControl, INamingContainer
     {
+        private readonly IServiceProvider serviceProvider;
         private bool itemChanged;
         private Hashtable sections;
 
         /// <summary>Initializes a new instance of the <see cref="PropertyEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public PropertyEditorControl()
+            : this(HttpContextSource.Current?.GetScope()?.ServiceProvider ?? Globals.DependencyProvider)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PropertyEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public PropertyEditorControl(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
             this.VisibilityStyle = new Style();
             this.ItemStyle = new Style();
             this.LabelStyle = new Style();
@@ -257,12 +268,12 @@ namespace DotNetNuke.UI.WebControls
             // Create the Editor
             this.CreateEditor();
 
-            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+            // Set flag so CreateChildControls should not be invoked later in control's lifecycle
             this.ChildControlsCreated = true;
         }
 
         /// <summary>
-        /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
+        /// AddEditorRow builds a single editor row and adds it to the Table, using the
         /// specified adapter.
         /// </summary>
         /// <param name="table">The Table Control to add the row to.</param>
@@ -277,7 +288,7 @@ namespace DotNetNuke.UI.WebControls
             row.Cells.Add(cell);
 
             // Create a FieldEditor for this Row
-            var editor = new FieldEditorControl
+            var editor = new FieldEditorControl(this.serviceProvider)
             {
                 DataSource = this.DataSource,
                 EditorInfoAdapter = adapter,
@@ -296,7 +307,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
         {
-            var editor = new FieldEditorControl
+            var editor = new FieldEditorControl(this.serviceProvider)
             {
                 DataSource = this.DataSource,
                 EditorInfoAdapter = adapter,
