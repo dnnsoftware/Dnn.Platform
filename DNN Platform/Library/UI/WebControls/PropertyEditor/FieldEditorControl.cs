@@ -13,25 +13,45 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
 
+    /// <summary>
+    /// The possible editor display modes.
+    /// </summary>
     public enum EditorDisplayMode
     {
+        /// <summary>
+        /// Displays the control in a div.
+        /// </summary>
         Div = 0,
+
+        /// <summary>
+        /// Displays the control in a table.
+        /// </summary>
         Table = 1,
     }
 
+    /// <summary>
+    /// Defines how help is displayed.
+    /// </summary>
     public enum HelpDisplayMode
     {
+        /// <summary>
+        /// Never display the help.
+        /// </summary>
         Never = 0,
+
+        /// <summary>
+        /// Display help only in edit mode.
+        /// </summary>
         EditOnly = 1,
+
+        /// <summary>
+        /// Always display help.
+        /// </summary>
         Always = 2,
     }
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      FieldEditorControl
     /// <summary>
-    /// The FieldEditorControl control provides a Control to display Profile
-    /// Properties.
+    /// The FieldEditorControl control provides a Control to display Profile Properties.
     /// </summary>
     [ToolboxData("<{0}:FieldEditorControl runat=server></{0}:FieldEditorControl>")]
     public class FieldEditorControl : WebControl, INamingContainer
@@ -59,12 +79,24 @@ namespace DotNetNuke.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
+        /// <summary>
+        /// Occurs when an item is added.
+        /// </summary>
         public event PropertyChangedEventHandler ItemAdded;
 
+        /// <summary>
+        /// Occurs when an item was changed.
+        /// </summary>
         public event PropertyChangedEventHandler ItemChanged;
 
+        /// <summary>
+        /// Occurs when an item was created.
+        /// </summary>
         public event EditorCreatedEventHandler ItemCreated;
 
+        /// <summary>
+        /// Occurs when an item was deleted.
+        /// </summary>
         public event PropertyChangedEventHandler ItemDeleted;
 
         /// <summary>Gets a value indicating whether all of the properties are Valid.</summary>
@@ -143,11 +175,17 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>Gets a value indicating whether any of the properties have been changed.</summary>
         public bool IsDirty { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the label mode.
+        /// </summary>
         public LabelMode LabelMode { get; set; }
 
         /// <summary>Gets or sets the Local Resource File for the Control.</summary>
         public string LocalResourceFile { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the field is required.
+        /// </summary>
         public bool Required { get; set; }
 
         /// <summary>Gets or sets the Url of the Required Image.</summary>
@@ -159,8 +197,14 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>Gets or sets a value indicating whether the Visibility control is used.</summary>
         public bool ShowVisibility { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user.
+        /// </summary>
         public UserInfo User { get; set; }
 
+        /// <summary>
+        /// Gets or sets the validation expression.
+        /// </summary>
         public string ValidationExpression { get; set; }
 
         /// <summary>Gets the value of the Field Style.</summary>
@@ -256,7 +300,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.isValid = this.Editor.IsValid;
 
-            if (this.IsValid)
+            if (this.isValid)
             {
                 IEnumerator valEnumerator = this.validators.GetEnumerator();
                 while (valEnumerator.MoveNext())
@@ -330,19 +374,30 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <summary>
+        /// Runs when an item is added to a collection type property.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemAdded(e);
         }
 
-        /// <summary>Runs when an item is removed from a collection type property.</summary>
+        /// <summary>
+        /// Runs when an item is removed from a collection type property.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemDeleted(e);
         }
 
-        /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <summary>
+        /// Runs when an item is added to a collection type property.
+        /// </summary>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
             if (this.ItemAdded != null)
@@ -351,7 +406,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Runs when the Editor is Created.</summary>
+        /// <summary>
+        /// Runs when the Editor is Created.
+        /// </summary>
+        /// <param name="e">The event arguments <see cref="PropertyEditorItemEventArgs"/>.</param>
         protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
         {
             if (this.ItemCreated != null)
@@ -360,7 +418,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Runs when an item is removed from a collection type property.</summary>
+        /// <summary>
+        /// Runs when an item is removed from a collection type property.
+        /// </summary>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
             if (this.ItemDeleted != null)
@@ -380,19 +441,31 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Runs when the Value of a Property changes.</summary>
+        /// <summary>
+        /// Runs when the Value of a Property changes.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void ValueChanged(object sender, PropertyEditorEventArgs e)
         {
             this.IsDirty = this.EditorInfoAdapter.UpdateValue(e);
         }
 
-        /// <summary>Runs when the Visibility of a Property changes.</summary>
+        /// <summary>
+        /// Runs when the Visibility of a Property changes.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
         {
             this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
         }
 
-        /// <summary>Runs when an Item in the List Is Changed.</summary>
+        /// <summary>
+        /// Runs when an Item in the List Is Changed.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         /// <remarks>Raises an ItemChanged event.</remarks>
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
