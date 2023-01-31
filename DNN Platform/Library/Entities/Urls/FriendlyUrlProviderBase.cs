@@ -11,7 +11,7 @@ namespace DotNetNuke.Entities.Urls
     public abstract class FriendlyUrlProviderBase
     {
         /// <summary>Initializes a new instance of the <see cref="FriendlyUrlProviderBase"/> class.</summary>
-        /// <param name="attributes"></param>
+        /// <param name="attributes">The provider attributes.</param>
         internal FriendlyUrlProviderBase(NameValueCollection attributes)
         {
             if (!string.IsNullOrEmpty(attributes["urlFormat"]))

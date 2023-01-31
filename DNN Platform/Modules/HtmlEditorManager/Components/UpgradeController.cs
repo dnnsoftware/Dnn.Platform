@@ -9,11 +9,12 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
     using System.Web.Hosting;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
@@ -26,6 +27,21 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         /// <summary>The module folder location.</summary>
         private const string ModuleFolder = "~/DesktopModules/Admin/HtmlEditorManager";
 
+        private readonly IApplicationStatusInfo applicationStatusInfo;
+
+        /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
+        public UpgradeController()
+            : this(new ApplicationStatusInfo(new Application()))
+        {
+        }
+
+        /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
+        /// <param name="applicationStatusInfo">The application status info.</param>
+        public UpgradeController(IApplicationStatusInfo applicationStatusInfo)
+        {
+            this.applicationStatusInfo = applicationStatusInfo;
+        }
+
         /// <summary>Called when a module is upgraded.</summary>
         /// <param name="version">The version.</param>
         /// <returns>Success if all goes well, otherwise, Failed.</returns>
@@ -37,22 +53,22 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                 {
                     case "07.04.00":
                         const string ResourceFile = ModuleFolder + "/App_LocalResources/ProviderConfiguration.ascx.resx";
-                        string pageName = Localization.GetString("HTMLEditorPageName", ResourceFile);
-                        string pageDescription = Localization.GetString("HTMLEditorPageDescription", ResourceFile);
+                        var pageName = Localization.GetString("HTMLEditorPageName", ResourceFile);
+                        var pageDescription = Localization.GetString("HTMLEditorPageDescription", ResourceFile);
 
                         // Create HTML Editor Config Page (or get existing one)
-                        TabInfo editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", false);
+                        var editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", false);
 
                         // Find the RadEditor control and remove it
                         Upgrade.RemoveModule("RadEditor Manager", editorPage.TabName, editorPage.ParentId, false);
 
                         // Add Module To Page
-                        int moduleDefId = this.GetModuleDefinitionID("DotNetNuke.HtmlEditorManager", "Html Editor Management");
+                        var moduleDefId = this.GetModuleDefinitionId("DotNetNuke.HtmlEditorManager", "Html Editor Management");
                         Upgrade.AddModuleToPage(editorPage, moduleDefId, pageName, ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", true);
 
                         foreach (var item in DesktopModuleController.GetDesktopModules(Null.NullInteger))
                         {
-                            DesktopModuleInfo moduleInfo = item.Value;
+                            var moduleInfo = item.Value;
 
                             if (moduleInfo.ModuleName == "DotNetNuke.HtmlEditorManager")
                             {
@@ -70,21 +86,21 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
                         if (this.TelerikAssemblyExists())
                         {
-                            UpdateWebConfigFile();
+                            this.UpdateWebConfigFile();
                         }
 
                         break;
                     case "09.02.00":
                         if (this.TelerikAssemblyExists())
                         {
-                            UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
+                            this.UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                         }
 
                         break;
                     case "09.02.01":
                         if (this.TelerikAssemblyExists())
                         {
-                            UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
+                            this.UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
                         }
 
                         break;
@@ -112,9 +128,9 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             var allowedDocExtensions = "doc|docx|xls|xlsx|ppt|pptx|pdf|txt".Split('|');
 
             var files = Directory.GetFiles(folder, mask);
-            foreach (var fname in files)
+            foreach (var fileName in files)
             {
-                if (fname.Contains(".Original.xml"))
+                if (fileName.Contains(".Original.xml"))
                 {
                     continue;
                 }
@@ -122,7 +138,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                 try
                 {
                     var doc = new XmlDocument { XmlResolver = null };
-                    doc.Load(fname);
+                    doc.Load(fileName);
                     var root = doc.DocumentElement;
                     var docFilters = root?.SelectNodes("/configuration/property[@name='DocumentsFilters']");
                     if (docFilters != null)
@@ -145,8 +161,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
                         if (changed)
                         {
-                            File.Copy(fname, fname + ".bak.resources", true);
-                            doc.Save(fname);
+                            File.Copy(fileName, fileName + ".bak.resources", true);
+                            doc.Save(fileName);
                         }
                     }
                 }
@@ -158,38 +174,38 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             }
         }
 
-        private static string UpdateWebConfigFile()
+        private string UpdateWebConfigFile()
         {
-            return UpdateTelerikEncryptionKey("Telerik.AsyncUpload.ConfigurationEncryptionKey");
+            return this.UpdateTelerikEncryptionKey("Telerik.AsyncUpload.ConfigurationEncryptionKey");
         }
 
-        private static string UpdateTelerikEncryptionKey(string keyName)
+        private string UpdateTelerikEncryptionKey(string keyName)
         {
-            const string defaultValue = "MDEyMzQ1Njc4OUFCQ0RFRjAxMjM0NTY3ODlBQkNERUYwMTIzNDU2Nzg5QUJDREVG";
+            const string DefaultValue = "MDEyMzQ1Njc4OUFCQ0RFRjAxMjM0NTY3ODlBQkNERUYwMTIzNDU2Nzg5QUJDREVG";
 
             var strError = string.Empty;
             var currentKey = Config.GetSetting(keyName);
-            if (string.IsNullOrEmpty(currentKey) || defaultValue.Equals(currentKey) || currentKey.Length < 40)
+            if (string.IsNullOrEmpty(currentKey) || DefaultValue.Equals(currentKey) || currentKey.Length < 40)
             {
                 try
                 {
                     // open the web.config
-                    var xmlConfig = Config.Load();
+                    var xmlConfig = Config.Load(this.applicationStatusInfo);
 
                     // save the current config file
-                    Config.BackupConfig();
+                    Config.BackupConfig(this.applicationStatusInfo);
 
                     // create a random Telerik encryption key and add it under <appSettings>
                     var newKey = PortalSecurity.Instance.CreateKey(32);
                     newKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(newKey));
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 
-                    // save a copy of the exitsing web.config
+                    // save a copy of the existing web.config
                     var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-                    strError += Config.Save(xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
+                    strError += Config.Save(this.applicationStatusInfo, xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
 
                     // save the web.config
-                    strError += Config.Save(xmlConfig) + Environment.NewLine;
+                    strError += Config.Save(this.applicationStatusInfo, xmlConfig) + Environment.NewLine;
                 }
                 catch (Exception ex)
                 {
@@ -204,17 +220,17 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         /// <param name="moduleName">Name of the module.</param>
         /// <param name="moduleDefinitionName">Name of the module definition.</param>
         /// <returns>The Module Id for the HTML Editor Management module.</returns>
-        private int GetModuleDefinitionID(string moduleName, string moduleDefinitionName)
+        private int GetModuleDefinitionId(string moduleName, string moduleDefinitionName)
         {
             // get desktop module
-            DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
             if (desktopModule == null)
             {
                 return -1;
             }
 
             // get module definition
-            ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByDefinitionName(
+            var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByDefinitionName(
                 moduleDefinitionName,
                 desktopModule.DesktopModuleID);
             if (moduleDefinition == null)

@@ -195,13 +195,13 @@ namespace DotNetNuke.Entities.Urls
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentSettings());
         }
 
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
+            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentSettings());
         }
 
         /// <inheritdoc/>
@@ -1396,9 +1396,8 @@ namespace DotNetNuke.Entities.Urls
 
         private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
-            Guid parentTraceId = Guid.Empty;
-            int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
-            bool cultureSpecificAlias;
+            var parentTraceId = Guid.Empty;
+            var portalId = portalSettings?.PortalId ?? tab.PortalID;
             var localSettings = new FriendlyUrlSettings(portalId);
 
             // Call GetFriendlyAlias to get the Alias part of the url
@@ -1407,13 +1406,13 @@ namespace DotNetNuke.Entities.Urls
                 portalAlias = portalSettingsAlias.HttpAlias;
             }
 
-            string friendlyPath = GetFriendlyAlias(
+            var friendlyPath = GetFriendlyAlias(
                 path,
                 ref portalAlias,
                 portalId,
                 localSettings,
                 portalSettings,
-                out cultureSpecificAlias);
+                out var cultureSpecificAlias);
 
             if (portalSettings != null)
             {
@@ -1422,7 +1421,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (tab == null && path == "~/" && string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                // this is a request for the site root for he dnn logo skin object (642)
+                // this is a request for the site root for the dnn logo skin object (642)
                 // do nothing, the friendly alias is already correct - we don't want to append 'default.aspx' on the end
             }
             else
@@ -1432,8 +1431,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (portalSettings == null)
                 {
-                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
-
+                    var alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
                     portalSettings = new PortalSettings(tab.TabID, alias);
                 }
 
@@ -1459,7 +1457,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
-                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
+                // If portal's "SSL URL" setting is defined: Use "SSL URL" instead of current portal alias
                 var sslUrl = portalSettings.SSLURL;
                 if (!string.IsNullOrEmpty(sslUrl))
                 {

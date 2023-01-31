@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.Seo.Services
     using Dnn.PersonaBar.Seo.Components;
     using Dnn.PersonaBar.Seo.Services.Dto;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -38,11 +39,12 @@ namespace Dnn.PersonaBar.Seo.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
         private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Seo/App_LocalResources/Seo.resx");
 
-        private readonly Components.SeoController controller = new Components.SeoController();
+        private readonly Components.SeoController controller;
 
-        public SeoController(INavigationManager navigationManager)
+        public SeoController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo)
         {
             this.NavigationManager = navigationManager;
+            this.controller = new Components.SeoController(applicationStatusInfo);
         }
 
         protected INavigationManager NavigationManager { get; }

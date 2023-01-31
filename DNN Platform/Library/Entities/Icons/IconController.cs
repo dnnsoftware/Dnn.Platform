@@ -6,11 +6,13 @@ namespace DotNetNuke.Entities.Icons
     using System;
     using System.IO;
     using System.Web.Hosting;
-
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>IconController provides all operation to icons.</summary>
     /// <remarks>
@@ -71,7 +73,7 @@ namespace DotNetNuke.Entities.Icons
 
             string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
 
-            // In debug mode, we want to warn (onluy once) if icon is not present on disk
+            // In debug mode, we want to warn (only once) if icon is not present on disk
 #if DEBUG
             CheckIconOnDisk(fileName);
 #endif
@@ -88,14 +90,21 @@ namespace DotNetNuke.Entities.Icons
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string[] GetIconSets()
         {
-            string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, "icons");
+            return GetIconSets(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        public static string[] GetIconSets(IApplicationStatusInfo appStatus)
+        {
+            var iconPhysicalPath = Path.Combine(appStatus.ApplicationMapPath, "icons");
             var iconRootDir = new DirectoryInfo(iconPhysicalPath);
-            string result = string.Empty;
+            var result = string.Empty;
             foreach (var iconDir in iconRootDir.EnumerateDirectories())
             {
-                string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
+                var testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
                 if (File.Exists(testFile))
                 {
                     result += iconDir.Name + ",";
@@ -120,7 +129,7 @@ namespace DotNetNuke.Entities.Icons
                 if (!IconsStatusOnDisk.ContainsKey(path))
                 {
                     IconsStatusOnDisk.Add(path, true);
-                    string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
+                    var iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
                         Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));

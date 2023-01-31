@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.UI.Skins;
@@ -1327,16 +1328,16 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
 
-                if (portalSettings == null || portalSettings.ActiveTab == null)
+                if (portalSettings == null || TabController.CurrentPage == null)
                 {
                     // without portal settings or active tab, we can't continue
                     return false;
                 }
 
                 // we don't want to load the portal smtp server when on a host tab.
-                if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
+                if (TabController.CurrentPage.PortalID == Null.NullInteger)
                 {
                     return false;
                 }

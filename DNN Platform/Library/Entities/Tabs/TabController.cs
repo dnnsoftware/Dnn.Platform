@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Tabs
     /// <summary>TabController provides all operation to tabinfo.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
-    /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
+    /// Tabs will be a sitemap for a portal, and every request at first need to check whether there is valid tab information
     /// include in the url, if not it will use default tab to display information.
     /// </remarks>
     public partial class TabController : ServiceLocator<ITabController, TabController>, ITabController
