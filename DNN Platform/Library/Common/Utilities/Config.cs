@@ -11,11 +11,15 @@ namespace DotNetNuke.Common.Utilities
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Config class provides access to the web.config file.</summary>
     public class Config
@@ -70,13 +74,13 @@ namespace DotNetNuke.Common.Utilities
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value, bool update)
         {
             // retrieve the appSettings node
-            XmlNode xmlAppSettings = xmlDoc.SelectSingleNode("//appSettings");
+            var xmlAppSettings = xmlDoc.SelectSingleNode("//appSettings");
             if (xmlAppSettings != null)
             {
                 XmlElement xmlElement;
 
                 // get the node based on key
-                XmlNode xmlNode = xmlAppSettings.SelectSingleNode("//add[@key='" + key + "']");
+                var xmlNode = xmlAppSettings.SelectSingleNode("//add[@key='" + key + "']");
                 if (update && xmlNode != null)
                 {
                     // update the existing element
@@ -109,20 +113,29 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Adds a code subdirectory to the configuration.</summary>
         /// <param name="name">The name of the code subdirectory.</param>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void AddCodeSubDirectory(string name)
         {
-            XmlDocument xmlConfig = Load();
-            XmlNode xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation");
-            if (xmlCompilation == null)
-            {
-                // Try location node
-                xmlCompilation = xmlConfig.SelectSingleNode("configuration/location/system.web/compilation");
-            }
+            AddCodeSubDirectory(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                name);
+        }
+
+        /// <summary>Adds a code subdirectory to the configuration.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="name">The name of the code subdirectory.</param>
+        public static void AddCodeSubDirectory(IApplicationStatusInfo appStatus, string name)
+        {
+            var xmlConfig = Load(appStatus);
+
+            // Try location node
+            var xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation") ??
+                                 xmlConfig.SelectSingleNode("configuration/location/system.web/compilation");
 
             // Get the CodeSubDirectories Node
             if (xmlCompilation != null)
             {
-                XmlNode xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
+                var xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
                 if (xmlSubDirectories == null)
                 {
                     // Add Node
@@ -138,7 +151,7 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 // Check if the node is already present
-                XmlNode xmlSubDirectory = xmlSubDirectories.SelectSingleNode("add[@directoryName='" + codeSubDirectoryName + "']");
+                var xmlSubDirectory = xmlSubDirectories.SelectSingleNode($"add[@directoryName='{codeSubDirectoryName}']");
                 if (xmlSubDirectory == null)
                 {
                     // Add Node
@@ -148,25 +161,36 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
 
-            Save(xmlConfig);
+            Save(appStatus, xmlConfig);
         }
 
         /// <summary>Creates a backup of the web.config file.</summary>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void BackupConfig()
         {
-            string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+            BackupConfig(Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Creates a backup of the web.config file.</summary>
+        /// <param name="statusInfo">The application status info.</param>
+        public static void BackupConfig(IApplicationStatusInfo statusInfo)
+        {
+            var backupFolder = $"{Globals.glbConfigFolder}Backup_{DateTime.Now:yyyyMMddHHmm}\\";
+            var backupFolderPath = Path.Combine(statusInfo.ApplicationMapPath, backupFolder);
+            var webConfigPath = Path.Combine(statusInfo.ApplicationMapPath, "web.config");
+            var backupWebConfigPath = Path.Combine(backupFolderPath, "web_old.config");
 
             // save the current config files
             try
             {
-                if (!Directory.Exists(Globals.ApplicationMapPath + backupFolder))
+                if (!Directory.Exists(backupFolderPath))
                 {
-                    Directory.CreateDirectory(Globals.ApplicationMapPath + backupFolder);
+                    Directory.CreateDirectory(backupFolderPath);
                 }
 
-                if (File.Exists(Globals.ApplicationMapPath + "\\web.config"))
+                if (File.Exists(webConfigPath))
                 {
-                    File.Copy(Globals.ApplicationMapPath + "\\web.config", Globals.ApplicationMapPath + backupFolder + "web_old.config", true);
+                    File.Copy(webConfigPath, backupWebConfigPath, true);
                 }
             }
             catch (Exception e)
@@ -187,12 +211,12 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The connection String.</returns>
         public static string GetConnectionString(string name)
         {
-            string connectionString = string.Empty;
+            var connectionString = string.Empty;
 
-            // First check if connection string is specified in <connectionstrings> (ASP.NET 2.0 / DNN v4.x)
+            // First check if connection string is specified in <connectionStrings> (ASP.NET 2.0 / DNN v4.x)
             if (!string.IsNullOrEmpty(name))
             {
-                // ASP.NET 2 version connection string (in <connectionstrings>)
+                // ASP.NET 2 version connection string (in <connectionStrings>)
                 // This will be for new v4.x installs or upgrades from v4.x
                 connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[name].ConnectionString;
             }
@@ -201,7 +225,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (!string.IsNullOrEmpty(name))
                 {
-                    // Next check if connection string is specified in <appsettings> (ASP.NET 1.1 / DNN v3.x)
+                    // Next check if connection string is specified in <appSettings> (ASP.NET 1.1 / DNN v3.x)
                     // This will accomodate upgrades from v3.x
                     connectionString = GetSetting(name);
                 }
@@ -210,16 +234,16 @@ namespace DotNetNuke.Common.Utilities
             return connectionString;
         }
 
-        /// <summary>  Returns the decryptionkey from webconfig machinekey.</summary>
+        /// <summary>Returns the decryptionKey from web.config machineKey.</summary>
         /// <returns>decryption key.</returns>
         public static string GetDecryptionkey()
         {
-            MachineKeySection key = System.Configuration.ConfigurationManager.GetSection("system.web/machineKey") as MachineKeySection;
+            var key = System.Configuration.ConfigurationManager.GetSection("system.web/machineKey") as MachineKeySection;
             return key?.DecryptionKey.ToString() ?? string.Empty;
         }
 
-        /// <summary>  Returns the fcnMode from webconfig httpRuntime.</summary>
-        /// <returns>decryption key.</returns>
+        /// <summary>Returns the fcnMode from web.config httpRuntime.</summary>
+        /// <returns>FCN mode.</returns>
         public static string GetFcnMode()
         {
             var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
@@ -227,11 +251,21 @@ namespace DotNetNuke.Common.Utilities
             return ((ValueType)mode ?? FcnMode.NotSet).ToString();
         }
 
-        /// <summary>  Returns the maximum file size allowed to be uploaded to the application in bytes.</summary>
+        /// <summary>Returns the maximum file size allowed to be uploaded to the application in bytes.</summary>
         /// <returns>Size in bytes.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static long GetMaxUploadSize()
         {
-            var configNav = Load();
+            return GetMaxUploadSize(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Returns the maximum file size allowed to be uploaded to the application in bytes.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>Size in bytes.</returns>
+        public static long GetMaxUploadSize(IApplicationStatusInfo appStatus)
+        {
+            var configNav = Load(appStatus);
 
             var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
                            configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
@@ -259,17 +293,27 @@ namespace DotNetNuke.Common.Utilities
             return maxRequestLength;
         }
 
-        /// <summary>  Returns the maximum file size allowed to be uploaded based on the request filter limit.</summary>
+        /// <summary>Returns the maximum file size allowed to be uploaded based on the request filter limit.</summary>
         /// <returns>Size in megabytes.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static long GetRequestFilterSize()
         {
-            var configNav = Load();
-            const int defaultRequestFilter = 30000000 / 1024 / 1024;
+            return GetRequestFilterSize(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Returns the maximum file size allowed to be uploaded based on the request filter limit.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>Size in megabytes.</returns>
+        public static long GetRequestFilterSize(IApplicationStatusInfo appStatus)
+        {
+            var configNav = Load(appStatus);
+            const int DefaultRequestFilter = 30000000 / 1024 / 1024;
             var httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
                        configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
             if (httpNode == null && Iis7AndAbove())
             {
-                return defaultRequestFilter;
+                return DefaultRequestFilter;
             }
 
             if (httpNode != null)
@@ -278,19 +322,30 @@ namespace DotNetNuke.Common.Utilities
                 return maxAllowedContentLength / 1024 / 1024;
             }
 
-            return defaultRequestFilter;
+            return DefaultRequestFilter;
         }
 
-        /// <summary>  Sets the maximum file size allowed to be uploaded to the application in bytes.</summary>
+        /// <summary>Sets the maximum file size allowed to be uploaded to the application in bytes.</summary>
         /// <param name="newSize">The new max upload size in bytes.</param>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void SetMaxUploadSize(long newSize)
+        {
+            SetMaxUploadSize(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                newSize);
+        }
+
+        /// <summary>Sets the maximum file size allowed to be uploaded to the application in bytes.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="newSize">The new max upload size in bytes.</param>
+        public static void SetMaxUploadSize(IApplicationStatusInfo appStatus, long newSize)
         {
             if (newSize < 12582912)
             {
                 newSize = 12582912;
             } // 12 Mb minimum
 
-            var configNav = Load();
+            var configNav = Load(appStatus);
 
             var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
                             configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
@@ -312,7 +367,7 @@ namespace DotNetNuke.Common.Utilities
                 httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
             }
 
-            Save(configNav);
+            Save(appStatus, configNav);
         }
 
         /// <summary>Gets the specified upgrade connection string.</summary>
@@ -326,7 +381,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The database owner.</returns>
         public static string GetDataBaseOwner()
         {
-            string databaseOwner = GetDefaultProvider("data").Attributes["databaseOwner"];
+            var databaseOwner = GetDefaultProvider("data").Attributes["databaseOwner"];
             if (!string.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
             {
                 databaseOwner += ".";
@@ -340,7 +395,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The default provider, <see cref="Provider"/>.</returns>
         public static Provider GetDefaultProvider(string type)
         {
-            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
+            var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
 
             // Read the configuration specific information for this provider
             return (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
@@ -351,12 +406,12 @@ namespace DotNetNuke.Common.Utilities
         public static string GetFriendlyUrlProvider()
         {
             string providerToUse;
-            ProviderConfiguration fupConfig = ProviderConfiguration.GetProviderConfiguration("friendlyUrl");
+            var fupConfig = ProviderConfiguration.GetProviderConfiguration("friendlyUrl");
             if (fupConfig != null)
             {
-                string defaultFriendlyUrlProvider = fupConfig.DefaultProvider;
+                var defaultFriendlyUrlProvider = fupConfig.DefaultProvider;
                 var provider = (Provider)fupConfig.Providers[defaultFriendlyUrlProvider];
-                string urlFormat = provider.Attributes["urlFormat"];
+                var urlFormat = provider.Attributes["urlFormat"];
                 if (string.IsNullOrEmpty(urlFormat) == false)
                 {
                     switch (urlFormat.ToLowerInvariant())
@@ -387,8 +442,8 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The object qualifier.</returns>
         public static string GetObjectQualifer()
         {
-            Provider provider = GetDefaultProvider("data");
-            string objectQualifier = provider.Attributes["objectQualifier"];
+            var provider = GetDefaultProvider("data");
+            var objectQualifier = provider.Attributes["objectQualifier"];
             if (!string.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
             {
                 objectQualifier += "_";
@@ -399,12 +454,22 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Gets the authentication cookie timeout value.</summary>
         /// <returns>The timeout value.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static int GetAuthCookieTimeout()
         {
-            XPathNavigator configNav = Load().CreateNavigator();
+            return GetAuthCookieTimeout(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Gets the authentication cookie timeout value.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>The timeout value.</returns>
+        public static int GetAuthCookieTimeout(IApplicationStatusInfo appStatus)
+        {
+            var configNav = Load(appStatus).CreateNavigator();
 
             // Select the location node
-            XPathNavigator locationNav = configNav.SelectSingleNode("configuration/location");
+            var locationNav = configNav.SelectSingleNode("configuration/location");
             XPathNavigator formsNav;
 
             // Test for the existence of the location node if it exists then include that in the nodes of the XPath Query
@@ -417,23 +482,32 @@ namespace DotNetNuke.Common.Utilities
                 formsNav = configNav.SelectSingleNode("configuration/location/system.web/authentication/forms");
             }
 
-            return (formsNav != null) ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30;
+            return formsNav != null ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30;
         }
 
-        /// <summary>Get's optional persistent cookie timeout value from web.config.</summary>
+        /// <summary>Gets optional persistent cookie timeout value from web.config.</summary>
         /// <returns>The persistent cookie value.</returns>
-        /// <remarks>
-        /// Allows users to override default asp.net values.
-        /// </remarks>
+        /// <remarks>Allows users to override default asp.net values.</remarks>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static int GetPersistentCookieTimeout()
         {
-            int persistentCookieTimeout = 0;
+            return GetPersistentCookieTimeout(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Gets optional persistent cookie timeout value from web.config.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>The persistent cookie value.</returns>
+        /// <remarks>Allows users to override default asp.net values.</remarks>
+        public static int GetPersistentCookieTimeout(IApplicationStatusInfo appStatus)
+        {
+            var persistentCookieTimeout = 0;
             if (!string.IsNullOrEmpty(GetSetting("PersistentCookieTimeout")))
             {
                 persistentCookieTimeout = int.Parse(GetSetting("PersistentCookieTimeout"));
             }
 
-            return (persistentCookieTimeout == 0) ? GetAuthCookieTimeout() : persistentCookieTimeout;
+            return persistentCookieTimeout == 0 ? GetAuthCookieTimeout(appStatus) : persistentCookieTimeout;
         }
 
         /// <summary>Gets a provider by its type and name.</summary>
@@ -442,7 +516,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The found provider, <see cref="Provider"/>.</returns>
         public static Provider GetProvider(string type, string name)
         {
-            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
+            var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
 
             // Read the configuration specific information for this provider
             return (Provider)providerConfiguration.Providers[name];
@@ -452,9 +526,8 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The provider path.</returns>
         public static string GetProviderPath(string type)
         {
-            Provider objProvider = GetDefaultProvider(type);
-            string providerPath = objProvider.Attributes["providerPath"];
-            return providerPath;
+            var objProvider = GetDefaultProvider(type);
+            return objProvider.Attributes["providerPath"];
         }
 
         /// <summary>Gets an application setting.</summary>
@@ -474,7 +547,16 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Loads the web.config file into an XML document.</summary>
+        /// <param name="appStatus">The application status info.</param>
         /// <returns>The configuration XML document.</returns>
+        public static XmlDocument Load(IApplicationStatusInfo appStatus)
+        {
+            return Load(appStatus, "web.config");
+        }
+
+        /// <summary>Loads the web.config file into an XML document.</summary>
+        /// <returns>The configuration XML document.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static XmlDocument Load()
         {
             return Load("web.config");
@@ -482,36 +564,64 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Gets the currently configured custom error mode.</summary>
         /// <returns>The currently configured custom error mode string.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string GetCustomErrorMode()
         {
-            XPathNavigator configNav = Load().CreateNavigator();
+            return GetCustomErrorMode(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Gets the currently configured custom error mode.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>The currently configured custom error mode string.</returns>
+        public static string GetCustomErrorMode(IApplicationStatusInfo appStatus)
+        {
+            var configNav = Load(appStatus).CreateNavigator();
 
             // Select the location node
             var customErrorsNav = configNav.SelectSingleNode("//configuration/system.web/customErrors|//configuration/location/system.web/customErrors");
 
-            string customErrorMode = XmlUtils.GetAttributeValue(customErrorsNav, "mode");
+            var customErrorMode = XmlUtils.GetAttributeValue(customErrorsNav, "mode");
             if (string.IsNullOrEmpty(customErrorMode))
             {
                 customErrorMode = "RemoteOnly";
             }
 
-            return (customErrorsNav != null) ? customErrorMode : "RemoteOnly";
+            return customErrorsNav != null ? customErrorMode : "RemoteOnly";
         }
 
         /// <summary>Loads a configuration file as an XML document.</summary>
         /// <param name="filename">The configuration file name.</param>
-        /// <returns>The configuraiton as an XML document.</returns>
+        /// <returns>The configuration as an XML document.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static XmlDocument Load(string filename)
+        {
+            return Load(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                filename);
+        }
+
+        /// <summary>Loads a configuration file as an XML document.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="filename">The configuration file name.</param>
+        /// <returns>The configuration as an XML document.</returns>
+        public static XmlDocument Load(IApplicationStatusInfo appStatus, string filename)
         {
             // open the config file
             var xmlDoc = new XmlDocument { XmlResolver = null };
-            xmlDoc.Load(Globals.ApplicationMapPath + "\\" + filename);
+            var configPath = Path.GetFullPath(Path.Combine(appStatus.ApplicationMapPath, filename));
+            if (!configPath.StartsWith(appStatus.ApplicationMapPath, StringComparison.Ordinal))
+            {
+                throw new SecurityException($"Unable to load config for \"{filename}\"");
+            }
+
+            xmlDoc.Load(configPath);
 
             // test for namespace added by Web Admin Tool
             if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
             {
                 // remove namespace
-                string strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", string.Empty);
+                var strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", string.Empty);
                 xmlDoc.LoadXml(strDoc);
             }
 
@@ -520,12 +630,23 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Removes a code subdirectory for the web.config file.</summary>
         /// <param name="name">The name of the code subdirectory.</param>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void RemoveCodeSubDirectory(string name)
         {
-            XmlDocument xmlConfig = Load();
+            RemoveCodeSubDirectory(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                name);
+        }
+
+        /// <summary>Removes a code subdirectory for the web.config file.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="name">The name of the code subdirectory.</param>
+        public static void RemoveCodeSubDirectory(IApplicationStatusInfo appStatus, string name)
+        {
+            var xmlConfig = Load(appStatus);
 
             // Select the location node
-            XmlNode xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation");
+            var xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation");
             if (xmlCompilation == null)
             {
                 // Try location node
@@ -533,7 +654,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Get the CodeSubDirectories Node
-            XmlNode xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
+            var xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
             if (xmlSubDirectories == null)
             {
                 // Parent doesn't exist so subDirectory node can't exist
@@ -548,19 +669,29 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Check if the node is present
-            XmlNode xmlSubDirectory = xmlSubDirectories.SelectSingleNode("add[@directoryName='" + codeSubDirectoryName + "']");
+            var xmlSubDirectory = xmlSubDirectories.SelectSingleNode($"add[@directoryName='{codeSubDirectoryName}']");
             if (xmlSubDirectory != null)
             {
                 // Remove Node
                 xmlSubDirectories.RemoveChild(xmlSubDirectory);
 
-                Save(xmlConfig);
+                Save(appStatus, xmlConfig);
             }
         }
 
         /// <summary>Save the web.config file.</summary>
-        /// <param name="xmlDoc">The configuraiton as an XML document.</param>
-        /// <returns>An emptry string upon success or the error message upon failure.</returns>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="xmlDoc">The configuration as an XML document.</param>
+        /// <returns>An empty string upon success or the error message upon failure.</returns>
+        public static string Save(IApplicationStatusInfo appStatus, XmlDocument xmlDoc)
+        {
+            return Save(appStatus, xmlDoc, "web.config");
+        }
+
+        /// <summary>Save the web.config file.</summary>
+        /// <param name="xmlDoc">The configuration as an XML document.</param>
+        /// <returns>An empty string upon success or the error message upon failure.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string Save(XmlDocument xmlDoc)
         {
             return Save(xmlDoc, "web.config");
@@ -569,13 +700,27 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Save an XML document to the application root folder.</summary>
         /// <param name="xmlDoc">The configuration as an XML document.</param>
         /// <param name="filename">The file name to save to.</param>
-        /// <returns>An emptry string upon success or the error message upon failure.</returns>
+        /// <returns>An empty string upon success or the error message upon failure.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string Save(XmlDocument xmlDoc, string filename)
+        {
+            return Save(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                xmlDoc,
+                filename);
+        }
+
+        /// <summary>Save an XML document to the application root folder.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="xmlDoc">The configuration as an XML document.</param>
+        /// <param name="filename">The file name to save to.</param>
+        /// <returns>An empty string upon success or the error message upon failure.</returns>
+        public static string Save(IApplicationStatusInfo appStatus, XmlDocument xmlDoc, string filename)
         {
             var retMsg = string.Empty;
             try
             {
-                var strFilePath = Globals.ApplicationMapPath + "\\" + filename;
+                var strFilePath = appStatus.ApplicationMapPath + "\\" + filename;
                 var objFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
@@ -588,9 +733,9 @@ namespace DotNetNuke.Common.Utilities
 
                 // Attempt a few times in case the file was locked; occurs during modules' installation due
                 // to application restarts where IIS can overlap old application shutdown and new one start.
-                const int maxRetires = 4;
-                const double miltiplier = 2.5;
-                for (var retry = maxRetires; retry >= 0; retry--)
+                const int MaxRetries = 4;
+                const double Multiplier = 2.5;
+                for (var retry = MaxRetries; retry >= 0; retry--)
                 {
                     try
                     {
@@ -614,7 +759,7 @@ namespace DotNetNuke.Common.Utilities
                         }
 
                         // try incremental delay; maybe the file lock is released by then
-                        Thread.Sleep((int)(miltiplier * (maxRetires - retry + 1)) * 1000);
+                        Thread.Sleep((int)(Multiplier * (MaxRetries - retry + 1)) * 1000);
                     }
                 }
 
@@ -633,12 +778,23 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Touches the web.config file to force the application to reload.</summary>
         /// <returns>A value indicating whether the operation succeeded.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static bool Touch()
         {
+            return Touch(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Touches the web.config file to force the application to reload.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>A value indicating whether the operation succeeded.</returns>
+        public static bool Touch(IApplicationStatusInfo appStatus)
+        {
+            var configPath = Path.Combine(appStatus.ApplicationMapPath, "web.config");
             try
             {
                 RetryableAction.Retry5TimesWith2SecondsDelay(
-                    () => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
+                    () => File.SetLastWriteTime(configPath, DateTime.Now), "Touching config file");
                 return true;
             }
             catch (Exception exc)
@@ -650,69 +806,118 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Updates the database connection string.</summary>
         /// <param name="conn">The connection string value.</param>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void UpdateConnectionString(string conn)
         {
-            XmlDocument xmlConfig = Load();
-            string name = GetDefaultProvider("data").Attributes["connectionStringName"];
+            UpdateConnectionString(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                conn);
+        }
+
+        /// <summary>Updates the database connection string.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="conn">The connection string value.</param>
+        public static void UpdateConnectionString(IApplicationStatusInfo appStatus, string conn)
+        {
+            var xmlConfig = Load(appStatus);
+            var name = GetDefaultProvider("data").Attributes["connectionStringName"];
 
             // Update ConnectionStrings
-            XmlNode xmlConnection = xmlConfig.SelectSingleNode("configuration/connectionStrings/add[@name='" + name + "']");
+            var xmlConnection = xmlConfig.SelectSingleNode("configuration/connectionStrings/add[@name='" + name + "']");
             XmlUtils.UpdateAttribute(xmlConnection, "connectionString", conn);
 
             // Update AppSetting
-            XmlNode xmlAppSetting = xmlConfig.SelectSingleNode("configuration/appSettings/add[@key='" + name + "']");
+            var xmlAppSetting = xmlConfig.SelectSingleNode("configuration/appSettings/add[@key='" + name + "']");
             XmlUtils.UpdateAttribute(xmlAppSetting, "value", conn);
 
             // Save changes
-            Save(xmlConfig);
+            Save(appStatus, xmlConfig);
         }
 
         /// <summary>Updates the data provider configuration.</summary>
         /// <param name="name">The data provider name.</param>
         /// <param name="databaseOwner">The database owner, usually dbo.</param>
         /// <param name="objectQualifier">The object qualifier if multiple Dnn instance run under the same database (not recommended).</param>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void UpdateDataProvider(string name, string databaseOwner, string objectQualifier)
         {
-            XmlDocument xmlConfig = Load();
+            UpdateDataProvider(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                name,
+                databaseOwner,
+                objectQualifier);
+        }
+
+        /// <summary>Updates the data provider configuration.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="name">The data provider name.</param>
+        /// <param name="databaseOwner">The database owner, usually dbo.</param>
+        /// <param name="objectQualifier">The object qualifier if multiple Dnn instance run under the same database (not recommended).</param>
+        public static void UpdateDataProvider(IApplicationStatusInfo appStatus, string name, string databaseOwner, string objectQualifier)
+        {
+            var xmlConfig = Load(appStatus);
 
             // Update provider
-            XmlNode xmlProvider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/data/providers/add[@name='" + name + "']");
+            var xmlProvider = xmlConfig.SelectSingleNode($"configuration/dotnetnuke/data/providers/add[@name='{name}']");
             XmlUtils.UpdateAttribute(xmlProvider, "databaseOwner", databaseOwner);
             XmlUtils.UpdateAttribute(xmlProvider, "objectQualifier", objectQualifier);
 
             // Save changes
-            Save(xmlConfig);
+            Save(appStatus, xmlConfig);
         }
 
         /// <summary>Updates the specified upgrade connection string.</summary>
         /// <param name="name">The connection string name.</param>
         /// <param name="upgradeConnectionString">The new value for the connection string.</param>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static void UpdateUpgradeConnectionString(string name, string upgradeConnectionString)
         {
-            XmlDocument xmlConfig = Load();
+            UpdateUpgradeConnectionString(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                name,
+                upgradeConnectionString);
+        }
+
+        /// <summary>Updates the specified upgrade connection string.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="name">The connection string name.</param>
+        /// <param name="upgradeConnectionString">The new value for the connection string.</param>
+        public static void UpdateUpgradeConnectionString(IApplicationStatusInfo appStatus, string name, string upgradeConnectionString)
+        {
+            var xmlConfig = Load(appStatus);
 
             // Update provider
-            XmlNode xmlProvider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/data/providers/add[@name='" + name + "']");
+            var xmlProvider = xmlConfig.SelectSingleNode($"configuration/dotnetnuke/data/providers/add[@name='{name}']");
             XmlUtils.UpdateAttribute(xmlProvider, "upgradeConnectionString", upgradeConnectionString);
 
             // Save changes
-            Save(xmlConfig);
+            Save(appStatus, xmlConfig);
         }
 
         /// <summary>Updates the unique machine key. Warning: Do not change this after installation unless you know what your are doing.</summary>
         /// <returns>An empty string upon success or an error message upon failure.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string UpdateMachineKey()
         {
-            string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+            return UpdateMachineKey(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Updates the unique machine key. Warning: Do not change this after installation unless you know what your are doing.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>An empty string upon success or an error message upon failure.</returns>
+        public static string UpdateMachineKey(IApplicationStatusInfo appStatus)
+        {
+            var backupFolder = $"{Globals.glbConfigFolder}Backup_{DateTime.Now:yyyyMMddHHmm}\\";
             var xmlConfig = new XmlDocument { XmlResolver = null };
-            string strError = string.Empty;
+            var strError = string.Empty;
 
             // save the current config files
-            BackupConfig();
+            BackupConfig(appStatus);
             try
             {
                 // open the web.config
-                xmlConfig = Load();
+                xmlConfig = Load(appStatus);
 
                 // create random keys for the Membership machine keys
                 xmlConfig = UpdateMachineKey(xmlConfig);
@@ -724,10 +929,10 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // save a copy of the web.config
-            strError += Save(xmlConfig, backupFolder + "web_.config");
+            strError += Save(appStatus, xmlConfig, backupFolder + "web_.config");
 
             // save the web.config
-            strError += Save(xmlConfig);
+            strError += Save(appStatus, xmlConfig);
 
             return strError;
         }
@@ -738,32 +943,40 @@ namespace DotNetNuke.Common.Utilities
         public static XmlDocument UpdateMachineKey(XmlDocument xmlConfig)
         {
             var portalSecurity = PortalSecurity.Instance;
-            string validationKey = portalSecurity.CreateKey(20);
-            string decryptionKey = portalSecurity.CreateKey(24);
+            var validationKey = portalSecurity.CreateKey(20);
+            var decryptionKey = portalSecurity.CreateKey(24);
 
-            XmlNode xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
+            var xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
             XmlUtils.UpdateAttribute(xmlMachineKey, "validationKey", validationKey);
             XmlUtils.UpdateAttribute(xmlMachineKey, "decryptionKey", decryptionKey);
 
-            xmlConfig = AddAppSetting(xmlConfig, "InstallationDate", DateTime.Today.ToString("d", new CultureInfo("en-US")));
-
-            return xmlConfig;
+            return AddAppSetting(xmlConfig, "InstallationDate", DateTime.Today.ToString("d", new CultureInfo("en-US")));
         }
 
-        /// <summary>Updates the validation key. WARNING: Do not call this APi unless you now what you are doing.</summary>
+        /// <summary>Updates the validation key. WARNING: Do not call this API unless you now what you are doing.</summary>
         /// <returns>An empty string upon success or an error message upon failure.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string UpdateValidationKey()
         {
-            string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+            return UpdateValidationKey(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        /// <summary>Updates the validation key. WARNING: Do not call this API unless you now what you are doing.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <returns>An empty string upon success or an error message upon failure.</returns>
+        public static string UpdateValidationKey(IApplicationStatusInfo appStatus)
+        {
+            var backupFolder = $"{Globals.glbConfigFolder}Backup_{DateTime.Now:yyyyMMddHHmm}\\";
             var xmlConfig = new XmlDocument { XmlResolver = null };
-            string strError = string.Empty;
+            var strError = string.Empty;
 
             // save the current config files
-            BackupConfig();
+            BackupConfig(appStatus);
             try
             {
                 // open the web.config
-                xmlConfig = Load();
+                xmlConfig = Load(appStatus);
 
                 // create random keys for the Membership machine keys
                 xmlConfig = UpdateValidationKey(xmlConfig);
@@ -775,10 +988,10 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // save a copy of the web.config
-            strError += Save(xmlConfig, backupFolder + "web_.config");
+            strError += Save(appStatus, xmlConfig, backupFolder + "web_.config");
 
             // save the web.config
-            strError += Save(xmlConfig);
+            strError += Save(appStatus, xmlConfig);
             return strError;
         }
 
@@ -787,44 +1000,66 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The newly modified XML configuration document.</returns>
         public static XmlDocument UpdateValidationKey(XmlDocument xmlConfig)
         {
-            XmlNode xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
+            var xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
             if (xmlMachineKey.Attributes["validationKey"].Value == "F9D1A2D3E1D3E2F7B3D9F90FF3965ABDAC304902")
             {
                 var objSecurity = PortalSecurity.Instance;
-                string validationKey = objSecurity.CreateKey(20);
+                var validationKey = objSecurity.CreateKey(20);
                 XmlUtils.UpdateAttribute(xmlMachineKey, "validationKey", validationKey);
             }
 
             return xmlConfig;
         }
 
-        /// <summary>Gets the path for the specificed Config file.</summary>
+        /// <summary>Gets the path for the specified Config file.</summary>
         /// <param name="file">The config.file to get the path for.</param>
         /// <returns>fully qualified path to the file.</returns>
-        /// <remarks>
-        /// Will copy the file from the template directory as requried.
-        /// </remarks>
+        /// <remarks>Will copy the file from the template directory as required.</remarks>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string GetPathToFile(ConfigFileType file)
         {
             return GetPathToFile(file, false);
         }
 
-        /// <summary>  Gets the path for the specificed Config file.</summary>
+        /// <summary>Gets the path for the specified Config file.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="file">The config.file to get the path for.</param>
+        /// <returns>fully qualified path to the file.</returns>
+        /// <remarks>Will copy the file from the template directory as required.</remarks>
+        public static string GetPathToFile(IApplicationStatusInfo appStatus, ConfigFileType file)
+        {
+            return GetPathToFile(appStatus, file, false);
+        }
+
+        /// <summary>Gets the path for the specified Config file.</summary>
         /// <param name="file">The config.file to get the path for.</param>
         /// <param name="overwrite">force an overwrite of the config file.</param>
         /// <returns>fully qualified path to the file.</returns>
-        /// <remarks>
-        ///   Will copy the file from the template directory as requried.
-        /// </remarks>
+        /// <remarks>Will copy the file from the template directory as required.</remarks>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string GetPathToFile(ConfigFileType file, bool overwrite)
         {
-            string fileName = EnumToFileName(file);
-            string path = Path.Combine(Globals.ApplicationMapPath, fileName);
+            return GetPathToFile(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                file,
+                overwrite);
+        }
+
+        /// <summary>Gets the path for the specified Config file.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="file">The config.file to get the path for.</param>
+        /// <param name="overwrite">force an overwrite of the config file.</param>
+        /// <returns>fully qualified path to the file.</returns>
+        /// <remarks>Will copy the file from the template directory as required.</remarks>
+        public static string GetPathToFile(IApplicationStatusInfo appStatus, ConfigFileType file, bool overwrite)
+        {
+            var fileName = EnumToFileName(file);
+            var path = Path.Combine(appStatus.ApplicationMapPath, fileName);
 
             if (!File.Exists(path) || overwrite)
             {
                 // Copy from \Config
-                string pathToDefault = Path.Combine(Globals.ApplicationMapPath + Globals.glbConfigFolder, fileName);
+                var pathToDefault = Path.Combine(appStatus.ApplicationMapPath, Globals.glbConfigFolder, fileName);
                 if (File.Exists(pathToDefault))
                 {
                     File.Copy(pathToDefault, path, true);
@@ -837,23 +1072,35 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>UpdateInstallVersion, but only if the setting does not already exist.</summary>
         /// <param name="version">The version to update to.</param>
         /// <returns>An empty string upon success or an error message upon failure.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string UpdateInstallVersion(Version version)
         {
-            string strError = string.Empty;
+            return UpdateInstallVersion(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                version);
+        }
+
+        /// <summary>UpdateInstallVersion, but only if the setting does not already exist.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="version">The version to update to.</param>
+        /// <returns>An empty string upon success or an error message upon failure.</returns>
+        public static string UpdateInstallVersion(IApplicationStatusInfo appStatus, Version version)
+        {
+            var strError = string.Empty;
 
             var installVersion = GetSetting("InstallVersion");
             if (string.IsNullOrEmpty(installVersion))
             {
                 // we need to add the InstallVersion
-                string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+                var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                 var xmlConfig = new XmlDocument { XmlResolver = null };
 
                 // save the current config files
-                BackupConfig();
+                BackupConfig(appStatus);
                 try
                 {
                     // open the web.config
-                    xmlConfig = Load();
+                    xmlConfig = Load(appStatus);
 
                     // Update the InstallVersion
                     xmlConfig = UpdateInstallVersion(xmlConfig, version);
@@ -865,10 +1112,10 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 // save a copy of the web.config
-                strError += Save(xmlConfig, backupFolder + "web_.config");
+                strError += Save(appStatus, xmlConfig, backupFolder + "web_.config");
 
                 // save the web.config
-                strError += Save(xmlConfig);
+                strError += Save(appStatus, xmlConfig);
             }
 
             return strError;
@@ -883,9 +1130,21 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Adds the File Change Notification (FCN) mode to the web.config if it does not yet exist.</summary>
-        /// <param name="fcnMode">The file change notificaiton (FNC) mode.</param>
+        /// <param name="fcnMode">The file change notification (FNC) mode.</param>
         /// <returns>Always an empty string.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string AddFCNMode(FcnMode fcnMode)
+        {
+            return AddFCNMode(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                fcnMode);
+        }
+
+        /// <summary>Adds the File Change Notification (FCN) mode to the web.config if it does not yet exist.</summary>
+        /// <param name="appStatus">The application status info.</param>
+        /// <param name="fcnMode">The file change notification (FNC) mode.</param>
+        /// <returns>Always an empty string.</returns>
+        public static string AddFCNMode(IApplicationStatusInfo appStatus, FcnMode fcnMode)
         {
             try
             {
@@ -893,14 +1152,14 @@ namespace DotNetNuke.Common.Utilities
                 if (IsNet45OrNewer() && GetFcnMode() != fcnMode.ToString())
                 {
                     // open the web.config
-                    var xmlConfig = Load();
+                    var xmlConfig = Load(appStatus);
 
-                    var xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
+                    var xmlHttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
                                                 xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
-                    XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
+                    XmlUtils.CreateAttribute(xmlConfig, xmlHttpRunTimeKey, "fcnMode", fcnMode.ToString());
 
                     // save the web.config
-                    Save(xmlConfig);
+                    Save(appStatus, xmlConfig);
                 }
             }
             catch (Exception ex)

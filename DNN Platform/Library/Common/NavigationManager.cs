@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common
 {
     using System.Linq;
@@ -15,6 +14,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>The default <see cref="INavigationManager"/> implementation.</summary>
     internal class NavigationManager : INavigationManager
     {
         private readonly IPortalController portalController;
@@ -30,8 +30,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL()
         {
-            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(portalSettings.ActiveTab.TabID, Null.NullString);
+            return this.NavigateURL(TabController.CurrentPage.TabID, Null.NullString);
         }
 
         /// <summary>Gets the URL to the given page.</summary>
@@ -48,8 +47,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            IPortalSettings portalSettings = this.portalController.GetCurrentSettings();
-            string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, portalSettings);
+            var portalSettings = this.portalController.GetCurrentSettings();
+            var cultureCode = Globals.GetCultureCode(tabID, isSuperTab, portalSettings);
             return this.NavigateURL(tabID, isSuperTab, portalSettings, Null.NullString, cultureCode);
         }
 
@@ -62,11 +61,8 @@ namespace DotNetNuke.Common
             {
                 return Globals.AccessDeniedURL();
             }
-            else
-            {
-                PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
-                return this.NavigateURL(portalSettings.ActiveTab.TabID, controlKey);
-            }
+
+            return this.NavigateURL(TabController.CurrentPage.TabID, controlKey);
         }
 
         /// <summary>Gets the URL to show the control associated with the given control key.</summary>
@@ -75,8 +71,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
+            return this.NavigateURL(TabController.CurrentPage?.TabID ?? -1, controlKey, additionalParameters);
         }
 
         /// <summary>Gets the URL to show the control associated with the given control key on the given page.</summary>
@@ -85,8 +80,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, string controlKey)
         {
-            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(tabID, portalSettings, controlKey, null);
+            return this.NavigateURL(tabID, this.portalController.GetCurrentSettings(), controlKey, null);
         }
 
         /// <summary>Gets the URL to show the given page.</summary>
@@ -96,8 +90,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(tabID, portalSettings, controlKey, additionalParameters);
+            return this.NavigateURL(tabID, this.portalController.GetCurrentSettings(), controlKey, additionalParameters);
         }
 
         /// <summary>Gets the URL to show the given page.</summary>
@@ -108,8 +101,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            bool isSuperTab = Globals.IsHostTab(tabID);
-
+            var isSuperTab = Globals.IsHostTab(tabID);
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
@@ -122,7 +114,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, settings);
+            var cultureCode = Globals.GetCultureCode(tabID, isSuperTab, settings);
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, cultureCode, additionalParameters);
         }
 
@@ -150,7 +142,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            string url = tabID == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabID);
+            var url = tabID == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabID);
             if (!string.IsNullOrEmpty(controlKey))
             {
                 url += "&ctl=" + controlKey;

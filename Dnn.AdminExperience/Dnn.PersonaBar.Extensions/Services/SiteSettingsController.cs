@@ -22,6 +22,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -73,12 +74,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController controller = new Components.SiteSettingsController();
         private readonly INavigationManager navigationManager;
+        private readonly IApplicationStatusInfo applicationStatusInfo;
 
         /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
         /// <param name="navigationManager">A manager to provide navigation services.</param>
-        public SiteSettingsController(INavigationManager navigationManager)
+        /// <param name="applicatiohnStatusInfo">The application status info.</param>
+        public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo)
         {
             this.navigationManager = navigationManager;
+            this.applicationStatusInfo = applicationStatusInfo;
         }
 
         /// <summary>Gets provides navigation services.</summary>
@@ -157,7 +161,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         z.Id,
                         z.DisplayName,
                     }),
-                    IconSets = IconController.GetIconSets(),
+                    IconSets = IconController.GetIconSets(this.applicationStatusInfo),
                 });
             }
             catch (Exception exc)

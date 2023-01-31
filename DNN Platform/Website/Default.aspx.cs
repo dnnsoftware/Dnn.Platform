@@ -40,12 +40,6 @@ namespace DotNetNuke.Framework
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// Project  : DotNetNuke
-    /// Class    : CDefault
-    ///
-    /// <summary>
-    ///
-    /// </summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));

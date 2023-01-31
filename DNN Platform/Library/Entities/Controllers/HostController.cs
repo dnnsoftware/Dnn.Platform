@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Controllers
             {
                 var dbProvider = DataProvider.Instance();
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 var settings = this.GetSettingsFromDatabase();
                 if (settings.ContainsKey(config.Key))
                 {

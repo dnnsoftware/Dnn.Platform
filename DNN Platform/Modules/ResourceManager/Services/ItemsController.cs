@@ -19,6 +19,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
@@ -42,17 +43,16 @@ namespace Dnn.Modules.ResourceManager.Services
     {
         private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
         private readonly IModuleControlPipeline modulePipeline;
+        private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly Hashtable mappedPathsSupported = new Hashtable();
 
         /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
-        /// <param name="modulePipeline">
-        /// An instance of an <see cref="IModuleControlPipeline"/> used to hook into the
-        /// EditUrl of the webforms folders provider settings UI.
-        /// </param>
-        public ItemsController(
-            IModuleControlPipeline modulePipeline)
+        /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
+        /// <param name="applicationStatusInfo">The application status info.</param>
+        public ItemsController(IModuleControlPipeline modulePipeline, IApplicationStatusInfo applicationStatusInfo)
         {
             this.modulePipeline = modulePipeline;
+            this.applicationStatusInfo = applicationStatusInfo;
         }
 
         /// <summary>Gets the content for a specific folder.</summary>
@@ -550,7 +550,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Ok(groups);
         }
 
-        /// <summary>Gets the roles for a rolegroup.</summary>
+        /// <summary>Gets the roles for a role group.</summary>
         /// <returns>A collection of roles.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
@@ -626,7 +626,7 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         /// <summary>Gets the list of possible file extensions as well as the validation code to use for uploads.</summary>
-        /// <returns>An object containing the allowed file exteions and the validation code to use for uploads.</returns>
+        /// <returns>An object containing the allowed file extensions and the validation code to use for uploads.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
 
@@ -642,7 +642,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var validationCode = ValidationUtils.ComputeValidationCode(parameters);
 
-            var maxUploadFileSize = Config.GetMaxUploadSize();
+            var maxUploadFileSize = Config.GetMaxUploadSize(this.applicationStatusInfo);
 
             return this.Ok(new { allowedExtensions, validationCode, maxUploadFileSize });
         }
