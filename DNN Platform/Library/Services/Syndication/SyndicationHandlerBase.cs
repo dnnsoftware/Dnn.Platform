@@ -9,20 +9,17 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
+    /// <summary>An HTTP handler for generating an RSS feed.</summary>
     public class SyndicationHandlerBase : GenericRssHttpHandlerBase
     {
         private int moduleId = Null.NullInteger;
 
         private int tabId = Null.NullInteger;
 
-        public PortalSettings Settings
-        {
-            get
-            {
-                return Globals.GetPortalSettings();
-            }
-        }
+        /// <summary>Gets the portal settings.</summary>
+        public PortalSettings Settings => Globals.GetPortalSettings();
 
+        /// <summary>Gets the tab ID of the request.</summary>
         public int TabId
         {
             get
@@ -39,6 +36,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        /// <summary>Gets the module ID of the request.</summary>
         public int ModuleId
         {
             get
@@ -55,12 +53,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        public HttpRequest Request
-        {
-            get
-            {
-                return HttpContext.Current.Request;
-            }
-        }
+        /// <summary>Gets the HTTP request.</summary>
+        public HttpRequest Request => HttpContext.Current.Request;
     }
 }
