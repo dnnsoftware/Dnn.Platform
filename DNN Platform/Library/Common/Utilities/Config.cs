@@ -175,10 +175,9 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="statusInfo">The application status info.</param>
         public static void BackupConfig(IApplicationStatusInfo statusInfo)
         {
-            var backupFolder = $"{Globals.glbConfigFolder}Backup_{DateTime.Now:yyyyMMddHHmm}\\";
-            var backupFolderPath = Path.Combine(statusInfo.ApplicationMapPath, backupFolder);
             var webConfigPath = Path.Combine(statusInfo.ApplicationMapPath, "web.config");
-            var backupWebConfigPath = Path.Combine(backupFolderPath, "web_old.config");
+            var backupWebConfigPath = GetTimestampedBackupPath(statusInfo, "web_old.config");
+            var backupFolderPath = Path.GetDirectoryName(backupWebConfigPath);
 
             // save the current config files
             try
@@ -609,7 +608,7 @@ namespace DotNetNuke.Common.Utilities
         {
             // open the config file
             var xmlDoc = new XmlDocument { XmlResolver = null };
-            var configPath = Path.GetFullPath(Path.Combine(appStatus.ApplicationMapPath, filename));
+            var configPath = Path.GetFullPath(Path.Combine(appStatus.ApplicationMapPath, filename.TrimStart(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)));
             if (!configPath.StartsWith(appStatus.ApplicationMapPath, StringComparison.Ordinal))
             {
                 throw new SecurityException($"Unable to load config for \"{filename}\"");
@@ -720,7 +719,7 @@ namespace DotNetNuke.Common.Utilities
             var retMsg = string.Empty;
             try
             {
-                var strFilePath = appStatus.ApplicationMapPath + "\\" + filename;
+                var strFilePath = Path.Combine(appStatus.ApplicationMapPath, filename.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
                 var objFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
@@ -908,7 +907,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>An empty string upon success or an error message upon failure.</returns>
         public static string UpdateMachineKey(IApplicationStatusInfo appStatus)
         {
-            var backupFolder = $"{Globals.glbConfigFolder}Backup_{DateTime.Now:yyyyMMddHHmm}\\";
             var xmlConfig = new XmlDocument { XmlResolver = null };
             var strError = string.Empty;
 
@@ -929,7 +927,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // save a copy of the web.config
-            strError += Save(appStatus, xmlConfig, backupFolder + "web_.config");
+            strError += Save(appStatus, xmlConfig, GetTimestampedBackupPath(appStatus, "web_.config"));
 
             // save the web.config
             strError += Save(appStatus, xmlConfig);
@@ -967,7 +965,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>An empty string upon success or an error message upon failure.</returns>
         public static string UpdateValidationKey(IApplicationStatusInfo appStatus)
         {
-            var backupFolder = $"{Globals.glbConfigFolder}Backup_{DateTime.Now:yyyyMMddHHmm}\\";
             var xmlConfig = new XmlDocument { XmlResolver = null };
             var strError = string.Empty;
 
@@ -988,7 +985,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // save a copy of the web.config
-            strError += Save(appStatus, xmlConfig, backupFolder + "web_.config");
+            strError += Save(appStatus, xmlConfig, GetTimestampedBackupPath(appStatus, "web_.config"));
 
             // save the web.config
             strError += Save(appStatus, xmlConfig);
@@ -1059,7 +1056,7 @@ namespace DotNetNuke.Common.Utilities
             if (!File.Exists(path) || overwrite)
             {
                 // Copy from \Config
-                var pathToDefault = Path.Combine(appStatus.ApplicationMapPath, Globals.glbConfigFolder, fileName);
+                var pathToDefault = Path.Combine(appStatus.ApplicationMapPath, Globals.glbConfigFolder.TrimStart('\\'), fileName);
                 if (File.Exists(pathToDefault))
                 {
                     File.Copy(pathToDefault, path, true);
@@ -1092,7 +1089,6 @@ namespace DotNetNuke.Common.Utilities
             if (string.IsNullOrEmpty(installVersion))
             {
                 // we need to add the InstallVersion
-                var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                 var xmlConfig = new XmlDocument { XmlResolver = null };
 
                 // save the current config files
@@ -1112,7 +1108,7 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 // save a copy of the web.config
-                strError += Save(appStatus, xmlConfig, backupFolder + "web_.config");
+                strError += Save(appStatus, xmlConfig, GetTimestampedBackupPath(appStatus, "web_.config");
 
                 // save the web.config
                 strError += Save(appStatus, xmlConfig);
@@ -1193,6 +1189,15 @@ namespace DotNetNuke.Common.Utilities
             xmlConfig = AddAppSetting(xmlConfig, "InstallVersion", Globals.FormatVersion(version), false);
 
             return xmlConfig;
+        }
+
+        private static string GetTimestampedBackupPath(IApplicationStatusInfo appStatus, string fileName)
+        {
+            return Path.Combine(
+                appStatus.ApplicationMapPath,
+                Globals.glbConfigFolder.TrimStart('\\'),
+                $"Backup_{DateTime.Now:yyyyMMddHHmm}",
+                fileName);
         }
     }
 }
