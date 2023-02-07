@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     newKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(newKey));
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 
-                    // save a copy of the exitsing web.config
+                    // save a copy of the existing web.config
                     var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                     strError += Config.Save(xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
 
