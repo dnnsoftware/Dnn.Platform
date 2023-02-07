@@ -176,7 +176,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             typeof(CodeMirror).GetProperties()
                                 .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))).Value;
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name)))?.Value;
                             switch (codeMirrorInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -207,7 +207,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     case "WordCount":
                         foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))).Value;
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name)))?.Value;
                             switch (wordCountInfo.PropertyType.Name)
                             {
                                 case "String":
