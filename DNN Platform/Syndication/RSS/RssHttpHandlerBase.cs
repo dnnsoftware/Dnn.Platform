@@ -11,18 +11,16 @@ namespace DotNetNuke.Services.Syndication
 
     public delegate void PreRenderEventHandler(object source, EventArgs e);
 
-    /// <summary>
-    ///   Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.
-    /// </summary>
-    /// <typeparam name = "RssChannelType"></typeparam>
-    /// <typeparam name = "RssItemType"></typeparam>
-    /// <typeparam name = "RssImageType"></typeparam>
-    public abstract class RssHttpHandlerBase<RssChannelType, RssItemType, RssImageType> : IHttpHandler
-        where RssChannelType : RssChannelBase<RssItemType, RssImageType>, new()
-        where RssItemType : RssElementBase, new()
-        where RssImageType : RssElementBase, new()
+    /// <summary>Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.</summary>
+    /// <typeparam name="TRssChannelType">The channel type.</typeparam>
+    /// <typeparam name="TRssItemType">The item type.</typeparam>
+    /// <typeparam name="TRssImageType">The image type.</typeparam>
+    public abstract class RssHttpHandlerBase<TRssChannelType, TRssItemType, TRssImageType> : IHttpHandler
+        where TRssChannelType : RssChannelBase<TRssItemType, TRssImageType>, new()
+        where TRssItemType : RssElementBase, new()
+        where TRssImageType : RssElementBase, new()
     {
-        private RssChannelType channel;
+        private TRssChannelType channel;
         private HttpContext context;
 
         public event InitEventHandler Init;
@@ -38,7 +36,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        protected RssChannelType Channel
+        protected TRssChannelType Channel
         {
             get
             {
@@ -75,9 +73,7 @@ namespace DotNetNuke.Services.Syndication
             this.Render(new XmlTextWriter(this.Context.Response.OutputStream, null));
         }
 
-        /// <summary>
-        ///   Triggers the Init event.
-        /// </summary>
+        /// <summary>  Triggers the Init event.</summary>
         protected virtual void OnInit(EventArgs ea)
         {
             if (this.Init != null)
@@ -86,9 +82,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        /// <summary>
-        ///   Triggers the PreRender event.
-        /// </summary>
+        /// <summary>  Triggers the PreRender event.</summary>
         protected virtual void OnPreRender(EventArgs ea)
         {
             if (this.PreRender != null)
@@ -112,7 +106,7 @@ namespace DotNetNuke.Services.Syndication
             this.context = context;
 
             // create the channel
-            this.channel = new RssChannelType();
+            this.channel = new TRssChannelType();
             this.channel.SetDefaults();
 
             this.Context.Response.ContentType = "text/xml";

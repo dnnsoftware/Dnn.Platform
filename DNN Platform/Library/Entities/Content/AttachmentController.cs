@@ -26,17 +26,13 @@ namespace DotNetNuke.Entities.Content
 
         private readonly IContentController contentController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AttachmentController"/> class.</summary>
         public AttachmentController()
             : this(Util.GetContentController())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AttachmentController"/> class.</summary>
         /// <param name="contentController"></param>
         public AttachmentController(IContentController contentController)
         {

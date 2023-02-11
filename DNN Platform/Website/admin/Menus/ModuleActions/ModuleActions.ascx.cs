@@ -178,7 +178,7 @@ namespace DotNetNuke.Admin.Containers
                         || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

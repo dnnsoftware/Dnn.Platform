@@ -15,19 +15,14 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Login : SkinObjectBase
     {
         private const string MyFileName = "Login.ascx";
 
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Login"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -40,14 +35,10 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string LogoffText { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether set this to false in the skin to take advantage of the enhanced markup.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether set this to false in the skin to take advantage of the enhanced markup.</summary>
         public bool LegacyMode { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
         public bool ShowInErrorPage { get; set; }
 
         /// <inheritdoc/>

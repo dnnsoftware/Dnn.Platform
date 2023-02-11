@@ -7,9 +7,7 @@ namespace DotNetNuke.Web.Razor
     using System;
     using System.Web.WebPages;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Web.Razor.Helpers;
-    using Microsoft.Extensions.DependencyInjection;
 
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public abstract class DotNetNukeWebPage : WebPageBase
@@ -40,26 +38,6 @@ namespace DotNetNuke.Web.Razor
 
             // Child pages need to get their context from the Parent
             this.Context = parentPage.Context;
-        }
-    }
-
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public abstract class DotNetNukeWebPage<TModel> : DotNetNukeWebPage
-        where TModel : class
-    {
-        private TModel model;
-
-        public DotNetNukeWebPage()
-        {
-            var model = Globals.DependencyProvider.GetService<TModel>();
-            this.Model = model ?? Activator.CreateInstance<TModel>();
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public new TModel Model
-        {
-            get { return this.PageContext?.Model as TModel ?? this.model; }
-            set { this.model = value; }
         }
     }
 }

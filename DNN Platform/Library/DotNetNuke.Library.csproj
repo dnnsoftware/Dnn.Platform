@@ -196,6 +196,7 @@
     <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
     <Compile Include="Common\Utilities\FileSystemExtensions.cs" />
+    <Compile Include="Common\Utilities\JsonExtensionsWeb.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Common\Utilities\ValidationUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
     <Compile Include="Entities\Content\ContentExtensions.cs" />
+    <Compile Include="Entities\Content\Taxonomy\ScopeTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
     <Compile Include="Entities\Modules\Prompt\AddModule.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="Entities\Portals\Templates\PortalTemplateExtensions.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateImporter.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateInfo.cs" />
+    <Compile Include="Entities\Urls\TabPathHelper.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidUserRegisterException.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
@@ -259,6 +262,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
+    <Compile Include="ExtensionPoints\PanelEditPagePanelExtensionControl.cs" />
+    <Compile Include="ExtensionPoints\PanelTabExtensionControl.cs" />
+    <Compile Include="Modules\NavigationEventArgs.cs" />
     <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
     <Compile Include="Obsolete\LogInfo.cs" />
@@ -548,7 +554,6 @@
     <Compile Include="Entities\Urls\StateBoolean.cs" />
     <Compile Include="Entities\Urls\StringLengthComparer.cs" />
     <Compile Include="Entities\Urls\TabIndexController.cs" />
-    <Compile Include="Entities\Urls\TabPathController.cs" />
     <Compile Include="Entities\Urls\UrlAction.cs" />
     <Compile Include="Entities\Urls\UrlEnumHelpers.cs" />
     <Compile Include="Entities\Urls\UrlEnums.cs" />
@@ -710,6 +715,7 @@
     <Compile Include="Services\Authentication\AuthMode.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthExtensions.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthorisationResult.cs" />
+    <Compile Include="Services\Authentication\OAuth\EmailData.cs" />
     <Compile Include="Services\Authentication\OAuth\HttpMethod.cs" />
     <Compile Include="Common\Utilities\Json.cs" />
     <Compile Include="Services\Authentication\OAuth\OAuthClientBase.cs" />
@@ -723,6 +729,10 @@
     <Compile Include="Services\Authentication\OAuth\QueryParameter.cs" />
     <Compile Include="Services\Authentication\OAuth\QueryParameterComparer.cs" />
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
+    <Compile Include="Services\ClientCapability\Age.cs" />
+    <Compile Include="Services\ClientCapability\FaceBookData.cs" />
+    <Compile Include="Services\ClientCapability\Page.cs" />
+    <Compile Include="Services\ClientCapability\User.cs" />
     <Compile Include="Services\ClientDependency\PurgeClientDependencyFiles.cs" />
     <Compile Include="Services\Connections\ConnectionsController.cs" />
     <Compile Include="Services\Connections\ConnectionsManager.cs" />
@@ -738,6 +748,7 @@
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
     <Compile Include="Services\DependencyInjection\IScopeAccessor.cs" />
+    <Compile Include="Services\EventQueue\EventMessageProcessorBase.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
@@ -772,7 +783,7 @@
     <Compile Include="Services\Assets\IAssetManager.cs" />
     <Compile Include="Services\FileSystem\IFileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
-    <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
+    <Compile Include="Services\FileSystem\IFileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
     <Compile Include="Services\FileSystem\Internal\FileDeletionController.cs" />
     <Compile Include="Services\FileSystem\Internal\FileLockingController.cs" />
@@ -786,6 +797,7 @@
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
     <Compile Include="Services\FileSystem\LinkClickPortalSettings.cs" />
     <Compile Include="Services\FileSystem\SyncFolderData.cs" />
+    <Compile Include="Services\GeneratedImage\IImageStore.cs" />
     <Compile Include="Services\GeneratedImage\IPCount.cs" />
     <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
     <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />
@@ -821,7 +833,9 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Installer\Packages\PackageTypeMemberNameFixer.cs" />
     <Compile Include="Services\Localization\CultureDropDownTypes.cs" />
+    <Compile Include="Services\Localization\LocalizationExpressionBuilderEditor.cs" />
     <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
@@ -886,6 +900,9 @@
     <Compile Include="Services\Search\Controllers\SearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
     <Compile Include="Services\Search\UserIndexer.cs" />
+    <Compile Include="Services\Search\UserSearch.cs" />
+    <Compile Include="Services\Sitemap\AlternateUrl.cs" />
+    <Compile Include="Services\Social\Messaging\Exceptions\AttachmentsNotAllowed.cs" />
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
@@ -903,10 +920,12 @@
     <Compile Include="Services\Tokens\CacheLevel.cs" />
     <Compile Include="Services\Tokens\HtmlTokenReplace.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\ArrayListPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\CssPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptDto.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\StylesheetDto.cs" />
     <Compile Include="Services\Tokens\Scope.cs" />
     <Compile Include="Services\Tokens\CoreTokenProvider.cs" />
     <Compile Include="Services\Tokens\TokenContext.cs" />
@@ -963,7 +982,6 @@
     <Compile Include="Services\Social\Messaging\Internal\InternalMessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Internal\InternalMessagingControllerImpl.cs" />
     <Compile Include="Services\Social\Messaging\MessageSentStatus.cs" />
-    <Compile Include="Services\Social\Messaging\Exceptions\AttachmentsNotAllowedException.cs" />
     <Compile Include="Services\Social\Messaging\Exceptions\MessageOrRecipientNotFoundException.cs" />
     <Compile Include="Services\Social\Messaging\Exceptions\RecipientLimitExceededException.cs" />
     <Compile Include="Services\Social\Messaging\Exceptions\ThrottlingIntervalNotMetException.cs" />
@@ -1279,7 +1297,6 @@
     <Compile Include="Services\EventQueue\Config\SubscriberInfo.cs" />
     <Compile Include="Services\EventQueue\EventMessage.cs" />
     <Compile Include="Services\EventQueue\EventMessageCollection.cs" />
-    <Compile Include="Services\EventQueue\EventMessageProcessor.cs" />
     <Compile Include="Services\EventQueue\EventQueueController.cs" />
     <Compile Include="Services\Exceptions\BasePortalException.cs" />
     <Compile Include="Services\Exceptions\ErrorContainer.cs" />
@@ -1516,7 +1533,6 @@
     <Compile Include="Services\Syndication\SyndicationHandlerBase.cs" />
     <Compile Include="Services\Tokens\BaseCustomTokenReplace.cs" />
     <Compile Include="Services\Tokens\BaseTokenReplace.cs" />
-    <Compile Include="Services\Tokens\PropertyAccess\ArrayListPropertyAccesss.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\CulturePropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\DataRowPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\DateTimePropertyAccess.cs" />
@@ -1588,8 +1604,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Modules\Html5\Html5ModuleTokenReplace.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleActionDto.cs" />
     <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleLocalizationDto.cs" />
     <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\RequestPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
@@ -1615,11 +1633,13 @@
     <Compile Include="UI\Skins\Controls\ControlPanel.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Skins\Controls\LanguagePropertyAccess.cs" />
     <Compile Include="UI\Skins\Controls\LanguageTokenReplace.cs" />
     <Compile Include="UI\Skins\Controls\ModuleMessage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\Skins\Controls\SkinsEditControl.cs" />
+    <Compile Include="UI\Skins\CustomAttribute.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventArgs.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
@@ -1671,6 +1691,7 @@
     <Compile Include="UI\UserControls\LabelControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\ListItemComparer.cs" />
     <Compile Include="UI\UserControls\ModuleAuditControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1689,9 +1710,7 @@
     <Compile Include="UI\UserControls\User.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\Utilities\ClientAPI.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="UI\Utilities\DNNClientAPI.cs" />
     <Compile Include="UI\WebControls\ActionLink.cs" />
     <Compile Include="UI\WebControls\CaptchaControl.cs" />
     <Compile Include="UI\WebControls\CaptchaHandler.cs" />
@@ -1832,7 +1851,6 @@
   <ItemGroup>
     <Compile Include="Common\Guard.cs" />
     <Compile Include="Common\Requires.cs" />
-    <Compile Include="Common\Utilities\JsonExtensions.cs" />
     <Compile Include="ComponentModel\ComponentBase.cs" />
     <Compile Include="Framework\BaseHttpHandler.cs" />
     <Compile Include="UI\Modules\IProfileModule.cs" />

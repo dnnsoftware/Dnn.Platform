@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.TaskScheduler.Services
 {
     using System;
@@ -34,13 +33,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         private Components.TaskSchedulerController controller = new Components.TaskSchedulerController();
 
         /// GET: api/TaskScheduler/GetServers
-        /// <summary>
-        /// Gets list of servers.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets list of servers.</summary>
         /// <returns>List of servers.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetServers()
         {
             try
@@ -76,13 +71,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// GET: api/TaskScheduler/GetScheduleItems
-        /// <summary>
-        /// Gets list of schedule items.
-        /// </summary>
-        /// <param name="serverName"></param>
+        /// <summary>Gets list of schedule items.</summary>
+        /// <param name="serverName">The server name (default <c>""</c>).</param>
         /// <returns>List of schedule items.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetScheduleItems(string serverName = "")
         {
             try
@@ -113,13 +105,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// GET: api/TaskScheduler/GetSchedulerSettings
-        /// <summary>
-        /// Gets scheduler settings.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets scheduler settings.</summary>
         /// <returns>scheduler settings.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetSchedulerSettings()
         {
             try
@@ -151,14 +139,11 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/UpdateSchedulerSettings
-        /// <summary>
-        /// Updates scheduler settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates scheduler settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSchedulerSettings(UpdateSettingsRequest request)
         {
             try
@@ -198,12 +183,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// GET: api/TaskScheduler/GetScheduleItemHistory
-        /// <summary>
-        /// Gets schedule item history.
-        /// </summary>
-        /// <param name="scheduleId"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <summary>Gets schedule item history.</summary>
+        /// <param name="scheduleId">The schedule ID (default -1).</param>
+        /// <param name="pageIndex">The page index (default 0).</param>
+        /// <param name="pageSize">The page size (default 20).</param>
         /// <returns>schedule item history.</returns>
         [HttpGet]
         public HttpResponseMessage GetScheduleItemHistory(int scheduleId = -1, int pageIndex = 0, int pageSize = 20)
@@ -241,10 +224,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// GET: api/TaskScheduler/GetScheduleItem
-        /// <summary>
-        /// Gets an existing schedule item.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets an existing schedule item.</summary>
+        /// <param name="scheduleId">The schedule ID.</param>
         /// <returns>schedule item.</returns>
         [HttpGet]
         public HttpResponseMessage GetScheduleItem(int scheduleId)
@@ -289,11 +270,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/CreateScheduleItem
-        /// <summary>
-        /// Creates a new schedule item.
-        /// </summary>
-        /// <param name="scheduleDto"></param>
-        /// <returns></returns>
+        /// <summary>Creates a new schedule item.</summary>
+        /// <param name="scheduleDto">The schedule info.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage CreateScheduleItem(ScheduleDto scheduleDto)
@@ -310,9 +289,20 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
 
-                var scheduleItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
-            scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
-            scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
+                var scheduleItem = this.controller.CreateScheduleItem(
+                    scheduleDto.TypeFullName,
+                    scheduleDto.FriendlyName,
+                    scheduleDto.TimeLapse,
+                    scheduleDto.TimeLapseMeasurement,
+                    scheduleDto.RetryTimeLapse,
+                    scheduleDto.RetryTimeLapseMeasurement,
+                    scheduleDto.RetainHistoryNum,
+                    scheduleDto.AttachToEvent,
+                    scheduleDto.CatchUpEnabled,
+                    scheduleDto.Enabled,
+                    scheduleDto.ObjectDependencies,
+                    scheduleDto.ScheduleStartDate,
+                    scheduleDto.Servers);
                 SchedulingProvider.Instance().AddSchedule(scheduleItem);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -325,11 +315,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/UpdateScheduleItem
-        /// <summary>
-        /// Updates an existing schedule item.
-        /// </summary>
-        /// <param name="scheduleDto"></param>
-        /// <returns></returns>
+        /// <summary>Updates an existing schedule item.</summary>
+        /// <param name="scheduleDto">The schedule info.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateScheduleItem(ScheduleDto scheduleDto)
@@ -348,9 +336,20 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
                 var existingItem = SchedulingProvider.Instance().GetSchedule(scheduleDto.ScheduleID);
 
-                var updatedItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
-            scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
-            scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
+                var updatedItem = this.controller.CreateScheduleItem(
+                    scheduleDto.TypeFullName,
+                    scheduleDto.FriendlyName,
+                    scheduleDto.TimeLapse,
+                    scheduleDto.TimeLapseMeasurement,
+                    scheduleDto.RetryTimeLapse,
+                    scheduleDto.RetryTimeLapseMeasurement,
+                    scheduleDto.RetainHistoryNum,
+                    scheduleDto.AttachToEvent,
+                    scheduleDto.CatchUpEnabled,
+                    scheduleDto.Enabled,
+                    scheduleDto.ObjectDependencies,
+                    scheduleDto.ScheduleStartDate,
+                    scheduleDto.Servers);
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
 
                 if (updatedItem.ScheduleStartDate != existingItem.ScheduleStartDate ||
@@ -378,13 +377,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// GET: api/TaskScheduler/GetScheduleStatus
-        /// <summary>
-        /// Gets schedule status.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets schedule status.</summary>
         /// <returns>schedule status.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetScheduleStatus()
         {
             try
@@ -469,11 +464,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/StartSchedule
-        /// <summary>
-        /// Starts schedule.
-        /// </summary>
-        /// <param></param>
-        /// <returns></returns>
+        /// <summary>Starts schedule.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage StartSchedule()
@@ -491,11 +483,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/StopSchedule
-        /// <summary>
-        /// Stops schedule.
-        /// </summary>
-        /// <param></param>
-        /// <returns></returns>
+        /// <summary>Stops schedule.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage StopSchedule()
@@ -513,21 +502,29 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/RunSchedule
-        /// <summary>
-        /// Runs schedule.
-        /// </summary>
-        /// <param name="scheduleDto"></param>
-        /// <returns></returns>
+        /// <summary>Runs schedule.</summary>
+        /// <param name="scheduleDto">The schedule info.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RunSchedule(ScheduleDto scheduleDto)
         {
             try
             {
-                var scheduleItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
-            scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
-            scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
+                var scheduleItem = this.controller.CreateScheduleItem(
+                    scheduleDto.TypeFullName,
+                    scheduleDto.FriendlyName,
+                    scheduleDto.TimeLapse,
+                    scheduleDto.TimeLapseMeasurement,
+                    scheduleDto.RetryTimeLapse,
+                    scheduleDto.RetryTimeLapseMeasurement,
+                    scheduleDto.RetainHistoryNum,
+                    scheduleDto.AttachToEvent,
+                    scheduleDto.CatchUpEnabled,
+                    scheduleDto.Enabled,
+                    scheduleDto.ObjectDependencies,
+                    scheduleDto.ScheduleStartDate,
+                    scheduleDto.Servers);
                 scheduleItem.ScheduleID = scheduleDto.ScheduleID;
                 SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
 
@@ -546,11 +543,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         }
 
         /// POST: api/TaskScheduler/DeleteSchedule
-        /// <summary>
-        /// Runs schedule.
-        /// </summary>
-        /// <param name="scheduleDto"></param>
-        /// <returns></returns>
+        /// <summary>Runs schedule.</summary>
+        /// <param name="scheduleDto">The schedule info.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteSchedule(ScheduleDto scheduleDto)

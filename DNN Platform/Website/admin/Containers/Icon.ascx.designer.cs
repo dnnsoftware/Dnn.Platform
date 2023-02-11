@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Containers {
     
     
     public partial class Icon {
-        /// <summary>
-        /// imgIcon control.
-        /// </summary>
+        /// <summary>imgIcon control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

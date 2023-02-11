@@ -11,48 +11,37 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : TabPermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// TabPermissionCollection provides the a custom collection for TabPermissionInfo
     /// objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("tabpermissions")]
     public class TabPermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
         public TabPermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
         /// <param name="tabPermissions"></param>
         public TabPermissionCollection(ArrayList tabPermissions)
         {
             this.AddRange(tabPermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
         /// <param name="tabPermissions"></param>
         public TabPermissionCollection(TabPermissionCollection tabPermissions)
         {
             this.AddRange(tabPermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
         /// <param name="tabPermissions"></param>
         /// <param name="tabId"></param>
         public TabPermissionCollection(ArrayList tabPermissions, int tabId)

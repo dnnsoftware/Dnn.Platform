@@ -9,9 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnTab : WebControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnTab"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnTab"/> class.</summary>
         public DnnTab()
             : base("div")
         {

@@ -6,15 +6,15 @@ namespace DotNetNuke.Entities.Icons
     using System;
     using System.IO;
     using System.Web.Hosting;
-
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// IconController provides all operation to icons.
-    /// </summary>
+    /// <summary>IconController provides all operation to icons.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
     /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
@@ -32,9 +32,7 @@ namespace DotNetNuke.Entities.Icons
 
         private static readonly SharedDictionary<string, bool> IconsStatusOnDisk = new SharedDictionary<string, bool>();
 
-        /// <summary>
-        /// Gets the Icon URL.
-        /// </summary>
+        /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
         public static string IconURL(string key)
@@ -42,9 +40,7 @@ namespace DotNetNuke.Entities.Icons
             return IconURL(key, DefaultIconSize, DefaultIconStyle);
         }
 
-        /// <summary>
-        /// Gets the Icon URL.
-        /// </summary>
+        /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
         /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32.</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
@@ -53,9 +49,7 @@ namespace DotNetNuke.Entities.Icons
             return IconURL(key, size, DefaultIconStyle);
         }
 
-        /// <summary>
-        /// Gets the Icon URL.
-        /// </summary>
+        /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
         /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32.</param>
         /// <param name="style">Style of icon, e.g. Standard (default).</param>
@@ -79,7 +73,7 @@ namespace DotNetNuke.Entities.Icons
 
             string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
 
-            // In debug mode, we want to warn (onluy once) if icon is not present on disk
+            // In debug mode, we want to warn (only once) if icon is not present on disk
 #if DEBUG
             CheckIconOnDisk(fileName);
 #endif
@@ -96,14 +90,21 @@ namespace DotNetNuke.Entities.Icons
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
+        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
         public static string[] GetIconSets()
         {
-            string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, "icons");
+            return GetIconSets(
+                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+        }
+
+        public static string[] GetIconSets(IApplicationStatusInfo appStatus)
+        {
+            var iconPhysicalPath = Path.Combine(appStatus.ApplicationMapPath, "icons");
             var iconRootDir = new DirectoryInfo(iconPhysicalPath);
-            string result = string.Empty;
+            var result = string.Empty;
             foreach (var iconDir in iconRootDir.EnumerateDirectories())
             {
-                string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
+                var testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
                 if (File.Exists(testFile))
                 {
                     result += iconDir.Name + ",";
@@ -128,7 +129,7 @@ namespace DotNetNuke.Entities.Icons
                 if (!IconsStatusOnDisk.ContainsKey(path))
                 {
                     IconsStatusOnDisk.Add(path, true);
-                    string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
+                    var iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
                         Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));

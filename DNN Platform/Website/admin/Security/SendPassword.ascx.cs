@@ -28,11 +28,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// <summary>
-    /// The SendPassword UserModuleBase is used to allow a user to retrieve their password.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The SendPassword UserModuleBase is used to allow a user to retrieve their password.</summary>
     public partial class SendPassword : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
@@ -42,17 +38,13 @@ namespace DotNetNuke.Modules.Admin.Security
         private int userCount = Null.NullInteger;
         private string ipAddress;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SendPassword"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SendPassword"/> class.</summary>
         public SendPassword()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets the Redirect URL (after successful sending of password).
-        /// </summary>
+        /// <summary>Gets the Redirect URL (after successful sending of password).</summary>
         protected string RedirectURL
         {
             get
@@ -61,8 +53,9 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 object setting = GetSetting(this.PortalId, "Redirect_AfterRegistration");
 
-                if (Convert.ToInt32(setting) > 0) // redirect to after registration page
+                if (Convert.ToInt32(setting) > 0)
                 {
+                    // redirect to after registration page
                     redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
@@ -95,8 +88,9 @@ namespace DotNetNuke.Modules.Admin.Security
                             redirectURL = this.navigationManager.NavigateURL();
                         }
                     }
-                    else // redirect to after registration page
+                    else
                     {
+                        // redirect to after registration page
                         redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
                 }
@@ -105,9 +99,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Captcha control is used to validate the login.</summary>
         protected bool UseCaptcha
         {
             get
@@ -171,11 +163,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -196,11 +184,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// cmdSendPassword_Click runs when the Password Reminder button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>cmdSendPassword_Click runs when the Password Reminder button is clicked.</summary>
         protected void OnSendPasswordClick(object sender, EventArgs e)
         {
             // pretty much always display the same message to avoid hinting on the existance of a user name

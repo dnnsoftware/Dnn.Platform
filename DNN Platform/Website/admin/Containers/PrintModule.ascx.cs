@@ -13,18 +13,13 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : Containers.Icon
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class PrintModule : ActionBase
     {
         public string PrintIcon { get; set; }
@@ -50,7 +45,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -100,7 +95,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((ImageButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

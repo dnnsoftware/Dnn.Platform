@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.Skins
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -18,9 +20,13 @@ namespace DotNetNuke.UI.Skins
 
     public class SkinControl : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboSkin;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CommandButton cmdPreview;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButton optHost;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButton optSite;
         private string defaultKey = "System";
         private string skinRoot;
@@ -174,22 +180,32 @@ namespace DotNetNuke.UI.Skins
                     this.LoadSkins();
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void optHost_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void optSite_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdPreview_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(this.SkinSrc))

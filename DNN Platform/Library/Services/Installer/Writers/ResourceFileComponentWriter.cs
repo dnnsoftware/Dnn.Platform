@@ -7,17 +7,12 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ResourceFileComponentWriter class handles creating the manifest for Resource
     /// File Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ResourceFileComponentWriter : FileComponentWriter
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ResourceFileComponentWriter"/> class.
         /// Constructs the ResourceFileComponentWriter.
@@ -25,18 +20,13 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">The Base Path for the files.</param>
         /// <param name="files">A Dictionary of files.</param>
         /// <param name="package"></param>
-        /// -----------------------------------------------------------------------------
         public ResourceFileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("resourceFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("resourceFiles").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -45,12 +35,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("ResourceFile").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("ResourceFile").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get
@@ -59,12 +45,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("resourceFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("resourceFile").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get

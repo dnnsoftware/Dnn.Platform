@@ -26,15 +26,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public bool IsReusable => true;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This handler handles requests for LinkClick.aspx, but only those specifc
         /// to file serving.
         /// </summary>
         /// <param name="context">System.Web.HttpContext).</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -201,8 +197,9 @@ namespace DotNetNuke.Services.FileSystem
                                         context.Response.Redirect(Globals.AccessDeniedURL(), true);
                                     }
                                 }
-                                catch (ThreadAbortException) // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
+                                catch (ThreadAbortException)
                                 {
+                                    // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
                                 }
                                 catch (Exception ex)
                                 {

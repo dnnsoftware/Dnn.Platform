@@ -25,17 +25,13 @@ namespace Dnn.PersonaBar.Library.Controllers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
         private IContentVerifier contentVerifier;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulesController"/> class.</summary>
         public ModulesController()
             : this(new ContentVerifier())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulesController"/> class.</summary>
         /// <param name="contentVerifier"></param>
         public ModulesController(IContentVerifier contentVerifier)
         {
@@ -80,7 +76,8 @@ namespace Dnn.PersonaBar.Library.Controllers
                     {
                         var defaultModule = ModuleController.Instance.GetModule(
                             portalSettings.DefaultModuleId,
-                            portalSettings.DefaultTabId, true);
+                            portalSettings.DefaultTabId,
+                            true);
                         if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
@@ -228,8 +225,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
-            int? pageId = null, int pageIndex = 0, int pageSize = 10)
+        public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;

@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Installer.Blocker
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// This class ...
-    /// </summary>
+    /// <summary>This class ...</summary>
     public class InstallBlocker : ServiceLocator<IInstallBlocker, InstallBlocker>, IInstallBlocker
     {
         private const string InstallBlockerFile = "\\installBlocker.lock";
@@ -41,12 +39,15 @@ namespace DotNetNuke.Services.Installer.Blocker
         {
             var retryable = new RetryableAction(
                 () =>
-            {
-                if (this.IsInstallInProgress() && this.fileCreated)
                 {
-                    File.Delete(Globals.ApplicationMapPath + InstallBlockerFile);
-                }
-            }, "Deleting lock file", 60, TimeSpan.FromSeconds(1));
+                    if (this.IsInstallInProgress() && this.fileCreated)
+                    {
+                        File.Delete(Globals.ApplicationMapPath + InstallBlockerFile);
+                    }
+                },
+                "Deleting lock file",
+                60,
+                TimeSpan.FromSeconds(1));
 
             retryable.TryIt();
             this.fileCreated = false;

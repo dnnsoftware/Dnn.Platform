@@ -31,9 +31,7 @@ namespace log4net.Util
     /// <param name="e"></param>
     public delegate void LogReceivedEventHandler(object source, LogReceivedEventArgs e);
 
-    /// <summary>
-    /// Outputs log statements from within the log4net assembly.
-    /// </summary>
+    /// <summary>Outputs log statements from within the log4net assembly.</summary>
     /// <remarks>
     /// <para>
     /// Log4net components cannot make log4net logging calls. However, it is
@@ -50,9 +48,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class LogLog
     {
-        /// <summary>
-        /// The event raised when an internal message has been received.
-        /// </summary>
+        /// <summary>The event raised when an internal message has been received.</summary>
         public static event LogReceivedEventHandler LogReceived;
 
         private readonly Type source;
@@ -61,33 +57,25 @@ namespace log4net.Util
         private readonly string message;
         private readonly Exception exception;
 
-        /// <summary>
-        /// The Type that generated the internal message.
-        /// </summary>
+        /// <summary>The Type that generated the internal message.</summary>
         public Type Source
         {
             get { return this.source; }
         }
 
-        /// <summary>
-        /// The DateTime stamp of when the internal message was received.
-        /// </summary>
+        /// <summary>The DateTime stamp of when the internal message was received.</summary>
         public DateTime TimeStamp
         {
             get { return this.timeStampUtc.ToLocalTime(); }
         }
 
-        /// <summary>
-        /// The UTC DateTime stamp of when the internal message was received.
-        /// </summary>
+        /// <summary>The UTC DateTime stamp of when the internal message was received.</summary>
         public DateTime TimeStampUtc
         {
             get { return this.timeStampUtc; }
         }
 
-        /// <summary>
-        /// A string indicating the severity of the internal message.
-        /// </summary>
+        /// <summary>A string indicating the severity of the internal message.</summary>
         /// <remarks>
         /// "log4net: ", 
         /// "log4net:ERROR ", 
@@ -98,17 +86,13 @@ namespace log4net.Util
             get { return this.prefix; }
         }
 
-        /// <summary>
-        /// The internal log message.
-        /// </summary>
+        /// <summary>The internal log message.</summary>
         public string Message
         {
             get { return this.message; }
         }
 
-        /// <summary>
-        /// The Exception related to the message.
-        /// </summary>
+        /// <summary>The Exception related to the message.</summary>
         /// <remarks>
         /// Optional. Will be null if no Exception was passed.
         /// </remarks>
@@ -127,9 +111,7 @@ namespace log4net.Util
             return this.Prefix + this.Source.Name + ": " + this.Message;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogLog" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LogLog" /> class. </summary>
         /// <param name="source"></param>
         /// <param name="prefix"></param>
         /// <param name="message"></param>
@@ -272,9 +254,7 @@ namespace log4net.Util
             set { s_emitInternalMessages = value; }
         }
 
-        /// <summary>
-        /// Raises the LogReceived event when an internal messages is received.
-        /// </summary>
+        /// <summary>Raises the LogReceived event when an internal messages is received.</summary>
         /// <param name="source"></param>
         /// <param name="prefix"></param>
         /// <param name="message"></param>
@@ -287,9 +267,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Test if LogLog.Debug is enabled for output.
-        /// </summary>
+        /// <summary>Test if LogLog.Debug is enabled for output.</summary>
         /// <value>
         /// <c>true</c> if Debug is enabled
         /// </value>
@@ -358,9 +336,7 @@ namespace log4net.Util
             }
         }
   
-        /// <summary>
-        /// Test if LogLog.Warn is enabled for output.
-        /// </summary>
+        /// <summary>Test if LogLog.Warn is enabled for output.</summary>
         /// <value>
         /// <c>true</c> if Warn is enabled
         /// </value>
@@ -429,9 +405,7 @@ namespace log4net.Util
             }
         } 
 
-        /// <summary>
-        /// Test if LogLog.Error is enabled for output.
-        /// </summary>
+        /// <summary>Test if LogLog.Error is enabled for output.</summary>
         /// <value>
         /// <c>true</c> if Error is enabled
         /// </value>
@@ -500,9 +474,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Writes output to the standard output stream.  
-        /// </summary>
+        /// <summary>Writes output to the standard output stream.  </summary>
         /// <param name="message">The message to log.</param>
         /// <remarks>
         /// <para>
@@ -534,9 +506,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Writes output to the standard error stream.  
-        /// </summary>
+        /// <summary>Writes output to the standard error stream.  </summary>
         /// <param name="message">The message to log.</param>
         /// <remarks>
         /// <para>
@@ -568,14 +538,10 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        ///  Default debug level
-        /// </summary>
+        /// <summary> Default debug level</summary>
         private static bool s_debugEnabled = false;
 
-        /// <summary>
-        /// In quietMode not even errors generate any output.
-        /// </summary>
+        /// <summary>In quietMode not even errors generate any output.</summary>
         private static bool s_quietMode = false;
 
         private static bool s_emitInternalMessages = true;

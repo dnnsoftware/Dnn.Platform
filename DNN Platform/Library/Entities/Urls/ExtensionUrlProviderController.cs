@@ -51,11 +51,9 @@ namespace DotNetNuke.Entities.Urls
             return CBO.FillCollection<ExtensionUrlProviderInfo>(DataProvider.Instance().GetExtensionUrlProviders(portalId));
         }
 
-        /// <summary>
-        /// Loads the module providers.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
+        /// <summary>Loads the module providers.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A <see cref="List{T}"/> of <see cref="ExtensionUrlProvider"/> instances.</returns>
         /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
         public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
         {
@@ -158,18 +156,13 @@ namespace DotNetNuke.Entities.Urls
             };
         }
 
-        /// <summary>
-        /// logs an exception related to a module provider once per cache-lifetime.
-        /// </summary>
+        /// <summary>logs an exception related to a module provider once per cache-lifetime.</summary>
         /// <param name="ex"></param>
         /// <param name="status"></param>
         /// <param name="result"></param>
         /// <param name="messages"></param>
         /// <param name="provider"></param>
-        public static void LogModuleProviderExceptionInRequest(Exception ex, string status,
-                                                                ExtensionUrlProvider provider,
-                                                                UrlAction result,
-                                                                List<string> messages)
+        public static void LogModuleProviderExceptionInRequest(Exception ex, string status, ExtensionUrlProvider provider, UrlAction result, List<string> messages)
         {
             if (ex != null)
             {
@@ -211,12 +204,8 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Raw Url", result.RawUrl ?? "null");
                         log.AddProperty("Final Url", result.FinalUrl ?? "null");
 
-                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
-                                                                     ? result.RewritePath
-                                                                     : "[no rewrite]");
-                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
-                                                                    ? "[no redirect]"
-                                                                    : result.FinalUrl);
+                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath) ? result.RewritePath : "[no rewrite]");
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) ? "[no redirect]" : result.FinalUrl);
                         log.AddProperty("Action", result.Action.ToString());
                         log.AddProperty("Reason", result.Reason.ToString());
                         log.AddProperty("Portal Id", result.PortalId.ToString());
@@ -289,14 +278,12 @@ namespace DotNetNuke.Entities.Urls
             ClearCache(portalId);
         }
 
-        /// <summary>
-        /// Checks to see if any providers are marked as 'always call for rewrites'.
-        /// </summary>
+        /// <summary>Checks to see if any providers are marked as 'always call for rewrites'.</summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the there are providers that need to always be called, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForAlwaysCallProviders(int portalId, int tabId, FriendlyUrlSettings settings, Guid parentTraceId)
         {
             List<int> alwaysCallTabids = CacheController.GetAlwaysCallProviderTabs(portalId);
@@ -358,17 +345,22 @@ namespace DotNetNuke.Entities.Urls
             ExtensionUrlProvider activeProvider = null;
             try
             {
-                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(result.TabId, result.PortalId, settings,
-                                                                             parentTraceId);
+                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(result.TabId, result.PortalId, settings, parentTraceId);
                 if (providersToCall != null && providersToCall.Count > 0)
                 {
                     FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                     foreach (ExtensionUrlProvider provider in providersToCall)
                     {
                         activeProvider = provider; // for error handling
-                        redirected = provider.CheckForRedirect(result.TabId, result.PortalId, result.HttpAlias,
-                                                               requestUri, queryStringCol, options, out location,
-                                                               ref messages);
+                        redirected = provider.CheckForRedirect(
+                            result.TabId,
+                            result.PortalId,
+                            result.HttpAlias,
+                            requestUri,
+                            queryStringCol,
+                            options,
+                            out location,
+                            ref messages);
                         if (redirected)
                         {
                             result.FinalUrl = location;
@@ -401,10 +393,8 @@ namespace DotNetNuke.Entities.Urls
             return redirected;
         }
 
-        /// <summary>
-        /// Returns boolean value is any loaded providers require checking of rewrite / redirect values from the site root (ie, not dnn tab path).
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Returns boolean value is any loaded providers require checking of rewrite / redirect values from the site root (ie, not dnn tab path).</summary>
+        /// <returns><see langword="true"/> if there is a provider that requires checks for a site root rewrite/redirect, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForSiteRootRewrite(int portalId, FriendlyUrlSettings settings, Guid parentTraceId)
         {
             var providers = GetProvidersToCall(RewriteController.SiteRootRewrite, portalId, settings, parentTraceId);
@@ -436,8 +426,7 @@ namespace DotNetNuke.Entities.Urls
 
             try
             {
-                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tab.TabID, portalId, settings,
-                                                                             parentTraceId);
+                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tab.TabID, portalId, settings, parentTraceId);
                 FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                 foreach (ExtensionUrlProvider provider in providersToCall)
                 {
@@ -551,8 +540,9 @@ namespace DotNetNuke.Entities.Urls
                             ref messages,
                             out status,
                             out location);
-                        if (status == 0 || status == 200) // either not set, or set to '200 OK'.
+                        if (status == 0 || status == 200)
                         {
+                            // either not set, or set to '200 OK'.
                             if (!string.IsNullOrEmpty(queryString) && queryString != newUrl)
                             {
                                 rewriteDone = true;
@@ -664,14 +654,12 @@ namespace DotNetNuke.Entities.Urls
             DataCache.RemoveCache(cacheKey);
         }
 
-        /// <summary>
-        /// Returns the providers to call. Returns tabid matches first, and any portal id matches after that.
-        /// </summary>
+        /// <summary>Returns the providers to call. Returns tab ID matches first, and any portal ID matches after that.</summary>
         /// <param name="tabId"></param>
         /// <param name="portalId"></param>
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="List{T}"/> of <see cref="ExtensionUrlProvider"/> instances.</returns>
         private static List<ExtensionUrlProvider> GetProvidersToCall(
             int tabId,
             int portalId,
@@ -694,9 +682,8 @@ namespace DotNetNuke.Entities.Urls
                     out definitelyNoProvider,
                     parentTraceId);
                 if (definitelyNoProvider == false && providersToCall == null)
-
-                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                 {
+                    // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                     // get all providers for the portal
                     var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
 

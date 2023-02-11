@@ -19,9 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnFileDropDownList runat='server'></{0}:DnnFileDropDownList>")]
     public class DnnFileDropDownList : DnnDropDownList
     {
-        /// <summary>
-        /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
-        /// </summary>
+        /// <summary>Gets or sets the selected Folder in the control, or selects the Folder in the control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IFileInfo SelectedFile

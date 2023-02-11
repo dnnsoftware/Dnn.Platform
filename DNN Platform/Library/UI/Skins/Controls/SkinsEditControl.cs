@@ -14,51 +14,38 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.Skins.Controls
     /// Class:      SkinsEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SkinsEditControl control provides a standard UI component for editing
     /// skins.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:SkinsEditControl runat=server></{0}:SkinsEditControl>")]
     public class SkinsEditControl : EditControl, IPostBackEventHandler
     {
         private string addedItem = Null.NullString;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinsEditControl"/> class.
         /// Constructs a SkinsEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public SkinsEditControl()
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinsEditControl"/> class.
         /// Constructs a SkinsEditControl.
         /// </summary>
         /// <param name="type">The type of the property.</param>
-        /// -----------------------------------------------------------------------------
         public SkinsEditControl(string type)
         {
             this.SystemType = type;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets oldStringValue returns the String representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets oldStringValue returns the String representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
             get
@@ -76,12 +63,8 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.
-        /// </summary>
+        /// <summary>Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.</summary>
         /// <value>A Dictionary(Of Integer, String) representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected Dictionary<int, string> DictionaryValue
         {
             get
@@ -95,12 +78,8 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue.</summary>
         /// <value>A Dictionary(Of Integer, String) representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
         protected Dictionary<int, string> OldDictionaryValue
         {
             get
@@ -114,12 +93,8 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
@@ -209,12 +184,10 @@ namespace DotNetNuke.UI.Skins.Controls
             return dataChanged;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -225,11 +198,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.OnValueChanged(args);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnPreRender runs just before the control is due to be rendered.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnPreRender runs just before the control is due to be rendered.</summary>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -238,12 +207,8 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Page.RegisterRequiresPostBack(this);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;
@@ -330,12 +295,8 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control.
-        /// </summary>
+        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             if (this.DictionaryValue != null)

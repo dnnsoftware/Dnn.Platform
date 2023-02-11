@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Themes.Components
 {
     using System;
@@ -33,12 +32,7 @@ namespace Dnn.PersonaBar.Themes.Components
 
         private static readonly object ThreadLocker = new object();
 
-        /// <summary>
-        /// Get Skins.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="level">portal level or host level.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<ThemeInfo> GetLayouts(PortalSettings portalSettings, ThemeLevel level)
         {
             var themes = new List<ThemeInfo>();
@@ -60,12 +54,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return themes;
         }
 
-        /// <summary>
-        /// Get Containers.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="level">portal level or host level.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<ThemeInfo> GetContainers(PortalSettings portalSettings, ThemeLevel level)
         {
             var themes = new List<ThemeInfo>();
@@ -87,12 +76,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return themes;
         }
 
-        /// <summary>
-        /// get skin files in the skin.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="theme"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<ThemeFileInfo> GetThemeFiles(PortalSettings portalSettings, ThemeInfo theme)
         {
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
@@ -152,6 +136,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return themeFiles;
         }
 
+        /// <inheritdoc />
         public ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type)
         {
             var themeName = SkinController.FormatSkinPath(filePath)
@@ -171,12 +156,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return null;
         }
 
-        /// <summary>
-        /// update portal skin.
-        /// </summary>
-        /// <param name="portalId">portal id.</param>
-        /// <param name="themeFile">skin info.</param>
-        /// <param name="scope">change skin or container.</param>
+        /// <inheritdoc />
         public void ApplyTheme(int portalId, ThemeFileInfo themeFile, ApplyThemeScope scope)
         {
             var skinPath = themeFile.Path + ".ascx";
@@ -211,12 +191,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// update portal skin.
-        /// </summary>
-        /// <param name="portalSettings">portal settings.</param>
-        /// <param name="themeName"></param>
-        /// <param name="level"></param>
+        /// <inheritdoc />
         public void ApplyDefaultTheme(PortalSettings portalSettings, string themeName, ThemeLevel level)
         {
             var skin = this.GetLayouts(portalSettings, ThemeLevel.All)
@@ -242,11 +217,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// delete a skin or container.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="themeFile"></param>
+        /// <inheritdoc />
         public void DeleteTheme(PortalSettings portalSettings, ThemeFileInfo themeFile)
         {
             var themePath = SkinController.FormatSkinSrc(themeFile.Path, portalSettings);
@@ -261,11 +232,7 @@ namespace Dnn.PersonaBar.Themes.Components
             DataCache.ClearPortalCache(portalSettings.PortalId, true);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="theme"></param>
+        /// <inheritdoc />
         public void DeleteThemePackage(PortalSettings portalSettings, ThemeInfo theme)
         {
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
@@ -309,11 +276,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// Update Theme Attributes.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="updateTheme"></param>
+        /// <inheritdoc />
         public void UpdateTheme(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
             var themePath = SkinController.FormatSkinSrc(updateTheme.Path + ".ascx", portalSettings);
@@ -349,12 +312,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// Parse skin package.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="theme"></param>
-        /// <param name="parseType"></param>
+        /// <inheritdoc />
         public void ParseTheme(PortalSettings portalSettings, ThemeInfo theme, ParseType parseType)
         {
             var strRootPath = Null.NullString;
@@ -472,8 +430,9 @@ namespace Dnn.PersonaBar.Themes.Components
                             objImage.Dispose();
                             objThumbnail.Dispose();
                         }
-                        catch (Exception ex) // problem creating thumbnail
+                        catch (Exception ex)
                         {
+                            // problem creating thumbnail
                             Logger.Error(ex);
                         }
                     }

@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Abstractions;
@@ -27,17 +29,12 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ManageUsers UserModuleBase is used to manage Users.
-    /// </summary>
+    /// <summary>The ManageUsers UserModuleBase is used to manage Users.</summary>
     public partial class ManageUsers : UserModuleBase, IActionable
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ManageUsers"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
         public ManageUsers()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -97,10 +94,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the current Page No.
-        /// </summary>
+        /// <summary>Gets or sets the current Page No.</summary>
         public int PageNo
         {
             get
@@ -120,10 +114,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to display the Manage Services tab.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to display the Manage Services tab.</summary>
         protected bool DisplayServices
         {
             get
@@ -133,10 +124,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Redirect URL (after successful registration).
-        /// </summary>
+        /// <summary>Gets the Redirect URL (after successful registration).</summary>
         protected string RedirectURL
         {
             get
@@ -168,8 +156,9 @@ namespace DotNetNuke.Modules.Admin.Users
                         redirectURL = this.navigationManager.NavigateURL();
                     }
                 }
-                else // redirect to after registration page
+                else
                 {
+                    // redirect to after registration page
                     redirectURL = this.navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
 
@@ -177,10 +166,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Return Url for the page.
-        /// </summary>
+        /// <summary>Gets the Return Url for the page.</summary>
         protected string ReturnUrl
         {
             get
@@ -189,10 +175,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Filter to use.
-        /// </summary>
+        /// <summary>Gets and sets the Filter to use.</summary>
         protected string UserFilter
         {
             get
@@ -220,9 +203,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether flag to indicate only edit profile.
-        /// </summary>
+        /// <summary>Gets a value indicating whether flag to indicate only edit profile.</summary>
         protected bool EditProfileMode
         {
             get
@@ -235,12 +216,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Init runs when the control is initialised.</summary>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -310,12 +286,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -335,21 +306,24 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this.navigationManager.NavigateURL(), true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdRegister_Click runs when the Register button is clicked.
-        /// </summary>
+        /// <summary>cmdRegister_Click runs when the Register button is clicked.</summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             if (this.IsAdmin == false && this.HasManageUsersModulePermission() == false)
@@ -370,12 +344,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.</summary>
         protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -389,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -632,12 +601,7 @@ namespace DotNetNuke.Modules.Admin.Users
             return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "MANAGEUSER");
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ModuleAction_Click handles all ModuleAction events raised from the skin.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>ModuleAction_Click handles all ModuleAction events raised from the skin.</summary>
         /// <param name="sender"> The object that triggers the event.</param>
         /// <param name="e">An ActionEventArgs object.</param>
         private void ModuleAction_Click(object sender, ActionEventArgs e)
@@ -661,12 +625,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipAuthorized runs when the User has been unlocked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>MembershipAuthorized runs when the User has been unlocked.</summary>
         private void MembershipAuthorized(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -687,19 +646,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipPromoteToSuperuser runs when the User has been promoted to a superuser.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>MembershipPromoteToSuperuser runs when the User has been promoted to a superuser.</summary>
         private void MembershipPromoteToSuperuser(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -713,19 +666,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipDemoteFromSuperuser runs when the User has been demoted to a regular user.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>MembershipDemoteFromSuperuser runs when the User has been demoted to a regular user.</summary>
         private void MembershipDemoteFromSuperuser(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -739,18 +686,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipUnAuthorized runs when the User has been unlocked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>MembershipUnAuthorized runs when the User has been unlocked.</summary>
         private void MembershipUnAuthorized(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -764,18 +706,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipUnLocked runs when the User has been unlocked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>MembershipUnLocked runs when the User has been unlocked.</summary>
         private void MembershipUnLocked(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -788,18 +725,13 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.AddModuleMessage("UserUnLocked", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.</summary>
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsAdmin == false)
@@ -818,12 +750,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// PasswordUpdated runs when the Password has been updated or reset.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>PasswordUpdated runs when the Password has been updated or reset.</summary>
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsAdmin == false)
@@ -864,12 +791,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProfileUpdateCompleted runs when the Profile has been updated.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>ProfileUpdateCompleted runs when the Profile has been updated.</summary>
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -897,12 +819,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UserCreateCompleted runs when a new user has been Created.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>UserCreateCompleted runs when a new user has been Created.</summary>
         private void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             try
@@ -917,36 +834,26 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UserDeleted runs when the User has been deleted.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>UserDeleted runs when the User has been deleted.</summary>
         private void UserDeleted(object sender, UserUserControlBase.UserDeletedEventArgs e)
         {
             try
             {
                 this.Response.Redirect(this.ReturnUrl, true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UserUpdateCompleted runs when a user has been updated.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>UserUpdateCompleted runs when a user has been updated.</summary>
         private void UserRestored(object sender, UserUserControlBase.UserRestoredEventArgs e)
         {
             try
@@ -981,12 +888,7 @@ namespace DotNetNuke.Modules.Admin.Users
             HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UserUpdateError runs when there is an error updating the user.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>UserUpdateError runs when there is an error updating the user.</summary>
         private void UserUpdateError(object sender, UserUserControlBase.UserUpdateErrorArgs e)
         {
             this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);

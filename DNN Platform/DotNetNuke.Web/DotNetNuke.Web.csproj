@@ -212,6 +212,16 @@
     <Compile Include="ConfigSection\MessageHandlerEntry.cs" />
     <Compile Include="ConfigSection\MessageHandlersCollection.cs" />
     <Compile Include="DependencyInjection\BuildUpExtensions.cs" />
+    <Compile Include="InternalServices\PublishPageDto.cs" />
+    <Compile Include="Mvp\IModuleView{TModel}.cs" />
+    <Compile Include="Mvp\ISettingsView{TModel}.cs" />
+    <Compile Include="Mvp\IWebServiceView{TModel}.cs" />
+    <Compile Include="Mvp\ModulePresenter{TView,TModel}.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenterBase{TView}.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenter{TView,TModel}.cs" />
+    <Compile Include="Mvp\ModuleView{TModel}.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Prompt\ListServices.cs" />
     <Compile Include="Models\ModuleDetail.cs" />
     <Compile Include="Models\ModuleInstance.cs" />
@@ -240,8 +250,6 @@
     <Compile Include="InternalServices\Views\Search\BasicView.cs" />
     <Compile Include="InternalServices\Views\Search\DetailedView.cs" />
     <Compile Include="Models\TabModule.cs" />
-    <Compile Include="Mvp\ModuleSettingsPresenterOfT.cs" />
-    <Compile Include="Mvp\ISettingsViewOfT.cs" />
     <Compile Include="Mvp\ProfileModuleViewBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -262,6 +270,7 @@
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="DependencyInjectionInitialize.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UI\DotNetNukeException.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
@@ -284,7 +293,6 @@
     <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
     <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
-    <Compile Include="Mvp\IWebServiceViewOfT.cs" />
     <Compile Include="Mvp\IWebServiceView.cs" />
     <Compile Include="Mvp\WebServicePresenter.cs" />
     <Compile Include="Mvp\WebServiceView.cs">
@@ -298,9 +306,7 @@
     <Compile Include="Mvp\HttpHandlerView.cs" />
     <Compile Include="Mvp\IHttpHandlerView.cs" />
     <Compile Include="Mvp\IModuleViewBase.cs" />
-    <Compile Include="Mvp\IModuleViewOfT.cs" />
     <Compile Include="Mvp\ISettingsView.cs" />
-    <Compile Include="Mvp\ModuleSettingsPresenter.cs" />
     <Compile Include="Mvp\SettingsViewBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -358,8 +364,10 @@
     <Compile Include="UI\WebControls\Internal\DnnModuleComboBox.cs" />
     <Compile Include="UI\WebControls\Internal\DnnScriptBlock.cs" />
     <Compile Include="UI\WebControls\Internal\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\OptionItem.cs" />
     <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\RenderOption.cs" />
     <Compile Include="UI\WebControls\Internal\TermsSelector.cs" />
     <Compile Include="UI\WebControls\ItemListOptions.cs" />
     <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
@@ -398,11 +406,7 @@
   <ItemGroup>
     <Compile Include="Mvp\IModuleView.cs" />
     <Compile Include="Mvp\ModulePresenterBase.cs" />
-    <Compile Include="Mvp\ModulePresenterOfT.cs" />
     <Compile Include="Mvp\ModuleViewBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Mvp\ModuleViewOfT.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\WebControls\DnnCheckBox.cs" />

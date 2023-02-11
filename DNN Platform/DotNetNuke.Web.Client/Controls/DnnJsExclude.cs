@@ -8,9 +8,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     public class DnnJsExclude : ClientResourceExclude
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnJsExclude"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnJsExclude"/> class.</summary>
         public DnnJsExclude()
         {
             this.DependencyType = ClientDependency.Core.ClientDependencyType.Javascript;

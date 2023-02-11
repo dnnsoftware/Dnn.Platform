@@ -8,15 +8,11 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Services.Search.Entities;
 
-    /// <summary>
-    /// Modules participating in Search should inherit from this class. A scheduled job will call the methods from this class.
-    /// </summary>
+    /// <summary>Modules participating in Search should inherit from this class. A scheduled job will call the methods from this class.</summary>
     /// <remarks>Since the methods will be called through a Scheduled job, there will be no Portal Context available by the module to take advantage of.</remarks>
     public abstract class ModuleSearchBase
     {
-        /// <summary>
-        /// Return a list of Modified Search Documents based on date. The documents will be stored in Search Index.
-        /// </summary>
+        /// <summary>Return a list of Modified Search Documents based on date. The documents will be stored in Search Index.</summary>
         /// <param name="moduleInfo">Module Info.</param>
         /// <param name="beginDateUtc">Provide modified content from this time in Utc.</param>
         /// <returns>Collection of SearchDocument.</returns>

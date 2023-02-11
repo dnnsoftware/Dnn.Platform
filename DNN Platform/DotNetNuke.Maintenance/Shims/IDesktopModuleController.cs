@@ -6,9 +6,7 @@ namespace DotNetNuke.Maintenance.Shims
 {
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// An abstraction of the <see cref="DesktopModuleController"/> class to enable DI and unit testing.
-    /// </summary>
+    /// <summary>An abstraction of the <see cref="DesktopModuleController"/> class to enable DI and unit testing.</summary>
     internal interface IDesktopModuleController
     {
         /// <inheritdoc cref="DesktopModuleController.GetDesktopModuleByModuleName(string, int)" />

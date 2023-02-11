@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Prompt.Services
 {
     using System;
@@ -11,10 +10,9 @@ namespace Dnn.PersonaBar.Prompt.Services
     using System.Text;
     using System.Web.Http;
 
-    // Copyright (c) .NET Foundation. All rights reserved.
-    // Licensed under the MIT License. See LICENSE file in the project root for full license information.
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Prompt.Common;
     using Dnn.PersonaBar.Prompt.Components;
     using Dnn.PersonaBar.Prompt.Components.Models;
@@ -74,7 +72,6 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-
         public HttpResponseMessage Cmd(int portalId, [FromBody] CommandInputModel command)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
@@ -94,7 +91,6 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-
         public HttpResponseMessage Cmd([FromBody] CommandInputModel command)
         {
             var startTime = DateTime.Now;
@@ -121,7 +117,11 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
                 else if (isHelpCmd && args.Length == 1)
                 {
-                    return this.AddLogAndReturnResponse(null, null, command, startTime,
+                    return this.AddLogAndReturnResponse(
+                        null,
+                        null,
+                        command,
+                        startTime,
                         string.Format(
                             Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
@@ -239,8 +239,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command,
-            DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -263,7 +262,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
 
                             var args = command.Args;
                             var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
@@ -286,7 +286,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
                         }
                     }
 
@@ -311,17 +312,14 @@ namespace Dnn.PersonaBar.Prompt.Services
             return message;
         }
 
-        /// <summary>
-        /// Log every command run by a users.
-        /// </summary>
+        /// <summary>Log every command run by a users.</summary>
         /// <param name="consoleCommand"></param>
         /// <param name="cmdTypeToRun"></param>
         /// <param name="command"></param>
         /// <param name="startTime"></param>
         /// <param name="error"></param>
-        /// <returns></returns>
-        private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command,
-            DateTime startTime, string error = null)
+        /// <returns>A <see cref="ConsoleResultModel"/> response.</returns>
+        private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -348,7 +346,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
 
                             var args = command.Args;
                             var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
@@ -371,7 +370,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
                         }
                     }
 

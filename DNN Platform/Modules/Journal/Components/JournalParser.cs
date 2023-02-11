@@ -36,9 +36,7 @@ namespace DotNetNuke.Modules.Journal.Components
         private bool isAdmin;
         private bool isUnverifiedUser;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalParser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalParser"/> class.</summary>
         /// <param name="portalSettings"></param>
         /// <param name="moduleId"></param>
         /// <param name="profileId"></param>
@@ -115,8 +113,13 @@ namespace DotNetNuke.Modules.Journal.Components
             IList<JournalItem> journalList;
             if (this.JournalId > 0)
             {
-                var journal = JournalController.Instance.GetJournalItem(this.PortalSettings.PortalId, this.CurrentUser.UserID,
-                                                                        this.JournalId, false, false, true);
+                var journal = JournalController.Instance.GetJournalItem(
+                    this.PortalSettings.PortalId,
+                    this.CurrentUser.UserID,
+                    this.JournalId,
+                    false,
+                    false,
+                    true);
                 journalList = new List<JournalItem>();
                 if (journal != null)
                 {

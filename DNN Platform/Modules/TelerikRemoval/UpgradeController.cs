@@ -17,16 +17,12 @@ namespace Dnn.Modules.TelerikRemoval
     using DotNetNuke.Services.Upgrade;
     using DotNetNuke.Web;
 
-    /// <summary>
-    /// An <see cref="IUpgradeable"/> implementation.
-    /// </summary>
+    /// <summary>An <see cref="IUpgradeable"/> implementation.</summary>
     public class UpgradeController : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeController));
 
-        /// <summary>
-        /// Key of the Telerik unintall option in the host settings.
-        /// </summary>
+        /// <summary>Key of the Telerik unintall option in the host settings.</summary>
         private static readonly string TelerikUninstallOptionSettingKey = "telerikUninstallOption";
 
         private readonly IServiceProvider serviceProvider = GetServiceProvider();

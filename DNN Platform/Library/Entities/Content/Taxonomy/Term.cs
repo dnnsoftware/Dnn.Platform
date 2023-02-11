@@ -16,9 +16,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Security;
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Major class of Taxonomy.
-    /// </summary>
+    /// <summary>Major class of Taxonomy.</summary>
     /// <remarks>
     /// <para>
     /// Taxonomy is defined as “the practice and science of classification” – Wikipedia,
@@ -62,35 +60,27 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private int vocabularyId;
         private int weight;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Term"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
         public Term()
             : this(Null.NullString, Null.NullString, Null.NullInteger)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Term"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
         /// <param name="vocabularyId"></param>
         public Term(int vocabularyId)
             : this(Null.NullString, Null.NullString, vocabularyId)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Term"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
         /// <param name="name"></param>
         public Term(string name)
             : this(name, Null.NullString, Null.NullInteger)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Term"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
         public Term(string name, string description)
@@ -98,9 +88,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Term"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="vocabularyId"></param>

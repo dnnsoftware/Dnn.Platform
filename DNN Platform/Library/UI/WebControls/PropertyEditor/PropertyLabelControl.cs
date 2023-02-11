@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -18,32 +19,30 @@ namespace DotNetNuke.UI.WebControls
     /// The PropertyLabelControl control provides a standard UI component for displaying
     /// a label for a property. It contains a Label and Help Text and can be Data Bound.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [ToolboxData("<{0}:PropertyLabelControl runat=server></{0}:PropertyLabelControl>")]
     public class PropertyLabelControl : WebControl
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl label;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblHelp;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblLabel;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlTooltip;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlHelp;
         private string resourceKey;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyLabelControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PropertyLabelControl"/> class.</summary>
         public PropertyLabelControl()
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the value of the Label Style.
-        /// </summary>
+        /// <summary>Gets and sets the value of the Label Style.</summary>
         /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -58,12 +57,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the value of the Label Style.
-        /// </summary>
+        /// <summary>Gets and sets the value of the Label Style.</summary>
         /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -78,9 +73,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and Sets the Caption Text if no ResourceKey is provided.
-        /// </summary>
+        /// <summary>Gets or sets the Caption Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Caption.</value>
         [Browsable(true)]
         [Category("Appearance")]
@@ -116,16 +109,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and Sets the related Edit Control.
-        /// </summary>
+        /// <summary>Gets or sets the related Edit Control.</summary>
         /// <value>A Control.</value>
         [Browsable(false)]
         public Control EditControl { get; set; }
 
-        /// <summary>
-        /// Gets or sets text is value of the Label Text if no ResourceKey is provided.
-        /// </summary>
+        /// <summary>Gets or sets text is value of the Label Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Text.</value>
         [Browsable(true)]
         [Category("Appearance")]
@@ -146,9 +135,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets resourceKey is the root localization key for this control.
-        /// </summary>
+        /// <summary>Gets or sets resourceKey is the root localization key for this control.</summary>
         /// <value>A string representing the Resource Key.</value>
         /// <remarks>This control will "standardise" the resource key names, so for instance
         /// if the resource key is "Control", Control.Text is the label text key, Control.Help
@@ -197,9 +184,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that is bound to the Label.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that is bound to the Label.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -207,9 +192,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that is data bound to the Label's Text property.")]
         public string DataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the DataSource that is bound to this control.
-        /// </summary>
+        /// <summary>Gets or sets the DataSource that is bound to this control.</summary>
         /// <value>The DataSource object.</value>
         [Browsable(false)]
         public object DataSource { get; set; }
@@ -225,9 +208,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// CreateChildControls creates the control collection.
-        /// </summary>
+        /// <summary>CreateChildControls creates the control collection.</summary>
         protected override void CreateChildControls()
         {
             this.CssClass += "dnnLabel";

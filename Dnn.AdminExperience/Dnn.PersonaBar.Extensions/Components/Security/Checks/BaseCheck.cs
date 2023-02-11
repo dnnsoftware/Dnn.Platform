@@ -9,16 +9,12 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Base class for security checks.
-    /// </summary>
+    /// <summary>Base class for security checks.</summary>
     public abstract class BaseCheck : IAuditCheck
     {
         private readonly Lazy<ILog> logger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCheck"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BaseCheck"/> class.</summary>
         public BaseCheck()
         {
             this.logger = new Lazy<ILog>(() => LoggerSource.Instance.GetLogger(this.GetType()));
@@ -30,15 +26,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         /// <inheritdoc cref="IAuditCheck.LazyLoad" />
         public virtual bool LazyLoad => false;
 
-        /// <summary>
-        /// Gets the path to the resources file (.resx).
-        /// </summary>
+        /// <summary>Gets the path to the resources file (.resx).</summary>
         protected virtual string LocalResourceFile =>
             "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
 
-        /// <summary>
-        /// Gets a typed instance of the <see cref="ILog"/> interface.
-        /// </summary>
+        /// <summary>Gets a typed instance of the <see cref="ILog"/> interface.</summary>
         protected virtual ILog Logger => this.logger.Value;
 
         /// <inheritdoc cref="IAuditCheck.Execute" />
@@ -55,9 +47,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
         }
 
-        /// <summary>
-        /// Performs the actual security check.
-        /// </summary>
+        /// <summary>Performs the actual security check.</summary>
         /// <returns>A <see cref="CheckResult"/> with the outcome of the security check.</returns>
         protected abstract CheckResult ExecuteInternal();
 
@@ -67,9 +57,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return Localization.GetString(this.Id + key, this.LocalResourceFile);
         }
 
-        /// <summary>
-        /// Returns an "unverified" result.
-        /// </summary>
+        /// <summary>Returns an "unverified" result.</summary>
         /// <param name="reason">The reason why we are returning an unverified result.
         /// This text will be displayed in the Notes column.</param>
         /// <returns>A <see cref="CheckResult"/> with a <see cref="CheckResult.Severity"/>

@@ -18,9 +18,7 @@ namespace Dnn.PersonaBar.Library.Attributes
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class MenuPermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        /// <summary>
-        /// Gets or sets the default service scope when <see cref="MenuName"/> is not defined.
-        /// </summary>
+        /// <summary>Gets or sets the default service scope when <see cref="MenuName"/> is not defined.</summary>
         public ServiceScope Scope { get; set; }
 
         /// <summary>

@@ -35,14 +35,10 @@ namespace DotNetNuke.UI.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
     /// Class    : ModuleHost
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ModuleHost hosts a Module Control (or its cached Content).
-    /// </summary>
+    /// <summary>ModuleHost hosts a Module Control (or its cached Content).</summary>
     public sealed class ModuleHost : Panel
     {
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
@@ -59,13 +55,10 @@ namespace DotNetNuke.UI.Modules
         private Control control;
         private bool isCached;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleHost"/> class.
         /// Creates a Module Host control using the ModuleConfiguration for the Module.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
             this.ID = "ModuleContent";
@@ -74,10 +67,7 @@ namespace DotNetNuke.UI.Modules
             this.Skin = skin;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the attached ModuleControl.
-        /// </summary>
+        /// <summary>Gets the attached ModuleControl.</summary>
         /// <returns>An IModuleControl.</returns>
         public IModuleControl ModuleControl
         {
@@ -89,10 +79,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the current POrtal Settings.
-        /// </summary>
+        /// <summary>Gets the current POrtal Settings.</summary>
         public PortalSettings PortalSettings
         {
             get
@@ -105,33 +92,25 @@ namespace DotNetNuke.UI.Modules
 
         public Skins.Skin Skin { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that indicates whether the Module is in View Mode.
-        /// </summary>
+        /// <summary>Gets a flag that indicates whether the Module is in View Mode.</summary>
         /// <returns>A Boolean.</returns>
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
             bool viewMode;
 
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString,
-                                                              moduleInfo))
+            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString, moduleInfo))
             {
                 viewMode = false;
             }
             else
             {
-                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
-                                                              moduleInfo);
+                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, moduleInfo);
             }
 
             return viewMode || Personalization.GetUserMode() == PortalSettings.Mode.View;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateChildControls builds the control tree.
-        /// </summary>
+        /// <summary>CreateChildControls builds the control tree.</summary>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -177,10 +156,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderContents renders the contents of the control to the output stream.
-        /// </summary>
+        /// <summary>RenderContents renders the contents of the control to the output stream.</summary>
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (this.isCached)
@@ -298,10 +274,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// ----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that indicates whether the Module Content should be displayed.
-        /// </summary>
+        /// <summary>Gets a flag that indicates whether the Module Content should be displayed.</summary>
         /// <returns>A Boolean.</returns>
         private bool DisplayContent()
         {
@@ -330,10 +303,7 @@ namespace DotNetNuke.UI.Modules
             return content;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadModuleControl loads the ModuleControl (PortalModuelBase).
-        /// </summary>
+        /// <summary>LoadModuleControl loads the ModuleControl (PortalModuelBase).</summary>
         private void LoadModuleControl()
         {
             try
@@ -353,8 +323,9 @@ namespace DotNetNuke.UI.Modules
                         this.control = this.moduleControlPipeline.LoadModuleControl(this.Page, this.moduleConfiguration);
                     }
                 }
-                else // content placeholder
+                else
                 {
+                    // content placeholder
                     this.control = this.moduleControlPipeline.CreateModuleControl(this.moduleConfiguration);
                 }
 
@@ -396,9 +367,7 @@ namespace DotNetNuke.UI.Modules
             this.control.ViewStateMode = ViewStateMode.Enabled;
         }
 
-        /// <summary>
-        /// LoadUpdatePanel optionally loads an AJAX Update Panel.
-        /// </summary>
+        /// <summary>LoadUpdatePanel optionally loads an AJAX Update Panel.</summary>
         private void LoadUpdatePanel()
         {
             // register AJAX
@@ -444,20 +413,14 @@ namespace DotNetNuke.UI.Modules
             this.Controls.Add(updateProgress);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that indicates whether the Module Instance supports Caching.
-        /// </summary>
+        /// <summary>Gets a flag that indicates whether the Module Instance supports Caching.</summary>
         /// <returns>A Boolean.</returns>
         private bool SupportsCaching()
         {
             return this.moduleConfiguration.CacheTime > 0;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Trys to load previously cached Module Content.
-        /// </summary>
+        /// <summary>Trys to load previously cached Module Content.</summary>
         /// <returns>A Boolean that indicates whether the cahed content was loaded.</returns>
         private bool TryLoadCached()
         {

@@ -12,9 +12,7 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly int length = Null.NullInteger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaxLengthAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MaxLengthAttribute"/> class.</summary>
         public MaxLengthAttribute(int length)
         {
             this.length = length;

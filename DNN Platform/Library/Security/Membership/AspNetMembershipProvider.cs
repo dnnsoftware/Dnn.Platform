@@ -29,18 +29,7 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Provider.AspNetProvider
-    /// Class:      AspNetMembershipProvider
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The AspNetMembershipProvider overrides the default MembershipProvider to provide
-    /// an AspNet Membership Component (MemberRole) implementation.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The AspNetMembershipProvider overrides the default MembershipProvider to provide an AspNet Membership Component (MemberRole) implementation.</summary>
     public class AspNetMembershipProvider : MembershipProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetMembershipProvider));
@@ -251,11 +240,7 @@ namespace DotNetNuke.Security.Membership
             return objUserInfo;
         }
 
-        /// <summary>
-        /// add new userportal record (used for creating sites with existing user).
-        /// </summary>
-        /// <param name="portalId">portalid.</param>
-        /// <param name="userId">userid.</param>
+        /// <inheritdoc />
         public override void AddUserPortal(int portalId, int userId)
         {
             Requires.NotNullOrEmpty("portalId", portalId.ToString());
@@ -263,11 +248,7 @@ namespace DotNetNuke.Security.Membership
             this.dataProvider.AddUserPortal(portalId, userId);
         }
 
-        /// <summary>
-        /// function supports the ability change username.
-        /// </summary>
-        /// <param name="userId">user id.</param>
-        /// <param name="newUsername">updated username.</param>
+        /// <inheritdoc />
         public override void ChangeUsername(int userId, string newUsername)
         {
             Requires.NotNull("userId", userId);
@@ -275,9 +256,7 @@ namespace DotNetNuke.Security.Membership
 
             var userName = PortalSecurity.Instance.InputFilter(
                 newUsername,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             if (!userName.Equals(newUsername))
             {
@@ -322,17 +301,7 @@ namespace DotNetNuke.Security.Membership
             DataCache.ClearCache();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ChangePassword attempts to change the users password.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to update.</param>
-        /// <param name="oldPassword">The old password.</param>
-        /// <param name="newPassword">The new password.</param>
-        /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
             MembershipUser aspnetUser = GetMembershipUser(user);
@@ -366,21 +335,8 @@ namespace DotNetNuke.Security.Membership
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
-        /// and PasswordAnswer.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to update.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="passwordQuestion">The new password question.</param>
-        /// <param name="passwordAnswer">The new password answer.</param>
-        /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
-        public override bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion,
-                                                             string passwordAnswer)
+        /// <inheritdoc />
+        public override bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
             MembershipUser aspnetUser = GetMembershipUser(user);
             if (password == Null.NullString)
@@ -391,15 +347,7 @@ namespace DotNetNuke.Security.Membership
             return aspnetUser.ChangePasswordQuestionAndAnswer(password, passwordQuestion, passwordAnswer);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateUser persists a User to the Data Store.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to persist to the Data Store.</param>
-        /// <returns>A UserCreateStatus enumeration indicating success or reason for failure.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
             UserCreateStatus createStatus = this.ValidateForProfanity(user);
@@ -472,8 +420,9 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
                 }
-                catch (Exception exc) // an unexpected error occurred
+                catch (Exception exc)
                 {
+                    // an unexpected error occurred
                     Exceptions.LogException(exc);
                     createStatus = UserCreateStatus.UnexpectedError;
                 }
@@ -482,15 +431,7 @@ namespace DotNetNuke.Security.Membership
             return createStatus;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteUser deletes a single User from the Data Store.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to delete from the Data Store.</param>
-        /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override bool DeleteUser(UserInfo user)
         {
             bool retValue = true;
@@ -507,39 +448,20 @@ namespace DotNetNuke.Security.Membership
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes all UserOnline inof from the database that has activity outside of the
-        /// time window.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="timeWindow">Time Window in Minutes.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DeleteUsersOnline(int timeWindow)
         {
             this.dataProvider.DeleteUsersOnline(timeWindow);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Generates a new random password (Length = Minimum Length + 4).
-        /// </summary>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override string GeneratePassword()
         {
             return this.GeneratePassword(this.MinPasswordLength + 4);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Generates a new random password.
-        /// </summary>
-        /// <param name="length">The length of password to generate.</param>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override string GeneratePassword(int length)
         {
             return System.Web.Security.Membership.GeneratePassword(length, this.MinNonAlphanumericCharacters);
@@ -551,13 +473,7 @@ namespace DotNetNuke.Security.Membership
             return FillUserCollection(portalId, this.dataProvider.GetDeletedUsers(portalId));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a collection of Online Users.
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override ArrayList GetOnlineUsers(int portalId)
         {
@@ -565,17 +481,7 @@ namespace DotNetNuke.Security.Membership
             return FillUserCollection(portalId, this.dataProvider.GetOnlineUsers(portalId), ref totalRecords);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Current Password Information for the User.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to delete from the Data Store.</param>
-        /// <param name="passwordAnswer">The answer to the Password Question, ues to confirm the user
-        /// has the right to obtain the password.</param>
-        /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override string GetPassword(UserInfo user, string passwordAnswer)
         {
             MembershipUser aspnetUser = GetMembershipUser(user);
@@ -601,16 +507,7 @@ namespace DotNetNuke.Security.Membership
                 this.dataProvider.GetUnAuthorizedUsers(portalId, includeDeleted, superUsersOnly));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override UserInfo GetUser(int portalId, int userId)
         {
             IDataReader dr = this.dataProvider.GetUser(portalId, userId);
@@ -619,7 +516,6 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc />
-
         public override UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
             IDataReader dr = this.dataProvider.GetUserByDisplayName(portalId, displayName);
@@ -627,39 +523,18 @@ namespace DotNetNuke.Security.Membership
             return objUserInfo;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore. Supports user caching in memory cache.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="username">The username of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override UserInfo GetUserByUserName(int portalId, string username)
         {
-            var objUserInfo = CBO.GetCachedObject<UserInfo>(
+            return CBO.GetCachedObject<UserInfo>(
                 new CacheItemArgs(
                     string.Format(DataCache.UserCacheKey, portalId, username),
-                    DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
-                _ =>
-                {
-                    return this.GetUserByUserNameFromDataStore(portalId, username);
-                });
-            return objUserInfo;
+                    DataCache.UserCacheTimeOut,
+                    DataCache.UserCachePriority),
+                _ => this.GetUserByUserNameFromDataStore(portalId, username));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserByVanityUrl retrieves a User from the DataStore.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="vanityUrl">The vanityUrl of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             UserInfo user = null;
@@ -672,16 +547,7 @@ namespace DotNetNuke.Security.Membership
             return user;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserByPasswordResetToken retrieves a User from the DataStore.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="resetToken">The password reset token.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
         {
             UserInfo user = null;
@@ -712,28 +578,13 @@ namespace DotNetNuke.Security.Membership
             return this.GetUserByUserName(portalId, userName);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserCountByPortal gets the number of users in the portal.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <returns>The no of users.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override int GetUserCountByPortal(int portalId)
         {
             return this.dataProvider.GetUserCountByPortal(portalId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserMembership retrieves the UserMembership information from the Data Store.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user whose Membership information we are retrieving.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void GetUserMembership(ref UserInfo user)
         {
             // Get AspNet MembershipUser
@@ -746,37 +597,14 @@ namespace DotNetNuke.Security.Membership
             user.Membership.IsOnLine = this.IsUserOnline(user);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsers gets all the users of the portal.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords)
         {
             return this.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsers gets all the users of the portal.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords,
-                                           bool includeDeleted, bool superUsersOnly)
+        /// <inheritdoc />
+        public override ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -784,72 +612,60 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId, this.dataProvider.GetAllUsers(portalId, pageIndex, pageSize, includeDeleted,
-                                                                superUsersOnly), ref totalRecords);
+            return FillUserCollection(
+                portalId,
+                this.dataProvider.GetAllUsers(
+                    portalId,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
         /// <inheritdoc/>
-        public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId,
-                                                               int filterRoleId, int relationshipTypeId,
-                                                               bool isAdmin, int pageIndex, int pageSize,
-                                                               string sortColumn,
-                                                               bool sortAscending, string propertyNames,
-                                                               string propertyValues)
+        public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationshipTypeId, bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames, string propertyValues)
         {
             return FillUserList(
                 portalId,
-                this.dataProvider.GetUsersAdvancedSearch(portalId, userId, filterUserId, filterRoleId,
-                                                                     relationshipTypeId, isAdmin, pageIndex, pageSize,
-                                                                     sortColumn, sortAscending, propertyNames,
-                                                                     propertyValues));
+                this.dataProvider.GetUsersAdvancedSearch(
+                    portalId,
+                    userId,
+                    filterUserId,
+                    filterRoleId,
+                    relationshipTypeId,
+                    isAdmin,
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortAscending,
+                    propertyNames,
+                    propertyValues));
         }
 
         /// <inheritdoc/>
-        public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
-                                                            bool sortAscending, string propertyName,
-                                                            string propertyValue)
+        public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyName, string propertyValue)
         {
-            return FillUserList(portalId, this.dataProvider.GetUsersBasicSearch(portalId, pageIndex, pageSize,
-                                                                            sortColumn, sortAscending, propertyName,
-                                                                            propertyValue));
+            return FillUserList(
+                portalId,
+                this.dataProvider.GetUsersBasicSearch(
+                    portalId,
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortAscending,
+                    propertyName,
+                    propertyValue));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByEmail gets all the users of the portal whose email matches a provided
-        /// filter expression.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="emailToMatch">The email address to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize,
-                                                  ref int totalRecords)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return this.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByEmail gets all the users of the portal whose email matches a provided
-        /// filter expression.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="emailToMatch">The email address to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize,
-                                                  ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -859,46 +675,24 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize,
-                                                                    includeDeleted, superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByEmail(
+                    portalId,
+                    emailToMatch,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByUserName gets all the users of the portal whose username matches a provided
-        /// filter expression.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userNameToMatch">The username to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize,
-                                                     ref int totalRecords)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return this.GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords, false, false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByUserName gets all the users of the portal whose username matches a provided
-        /// filter expression.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userNameToMatch">The username to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize,
-                                                     ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -908,27 +702,18 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByUsername(portalId, userNameToMatch, pageIndex, pageSize,
-                                                                       includeDeleted, superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByUsername(
+                    portalId,
+                    userNameToMatch,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByDisplayName gets all the users of the portal whose display name matches a provided
-        /// filter expression.
-        /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="nameToMatch">The display name to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize,
-                                                     ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -938,52 +723,32 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByDisplayname(portalId, nameToMatch, pageIndex, pageSize,
-                                                                       includeDeleted, superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByDisplayname(
+                    portalId,
+                    nameToMatch,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByProfileProperty gets all the users of the portal whose profile matches
-        /// the profile property pased as a parameter.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="propertyName">The name of the property being matched.</param>
-        /// <param name="propertyValue">The value of the property being matched.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue,
-                                                            int pageIndex, int pageSize, ref int totalRecords)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords)
         {
-            return this.GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize,
-                                             ref totalRecords, false, false);
+            return this.GetUsersByProfileProperty(
+                portalId,
+                propertyName,
+                propertyValue,
+                pageIndex,
+                pageSize,
+                ref totalRecords,
+                false,
+                false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUsersByProfileProperty gets all the users of the portal whose profile matches
-        /// the profile property pased as a parameter.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="propertyName">The name of the property being matched.</param>
-        /// <param name="propertyValue">The value of the property being matched.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue,
-                                                            int pageIndex, int pageSize, ref int totalRecords,
-                                                            bool includeDeleted, bool superUsersOnly)
+        /// <inheritdoc />
+        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -993,20 +758,18 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByProfileProperty(portalId, propertyName, propertyValue,
-                                                                              pageIndex, pageSize, includeDeleted,
-                                                                              superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByProfileProperty(
+                    portalId,
+                    propertyName,
+                    propertyValue,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether the user in question is online.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user.</param>
-        /// <returns>A Boolean indicating whether the user is online.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override bool IsUserOnline(UserInfo user)
         {
@@ -1064,16 +827,7 @@ namespace DotNetNuke.Security.Membership
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ResetPassword resets a user's password and returns the newly created password.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to update.</param>
-        /// <param name="passwordAnswer">The answer to the user's password Question.</param>
-        /// <returns>The new Password.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override string ResetPassword(UserInfo user, string passwordAnswer)
         {
             // Get AspNet MembershipUser
@@ -1082,14 +836,7 @@ namespace DotNetNuke.Security.Membership
             return this.RequiresQuestionAndAnswer ? aspnetUser.ResetPassword(passwordAnswer) : aspnetUser.ResetPassword();
         }
 
-        /// <summary>
-        /// function sets user specific password reset token and timeout
-        /// works for all PasswordFormats as it resets and then changes the password
-        /// so old password is not required
-        /// method does not support RequiresQuestionAndAnswer.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
             return this.ResetAndChangePassword(user, newPassword, string.Empty);
@@ -1132,15 +879,7 @@ namespace DotNetNuke.Security.Membership
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Unlocks the User's Account.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user whose account is being Unlocked.</param>
-        /// <returns>True if successful, False if unsuccessful.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override bool UnLockUser(UserInfo user)
         {
             MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);
@@ -1154,73 +893,40 @@ namespace DotNetNuke.Security.Membership
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// User has agreed to terms and conditions for the portal.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The agreeing user.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void UserAgreedToTerms(UserInfo user)
         {
             this.dataProvider.UserAgreedToTerms(PortalController.GetEffectivePortalId(user.PortalID), user.UserID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Reset all agreements on portal so all users need to agree again at next login.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">Portal for which to reset agreements.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void ResetTermsAgreement(int portalId)
         {
             this.dataProvider.ResetTermsAgreement(portalId);
         }
 
-        /// <summary>
-        /// Sets a boolean on the user portal to indicate this user has requested that their account be deleted.
-        /// </summary>
-        /// <param name="user">User requesting removal.</param>
-        /// <param name="remove">True if user requests removal, false if the value needs to be reset.</param>
+        /// <inheritdoc />
         public override void UserRequestsRemoval(UserInfo user, bool remove)
         {
             this.dataProvider.UserRequestsRemoval(user.PortalID, user.UserID, remove);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateUser persists a user to the Data Store.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="user">The user to persist to the Data Store.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void UpdateUser(UserInfo user)
         {
             var objSecurity = PortalSecurity.Instance;
             string firstName = objSecurity.InputFilter(
                 user.FirstName,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                       PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string lastName = objSecurity.InputFilter(
                 user.LastName,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string email = objSecurity.InputFilter(
                 user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                   PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                   PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string displayName = objSecurity.InputFilter(
                 user.DisplayName,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             if (displayName.Contains("<"))
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
@@ -1269,54 +975,21 @@ namespace DotNetNuke.Security.Membership
             ProfileController.UpdateUserProfile(user);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates UserOnline info
-        /// time window.
-        /// </summary>
-        /// <param name="userList">List of users to update.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void UpdateUsersOnline(Hashtable userList)
         {
             this.dataProvider.UpdateUsersOnline(userList);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UserLogin attempts to log the user in, and returns the User if successful.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="username">The user name of the User attempting to log in.</param>
-        /// <param name="password">The password of the User attempting to log in.</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
-        /// <param name="loginStatus">An enumerated value indicating the login status.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
-        public override UserInfo UserLogin(int portalId, string username, string password, string verificationCode,
-                                           ref UserLoginStatus loginStatus)
+        /// <inheritdoc />
+        public override UserInfo UserLogin(int portalId, string username, string password, string verificationCode, ref UserLoginStatus loginStatus)
         {
             return this.UserLogin(portalId, username, password, "DNN", verificationCode, ref loginStatus);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UserLogin attempts to log the user in, and returns the User if successful.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="username">The user name of the User attempting to log in.</param>
-        /// <param name="password">The password of the User attempting to log in (may not be used by all Auth types).</param>
-        /// <param name="authType">The type of Authentication Used.</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
-        /// <param name="loginStatus">An enumerated value indicating the login status.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
-        public override UserInfo UserLogin(int portalId, string username, string password, string authType,
-                                           string verificationCode, ref UserLoginStatus loginStatus)
+        /// <inheritdoc />
+        public override UserInfo UserLogin(int portalId, string username, string password, string authType, string verificationCode, ref UserLoginStatus loginStatus)
         {
             // For now, we are going to ignore the possibility that the User may exist in the
             // Global Data Store but not in the Local DataStore ie. A shared Global Data Store
@@ -1438,14 +1111,10 @@ namespace DotNetNuke.Security.Membership
             var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(
                 user.Username,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string email = portalSecurity.InputFilter(
                 user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             MembershipCreateStatus status;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
@@ -1798,16 +1467,24 @@ namespace DotNetNuke.Security.Membership
         {
             return
                 CBO.GetCachedObject<MembershipUser>(
-                    new CacheItemArgs(GetCacheKey(userName), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
-                                      userName), GetMembershipUserCallBack);
+                    new CacheItemArgs(
+                        GetCacheKey(userName),
+                        DataCache.UserCacheTimeOut,
+                        DataCache.UserCachePriority,
+                        userName),
+                    GetMembershipUserCallBack);
         }
 
         private static MembershipUser GetMembershipUserByUserKey(string userKey)
         {
             return
                 CBO.GetCachedObject<MembershipUser>(
-                    new CacheItemArgs(GetCacheKey(userKey), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
-                        userKey), GetMembershipUserByUserKeyCallBack);
+                    new CacheItemArgs(
+                        GetCacheKey(userKey),
+                        DataCache.UserCacheTimeOut,
+                        DataCache.UserCachePriority,
+                        userKey),
+                    GetMembershipUserByUserKeyCallBack);
         }
 
         private static string GetCacheKey(string cacheKey)
@@ -1834,9 +1511,7 @@ namespace DotNetNuke.Security.Membership
             var portalSecurity = PortalSecurity.Instance;
             string email = portalSecurity.InputFilter(
                 user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             // Persist the Membership Properties to the AspNet Data Store
             MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);
@@ -1859,9 +1534,7 @@ namespace DotNetNuke.Security.Membership
             DataCache.RemoveCache(GetCacheKey(user.Username));
         }
 
-        private static UserLoginStatus ValidateLogin(string username, string authType, UserInfo user,
-                                                     UserLoginStatus loginStatus, string password, ref bool bValid,
-                                                     int portalId)
+        private static UserLoginStatus ValidateLogin(string username, string authType, UserInfo user, UserLoginStatus loginStatus, string password, ref bool bValid, int portalId)
         {
             if (loginStatus != UserLoginStatus.LOGIN_USERLOCKEDOUT &&
                 (loginStatus != UserLoginStatus.LOGIN_USERNOTAPPROVED || user.IsInRole("Unverified Users")))
@@ -2010,16 +1683,10 @@ namespace DotNetNuke.Security.Membership
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserByUserNameFromDataStore retrieves a User from the DataStore.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetUserByUserNameFromDataStore retrieves a User from the DataStore.</summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
         /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
         {
             using (var dr = this.dataProvider.GetUserByUsername(portalId, username))

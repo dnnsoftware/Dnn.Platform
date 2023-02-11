@@ -4,12 +4,9 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
-    using System.Collections.Generic;
     using System.Xml;
 
-    /// <summary>
-    ///   Class for managing an OPML feed outline.
-    /// </summary>
+    /// <summary>  Class for managing an OPML feed outline.</summary>
     public class OpmlOutline
     {
         private string category = string.Empty;
@@ -204,9 +201,5 @@ namespace DotNetNuke.Services.Syndication
         }
 
         public OpmlOutlines Outlines { get; set; }
-    }
-
-    public class OpmlOutlines : List<OpmlOutline>
-    {
     }
 }

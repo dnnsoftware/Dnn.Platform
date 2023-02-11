@@ -15,41 +15,31 @@ namespace DotNetNuke.Modules.Admin.ViewProfile {
     
     
     public partial class ViewProfile {
-        /// <summary>
-        /// profileOutput control.
-        /// </summary>
+        /// <summary>profileOutput control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileOutput;
-        /// <summary>
-        /// noPropertiesLabel control.
-        /// </summary>
+        /// <summary>noPropertiesLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label noPropertiesLabel;
-        /// <summary>
-        /// buttonPanel control.
-        /// </summary>
+        /// <summary>buttonPanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl buttonPanel;
-        /// <summary>
-        /// editLink control.
-        /// </summary>
+        /// <summary>editLink control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink editLink;
-        /// <summary>
-        /// pnlScripts control.
-        /// </summary>
+        /// <summary>pnlScripts control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

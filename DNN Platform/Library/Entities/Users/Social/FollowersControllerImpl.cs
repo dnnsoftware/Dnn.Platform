@@ -16,35 +16,29 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         internal const string FollowerRequest = "FollowerRequest";
         internal const string FollowBackRequest = "FollowBackRequest";
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FollowUser - Current User initiates a Follow Request to the Target User.
-        /// </summary>
+        /// <summary>FollowUser - Current User initiates a Follow Request to the Target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Follow Relationship is setup for auto-acceptance (default) at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void FollowUser(UserInfo targetUser)
         {
             this.FollowUser(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FollowUser - Initiating User initiates a Follow Request to the Target User.
-        /// </summary>
+        /// <summary>FollowUser - Initiating User initiates a Follow Request to the Target User.</summary>
         /// <param name="initiatingUser">UserInfo for Initiating User.</param>
         /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Follow Relationship is setup for auto-acceptance (default) at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void FollowUser(UserInfo initiatingUser, UserInfo targetUser)
         {
             Requires.NotNull("user1", initiatingUser);
 
-            var relationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
+            var relationship = RelationshipController.Instance.InitiateUserRelationship(
+                initiatingUser,
+                targetUser,
                 RelationshipController.Instance.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
 
             AddFollowerRequestNotification(initiatingUser, targetUser);
@@ -52,12 +46,8 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             EventManager.Instance.OnFollowRequested(new RelationshipEventArgs(relationship, initiatingUser.PortalID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UnFollowUser - Current User initiates an UnFollow Request to the Target User.
-        /// </summary>
+        /// <summary>UnFollowUser - Current User initiates an UnFollow Request to the Target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
-        /// -----------------------------------------------------------------------------
         public void UnFollowUser(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();

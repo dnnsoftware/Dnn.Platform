@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.ClientDependency
 
     internal class PurgeClientDependencyFiles : SchedulerClient
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PurgeClientDependencyFiles"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PurgeClientDependencyFiles"/> class.</summary>
         /// <param name="objScheduleHistoryItem"></param>
         public PurgeClientDependencyFiles(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -33,7 +31,7 @@ namespace DotNetNuke.Services.ClientDependency
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Purging client dependency files task succeeded");
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 

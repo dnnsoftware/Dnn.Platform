@@ -122,6 +122,24 @@ namespace DotNetNuke.UI.WebControls
             return memStream;
         }
 
+        /// <summary>
+        /// Get CountryCode by CountryName.
+        /// </summary>
+        /// <param name="stringValue">CountryName.</param>
+        /// <returns>CountryCode.</returns>
+        public static string CodeByName(string stringValue)
+        {
+            for (int i = 0; i < CountryName.Length; i++)
+            {
+                if (stringValue == CountryName[i])
+                {
+                    return CountryCode[i];
+                }
+            }
+
+            return "--";
+        }
+
         /// <summary>Looks up the country code from an IP address.</summary>
         /// <param name="ipAddress">The IP address.</param>
         /// <returns>The country code, e.g. <c>"US"</c>.</returns>

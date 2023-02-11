@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Cache
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
@@ -15,13 +16,14 @@ namespace DotNetNuke.Services.Cache
 
     public class FBCachingProvider : CachingProvider
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal const string CacheFileExtension = ".resources";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal static string CachingDirectory = "Cache\\";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
 
         /// <inheritdoc/>
-        public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                    CacheItemRemovedCallback onRemoveCallback)
+        public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,                                    CacheItemRemovedCallback onRemoveCallback)
         {
             // initialize cache dependency
             DNNCacheDependency d = dependency;

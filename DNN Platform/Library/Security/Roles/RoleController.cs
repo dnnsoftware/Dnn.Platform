@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Security.Roles
 {
     using System;
@@ -27,10 +26,7 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Services.Messaging.Data;
     using DotNetNuke.Services.Search.Entities;
 
-    /// <summary>
-    /// The RoleController class provides Business Layer methods for Roles.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The RoleController class provides Business Layer methods for Roles.</summary>
     public partial class RoleController : ServiceLocator<IRoleController, RoleController>, IRoleController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
@@ -44,29 +40,27 @@ namespace DotNetNuke.Security.Roles
             Delete = 2,
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a Role Group.
-        /// </summary>
+        /// <summary>Adds a Role Group.</summary>
         /// <param name="objRoleGroupInfo">The RoleGroup to Add.</param>
         /// <returns>The Id of the new role.</returns>
-        /// -----------------------------------------------------------------------------
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
             var id = Provider.CreateRoleGroup(objRoleGroupInfo);
-            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
+            EventLogController.Instance.AddLog(
+                objRoleGroupInfo,
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                EventLogController.EventLogType.USER_ROLE_CREATED);
             return id;
         }
 
-        /// <summary>
-        /// Adds a User to a Role.
-        /// </summary>
+        /// <summary>Adds a User to a Role.</summary>
         /// <param name="user">The user to assign.</param>
         /// <param name="role">The role to add.</param>
         /// <param name="portalSettings">The PortalSettings of the Portal.</param>
         /// <param name="status">RoleStatus.</param>
-        /// <param name="effectiveDate">The expiry Date of the Role membership.</param>
+        /// <param name="effectiveDate">The effective Date of the Role membership.</param>
         /// <param name="expiryDate">The expiry Date of the Role membership.</param>
         /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
         /// <param name="isOwner">A flag that indicates whether this user should be one of the group owners.</param>
@@ -102,19 +96,12 @@ namespace DotNetNuke.Security.Roles
             DataCache.ClearUserCache(portalSettings.PortalId, user.Username);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Determines if the specified user can be removed from a role.
-        /// </summary>
-        /// <remarks>
-        /// Roles such as "Registered Users" and "Administrators" can only
-        /// be removed in certain circumstances.
-        /// </remarks>
+        /// <summary>Determines if the specified user can be removed from a role.</summary>
+        /// <remarks>Roles such as "Registered Users" and "Administrators" can only be removed in certain circumstances.</remarks>
         /// <param name="portalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings.</param>
         /// <param name="userId">The Id of the User that should be checked for role removability.</param>
         /// <param name="roleId">The Id of the Role that should be checked for removability.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the role can be removed, otherwise <see langword="false"/>.</returns>
         public static bool CanRemoveUserFromRole(PortalSettings portalSettings, int userId, int roleId)
         {
             // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
@@ -123,19 +110,12 @@ namespace DotNetNuke.Security.Roles
             return !((portalSettings.AdministratorId == userId && portalSettings.AdministratorRoleId == roleId) || portalSettings.RegisteredRoleId == roleId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Determines if the specified user can be removed from a role.
-        /// </summary>
-        /// <remarks>
-        /// Roles such as "Registered Users" and "Administrators" can only
-        /// be removed in certain circumstances.
-        /// </remarks>
+        /// <summary>Determines if the specified user can be removed from a role.</summary>
+        /// <remarks>Roles such as "Registered Users" and "Administrators" can only be removed in certain circumstances.</remarks>
         /// <param name="portalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal.</param>
         /// <param name="userId">The Id of the User.</param>
         /// <param name="roleId">The Id of the Role that should be checked for removability.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the role can be removed, otherwise <see langword="false"/>.</returns>
         public static bool CanRemoveUserFromRole(PortalInfo portalInfo, int userId, int roleId)
         {
             // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
@@ -144,36 +124,26 @@ namespace DotNetNuke.Security.Roles
             return !((portalInfo.AdministratorId == userId && portalInfo.AdministratorRoleId == roleId) || portalInfo.RegisteredRoleId == roleId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes a Role Group.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Deletes a Role Group.</summary>
         public static void DeleteRoleGroup(int portalID, int roleGroupId)
         {
             DeleteRoleGroup(GetRoleGroup(portalID, roleGroupId));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes a Role Group.
-        /// </summary>
+        /// <summary>Deletes a Role Group.</summary>
         /// <param name="objRoleGroupInfo">The RoleGroup to Delete.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
             Provider.DeleteRoleGroup(objRoleGroupInfo);
             EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_DELETED);
         }
 
-        /// <summary>
-        /// Removes a User from a Role.
-        /// </summary>
+        /// <summary>Removes a User from a Role.</summary>
         /// <param name="objUser">The user to remove.</param>
         /// <param name="role">The role to remove the use from.</param>
         /// <param name="portalSettings">The PortalSettings of the Portal.</param>
         /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the role was deleted, otherwise <see langword="false"/>.</returns>
         public static bool DeleteUserRole(UserInfo objUser, RoleInfo role, PortalSettings portalSettings, bool notifyUser)
         {
             bool canDelete = DeleteUserRoleInternal(portalSettings.PortalId, objUser.UserID, role.RoleID);
@@ -188,53 +158,35 @@ namespace DotNetNuke.Security.Roles
             return canDelete;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fetch a single RoleGroup.
-        /// </summary>
+        /// <summary>Fetch a single RoleGroup.</summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="roleGroupId">Role Group ID.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A <see cref="RoleGroupInfo"/> instance or <see langword="null"/>.</returns>
         public static RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
             return Provider.GetRoleGroup(portalId, roleGroupId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fetch a single RoleGroup by Name.
-        /// </summary>
+        /// <summary>Fetch a single RoleGroup by Name.</summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="roleGroupName">Role Group Name.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A <see cref="RoleGroupInfo"/> instance or <see langword="null"/>.</returns>
         public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
             return Provider.GetRoleGroupByName(portalId, roleGroupName);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets an ArrayList of RoleGroups.
-        /// </summary>
+        /// <summary>Gets an ArrayList of RoleGroups.</summary>
         /// <param name="portalID">The Id of the Portal.</param>
         /// <returns>An ArrayList of RoleGroups.</returns>
-        /// -----------------------------------------------------------------------------
         public static ArrayList GetRoleGroups(int portalID)
         {
             return Provider.GetRoleGroups(portalID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Serializes the role groups.
-        /// </summary>
+        /// <summary>Serializes the role groups.</summary>
         /// <param name="writer">An XmlWriter.</param>
         /// <param name="portalID">The Id of the Portal.</param>
-        /// -----------------------------------------------------------------------------
         public static void SerializeRoleGroups(XmlWriter writer, int portalID)
         {
             // Serialize Role Groups
@@ -254,12 +206,8 @@ namespace DotNetNuke.Security.Roles
             writer.WriteEndElement();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates a Role Group.
-        /// </summary>
+        /// <summary>Updates a Role Group.</summary>
         /// <param name="roleGroup">The RoleGroup to Update.</param>
-        /// -----------------------------------------------------------------------------
         public static void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
             UpdateRoleGroup(roleGroup, false);
@@ -429,9 +377,7 @@ namespace DotNetNuke.Security.Roles
             return Provider.GetRoleSettings(roleId);
         }
 
-        /// <summary>
-        /// Gets a User/Role.
-        /// </summary>
+        /// <summary>Gets a User/Role.</summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="userId">The Id of the user.</param>
         /// <param name="roleId">The Id of the Role.</param>
@@ -441,10 +387,8 @@ namespace DotNetNuke.Security.Roles
             return Provider.GetUserRole(portalId, userId, roleId);
         }
 
-        /// <summary>
-        /// Gets a list of UserRoles for the user.
-        /// </summary>
-        /// <param name="user">A UserInfo object representaing the user.</param>
+        /// <summary>Gets a list of UserRoles for the user.</summary>
+        /// <param name="user">A UserInfo object representing the user.</param>
         /// <param name="includePrivate">Include private roles.</param>
         /// <returns>A list of UserRoleInfo objects.</returns>
         public IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
@@ -608,12 +552,38 @@ namespace DotNetNuke.Security.Roles
             Instance.ClearRoleCache(portalId);
         }
 
-        /// <summary>
-        /// Completely remove all a user's roles for a specific portal. This method is used when
-        /// anonymizing a user.
-        /// </summary>
-        /// <param name="user">User for which all roles must be deleted. The PortalId property
-        /// is used to determine for which portal roles must be removed.</param>
+        /// <inheritdoc/>
+        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
+        {
+            Requires.NotNull("role", role);
+
+            var roleId = -1;
+            if (Provider.CreateRole(role))
+            {
+                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
+                if (addToExistUsers)
+                {
+                    this.AutoAssignUsers(role);
+                }
+
+                roleId = role.RoleID;
+
+                this.ClearRoleCache(role.PortalID);
+
+                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
+            }
+
+            return roleId;
+        }
+
+        /// <inheritdoc/>
+        void IRoleController.UpdateRole(RoleInfo role)
+        {
+            this.UpdateRole(role, true);
+        }
+
+        /// <summary>Completely remove all a user's roles for a specific portal. This method is used when anonymizing a user. </summary>
+        /// <param name="user">User for which all roles must be deleted. The PortalId property is used to determine for which portal roles must be removed.</param>
         internal static void DeleteUserRoles(UserInfo user)
         {
             var ctrl = new RoleController();
@@ -688,15 +658,15 @@ namespace DotNetNuke.Security.Roles
                 FromUserID = portalSettings.AdministratorId,
                 ToUserID = objUser.UserID,
                 Subject =
-                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, portalSettings,
-                                                  "EMAIL_ROLE_" +
-                                                  UserRoleActionsCaption[(int)action] +
-                                                  "_SUBJECT", objUser),
+                    Localization.GetSystemMessage(
+                        objUser.Profile.PreferredLocale,
+                        portalSettings,
+                        $"EMAIL_ROLE_{UserRoleActionsCaption[(int)action]}_SUBJECT",
+                        objUser),
                 Body = Localization.GetSystemMessage(
                     objUser.Profile.PreferredLocale,
                     portalSettings,
-                    "EMAIL_ROLE_" +
-                                                     UserRoleActionsCaption[(int)action] + "_BODY",
+                    $"EMAIL_ROLE_{UserRoleActionsCaption[(int)action]}_BODY",
                     objUser,
                     Localization.GlobalResourceFile,
                     custom),
@@ -705,30 +675,6 @@ namespace DotNetNuke.Security.Roles
 
             // _messagingController.SaveMessage(_message);
             Mail.SendEmail(portalSettings.Email, objUser.Email, message.Subject, message.Body);
-        }
-
-        /// <inheritdoc/>
-        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
-        {
-            Requires.NotNull("role", role);
-
-            var roleId = -1;
-            if (Provider.CreateRole(role))
-            {
-                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
-                if (addToExistUsers)
-                {
-                    this.AutoAssignUsers(role);
-                }
-
-                roleId = role.RoleID;
-
-                this.ClearRoleCache(role.PortalID);
-
-                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
-            }
-
-            return roleId;
         }
 
         private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
@@ -760,12 +706,6 @@ namespace DotNetNuke.Security.Roles
                     }
                 }
             }
-        }
-
-        /// <inheritdoc/>
-        void IRoleController.UpdateRole(RoleInfo role)
-        {
-            this.UpdateRole(role, true);
         }
     }
 }

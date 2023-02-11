@@ -9,13 +9,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageDependency determines whether the dependent package is installed.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageDependency determines whether the dependent package is installed.</summary>
     public class PackageDependency : DependencyBase
     {
         private string packageName;

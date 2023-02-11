@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds.
-    /// </summary>
+    /// <summary>  Helper class that provides memory and disk caching of the downloaded feeds.</summary>
     internal class OpmlDownloadManager
     {
         private const string OPMLDir = "/OPML/";

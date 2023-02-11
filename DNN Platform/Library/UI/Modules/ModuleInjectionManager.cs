@@ -53,8 +53,7 @@ namespace DotNetNuke.UI.Modules
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering module injection filters.  {1}", filterType.FullName,
-                                 e.Message);
+                    Logger.ErrorFormat("Unable to create {0} while registering module injection filters.  {1}", filterType.FullName, e.Message);
                     filter = null;
                 }
 

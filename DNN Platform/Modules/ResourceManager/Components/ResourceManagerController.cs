@@ -11,9 +11,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>
-    /// Provides upgrade support for module.
-    /// </summary>
+    /// <summary>Provides upgrade support for module.</summary>
     public class ResourceManagerController : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceManagerController));

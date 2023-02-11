@@ -20,9 +20,7 @@ namespace DotNetNuke.Modules.UrlManagement
         private int providerId;
         private IExtensionUrlProviderSettingsControl providerSettingsControl;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderSettings"/> class.</summary>
         public ProviderSettings()
         {
             this.navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();

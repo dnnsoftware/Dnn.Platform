@@ -14,9 +14,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
 
-    /// <summary>
-    /// Provides Dnn context for the DDR Menu.
-    /// </summary>
+    /// <summary>Provides Dnn context for the DDR Menu.</summary>
     public class DNNContext : IDisposable
     {
         private static string moduleName;
@@ -30,9 +28,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         private TabInfo activeTab;
         private string skinPath;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNContext"/> class.</summary>
         /// <param name="hostControl">The control that hosts the menu.</param>
         public DNNContext(Control hostControl)
         {
@@ -42,17 +38,13 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             Current = this;
         }
 
-        /// <summary>
-        /// Gets the module name.
-        /// </summary>
+        /// <summary>Gets the module name.</summary>
         public static string ModuleName
         {
             get { return moduleName ?? (moduleName = GetModuleNameFromAssembly()); }
         }
 
-        /// <summary>
-        /// Gets the module folder.
-        /// </summary>
+        /// <summary>Gets the module folder.</summary>
         public static string ModuleFolder
         {
             get
@@ -64,50 +56,38 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             }
         }
 
-        /// <summary>
-        /// Gets the current Dnn context.
-        /// </summary>
+        /// <summary>Gets the current Dnn context.</summary>
         public static DNNContext Current
         {
             get { return (DNNContext)HttpContext.Current.Items[DataName]; }
             private set { HttpContext.Current.Items[DataName] = value; }
         }
 
-        /// <summary>
-        /// Gets a reference to the page.
-        /// </summary>
+        /// <summary>Gets a reference to the page.</summary>
         public Page Page
         {
             get { return this.page ?? (this.page = this.HostControl.Page); }
         }
 
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
+        /// <summary>Gets the current portal settings.</summary>
         public PortalSettings PortalSettings
         {
             get { return this.portalSettings ?? (this.portalSettings = (PortalSettings)PortalController.Instance.GetCurrentSettings()); }
         }
 
-        /// <summary>
-        /// Gets the currently active tab (page).
-        /// </summary>
+        /// <summary>Gets the currently active tab (page).</summary>
         public TabInfo ActiveTab
         {
             get { return this.activeTab ?? (this.activeTab = this.PortalSettings.ActiveTab); }
         }
 
-        /// <summary>
-        /// Gets the path to the skin (theme).
-        /// </summary>
+        /// <summary>Gets the path to the skin (theme).</summary>
         public string SkinPath
         {
             get { return this.skinPath ?? (this.skinPath = this.ActiveTab.SkinPath); }
         }
 
-        /// <summary>
-        /// Gets the host control.
-        /// </summary>
+        /// <summary>Gets the host control.</summary>
         public Control HostControl { get; private set; }
 
         private static string DataName
@@ -115,9 +95,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             get { return dataName ?? (dataName = "DDRMenu.DNNContext." + ModuleName); }
         }
 
-        /// <summary>
-        /// Converts a url into one that is usable on the requesting Client.
-        /// </summary>
+        /// <summary>Converts a url into one that is usable on the requesting Client.</summary>
         /// <param name="relativeUrl">The relative url.</param>
         /// <returns>The converted url.</returns>
         public string ResolveUrl(string relativeUrl)
@@ -132,9 +110,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Disposes this instance resources.
-        /// </summary>
+        /// <summary>Disposes this instance resources.</summary>
         /// <param name="disposing">A value indicating if the current instance is disposing.</param>
         protected virtual void Dispose(bool disposing)
         {

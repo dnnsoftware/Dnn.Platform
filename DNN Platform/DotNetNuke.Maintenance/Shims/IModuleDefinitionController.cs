@@ -8,9 +8,7 @@ namespace DotNetNuke.Maintenance.Shims
 
     using DotNetNuke.Entities.Modules.Definitions;
 
-    /// <summary>
-    /// An abstraction of the <see cref="ModuleDefinitionController"/> class to enable DI and unit testing.
-    /// </summary>
+    /// <summary>An abstraction of the <see cref="ModuleDefinitionController"/> class to enable DI and unit testing.</summary>
     internal interface IModuleDefinitionController
     {
         /// <inheritdoc cref="ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(int)" />

@@ -33,9 +33,7 @@ using log4net.Util;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Delivers logging events to a remote logging sink. 
-    /// </summary>
+    /// <summary>Delivers logging events to a remote logging sink. </summary>
     /// <remarks>
     /// <para>
     /// This Appender is designed to deliver events to a remote sink. 
@@ -81,9 +79,7 @@ namespace log4net.Appender
     /// <author>Daniel Cazzulino</author>
     public class RemotingAppender : BufferingAppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RemotingAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RemotingAppender" /> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -113,9 +109,7 @@ namespace log4net.Appender
             set { this.m_sinkUrl = value; }
         }
 
-        /// <summary>
-        /// Initialize the appender based on the options set
-        /// </summary>
+        /// <summary>Initialize the appender based on the options set</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -142,9 +136,7 @@ namespace log4net.Appender
             this.m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), this.m_sinkUrl, channelProperties);
         }
 
-        /// <summary>
-        /// Send the contents of the buffer to the remote sink.
-        /// </summary>
+        /// <summary>Send the contents of the buffer to the remote sink.</summary>
         /// <remarks>
         /// The events are not sent immediately. They are scheduled to be sent
         /// using a pool thread. The effect is that the send occurs asynchronously.
@@ -175,9 +167,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Override base class close.
-        /// </summary>
+        /// <summary>Override base class close.</summary>
         /// <remarks>
         /// <para>
         /// This method waits while there are queued work items. The events are
@@ -205,9 +195,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Flushes any buffered log data.
-        /// </summary>
+        /// <summary>Flushes any buffered log data.</summary>
         /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public override bool Flush(int millisecondsTimeout)
@@ -216,9 +204,7 @@ namespace log4net.Appender
             return this.m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
         }
 
-        /// <summary>
-        /// A work item is being queued into the thread pool
-        /// </summary>
+        /// <summary>A work item is being queued into the thread pool</summary>
         private void BeginAsyncSend()
         {
             // The work queue is not empty
@@ -228,9 +214,7 @@ namespace log4net.Appender
             Interlocked.Increment(ref this.m_queuedCallbackCount);
         }
 
-        /// <summary>
-        /// A work item from the thread pool has completed
-        /// </summary>
+        /// <summary>A work item from the thread pool has completed</summary>
         private void EndAsyncSend()
         {
             // Decrement the queued count
@@ -241,9 +225,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Send the contents of the buffer to the remote sink.
-        /// </summary>
+        /// <summary>Send the contents of the buffer to the remote sink.</summary>
         /// <remarks>
         /// This method is designed to be used with the <see cref="ThreadPool"/>.
         /// This method expects to be passed an array of <see cref="LoggingEvent"/>
@@ -269,33 +251,23 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// The URL of the remote sink.
-        /// </summary>
+        /// <summary>The URL of the remote sink.</summary>
         private string m_sinkUrl;
 
-        /// <summary>
-        /// The local proxy (.NET remoting) for the remote logging sink.
-        /// </summary>
+        /// <summary>The local proxy (.NET remoting) for the remote logging sink.</summary>
         private IRemoteLoggingSink m_sinkObj;
 
-        /// <summary>
-        /// The number of queued callbacks currently waiting or executing
-        /// </summary>
+        /// <summary>The number of queued callbacks currently waiting or executing</summary>
         private int m_queuedCallbackCount = 0;
 
-        /// <summary>
-        /// Event used to signal when there are no queued work items
-        /// </summary>
+        /// <summary>Event used to signal when there are no queued work items</summary>
         /// <remarks>
         /// This event is set when there are no queued work items. In this
         /// state it is safe to close the appender.
         /// </remarks>
         private ManualResetEvent m_workQueueEmptyEvent = new ManualResetEvent(true);
 
-        /// <summary>
-        /// Interface used to deliver <see cref="LoggingEvent"/> objects to a remote sink.
-        /// </summary>
+        /// <summary>Interface used to deliver <see cref="LoggingEvent"/> objects to a remote sink.</summary>
         /// <remarks>
         /// This interface must be implemented by a remoting sink
         /// if the <see cref="RemotingAppender"/> is to be used
@@ -303,9 +275,7 @@ namespace log4net.Appender
         /// </remarks>
         public interface IRemoteLoggingSink
         {
-            /// <summary>
-            /// Delivers logging events to the remote sink
-            /// </summary>
+            /// <summary>Delivers logging events to the remote sink</summary>
             /// <param name="events">Array of events to log.</param>
             /// <remarks>
             /// <para>

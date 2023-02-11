@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Exceptions
         private List<string> columns;
         private Type type;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
         public ObjectHydrationException(string message, Exception innerException)
@@ -23,9 +21,7 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
         /// <param name="type"></param>
@@ -41,9 +37,7 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected ObjectHydrationException(SerializationInfo info, StreamingContext context)

@@ -16,9 +16,7 @@ namespace DotNetNuke.Data.PetaPoco
         private static ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
         private readonly string tablePrefix;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoMapper"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoMapper"/> class.</summary>
         /// <param name="tablePrefix"></param>
         public PetaPocoMapper(string tablePrefix)
         {

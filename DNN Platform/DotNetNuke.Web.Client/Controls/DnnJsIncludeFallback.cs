@@ -7,14 +7,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>
-    ///     Emit a fallback block for a script in the same part of the page.
-    /// </summary>
+    /// <summary>    Emit a fallback block for a script in the same part of the page.</summary>
     public class DnnJsIncludeFallback : WebControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnJsIncludeFallback"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnJsIncludeFallback"/> class.</summary>
         /// <param name="objectName">The JS object name to verify is defined in global scope.</param>
         /// <param name="fileName">The path to load if the object is not defined.</param>
         public DnnJsIncludeFallback(string objectName, string fileName)

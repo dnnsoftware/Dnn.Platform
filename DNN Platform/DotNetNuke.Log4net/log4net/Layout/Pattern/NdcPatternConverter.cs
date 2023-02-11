@@ -26,9 +26,7 @@ using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Converter to include event NDC
-    /// </summary>
+    /// <summary>Converter to include event NDC</summary>
     /// <remarks>
     /// <para>
     /// Outputs the value of the event property named <c>NDC</c>.
@@ -40,9 +38,7 @@ namespace log4net.Layout.Pattern
     /// <author>Nicko Cadell</author>
     internal sealed class NdcPatternConverter : PatternLayoutConverter 
     {
-        /// <summary>
-        /// Write the event NDC to the output
-        /// </summary>
+        /// <summary>Write the event NDC to the output</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">the event being logged</param>
         /// <remarks>

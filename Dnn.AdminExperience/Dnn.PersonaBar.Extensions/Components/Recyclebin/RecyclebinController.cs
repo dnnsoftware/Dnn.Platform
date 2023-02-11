@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -29,6 +29,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
     public class RecyclebinController : ServiceLocator<IRecyclebinController, RecyclebinController>,
         IRecyclebinController
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
         private readonly ITabController tabController;
@@ -158,7 +159,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     this.tabVersionSettings.SetEnabledVersioningForTab(
                         tab.TabID,
                         changeControlStateForTab.IsVersioningEnabledForTab);
-                    this.tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
+                    this.tabWorkflowSettings.SetWorkflowEnabled(
+                        tab.PortalID,
+                        tab.TabID,
                         changeControlStateForTab.IsWorkflowEnabledForTab);
                 }
             }
@@ -184,7 +187,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     var title = !string.IsNullOrEmpty(module.ModuleTitle)
                         ? module.ModuleTitle
                         : module.DesktopModule.FriendlyName;
-                    errorMessage = string.Format(this.LocalizeString("Service_RestoreModuleError"), title,
+                    errorMessage = string.Format(
+                        this.LocalizeString("Service_RestoreModuleError"),
+                        title,
                         deletedTabs.SingleOrDefault().TabName);
                     return false;
                 }
@@ -361,11 +366,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             // hard-delete Tab Module Instance
         }
 
-        /// <summary>
-        /// Checks if the current user has enough rights to manage the provided user or not.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <summary>Checks if the current user has enough rights to manage the provided user or not.</summary>
+        /// <param name="user">The user to check.</param>
+        /// <returns><see langword="true"/> if the current user can managed the given <paramref name="user"/>, otherwise <see langword="false"/>.</returns>
         private bool CanManageUser(UserInfo user)
         {
             if (PortalSettings.UserInfo.IsSuperUser ||

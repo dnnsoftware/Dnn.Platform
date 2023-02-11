@@ -11,9 +11,7 @@ namespace DotNetNuke.Entities.Portals
     [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
     public class PortalAliasCollection : DictionaryBase
     {
-        /// <summary>
-        /// Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.
-        /// </summary>
+        /// <summary>Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.</summary>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
         public bool HasKeys
         {
@@ -41,9 +39,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Gets or sets the value associated with the specified key.
-        /// </summary>
+        /// <summary>Gets or sets the value associated with the specified key.</summary>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
         public PortalAliasInfo this[string key]
         {
@@ -64,9 +60,7 @@ namespace DotNetNuke.Entities.Portals
             return this.Dictionary.Contains(key);
         }
 
-        /// <summary>
-        /// Adds an entry to the collection.
-        /// </summary>
+        /// <summary>Adds an entry to the collection.</summary>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
         public void Add(string key, PortalAliasInfo value)
         {

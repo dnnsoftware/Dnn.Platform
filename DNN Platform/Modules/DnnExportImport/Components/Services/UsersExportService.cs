@@ -18,9 +18,7 @@ namespace Dnn.ExportImport.Components.Services
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
-    /// <summary>
-    /// Service to export/import users.
-    /// </summary>
+    /// <summary>Service to export/import users.</summary>
     public class UsersExportService : BasePortableService
     {
         private static readonly Tuple<string, Type>[] UsersDatasetColumns =

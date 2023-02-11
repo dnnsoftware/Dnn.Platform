@@ -13,9 +13,7 @@ namespace DotNetNuke.ComponentModel
         private readonly Type type;
         private object instance;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.</summary>
         /// <param name="name">The name of the component.</param>
         /// <param name="type">The type of the component.</param>
         public SingletonComponentBuilder(string name, Type type)

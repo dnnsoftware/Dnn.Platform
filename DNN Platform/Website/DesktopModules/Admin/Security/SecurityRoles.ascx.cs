@@ -1,11 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Security
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using System.Web.UI;
@@ -30,14 +32,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using Calendar = DotNetNuke.Common.Utilities.Calendar;
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The SecurityRoles PortalModuleBase is used to manage the users and roles they
-    /// have.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The SecurityRoles PortalModuleBase is used to manage the users and roles they have.</summary>
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
@@ -65,20 +60,10 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ParentModule (if one exists).
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the ParentModule (if one exists).</summary>
         public PortalModuleBase ParentModule { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Return Url for the page.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Return Url for the page.</summary>
         protected string ReturnUrl
         {
             get
@@ -155,11 +140,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the control should use a Combo Box or Text Box to display the users.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the control should use a Combo Box or Text Box to display the users.</summary>
         protected UsersControl UsersControl
         {
             get
@@ -193,11 +174,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         protected int CurrentPage { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>DataBind binds the data to the controls.</summary>
         public override void DataBind()
         {
             if (!ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
@@ -216,17 +193,13 @@ namespace DotNetNuke.Modules.Admin.Security
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteButonVisible returns a boolean indicating if the delete button for
+        /// DeleteButtonVisible returns a boolean indicating if the delete button for
         /// the specified UserID, RoleID pair should be shown.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="userID">The ID of the user to check delete button visibility for.</param>
         /// <param name="roleID">The ID of the role to check delete button visibility for.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the delete button should be shown, <see langword="false"/> to hide the delete button.</returns>
         public bool DeleteButtonVisible(int userID, int roleID)
         {
             // [DNN-4285] Check if the role can be removed (only handles case of Administrator and Administrator Role
@@ -240,15 +213,9 @@ namespace DotNetNuke.Modules.Admin.Security
             return canDelete;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>FormatExpiryDate formats the expiry/effective date and filters out nulls.</summary>
         /// <param name="dateTime">The Date object to format.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The short date string or <see cref="string.Empty"/>.</returns>
         public string FormatDate(DateTime dateTime)
         {
             if (!Null.IsNull(dateTime))
@@ -261,17 +228,16 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>FormatExpiryDate formats the expiry/effective date and filters out nulls.</summary>
+        /// <returns>A string with an HTML link to edit the user.</returns>
         public string FormatUser(int userID, string displayName)
         {
             return "<a href=\"" + Globals.LinkClick("userid=" + userID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + displayName + "</a>";
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public void cmdDeleteUserRole_click(object sender, ImageClickEventArgs e)
         {
             if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
@@ -300,13 +266,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -347,13 +307,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.grdUserRoles.ItemDataBound += this.grdUserRoles_ItemDataBound;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -374,16 +328,20 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
                 this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
-            catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
+            catch (ThreadAbortException exc)
             {
+                // Do nothing if ThreadAbort as this is caused by a redirect
                 Logger.Debug(exc);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void grdUserRoles_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             DataGridItem item = e.Item;
@@ -408,13 +366,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// BindData loads the controls from the Database.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>BindData loads the controls from the Database.</summary>
         private void BindData()
         {
             // bind all portal roles to dropdownlist
@@ -515,13 +467,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// BindGrid loads the data grid from the Database.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>BindGrid loads the data grid from the Database.</summary>
         private void BindGrid()
         {
             if (this.roleId != Null.NullInteger)
@@ -567,15 +513,9 @@ namespace DotNetNuke.Modules.Admin.Security
             return userList.Skip((this.CurrentPage - 1) * this.PageSize).Take(this.PageSize).ToList();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDates gets the expiry/effective Dates of a Users Role membership.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetDates gets the expiry/effective Dates of a Users Role membership.</summary>
         /// <param name="userId">The Id of the User.</param>
         /// <param name="roleId">The Id of the Role.</param>
-        /// -----------------------------------------------------------------------------
         private void GetDates(int userId, int roleId)
         {
             DateTime? expiryDate = null;
@@ -594,8 +534,9 @@ namespace DotNetNuke.Modules.Admin.Security
                     expiryDate = objUserRole.ExpiryDate;
                 }
             }
-            else // new role assignment
+            else
             {
+                // new role assignment
                 RoleInfo objRole = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
 
                 if (objRole.BillingPeriod > 0)
@@ -622,14 +563,6 @@ namespace DotNetNuke.Modules.Admin.Security
             this.expiryDatePicker.SelectedDate = expiryDate;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cboUsers_SelectedIndexChanged runs when the selected User is changed in the
-        /// Users Drop-Down.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void CboUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if ((this.cboUsers.SelectedItem != null) && (this.cboRoles.SelectedItem != null))
@@ -641,13 +574,6 @@ namespace DotNetNuke.Modules.Admin.Security
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdValidate_Click executes when a user selects the Validate link for a username.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void CmdValidate_Click(object sender, EventArgs e)
         {
             if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
@@ -673,27 +599,12 @@ namespace DotNetNuke.Modules.Admin.Security
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cboRoles_SelectedIndexChanged runs when the selected Role is changed in the
-        /// Roles Drop-Down.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void CboRoles_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.GetDates(this.userId, int.Parse(this.cboRoles.SelectedItem.Value));
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdAdd_Click runs when the Update Button is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void CmdAdd_Click(object sender, EventArgs e)
         {
             if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
@@ -749,19 +660,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 this.BindGrid();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdUserRoles_ItemCreated runs when an item in the UserRoles Grid is created.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void GrdUserRoles_ItemCreated(object sender, DataGridItemEventArgs e)
         {
             try
@@ -788,7 +692,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 item.Cells[5].Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -9,9 +9,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Verifies the abililty to create and delete files and folders.
-    /// </summary>
+    /// <summary>  Verifies the abililty to create and delete files and folders.</summary>
     /// <remarks>
     ///   This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.
     /// </remarks>
@@ -22,18 +20,14 @@ namespace DotNetNuke.Common.Utilities
 
         private int retryTimes = 30;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.</summary>
         /// <param name="basePath"></param>
         public FileSystemPermissionVerifier(string basePath)
         {
             this.basePath = basePath;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.</summary>
         /// <param name="basePath"></param>
         /// <param name="retryTimes"></param>
         public FileSystemPermissionVerifier(string basePath, int retryTimes)
@@ -42,9 +36,7 @@ namespace DotNetNuke.Common.Utilities
             this.retryTimes = retryTimes;
         }
 
-        /// <summary>
-        /// Gets base path need to verify permission.
-        /// </summary>
+        /// <summary>Gets base path need to verify permission.</summary>
         public string BasePath
         {
             get
@@ -88,11 +80,7 @@ namespace DotNetNuke.Common.Utilities
             Directory.CreateDirectory(verifyPath);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFileCreate checks whether a file can be created.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFileCreate checks whether a file can be created.</summary>
         private bool VerifyFileCreate()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
@@ -112,11 +100,7 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFileDelete checks whether a file can be deleted.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFileDelete checks whether a file can be deleted.</summary>
         private bool VerifyFileDelete()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
@@ -136,11 +120,7 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFolderCreate checks whether a folder can be created.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFolderCreate checks whether a folder can be created.</summary>
         private bool VerifyFolderCreate()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify");
@@ -160,11 +140,7 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFolderDelete checks whether a folder can be deleted.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFolderDelete checks whether a folder can be deleted.</summary>
         private bool VerifyFolderDelete()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify");

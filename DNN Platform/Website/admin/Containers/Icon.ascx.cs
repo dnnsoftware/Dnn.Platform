@@ -11,17 +11,13 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : DotNetNuke.UI.Containers.Icon
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Icon : SkinObjectBase
     {
         public string BorderWidth { get; set; }
@@ -62,7 +58,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

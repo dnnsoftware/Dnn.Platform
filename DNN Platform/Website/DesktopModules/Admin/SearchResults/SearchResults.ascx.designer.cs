@@ -15,57 +15,43 @@ namespace DotNetNuke.Modules.SearchResults {
     
     
     public partial class SearchResults {
-        /// <summary>
-        /// ResultsPerPageList control.
-        /// </summary>
+        /// <summary>ResultsPerPageList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox ResultsPerPageList;
-        /// <summary>
-        /// lblAdvancedTags control.
-        /// </summary>
+        /// <summary>lblAdvancedTags control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblAdvancedTags;
-        /// <summary>
-        /// lblAdvancedDates control.
-        /// </summary>
+        /// <summary>lblAdvancedDates control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblAdvancedDates;
-        /// <summary>
-        /// AdvnacedDatesList control.
-        /// </summary>
+        /// <summary>AdvnacedDatesList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox AdvnacedDatesList;
-        /// <summary>
-        /// lblAdvancedScope control.
-        /// </summary>
+        /// <summary>lblAdvancedScope control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblAdvancedScope;
-        /// <summary>
-        /// SearchScopeList control.
-        /// </summary>
+        /// <summary>SearchScopeList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox SearchScopeList;
-        /// <summary>
-        /// lblAdvancedExactSearch control.
-        /// </summary>
+        /// <summary>lblAdvancedExactSearch control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

@@ -10,18 +10,14 @@ namespace DotNetNuke.Services.Exceptions
     {
         // default constructor
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PageLoadException"/> class.</summary>
         public PageLoadException()
         {
         }
 
         // constructor with exception message
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PageLoadException"/> class.</summary>
         /// <param name="message"></param>
         public PageLoadException(string message)
             : base(message)
@@ -30,9 +26,7 @@ namespace DotNetNuke.Services.Exceptions
 
         // constructor with message and inner exception
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PageLoadException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public PageLoadException(string message, Exception inner)
@@ -40,9 +34,7 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PageLoadException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PageLoadException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected PageLoadException(SerializationInfo info, StreamingContext context)

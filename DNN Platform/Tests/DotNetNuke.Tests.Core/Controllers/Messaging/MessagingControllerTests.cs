@@ -37,9 +37,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of MessagingController.
-    /// </summary>
+    /// <summary> Testing various aspects of MessagingController.</summary>
     [TestFixture]
     public class MessagingControllerTests
     {
@@ -206,40 +204,72 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetMessageThread_Calls_Overload_With_Default_Values()
         {
-            int[] totalRecords = { 0 };
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetMessageThread(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), MessagingController.ConstSortColumnDate, !MessagingController.ConstAscending, ref totalRecords[0]))
-                .Verifiable();
+            // Arrange
+            var totalRecords = 0;
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._dtMessageThreadsView.Clear();
+            this._mockDataService.Setup(ds => ds.GetMessageThread(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), ref totalRecords)).Returns(this._dtMessageThreadsView.CreateDataReader()).Verifiable();
 
-            this._mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, ref totalRecords[0]);
+            // Act
+            this._mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, ref totalRecords);
 
-            this._mockInternalMessagingController.Verify();
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]
 
         public void GetRecentSentbox_Calls_Overload_With_Default_Values()
         {
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetRecentSentbox(Constants.UserID_User12, MessagingController.ConstDefaultPageIndex, MessagingController.ConstDefaultPageSize))
+            // Arrange
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._dtMessageConversationView.Clear();
+            this._mockDataService
+                .Setup(ds => ds.GetSentBoxView(
+                    Constants.UserID_User12,
+                    Constants.PORTAL_Zero,
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                .Returns(this._dtMessageConversationView.CreateDataReader())
                 .Verifiable();
 
+            // Act
             this._mockInternalMessagingController.Object.GetRecentSentbox(Constants.UserID_User12);
 
-            this._mockInternalMessagingController.Verify();
+
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]
 
         public void GetRecentSentbox_Calls_GetSentbox_With_Default_Values()
         {
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetSentbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), MessagingController.ConstSortColumnDate, !MessagingController.ConstAscending))
+            // Arrange
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._dtMessageConversationView.Clear();
+            this._mockDataService
+                .Setup(ds => ds.GetSentBoxView(
+                    Constants.UserID_User12,
+                    Constants.PORTAL_Zero,
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                .Returns(this._dtMessageConversationView.CreateDataReader())
                 .Verifiable();
 
+            // Act
             this._mockInternalMessagingController.Object.GetRecentSentbox(Constants.UserID_User12);
 
-            this._mockInternalMessagingController.Verify();
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]
@@ -281,13 +311,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         public void GetSentbox_Calls_Overload_With_Default_Values()
         {
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetSentbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived))
+            // Arrange
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._dtMessageConversationView.Clear();
+            this._mockDataService
+                .Setup(ds => ds.GetSentBoxView(
+                    Constants.UserID_User12,
+                    Constants.PORTAL_Zero,
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                .Returns(this._dtMessageConversationView.CreateDataReader())
                 .Verifiable();
 
+            // Act
             this._mockInternalMessagingController.Object.GetSentbox(Constants.UserID_User12, 0, 0, string.Empty, false);
 
-            this._mockInternalMessagingController.Verify();
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]
@@ -1298,39 +1342,54 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         public void GetInbox_Calls_Overload_With_Default_Values()
         {
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetInbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived))
-                .Verifiable();
+            // Arrange
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._dtMessageConversationView.Clear();
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._mockDataService.Setup(ds => ds.GetInBoxView(It.IsAny<int>(), Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived, MessageSentStatus.Received)).Returns(this._dtMessageConversationView.CreateDataReader()).Verifiable();
 
-            this._mockInternalMessagingController.Object.GetInbox(Constants.UserID_User12, 0, 0, string.Empty, false);
+            // Act
+            this._mockInternalMessagingController.Object.GetInbox(this._user12UserInfo.UserID, 0, 0, string.Empty, false);
 
-            this._mockInternalMessagingController.Verify();
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]
 
         public void GetRecentInbox_Calls_GetInbox_With_Default_Values()
         {
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetInbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), MessagingController.ConstSortColumnDate, !MessagingController.ConstAscending))
-                .Verifiable();
+            // Arrange
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._dtMessageConversationView.Clear();
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._mockDataService.Setup(ds => ds.GetInBoxView(It.IsAny<int>(), Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived, MessageSentStatus.Received)).Returns(this._dtMessageConversationView.CreateDataReader()).Verifiable();
 
+            // Act
             this._mockInternalMessagingController.Object.GetRecentInbox(Constants.UserID_User12, 0, 0);
 
-            this._mockInternalMessagingController.Verify();
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]
 
         public void GetRecentInbox_Calls_Overload_With_Default_Values()
         {
-            this._mockInternalMessagingController
-                .Setup(mc => mc.GetRecentInbox(Constants.UserID_User12, MessagingController.ConstDefaultPageIndex, MessagingController.ConstDefaultPageSize))
-                .Verifiable();
+            // Arrange
+            DataService.RegisterInstance(this._mockDataService.Object);
+            this._dtMessageConversationView.Clear();
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._mockDataService.Setup(ds => ds.GetInBoxView(It.IsAny<int>(), Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived, MessageSentStatus.Received)).Returns(this._dtMessageConversationView.CreateDataReader()).Verifiable();
 
+            // Act
             this._mockInternalMessagingController.Object.GetRecentInbox(Constants.UserID_User12);
 
-            this._mockInternalMessagingController.Verify();
+            // Assert
+            this._mockDataService.Verify();
         }
 
         [Test]

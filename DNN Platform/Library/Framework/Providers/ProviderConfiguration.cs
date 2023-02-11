@@ -29,14 +29,14 @@ namespace DotNetNuke.Framework.Providers
             }
         }
 
-        public Provider GetDefaultProvider()
-        {
-            return (Provider)this.providers[this.defaultProvider];
-        }
-
         public static ProviderConfiguration GetProviderConfiguration(string strProvider)
         {
             return (ProviderConfiguration)Config.GetSection("dotnetnuke/" + strProvider);
+        }
+
+        public Provider GetDefaultProvider()
+        {
+            return (Provider)this.providers[this.defaultProvider];
         }
 
         internal void LoadValuesFromConfigurationXml(XmlNode node)

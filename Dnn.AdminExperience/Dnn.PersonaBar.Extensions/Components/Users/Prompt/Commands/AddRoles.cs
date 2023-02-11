@@ -43,17 +43,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private IUsersController usersController;
         private IRolesController rolesController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddRoles"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
         public AddRoles()
             : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddRoles"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
         /// <param name="userValidator"></param>
         /// <param name="userController"></param>
         /// <param name="rolesController"></param>

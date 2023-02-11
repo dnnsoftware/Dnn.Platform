@@ -14,9 +14,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
     {
         private readonly DataProvider provider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataService"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DataService"/> class.</summary>
         public DataService()
         {
             this.provider = DataProvider.Instance();

@@ -1667,6 +1667,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.12.1":
+  version: 7.20.7
+  resolution: "@babel/runtime@npm:7.20.7"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 4629ce5c46f06cca9cfb9b7fc00d48003335a809888e2b91ec2069a2dcfbfef738480cff32ba81e0b7c290f8918e5c22ddcf2b710001464ee84ba62c7e32a3a3
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.1.0, @babel/template@npm:^7.1.2, @babel/template@npm:^7.2.2, @babel/template@npm:^7.4.0, @babel/template@npm:^7.4.4":
   version: 7.4.4
   resolution: "@babel/template@npm:7.4.4"
@@ -1781,7 +1790,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@9.11.0, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@9.11.1, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -4735,6 +4744,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hoist-non-react-statics@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "@types/hoist-non-react-statics@npm:3.3.1"
+  dependencies:
+    "@types/react": "*"
+    hoist-non-react-statics: ^3.3.0
+  checksum: 2c0778570d9a01d05afabc781b32163f28409bb98f7245c38d5eaf082416fdb73034003f5825eb5e21313044e8d2d9e1f3fe2831e345d3d1b1d20bcd12270719
+  languageName: node
+  linkType: hard
+
 "@types/is-function@npm:^1.0.0":
   version: 1.0.1
   resolution: "@types/is-function@npm:1.0.1"
@@ -4961,6 +4980,13 @@ __metadata:
   version: 2.0.3
   resolution: "@types/unist@npm:2.0.3"
   checksum: 4427306b094561da28164e7e5250c4e6b382cb8eac40bf7e6bb0ff1e6e00c13e47aaf32e4a08fc8ba54602d07f79a39fb9ba304cc9dc886b1e3caf824649edbd
+  languageName: node
+  linkType: hard
+
+"@types/use-sync-external-store@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@types/use-sync-external-store@npm:0.0.3"
+  checksum: 161ddb8eec5dbe7279ac971531217e9af6b99f7783213566d2b502e2e2378ea19cf5e5ea4595039d730aa79d3d35c6567d48599f69773a02ffcff1776ec2a44e
   languageName: node
   linkType: hard
 
@@ -5367,16 +5393,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"admin_logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web":
+"admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web":
   version: 0.0.0-use.local
-  resolution: "admin_logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
+  resolution: "admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.0.0
     "@babel/plugin-transform-object-assign": ^7.0.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -5396,11 +5422,11 @@ __metadata:
     less-loader: 5.0.0
     prop-types: 15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-click-outside: ^3.0.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
-    react-redux: ^5.1.1
+    react-redux: ^8.0.5
     redux: ^4.0.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.2.0
@@ -10103,7 +10129,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babel-polyfill: 6.26.0
@@ -10118,8 +10144,8 @@ __metadata:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     style-loader: ^0.23.1
     url-loader: 1.1.2
@@ -10139,7 +10165,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.4
     babel-plugin-transform-react-remove-prop-types: 0.4.20
     babel-polyfill: 6.26.0
@@ -10156,8 +10182,8 @@ __metadata:
     less: 4.1.2
     less-loader: 4.1.0
     prop-types: ^15.6.2
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.3.5
     style-loader: ^0.23.1
     webpack: 4.31.0
@@ -10175,7 +10201,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.6
     create-react-class: ^15.6.3
     css-loader: 2.1.1
@@ -10191,10 +10217,10 @@ __metadata:
     less-loader: 5.0.0
     localization: ^1.0.2
     prop-types: 15.6.2
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: ^4.8.5
-    react-redux: ^5.1.1
+    react-redux: ^8.0.5
     react-widgets: ^4.4.7
     redux: 4.2.0
     style-loader: ^0.23.1
@@ -11428,7 +11454,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -11453,15 +11479,15 @@ __metadata:
     moment: ^2.29.2
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-collapse: 5.1.0
     react-custom-scrollbars: 4.2.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-height: 3.0.1
     react-hot-loader: 4.8.5
     react-modal: 3.6.1
     react-motion: 0.5.2
-    react-redux: 5.1.1
+    react-redux: 8.0.5
     react-tabs: 3.0.0
     react-tooltip: 4.2.21
     react-widgets: 4.4.6
@@ -11570,7 +11596,7 @@ __metadata:
     "@babel/core": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
     babel-plugin-transform-object-rest-spread: 6.26.0
@@ -11587,8 +11613,8 @@ __metadata:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     style-loader: ^0.23.1
     url-loader: 1.1.2
@@ -13110,12 +13136,21 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0":
+"hoist-non-react-statics@npm:^3.3.0":
   version: 3.3.0
   resolution: "hoist-non-react-statics@npm:3.3.0"
   dependencies:
     react-is: ^16.7.0
   checksum: 78f77efc6dd4bfa194a96e8c97248ce59f9bf0e63686ee76cb9ab0183d8bd317fcb6bd25f442c0ef9c19d6db144de0df05b79895fd64cae331dbd6e2e573a565
+  languageName: node
+  linkType: hard
+
+"hoist-non-react-statics@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "hoist-non-react-statics@npm:3.3.2"
+  dependencies:
+    react-is: ^16.7.0
+  checksum: b1538270429b13901ee586aa44f4cc3ecd8831c061d06cb8322e50ea17b3f5ce4d0e2e66394761e6c8e152cd8c34fb3b4b690116c6ce2bd45b18c746516cb9e8
   languageName: node
   linkType: hard
 
@@ -15886,7 +15921,7 @@ fsevents@^1.2.7:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -18475,7 +18510,7 @@ fsevents@^1.2.7:
     "@babel/plugin-proposal-object-rest-spread": ^7.0.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     "@types/knockout": ^3.4.66
     "@types/redux": 3.6.31
     babel-eslint: ^10.0.1
@@ -18505,10 +18540,10 @@ fsevents@^1.2.7:
     promise: ^8.0.2
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-custom-scrollbars: 4.2.1
     react-day-picker: ^7.2.4
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     react-test-renderer: ^17.0.2
     react-widgets: 4.4.7
@@ -19641,7 +19676,7 @@ fsevents@^1.2.7:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-eslint: ^10.0.1
@@ -19677,11 +19712,11 @@ fsevents@^1.2.7:
     optimize-css-assets-webpack-plugin: ^5.0.1
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-click-outside: ^3.0.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
-    react-redux: 5.1.0
+    react-redux: 8.0.5
     react-test-renderer: ^17.0.2
     redux: 4.2.0
     redux-devtools: ^3.5.0
@@ -19694,8 +19729,6 @@ fsevents@^1.2.7:
     throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     webpack: ^4.31.0
-    webpack-bundle-analyzer: ^4.4.1
-    webpack-bundle-size-analyzer: 3.0.0
     webpack-cli: ^3.1.2
     webpack-dev-server: ^3.1.14
   languageName: unknown
@@ -20264,7 +20297,21 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.4.2, react-dom@npm:^16.6.3, react-dom@npm:^16.8.1":
+"react-dom@npm:^16.14.0":
+  version: 16.14.0
+  resolution: "react-dom@npm:16.14.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    prop-types: ^15.6.2
+    scheduler: ^0.19.1
+  peerDependencies:
+    react: ^16.14.0
+  checksum: 5a5c49da0f106b2655a69f96c622c347febcd10532db391c262b26aec225b235357d9da1834103457683482ab1b229af7a50f6927a6b70e53150275e31785544
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:^16.4.2, react-dom@npm:^16.8.1":
   version: 16.13.0
   resolution: "react-dom@npm:16.13.0"
   dependencies:
@@ -20429,7 +20476,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0, react-is@npm:^16.3.2, react-is@npm:^16.6.0, react-is@npm:^16.7.0, react-is@npm:^16.8.1, react-is@npm:^16.8.2, react-is@npm:^16.8.6":
+"react-is@npm:^16.12.0, react-is@npm:^16.3.2, react-is@npm:^16.7.0, react-is@npm:^16.8.1, react-is@npm:^16.8.6":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -20570,56 +20617,35 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-redux@npm:5.1.0":
-  version: 5.1.0
-  resolution: "react-redux@npm:5.1.0"
+"react-redux@npm:8.0.5, react-redux@npm:^8.0.5":
+  version: 8.0.5
+  resolution: "react-redux@npm:8.0.5"
   dependencies:
-    "@babel/runtime": ^7.1.2
-    hoist-non-react-statics: ^3.0.0
-    invariant: ^2.2.4
-    loose-envify: ^1.1.0
-    prop-types: ^15.6.1
-    react-is: ^16.6.0
-    react-lifecycles-compat: ^3.0.0
+    "@babel/runtime": ^7.12.1
+    "@types/hoist-non-react-statics": ^3.3.1
+    "@types/use-sync-external-store": ^0.0.3
+    hoist-non-react-statics: ^3.3.2
+    react-is: ^18.0.0
+    use-sync-external-store: ^1.0.0
   peerDependencies:
-    react: ^0.14.0 || ^15.0.0-0 || ^16.0.0-0
-    redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
-  checksum: 5eb904d10994340696d2bffcdf7157231d23f74cae08b1f4c286945ec6ccaf3a49dea891544dce2a1fcb88bdf02387db913070b45d68381a36f45895d82074b1
-  languageName: node
-  linkType: hard
-
-"react-redux@npm:5.1.1, react-redux@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "react-redux@npm:5.1.1"
-  dependencies:
-    "@babel/runtime": ^7.1.2
-    hoist-non-react-statics: ^3.1.0
-    invariant: ^2.2.4
-    loose-envify: ^1.1.0
-    prop-types: ^15.6.1
-    react-is: ^16.6.0
-    react-lifecycles-compat: ^3.0.0
-  peerDependencies:
-    react: ^0.14.0 || ^15.0.0-0 || ^16.0.0-0
-    redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
-  checksum: 6c79892e8dd40d33af056fa6064184287f7237891c6a858708b4decc9e1a456bab84b4f0a9ae14cb7b0bf520bbed044adae952c0d688d9a1c33072d3a058ad3c
-  languageName: node
-  linkType: hard
-
-"react-redux@npm:^6.0.0":
-  version: 6.0.1
-  resolution: "react-redux@npm:6.0.1"
-  dependencies:
-    "@babel/runtime": ^7.3.1
-    hoist-non-react-statics: ^3.3.0
-    invariant: ^2.2.4
-    loose-envify: ^1.4.0
-    prop-types: ^15.7.2
-    react-is: ^16.8.2
-  peerDependencies:
-    react: ^16.4.0-0
-    redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
-  checksum: d9b8648f57e854e0ef7797582b9d7948b557f83974359613572bab684df4bff7423babe4841ae198e670eebf8584e8858729b0f00c7caa92a4704076f3ef5537
+    "@types/react": ^16.8 || ^17.0 || ^18.0
+    "@types/react-dom": ^16.8 || ^17.0 || ^18.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+    react-native: ">=0.59"
+    redux: ^4
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+    redux:
+      optional: true
+  checksum: a108f4f7ead6ac005e656d46051474a2bbdb31ede481bbbb3d8d779c1a35e1940b8655577cc5021313411864d305f67fc719aa48d6e5ed8288cf9cbe8b7042e4
   languageName: node
   linkType: hard
 
@@ -20873,7 +20899,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react@npm:^16.4.2, react@npm:^16.6.3, react@npm:^16.8.1":
+"react@npm:^16.14.0":
+  version: 16.14.0
+  resolution: "react@npm:16.14.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    prop-types: ^15.6.2
+  checksum: 8484f3ecb13414526f2a7412190575fc134da785c02695eb92bb6028c930bfe1c238d7be2a125088fec663cc7cda0a3623373c46807cf2c281f49c34b79881ac
+  languageName: node
+  linkType: hard
+
+"react@npm:^16.4.2, react@npm:^16.8.1":
   version: 16.8.6
   resolution: "react@npm:16.8.6"
   dependencies:
@@ -21359,6 +21396,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"regenerator-runtime@npm:^0.13.11":
+  version: 0.13.11
+  resolution: "regenerator-runtime@npm:0.13.11"
+  checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
+  languageName: node
+  linkType: hard
+
 "regenerator-runtime@npm:^0.13.4, regenerator-runtime@npm:^0.13.7":
   version: 0.13.9
   resolution: "regenerator-runtime@npm:0.13.9"
@@ -21815,7 +21859,7 @@ resolve@^1.20.0:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: ^2.0.0
     array.prototype.findindex: ^2.0.0
     babel-loader: ^8.0.6
@@ -21831,15 +21875,14 @@ resolve@^1.20.0:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    i18n-webpack-plugin: 1.0.0
     jwt-decode: 2.2.0
     less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-click-outside: ^3.0.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     react-widgets: ^4.4.6
     style-loader: 0.23.1
@@ -22001,7 +22044,7 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.19.0":
+"scheduler@npm:^0.19.0, scheduler@npm:^0.19.1":
   version: 0.19.1
   resolution: "scheduler@npm:0.19.1"
   dependencies:
@@ -22080,16 +22123,16 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"security_settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web":
+"security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web":
   version: 0.0.0-use.local
-  resolution: "security_settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
+  resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
     "@babel/core": ^7.2.0
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     create-react-class: ^15.6.3
@@ -22104,11 +22147,11 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     react-modal: 3.6.1
-    react-redux: ^6.0.0
+    react-redux: ^8.0.5
     redux: ^4.0.1
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
@@ -22224,7 +22267,7 @@ resolve@^1.20.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -22245,8 +22288,8 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     react-modal: 3.6.1
     style-loader: ^0.23.1
@@ -22313,7 +22356,7 @@ resolve@^1.20.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     "@types/redux": ^3.6.31
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
@@ -22332,9 +22375,9 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-custom-scrollbars: ^4.1.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     style-loader: ^0.23.1
     url-loader: 1.1.2
@@ -22572,16 +22615,16 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"site_import_export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web":
+"site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web":
   version: 0.0.0-use.local
-  resolution: "site_import_export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
+  resolution: "site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-eslint: ^10.0.1
     babel-loader: 8.0.6
     babel-plugin-transform-class-properties: ^6.22.0
@@ -22603,11 +22646,11 @@ resolve@^1.20.0:
     prop-types: ^15.6.2
     raw-loader: ^2.0.0
     rc-progress: ^2.0.6
-    react: ^16.6.3
+    react: ^16.14.0
     react-click-outside: ^3.0.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
-    react-redux: ^6.0.0
+    react-redux: ^8.0.5
     redux: ^4.0.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.2.0
@@ -22627,16 +22670,16 @@ resolve@^1.20.0:
   languageName: unknown
   linkType: soft
 
-"site_settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web":
+"site-settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web":
   version: 0.0.0-use.local
-  resolution: "site_settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web"
+  resolution: "site-settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -22655,12 +22698,12 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
+    react: ^16.14.0
     react-custom-scrollbars: 4.2.1
-    react-dom: ^16.6.3
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     react-modal: 3.6.1
-    react-redux: ^6.0.0
+    react-redux: ^8.0.5
     redux: ^4.0.1
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
@@ -22683,7 +22726,7 @@ resolve@^1.20.0:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babel-polyfill: 6.26.0
@@ -22698,8 +22741,8 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     style-loader: ^0.23.1
     url-loader: 1.1.2
@@ -23712,15 +23755,15 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"task_scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web":
+"task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web":
   version: 0.0.0-use.local
-  resolution: "task_scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
+  resolution: "task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -23741,8 +23784,8 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     react-modal: 3.6.1
     style-loader: ^0.23.1
@@ -23762,7 +23805,7 @@ resolve@^1.20.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -23784,8 +23827,8 @@ resolve@^1.20.0:
     object-path: 0.11.8
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     style-loader: ^0.23.1
     url-loader: 1.1.2
@@ -23930,7 +23973,7 @@ resolve@^1.20.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
     babel-plugin-transform-object-rest-spread: 6.26.0
@@ -23947,8 +23990,8 @@ resolve@^1.20.0:
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
     style-loader: ^0.23.1
     url-loader: 1.1.2
@@ -24391,9 +24434,9 @@ resolve@^1.20.0:
   linkType: hard
 
 "ua-parser-js@npm:^0.7.18":
-  version: 0.7.19
-  resolution: "ua-parser-js@npm:0.7.19"
-  checksum: 6122d39209c5533d318997752a65b0f571427639dda61f06db257c93378a454a7e120c1d4b417a28ed1a191bbe984931cf948a1da3132d5e07cffc76fac228d0
+  version: 0.7.33
+  resolution: "ua-parser-js@npm:0.7.33"
+  checksum: 1510e9ec26fcaf0d8c6ae8f1078a8230e8816f083e1b5f453ea19d06b8ef2b8a596601c92148fd41899e8b3e5f83fa69c42332bd5729b931a721040339831696
   languageName: node
   linkType: hard
 
@@ -24773,6 +24816,15 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
+  languageName: node
+  linkType: hard
+
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -24789,7 +24841,7 @@ resolve@^1.20.0:
     "@babel/plugin-transform-react-jsx": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.11.0
+    "@dnnsoftware/dnn-react-common": 9.11.1
     babel-loader: ^8.0.6
     create-react-class: ^15.6.3
     css-loader: 2.1.1
@@ -24804,10 +24856,10 @@ resolve@^1.20.0:
     localization: ^1.0.2
     prop-types: ^15.6.2
     raw-loader: 2.0.0
-    react: ^16.6.3
-    react-dom: ^16.6.3
+    react: ^16.14.0
+    react-dom: ^16.14.0
     react-hot-loader: 4.8.5
-    react-redux: ^5.1.1
+    react-redux: ^8.0.5
     react-widgets: ^4.4.6
     redux: ^4.0.1
     redux-devtools: ^3.5.0

@@ -25,9 +25,7 @@ using System.Text.RegularExpressions;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Utility class that represents a format string.
-    /// </summary>
+    /// <summary>Utility class that represents a format string.</summary>
     /// <remarks>
     /// <para>
     /// Utility class that represents a format string.
@@ -40,9 +38,7 @@ namespace log4net.Util
         private readonly string m_format;
         private readonly object[] m_args;
 
-        /// <summary>
-        /// Initialise the <see cref="SystemStringFormat"/>
-        /// </summary>
+        /// <summary>Initialise the <see cref="SystemStringFormat"/></summary>
         /// <param name="provider">An <see cref="System.IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="format">A <see cref="System.String"/> containing zero or more format items.</param>
         /// <param name="args">An <see cref="System.Object"/> array containing zero or more objects to format.</param>
@@ -53,9 +49,7 @@ namespace log4net.Util
             this.m_args = args;
         }
 
-        /// <summary>
-        /// Format the string and arguments
-        /// </summary>
+        /// <summary>Format the string and arguments</summary>
         /// <returns>the formatted string</returns>
         public override string ToString()
         {
@@ -113,9 +107,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Process an error during StringFormat
-        /// </summary>
+        /// <summary>Process an error during StringFormat</summary>
         private static string StringFormatError(Exception formatException, string format, object[] args)
         {
             try
@@ -152,9 +144,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Dump the contents of an array into a string builder
-        /// </summary>
+        /// <summary>Dump the contents of an array into a string builder</summary>
         private static void RenderArray(Array array, StringBuilder buffer)
         {
             if (array == null)
@@ -186,9 +176,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Dump an object to a string
-        /// </summary>
+        /// <summary>Dump an object to a string</summary>
         private static void RenderObject(Object obj, StringBuilder buffer)
         {
             if (obj == null)
@@ -214,9 +202,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// The fully qualified type of the SystemStringFormat class.
-        /// </summary>
+        /// <summary>The fully qualified type of the SystemStringFormat class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

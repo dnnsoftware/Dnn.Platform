@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
     using System;
@@ -22,9 +21,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.Blob;
 
-    /// <summary>
-    /// Windows Azure Storage Folder Provider.
-    /// </summary>
+    /// <summary>Windows Azure Storage Folder Provider.</summary>
+    /// <inheritdoc />
     public class AzureFolderProvider : BaseRemoteStorageProvider
     {
         internal const string ProviderName = "AzureFolderProvider";
@@ -73,6 +71,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// Azure Storage doesn't support folders, so we create a file in order for the folder to not be deleted during future synchronizations.
         /// The file has an extension not allowed by host. This way the file won't be added during synchronizations.
         /// </remarks>
+        /// <inheritdoc />
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
         {
             Requires.NotNull("folderPath", folderPath);
@@ -81,10 +80,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.UpdateFileInternal(new MemoryStream(), folderMapping, mappedPath + Constants.PlaceHolderFileName);
         }
 
-        /// <summary>
-        /// Gets the direct Url to the file.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string GetFileUrl(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -158,10 +154,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             return FileLinkClickController.Instance.GetFileLinkClick(file);
         }
 
-        /// <summary>
-        /// Gets the URL of the image to display in FileManager tree.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string GetFolderProviderIconPath()
         {
             return Globals.ResolveUrl("~/Providers/FolderProviders/AzureFolderProvider/images/FolderAzure_32x32_Standard.png");
@@ -179,6 +172,26 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var blobClient = csa.CreateCloudBlobClient();
             blobClient.ListContainers().ToList().ForEach(x => containers.Add(x.Name));
             return containers;
+        }
+
+        /// <summary>Updates a file in Azure folder provider.</summary>
+        /// <remarks>
+        /// Azure is case sensitive.  If you update dnninternals.pdf with DNNINTERNALS.pdf, to DNN it's the same
+        /// so it just re-uploads it, causing both files to exist in Azure. This azure specific method deletes the
+        /// old existing duplicate that only differs in case as part of the update.
+        /// </remarks>
+        /// <inheritdoc />
+        public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
+        {
+            IFileInfo originalFile = FileManager.Instance.GetFile(folder, fileName);
+
+            base.UpdateFile(folder, fileName, content);
+
+            if (originalFile != null && originalFile.FileName != fileName)
+            {
+                FolderMappingInfo folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID);
+                this.DeleteFileInternal(folderMapping, folder.MappedPath + originalFile.FileName);
+            }
         }
 
         /// <inheritdoc/>
@@ -293,27 +306,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
 
             this.ClearCache(folderMapping.FolderMappingID);
-        }
-
-        /// <summary>
-        /// Updates a file in Azure folder provider.
-        /// </summary>
-        /// <remarks>
-        /// Azure is case sensitive.  If you update dnninternals.pdf with DNNINTERNALS.pdf, to DNN it's the same
-        /// so it just re-uploads it, causing both files to exist in Azure. This azure specific method deletes the
-        /// old existing duplicate that only differs in case as part of the update.
-        /// </remarks>
-        public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
-        {
-            IFileInfo originalFile = FileManager.Instance.GetFile(folder, fileName);
-
-            base.UpdateFile(folder, fileName, content);
-
-            if (originalFile != null && originalFile.FileName != fileName)
-            {
-                FolderMappingInfo folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID);
-                this.DeleteFileInternal(folderMapping, folder.MappedPath + originalFile.FileName);
-            }
         }
 
         /// <inheritdoc/>

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Entities.Portals;
@@ -13,51 +14,67 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnPaswordStrengthOptions
     {
         [DataMember(Name = "minLength")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int MinLength;
 
         [DataMember(Name = "minNumberOfSpecialChars")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int MinNumberOfSpecialChars;
 
         [DataMember(Name = "validationExpression")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string ValidationExpression;
 
         [DataMember(Name = "minLengthText")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string MinLengthText;
 
         [DataMember(Name = "weakText")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string WeakText;
 
         [DataMember(Name = "fairText")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string FairText;
 
         [DataMember(Name = "strongText")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string StrongText;
 
         [DataMember(Name = "weakColor")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string WeakColor;
 
         [DataMember(Name = "fairColor")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string FairColor;
 
         [DataMember(Name = "strongColor")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string StrongColor;
 
         [DataMember(Name = "labelCss")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string LabelCss;
 
         [DataMember(Name = "meterCss")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string MeterCss;
 
         [DataMember(Name = "criteriaAtLeastNSpecialChars")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string CriteriaAtLeastNSpecialCharsText;
 
         [DataMember(Name = "criteriaAtLeastNChars")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string CriteriaAtLeastNCharsText;
 
         [DataMember(Name = "criteriaValidationExpression")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string CriteriaValidationExpressionText;
 
         [DataMember(Name = "passwordRulesHeadText")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string PasswordRulesHeadText;
 
         public DnnPaswordStrengthOptions()
@@ -82,9 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.MeterCss = "meter";
         }
 
-        /// <summary>
-        /// To avoid fetching data from the database in constructor, the OnSerializing method is consumed.
-        /// </summary>
+        /// <summary>To avoid fetching data from the database in constructor, the OnSerializing method is consumed.</summary>
         /// <param name="context"></param>
         [OnSerializing]
         public void OnSerializing(StreamingContext context)

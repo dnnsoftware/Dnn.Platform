@@ -20,49 +20,23 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionManager
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ActionManager is a helper class that provides common Action Behaviours that can
-    /// be used by any IActionControl implementation.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any IActionControl implementation.</summary>
     public class ActionManager
     {
-
         private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
         private readonly HttpRequest request = HttpContext.Current.Request;
         private readonly HttpResponse response = HttpContext.Current.Response;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionManager"/> class.
-        /// Constructs a new ActionManager.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
         public ActionManager(IActionControl actionControl)
         {
             this.ActionControl = actionControl;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Action Control that is connected to this ActionManager instance.
-        /// </summary>
-        /// <returns>An IActionControl object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Action Control that is connected to this ActionManager instance.</summary>
         public IActionControl ActionControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleInstanceContext instance that is connected to this ActionManager
-        /// instance.
-        /// </summary>
-        /// <returns>A ModuleInstanceContext object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the ModuleInstanceContext instance that is connected to this ActionManager instance.</summary>
         protected ModuleInstanceContext ModuleContext
         {
             get
@@ -71,13 +45,8 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DisplayControl determines whether the associated Action control should be
-        /// displayed.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
+        /// <returns><see langword="true"/> if the nodes should be displayed, otherwise <see langword="false"/>.</returns>
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
             if (objNodes != null && objNodes.Count > 0 && Personalization.GetUserMode() != PortalSettings.Mode.View)
@@ -105,38 +74,25 @@ namespace DotNetNuke.UI.Containers
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAction gets the action associated with the commandName.
-        /// </summary>
+        /// <summary>GetAction gets the action associated with the commandName.</summary>
         /// <param name="commandName">The command name.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="ModuleAction"/> instance or <see langword="null"/>.</returns>
         public ModuleAction GetAction(string commandName)
         {
             return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAction gets the action associated with the id.
-        /// </summary>
+        /// <summary>GetAction gets the action associated with the id.</summary>
         /// <param name="id">The Id.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="ModuleAction"/> instance or <see langword="null"/>.</returns>
         public ModuleAction GetAction(int id)
         {
             return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(id);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetClientScriptURL gets the client script to attach to the control's client
-        /// side onclick event.
-        /// </summary>
+        /// <summary>GetClientScriptURL gets the client script to attach to the control's client side onclick event.</summary>
         /// <param name="action">The Action.</param>
         /// <param name="control">The Control.</param>
-        /// -----------------------------------------------------------------------------
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
             if (!string.IsNullOrEmpty(action.ClientScript))
@@ -153,13 +109,9 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// IsVisible determines whether the action control is Visible.
-        /// </summary>
+        /// <summary>IsVisible determines whether the action control is Visible.</summary>
         /// <param name="action">The Action.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the action is visible, otherwise <see langword="false"/>.</returns>
         public bool IsVisible(ModuleAction action)
         {
             bool isVisible = false;
@@ -182,13 +134,9 @@ namespace DotNetNuke.UI.Containers
             return isVisible;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProcessAction processes the action.
-        /// </summary>
+        /// <summary>ProcessAction processes the action.</summary>
         /// <param name="id">The Id of the Action.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the action was processed, otherwise <see langword="false"/> (if it's a custom action that can't be found).</returns>
         public bool ProcessAction(string id)
         {
             bool bProcessed = true;
@@ -201,13 +149,9 @@ namespace DotNetNuke.UI.Containers
             return bProcessed;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProcessAction processes the action.
-        /// </summary>
+        /// <summary>ProcessAction processes the action.</summary>
         /// <param name="action">The Action.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the action was processed, otherwise <see langword="false"/> (if it's a custom action that can't be found).</returns>
         public bool ProcessAction(ModuleAction action)
         {
             bool bProcessed = true;

@@ -14,14 +14,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Secure File ImageTransform class.
-    /// </summary>
+    /// <summary>Secure File ImageTransform class.</summary>
     public class SecureFileTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecureFileTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SecureFileTransform"/> class.</summary>
         public SecureFileTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -30,24 +26,16 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             this.CompositingQuality = CompositingQuality.HighQuality;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for the image transformation.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for the image transformation.</summary>
         public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
 
-        /// <summary>
-        /// Gets or sets set IFileInfo object of given FileId.
-        /// </summary>
+        /// <summary>Gets or sets set IFileInfo object of given FileId.</summary>
         public IFileInfo SecureFile { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Image to return if no image or error.
-        /// </summary>
+        /// <summary>Gets or sets the Image to return if no image or error.</summary>
         public Image EmptyImage { get; set; }
 
-        /// <summary>
-        /// Processes an input image returing a secure file image.
-        /// </summary>
+        /// <summary>Processes an input image returing a secure file image.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         /// <remarks>
@@ -67,9 +55,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             }
         }
 
-        /// <summary>
-        /// Checks if the current user have READ permission on a given folder.
-        /// </summary>
+        /// <summary>Checks if the current user have READ permission on a given folder.</summary>
         /// <param name="folder">Folder info object.</param>
         /// <returns>True if the user has READ permission, false otherwise.</returns>
         public bool DoesHaveReadFolderPermission(IFolderInfo folder)

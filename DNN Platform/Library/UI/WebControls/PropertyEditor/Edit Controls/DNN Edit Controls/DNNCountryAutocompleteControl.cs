@@ -20,17 +20,13 @@ namespace DotNetNuke.UI.WebControls
 
         private HiddenField countryId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         public DnnCountryAutocompleteControl()
         {
             this.Init += this.DnnCountryRegionControl_Init;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         /// <param name="type"></param>
         public DnnCountryAutocompleteControl(string type)
         {
@@ -175,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.CountryName.Text = this.StringValue;
             int countryId = -1;
-            string countryCode = this.StringValue;
+            string countryCode = CountryLookup.CodeByName(this.StringValue);
             if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out countryId))
             {
                 var listController = new ListController();

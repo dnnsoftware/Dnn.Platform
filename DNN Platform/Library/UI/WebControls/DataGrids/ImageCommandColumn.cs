@@ -18,15 +18,11 @@ namespace DotNetNuke.UI.WebControls
         private bool showImage = true;
         private string imageURL = string.Empty;
 
-        /// <summary>
-        /// Gets or sets the CommandName for the Column.
-        /// </summary>
+        /// <summary>Gets or sets the CommandName for the Column.</summary>
         /// <value>A String.</value>
         public string CommandName { get; set; }
 
-        /// <summary>
-        /// Gets or sets editMode for the Column.
-        /// </summary>
+        /// <summary>Gets or sets editMode for the Column.</summary>
         /// <value>A String.</value>
         public ImageCommandColumnEditMode EditMode
         {
@@ -34,9 +30,7 @@ namespace DotNetNuke.UI.WebControls
             set { this.editMode = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the URL of the Image.
-        /// </summary>
+        /// <summary>Gets or sets the URL of the Image.</summary>
         /// <value>A String.</value>
         public string ImageURL
         {
@@ -56,54 +50,38 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Icon Key to obtain ImageURL.
-        /// </summary>
+        /// <summary>Gets or sets the Icon Key to obtain ImageURL.</summary>
         /// <value>A String.</value>
         public string IconKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Icon Siz to obtain ImageURL.
-        /// </summary>
+        /// <summary>Gets or sets the Icon Siz to obtain ImageURL.</summary>
         /// <value>A String.</value>
         public string IconSize { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Icon Style to obtain ImageURL.
-        /// </summary>
+        /// <summary>Gets or sets the Icon Style to obtain ImageURL.</summary>
         /// <value>A String.</value>
         public string IconStyle { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Key Field that provides a Unique key to the data Item.
-        /// </summary>
+        /// <summary>Gets or sets the Key Field that provides a Unique key to the data Item.</summary>
         /// <value>A String.</value>
         public string KeyField { get; set; }
 
-        /// <summary>
-        /// Gets or sets the URL of the Link (unless DataBinding through KeyField).
-        /// </summary>
+        /// <summary>Gets or sets the URL of the Link (unless DataBinding through KeyField).</summary>
         /// <value>A String.</value>
         public string NavigateURL { get; set; }
 
-        /// <summary>
-        /// Gets or sets the URL Formatting string.
-        /// </summary>
+        /// <summary>Gets or sets the URL Formatting string.</summary>
         /// <value>A String.</value>
         public string NavigateURLFormatString { get; set; }
 
-        /// <summary>
-        /// Gets or sets javascript text to attach to the OnClick Event.
-        /// </summary>
+        /// <summary>Gets or sets javascript text to attach to the OnClick Event.</summary>
         /// <value>A String.</value>
 // ReSharper disable InconsistentNaming
         public string OnClickJS { get; set; }
 
         // ReSharper restore InconsistentNaming
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether an Image is displayed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets whether an Image is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool ShowImage
@@ -112,21 +90,15 @@ namespace DotNetNuke.UI.WebControls
             set { this.showImage = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the Text (for Header/Footer Templates).
-        /// </summary>
+        /// <summary>Gets or sets the Text (for Header/Footer Templates).</summary>
         /// <value>A String.</value>
         public string Text { get; set; }
 
-        /// <summary>
-        /// Gets or sets an flag that indicates whether the buttons are visible.
-        /// </summary>
+        /// <summary>Gets or sets an flag that indicates whether the buttons are visible.</summary>
         /// <value>A Boolean.</value>
         public string VisibleField { get; set; }
 
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
+        /// <summary>Initialises the Column.</summary>
         public override void Initialize()
         {
             this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
@@ -144,9 +116,7 @@ namespace DotNetNuke.UI.WebControls
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
 
-        /// <summary>
-        /// Creates a ImageCommandColumnTemplate.
-        /// </summary>
+        /// <summary>Creates a ImageCommandColumnTemplate.</summary>
         /// <returns>A ImageCommandColumnTemplate.</returns>
         private ImageCommandColumnTemplate CreateTemplate(ListItemType type)
         {

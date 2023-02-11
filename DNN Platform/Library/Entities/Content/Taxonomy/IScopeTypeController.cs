@@ -5,9 +5,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 {
     using System.Linq;
 
-    /// <summary>
-    /// Interface of ScopeTypeController.
-    /// </summary>
+    /// <summary>Interface of ScopeTypeController.</summary>
     /// <seealso cref="ScopeTypeController"/>
     public interface IScopeTypeController
     {

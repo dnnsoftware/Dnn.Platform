@@ -229,11 +229,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.css");
                     ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.default.css");
 
-                    var options = JsonConvert.SerializeObject(this.Options, Formatting.None,
-                                    new JsonSerializerSettings
-                                    {
-                                        NullValueHandling = NullValueHandling.Ignore,
-                                    });
+                    var options = JsonConvert.SerializeObject(this.Options, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, });
 
                     var initScripts = $"$('#{this.ClientID}').dnnComboBox({options});";
 

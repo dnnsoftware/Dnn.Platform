@@ -38,9 +38,7 @@ namespace DotNetNuke.Data.PetaPoco
             return reader;
         }
 
-        /// <summary>
-        /// Escapes the "@" character if the arguments are empty and the sql string contains any "@" characters.
-        /// </summary>
+        /// <summary>Escapes the "@" character if the arguments are empty and the sql string contains any "@" characters.</summary>
         /// <param name="sql">Sql string to normalize.</param>
         /// <param name="args">Sql command arguments.</param>
         /// <returns>Normalized sql string.</returns>

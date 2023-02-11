@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.AdminLogs.Services
 {
     using System;
@@ -16,9 +15,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
@@ -31,10 +28,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         private readonly Components.AdminLogsController controller = new Components.AdminLogsController();
 
         /// GET: api/AdminLogs/GetLogTypes
-        /// <summary>
-        /// Gets log types.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets log types.</summary>
         /// <returns>List of log types.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit)]
@@ -76,17 +70,13 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// GET: api/AdminLogs/GetLogItems
-        /// <summary>
-        /// Gets log items.
-        /// </summary>
-        /// <param></param>
-        /// <param name="logType"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
+        /// <summary>Gets log items.</summary>
+        /// <param name="logType">The log type.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="pageIndex">The page index.</param>
         /// <returns>List of log items.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView)]
-
         public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex)
         {
             try
@@ -96,7 +86,9 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 var logItems = LogController.Instance.GetLogs(
                     portalId,
                     logType == "*" ? string.Empty : logType,
-                    pageSize, pageIndex, ref totalRecords);
+                    pageSize,
+                    pageIndex,
+                    ref totalRecords);
 
                 var items = logItems.Select(v => new
                 {
@@ -128,15 +120,12 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// POST: api/AdminLogs/DeleteLogItems
-        /// <summary>
-        /// Deletes log items.
-        /// </summary>
+        /// <summary>Deletes log items.</summary>
         /// <param name="logIds">List of log items to be deleted.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage DeleteLogItems(IEnumerable<string> logIds)
         {
             try
@@ -157,15 +146,12 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// POST: api/AdminLogs/EmailLogItems
-        /// <summary>
-        /// Sends log items via email.
-        /// </summary>
+        /// <summary>Sends log items via email.</summary>
         /// <param name="request">send email request.</param>
-        /// <returns></returns>
+        /// <returns>A response with result details.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit)]
-
         public HttpResponseMessage EmailLogItems(EmailLogItemsRequest request)
         {
             try
@@ -186,8 +172,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     subject = this.PortalSettings.PortalName + @" Exceptions";
                 }
 
-                string returnMsg = this.controller.EmailLogItems(subject, strFromEmailAddress, request.Email,
-                    request.Message, request.LogIds, out error);
+                string returnMsg = this.controller.EmailLogItems(subject, strFromEmailAddress, request.Email, request.Message, request.LogIds, out error);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = string.IsNullOrEmpty(returnMsg) ? true : false,
@@ -203,15 +188,11 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// POST: api/AdminLogs/ClearLog
-        /// <summary>
-        /// Clears all log items.
-        /// </summary>
-        /// <param></param>
-        /// <returns></returns>
+        /// <summary>Clears all log items.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage ClearLog()
         {
             try
@@ -227,10 +208,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// GET: api/AdminLogs/GetKeepMostRecentOptions
-        /// <summary>
-        /// Gets options of Keep Most Recent.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets options of Keep Most Recent.</summary>
         /// <returns>Option list of Keep Most Recent.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
@@ -256,12 +234,9 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             }
         }
 
-        /// GET: api/AdminLogs/GetOccurenceThresholdOptions
-        /// <summary>
-        /// Gets options of Occurence Threshold.
-        /// </summary>
-        /// <param></param>
-        /// <returns>Option list of Occurence Threshold.</returns>
+        /// GET: api/AdminLogs/GetOccurrenceOptions
+        /// <summary>Gets options of occurrence threshold.</summary>
+        /// <returns>Option list of occurrence threshold.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetOccurrenceOptions()
@@ -290,10 +265,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// GET: api/AdminLogs/GetLogSettings
-        /// <summary>
-        /// Gets log settings.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets log settings.</summary>
         /// <returns>List of log settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
@@ -338,11 +310,9 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// GET: api/AdminLogs/GetLogSettings
-        /// <summary>
-        /// Gets log type settings.
-        /// </summary>
-        /// <param name="logTypeConfigId"></param>
-        /// <returns></returns>
+        /// <summary>Gets log type settings.</summary>
+        /// <param name="logTypeConfigId">The log type config ID.</param>
+        /// <returns>A response with the log setting info.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
 
@@ -386,15 +356,12 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// POST: api/AdminLogs/AddLogSettings
-        /// <summary>
-        /// Adds a new log settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Adds a new log settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response with the log setting info.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit, CheckPermissionForAdmin = true)]
-
         public HttpResponseMessage AddLogSetting([FromBody] UpdateLogSettingsRequest request)
         {
             try
@@ -416,15 +383,12 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// POST: api/AdminLogs/UpdateLogSettings
-        /// <summary>
-        /// Updates an existing log settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates an existing log settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response with the log setting info.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit, CheckPermissionForAdmin = true)]
-
         public HttpResponseMessage UpdateLogSetting([FromBody] UpdateLogSettingsRequest request)
         {
             try
@@ -453,15 +417,12 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// POST: api/AdminLogs/DeleteLogSettings
-        /// <summary>
-        /// Deletes an existing log settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Deletes an existing log settings.</summary>
+        /// <param name="request">The delete request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit, CheckPermissionForAdmin = true)]
-
         public HttpResponseMessage DeleteLogSetting(DeleteLogSettingsRequest request)
         {
             try
@@ -486,10 +447,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         }
 
         /// GET: api/AdminLogs/GetLatestLogSetting
-        /// <summary>
-        /// Gets latest log setting.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets latest log setting.</summary>
         /// <returns>Log Setting.</returns>
         private HttpResponseMessage GetLatestLogSetting()
         {

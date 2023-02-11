@@ -42,9 +42,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowLogger workflowLogger;
         private readonly ISystemWorkflowManager systemWorkflowManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowEngine"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowEngine"/> class.</summary>
         public WorkflowEngine()
         {
             this.contentController = Util.GetContentController();
@@ -99,8 +97,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
 
             // Send notifications to stater
-            if (workflow.WorkflowID != this.systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) // This notification is not sent in Direct Publish WF
+            if (workflow.WorkflowID != this.systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID)
             {
+                // This notification is not sent in Direct Publish WF
                 this.SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);
             }
 
@@ -158,15 +157,15 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             // Add logs
             this.AddWorkflowCommentLog(contentItem, currentState, stateTransaction.UserId, stateTransaction.Message.UserComment);
-            this.AddWorkflowLog(contentItem, currentState,
-                currentState.StateID == workflow.FirstState.StateID
-                    ? WorkflowLogType.DraftCompleted
-                    : WorkflowLogType.StateCompleted, stateTransaction.UserId);
             this.AddWorkflowLog(
                 contentItem,
-                nextState.StateID == workflow.LastState.StateID
-                    ? WorkflowLogType.WorkflowApproved
-                    : WorkflowLogType.StateInitiated, stateTransaction.UserId);
+                currentState,
+                currentState.StateID == workflow.FirstState.StateID ? WorkflowLogType.DraftCompleted : WorkflowLogType.StateCompleted,
+                stateTransaction.UserId);
+            this.AddWorkflowLog(
+                contentItem,
+                nextState.StateID == workflow.LastState.StateID ? WorkflowLogType.WorkflowApproved : WorkflowLogType.StateInitiated,
+                stateTransaction.UserId);
 
             this.SendNotificationsToReviewers(contentItem, nextState, stateTransaction, WorkflowActionTypes.CompleteState, new PortalSettings(workflow.PortalID));
 
@@ -591,8 +590,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
-        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
-            ActionMessage message, string notificationType)
+        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction, ActionMessage message, string notificationType)
         {
             var notification = new Notification
             {

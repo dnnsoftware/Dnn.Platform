@@ -18,16 +18,14 @@ namespace Dnn.PersonaBar.Roles.Components
 
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
     {
-        /// <summary>
-        /// Gets a paginated list of Roles matching given search criteria.
-        /// </summary>
+        /// <summary>Gets a paginated list of Roles matching given search criteria.</summary>
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
         /// <param name="keyword"></param>
         /// <param name="total"></param>
         /// <param name="startIndex"></param>
         /// <param name="pageSize"></param>
-        /// <returns></returns>
+        /// <returns>A sequence of <see cref="RoleInfo"/> instances.</returns>
         public IEnumerable<RoleInfo> GetRoles(PortalSettings portalSettings, int groupId, string keyword, out int total, int startIndex, int pageSize)
         {
             var isAdmin = this.IsAdmin(portalSettings);
@@ -45,9 +43,7 @@ namespace Dnn.PersonaBar.Roles.Components
             return roleInfos.Skip(startIndex).Take(pageSize);
         }
 
-        /// <summary>
-        /// Gets a list (not paginated) of Roles given a comma separated list of Roles' names.
-        /// </summary>
+        /// <summary>Gets a list (not paginated) of Roles given a comma separated list of Roles' names.</summary>
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
         /// <param name="rolesFilter"></param>
@@ -124,8 +120,9 @@ namespace Dnn.PersonaBar.Roles.Components
 
                 if (existingRole.IsSystemRole)
                 {
-                    if (role.Description != existingRole.Description) // In System roles only description can be updated.
+                    if (role.Description != existingRole.Description)
                     {
+                        // In System roles only description can be updated.
                         existingRole.Description = role.Description;
                         RoleController.Instance.UpdateRole(existingRole, assignExistUsers);
                     }

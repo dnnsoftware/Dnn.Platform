@@ -5,6 +5,7 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Abstractions;
     using Abstractions.Application;
     using Abstractions.Logging;
@@ -25,9 +26,7 @@
     using Services.Cache;
 
     using Utilities.Mocks;
-    /// <summary>
-    /// Tests FileUploadController methods
-    /// </summary>
+    /// <summary>Tests FileUploadController methods</summary>
     [TestFixture]
     public class FileUploadControllerTests
     {
@@ -40,7 +39,6 @@
         [SetUp]
         public void SetUp()
         {
-
             this.SetupDataProvider();
 
             this.SetupCachingProvider();
@@ -107,6 +105,7 @@
         private class TestSynchronizationContext : SynchronizationContext
         {
             private bool isUploadFileCalled;
+
             public override void Post(SendOrPostCallback d, object state)
             {
                 d(state);

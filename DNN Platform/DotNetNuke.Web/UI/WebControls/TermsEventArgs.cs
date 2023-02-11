@@ -11,9 +11,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private readonly Term selectedTerm;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TermsEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TermsEventArgs"/> class.</summary>
         /// <param name="selectedTerm"></param>
         public TermsEventArgs(Term selectedTerm)
         {

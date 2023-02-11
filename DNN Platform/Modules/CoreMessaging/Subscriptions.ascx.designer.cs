@@ -15,33 +15,25 @@ namespace DotNetNuke.Modules.CoreMessaging {
     
     
     public partial class Subscriptions {
-        /// <summary>
-        /// ScopeWrapper control.
-        /// </summary>
+        /// <summary>ScopeWrapper control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel ScopeWrapper;
-        /// <summary>
-        /// lblSubscriptionsHelp control.
-        /// </summary>
+        /// <summary>lblSubscriptionsHelp control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSubscriptionsHelp;
-        /// <summary>
-        /// lblNotificationFreq control.
-        /// </summary>
+        /// <summary>lblNotificationFreq control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblNotificationFreq;
-        /// <summary>
-        /// lblMessageFreq control.
-        /// </summary>
+        /// <summary>lblMessageFreq control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

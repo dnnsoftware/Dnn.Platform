@@ -10,9 +10,7 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly LabelMode mode;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LabelModeAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LabelModeAttribute"/> class.</summary>
         /// <param name="mode">The label mode to apply to the associated property.</param>
         public LabelModeAttribute(LabelMode mode)
         {

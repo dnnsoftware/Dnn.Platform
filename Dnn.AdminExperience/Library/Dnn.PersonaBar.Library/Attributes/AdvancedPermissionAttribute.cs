@@ -18,19 +18,13 @@ namespace Dnn.PersonaBar.Library.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
     public class AdvancedPermissionAttribute : AuthorizeAttributeBase
     {
-        /// <summary>
-        /// Gets or sets the menu identifier.
-        /// </summary>
+        /// <summary>Gets or sets the menu identifier.</summary>
         public string MenuName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the permission key.
-        /// </summary>
+        /// <summary>Gets or sets the permission key.</summary>
         public string Permission { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether when true, it will force admin to have explicit Permission. When false, admin is passed without checking the Permission.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether when true, it will force admin to have explicit Permission. When false, admin is passed without checking the Permission.</summary>
         public bool CheckPermissionForAdmin { get; set; }
 
         /// <inheritdoc/>

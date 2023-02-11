@@ -32,20 +32,12 @@ namespace DotNetNuke.Modules.Admin.Users
     using Globals = DotNetNuke.Common.Globals;
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The User UserModuleBase is used to manage the base parts of a User.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The User UserModuleBase is used to manage the base parts of a User.</summary>
     public partial class User : UserUserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the User is valid.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the User is valid.</summary>
         public bool IsValid
         {
             get
@@ -56,10 +48,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public UserCreateStatus CreateStatus { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Password section is displayed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the Password section is displayed.</summary>
         public bool ShowPassword
         {
             get
@@ -73,10 +62,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Update button.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the Update button.</summary>
         public bool ShowUpdate
         {
             get
@@ -90,9 +76,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets user Form's css class.
-        /// </summary>
+        /// <summary>Gets or sets user Form's css class.</summary>
         public string CssClass
         {
             get
@@ -107,10 +91,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateUser creates a new user in the Database.
-        /// </summary>
+        /// <summary>CreateUser creates a new user in the Database.</summary>
         public void CreateUser()
         {
             // Update DisplayName to conform to Format
@@ -145,10 +126,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.OnUserCreateCompleted(args);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
+        /// <summary>DataBind binds the data to the controls.</summary>
         public override void DataBind()
         {
             if (this.Page.IsPostBack == false)
@@ -284,12 +262,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -321,9 +294,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 var options = new DnnPaswordStrengthOptions();
                 var optionsAsJsonString = Json.Serialize(options);
-                var passwordScript = string.Format(
-                    "dnn.initializePasswordStrength('.{0}', {1});{2}",
-                    "password-strength", optionsAsJsonString, Environment.NewLine);
+                var passwordScript =
+                    $"dnn.initializePasswordStrength('.{"password-strength"}', {optionsAsJsonString});{Environment.NewLine}";
 
                 if (ScriptManager.GetCurrent(this.Page) != null)
                 {
@@ -363,7 +335,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// method checks to see if its allowed to change the username
         /// valid if a host, or an admin where the username is in only 1 portal.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the user can update their username, otherwise <see langword="false"/>.</returns>
         private bool CanUpdateUsername()
         {
             // do not allow for non-logged in users
@@ -409,10 +381,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Validate validates the User.
-        /// </summary>
+        /// <summary>Validate validates the User.</summary>
         private bool Validate()
         {
             // Check User Editor
@@ -477,10 +446,7 @@ namespace DotNetNuke.Modules.Admin.Users
             return isValid;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdDelete_Click runs when the delete Button is clicked.
-        /// </summary>
+        /// <summary>cmdDelete_Click runs when the delete Button is clicked.</summary>
         private void CmdDelete_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -542,10 +508,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the Update Button is clicked.
-        /// </summary>
+        /// <summary>cmdUpdate_Click runs when the Update Button is clicked.</summary>
         private void CmdUpdate_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
     using System;
@@ -36,17 +35,23 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
+        /// <summary>A regular expression which matches a file name for a resource file.</summary>
+        /// <remarks>
+        /// Sample matches:
+        /// <list type="bullet">
+        ///     <item><description><c>MyResources.ascx.en-US.resx</c></description></item>
+        ///     <item><description><c>MyResources.ascx.en-US.Host.resx</c></description></item>
+        ///     <item><description><c>MyResources.ascx.en-US.Portal-123.resx</c></description></item>
+        /// </list>
+        /// </remarks>
+        internal static readonly Regex FileInfoRegex = new Regex(
+            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
+
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
 
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-
-        // Sample matches:
-        // MyResources.ascx.en-US.resx
-        // MyResources.ascx.en-US.Host.resx
-        // MyResources.ascx.en-US.Portal-123.resx
-        internal static readonly Regex FileInfoRegex = new Regex(
-            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
 
@@ -68,7 +73,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/pages/GetTabsForTranslation?portalId=&cultureCode=fr-FR
         [HttpGet]
-
         public HttpResponseMessage GetTabsForTranslation(int? portalId, string cultureCode)
         {
             try
@@ -91,7 +95,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetRootResourcesFolders
         [HttpGet]
-
         public HttpResponseMessage GetRootResourcesFolders()
         {
             try
@@ -119,7 +122,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetSubRootResources?currentFolder=DesktopModules
         [HttpGet]
-
         public HttpResponseMessage GetSubRootResources(string currentFolder = null)
         {
             try
@@ -197,7 +199,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetResxEntries?portalId=&mode=Portal&locale=de-DE&resourceFile=App_GlobalResources%2fFileUpload.resx
         [HttpGet]
-
         public HttpResponseMessage GetResxEntries(int? portalId, string mode, string locale, string resourceFile, bool highlight = false)
         {
             try
@@ -309,7 +310,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/SaveResxEntries
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage SaveResxEntries(UpdateTransaltionsRequest request)
         {
             try
@@ -368,7 +368,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/EnableLocalizedContent?portalId=&translatePages=true
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage EnableLocalizedContent([FromUri] int? portalId, [FromUri] bool translatePages)
         {
             try
@@ -396,7 +395,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/LocalizedContent?portalId=&cultureCode=de-DE
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage LocalizedContent([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
@@ -423,7 +421,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetLocalizationProgress
         [HttpGet]
-
         public HttpResponseMessage GetLocalizationProgress()
         {
             try
@@ -441,7 +438,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/DisableLocalizedContent
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DisableLocalizedContent([FromUri] int? portalId)
         {
             try
@@ -479,7 +475,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/MarkAllPagesTranslated?portalId=&cultureCode=de-DE
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage MarkAllPagesTranslated([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
@@ -524,7 +519,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/ActivateLanguage?portalId=&cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ActivateLanguage([FromUri] int? portalId, [FromUri] string cultureCode, [FromUri] bool enable)
         {
             try
@@ -559,7 +553,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/PublishAllPages?portalId=&cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage PublishAllPages([FromUri] int? portalId, [FromUri] string cultureCode, [FromUri] bool enable)
         {
             try
@@ -594,7 +587,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/DeleteLanguagePages?portalId=&cultureCode=de-DE
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteLanguagePages(int? portalId, string cultureCode)
         {
             try
@@ -688,19 +680,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return Localization.GetString(key, LocalResourcesFile);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///  Loads resources from file into the HastTable.
-        /// </summary>
-        /// <param name = "ht">Current resources HashTable.</param>
-        /// <param name = "filepath">Resources file.</param>
+        /// <summary> Loads resources from file into the HastTable.</summary>
+        /// <param name="ht">Current resources HashTable.</param>
+        /// <param name="filepath">Resources file.</param>
         /// <remarks>
         ///   Returned hashtable uses resourcekey as key.
         ///   Value contains a Pair object where:
         ///   First=>value to be edited
         ///   Second=>default value.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static void LoadResource(IDictionary ht, string filepath)
         {
             var d = new XmlDocument { XmlResolver = null };
@@ -777,28 +765,24 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return this.localeController.GetLocales(portalId).ContainsKey(cultureCode);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Loads resources from file.
-        /// </summary>
-        /// <param name = "portalId">Portal Id.</param>
-        /// <param name = "mode">Active editor mode.</param>
-        /// <param name = "type">Resource being loaded (edit or default).</param>
+        /// <summary>Loads resources from file.</summary>
+        /// <param name="portalId">Portal Id.</param>
+        /// <param name="mode">Active editor mode.</param>
+        /// <param name="type">Resource being loaded (edit or default).</param>
         /// <param name="locale">The locale of the file being edited.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Hashtable"/> where the keys are resource names and the values are <see cref="Pair"/> instances with the resource text as both values.</returns>
         /// <remarks>
-        ///   Depending on the editor mode, resources will be overrided using default DNN schema.
+        ///   Depending on the editor mode, resources will be overridden using default DNN schema.
         ///   "Edit" resources will only load selected file.
         ///   When loading "Default" resources (to be used on the editor as helpers) fallback resource
         ///   chain will be used in order for the editor to be able to correctly see what
         ///   is the current default value for the any key. This process depends on the current active
         ///   editor mode:
         ///   - System: when editing system base resources on en-US needs to be loaded
-        ///   - Host: base en-US, and base locale especific resource
-        ///   - Portal: base en-US, host override for en-US, base locale especific resource, and host override
+        ///   - Host: base en-US, and base locale specific resource
+        ///   - Portal: base en-US, host override for en-US, base locale specific resource, and host override
         ///   for locale.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private Hashtable LoadFile(int portalId, LanguageResourceMode mode, string type, string locale)
         {
             string file;
@@ -844,25 +828,17 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return ht;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Returns the resource file name for a given resource and language.
-        /// </summary>
+        /// <summary>  Returns the resource file name for a given resource and language.</summary>
         /// <param name="portalId">Portal Id.</param>
         /// <param name="language">Language Name.</param>
-        /// <param name = "mode">Identifies the resource being searched (System, Host, Portal).</param>
+        /// <param name="mode">Identifies the resource being searched (System, Host, Portal).</param>
         /// <returns>Localized File Name.</returns>
-        /// -----------------------------------------------------------------------------
         private string ResourceFile(int portalId, string language, LanguageResourceMode mode)
         {
             return Localization.GetResourceFileName(this.selectedResourceFile, language, mode.ToString(), portalId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Updates all values from the datagrid.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  Updates all values from the datagrid.</summary>
         private string SaveResourceFileFile(int portalId, LanguageResourceMode mode, string locale, IEnumerable<LocalizationEntry> entries)
         {
             var resDoc = new XmlDocument { XmlResolver = null };
@@ -1013,26 +989,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
 
             return pages;
-        }
-    }
-
-    internal static class KpvExtension
-    {
-
-        public static IEnumerable<LocalizationEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
-        {
-            var appPath = Globals.ApplicationMapPath;
-            var appPathLen = appPath.Length;
-            if (!appPath.EndsWith(@"\"))
-            {
-                appPathLen++;
-            }
-
-            return list.Select(kpv => new LocalizationEntry
-            {
-                Name = kpv.Key,
-                NewValue = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/"),
-            });
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Modules.Html
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
@@ -34,30 +33,20 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Services.Tokens;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Modules.Html
-    /// Project:    DotNetNuke
-    /// Class:      HtmlTextController
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The HtmlTextController is the Controller class for managing HtmlText information the HtmlText module.
-    /// </summary>
+    /// <summary>The HtmlTextController is the Controller class for managing HtmlText information the HtmlText module.</summary>
     public class HtmlTextController : ModuleSearchBase, IPortable, IUpgradeable
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public const int MAX_DESCRIPTION_LENGTH = 100;
         private const string PortalRootToken = "{{PortalRoot}}";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlTextController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
         public HtmlTextController()
             : this(Globals.DependencyProvider.GetRequiredService<INavigationManager>())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlTextController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
         /// <param name="navigationManager"></param>
         public HtmlTextController(INavigationManager navigationManager)
         {
@@ -66,18 +55,13 @@ namespace DotNetNuke.Modules.Html
 
         protected INavigationManager NavigationManager { get; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   FormatHtmlText formats HtmlText content for display in the browser.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>FormatHtmlText formats HtmlText content for display in the browser.</summary>
         /// <param name="moduleId">The ModuleID.</param>
-        /// <param name = "content">The HtmlText Content.</param>
-        /// <param name = "settings">Module Settings.</param>
+        /// <param name="content">The HtmlText Content.</param>
+        /// <param name="settings">Module Settings.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <param name="page">The Page Instance.</param>
-        /// <returns></returns>
+        /// <returns>The formatted HTML content.</returns>
         public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
         {
             // Html decode content
@@ -214,14 +198,9 @@ namespace DotNetNuke.Modules.Html
             return string.IsNullOrEmpty(protocol) ? result : protocol + result;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleID">The ID of the Module.</param>
-        /// <param name = "itemID">The ID of the Item.</param>
+        /// <summary>DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item.</summary>
+        /// <param name="moduleID">The ID of the Module.</param>
+        /// <param name="itemID">The ID of the Item.</param>
         public void DeleteHtmlText(int moduleID, int itemID)
         {
             DataProvider.Instance().DeleteHtmlText(moduleID, itemID);
@@ -230,43 +209,28 @@ namespace DotNetNuke.Modules.Html
             ModuleController.SynchronizeModule(moduleID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetAllHtmlText gets a collection of HtmlTextInfo objects for the Module and Workflow.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleID">The ID of the Module.</param>
-        /// <returns></returns>
+        /// <summary>GetAllHtmlText gets a collection of HtmlTextInfo objects for the Module and Workflow.</summary>
+        /// <param name="moduleID">The ID of the Module.</param>
+        /// <returns>A <see cref="List{T}"/> of <see cref="HtmlTextInfo"/> instances.</returns>
         public List<HtmlTextInfo> GetAllHtmlText(int moduleID)
         {
             return CBO.FillCollection<HtmlTextInfo>(DataProvider.Instance().GetAllHtmlText(moduleID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetHtmlText gets the HtmlTextInfo object for the Module, Item, and Workflow.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleID">The ID of the Module.</param>
-        /// <param name = "itemID">The ID of the Item.</param>
-        /// <returns></returns>
+        /// <summary>GetHtmlText gets the HtmlTextInfo object for the Module, Item, and Workflow.</summary>
+        /// <param name="moduleID">The ID of the Module.</param>
+        /// <param name="itemID">The ID of the Item.</param>
+        /// <returns>An <see cref="HtmlTextInfo"/> instance or <see langword="null"/>.</returns>
         public HtmlTextInfo GetHtmlText(int moduleID, int itemID)
         {
             return CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetHtmlText(moduleID, itemID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetTopHtmlText gets the most recent HtmlTextInfo object for the Module, Workflow, and State.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleId">The ID of the Module.</param>
-        /// <param name = "isPublished">Whether the content has been published or not.</param>
+        /// <summary>GetTopHtmlText gets the most recent HtmlTextInfo object for the Module, Workflow, and State.</summary>
+        /// <param name="moduleId">The ID of the Module.</param>
+        /// <param name="isPublished">Whether the content has been published or not.</param>
         /// <param name="workflowId">The Workflow ID.</param>
-        /// <returns></returns>
+        /// <returns>An <see cref="HtmlTextInfo"/> instance or <see langword="null"/>.</returns>
         public HtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
         {
             var htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished));
@@ -295,16 +259,11 @@ namespace DotNetNuke.Modules.Html
             return htmlText;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetWorkFlow retrieves the currently active Workflow for the Portal.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleId">The ID of the Module.</param>
+        /// <summary>GetWorkFlow retrieves the currently active Workflow for the Portal.</summary>
+        /// <param name="moduleId">The ID of the Module.</param>
         /// <param name="tabId">The Tab ID.</param>
-        /// <param name = "portalId">The ID of the Portal.</param>
-        /// <returns></returns>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <returns>A <see cref="KeyValuePair{TKey,TValue}"/> where the <see cref="KeyValuePair{TKey,TValue}.Key"/> is the workflow type, and the <see cref="KeyValuePair{TKey,TValue}.Value"/> is the workflow ID.</returns>
         public KeyValuePair<string, int> GetWorkflow(int moduleId, int tabId, int portalId)
         {
             int workFlowId = Null.NullInteger;
@@ -366,14 +325,9 @@ namespace DotNetNuke.Modules.Html
             return new KeyValuePair<string, int>(workFlowType, workFlowId);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   UpdateHtmlText creates a new HtmlTextInfo object or updates an existing HtmlTextInfo object.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "htmlContent">An HtmlTextInfo object.</param>
-        /// <param name = "maximumVersionHistory">The maximum number of versions to retain.</param>
+        /// <summary>UpdateHtmlText creates a new HtmlTextInfo object or updates an existing HtmlTextInfo object.</summary>
+        /// <param name="htmlContent">An HtmlTextInfo object.</param>
+        /// <param name="maximumVersionHistory">The maximum number of versions to retain.</param>
         public void UpdateHtmlText(HtmlTextInfo htmlContent, int maximumVersionHistory)
         {
             var workflowStateController = new WorkflowStateController();
@@ -443,15 +397,10 @@ namespace DotNetNuke.Modules.Html
             ModuleController.SynchronizeModule(htmlContent.ModuleID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   UpdateWorkFlow updates the currently active Workflow.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="workFlowType">The type of workflow (Module | Page | Site).</param>
-        /// <param name = "workflowID">The ID of the Workflow.</param>
+        /// <summary>UpdateWorkFlow updates the currently active Workflow.</summary>
         /// <param name="objectID">The ID of the object to apply the update to (depends on WorkFlowType).</param>
+        /// <param name="workFlowType">The type of workflow (Module | Page | Site).</param>
+        /// <param name="workflowID">The ID of the Workflow.</param>
         /// <param name="replaceExistingSettings">Should existing settings be overwritten?.</param>
         public void UpdateWorkflow(int objectID, string workFlowType, int workflowID, bool replaceExistingSettings)
         {
@@ -493,14 +442,9 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetMaximumVersionHistory retrieves the maximum number of versions to store for a module.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "portalID">The ID of the Portal.</param>
-        /// <returns></returns>
+        /// <summary>GetMaximumVersionHistory retrieves the maximum number of versions to store for a module.</summary>
+        /// <param name="portalID">The ID of the Portal.</param>
+        /// <returns>The maximum number of versions for the portal (defaults to <c>5</c>).</returns>
         public int GetMaximumVersionHistory(int portalID)
         {
             int intMaximumVersionHistory = -1;
@@ -520,14 +464,9 @@ namespace DotNetNuke.Modules.Html
             return intMaximumVersionHistory;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   UpdateWorkFlowID updates the currently active WorkflowID for the Portal.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "portalID">The ID of the Portal.</param>
-        /// <param name = "maximumVersionHistory">The MaximumVersionHistory.</param>
+        /// <summary>UpdateWorkFlowID updates the currently active WorkflowID for the Portal.</summary>
+        /// <param name="portalID">The ID of the Portal.</param>
+        /// <param name="maximumVersionHistory">The MaximumVersionHistory.</param>
         public void UpdateMaximumVersionHistory(int portalID, int maximumVersionHistory)
         {
             // data integrity check
@@ -546,14 +485,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   ExportModule implements the IPortable ExportModule Interface.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleId">The Id of the module to be exported.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string ExportModule(int moduleId)
         {
             string xml = string.Empty;
@@ -572,16 +504,7 @@ namespace DotNetNuke.Modules.Html
             return xml;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   ImportModule implements the IPortable ImportModule Interface.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "moduleID">The ID of the Module being imported.</param>
-        /// <param name = "content">The Content being imported.</param>
-        /// <param name = "version">The Version of the Module Content being imported.</param>
-        /// <param name = "userId">The UserID of the User importing the Content.</param>
+        /// <inheritdoc />
         public void ImportModule(int moduleID, string content, string version, int userId)
         {
             ModuleInfo module = ModuleController.Instance.GetModule(moduleID, Null.NullInteger, true);
@@ -717,12 +640,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   CreateUserNotifications creates HtmlTextUser records and optionally sends email notifications to participants in a Workflow.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>CreateUserNotifications creates HtmlTextUser records and optionally sends email notifications to participants in a Workflow.</summary>
         /// <param name="objHtmlText">An HtmlTextInfo object.</param>
         private void CreateUserNotifications(HtmlTextInfo objHtmlText)
         {

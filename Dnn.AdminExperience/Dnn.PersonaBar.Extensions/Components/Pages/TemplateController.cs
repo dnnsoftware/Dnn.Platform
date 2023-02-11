@@ -30,9 +30,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private readonly ITabController tabController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TemplateController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TemplateController"/> class.</summary>
         public TemplateController()
         {
             this.tabController = TabController.Instance;

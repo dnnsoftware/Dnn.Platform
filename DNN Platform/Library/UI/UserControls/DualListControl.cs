@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -13,13 +15,29 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class DualListControl : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Label Label1;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Label Label2;
+
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAdd;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAddAll;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdRemove;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdRemoveAll;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ListBox lstAssigned;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ListBox lstAvailable;
         private string myFileName = "DualListControl.ascx";
         private ArrayList assigned;
@@ -176,7 +194,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ViewState[this.ClientID + "_ListBoxHeight"] = this.ListBoxHeight;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -266,18 +284,6 @@ namespace DotNetNuke.UI.UserControls
             {
                 ctlListBox.Items.Add(objListItem);
             }
-        }
-    }
-
-    public class ListItemComparer : IComparer
-    {
-        /// <inheritdoc/>
-        public int Compare(object x, object y)
-        {
-            var a = (ListItem)x;
-            var b = (ListItem)y;
-            var c = new CaseInsensitiveComparer();
-            return c.Compare(a.Text, b.Text);
         }
     }
 }

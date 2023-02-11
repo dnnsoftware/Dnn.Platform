@@ -27,17 +27,13 @@ namespace DotNetNuke.Services.FileSystem
         private FolderPermissionCollection folderPermissions;
         private int folderMappingId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
         public FolderInfo()
             : this(false)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
         /// <param name="portalId"></param>
         /// <param name="folderpath"></param>
         /// <param name="storageLocation"></param>
@@ -50,9 +46,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
         /// <param name="uniqueId"></param>
         /// <param name="portalId"></param>
         /// <param name="folderpath"></param>
@@ -76,9 +70,7 @@ namespace DotNetNuke.Services.FileSystem
             this.LastUpdated = lastUpdated;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
         /// <param name="initialiseEmptyPermissions"></param>
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
@@ -116,9 +108,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the folder has any child subfolder.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the folder has any child subfolder.</summary>
         [XmlElement("haschildren")]
         public bool HasChildren
         {
@@ -128,15 +118,11 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Gets or sets a reference to the active Workflow for the folder.
-        /// </summary>
+        /// <summary>Gets or sets a reference to the active Workflow for the folder.</summary>
         [XmlElement("workflowid")]
         public int WorkflowID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a reference to the parent folder.
-        /// </summary>
+        /// <summary>Gets or sets a reference to the parent folder.</summary>
         [XmlElement("parentid")]
         public int ParentID { get; set; }
 
@@ -260,15 +246,11 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("isprotected")]
         public bool IsProtected { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether file versions are active for the folder.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether file versions are active for the folder.</summary>
         [XmlElement("isversioned")]
         public bool IsVersioned { get; set; }
 
-        /// <summary>
-        /// Gets or sets the path this folder is mapped on its provider file system.
-        /// </summary>
+        /// <summary>Gets or sets the path this folder is mapped on its provider file system.</summary>
         [XmlElement("mappedpath")]
         public string MappedPath { get; set; }
 
@@ -310,12 +292,8 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>  Gets or sets and sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -331,12 +309,8 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Fills a FolderInfo from a Data Reader.
-        /// </summary>
-        /// <param name = "dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  Fills a FolderInfo from a Data Reader.</summary>
+        /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
             this.FolderID = Null.SetNullInteger(dr["FolderID"]);

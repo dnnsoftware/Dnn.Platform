@@ -19,16 +19,14 @@ namespace DotNetNuke.Entities.Modules.Prompt
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
-    /// </summary>
+    /// <summary>This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.</summary>
     [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
+
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
         [ConsoleCommandParameter("name", "Prompt_AddModule_FlagModuleName", true)]
         public string ModuleName { get; set; }
@@ -95,7 +93,8 @@ namespace DotNetNuke.Entities.Modules.Prompt
                         {
                             var defaultModule = ModuleController.Instance.GetModule(
                                 this.PortalSettings.DefaultModuleId,
-                                this.PortalSettings.DefaultTabId, true);
+                                this.PortalSettings.DefaultTabId,
+                                true);
                             if (defaultModule != null)
                             {
                                 objModule.CacheTime = defaultModule.CacheTime;

@@ -1,13 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Users.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
-    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -22,7 +20,6 @@ namespace Dnn.PersonaBar.Users.Services
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Membership;
     using DotNetNuke.Instrumentation;
@@ -37,14 +34,11 @@ namespace Dnn.PersonaBar.Users.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
 
-        /// <summary>
-        /// Create a User.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Create a User.</summary>
+        /// <returns>A response with a (potentially <see langword="null"/>) <see cref="UserBasicDto"/>.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AddUser)]
-
         public HttpResponseMessage CreateUser(CreateUserContract contract)
         {
             try
@@ -64,12 +58,16 @@ namespace Dnn.PersonaBar.Users.Services
                     RandomPassword = contract.RandomPassword,
                     IgnoreRegistrationMode = true,
                 };
+
                 var userInfo = RegisterController.Instance.Register(settings);
-                return this.Request.CreateResponse(HttpStatusCode.OK, userInfo != null
-                    ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(
-                        this.PortalId,
-                        userInfo.UserId))
-                    : null);
+                UserBasicDto response = null;
+                if (userInfo != null)
+                {
+                    var userDetail = Components.UsersController.Instance.GetUserDetail(this.PortalId, userInfo.UserId);
+                    response = UserBasicDto.FromUserDetails(userDetail);
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {
@@ -85,21 +83,16 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        /// <summary>
-        /// Perform a search on Users registered in the Site.
-        /// </summary>
+        /// <summary>Perform a search on Users registered in the Site.</summary>
         /// <param name="searchText">Search filter text (if any).</param>
         /// <param name="filter">User filter. Send -1 to disable.</param>
         /// <param name="pageIndex">Page index to begin from (0, 1, 2).</param>
         /// <param name="pageSize">Number of records to return per page.</param>
         /// <param name="sortColumn">Column to sort on.</param>
         /// <param name="sortAscending">Sort ascending or descending.</param>
-        /// <returns></returns>
+        /// <returns>A response with a collection of <see cref="UserBasicDto"/> and total results count.</returns>
         [HttpGet]
-
-        public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize,
-            string sortColumn,
-            bool sortAscending)
+        public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize, string sortColumn, bool sortAscending)
         {
             try
             {
@@ -115,8 +108,7 @@ namespace Dnn.PersonaBar.Users.Services
                     Filter = filter,
                 };
 
-                var results = Components.UsersController.Instance.GetUsers(getUsersContract, this.UserInfo.IsSuperUser,
-                    out totalRecords);
+                var results = Components.UsersController.Instance.GetUsers(getUsersContract, this.UserInfo.IsSuperUser, out totalRecords);
                 var response = new
                 {
                     Results = results,
@@ -133,7 +125,6 @@ namespace Dnn.PersonaBar.Users.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetUserFilters()
         {
             try
@@ -149,13 +140,10 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        /// <summary>
-        /// Get User Detail Info.
-        /// </summary>
+        /// <summary>Get User Detail Info.</summary>
         /// <param name="userId"></param>
-        /// <returns></returns>
+        /// <returns>A response with a <see cref="UserDetailDto"/>.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetUserDetail(int userId)
         {
             try
@@ -336,8 +324,9 @@ namespace Dnn.PersonaBar.Users.Services
                     return httpResponseMessage;
                 }
 
-                if (user.Membership.Approved == authorized) // Do nothing if the new status is same as current status.
+                if (user.Membership.Approved == authorized)
                 {
+                    // Do nothing if the new status is same as current status.
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
 
@@ -632,8 +621,7 @@ namespace Dnn.PersonaBar.Users.Services
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
 
-        public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri] bool notifyUser,
-            [FromUri] bool isOwner)
+        public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri] bool notifyUser, [FromUri] bool isOwner)
         {
             try
             {
@@ -645,8 +633,12 @@ namespace Dnn.PersonaBar.Users.Services
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                var result = Components.UsersController.Instance.SaveUserRole(this.PortalId, this.UserInfo, userRoleDto,
-                    notifyUser, isOwner);
+                var result = Components.UsersController.Instance.SaveUserRole(
+                    this.PortalId,
+                    this.UserInfo,
+                    userRoleDto,
+                    notifyUser,
+                    isOwner);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }
@@ -673,8 +665,13 @@ namespace Dnn.PersonaBar.Users.Services
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                RoleController.Instance.UpdateUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
-                    RoleStatus.Approved, false, true);
+                RoleController.Instance.UpdateUserRole(
+                    this.PortalId,
+                    userRoleDto.UserId,
+                    userRoleDto.RoleId,
+                    RoleStatus.Approved,
+                    false,
+                    true);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -701,9 +698,7 @@ namespace Dnn.PersonaBar.Users.Services
         //            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
         //        }
 
-        /// <summary>
-        /// Return Password security options from server.
-        /// </summary>
+        /// <summary>Return Password security options from server.</summary>
         /// <returns>MembershipPasswordSettings.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]

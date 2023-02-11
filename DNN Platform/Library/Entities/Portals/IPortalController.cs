@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Portals
 {
     using System;
@@ -10,7 +9,6 @@ namespace DotNetNuke.Entities.Portals
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
-    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Users;
 
     /// <summary>
@@ -19,25 +17,17 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     public interface IPortalController
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates a new portal alias.
-        /// </summary>
+        /// <summary>Creates a new portal alias.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="portalAlias">Portal Alias to be created.</param>
-        /// -----------------------------------------------------------------------------
         void AddPortalAlias(int portalId, string portalAlias);
 
-        /// <summary>
-        /// Copies the page template.
-        /// </summary>
+        /// <summary>Copies the page template.</summary>
         /// <param name="templateFile">The template file.</param>
         /// <param name="mappedHomeDirectory">The mapped home directory.</param>
         void CopyPageTemplate(string templateFile, string mappedHomeDirectory);
 
-        /// <summary>
-        /// Creates the portal.
-        /// </summary>
+        /// <summary>Creates the portal.</summary>
         /// <param name="portalName">Name of the portal.</param>
         /// <param name="adminUserId">The obj admin user.</param>
         /// <param name="description">The description.</param>
@@ -50,12 +40,9 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
-        int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template,
-                                            string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+        int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
-        /// <summary>
-        /// Creates the portal.
-        /// </summary>
+        /// <summary>Creates the portal.</summary>
         /// <param name="portalName">Name of the portal.</param>
         /// <param name="adminUserId">The obj admin user.</param>
         /// <param name="description">The description.</param>
@@ -67,12 +54,9 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template,
-                                            string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+        int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
-        /// <summary>
-        /// Creates the portal.
-        /// </summary>
+        /// <summary>Creates the portal.</summary>
         /// <param name="portalName">Name of the portal.</param>
         /// <param name="adminUser">The obj admin user.</param>
         /// <param name="description">The description.</param>
@@ -85,12 +69,9 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DNN 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
-        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template,
-                         string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
-        /// <summary>
-        /// Creates the portal.
-        /// </summary>
+        /// <summary>Creates the portal.</summary>
         /// <param name="portalName">Name of the portal.</param>
         /// <param name="adminUser">The obj admin user.</param>
         /// <param name="description">The description.</param>
@@ -102,98 +83,71 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
-                         string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
-        /// <summary>
-        /// Get all the available portal templates grouped by culture.
-        /// </summary>
+        /// <summary>Get all the available portal templates grouped by culture.</summary>
         /// <returns>List of PortalTemplateInfo objects.</returns>
         [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplates instead. Scheduled removal in v11.0.0.")]
         IList<PortalController.PortalTemplateInfo> GetAvailablePortalTemplates();
 
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
+        /// <summary>Gets the current portal settings.</summary>
         /// <returns>portal settings.</returns>
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0. Use GetCurrentSettings instead.")]
         PortalSettings GetCurrentPortalSettings();
 
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
+        /// <summary>Gets the current portal settings.</summary>
         /// <returns>portal settings.</returns>
         IPortalSettings GetCurrentSettings();
 
-        /// <summary>
-        ///   Gets information of a portal.
-        /// </summary>
-        /// <param name = "portalId">Id of the portal.</param>
+        /// <summary>  Gets information of a portal.</summary>
+        /// <param name="portalId">Id of the portal.</param>
         /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId);
 
-        /// <summary>
-        ///   Gets information of a portal.
-        /// </summary>
-        /// <param name = "portalId">Id of the portal.</param>
+        /// <summary>  Gets information of a portal.</summary>
+        /// <param name="portalId">Id of the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId, string cultureCode);
 
-        /// <summary>
-        /// Gets the portal.
-        /// </summary>
+        /// <summary>Gets the portal.</summary>
         /// <param name="uniqueId">The unique id.</param>
         /// <returns>Portal info.</returns>
         PortalInfo GetPortal(Guid uniqueId);
 
-        /// <summary>
-        /// Get portals in specific culture.
-        /// </summary>
+        /// <summary>Get portals in specific culture.</summary>
         /// <param name="cultureCode">The culture code.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="List{T}"/> of <see cref="PortalInfo"/> instances.</returns>
         List<PortalInfo> GetPortalList(string cultureCode);
 
-        /// <summary>
-        /// Gets information from all portals.
-        /// </summary>
+        /// <summary>Gets information from all portals.</summary>
         /// <returns>ArrayList of PortalInfo objects.</returns>
         ArrayList GetPortals();
 
-        /// <summary>
-        /// Gets the portal settings dictionary.
-        /// </summary>
+        /// <summary>Gets the portal settings dictionary.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>portal settings.</returns>
         Dictionary<string, string> GetPortalSettings(int portalId);
 
-        /// <summary>
-        /// Gets the portal settings dictionary.
-        /// </summary>
+        /// <summary>Gets the portal settings dictionary.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns>portal settings.</returns>
         Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode);
 
-        /// <summary>
-        /// Gets the portal space used bytes.
-        /// </summary>
+        /// <summary>Gets the portal space used bytes.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <returns>Space used in bytes.</returns>
         long GetPortalSpaceUsedBytes(int portalId = -1);
 
-        /// <summary>
-        /// Load info for a portal template.
-        /// </summary>
+        /// <summary>Load info for a portal template.</summary>
         /// <param name="templateFileName">The file name of the portal template.</param>
         /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
         /// <returns>A portal template.</returns>
         [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplate instead. Scheduled removal in v11.0.0.")]
         PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
-        /// <summary>
-        /// Verifies if there's enough space to upload a new file on the given portal.
-        /// </summary>
+        /// <summary>Verifies if there's enough space to upload a new file on the given portal.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
         /// <returns>True if there's enough space available to upload the file.</returns>
@@ -203,21 +157,15 @@ namespace DotNetNuke.Entities.Portals
         ///   Remaps the Special Pages such as Home, Profile, Search
         ///   to their localized versions.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
-        /// <summary>
-        /// Removes the related PortalLocalization record from the database, adds optional clear cache.
-        /// </summary>
+        /// <summary>Removes the related PortalLocalization record from the database, adds optional clear cache.</summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
         /// <param name="clearCache"></param>
         void RemovePortalLocalization(int portalId, string cultureCode, bool clearCache = true);
 
-        /// <summary>
-        /// Processess a template file for the new portal.
-        /// </summary>
+        /// <summary>Processess a template file for the new portal.</summary>
         /// <param name="portalId">PortalId of the new portal.</param>
         /// <param name="template">The template.</param>
         /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
@@ -229,9 +177,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead. Scheduled removal in v11.0.0.")]
         void ParseTemplate(int portalId, PortalController.PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
-        /// <summary>
-        /// Processes the resource file for the template file selected.
-        /// </summary>
+        /// <summary>Processes the resource file for the template file selected.</summary>
         /// <param name="portalPath">New portal's folder.</param>
         /// <param name="resoureceFile">full path to the resource file.</param>
         /// <remarks>
@@ -241,25 +187,19 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         void ProcessResourceFileExplicit(string portalPath, string resoureceFile);
 
-        /// <summary>
-        /// Updates the portal expiry.
-        /// </summary>
+        /// <summary>Updates the portal expiry.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="cultureCode">The culture code.</param>
         void UpdatePortalExpiry(int portalId, string cultureCode);
 
-        /// <summary>
-        /// Updates basic portal information.
-        /// </summary>
+        /// <summary>Updates basic portal information.</summary>
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
 
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 
-        /// <summary>
-        /// Adds or Updates or Deletes a portal setting value.
-        /// </summary>
+        /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }

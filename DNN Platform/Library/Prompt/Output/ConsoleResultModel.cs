@@ -10,6 +10,18 @@ namespace DotNetNuke.Prompt
     {
         // the returned result - text or HTML
 
+        /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
+        public ConsoleResultModel()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
+        /// <param name="output"></param>
+        public ConsoleResultModel(string output)
+        {
+            this.Output = output;
+        }
+
         /// <inheritdoc/>
         [JsonProperty(PropertyName = "output")]
         public string Output { get; set; }
@@ -55,21 +67,5 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         [JsonProperty(PropertyName = "records")]
         public int Records { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleResultModel"/> class.
-        /// </summary>
-        public ConsoleResultModel()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleResultModel"/> class.
-        /// </summary>
-        /// <param name="output"></param>
-        public ConsoleResultModel(string output)
-        {
-            this.Output = output;
-        }
     }
 }

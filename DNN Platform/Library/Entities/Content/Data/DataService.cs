@@ -7,14 +7,11 @@ namespace DotNetNuke.Entities.Content.Data
     using System.Data;
 
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
 
-    /// <summary>
-    /// Persistent data of content with DataProvider instance.
-    /// </summary>
-    /// <remarks>
-    /// It's better to use Util.GetDataService instead of create new instance directly.
-    /// </remarks>
+    /// <summary>Persistent data of content with DataProvider instance.</summary>
+    /// <remarks>It's better to use <see cref="Util.GetDataService"/> instead of create new instance directly.</remarks>
     /// <example>
     /// <code lang="C#">
     /// public ContentController() : this(Util.GetDataService())
@@ -30,9 +27,7 @@ namespace DotNetNuke.Entities.Content.Data
     {
         private readonly DataProvider provider = DataProvider.Instance();
 
-        /// <summary>
-        /// Adds the content item.
-        /// </summary>
+        /// <summary>Adds the content item.</summary>
         /// <param name="contentItem">The content item.</param>
         /// <param name="createdByUserId">The created by user id.</param>
         /// <returns>content item id.</returns>
@@ -50,18 +45,14 @@ namespace DotNetNuke.Entities.Content.Data
                 this.provider.GetNull(contentItem.StateID));
         }
 
-        /// <summary>
-        /// Deletes the content item.
-        /// </summary>
+        /// <summary>Deletes the content item.</summary>
         /// <param name="contentItemId">The content item ID.</param>
         public void DeleteContentItem(int contentItemId)
         {
             this.provider.ExecuteNonQuery("DeleteContentItem", contentItemId);
         }
 
-        /// <summary>
-        /// Gets the content item.
-        /// </summary>
+        /// <summary>Gets the content item.</summary>
         /// <param name="contentItemId">The content item id.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetContentItem(int contentItemId)
@@ -69,23 +60,21 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteReader("GetContentItem", contentItemId);
         }
 
-        /// <summary>
-        /// Gets the content items.
-        /// </summary>
+        /// <summary>Gets the content items.</summary>
         /// <param name="contentTypeId">The Id of the Content Type.</param>
         /// <param name="tabId">The Id of the Tab.</param>
         /// <param name="moduleId">The Id of the Module.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetContentItems(int contentTypeId, int tabId, int moduleId)
         {
-            return this.provider.ExecuteReader("GetContentItems", this.provider.GetNull(contentTypeId),
-                                                            this.provider.GetNull(tabId),
-                                                            this.provider.GetNull(moduleId));
+            return this.provider.ExecuteReader(
+                "GetContentItems",
+                this.provider.GetNull(contentTypeId),
+                this.provider.GetNull(tabId),
+                this.provider.GetNull(moduleId));
         }
 
-        /// <summary>
-        /// Gets the content items by term.
-        /// </summary>
+        /// <summary>Gets the content items by term.</summary>
         /// <param name="term">The term.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetContentItemsByTerm(string term)
@@ -93,56 +82,44 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteReader("GetContentItemsByTerm", term);
         }
 
-        /// <summary>
-        /// Get a list of content items of the specified content type, <paramref name="contentTypeId"/>.
-        /// </summary>
+        /// <summary>Get a list of content items of the specified content type, <paramref name="contentTypeId"/>.</summary>
         /// <param name="contentTypeId">The type of content items you are searching for.</param>
-        /// <returns></returns>
+        /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByContentType(int contentTypeId)
         {
             return this.provider.ExecuteReader("GetContentItemsByContentType", contentTypeId);
         }
 
-        /// <summary>
-        /// Get a list of content items based on TabID (PageID).
-        /// </summary>
+        /// <summary>Get a list of content items based on TabID (PageID).</summary>
         /// <param name="tabId">The TabID (or "Page ID") that the content items are associated with.</param>
-        /// <returns></returns>
+        /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByTabId(int tabId)
         {
             return this.provider.ExecuteReader("GetContentItemsByTabId", tabId);
         }
 
-        /// <summary>
-        /// Retrieve all content items associated with a articular Module ID, <paramref name="moduleId"/>.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieve all content items associated with a articular Module ID, <paramref name="moduleId"/>.</summary>
+        /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByModuleId(int moduleId)
         {
             return this.provider.ExecuteReader("GetContentItemsByModuleId", moduleId);
         }
 
-        /// <summary>
-        /// Retrieve a list of content items containg terms from the specified Vocabulary ID.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieve a list of content items containing terms from the specified Vocabulary ID.</summary>
+        /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByVocabularyId(int vocabularyId)
         {
             return this.provider.ExecuteReader("GetContentItemsByVocabularyId", vocabularyId);
         }
 
-        /// <summary>
-        /// Gets the un indexed content items.
-        /// </summary>
+        /// <summary>Gets the un indexed content items.</summary>
         /// <returns>data reader.</returns>
         public IDataReader GetUnIndexedContentItems()
         {
             return this.provider.ExecuteReader("GetUnIndexedContentItems");
         }
 
-        /// <summary>
-        /// Updates the content item.
-        /// </summary>
+        /// <summary>Updates the content item.</summary>
         /// <param name="contentItem">The content item.</param>
         /// <param name="createdByUserId">The created by user id.</param>
         public void UpdateContentItem(ContentItem contentItem, int createdByUserId)
@@ -160,9 +137,7 @@ namespace DotNetNuke.Entities.Content.Data
                 this.provider.GetNull(contentItem.StateID));
         }
 
-        /// <summary>
-        /// Adds the meta data.
-        /// </summary>
+        /// <summary>Adds the meta data.</summary>
         /// <param name="contentItem">The content item.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
@@ -178,7 +153,7 @@ namespace DotNetNuke.Entities.Content.Data
             //TODO: fixing the original code requires adding new DataProvider methods. Reason:
             //      since we are calling DeleteMetaData/AddMetaData on their own connections,
             //      the transaction is useless and not going on the same connection as the other
-            //      operations; we must find a better way of doing this transactionsl operation.
+            //      operations; we must find a better way of doing this transactional operation.
             using (var transaction = _provider.GetTransaction())
             {
                 try
@@ -215,9 +190,7 @@ namespace DotNetNuke.Entities.Content.Data
 #endif
         }
 
-        /// <summary>
-        /// Deletes the meta data.
-        /// </summary>
+        /// <summary>Deletes the meta data.</summary>
         /// <param name="contentItem">The content item.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
@@ -226,9 +199,7 @@ namespace DotNetNuke.Entities.Content.Data
             this.provider.ExecuteNonQuery("DeleteMetaData", contentItem.ContentItemId, name, value);
         }
 
-        /// <summary>
-        /// Gets the meta data.
-        /// </summary>
+        /// <summary>Gets the meta data.</summary>
         /// <param name="contentItemId">The content item id.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetMetaData(int contentItemId)
@@ -236,9 +207,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteReader("GetMetaData", contentItemId);
         }
 
-        /// <summary>
-        /// Adds the type of the content.
-        /// </summary>
+        /// <summary>Adds the type of the content.</summary>
         /// <param name="contentType">Type of the content.</param>
         /// <returns>content type id.</returns>
         public int AddContentType(ContentType contentType)
@@ -252,27 +221,21 @@ namespace DotNetNuke.Entities.Content.Data
             this.provider.ExecuteNonQuery("DeleteContentType", contentType.ContentTypeId);
         }
 
-        /// <summary>
-        /// Gets the content types.
-        /// </summary>
+        /// <summary>Gets the content types.</summary>
         /// <returns>data reader.</returns>
         public IDataReader GetContentTypes()
         {
             return this.provider.ExecuteReader("GetContentTypes");
         }
 
-        /// <summary>
-        /// Updates the type of the content.
-        /// </summary>
+        /// <summary>Updates the type of the content.</summary>
         /// <param name="contentType">Type of the content.</param>
         public void UpdateContentType(ContentType contentType)
         {
             this.provider.ExecuteNonQuery("UpdateContentType", contentType.ContentTypeId, contentType.ContentType);
         }
 
-        /// <summary>
-        /// Adds the type of the scope.
-        /// </summary>
+        /// <summary>Adds the type of the scope.</summary>
         /// <param name="scopeType">Type of the scope.</param>
         /// <returns>scope type id.</returns>
         public int AddScopeType(ScopeType scopeType)
@@ -280,36 +243,28 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteScalar<int>("AddScopeType", scopeType.ScopeType);
         }
 
-        /// <summary>
-        /// Deletes the type of the scope.
-        /// </summary>
+        /// <summary>Deletes the type of the scope.</summary>
         /// <param name="scopeType">Type of the scope.</param>
         public void DeleteScopeType(ScopeType scopeType)
         {
             this.provider.ExecuteNonQuery("DeleteScopeType", scopeType.ScopeTypeId);
         }
 
-        /// <summary>
-        /// Gets the scope types.
-        /// </summary>
+        /// <summary>Gets the scope types.</summary>
         /// <returns>data reader.</returns>
         public IDataReader GetScopeTypes()
         {
             return this.provider.ExecuteReader("GetScopeTypes");
         }
 
-        /// <summary>
-        /// Updates the type of the scope.
-        /// </summary>
+        /// <summary>Updates the type of the scope.</summary>
         /// <param name="scopeType">Type of the scope.</param>
         public void UpdateScopeType(ScopeType scopeType)
         {
             this.provider.ExecuteNonQuery("UpdateScopeType", scopeType.ScopeTypeId, scopeType.ScopeType);
         }
 
-        /// <summary>
-        /// Adds the heirarchical term.
-        /// </summary>
+        /// <summary>Adds the hierarchical term.</summary>
         /// <param name="term">The term.</param>
         /// <param name="createdByUserId">The created by user id.</param>
         /// <returns>term id.</returns>
@@ -318,9 +273,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteScalar<int>("AddHeirarchicalTerm", term.VocabularyId, term.ParentTermId, term.Name, term.Description, term.Weight, createdByUserId);
         }
 
-        /// <summary>
-        /// Adds the simple term.
-        /// </summary>
+        /// <summary>Adds the simple term.</summary>
         /// <param name="term">The term.</param>
         /// <param name="createdByUserId">The created by user id.</param>
         /// <returns>term id.</returns>
@@ -335,27 +288,21 @@ namespace DotNetNuke.Entities.Content.Data
             this.provider.ExecuteNonQuery("AddTermToContent", term.TermId, contentItem.ContentItemId);
         }
 
-        /// <summary>
-        /// Deletes the simple term.
-        /// </summary>
+        /// <summary>Deletes the simple term.</summary>
         /// <param name="term">The term.</param>
         public void DeleteSimpleTerm(Term term)
         {
             this.provider.ExecuteNonQuery("DeleteSimpleTerm", term.TermId);
         }
 
-        /// <summary>
-        /// Deletes the heirarchical term.
-        /// </summary>
+        /// <summary>Deletes the hierarchical term.</summary>
         /// <param name="term">The term.</param>
         public void DeleteHeirarchicalTerm(Term term)
         {
             this.provider.ExecuteNonQuery("DeleteHeirarchicalTerm", term.TermId);
         }
 
-        /// <summary>
-        /// Gets the term.
-        /// </summary>
+        /// <summary>Gets the term.</summary>
         /// <param name="termId">The term id.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetTerm(int termId)
@@ -363,18 +310,14 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteReader("GetTerm", termId);
         }
 
-        /// <summary>
-        /// Retrieve term usage data for the specified Term ID, <paramref name="termId"/>.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieve term usage data for the specified Term ID, <paramref name="termId"/>.</summary>
+        /// <returns>A data reader with the term usage.</returns>
         public IDataReader GetTermUsage(int termId)
         {
             return this.provider.ExecuteReader("GetTermUsage", termId);
         }
 
-        /// <summary>
-        /// Gets the content of the terms by.
-        /// </summary>
+        /// <summary>Gets the content of the terms by.</summary>
         /// <param name="contentItemId">The content item id.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetTermsByContent(int contentItemId)
@@ -382,9 +325,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteReader("GetTermsByContent", contentItemId);
         }
 
-        /// <summary>
-        /// Gets the terms by vocabulary.
-        /// </summary>
+        /// <summary>Gets the terms by vocabulary.</summary>
         /// <param name="vocabularyId">The vocabulary id.</param>
         /// <returns>data reader.</returns>
         public IDataReader GetTermsByVocabulary(int vocabularyId)
@@ -392,18 +333,14 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteReader("GetTermsByVocabulary", vocabularyId);
         }
 
-        /// <summary>
-        /// Removes the content of the terms from.
-        /// </summary>
+        /// <summary>Removes the content of the terms from.</summary>
         /// <param name="contentItem">The content item.</param>
         public void RemoveTermsFromContent(ContentItem contentItem)
         {
             this.provider.ExecuteNonQuery("RemoveTermsFromContent", contentItem.ContentItemId);
         }
 
-        /// <summary>
-        /// Updates the heirarchical term.
-        /// </summary>
+        /// <summary>Updates the hierarchical term.</summary>
         /// <param name="term">The term.</param>
         /// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateHeirarchicalTerm(Term term, int lastModifiedByUserId)
@@ -411,9 +348,7 @@ namespace DotNetNuke.Entities.Content.Data
             this.provider.ExecuteNonQuery("UpdateHeirarchicalTerm", term.TermId, term.VocabularyId, term.ParentTermId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
         }
 
-        /// <summary>
-        /// Updates the simple term.
-        /// </summary>
+        /// <summary>Updates the simple term.</summary>
         /// <param name="term">The term.</param>
         /// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateSimpleTerm(Term term, int lastModifiedByUserId)
@@ -421,9 +356,7 @@ namespace DotNetNuke.Entities.Content.Data
             this.provider.ExecuteNonQuery("UpdateSimpleTerm", term.TermId, term.VocabularyId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
         }
 
-        /// <summary>
-        /// Adds the vocabulary.
-        /// </summary>
+        /// <summary>Adds the vocabulary.</summary>
         /// <param name="vocabulary">The vocabulary.</param>
         /// <param name="createdByUserId">The created by user id.</param>
         /// <returns>Vocabulary id.</returns>
@@ -440,27 +373,21 @@ namespace DotNetNuke.Entities.Content.Data
                 createdByUserId);
         }
 
-        /// <summary>
-        /// Deletes the vocabulary.
-        /// </summary>
+        /// <summary>Deletes the vocabulary.</summary>
         /// <param name="vocabulary">The vocabulary.</param>
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
             this.provider.ExecuteNonQuery("DeleteVocabulary", vocabulary.VocabularyId);
         }
 
-        /// <summary>
-        /// Gets the vocabularies.
-        /// </summary>
+        /// <summary>Gets the vocabularies.</summary>
         /// <returns>data reader.</returns>
         public IDataReader GetVocabularies()
         {
             return this.provider.ExecuteReader("GetVocabularies");
         }
 
-        /// <summary>
-        /// Updates the vocabulary.
-        /// </summary>
+        /// <summary>Updates the vocabulary.</summary>
         /// <param name="vocabulary">The vocabulary.</param>
         /// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateVocabulary(Vocabulary vocabulary, int lastModifiedByUserId)

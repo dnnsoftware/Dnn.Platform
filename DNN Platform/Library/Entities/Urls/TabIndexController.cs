@@ -64,9 +64,7 @@ namespace DotNetNuke.Entities.Urls
             return rewritePath;
         }
 
-        /// <summary>
-        /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.
-        /// </summary>
+        /// <summary>Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.</summary>
         /// <param name="portalId"></param>
         /// <param name="minTabPathDepth">ByRef parameter to return the minimum tab path depth (the number of '/' in the tab path).</param>
         /// <param name="maxTabPathDepth">ByRef parameter to return the maximum tab path depth (the number of '/' in the tab path).</param>
@@ -79,7 +77,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>Dictionary (string, string) of Tab paths in tab key, with the rewrite path as the value.</returns>
         /// <remarks>
         /// Changes
-        /// Task 608 : Incrementally build tab dictionary instead of building entire dicitionary all at once
+        /// Task 608 : Incrementally build tab dictionary instead of building entire dictionary all at once
         /// Task 609 : If usePortalAlias is specified, only build dictionary with specific portal alias : ignore others
         /// Task 791 : allow for specification of true/false for using thread locking to prevent multiple rebuilds on threads.
         /// </remarks>
@@ -163,7 +161,8 @@ namespace DotNetNuke.Entities.Urls
                             portalDepths[portalId] = depthInfo;
                         }
 
-                        if (bypassCache == false) // only cache if bypass not switched on
+                        // only cache if bypass not switched on
+                        if (bypassCache == false)
                         {
                             reason += "Portal " + portalId + " added to index;";
                             using (dict.GetReadLock())
@@ -192,7 +191,7 @@ namespace DotNetNuke.Entities.Urls
             }
             else
             {
-                // fallback values, should never get here: mainly for compiler wranings
+                // fallback values, should never get here: mainly for compiler warnings
                 minTabPathDepth = 1;
                 maxTabPathDepth = 10;
                 minAliasPathDepth = 1;
@@ -202,11 +201,9 @@ namespace DotNetNuke.Entities.Urls
             return dict;
         }
 
-        /// <summary>
-        /// Returns a list of aliases that are used in custom tab/alias association.
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <summary>Returns a list of aliases that are used in custom tab/alias association.</summary>
+        /// <param name="settings">The settings.</param>
+        /// <returns>A <see cref="List{T}"/> of alias strings.</returns>
         internal static List<string> GetCustomPortalAliases(FriendlyUrlSettings settings)
         {
             List<string> aliases = CacheController.GetCustomAliasesFromCache();
@@ -219,9 +216,7 @@ namespace DotNetNuke.Entities.Urls
             return aliases;
         }
 
-        /// <summary>
-        /// Gets the portal alias by portal.
-        /// </summary>
+        /// <summary>Gets the portal alias by portal.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns>Portal alias.</returns>
@@ -288,10 +283,8 @@ namespace DotNetNuke.Entities.Urls
             return retValue;
         }
 
-        /// <summary>
-        /// Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.</summary>
+        /// <returns>An <see cref="OrderedDictionary"/> where the keys are <see cref="string"/> aliases and the values are <see cref="PortalAliasInfo"/> instances.</returns>
         internal static OrderedDictionary GetPortalAliases(FriendlyUrlSettings settings)
         {
             // object to return
@@ -305,14 +298,12 @@ namespace DotNetNuke.Entities.Urls
             return aliasList;
         }
 
-        /// <summary>
-        /// Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage.
-        /// </summary>
+        /// <summary>Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage.</summary>
         /// <param name="tab"></param>
         /// <param name="options"></param>
         /// <param name="parentTraceId"></param>
         /// <remarks>Will remove // from the tabPath as stored in the Tabs object/table.</remarks>
-        /// <returns></returns>
+        /// <returns>The friendly URL path.</returns>
         internal static string GetTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
             string tabPath = null;
@@ -666,8 +657,9 @@ namespace DotNetNuke.Entities.Urls
             Dictionary<string, DupKeyCheck> dupCheck,
             ICollection<string> usingHttpAliases)
         {
-            foreach (PortalAliasInfo alias in chosenAliases) // and that is once per portal alias per portal
+            foreach (PortalAliasInfo alias in chosenAliases)
             {
+                // and that is once per portal alias per portal
                 string httpAlias = alias.HTTPAlias;
 
                 // check to see if there is a parameter rewrite rule that allows for parameters on the site root
@@ -829,10 +821,9 @@ namespace DotNetNuke.Entities.Urls
             // DNN-6186: add expired pages in dictionary as admin/host user should able to visit/edit them.
             bool isDeleted = tab.IsDeleted || tab.DisableLink;
             if (isDeleted)
-
-            // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted &&
-            // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
             {
+                // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted &&
+                // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
                 // 777: force 404 result for all deleted pages instead of relying on 'not found'
                 // 838 : separate handling for disabled pages
                 ActionType action = settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error
@@ -910,21 +901,19 @@ namespace DotNetNuke.Entities.Urls
                 // this entry is the 'original' (spaces removed) version ie mypage
                 string substituteRewritePath = rewritePath;
                 if (!isDeleted)
-
-                // if it is deleted, we don't care if the spaces were replaced, or anything else, just take care in deleted handling
                 {
+                    // if it is deleted, we don't care if the spaces were replaced, or anything else, just take care in deleted handling
                     string replaceSpaceWith = string.Empty;
                     if (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                     {
                         replaceSpaceWith = settings.ReplaceSpaceWith;
                     }
 
+                    var reason = tabPath.Contains(replaceSpaceWith) ? RedirectReason.Spaces_Replaced : RedirectReason.Custom_Redirect;
                     substituteRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         substituteRewritePath,
                         ActionType.Redirect301,
-                        tabPath.Contains(replaceSpaceWith)
-                                                                ? RedirectReason.Spaces_Replaced
-                                                                : RedirectReason.Custom_Redirect);
+                        reason);
                 }
 
                 // the preference variable determines what to do if a duplicate tab is found already in the dictionary
@@ -1214,7 +1203,8 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    if (replaceTab && !isDeleted) // don't replace if the incoming tab is deleted
+                    // don't replace if the incoming tab is deleted
+                    if (replaceTab && !isDeleted)
                     {
                         // remove the previous one
                         tabIndex.Remove(tabKey);
@@ -1234,17 +1224,16 @@ namespace DotNetNuke.Entities.Urls
             if (dupCheckDict.ContainsKey(dupKey))
             {
                 DupKeyCheck foundTAb = dupCheckDict[dupKey];
+
+                // -1 tabs are login, register, privacy etc
                 if ((foundTAb.IsDeleted == false && isDeleted == false) // found is not deleted, this tab is not deleted
                     && keyDupAction == UrlEnums.TabKeyPreference.TabOK
                     && foundTAb.TabIdOriginal != "-1")
-
-                // -1 tabs are login, register, privacy etc
                 {
                     // check whether to log for this or not
                     if (checkForDupUrls && foundTAb.TabIdOriginal != tabId.ToString())
-
-                    // dont' show message for where same tab is being added twice)
                     {
+                        // dont' show message for where same tab is being added twice)
                         // there is a naming conflict where this alias/tab path could be mistaken
                         int tabIdOriginal;
                         string tab1Name = string.Empty, tab2Name = string.Empty;
@@ -1525,9 +1514,8 @@ namespace DotNetNuke.Entities.Urls
                                     // this is a language-specific alias that's different to the culture for this alias
                                     && !string.IsNullOrEmpty(tabCulture) // and the tab culture is set
                                     && aliasSpecificCultures.Contains(tabCulture))
-
-                                // and there is a specific alias for this tab culture
                                 {
+                                    // and there is a specific alias for this tab culture
                                     ignoreTabWrongCulture = true;
                                 }
                             }
@@ -1580,9 +1568,9 @@ namespace DotNetNuke.Entities.Urls
                                             ref customHttpAliasesUsed,
                                             tab.IsDeleted,
                                             parentTraceId);
-                                        if (rewritePath != rewritePathKeep)
 
                                         // check to see the rewrite path is still the same, or did it get changed?
+                                        if (rewritePath != rewritePathKeep)
                                         {
                                             // OK, the rewrite path was modifed by the custom redirects dictionary add
                                             excludeFriendlyUrls = false;
@@ -1790,12 +1778,10 @@ namespace DotNetNuke.Entities.Urls
             return customHttpAlias;
         }
 
-        /// <summary>
-        /// Returns whether the portal specified exists in the Tab index or not.
-        /// </summary>
+        /// <summary>Returns whether the portal specified exists in the Tab index or not.</summary>
         /// <param name="portalDepths">The current portalDepths dictionary.</param>
         /// <param name="portalId">The id of the portal to search for.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the portal exists in the index, otherwise <see langword="false"/>.</returns>
         private static bool PortalExistsInIndex(SharedDictionary<int, PathSizes> portalDepths, int portalId)
         {
             bool result = false;

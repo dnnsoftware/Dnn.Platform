@@ -7,28 +7,21 @@ namespace DotNetNuke.UI.Modules
 
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
     /// Class    : ModuleControlBase
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleControlBase is a base class for Module Controls that inherits from the
     /// Control base class.  As with all MontrolControl base classes it implements
     /// IModuleControl.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class ModuleControlBase : Control, IModuleControl
     {
         private string localResourceFile;
         private ModuleInstanceContext moduleContext;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the underlying base control for this ModuleControl.
-        /// </summary>
+        /// <summary>Gets the underlying base control for this ModuleControl.</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public Control Control
         {
             get
@@ -37,12 +30,8 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Path for this control (used primarily for UserControls).
-        /// </summary>
+        /// <summary>Gets the Path for this control (used primarily for UserControls).</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlPath
         {
             get
@@ -51,12 +40,8 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Name for this control.
-        /// </summary>
+        /// <summary>Gets the Name for this control.</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlName
         {
             get
@@ -65,12 +50,8 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Module Context for this control.
-        /// </summary>
+        /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
-        /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
             get
@@ -84,12 +65,8 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the local resource file for this control.
-        /// </summary>
+        /// <summary>Gets or sets the local resource file for this control.</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
             get

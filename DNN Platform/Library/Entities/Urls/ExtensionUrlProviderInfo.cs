@@ -14,9 +14,7 @@ namespace DotNetNuke.Entities.Urls
     [Serializable]
     public class ExtensionUrlProviderInfo : IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtensionUrlProviderInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExtensionUrlProviderInfo"/> class.</summary>
         public ExtensionUrlProviderInfo()
         {
             this.ExtensionUrlProviderId = -1;
@@ -24,17 +22,13 @@ namespace DotNetNuke.Entities.Urls
             this.TabIds = new List<int>();
         }
 
-        /// <summary>
-        /// Gets a value indicating whether when true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
-        /// </summary>
+        /// <summary>Gets a value indicating whether when true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.</summary>
         public bool AllTabs
         {
             get { return this.TabIds.Count == 0; }
         }
 
-        /// <summary>
-        /// Gets or sets the DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.
-        /// </summary>
+        /// <summary>Gets or sets the DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.</summary>
         /// <remarks>
         /// If the Extension provider is not associated with any particular DotNetNuke extension, return null.
         /// </remarks>
@@ -42,9 +36,7 @@ namespace DotNetNuke.Entities.Urls
 
         public int ExtensionUrlProviderId { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether when true, provider is active.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether when true, provider is active.</summary>
         public bool IsActive { get; set; }
 
         public int PortalId { get; set; }
@@ -75,9 +67,7 @@ namespace DotNetNuke.Entities.Urls
 
         public Dictionary<string, string> Settings { get; private set; }
 
-        /// <summary>
-        /// Gets a list of TabIds where the module provider should be called when generating friendly urls.
-        /// </summary>
+        /// <summary>Gets a list of TabIds where the module provider should be called when generating friendly urls.</summary>
         public List<int> TabIds { get; private set; }
 
         /// <inheritdoc/>

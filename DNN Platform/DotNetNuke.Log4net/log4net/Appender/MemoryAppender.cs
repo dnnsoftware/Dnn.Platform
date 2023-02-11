@@ -25,9 +25,7 @@ using log4net.Core;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Stores logging events in an array.
-    /// </summary>
+    /// <summary>Stores logging events in an array.</summary>
     /// <remarks>
     /// <para>
     /// The memory appender stores all the logging events
@@ -57,9 +55,7 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class MemoryAppender : AppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MemoryAppender" /> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -70,9 +66,7 @@ namespace log4net.Appender
             this.m_eventsList = new ArrayList();
         }
 
-        /// <summary>
-        /// Gets the events that have been logged.
-        /// </summary>
+        /// <summary>Gets the events that have been logged.</summary>
         /// <returns>The events that have been logged</returns>
         /// <remarks>
         /// <para>
@@ -121,9 +115,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets or sets the fields that will be fixed in the event
-        /// </summary>
+        /// <summary>Gets or sets the fields that will be fixed in the event</summary>
         /// <remarks>
         /// <para>
         /// The logging event needs to have certain thread specific values 
@@ -137,9 +129,7 @@ namespace log4net.Appender
             set { this.m_fixFlags = value; }
         }
 
-        /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method. 
-        /// </summary>
+        /// <summary>This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method. </summary>
         /// <param name="loggingEvent">the event to log</param>
         /// <remarks>
         /// <para>Stores the <paramref name="loggingEvent"/> in the events list.</para>
@@ -157,9 +147,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Clear the list of events
-        /// </summary>
+        /// <summary>Clear the list of events</summary>
         /// <remarks>
         /// Clear the list of events
         /// </remarks>
@@ -171,9 +159,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets the events that have been logged and clears the list of events.
-        /// </summary>
+        /// <summary>Gets the events that have been logged and clears the list of events.</summary>
         /// <returns>The events that have been logged</returns>
         /// <remarks>
         /// <para>
@@ -190,14 +176,10 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// The list of events that have been appended.
-        /// </summary>
+        /// <summary>The list of events that have been appended.</summary>
         protected ArrayList m_eventsList;
 
-        /// <summary>
-        /// Value indicating which fields in the event should be fixed
-        /// </summary>
+        /// <summary>Value indicating which fields in the event should be fixed</summary>
         /// <remarks>
         /// By default all fields are fixed
         /// </remarks>

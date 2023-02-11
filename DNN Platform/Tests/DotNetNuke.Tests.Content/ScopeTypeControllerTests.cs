@@ -25,9 +25,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ScopeTypeTests.
-    /// </summary>
+    /// <summary>  Summary description for ScopeTypeTests.</summary>
     [TestFixture]
     public class ScopeTypeControllerTests
     {

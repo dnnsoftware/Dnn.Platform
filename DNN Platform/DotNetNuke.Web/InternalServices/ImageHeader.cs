@@ -29,9 +29,7 @@ namespace DotNetNuke.Web.InternalServices
                 { new byte[] { 0xff, 0xd8 }, DecodeJfif },
             };
 
-        /// <summary>
-        ///     Gets the dimensions of an image.
-        /// </summary>
+        /// <summary>    Gets the dimensions of an image.</summary>
         /// <param name="path">The path of the image to get the dimensions of.</param>
         /// <returns>The dimensions of the specified image.</returns>
         /// <exception cref="ArgumentException">The image was of an unrecognised format.</exception>
@@ -65,9 +63,7 @@ namespace DotNetNuke.Web.InternalServices
             return size;
         }
 
-        /// <summary>
-        ///     Gets the dimensions of an image.
-        /// </summary>
+        /// <summary>    Gets the dimensions of an image.</summary>
         /// <param name="binaryReader">The path of the image to get the dimensions of.</param>
         /// <returns>The dimensions of the specified image.</returns>
         /// <exception cref="ArgumentException">The image was of an unrecognised format.</exception>

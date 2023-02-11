@@ -422,8 +422,9 @@ namespace DotNetNuke.Services.Assets
 
             foreach (var ch in Path.GetInvalidPathChars())
             {
-                if (invalidChars.IndexOf(ch) == -1) // The ch does not exists
+                if (invalidChars.IndexOf(ch) == -1)
                 {
+                    // The ch does not exists
                     invalidChars += ch;
                 }
             }
@@ -439,9 +440,11 @@ namespace DotNetNuke.Services.Assets
 
         private string GetInvalidCharsErrorText()
         {
-            throw new AssetManagerException(Localization.GetExceptionMessage(
-                "FolderFileNameHasInvalidcharacters",
-                FolderFileNameHasInvalidcharactersDefaultMessage, "\\:/*?\"<>|"));
+            throw new AssetManagerException(
+                Localization.GetExceptionMessage(
+                    "FolderFileNameHasInvalidcharacters",
+                    FolderFileNameHasInvalidcharactersDefaultMessage,
+                    "\\:/*?\"<>|"));
         }
 
         private IFolderInfo GetFolderInfo(int folderId)

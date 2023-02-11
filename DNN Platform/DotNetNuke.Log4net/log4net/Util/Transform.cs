@@ -25,9 +25,7 @@ using System.Text.RegularExpressions;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Utility class for transforming strings.
-    /// </summary>
+    /// <summary>Utility class for transforming strings.</summary>
     /// <remarks>
     /// <para>
     /// Utility class for transforming strings.
@@ -37,9 +35,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class Transform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Transform" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Transform" /> class. </summary>
         /// <remarks>
         /// <para>
         /// Uses a private access modifier to prevent instantiation of this class.
@@ -49,9 +45,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Write a string to an <see cref="XmlWriter"/>
-        /// </summary>
+        /// <summary>Write a string to an <see cref="XmlWriter"/></summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="textData">the string to write</param>
         /// <param name="invalidCharReplacement">The string to replace non XML compliant chars with</param>
@@ -112,9 +106,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Replace invalid XML characters in text string
-        /// </summary>
+        /// <summary>Replace invalid XML characters in text string</summary>
         /// <param name="textData">the XML text input string</param>
         /// <param name="mask">the string to use in place of invalid characters</param>
         /// <returns>A string that does not contain invalid XML characters.</returns>
@@ -133,9 +125,7 @@ namespace log4net.Util
             return INVALIDCHARS.Replace(textData, mask);
         }
 
-        /// <summary>
-        /// Count the number of times that the substring occurs in the text
-        /// </summary>
+        /// <summary>Count the number of times that the substring occurs in the text</summary>
         /// <param name="text">the text to search</param>
         /// <param name="substring">the substring to find</param>
         /// <returns>the number of times the substring occurs in the text</returns>
@@ -178,9 +168,7 @@ namespace log4net.Util
         private const string CDATA_END	= "]]>";
         private const string CDATA_UNESCAPABLE_TOKEN	= "]]";
 
-        /// <summary>
-        /// Characters illegal in XML 1.0
-        /// </summary>
+        /// <summary>Characters illegal in XML 1.0</summary>
         private static Regex INVALIDCHARS = new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD]", RegexOptions.Compiled);
     }
 }

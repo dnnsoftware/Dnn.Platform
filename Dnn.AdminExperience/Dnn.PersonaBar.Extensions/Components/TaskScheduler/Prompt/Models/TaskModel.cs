@@ -7,21 +7,15 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Services.Scheduling;
 
-    /// <summary>
-    /// Represents a DNN ScheduleItem.
-    /// </summary>
+    /// <summary>Represents a DNN ScheduleItem.</summary>
     public class TaskModel : TaskModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TaskModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TaskModel"/> class.</summary>
         public TaskModel()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TaskModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TaskModel"/> class.</summary>
         /// <param name="item"></param>
         public TaskModel(ScheduleItem item)
             : base(item)

@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Users
 
     public class PurgeDeletedUsers : SchedulerClient
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.</summary>
         /// <param name="objScheduleHistoryItem"></param>
         public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -62,7 +60,7 @@ namespace DotNetNuke.Services.Users
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Purging deleted users task completed");
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 

@@ -23,19 +23,15 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// The File Upload Handler.
-    /// </summary>
+    /// <summary>The File Upload Handler.</summary>
     public class FileUploader : IHttpHandler
     {
-        /// <summary>
-        /// The JavaScript Serializer.
-        /// </summary>
+        /// <summary>The JavaScript Serializer.</summary>
         private readonly JavaScriptSerializer js = new JavaScriptSerializer();
 
-        /// <summary>
-        /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler" /> instance.
-        /// </summary>
+        private PortalSettings portalSettings = null;
+
+        /// <summary>Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler" /> instance.</summary>
         public bool IsReusable
         {
             get
@@ -44,9 +40,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether [override files].
-        /// </summary>
+        /// <summary>Gets a value indicating whether [override files].</summary>
         /// <value>
         ///   <c>true</c> if [override files]; otherwise, <c>false</c>.
         /// </value>
@@ -61,9 +55,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>
-        /// Gets the storage folder.
-        /// </summary>
+        /// <summary>Gets the storage folder.</summary>
         /// <value>
         /// The storage folder.
         /// </value>
@@ -76,9 +68,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /*
-        /// <summary>
-        /// Gets the storage folder.
-        /// </summary>
+        /// <summary>Gets the storage folder.</summary>
         /// <value>
         /// The storage folder.
         /// </value>
@@ -90,9 +80,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }*/
 
-        /// <summary>
-        /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler" /> interface.
-        /// </summary>
+        /// <summary>Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler" /> interface.</summary>
         /// <param name="context">An <see cref="T:System.Web.HttpContext" /> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
         public void ProcessRequest(HttpContext context)
         {
@@ -102,9 +90,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.HandleMethod(context);
         }
 
-        /// <summary>
-        /// Returns the options.
-        /// </summary>
+        /// <summary>Returns the options.</summary>
         /// <param name="context">The context.</param>
         private static void ReturnOptions(HttpContext context)
         {
@@ -112,9 +98,21 @@ namespace DNNConnect.CKEditorProvider.Browser
             context.Response.StatusCode = 200;
         }
 
-        /// <summary>
-        /// Handle request based on method.
-        /// </summary>
+        /// <summary>The get encoder.</summary>
+        /// <param name="format">
+        /// The format.
+        /// </param>
+        /// <returns>
+        /// The Encoder.
+        /// </returns>
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
+        }
+
+        /// <summary>Handle request based on method.</summary>
         /// <param name="context">The context.</param>
         private void HandleMethod(HttpContext context)
         {
@@ -149,9 +147,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>
-        /// Uploads the file.
-        /// </summary>
+        /// <summary>Uploads the file.</summary>
         /// <param name="context">The context.</param>
         private void UploadFile(HttpContext context)
         {
@@ -161,24 +157,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             this.WriteJsonIframeSafe(context, statuses);
         }
-
-        /// <summary>
-        /// The get encoder.
-        /// </summary>
-        /// <param name="format">
-        /// The format.
-        /// </param>
-        /// <returns>
-        /// The Encoder.
-        /// </returns>
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-
-            return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
-        }
-
-        private PortalSettings portalSettings = null;
 
         private EditorProviderSettings GetCurrentSettings(HttpContext context)
         {
@@ -246,9 +224,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             return currentSettings;
         }
 
-        /// <summary>
-        /// Uploads the whole file.
-        /// </summary>
+        /// <summary>Uploads the whole file.</summary>
         /// <param name="context">The context.</param>
         /// <param name="statuses">The statuses.</param>
         private void UploadWholeFile(HttpContext context, List<FilesUploadStatus> statuses)
@@ -399,9 +375,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>
-        /// Writes the JSON iFrame safe.
-        /// </summary>
+        /// <summary>Writes the JSON iFrame safe.</summary>
         /// <param name="context">The context.</param>
         /// <param name="statuses">The statuses.</param>
         private void WriteJsonIframeSafe(HttpContext context, List<FilesUploadStatus> statuses)

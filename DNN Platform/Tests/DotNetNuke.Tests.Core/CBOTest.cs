@@ -13,9 +13,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     using DotNetNuke.Tests.Utilities.Mocks;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for DataCacheTests.
-    /// </summary>
+    /// <summary>  Summary description for DataCacheTests.</summary>
     [TestFixture]
     public class CBOTest
     {

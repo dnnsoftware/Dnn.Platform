@@ -78,7 +78,7 @@ export class DnnRmQueuedFile {
 
     private uploadFile(){
         return new Promise<string>((resolve, reject) => {
-            const extension = this.file.name.split('.').pop();
+            const extension = this.file.name.split('.').pop().toLowerCase();
             if (this.filter.split(',').indexOf(extension) === -1) {
                 const message = `'.${extension}' ${state.localization.InvalidExtensionMessage}`;
                 this.fileUploadResults = {

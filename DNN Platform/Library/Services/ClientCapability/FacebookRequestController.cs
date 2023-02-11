@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.ClientCapability
 {
     using System;
@@ -11,36 +10,7 @@ namespace DotNetNuke.Services.ClientCapability
 
     using DotNetNuke.Common.Utilities;
 
-    internal struct Page
-    {
-        public string Id { get; set; }
-
-        public bool Liked { get; set; }
-
-        public bool Admin { get; set; }
-    }
-
-    internal struct Age
-    {
-        public long Min { get; set; }
-
-        public long Max { get; set; }
-    }
-
-    internal struct User
-    {
-        public string Locale { get; set; }
-
-        public string Country { get; set; }
-
-        public Age Age { get; set; }
-    }
-
-    /// <summary>
-    /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,
-    /// giving it variables such as if the Page has been Liked, and the age range of the user.
-    ///
-    /// </summary>
+    /// <summary>Make modules that are aware of Facebook’s <c>signed_request</c> – a parameter that is POSTed to the web page being loaded in the iFrame, giving it variables such as if the Page has been Liked, and the age range of the user.</summary>
     public class FacebookRequestController
     {
         private const string SignedRequestParameter = "signed_request";
@@ -153,9 +123,7 @@ namespace DotNetNuke.Services.ClientCapability
             return false;
         }
 
-        /// <summary>
-        /// Converts the base 64 url encoded string to standard base 64 encoding.
-        /// </summary>
+        /// <summary>Converts the base 64 url encoded string to standard base 64 encoding.</summary>
         /// <param name="encodedValue">The encoded value.</param>
         /// <returns>The base 64 string.</returns>
         private static string Base64UrlDecode(string encodedValue)
@@ -183,11 +151,9 @@ namespace DotNetNuke.Services.ClientCapability
             }
         }
 
-        /// <summary>
-        /// method for converting a System.DateTime value to a UNIX Timestamp.
-        /// </summary>
-        /// <param name="value">date to convert.</param>
-        /// <returns></returns>
+        /// <summary>method for converting a Unix Timestamp to a <see cref="DateTime"/>.</summary>
+        /// <param name="value">The number of seconds since the start of the Unix epoch.</param>
+        /// <returns>The corresponding <see cref="DateTime"/> value.</returns>
         private static DateTime ConvertToTimestamp(long value)
         {
             // create Timespan by subtracting the value provided from
@@ -195,26 +161,5 @@ namespace DotNetNuke.Services.ClientCapability
             DateTime epoc = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return epoc.AddSeconds((double)value);
         }
-    }
-
-    internal struct FaceBookData
-    {
-        public User User { get; set; }
-
-        public string Algorithm { get; set; }
-
-        public long Issued_at { get; set; }
-
-        public string User_id { get; set; }
-
-        public string Oauth_token { get; set; }
-
-        public long Expires { get; set; }
-
-        public string App_data { get; set; }
-
-        public Page Page { get; set; }
-
-        public long Profile_id { get; set; }
     }
 }

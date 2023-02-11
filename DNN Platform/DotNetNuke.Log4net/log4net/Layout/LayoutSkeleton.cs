@@ -26,9 +26,7 @@ using log4net.Core;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Extend this abstract class to create your own log layout format.
-    /// </summary>
+    /// <summary>Extend this abstract class to create your own log layout format.</summary>
     /// <remarks>
     /// <para>
     /// This is the base implementation of the <see cref="ILayout"/>
@@ -51,9 +49,7 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public abstract class LayoutSkeleton : ILayout, IOptionHandler
     {
-        /// <summary>
-        /// The header text
-        /// </summary>
+        /// <summary>The header text</summary>
         /// <remarks>
         /// <para>
         /// See <see cref="Header"/> for more information.
@@ -61,9 +57,7 @@ namespace log4net.Layout
         /// </remarks>
         private string m_header = null;
 
-        /// <summary>
-        /// The footer text
-        /// </summary>
+        /// <summary>The footer text</summary>
         /// <remarks>
         /// <para>
         /// See <see cref="Footer"/> for more information.
@@ -71,9 +65,7 @@ namespace log4net.Layout
         /// </remarks>
         private string m_footer = null;
 
-        /// <summary>
-        /// Flag indicating if this layout handles exceptions
-        /// </summary>
+        /// <summary>Flag indicating if this layout handles exceptions</summary>
         /// <remarks>
         /// <para>
         /// <c>false</c> if this layout handles exceptions
@@ -81,9 +73,7 @@ namespace log4net.Layout
         /// </remarks>
         private bool m_ignoresException = true;
 
-        /// <summary>
-        /// Empty default constructor
-        /// </summary>
+        /// <summary>Empty default constructor</summary>
         /// <remarks>
         /// <para>
         /// Empty default constructor
@@ -93,9 +83,7 @@ namespace log4net.Layout
         {
         }
 
-        /// <summary>
-        /// Activate component options
-        /// </summary>
+        /// <summary>Activate component options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -114,9 +102,7 @@ namespace log4net.Layout
         /// </remarks>
         public abstract void ActivateOptions();
 
-        /// <summary>
-        /// Implement this method to create your own layout format.
-        /// </summary>
+        /// <summary>Implement this method to create your own layout format.</summary>
         /// <param name="writer">The TextWriter to write the formatted event to</param>
         /// <param name="loggingEvent">The event to format</param>
         /// <remarks>
@@ -127,9 +113,7 @@ namespace log4net.Layout
         /// </remarks>
         public abstract void Format(TextWriter writer, LoggingEvent loggingEvent);
 
-        /// <summary>
-        /// Convenience method for easily formatting the logging event into a string variable.
-        /// </summary>
+        /// <summary>Convenience method for easily formatting the logging event into a string variable.</summary>
         /// <param name="loggingEvent"></param>
         /// <remarks>
         /// Creates a new StringWriter instance to store the formatted logging event.
@@ -143,9 +127,7 @@ namespace log4net.Layout
             }
         }
 
-        /// <summary>
-        /// The content type output by this layout. 
-        /// </summary>
+        /// <summary>The content type output by this layout. </summary>
         /// <value>The content type is <c>"text/plain"</c></value>
         /// <remarks>
         /// <para>
@@ -162,9 +144,7 @@ namespace log4net.Layout
             get { return "text/plain"; }
         }
 
-        /// <summary>
-        /// The header for the layout format.
-        /// </summary>
+        /// <summary>The header for the layout format.</summary>
         /// <value>the layout header</value>
         /// <remarks>
         /// <para>
@@ -178,9 +158,7 @@ namespace log4net.Layout
             set { this.m_header = value; }
         }
 
-        /// <summary>
-        /// The footer for the layout format.
-        /// </summary>
+        /// <summary>The footer for the layout format.</summary>
         /// <value>the layout footer</value>
         /// <remarks>
         /// <para>
@@ -194,9 +172,7 @@ namespace log4net.Layout
             set { this.m_footer = value; }
         }
 
-        /// <summary>
-        /// Flag indicating if this layout handles exceptions
-        /// </summary>
+        /// <summary>Flag indicating if this layout handles exceptions</summary>
         /// <value><c>false</c> if this layout handles exceptions</value>
         /// <remarks>
         /// <para>

@@ -40,9 +40,14 @@ namespace DotNetNuke.Security.Cookies
             if (this.ExpiresOn.Kind != DateTimeKind.Utc)
             {
                 this.ExpiresOn = new DateTime(
-                    this.ExpiresOn.Year, this.ExpiresOn.Month, this.ExpiresOn.Day,
-                    this.ExpiresOn.Hour, this.ExpiresOn.Minute, this.ExpiresOn.Second,
-                    this.ExpiresOn.Millisecond, DateTimeKind.Utc);
+                    this.ExpiresOn.Year,
+                    this.ExpiresOn.Month,
+                    this.ExpiresOn.Day,
+                    this.ExpiresOn.Hour,
+                    this.ExpiresOn.Minute,
+                    this.ExpiresOn.Second,
+                    this.ExpiresOn.Millisecond,
+                    DateTimeKind.Utc);
             }
         }
     }

@@ -6,20 +6,18 @@ namespace DotNetNuke.Services.Syndication
     using System.Collections.Generic;
     using System.Xml;
 
-    /// <summary>
-    ///   Base class for RSS channel (for strongly-typed and late-bound channel types).
-    /// </summary>
-    /// <typeparam name = "RssItemType"></typeparam>
-    /// <typeparam name = "RssImageType"></typeparam>
-    public abstract class RssChannelBase<RssItemType, RssImageType> : RssElementBase
-        where RssItemType : RssElementBase, new()
-        where RssImageType : RssElementBase, new()
+    /// <summary>Base class for RSS channel (for strongly-typed and late-bound channel types).</summary>
+    /// <typeparam name="TRssItemType">The item type.</typeparam>
+    /// <typeparam name="TRssImageType">The image type.</typeparam>
+    public abstract class RssChannelBase<TRssItemType, TRssImageType> : RssElementBase
+        where TRssItemType : RssElementBase, new()
+        where TRssImageType : RssElementBase, new()
     {
-        private readonly List<RssItemType> items = new List<RssItemType>();
-        private RssImageType image;
+        private readonly List<TRssItemType> items = new List<TRssItemType>();
+        private TRssImageType image;
         private string url;
 
-        public List<RssItemType> Items
+        public List<TRssItemType> Items
         {
             get
             {
@@ -50,7 +48,7 @@ namespace DotNetNuke.Services.Syndication
                 RssXmlHelper.SaveRssElementAsXml(channelNode, this.image, "image");
             }
 
-            foreach (RssItemType item in this.items)
+            foreach (TRssItemType item in this.items)
             {
                 RssXmlHelper.SaveRssElementAsXml(channelNode, item, "item");
             }
@@ -66,7 +64,7 @@ namespace DotNetNuke.Services.Syndication
             // image attributes
             if (dom.Image != null)
             {
-                var image = new RssImageType();
+                var image = new TRssImageType();
                 image.SetAttributes(dom.Image);
                 this.image = image;
             }
@@ -74,7 +72,7 @@ namespace DotNetNuke.Services.Syndication
             // items
             foreach (Dictionary<string, string> i in dom.Items)
             {
-                var item = new RssItemType();
+                var item = new TRssItemType();
                 item.SetAttributes(i);
                 this.items.Add(item);
             }
@@ -101,11 +99,11 @@ namespace DotNetNuke.Services.Syndication
             this.LoadFromDom(dom);
         }
 
-        protected RssImageType GetImage()
+        protected TRssImageType GetImage()
         {
             if (this.image == null)
             {
-                this.image = new RssImageType();
+                this.image = new TRssImageType();
             }
 
             return this.image;

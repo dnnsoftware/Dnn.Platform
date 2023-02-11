@@ -15,57 +15,43 @@ namespace DotNetNuke.Modules.Admin.Modules {
     
     
     public partial class Import {
-        /// <summary>
-        /// plFolder control.
-        /// </summary>
+        /// <summary>plFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFolder;
-        /// <summary>
-        /// cboFolders control.
-        /// </summary>
+        /// <summary>cboFolders control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList cboFolders;
-        /// <summary>
-        /// plFile control.
-        /// </summary>
+        /// <summary>plFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFile;
-        /// <summary>
-        /// cboFiles control.
-        /// </summary>
+        /// <summary>cboFiles control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboFiles;
-        /// <summary>
-        /// txtContent control.
-        /// </summary>
+        /// <summary>txtContent control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtContent;
-        /// <summary>
-        /// cmdImport control.
-        /// </summary>
+        /// <summary>cmdImport control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdImport;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

@@ -11,9 +11,7 @@ namespace DotNetNuke.Common
     [DataContract]
     public class SerializableKeyValuePair<TKey, TValue>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SerializableKeyValuePair{TKey, TValue}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SerializableKeyValuePair{TKey, TValue}"/> class.</summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         public SerializableKeyValuePair(TKey key, TValue value)

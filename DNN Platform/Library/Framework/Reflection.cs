@@ -12,120 +12,79 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
 
-    /// -----------------------------------------------------------------------------
-    /// Namespace: DotNetNuke.Framework
-    /// Project  : DotNetNuke
-    /// Class    : Reflection
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// Library responsible for reflection.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>Library responsible for reflection.</summary>
     public class Reflection
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Reflection));
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
-        /// -----------------------------------------------------------------------------
         public static object CreateObject(string objectProviderType)
         {
             return CreateObject(objectProviderType, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
-        /// -----------------------------------------------------------------------------
         public static object CreateObject(string objectProviderType, bool useCache)
         {
             return CreateObject(objectProviderType, string.Empty, string.Empty, string.Empty, useCache);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <returns>The created Object.</returns>
-        /// <remarks>Overload for creating an object from a Provider including NameSpace and
-        /// AssemblyName ( this allows derived providers to share the same config ).</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <remarks>Overload for creating an object from a Provider including NameSpace and AssemblyName ( this allows derived providers to share the same config ).</remarks>
         public static object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName)
         {
             return CreateObject(objectProviderType, string.Empty, objectNamespace, objectAssemblyName, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
-        /// <remarks>Overload for creating an object from a Provider including NameSpace and
-        /// AssemblyName ( this allows derived providers to share the same config ).</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <remarks>Overload for creating an object from a Provider including NameSpace and AssemblyName ( this allows derived providers to share the same config ).</remarks>
         public static object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName, bool useCache)
         {
             return CreateObject(objectProviderType, string.Empty, objectNamespace, objectAssemblyName, useCache);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectProviderName">The name of the Provider.</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <returns>The created Object.</returns>
-        /// <remarks>Overload for creating an object from a Provider including NameSpace,
-        /// AssemblyName and ProviderName.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
         public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName)
         {
             return CreateObject(objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectProviderName">The name of the Provider.</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
-        /// <remarks>Overload for creating an object from a Provider including NameSpace,
-        /// AssemblyName and ProviderName.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
         public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache)
         {
             return CreateObject(objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, useCache, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectProviderName">The name of the Provider.</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
@@ -133,9 +92,7 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <param name="fixAssemblyName">Whether append provider name as part of the assembly name.</param>
         /// <returns>The created Object.</returns>
-        /// <remarks>Overload for creating an object from a Provider including NameSpace,
-        /// AssemblyName and ProviderName.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
         public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache, bool fixAssemblyName)
         {
             string typeName = string.Empty;
@@ -191,56 +148,40 @@ namespace DotNetNuke.Framework
             return CreateObject(typeName, typeName, useCache);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="typeName">The fully qualified TypeName.</param>
         /// <param name="cacheKey">The Cache Key.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
-        /// -----------------------------------------------------------------------------
         public static object CreateObject(string typeName, string cacheKey)
         {
             return CreateObject(typeName, cacheKey, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="typeName">The fully qualified TypeName.</param>
         /// <param name="cacheKey">The Cache Key.</param>
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
-        /// -----------------------------------------------------------------------------
         public static object CreateObject(string typeName, string cacheKey, bool useCache)
         {
             return Activator.CreateInstance(CreateType(typeName, cacheKey, useCache));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <typeparam name="T">The type of object to create.</typeparam>
-        /// <returns></returns>
+        /// <returns>The created object.</returns>
         /// <remarks>Generic version.</remarks>
-        /// -----------------------------------------------------------------------------
         public static T CreateObject<T>()
         {
             // dynamically create the object
             return Activator.CreateInstance<T>();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Creates an object.
-        /// </summary>
+        /// <summary>Creates an object.</summary>
         /// <param name="type">The type of object to create.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The created object.</returns>
         public static object CreateObject(Type type)
         {
             return Activator.CreateInstance(type);

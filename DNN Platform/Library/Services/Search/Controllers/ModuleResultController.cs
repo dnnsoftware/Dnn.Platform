@@ -24,10 +24,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Search Result Controller for Module Crawler.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Search Result Controller for Module Crawler.</summary>
     [Serializable]
     public class ModuleResultController : BaseResultController
     {
@@ -70,8 +67,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                     searchResult.Url = this.GetModuleSearchUrl(module, searchResult);
                                     if (string.IsNullOrEmpty(searchResult.Url))
                                     {
-                                        searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty,
-                                                                               searchResult.QueryString);
+                                        searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty, searchResult.QueryString);
                                     }
                                 }
 
@@ -118,8 +114,7 @@ namespace DotNetNuke.Services.Search.Controllers
                             var portalSettings = new PortalSettings(searchResult.PortalId);
                             portalSettings.PortalAlias =
                                 PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-                            url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty,
-                                                      searchResult.QueryString);
+                            url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
                         }
                     }
                     catch (Exception ex)

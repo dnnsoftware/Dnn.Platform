@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Journal
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -330,7 +331,6 @@ namespace DotNetNuke.Modules.Journal
         }
 
         // Check if a user can post content on a specific profile's page
-
         private void CheckProfileAccess(int profileId, UserInfo currentUser)
         {
             if (profileId != currentUser.UserID)
@@ -617,13 +617,20 @@ namespace DotNetNuke.Modules.Journal
 
         public class SuggestDTO
         {
+            // ReSharper disable InconsistentNaming
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
             public string displayName { get; set; }
 
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
             public int userId { get; set; }
 
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
             public string avatar { get; set; }
 
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
             public string key { get; set; }
+
+            // ReSharper restore InconsistentNaming
         }
     }
 }

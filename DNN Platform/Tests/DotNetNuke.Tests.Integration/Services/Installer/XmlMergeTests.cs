@@ -426,9 +426,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             Assert.AreEqual("4.1.0.0", bindingRedirect.Attributes["newVersion"].Value);
         }
 
-        /// <summary>
-        /// Merges the Merge and Target files based on the name of the calling method.
-        /// </summary>
+        /// <summary>Merges the Merge and Target files based on the name of the calling method.</summary>
         /// <remarks>xml files must be embedded resources in the MergeFiles folder named {method}Merge.xml and {method}Target.xml.</remarks>
         /// <returns>XmlDocument with the result of the merge operation.</returns>
         private XmlDocument ExecuteMerge()
@@ -436,9 +434,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             return this.ExecuteMerge(null);
         }
 
-        /// <summary>
-        /// As ExecuteMerge but allows the merge file prefix to be specified.
-        /// </summary>
+        /// <summary>As ExecuteMerge but allows the merge file prefix to be specified.</summary>
         private XmlDocument ExecuteMerge(string mergeName)
         {
             string testMethodName = this.GetTestMethodName();

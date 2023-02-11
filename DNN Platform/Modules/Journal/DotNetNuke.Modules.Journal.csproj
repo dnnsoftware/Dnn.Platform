@@ -139,7 +139,7 @@
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\ImageInfo.cs" />
     <Compile Include="Components\JournalControl.cs" />
-    <Compile Include="Components\JournalItemPropertyAccess.cs" />
+    <Compile Include="Components\JournalItemTokenReplace.cs" />
     <Compile Include="Components\JournalParser.cs" />
     <Compile Include="Components\LinkInfo.cs" />
     <Compile Include="Components\ProfilePicPropertyAccess.cs" />

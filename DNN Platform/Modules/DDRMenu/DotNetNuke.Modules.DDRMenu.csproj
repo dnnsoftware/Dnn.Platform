@@ -170,7 +170,10 @@
     <Compile Include="SkinObject.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="TemplateEngine\ClientBoolean.cs" />
+    <Compile Include="TemplateEngine\ClientNumber.cs" />
     <Compile Include="TemplateEngine\ClientOption.cs" />
+    <Compile Include="TemplateEngine\ClientString.cs" />
     <Compile Include="TemplateEngine\ITemplateProcessor.cs" />
     <Compile Include="TemplateEngine\RazorTemplateProcessor.cs">
       <SubType>Code</SubType>

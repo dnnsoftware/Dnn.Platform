@@ -19,6 +19,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
@@ -33,9 +34,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
     using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
 
-    /// <summary>
-    /// Expose any services via this class. You can keep services in separate classes or all together in one service class.
-    /// </summary>
+    /// <summary>Expose any services via this class. You can keep services in separate classes or all together in one service class.</summary>
     [ResourceManagerExceptionFilter]
     [DnnExceptionFilter]
     [SupportedModules("ResourceManager")]
@@ -44,24 +43,19 @@ namespace Dnn.Modules.ResourceManager.Services
     {
         private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
         private readonly IModuleControlPipeline modulePipeline;
+        private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly Hashtable mappedPathsSupported = new Hashtable();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsController"/> class.
-        /// </summary>
-        /// <param name="modulePipeline">
-        /// An instance of an <see cref="IModuleControlPipeline"/> used to hook into the
-        /// EditUrl of the webforms folders provider settings UI.
-        /// </param>
-        public ItemsController(
-            IModuleControlPipeline modulePipeline)
+        /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
+        /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
+        /// <param name="applicationStatusInfo">The application status info.</param>
+        public ItemsController(IModuleControlPipeline modulePipeline, IApplicationStatusInfo applicationStatusInfo)
         {
             this.modulePipeline = modulePipeline;
+            this.applicationStatusInfo = applicationStatusInfo;
         }
 
-        /// <summary>
-        /// Gets the content for a specific folder.
-        /// </summary>
+        /// <summary>Gets the content for a specific folder.</summary>
         /// <param name="folderId">The id of the folder.</param>
         /// <param name="startIndex">The page number to get.</param>
         /// <param name="numItems">How many items to get per page.</param>
@@ -100,9 +94,7 @@ namespace Dnn.Modules.ResourceManager.Services
             });
         }
 
-        /// <summary>
-        /// Gets the module settings.
-        /// </summary>
+        /// <summary>Gets the module settings.</summary>
         /// <returns><see cref="SettingsManager"/>.</returns>
         [HttpGet]
         public IHttpActionResult GetSettings()
@@ -113,9 +105,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Ok(settings);
         }
 
-        /// <summary>
-        /// Gets an item representation for a provided folder ID.
-        /// </summary>
+        /// <summary>Gets an item representation for a provided folder ID.</summary>
         /// <param name="folderId">The ID of the folder to get.</param>
         /// <returns>An Item viewmodel.</returns>
         [HttpGet]
@@ -127,9 +117,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Ok(item);
         }
 
-        /// <summary>
-        /// Syncs the folder content.
-        /// </summary>
+        /// <summary>Syncs the folder content.</summary>
         /// <param name="folderId">The folder id.</param>
         /// <param name="numItems">The number of items.</param>
         /// <param name="sorting">The sorting.</param>
@@ -144,9 +132,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.GetFolderContent(folderId, 0, numItems, sorting);
         }
 
-        /// <summary>
-        /// Download thumbnail.
-        /// </summary>
+        /// <summary>Download thumbnail.</summary>
         /// <param name="item">The thumbnail download request.</param>
         /// <returns>The http repsonse message.</returns>
         [HttpGet]
@@ -166,9 +152,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return result;
         }
 
-        /// <summary>
-        /// Downloads a file.
-        /// </summary>
+        /// <summary>Downloads a file.</summary>
         /// <param name="fileId">The id of the file to download.</param>
         /// <param name="forceDownload">
         /// A value indicating whether to force the download.
@@ -188,9 +172,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return result;
         }
 
-        /// <summary>
-        /// Gets a list of folder mappings.
-        /// </summary>
+        /// <summary>Gets a list of folder mappings.</summary>
         /// <returns>
         /// A list of folder mapping including information such as if the folder mapping is default or not
         /// and a url to edit the folder mapping using the provider settings UI.
@@ -229,9 +211,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }
 
-        /// <summary>
-        /// Determines whether or not the current user has permissions to manage the folder types.
-        /// </summary>
+        /// <summary>Determines whether or not the current user has permissions to manage the folder types.</summary>
         /// <returns>
         /// A boolean indicating whether or not the current user has permissions to manage the folder types.
         /// </returns>
@@ -243,9 +223,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, canManage);
         }
 
-        /// <summary>
-        /// Gets a url to add a new folder type.
-        /// </summary>
+        /// <summary>Gets a url to add a new folder type.</summary>
         /// <returns>A url to the folder providers control that allows adding a new folder type.</returns>
         [HttpGet]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Admin)]
@@ -263,9 +241,7 @@ namespace Dnn.Modules.ResourceManager.Services
                     this.ActiveModule.ModuleID.ToString()));
         }
 
-        /// <summary>
-        /// Removes a folder type.
-        /// </summary>
+        /// <summary>Removes a folder type.</summary>
         /// <param name="folderMappingId">The id of an existing folder mapping.</param>
         /// <returns>The id of the recently remove folder type.</returns>
         [HttpPost]
@@ -278,9 +254,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, folderMappingId);
         }
 
-        /// <summary>
-        /// Attempts to create a new folder.
-        /// </summary>
+        /// <summary>Attempts to create a new folder.</summary>
         /// <param name="request">The request to add a new folder, <see cref="CreateNewFolderRequest"/>.</param>
         /// <returns>Information about the new folder.</returns>
         [HttpPost]
@@ -305,9 +279,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 });
         }
 
-        /// <summary>
-        /// Attempts to delete a folder.
-        /// </summary>
+        /// <summary>Attempts to delete a folder.</summary>
         /// <param name="request">The request to delete a folder, <see cref="DeleteFolderRequest"/>.</param>
         /// <returns>Ok if succedded.</returns>
         [HttpPost]
@@ -323,9 +295,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Attempts to delete a file.
-        /// </summary>
+        /// <summary>Attempts to delete a file.</summary>
         /// <param name="request">The file deletion request, <see cref="DeleteFileRequest"/>.</param>
         /// <returns>OK if succeeded.</returns>
         [HttpPost]
@@ -341,9 +311,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Performs file search in a folder.
-        /// </summary>
+        /// <summary>Performs file search in a folder.</summary>
         /// <param name="folderId">The id of the folder.</param>
         /// <param name="search">The search term.</param>
         /// <param name="pageIndex">The page index to get.</param>
@@ -377,9 +345,7 @@ namespace Dnn.Modules.ResourceManager.Services
             });
         }
 
-        /// <summary>
-        /// Gets details about a file.
-        /// </summary>
+        /// <summary>Gets details about a file.</summary>
         /// <param name="fileId">The id of the file to get the details from.</param>
         /// <returns>Detailed information about the file.</returns>
         [HttpGet]
@@ -420,9 +386,7 @@ namespace Dnn.Modules.ResourceManager.Services
             });
         }
 
-        /// <summary>
-        /// Attempts to save new details about a file.
-        /// </summary>
+        /// <summary>Attempts to save new details about a file.</summary>
         /// <param name="fileDetails">The new file details, <see cref="FileDetailsRequest"/>.</param>
         /// <returns>OK if the request succeeded.</returns>
         [HttpPost]
@@ -449,9 +413,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Gets details about a folder.
-        /// </summary>
+        /// <summary>Gets details about a folder.</summary>
         /// <param name="folderId">The id of the folder from which to get the details.</param>
         /// <returns>Detailed information about the folder.</returns>
         [HttpGet]
@@ -484,9 +446,7 @@ namespace Dnn.Modules.ResourceManager.Services
             });
         }
 
-        /// <summary>
-        /// Attempts to save new details about a folder.
-        /// </summary>
+        /// <summary>Attempts to save new details about a folder.</summary>
         /// <param name="folderDetails">The new folder details, <see cref="FolderDetailsRequest"/>.</param>
         /// <returns>OK if the request succeeded.</returns>
         [HttpPost]
@@ -512,9 +472,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Gets available sorting options.
-        /// </summary>
+        /// <summary>Gets available sorting options.</summary>
         /// <returns>A list of values and labels to populate the search sorting dropdown.</returns>
         [HttpGet]
         public HttpResponseMessage GetSortOptions()
@@ -528,9 +486,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, sortOptions);
         }
 
-        /// <summary>
-        /// Attempts to move a file into a folder.
-        /// </summary>
+        /// <summary>Attempts to move a file into a folder.</summary>
         /// <param name="moveFileRequest">The file move request, <see cref="MoveFileRequest"/>.</param>
         /// <returns>A 0 status code if succeeded.</returns>
         [HttpPost]
@@ -546,9 +502,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Attempts to move a folder into another folder.
-        /// </summary>
+        /// <summary>Attempts to move a folder into another folder.</summary>
         /// <param name="moveFolderRequest">The folder move request, <see cref="MoveFolderRequest"/>.</param>
         /// <returns>A 0 status code if succeeded.</returns>
         [HttpPost]
@@ -564,9 +518,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Gets the relevant icon for this requested folder.
-        /// </summary>
+        /// <summary>Gets the relevant icon for this requested folder.</summary>
         /// <param name="folderId">The ID of the folder for which to get the image for.</param>
         /// <returns>A string representing the full url  to the folder icon.</returns>
         [HttpGet]
@@ -579,9 +531,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Ok(new { url });
         }
 
-        /// <summary>
-        /// Gets a list of role groups.
-        /// </summary>
+        /// <summary>Gets a list of role groups.</summary>
         /// <returns>A collection of role groups.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
@@ -600,9 +550,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Ok(groups);
         }
 
-        /// <summary>
-        /// Gets the roles for a rolegroup.
-        /// </summary>
+        /// <summary>Gets the roles for a role group.</summary>
         /// <returns>A collection of roles.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
@@ -624,9 +572,7 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Ok(matchedRoles);
         }
 
-        /// <summary>
-        /// Gets a list of users that match the search keyword.
-        /// </summary>
+        /// <summary>Gets a list of users that match the search keyword.</summary>
         /// <param name="keyword">The keyword to search for.</param>
         /// <param name="count">The amount of results to return.</param>
         /// <returns>A collection of users.</returns>
@@ -679,10 +625,8 @@ namespace Dnn.Modules.ResourceManager.Services
             }
         }
 
-        /// <summary>
-        /// Gets the list of possible file extensions as well as the validation code to use for uploads.
-        /// </summary>
-        /// <returns>An object containing the allowed file exteions and the validation code to use for uploads.</returns>
+        /// <summary>Gets the list of possible file extensions as well as the validation code to use for uploads.</summary>
+        /// <returns>An object containing the allowed file extensions and the validation code to use for uploads.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
 
@@ -698,7 +642,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var validationCode = ValidationUtils.ComputeValidationCode(parameters);
 
-            var maxUploadFileSize = Config.GetMaxUploadSize();
+            var maxUploadFileSize = Config.GetMaxUploadSize(this.applicationStatusInfo);
 
             return this.Ok(new { allowedExtensions, validationCode, maxUploadFileSize });
         }

@@ -25,15 +25,10 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Framework
     /// Project:    DotNetNuke
     /// Class:      PageBase
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// PageBase provides a custom DotNetNuke base class for pages.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>PageBase provides a custom DotNetNuke base class for pages.</summary>
     public abstract class PageBase : Page
     {
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
@@ -48,12 +43,10 @@ namespace DotNetNuke.Framework
         private CultureInfo pageCulture;
         private string localResourceFile;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PageBase"/> class.
         /// Creates the Page.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected PageBase()
         {
             this.localizedControls = new ArrayList();
@@ -109,17 +102,11 @@ namespace DotNetNuke.Framework
 
         public string CanonicalLinkUrl { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether indicate whether http headers has been sent to client.
-        /// </summary>
+        /// <summary>Gets a value indicating whether indicate whether http headers has been sent to client.</summary>
         public bool HeaderIsWritten { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.
-        /// </summary>
+        /// <summary>Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.</summary>
         /// <returns>A System.Web.UI.PageStatePersister.</returns>
-        /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
             get
@@ -170,9 +157,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// <para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para>
-        /// </summary>
+        /// <summary><para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="attributeName">Name of key to search for.</param>
@@ -227,9 +212,7 @@ namespace DotNetNuke.Framework
             return key;
         }
 
-        /// <summary>
-        /// <para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para>
-        /// </summary>
+        /// <summary><para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="includeChildren">If true, causes this method to process children of this controls.</param>
@@ -400,8 +383,7 @@ namespace DotNetNuke.Framework
 
                     if (this.PortalSettings?.ErrorPage500 != -1)
                     {
-                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc,
-                            false);
+                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc, false);
                         HttpContext.Current.Response.Redirect(url);
                     }
                     else

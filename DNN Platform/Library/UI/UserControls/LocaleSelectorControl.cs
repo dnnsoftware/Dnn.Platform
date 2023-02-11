@@ -4,22 +4,24 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   LocaleSelectorControl is a user control that provides all the server code to manage
     ///   localisation selection.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList ddlPortalDefaultLanguage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Literal litStatus;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButtonList rbViewType;
         private string myFileName = "LocaleSelectorControl.ascx";
         private string viewType = string.Empty;

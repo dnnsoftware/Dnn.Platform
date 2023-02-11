@@ -18,7 +18,6 @@ namespace DotNetNuke.UI
 
     public class UIUtilities
     {
-
         public static ModuleInfo GetSlaveModule(int tabId)
         {
             var key = GetControlKey();

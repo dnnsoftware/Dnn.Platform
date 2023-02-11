@@ -1,12 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Connectors.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -28,7 +26,6 @@ namespace Dnn.PersonaBar.Connectors.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectorsController));
 
         [HttpGet]
-
         public HttpResponseMessage GetConnections()
         {
             var connections = this.GetConnections(this.PortalId)
@@ -55,7 +52,6 @@ namespace Dnn.PersonaBar.Connectors.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage SaveConnection(object postData)
         {
             try
@@ -101,8 +97,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                 {
                     var configs = this.GetConfigAsDictionary(postObject.configurations);
                     string customErrorMessage;
-                    var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated,
-                        out customErrorMessage);
+                    var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated, out customErrorMessage);
 
                     if (!saved)
                     {
@@ -143,14 +138,11 @@ namespace Dnn.PersonaBar.Connectors.Services
             }
         }
 
-        /// <summary>
-        /// Delete a connector. Supported only for connectors with SupportsMultiple=true.
-        /// </summary>
-        /// <param name="postData"></param>
-        /// <returns></returns>
+        /// <summary>Delete a connector. Supported only for connectors with SupportsMultiple=true.</summary>
+        /// <param name="postData">The connection name and ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteConnection(object postData)
         {
             try
@@ -205,7 +197,6 @@ namespace Dnn.PersonaBar.Connectors.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetConnectionLocalizedString(string name, string culture)
         {
             var connection = this.GetConnections(this.PortalId).ForEach(x =>

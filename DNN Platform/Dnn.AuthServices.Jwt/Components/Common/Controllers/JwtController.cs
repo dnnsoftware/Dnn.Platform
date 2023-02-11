@@ -27,14 +27,10 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using DotNetNuke.Web.Api;
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Controls JWT features.
-    /// </summary>
+    /// <summary>Controls JWT features.</summary>
     internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
     {
-        /// <summary>
-        /// The name of the authentication scheme header.
-        /// </summary>
+        /// <summary>The name of the authentication scheme header.</summary>
         public const string AuthScheme = "Bearer";
 
         private const int ClockSkew = 5; // in minutes; default for clock skew
@@ -421,9 +417,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             };
         }
 
-        /// <summary>
-        /// Checks for Authorization header and validates it is JWT scheme. If successful, it returns the token string.
-        /// </summary>
+        /// <summary>Checks for Authorization header and validates it is JWT scheme. If successful, it returns the token string.</summary>
         /// <param name="authHdr">The request auhorization header.</param>
         /// <returns>The JWT passed in the request; otherwise, it returns null.</returns>
         private string ValidateAuthHeader(AuthenticationHeaderValue authHdr)

@@ -53,8 +53,13 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             try
             {
                 int total;
-                var results = RolesController.Instance.GetRoles(this.PortalSettings, -1, string.Empty, out total,
-                    (this.Page > 0 ? this.Page - 1 : 0) * max, max);
+                var results = RolesController.Instance.GetRoles(
+                    this.PortalSettings,
+                    -1,
+                    string.Empty,
+                    out total,
+                    (this.Page > 0 ? this.Page - 1 : 0) * max,
+                    max);
                 roles.AddRange(results.Select(role => new RoleModelBase(role)));
                 var totalPages = (total / max) + (total % max == 0 ? 0 : 1);
                 var pageNo = this.Page > 0 ? this.Page : 1;

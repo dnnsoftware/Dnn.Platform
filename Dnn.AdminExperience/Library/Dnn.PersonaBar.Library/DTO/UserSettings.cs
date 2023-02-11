@@ -14,9 +14,7 @@ namespace Dnn.PersonaBar.Library.DTO
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// Persona Bar Settings For User.
-    /// </summary>
+    /// <summary>Persona Bar Settings For User.</summary>
     [DataContract]
     public class UserSettings : Dictionary<string, object>, IXmlSerializable
     {

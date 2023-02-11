@@ -10,16 +10,12 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalEntity : IPropertyAccess
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalEntity"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalEntity"/> class.</summary>
         public JournalEntity()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalEntity"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalEntity"/> class.</summary>
         /// <param name="entityXML"></param>
         public JournalEntity(string entityXML)
         {

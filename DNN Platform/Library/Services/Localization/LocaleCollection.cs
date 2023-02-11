@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Localization
     using System.Collections;
     using System.Collections.Specialized;
 
-    /// <summary>
-    /// <para>The LocaleCollection class is a collection of Locale objects.  It stores the supported locales.</para>
-    /// </summary>
+    /// <summary><para>The LocaleCollection class is a collection of Locale objects.  It stores the supported locales.</para></summary>
     public class LocaleCollection : NameObjectCollectionBase
     {
         private DictionaryEntry de;

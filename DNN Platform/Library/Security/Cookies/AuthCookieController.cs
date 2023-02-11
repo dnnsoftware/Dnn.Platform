@@ -37,8 +37,12 @@ namespace DotNetNuke.Security.Cookies
             }
 
             return CBO.Instance.GetCachedObject<PersistedAuthCookie>(
-                new CacheItemArgs(GetKey(cookieValue), (int)FormsAuthentication.Timeout.TotalMinutes, CacheItemPriority.AboveNormal),
-                _ => CBO.Instance.FillObject<PersistedAuthCookie>(this.dataProvider.FindAuthCookie(cookieValue)), false);
+                new CacheItemArgs(
+                    GetKey(cookieValue),
+                    (int)FormsAuthentication.Timeout.TotalMinutes,
+                    CacheItemPriority.AboveNormal),
+                _ => CBO.Instance.FillObject<PersistedAuthCookie>(this.dataProvider.FindAuthCookie(cookieValue)),
+                false);
         }
 
         /// <inheritdoc/>

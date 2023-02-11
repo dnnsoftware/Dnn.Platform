@@ -34,17 +34,13 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InternalMessagingControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InternalMessagingControllerImpl"/> class.</summary>
         public InternalMessagingControllerImpl()
             : this(DataService.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InternalMessagingControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InternalMessagingControllerImpl"/> class.</summary>
         /// <param name="dataService"></param>
         public InternalMessagingControllerImpl(IDataService dataService)
         {
@@ -142,8 +138,9 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             // call ReplyMessage
             var messageId = this.dataService.CreateMessageReply(conversationId, PortalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
-            if (messageId == -1) // Parent message was not found or Recipient was not found in the message
+            if (messageId == -1)
             {
+                // Parent message was not found or Recipient was not found in the message
                 throw new MessageOrRecipientNotFoundException(Localization.GetString("MsgMessageOrRecipientNotFound", Localization.ExceptionsResourceFile));
             }
 
@@ -165,10 +162,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return messageId;
         }
 
-        /// <summary>How long a user needs to wait before sending the next message.</summary>
-        /// <returns>Time in seconds. Returns zero if user is Host, Admin or has never sent a message.</returns>
-        /// <param name="sender">Sender's UserInfo.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <inheritdoc />
         public virtual int WaitTimeForNextMessage(UserInfo sender)
         {
             Requires.NotNull("sender", sender);
@@ -189,41 +183,31 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return waitTime < 0 ? 0 : waitTime;
         }
 
-        /// <summary>Last message sent by the User.</summary>
-        /// <returns>Message. Null when no message was sent.</returns>
-        /// <param name="sender">Sender's UserInfo.</param>
+        /// <inheritdoc />
         public virtual Message GetLastSentMessage(UserInfo sender)
         {
             return CBO.FillObject<Message>(this.dataService.GetLastSentMessage(sender.UserID, PortalController.GetEffectivePortalId(sender.PortalID)));
         }
 
-        /// <summary>Whether or not attachments are included with outgoing email.</summary>
-        /// <param name="portalId">Portal Id.</param>
-        /// <returns>True or False.</returns>
+        /// <inheritdoc />
         public virtual bool IncludeAttachments(int portalId)
         {
             return this.GetPortalSetting("MessagingIncludeAttachments", portalId, "YES") == "YES";
         }
 
-        /// <summary>Are attachments allowed.</summary>
-        /// <param name="portalId">Portal Id.</param>
-        /// <returns>True or False.</returns>
+        /// <inheritdoc />
         public virtual bool AttachmentsAllowed(int portalId)
         {
             return this.GetPortalSetting("MessagingAllowAttachments", portalId, "YES") == "YES";
         }
 
-        /// <summary>Maximum number of Recipients allowed.</summary>
-        /// <returns>Count. Message to a Role is considered a single Recipient. Each User in the To list is counted as one User each.</returns>
-        /// <param name="portalId">Portal Id.</param>
+        /// <inheritdoc />
         public virtual int RecipientLimit(int portalId)
         {
             return this.GetPortalSettingAsInteger("MessagingRecipientLimit", portalId, 5);
         }
 
-        /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>
-        /// <param name="portalId">Portal Id.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual bool DisablePrivateMessage(int portalId)
         {
             return this.GetPortalSetting("DisablePrivateMessage", portalId, "N") == "Y";
@@ -363,8 +347,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             var count = this.dataService.CountTotalConversations(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 
@@ -385,8 +373,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             var count = this.dataService.CountNewThreads(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 
@@ -414,9 +406,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return userId <= 0 ? 0 : this.dataService.CountArchivedConversations(userId, portalId);
         }
 
-        /// <summary>Gets the attachments.</summary>
-        /// <param name="messageId">The message identifier.</param>
-        /// <returns>A list of message attachments for the given message.</returns>
+        /// <inheritdoc />
         public IEnumerable<MessageFileView> GetAttachments(int messageId)
         {
             return this.dataService.GetMessageAttachmentsByMessage(messageId);

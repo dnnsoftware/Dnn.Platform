@@ -32,17 +32,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         private readonly IContentVerifier contentVerifier;
         private readonly IRecyclebinController recyclebinController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RestorePage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
         public RestorePage()
             : this(TabController.Instance, RecyclebinController.Instance, new ContentVerifier())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RestorePage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
         /// <param name="tabController"></param>
         /// <param name="recyclebinController"></param>
         /// <param name="contentVerifier"></param>

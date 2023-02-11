@@ -9,47 +9,36 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : DesktopModulePermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionCollection provides the a custom collection for DesktopModulePermissionInfo
     /// objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModulePermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         public DesktopModulePermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         /// <param name="desktopModulePermissions"></param>
         public DesktopModulePermissionCollection(ArrayList desktopModulePermissions)
         {
             this.AddRange(desktopModulePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         /// <param name="desktopModulePermissions"></param>
         public DesktopModulePermissionCollection(DesktopModulePermissionCollection desktopModulePermissions)
         {
             this.AddRange(desktopModulePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         /// <param name="desktopModulePermissions"></param>
         /// <param name="desktopModulePermissionID"></param>
         public DesktopModulePermissionCollection(ArrayList desktopModulePermissions, int desktopModulePermissionID)

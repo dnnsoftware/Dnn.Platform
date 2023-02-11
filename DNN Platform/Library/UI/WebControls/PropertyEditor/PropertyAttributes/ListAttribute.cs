@@ -13,9 +13,7 @@ namespace DotNetNuke.UI.WebControls
         private readonly ListBoundField textField;
         private readonly ListBoundField valueField;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ListAttribute"/> class.</summary>
         /// <param name="listName">The name of the List to use for this property.</param>
         /// <param name="parentKey">The key of the parent for this List.</param>
         /// <param name="textField">Text Field.</param>

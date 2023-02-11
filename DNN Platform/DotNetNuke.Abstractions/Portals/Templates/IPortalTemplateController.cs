@@ -6,14 +6,10 @@ namespace DotNetNuke.Abstractions.Portals.Templates
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Work with Portal Templates.
-    /// </summary>
+    /// <summary>Work with Portal Templates.</summary>
     public interface IPortalTemplateController
     {
-        /// <summary>
-        /// Apply a portal template to an existing (can be newly created) portal.
-        /// </summary>
+        /// <summary>Apply a portal template to an existing (can be newly created) portal.</summary>
         /// <param name="portalId">PortalId of the portal.</param>
         /// <param name="template">The template.</param>
         /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
@@ -27,9 +23,7 @@ namespace DotNetNuke.Abstractions.Portals.Templates
         /// </remarks>
         void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
-        /// <summary>
-        /// Export a portal into a portal template.
-        /// </summary>
+        /// <summary>Export a portal into a portal template.</summary>
         /// <param name="portalId">PortalId of the portal to be exported.</param>
         /// <param name="fileName">The filename to use when writing the portal template to disk. Note it will be written to the host
         /// directory (Portals/_default).</param>
@@ -47,17 +41,13 @@ namespace DotNetNuke.Abstractions.Portals.Templates
         /// <returns>A boolean indicating success and a string with an (success or error) message.</returns>
         (bool success, string message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
 
-        /// <summary>
-        /// Load info for a portal template.
-        /// </summary>
+        /// <summary>Load info for a portal template.</summary>
         /// <param name="templatePath">Full path to the portal template.</param>
         /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
         /// <returns>A portal template.</returns>
         IPortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode);
 
-        /// <summary>
-        /// Get all the available portal templates grouped by culture.
-        /// </summary>
+        /// <summary>Get all the available portal templates grouped by culture.</summary>
         /// <returns>List of PortalTemplateInfo objects.</returns>
         IList<IPortalTemplateInfo> GetPortalTemplates();
     }

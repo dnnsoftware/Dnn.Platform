@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Security.Services
 {
     using System;
@@ -42,14 +41,12 @@ namespace Dnn.PersonaBar.Security.Services
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
+        private const string BULLETINXMLNODEPATH = "//channel/item";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController controller;
         private readonly IPortalAliasController portalAliasController;
-        private const string BULLETINXMLNODEPATH = "//channel/item";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
         public SecurityController()
             : this(
                 new Components.SecurityController(),
@@ -57,11 +54,9 @@ namespace Dnn.PersonaBar.Security.Services
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityController"/> class.
-        /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="portalAliasController"></param>
+        /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
+        /// <param name="controller">The security controller.</param>
+        /// <param name="portalAliasController">The portal alias controller.</param>
         internal SecurityController(
             Components.SecurityController controller,
             IPortalAliasController portalAliasController)
@@ -71,10 +66,8 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetBasicLoginSettings
-        /// <summary>
-        /// Gets portal's basic login settings.
-        /// </summary>
-        /// <param name="cultureCode"></param>
+        /// <summary>Gets portal's basic login settings.</summary>
+        /// <param name="cultureCode">The culture code or <see langword="null"/> or empty to use the current locale.</param>
         /// <returns>Portal's basic login settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
@@ -133,15 +126,12 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateBasicLoginSettings
-        /// <summary>
-        /// Updates an existing log settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates an existing log settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit)]
-
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
             if (!this.ModelState.IsValid)
@@ -176,13 +166,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetIpFilters
-        /// <summary>
-        /// Gets list of IP filters.
-        /// </summary>
+        /// <summary>Gets list of IP filters.</summary>
         /// <returns>List of IP filters.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetIpFilters()
         {
             try
@@ -214,9 +201,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetIpFilter
-        /// <summary>
-        /// Gets an IP filter.
-        /// </summary>
+        /// <summary>Gets an IP filter.</summary>
         /// <param name="filterId">The ID of the IP filter to get.</param>
         /// <returns>IP filter.</returns>
         [HttpGet]
@@ -249,9 +234,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateIpFilter
-        /// <summary>
-        /// Updates an IP filter.
-        /// </summary>
+        /// <summary>Updates an IP filter.</summary>
         /// <param name="request"><see cref="UpdateIpFilterRequest"/>.</param>
         /// <returns>Ok or BadRequest or InternalServerError.</returns>
         [HttpPost]
@@ -302,11 +285,9 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/DeleteIpFilter
-        /// <summary>
-        /// Deletes an IP filter.
-        /// </summary>
-        /// <param name="filterId"></param>
-        /// <returns></returns>
+        /// <summary>Deletes an IP filter.</summary>
+        /// <param name="filterId">The filter ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -337,13 +318,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetMemberSettings
-        /// <summary>
-        /// Gets portal's member settings.
-        /// </summary>
+        /// <summary>Gets portal's member settings.</summary>
         /// <returns>Portal's member settings.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetMemberSettings()
         {
             try
@@ -380,15 +358,12 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateMemberSettings
-        /// <summary>
-        /// Updates member settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates member settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage UpdateMemberSettings(UpdateMemberSettingsRequest request)
         {
             try
@@ -415,13 +390,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetRegistrationSettings
-        /// <summary>
-        /// Gets portal's registration settings.
-        /// </summary>
+        /// <summary>Gets portal's registration settings.</summary>
         /// <returns>Portal's registration settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView)]
-
         public HttpResponseMessage GetRegistrationSettings()
         {
             try
@@ -482,13 +454,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetSslSettings
-        /// <summary>
-        /// Gets portal's SSL settings.
-        /// </summary>
-        /// <returns>Portal's ssl settings.</returns>
+        /// <summary>Gets portal's SSL settings.</summary>
+        /// <returns>Portal's SSL settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetSslSettings()
         {
             try
@@ -527,15 +496,12 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateRegistrationSettings
-        /// <summary>
-        /// Updates registration settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates registration settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit)]
-
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
             if (!this.ModelState.IsValid)
@@ -578,15 +544,12 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateSslSettings
-        /// <summary>
-        /// Updates SSL settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates SSL settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateSslSettings(UpdateSslSettingsRequest request)
         {
             try
@@ -628,14 +591,11 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/SetAllPagesSecure
-        /// <summary>
-        /// Sets all pages in the portal to be secure.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Sets all pages in the portal to be secure.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage SetAllPagesSecure()
         {
             try
@@ -651,13 +611,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetSecurityBulletins
-        /// <summary>
-        /// Gets security bulletins.
-        /// </summary>
+        /// <summary>Gets security bulletins.</summary>
         /// <returns>Security bulletins.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetSecurityBulletins()
         {
             try
@@ -732,13 +689,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetOtherSettings
-        /// <summary>
-        /// Gets host other settings.
-        /// </summary>
-        /// <returns>Portal's ssl settings.</returns>
+        /// <summary>Gets host other settings.</summary>
+        /// <returns>Portal's other settings.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetOtherSettings()
         {
             try
@@ -773,15 +727,12 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// POST: api/Security/UpdateOtherSettings
-        /// <summary>
-        /// Updates other settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates other settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateOtherSettings(UpdateOtherSettingsRequest request)
         {
             try
@@ -823,9 +774,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetAuditCheckResults
-        /// <summary>
-        /// Gets audit check results.
-        /// </summary>
+        /// <summary>Gets audit check results.</summary>
         /// <returns>audit check results.</returns>
         [HttpGet]
         [RequireHost]
@@ -851,9 +800,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetAuditCheckResult?id={id}
-        /// <summary>
-        /// Gets audit check result for a specific checker.
-        /// </summary>
+        /// <summary> Gets audit check result for a specific checker.</summary>
         /// <returns>audit check result.</returns>
         [HttpGet]
         [RequireHost]
@@ -879,13 +826,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetSuperuserActivities
-        /// <summary>
-        /// Gets super user activities.
-        /// </summary>
+        /// <summary>Gets super user activities.</summary>
         /// <returns>super user activities.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetSuperuserActivities()
         {
             try
@@ -921,10 +865,8 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/SearchFileSystemAndDatabase
-        /// <summary>
-        /// Searchs file system and database.
-        /// </summary>
-        /// <returns>Searchs file system and database.</returns>
+        /// <summary>Searches file system and database.</summary>
+        /// <returns>The search results from files and database.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage SearchFileSystemAndDatabase(string term)
@@ -958,13 +900,10 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetLastModifiedFiles
-        /// <summary>
-        /// Gets recently modified files.
-        /// </summary>
+        /// <summary>Gets recently modified files.</summary>
         /// <returns>last modified files.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetLastModifiedFiles()
         {
             try
@@ -999,9 +938,7 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/GetRecentlyModifiedSettings
-        /// <summary>
-        /// Gets last modified settings.
-        /// </summary>
+        /// <summary>Gets last modified settings.</summary>
         /// <returns>last modified settings.</returns>
         [HttpGet]
         [RequireHost]

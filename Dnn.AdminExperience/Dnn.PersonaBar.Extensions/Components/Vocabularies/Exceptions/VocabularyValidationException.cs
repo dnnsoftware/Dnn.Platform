@@ -8,9 +8,7 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
 
     public class VocabularyValidationException : VocabulariesException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VocabularyValidationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="VocabularyValidationException"/> class.</summary>
         public VocabularyValidationException()
             : base(Constants.VocabularyValidationError)
         {

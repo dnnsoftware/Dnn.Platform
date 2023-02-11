@@ -23,16 +23,12 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.
-    /// </summary>
+    /// <summary>  The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.</summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ViewProfile"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         public ViewProfile()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -81,11 +77,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             JavaScript.RequestRegistration(CommonJs.Knockout);
         }
 
-        /// <summary>
-        ///   Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -253,13 +245,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             // in case someone is being redirected to here from an e-mail link action we need to process that here
             var action = this.Request.QueryString["action"];
 
-            if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // action requested but not logged in.
+            if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action))
             {
+                // action requested but not logged in.
                 string loginUrl = Common.Globals.LoginURL(this.Request.RawUrl, false);
                 this.Response.Redirect(loginUrl);
             }
 
-            if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // only process this for authenticated requests
+            // only process this for authenticated requests
+            if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action))
             {
                 // current user, i.e. the one that the request was for
                 var currentUser = UserController.Instance.GetCurrentUserInfo();

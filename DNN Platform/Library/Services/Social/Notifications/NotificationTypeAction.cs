@@ -13,23 +13,16 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Services.Social.Notifications
     /// Class:      NotificationTypeAction
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The NotificationTypeAction class describes a single notification type action that can be associated to a message.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The NotificationTypeAction class describes a single notification type action that can be associated to a message.</summary>
     [Serializable]
     public class NotificationTypeAction : BaseEntityInfo, IHydratable
     {
         private int notificationTypeActionId = -1;
 
-        /// <summary>
-        /// Gets or sets the notification type action identifier.
-        /// </summary>
+        /// <summary>Gets or sets the notification type action identifier.</summary>
         [XmlAttribute]
         public int NotificationTypeActionId
         {
@@ -44,45 +37,31 @@ namespace DotNetNuke.Services.Social.Notifications
             }
         }
 
-        /// <summary>
-        /// Gets or sets the notification type identifier.
-        /// </summary>
+        /// <summary>Gets or sets the notification type identifier.</summary>
         [XmlAttribute]
         public int NotificationTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification type action name resource key.
-        /// </summary>
+        /// <summary>Gets or sets the notification type action name resource key.</summary>
         [XmlAttribute]
         public string NameResourceKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification type action description resource key.
-        /// </summary>
+        /// <summary>Gets or sets the notification type action description resource key.</summary>
         [XmlAttribute]
         public string DescriptionResourceKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification type action confirmation resource key.
-        /// </summary>
+        /// <summary>Gets or sets the notification type action confirmation resource key.</summary>
         [XmlAttribute]
         public string ConfirmResourceKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification type action order to be used while displaying the list of available actions.
-        /// </summary>
+        /// <summary>Gets or sets the notification type action order to be used while displaying the list of available actions.</summary>
         [XmlAttribute]
         public int Order { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Service Framework URL to be called when the action is performed.
-        /// </summary>
+        /// <summary>Gets or sets the Service Framework URL to be called when the action is performed.</summary>
         [XmlAttribute]
         public string APICall { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -91,9 +70,7 @@ namespace DotNetNuke.Services.Social.Notifications
             set { this.NotificationTypeActionId = value; }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

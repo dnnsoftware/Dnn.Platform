@@ -100,6 +100,9 @@ class PersonaBarPageTreeviewInteractor extends Component {
         this.setState({
             treeViewActivePage: this.props.activePage
         });
+        if (!this.state.isChildLoaded) {
+            this.loadAllChildList();
+        }
     }
 
     getPageInfo(id) {
@@ -767,10 +770,6 @@ class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     render() {
-        if (!this.state.isChildLoaded) {
-            this.loadAllChildList();
-        }
-
         return (
             <div onMouseEnter={() => this.setMouseOver(true)} onMouseLeave={() => this.setMouseOver(false)}>
                 <GridCell

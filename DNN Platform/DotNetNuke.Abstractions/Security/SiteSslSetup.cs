@@ -4,24 +4,16 @@
 
 namespace DotNetNuke.Abstractions.Security
 {
-    /// <summary>
-    /// The SiteSslSetup is used in the portal settings to indicate what the global SSL setup is for the site.
-    /// </summary>
+    /// <summary>The SiteSslSetup is used in the portal settings to indicate what the global SSL setup is for the site.</summary>
     public enum SiteSslSetup
     {
-        /// <summary>
-        /// No SSL
-        /// </summary>
+        /// <summary>No SSL</summary>
         Off = 0,
 
-        /// <summary>
-        /// Complete SSL
-        /// </summary>
+        /// <summary>Complete SSL</summary>
         On = 1,
 
-        /// <summary>
-        /// Ability to tweak SSL settings
-        /// </summary>
+        /// <summary>Ability to tweak SSL settings</summary>
         Advanced = 2,
     }
 }

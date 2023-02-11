@@ -14,10 +14,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Represents the collection of Tabs for a portal.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Represents the collection of Tabs for a portal.</summary>
     [Serializable]
     public class TabCollection : Dictionary<int, TabInfo>
     {
@@ -33,9 +30,7 @@ namespace DotNetNuke.Entities.Tabs
         [NonSerialized]
         private readonly Dictionary<string, List<TabInfo>> localizedTabs;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
         public TabCollection()
         {
             this.list = new List<TabInfo>();
@@ -45,9 +40,7 @@ namespace DotNetNuke.Entities.Tabs
 
         // The special constructor is used to deserialize values.
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public TabCollection(SerializationInfo info, StreamingContext context)
@@ -58,9 +51,7 @@ namespace DotNetNuke.Entities.Tabs
             this.localizedTabs = new Dictionary<string, List<TabInfo>>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
         /// <param name="tabs"></param>
         public TabCollection(IEnumerable<TabInfo> tabs)
             : this()
@@ -200,8 +191,9 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (this.ContainsKey(tabId))
             {
-                if (updatedTab == null) // the tab has been deleted
+                if (updatedTab == null)
                 {
+                    // the tab has been deleted
                     this.Remove(tabId);
                     this.list.RemoveAll(t => t.TabID == tabId);
                     this.localizedTabs.ForEach(kvp =>

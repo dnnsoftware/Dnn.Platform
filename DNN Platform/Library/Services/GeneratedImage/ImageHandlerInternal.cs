@@ -32,9 +32,7 @@ namespace DotNetNuke.Services.GeneratedImage
         private IImageStore imageStore;
         private DateTime? now;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
         public ImageHandlerInternal()
         {
             this.ContentType = ImageFormat.Jpeg;
@@ -43,9 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage
             this.AllowStandalone = false;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
         /// <param name="imageStore"></param>
         /// <param name="now"></param>
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
@@ -329,7 +325,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             using (var imageOutputBuffer = new MemoryStream())
             {
-                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
+                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null), "Image or ImageByteByffer must have a value");
                 if (imageMethodData.Image != null)
                 {
                     this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
@@ -399,9 +395,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        /// <summary>
-        /// Returns the encoder for the specified mime type.
-        /// </summary>
+        /// <summary>Returns the encoder for the specified mime type.</summary>
         /// <param name="mimeType">The mime type of the content.</param>
         /// <returns>ImageCodecInfo.</returns>
         private static ImageCodecInfo GetEncoderInfo(string mimeType)

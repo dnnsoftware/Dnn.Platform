@@ -19,9 +19,7 @@ namespace DotNetNuke.Modules.Groups
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GroupEdit"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GroupEdit"/> class.</summary>
         public GroupEdit()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -109,7 +107,8 @@ namespace DotNetNuke.Modules.Groups
                 var roleInfo = RoleController.Instance.GetRoleById(this.PortalId, this.GroupId);
                 if (roleInfo != null)
                 {
-                    if (this.txtGroupName.Visible) // if this is visible assume that we're editing the groupname
+                    // if this is visible assume that we're editing the groupname
+                    if (this.txtGroupName.Visible)
                     {
                         if (this.txtGroupName.Text != roleInfo.RoleName)
                         {

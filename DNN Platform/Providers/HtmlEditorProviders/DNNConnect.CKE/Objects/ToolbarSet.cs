@@ -6,22 +6,16 @@ namespace DNNConnect.CKEditorProvider.Objects
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Toolbar Set Class.
-    /// </summary>
+    /// <summary>Toolbar Set Class.</summary>
     public class ToolbarSet
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolbarSet" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ToolbarSet" /> class.</summary>
         public ToolbarSet()
         {
             this.ToolbarGroups = new List<ToolbarGroup>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolbarSet" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ToolbarSet" /> class.</summary>
         /// <param name="name">The name.</param>
         public ToolbarSet(string name)
         {
@@ -29,9 +23,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.ToolbarGroups = new List<ToolbarGroup>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolbarSet" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ToolbarSet" /> class.</summary>
         /// <param name="name">The name.</param>
         /// <param name="priority">The priority.</param>
         public ToolbarSet(string name, int priority)
@@ -41,19 +33,13 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.ToolbarGroups = new List<ToolbarGroup>();
         }
 
-        /// <summary>
-        /// Gets or sets The Name of the Toolbar Set.
-        /// </summary>
+        /// <summary>Gets or sets The Name of the Toolbar Set.</summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets Toolbar Priority from 1-20.
-        /// </summary>
+        /// <summary>Gets or sets Toolbar Priority from 1-20.</summary>
         public int Priority { get; set; }
 
-        /// <summary>
-        /// Gets or sets the toolbar group.
-        /// </summary>
+        /// <summary>Gets or sets the toolbar group.</summary>
         /// <value>
         /// The toolbar group.
         /// </value>

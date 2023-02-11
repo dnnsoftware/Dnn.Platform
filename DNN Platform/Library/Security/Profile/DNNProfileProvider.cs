@@ -1,10 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Security.Profile
-
-// ReSharper restore CheckNamespace
 {
     using System;
     using System.Globalization;
@@ -18,28 +15,12 @@ namespace DotNetNuke.Security.Profile
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Profile
-    /// Class:      DNNProfileProvider
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The DNNProfileProvider overrides the default ProfileProvider to provide
-    /// a purely DotNetNuke implementation.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The DNNProfileProvider overrides the default ProfileProvider to provide a purely DotNetNuke implementation.</summary>
     public class DNNProfileProvider : ProfileProvider
     {
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Provider Properties can be edited.
-        /// </summary>
-        /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the Provider Properties can be edited.</summary>
         public override bool CanEditProviderProperties
         {
             get
@@ -48,14 +29,8 @@ namespace DotNetNuke.Security.Profile
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserProfile retrieves the UserProfile information from the Data Store.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetUserProfile retrieves the UserProfile information from the Data Store.</summary>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
-        /// -----------------------------------------------------------------------------
         public override void GetUserProfile(ref UserInfo user)
         {
             ProfilePropertyDefinition profProperty;
@@ -133,14 +108,8 @@ namespace DotNetNuke.Security.Profile
             this.UpdateTimeZoneInfo(user, properties);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateUserProfile persists a user's Profile to the Data Store.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>UpdateUserProfile persists a user's Profile to the Data Store.</summary>
         /// <param name="user">The user to persist to the Data Store.</param>
-        /// -----------------------------------------------------------------------------
         public override void UpdateUserProfile(UserInfo user)
         {
             var key = this.GetProfileCacheKey(user);
@@ -177,9 +146,14 @@ namespace DotNetNuke.Security.Profile
                 {
                     var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
-                    this.dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId,
-                                                propertyValue, (int)profProperty.ProfileVisibility.VisibilityMode,
-                                                profProperty.ProfileVisibility.ExtendedVisibilityString(), DateTime.Now);
+                    this.dataProvider.UpdateProfileProperty(
+                        Null.NullInteger,
+                        user.UserID,
+                        profProperty.PropertyDefinitionId,
+                        propertyValue,
+                        (int)profProperty.ProfileVisibility.VisibilityMode,
+                        profProperty.ProfileVisibility.ExtendedVisibilityString(),
+                        DateTime.Now);
                     EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");
                 }
             }

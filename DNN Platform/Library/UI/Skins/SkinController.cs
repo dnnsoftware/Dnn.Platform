@@ -21,17 +21,10 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinController
     ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///     Handles the Business Control Layer for Skins.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>    Handles the Business Control Layer for Skins.</summary>
     public class SkinController
     {
         private const string GlobalSkinPrefix = "[G]";
@@ -84,8 +77,9 @@ namespace DotNetNuke.UI.Skins
                 skinType = "S";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
-            else // to be compliant with all versions
+            else
             {
+                // to be compliant with all versions
                 skinType = "L";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
@@ -244,9 +238,7 @@ namespace DotNetNuke.UI.Skins
             return skins;
         }
 
-        /// <summary>
-        /// Determines if a given skin is defined as a global skin.
-        /// </summary>
+        /// <summary>Determines if a given skin is defined as a global skin.</summary>
         /// <param name="skinSrc">This is the app relative path and filename of the skin to be checked.</param>
         /// <returns>True if the skin is located in the HostPath child directories.</returns>
         /// <remarks>This function performs a quick check to detect the type of skin that is
@@ -519,12 +511,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// format skin name.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>format skin name.</summary>
         /// <param name="skinFolder">The Folder Name.</param>
         /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)

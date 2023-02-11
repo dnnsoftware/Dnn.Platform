@@ -28,9 +28,7 @@ using log4net.Util;
 
 namespace log4net.ObjectRenderer
 {
-    /// <summary>
-    /// Map class objects to an <see cref="IObjectRenderer"/>.
-    /// </summary>
+    /// <summary>Map class objects to an <see cref="IObjectRenderer"/>.</summary>
     /// <remarks>
     /// <para>
     /// Maintains a mapping between types that require special
@@ -53,9 +51,7 @@ namespace log4net.ObjectRenderer
 
         private static IObjectRenderer s_defaultRenderer = new DefaultRenderer();
 
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
+        /// <summary>Default Constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -66,9 +62,7 @@ namespace log4net.ObjectRenderer
             this.m_map = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
 
-        /// <summary>
-        /// Render <paramref name="obj"/> using the appropriate renderer.
-        /// </summary>
+        /// <summary>Render <paramref name="obj"/> using the appropriate renderer.</summary>
         /// <param name="obj">the object to render to a string</param>
         /// <returns>the object rendered as a string</returns>
         /// <remarks>
@@ -95,9 +89,7 @@ namespace log4net.ObjectRenderer
                 
         }
 
-        /// <summary>
-        /// Render <paramref name="obj"/> using the appropriate renderer.
-        /// </summary>
+        /// <summary>Render <paramref name="obj"/> using the appropriate renderer.</summary>
         /// <param name="obj">the object to render to a string</param>
         /// <param name="writer">The writer to render to</param>
         /// <remarks>
@@ -164,9 +156,7 @@ namespace log4net.ObjectRenderer
             }
         }
 
-        /// <summary>
-        /// Gets the renderer for the specified object type
-        /// </summary>
+        /// <summary>Gets the renderer for the specified object type</summary>
         /// <param name="obj">the object to lookup the renderer for</param>
         /// <returns>the renderer for <paramref name="obj"/></returns>
         /// <remarks>
@@ -190,9 +180,7 @@ namespace log4net.ObjectRenderer
             }
         }
   
-        /// <summary>
-        /// Gets the renderer for the specified type
-        /// </summary>
+        /// <summary>Gets the renderer for the specified type</summary>
         /// <param name="type">the type to lookup the renderer for</param>
         /// <returns>the renderer for the specified type</returns>
         /// <remarks>
@@ -243,9 +231,7 @@ namespace log4net.ObjectRenderer
             return result;
         }  
 
-        /// <summary>
-        /// Internal function to recursively search interfaces
-        /// </summary>
+        /// <summary>Internal function to recursively search interfaces</summary>
         /// <param name="type">the type to lookup the renderer for</param>
         /// <returns>the renderer for the specified type</returns>
         private IObjectRenderer SearchTypeAndInterfaces(Type type) 
@@ -269,9 +255,7 @@ namespace log4net.ObjectRenderer
             return null;
         }
 
-        /// <summary>
-        /// Get the default renderer instance
-        /// </summary>
+        /// <summary>Get the default renderer instance</summary>
         /// <value>the default renderer</value>
         /// <remarks>
         /// <para>
@@ -283,9 +267,7 @@ namespace log4net.ObjectRenderer
             get { return s_defaultRenderer; }
         }
 
-        /// <summary>
-        /// Clear the map of renderers
-        /// </summary>
+        /// <summary>Clear the map of renderers</summary>
         /// <remarks>
         /// <para>
         /// Clear the custom renderers defined by using
@@ -299,9 +281,7 @@ namespace log4net.ObjectRenderer
             this.m_cache.Clear();
         }
 
-        /// <summary>
-        /// Register an <see cref="IObjectRenderer"/> for <paramref name="typeToRender"/>. 
-        /// </summary>
+        /// <summary>Register an <see cref="IObjectRenderer"/> for <paramref name="typeToRender"/>. </summary>
         /// <param name="typeToRender">the type that will be rendered by <paramref name="renderer"/></param>
         /// <param name="renderer">the renderer for <paramref name="typeToRender"/></param>
         /// <remarks>

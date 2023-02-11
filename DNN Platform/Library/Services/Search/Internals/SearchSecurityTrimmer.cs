@@ -27,9 +27,7 @@ namespace DotNetNuke.Services.Search.Internals
         private int totalHits;
         private List<ScoreDoc> scoreDocs;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchSecurityTrimmer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchSecurityTrimmer"/> class.</summary>
         /// <param name="searchContext"></param>
         public SearchSecurityTrimmer(SearchSecurityTrimmerContext searchContext)
         {

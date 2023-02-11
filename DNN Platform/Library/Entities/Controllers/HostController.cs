@@ -27,9 +27,7 @@ namespace DotNetNuke.Entities.Controllers
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HostController"/> class.</summary>
         public HostController()
         {
         }
@@ -186,7 +184,7 @@ namespace DotNetNuke.Entities.Controllers
             {
                 var dbProvider = DataProvider.Instance();
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 var settings = this.GetSettingsFromDatabase();
                 if (settings.ContainsKey(config.Key))
                 {
@@ -260,9 +258,7 @@ namespace DotNetNuke.Entities.Controllers
             }
         }
 
-        /// <summary>
-        /// Gets all settings from the databse.
-        /// </summary>
+        /// <summary>Gets all settings from the databse.</summary>
         /// <returns><see cref="Dictionary{TKey, TValue}"/>.</returns>
         private Dictionary<string, IConfigurationSetting> GetSettingsFromDatabase()
         {

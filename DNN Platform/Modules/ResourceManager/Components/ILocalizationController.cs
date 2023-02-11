@@ -8,27 +8,19 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using Dnn.Modules.ResourceManager.Components.Models;
 
-    /// <summary>
-    /// Provides localization services.
-    /// </summary>
+    /// <summary>Provides localization services.</summary>
     public interface ILocalizationController
     {
-        /// <summary>
-        /// Gets the culture name.
-        /// </summary>
+        /// <summary>Gets the culture name.</summary>
         string CultureName { get; }
 
-        /// <summary>
-        /// Gets a timestamp for a given resource file.
-        /// </summary>
+        /// <summary>Gets a timestamp for a given resource file.</summary>
         /// <param name="resourceFile">The resource file for which to get the timestamp.</param>
         /// <param name="localization">The localizatio information.</param>
         /// <returns>A long representing the resource file timestamp.</returns>
         long GetResxTimeStamp(string resourceFile, Localization localization);
 
-        /// <summary>
-        /// Gets a localized dictionary from a resource file.
-        /// </summary>
+        /// <summary>Gets a localized dictionary from a resource file.</summary>
         /// <param name="resourceFile">The resource file from which to generate a dictionary.</param>
         /// <param name="culture">The culture to get.</param>
         /// <param name="localization">The localization information.</param>
@@ -38,9 +30,7 @@ namespace Dnn.Modules.ResourceManager.Components
         /// </returns>
         Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Localization localization);
 
-        /// <summary>
-        /// Returns a dictionary of localized keys for a resource file for a given culture.
-        /// </summary>
+        /// <summary>Returns a dictionary of localized keys for a resource file for a given culture.</summary>
         /// <param name="resourceFile">
         /// The relative file path of the main resource file,e.g.
         /// ~/DesktopModules/SocialLibrary/App_LocalResources/CmxResources.resx .

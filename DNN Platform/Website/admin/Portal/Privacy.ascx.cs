@@ -9,14 +9,7 @@ namespace DotNetNuke.Common.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Privacy PortalModuleBase displays the Privacy text.
-    /// </summary>
-    /// <returns></returns>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The Privacy PortalModuleBase displays the Privacy text.</summary>
     public partial class Privacy : PortalModuleBase
     {
         /// <inheritdoc/>
@@ -29,13 +22,7 @@ namespace DotNetNuke.Common.Controls
             this.InitializeComponent();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -46,7 +33,7 @@ namespace DotNetNuke.Common.Controls
                     this.lblPrivacy.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_PRIVACY");
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

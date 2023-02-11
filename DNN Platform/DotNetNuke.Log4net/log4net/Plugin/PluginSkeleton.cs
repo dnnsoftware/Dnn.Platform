@@ -22,9 +22,7 @@ using log4net.Repository;
 
 namespace log4net.Plugin
 {
-    /// <summary>
-    /// Base implementation of <see cref="IPlugin"/>
-    /// </summary>
+    /// <summary>Base implementation of <see cref="IPlugin"/></summary>
     /// <remarks>
     /// <para>
     /// Default abstract implementation of the <see cref="IPlugin"/>
@@ -36,9 +34,7 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public abstract class PluginSkeleton : IPlugin
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="name">the name of the plugin</param>
         /// <remarks>
         /// Initializes a new Plugin with the specified name.
@@ -48,9 +44,7 @@ namespace log4net.Plugin
             this.m_name = name;
         }
 
-        /// <summary>
-        /// Gets or sets the name of the plugin.
-        /// </summary>
+        /// <summary>Gets or sets the name of the plugin.</summary>
         /// <value>
         /// The name of the plugin.
         /// </value>
@@ -71,9 +65,7 @@ namespace log4net.Plugin
             set { this.m_name = value; }
         }
 
-        /// <summary>
-        /// Attaches this plugin to a <see cref="ILoggerRepository"/>.
-        /// </summary>
+        /// <summary>Attaches this plugin to a <see cref="ILoggerRepository"/>.</summary>
         /// <param name="repository">The <see cref="ILoggerRepository"/> that this plugin should be attached to.</param>
         /// <remarks>
         /// <para>
@@ -88,9 +80,7 @@ namespace log4net.Plugin
             this.m_repository = repository;
         }
 
-        /// <summary>
-        /// Is called when the plugin is to shutdown.
-        /// </summary>
+        /// <summary>Is called when the plugin is to shutdown.</summary>
         /// <remarks>
         /// <para>
         /// This method is called to notify the plugin that 
@@ -102,9 +92,7 @@ namespace log4net.Plugin
         {
         }
 
-        /// <summary>
-        /// The repository for this plugin
-        /// </summary>
+        /// <summary>The repository for this plugin</summary>
         /// <value>
         /// The <see cref="ILoggerRepository" /> that this plugin is attached to.
         /// </value>
@@ -120,14 +108,10 @@ namespace log4net.Plugin
             set { this.m_repository = value; }
         }
 
-        /// <summary>
-        /// The name of this plugin.
-        /// </summary>
+        /// <summary>The name of this plugin.</summary>
         private string m_name;
 
-        /// <summary>
-        /// The repository this plugin is attached to.
-        /// </summary>
+        /// <summary>The repository this plugin is attached to.</summary>
         private ILoggerRepository m_repository;
     }
 }

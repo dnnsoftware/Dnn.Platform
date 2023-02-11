@@ -10,6 +10,7 @@ namespace DotNetNuke.Common.Utilities
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -44,14 +45,14 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DecryptParameter(string value)
         {
-            return DecryptParameter(value, PortalController.Instance.GetCurrentPortalSettings().GUID.ToString());
+            return DecryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
         }
 
         public static string DecryptParameter(string value, string encryptionKey)
         {
             var objSecurity = PortalSecurity.Instance;
 
-            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
+            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
             var toDecrypt = new StringBuilder(value);
             toDecrypt.Replace("_", "/");
             toDecrypt.Replace("-", "+");
@@ -71,7 +72,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string EncryptParameter(string value)
         {
-            return EncryptParameter(value, PortalController.Instance.GetCurrentPortalSettings().GUID.ToString());
+            return EncryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
         }
 
         public static string EncryptParameter(string value, string encryptionKey)
@@ -79,7 +80,7 @@ namespace DotNetNuke.Common.Utilities
             var objSecurity = PortalSecurity.Instance;
             var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
 
-            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
+            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
             parameterValue.Replace("/", "_");
             parameterValue.Replace("+", "-");
             parameterValue.Replace("=", "%3d");
@@ -110,7 +111,7 @@ namespace DotNetNuke.Common.Utilities
         /// either, the portalid param is not allowed when the tab is a supertab
         /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The query-string parameters collection in <c>"key=value"</c> format.</returns>
         public static string[] GetQSParamsForNavigateURL()
         {
             string returnValue = string.Empty;
@@ -340,7 +341,7 @@ namespace DotNetNuke.Common.Utilities
                 if (urlWithNoQuery.Contains("://"))
                 {
                     var portalSettings = PortalSettings.Current;
-                    var aliasWithHttp = Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias);
+                    var aliasWithHttp = Globals.AddHTTP(((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias);
                     var uri1 = new Uri(url);
                     var uri2 = new Uri(aliasWithHttp);
 
@@ -367,8 +368,8 @@ namespace DotNetNuke.Common.Utilities
                     var urlWithNoProtocol = url.Substring(2);
                     var portalSettings = PortalSettings.Current;
 
-                    // note: this can redirict from parent to childe and vice versa
-                    if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
+                    // note: this can redirect from parent to child and vice versa
+                    if (!urlWithNoProtocol.StartsWith(((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias + "/", StringComparison.InvariantCultureIgnoreCase))
                     {
                         return string.Empty;
                     }
@@ -393,9 +394,7 @@ namespace DotNetNuke.Common.Utilities
             return url.IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
-        /// <summary>
-        /// Redirect current response to 404 error page or output 404 content if error page not defined.
-        /// </summary>
+        /// <summary>Redirect current response to 404 error page or output 404 content if error page not defined.</summary>
         /// <param name="response"></param>
         /// <param name="portalSetting"></param>
         public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)

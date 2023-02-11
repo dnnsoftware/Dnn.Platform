@@ -5,28 +5,38 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// This class encapsulates different options used in generating friendly urls.
-    /// </summary>
+    /// <summary>This class encapsulates different options used in generating friendly urls.</summary>
     [Serializable]
     public class FriendlyUrlOptions
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public bool ConvertDiacriticChars;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string IllegalChars;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int MaxUrlPathLength;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string PageExtension;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string PunctuationReplacement;
 
         // 922 : change to use regexMatch pattern for allowable characters
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string RegexMatch;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public Dictionary<string, string> ReplaceCharWithChar = new Dictionary<string, string>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string ReplaceChars;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public bool ReplaceDoubleChars;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string SpaceEncoding;
+
         private static readonly object RegexLookupLock = new object();
         private static readonly Dictionary<string, Regex> RegexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
 

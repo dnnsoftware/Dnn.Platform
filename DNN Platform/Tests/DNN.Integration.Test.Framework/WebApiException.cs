@@ -10,9 +10,7 @@ namespace DNN.Integration.Test.Framework
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    /// <summary>
-    /// Represents a non successful response while executing a WebApi call.
-    /// </summary>
+    /// <summary>Represents a non successful response while executing a WebApi call.</summary>
     public class WebApiException : Exception
     {
         /// <summary>
@@ -33,14 +31,10 @@ namespace DNN.Integration.Test.Framework
             this.Body = body;
         }
 
-        /// <summary>
-        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code.
-        /// </summary>
+        /// <summary>Gets the result of the request. Can be used to retrieve additional info like HTTP status code.</summary>
         public HttpResponseMessage Result { get; private set; }
 
-        /// <summary>
-        /// Gets body from the Get Response. Available when exception is thrown as well.
-        /// </summary>
+        /// <summary>Gets body from the Get Response. Available when exception is thrown as well.</summary>
         public string Body { get; private set; }
 
         public dynamic BodyAsJson()

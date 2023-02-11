@@ -22,9 +22,7 @@ using log4net.Core;
 
 namespace log4net.Util.PatternStringConverters
 {
-    /// <summary>
-    /// Writes a newline to the output
-    /// </summary>
+    /// <summary>Writes a newline to the output</summary>
     /// <remarks>
     /// <para>
     /// Writes the system dependent line terminator to the output.
@@ -48,9 +46,7 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal sealed class NewLinePatternConverter : LiteralPatternConverter, IOptionHandler
     {
-        /// <summary>
-        /// Initialize the converter
-        /// </summary>
+        /// <summary>Initialize the converter</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object

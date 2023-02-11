@@ -4,44 +4,26 @@
 
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    /// -----------------------------------------------------------------------------
     /// Project     : DotNetNuke
     /// Class       : ModuleActionEventListener
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///
     /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public class ModuleActionEventListener
     {
         private readonly ActionEventHandler actionEvent;
         private readonly int moduleID;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.</summary>
         /// <param name="modID"></param>
         /// <param name="e"></param>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleActionEventListener(int modID, ActionEventHandler e)
         {
             this.moduleID = modID;
             this.actionEvent = e;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public int ModuleID
         {
             get
@@ -50,15 +32,6 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ActionEventHandler ActionEvent
         {
             get

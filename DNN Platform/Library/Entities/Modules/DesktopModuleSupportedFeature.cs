@@ -6,16 +6,13 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
     /// Class    : DesktopModuleSupportedFeature
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DesktopModuleSupportedFeature enum provides an enumeration of Supported
     /// Features.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Flags]
     public enum DesktopModuleSupportedFeature
     {

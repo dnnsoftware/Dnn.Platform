@@ -126,13 +126,13 @@
     </Compile>
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Content.cs" />
-    <Compile Include="Components\GroupItemPropertyAccess.cs" />
+    <Compile Include="Components\GroupItemTokenReplace.cs" />
     <Compile Include="Components\GroupMemberType.cs" />
     <Compile Include="Components\GroupsBusinessController.cs" />
-    <Compile Include="Components\GroupsRouteMapper.cs" />
     <Compile Include="Components\GroupUtilities.cs" />
     <Compile Include="Components\GroupViewParser.cs" />
     <Compile Include="Components\Notifications.cs" />
+    <Compile Include="Components\ServiceRouteMapper.cs" />
     <Compile Include="Components\Utilities.cs" />
     <Compile Include="Create.ascx.cs">
       <DependentUpon>Create.ascx</DependentUpon>

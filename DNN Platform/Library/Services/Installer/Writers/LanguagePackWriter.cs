@@ -15,22 +15,14 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The LanguagePackWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The LanguagePackWriter class.</summary>
     public class LanguagePackWriter : PackageWriterBase
     {
         private bool isCore = Null.NullBoolean;
         private Locale language;
         private LanguagePackInfo languagePack;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
         /// <param name="package"></param>
         public LanguagePackWriter(PackageInfo package)
             : base(package)
@@ -57,9 +49,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
         /// <param name="manifestNav"></param>
         /// <param name="installer"></param>
         public LanguagePackWriter(XPathNavigator manifestNav, InstallerInfo installer)
@@ -92,9 +82,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Null.NullString;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePackWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
         /// <param name="language"></param>
         /// <param name="package"></param>
         public LanguagePackWriter(Locale language, PackageInfo package)
@@ -113,12 +101,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Language.
-        /// </summary>
+        /// <summary>Gets or sets the associated Language.</summary>
         /// <value>An Locale object.</value>
-        /// -----------------------------------------------------------------------------
         public Locale Language
         {
             get
@@ -132,12 +116,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Language Pack.
-        /// </summary>
+        /// <summary>Gets or sets the associated Language Pack.</summary>
         /// <value>An LanguagePackInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {
             get

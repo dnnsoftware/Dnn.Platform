@@ -5,14 +5,10 @@ namespace DotNetNuke.Collections.Internal
 {
     using System;
 
-    /// <summary>
-    /// Factory class for LockingStrategies.
-    /// </summary>
+    /// <summary>Factory class for LockingStrategies.</summary>
     internal class LockingStrategyFactory
     {
-        /// <summary>
-        /// Creates a new locking strategy.
-        /// </summary>
+        /// <summary>Creates a new locking strategy.</summary>
         /// <param name="strategy">The <see cref="LockingStrategy"/> to instantiate.</param>
         /// <returns>An instance of <see cref="ILockStrategy"/> that uses the specified strategy.</returns>
         public static ILockStrategy Create(LockingStrategy strategy)

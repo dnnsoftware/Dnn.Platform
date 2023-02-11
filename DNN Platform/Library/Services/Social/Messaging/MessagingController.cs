@@ -23,12 +23,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Controller class for social Messaging.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  The Controller class for social Messaging.</summary>
     public class MessagingController
                                 : ServiceLocator<IMessagingController, MessagingController>,
                                 IMessagingController
@@ -45,17 +40,13 @@ namespace DotNetNuke.Services.Social.Messaging
 
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MessagingController"/> class.</summary>
         public MessagingController()
             : this(DataService.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MessagingController"/> class.</summary>
         /// <param name="dataService"></param>
         public MessagingController(IDataService dataService)
         {

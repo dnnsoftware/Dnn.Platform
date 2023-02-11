@@ -2,9 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+// ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Exceptions
-
-// ReSharper restore CheckNamespace
 {
     using System;
     using System.Web;
@@ -17,22 +16,13 @@ namespace DotNetNuke.Services.Exceptions
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Class    : ErrorPage
-    ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// Trapped errors are redirected to this universal error page, resulting in a
-    /// graceful display.
-    /// </summary>
+    /// <summary>Trapped errors are redirected to this universal error page, resulting in a graceful display.</summary>
     /// <remarks>
     /// 'get the last server error
     /// 'process this error using the Exception Management Application Block
     /// 'add to a placeholder and place on page
     /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {
         /// <inheritdoc/>
@@ -64,8 +54,7 @@ namespace DotNetNuke.Services.Exceptions
             var security = PortalSecurity.Instance;
             var status = security.InputFilter(
                 this.Request.QueryString["status"],
-                PortalSecurity.FilterFlag.NoScripting |
-                                                    PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
             if (!string.IsNullOrEmpty(status))
             {
                 this.ManageError(status);

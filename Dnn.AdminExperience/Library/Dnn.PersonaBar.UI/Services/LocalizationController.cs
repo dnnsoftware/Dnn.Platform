@@ -27,12 +27,9 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static object threadLocker = new object();
 
-        /// <summary>
-        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieve a list of CMX related Localization Keys with its values for the current culture.</summary>
+        /// <returns>A response with a dictionary of resource file names to resource dictionaries.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetTable(string culture)
         {
             try
@@ -242,10 +239,5 @@ namespace Dnn.PersonaBar.UI.Services
 
             return resourceFiles;
         }
-    }
-
-    [Serializable]
-    public class CacheDto
-    {
     }
 }

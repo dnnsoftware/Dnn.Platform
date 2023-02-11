@@ -25,9 +25,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// An entry in the <see cref="LevelMapping"/>
-    /// </summary>
+    /// <summary>An entry in the <see cref="LevelMapping"/></summary>
     /// <remarks>
     /// <para>
     /// This is an abstract base class for types that are stored in the
@@ -37,9 +35,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public abstract class LevelMappingEntry : IOptionHandler
     {
-        /// <summary>
-        /// Default protected constructor
-        /// </summary>
+        /// <summary>Default protected constructor</summary>
         /// <remarks>
         /// <para>
         /// Default protected constructor
@@ -49,9 +45,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// The level that is the key for this mapping 
-        /// </summary>
+        /// <summary>The level that is the key for this mapping </summary>
         /// <value>
         /// The <see cref="Level"/> that is the key for this mapping 
         /// </value>
@@ -67,9 +61,7 @@ namespace log4net.Util
             set { this.m_level = value; }
         }
 
-        /// <summary>
-        /// Initialize any options defined on this entry
-        /// </summary>
+        /// <summary>Initialize any options defined on this entry</summary>
         /// <remarks>
         /// <para>
         /// Should be overridden by any classes that need to initialise based on their options

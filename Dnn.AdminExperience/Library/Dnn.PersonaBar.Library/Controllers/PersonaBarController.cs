@@ -114,15 +114,15 @@ namespace Dnn.PersonaBar.Library.Controllers
                     this.UpdateParamters(cloneItem);
                     cloneItem.Settings = this.GetMenuSettings(menuItem);
 
-                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
-                        menuItem.Children);
+                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
                     if (!filtered || cloneItem.Children.Count > 0)
                     {
                         filterItems.Add(cloneItem);
                     }
                 }
-                catch (Exception e) // Ignore the failure and still load personaBar
+                catch (Exception e)
                 {
+                    // Ignore the failure and still load personaBar
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
                 }
             }

@@ -7,6 +7,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
+
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Internal;
@@ -58,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "Name", StaticName },
                                                                                         { "TemplateFilePath", StaticPath },
                                                                                         { "Description", StaticDescription },
-                                                                                        { "CultureCode", CultureCode },
+                                                                                        { "CultureCode", "en-US" },
                                                                                     };
 
         private static readonly string AlternatePath = MakePath(AlternateName);
@@ -80,7 +81,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "Name", ResourceName },
                                                                                         { "TemplateFilePath", ResourcePath },
                                                                                         { "ResourceFilePath", ResourceFilePath },
-                                                                                        { "CultureCode", CultureCode },
+                                                                                        { "CultureCode", "en-US" },
                                                                                     };
 
         private Mock<IPortalTemplateIO> _mockPortalTemplateIO;
@@ -253,7 +254,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(StaticPath)).Returns(this.CreateTemplateFileReader(StaticDescription));
 
             // Act
-            var template = PortalTemplateController.Instance.GetPortalTemplate(StaticPath, CultureCode);
+            var template = PortalTemplateController.Instance.GetPortalTemplate(StaticPath, "en-US");
 
             // Assert
             AssertTemplateInfo(StaticExpectations, template);

@@ -31,8 +31,8 @@ namespace DotNetNuke.Web.UI
         /// <summary>Initializes a new instance of the <see cref="MessageWindowParameters"/> class.</summary>
         /// <param name="message">The message.</param>
         /// <param name="title">The title.</param>
-        /// <param name="windowWidth">The window width (in a format that can be parsed by <see cref="Unit.Parse" />).</param>
-        /// <param name="windowHeight">The window height (in a format that can be parsed by <see cref="Unit.Parse" />).</param>
+        /// <param name="windowWidth">The window width (in a format that can be parsed by <see cref="Unit.Parse(string)" />).</param>
+        /// <param name="windowHeight">The window height (in a format that can be parsed by <see cref="Unit.Parse(string)" />).</param>
         public MessageWindowParameters(string message, string title, string windowWidth, string windowHeight)
         {
             this.message = message;

@@ -17,13 +17,7 @@ namespace DotNetNuke.Services.Installer.Installers
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileSystemGlobbing;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The CleanupInstaller cleans up (removes) files from previous versions.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The CleanupInstaller cleans up (removes) files from previous versions.</summary>
     public class CleanupInstaller : FileInstaller
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
@@ -35,9 +29,7 @@ namespace DotNetNuke.Services.Installer.Installers
         private string fileName;
         private string glob;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CleanupInstaller"/> class.</summary>
         public CleanupInstaller()
             : this(
                 Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>(),
@@ -45,9 +37,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CleanupInstaller"/> class.</summary>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         /// <param name="fileSystemUtils">An instance of <see cref="IFileSystemUtils"/>.</param>
         internal CleanupInstaller(
@@ -61,43 +51,30 @@ namespace DotNetNuke.Services.Installer.Installers
                 ?? throw new ArgumentNullException(nameof(fileSystemUtils));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override string AllowableFiles => "*";
 
-        /// <summary>
-        /// Gets the list of folders to clean up.
-        /// </summary>
+        /// <summary>Gets the list of folders to clean up.</summary>
         protected IList<string> Folders => this.folders;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
         /// <remarks>In the case of Clenup this is not neccessary.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void Commit()
         {
             // Do nothing
             base.Commit();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method cleansup the files.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <remarks>The Install method cleans up the files.</remarks>
+        /// <inheritdoc />
         public override void Install()
         {
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(this.fileName) && string.IsNullOrEmpty(this.glob)) // No attribute: use the xml files definition.
+                if (string.IsNullOrEmpty(this.fileName) && string.IsNullOrEmpty(this.glob))
                 {
+                    // No attribute: use the xml files definition.
                     foreach (InstallFile file in this.Files)
                     {
                         bSuccess = this.CleanupFile(file);
@@ -112,12 +89,14 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.CleanupFolder(folder);
                     }
                 }
-                else if (!string.IsNullOrEmpty(this.fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
+                else if (!string.IsNullOrEmpty(this.fileName))
                 {
+                    // Cleanup file provided: clean each file in the cleanup text file line one by one.
                     bSuccess = this.ProcessCleanupFile();
                 }
-                else if (!string.IsNullOrEmpty(this.glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
+                else if (!string.IsNullOrEmpty(this.glob))
                 {
+                    // A globbing pattern was provided, use it to find the files and delete what matches.
                     bSuccess = this.ProcessGlob();
                 }
 
@@ -143,28 +122,20 @@ namespace DotNetNuke.Services.Installer.Installers
             base.ReadManifest(manifestNav);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the file component.
-        /// </summary>
         /// <remarks>There is no uninstall for this component.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void UnInstall()
         {
         }
 
-        /// <summary>
-        /// Adds a folder path to the list.
-        /// </summary>
+        /// <summary>Adds a folder path to the list.</summary>
         /// <param name="path">The folder path.</param>
         internal void ProcessFolder(string path)
         {
             this.Folders.Add(path);
         }
 
-        /// <summary>
-        /// Validates a folder path for cleanup.
-        /// </summary>
+        /// <summary>Validates a folder path for cleanup.</summary>
         /// <param name="path">The folder path to validate.</param>
         /// <param name="validPath">The sanitized absolute folder path after validation.</param>
         /// <returns>Whether or not the folder path is valid.</returns>
@@ -221,13 +192,9 @@ namespace DotNetNuke.Services.Installer.Installers
             return true;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CleanupFile method cleansup a single file.
-        /// </summary>
+        /// <summary>The CleanupFile method cleans up a single file.</summary>
         /// <param name="insFile">The InstallFile to clean up.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the file was deleted, otherwise <see langword="false"/>.</returns>
         protected bool CleanupFile(InstallFile insFile)
         {
             try
@@ -250,9 +217,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
-        /// </summary>
+        /// <summary>Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.</summary>
         /// <param name="path">The root folder path.</param>
         protected virtual void CleanupFolder(string path)
         {
@@ -273,13 +238,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node.
-        /// </summary>
+        /// <summary>The ProcessFile method determines what to do with parsed "file" node.</summary>
         /// <param name="file">The file represented by the node.</param>
         /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
             if (file != null)
@@ -288,9 +249,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Determines what to do with the parsed "folder" node.
-        /// </summary>
+        /// <summary>Determines what to do with the parsed "folder" node.</summary>
         /// <param name="nav">The XPathNavigator representing the node.</param>
         protected virtual void ProcessFolder(XPathNavigator nav)
         {
@@ -308,12 +267,7 @@ namespace DotNetNuke.Services.Installer.Installers
             return base.ReadManifestItem(nav, false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The RollbackFile method rolls back the cleanup of a single file.
-        /// </summary>
-        /// <param name="installFile">The InstallFile to commit.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void RollbackFile(InstallFile installFile)
         {
             if (File.Exists(installFile.BackupFileName))

@@ -22,11 +22,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Impl Controller class for Search.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>  The Impl Controller class for Search.</summary>
     internal class SearchControllerImpl : ISearchController
     {
         private const string SeacrchContollersCacheKey = "SearchControllers";
@@ -257,8 +253,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     var keywordQuery = new BooleanQuery();
                     foreach (var fieldToSearch in Constants.KeyWordSearchFields)
                     {
-                        var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch,
-                            fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
+                        var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch, fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
                         parserContent.AllowLeadingWildcard = allowLeadingWildcard;
                         var parsedQueryContent = parserContent.Parse(keywords);
                         keywordQuery.Add(parsedQueryContent, Occur.SHOULD);

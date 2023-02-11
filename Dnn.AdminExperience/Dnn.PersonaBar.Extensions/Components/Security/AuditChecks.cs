@@ -16,9 +16,7 @@ namespace Dnn.PersonaBar.Security.Components
     {
         private readonly IEnumerable<IAuditCheck> auditChecks;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuditChecks"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuditChecks"/> class.</summary>
         public AuditChecks()
         {
             var checks = new List<IAuditCheck>

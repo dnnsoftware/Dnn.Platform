@@ -1,14 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#if INDIVIDUAL_LOCKS
-using System.Collections;
-#endif
-
 namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
+    #if INDIVIDUAL_LOCKS
+    using System.Collections;
+    #endif
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -16,31 +14,22 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
     using System.Web.Hosting;
 
-    internal interface IImageStore
-    {
-        void Add(string id, byte[] data);
-
-        bool TryTransmitIfContains(string id, HttpResponseBase response);
-
-        void ForcePurgeFromServerCache(string cacheId);
-    }
-
     public class DiskImageStore : IImageStore
     {
         private const string TempFileExtension = ".tmp";
         private const string CacheAppRelativePath = @"~\App_Data\_imagecache\";
-        private static DiskImageStore diskImageStore;
         private static readonly object InstanceLock = new object();
+        private static DiskImageStore diskImageStore;
         private static string cachePath;
         private static TimeSpan purgeInterval;
-        private DateTime lastPurge;
         private readonly object purgeQueuedLock = new object();
+        private readonly object fileLock = new object();
+        private DateTime lastPurge;
         private bool purgeQueued;
 
 #if INDIVIDUAL_LOCKS
         private Hashtable _fileLocks = new Hashtable();
 #else
-        private readonly object fileLock = new object();
 
         static DiskImageStore()
         {
@@ -49,9 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiskImageStore"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DiskImageStore"/> class.</summary>
         internal DiskImageStore()
         {
             if (CachePath != null && !Directory.Exists(CachePath))

@@ -15,137 +15,103 @@ namespace DotNetNuke.Modules.RazorHost {
     
     
     public partial class CreateModule {
-        /// <summary>
-        /// scriptsLabel control.
-        /// </summary>
+        /// <summary>scriptsLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl scriptsLabel;
-        /// <summary>
-        /// scriptList control.
-        /// </summary>
+        /// <summary>scriptList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList scriptList;
-        /// <summary>
-        /// lblSourceFile control.
-        /// </summary>
+        /// <summary>lblSourceFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSourceFile;
-        /// <summary>
-        /// lblModuleControl control.
-        /// </summary>
+        /// <summary>lblModuleControl control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblModuleControl;
-        /// <summary>
-        /// plFolder control.
-        /// </summary>
+        /// <summary>plFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plFolder;
-        /// <summary>
-        /// txtFolder control.
-        /// </summary>
+        /// <summary>txtFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFolder;
-        /// <summary>
-        /// valFolder control.
-        /// </summary>
+        /// <summary>valFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valFolder;
-        /// <summary>
-        /// plName control.
-        /// </summary>
+        /// <summary>plName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plName;
-        /// <summary>
-        /// txtName control.
-        /// </summary>
+        /// <summary>txtName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtName;
-        /// <summary>
-        /// valName control.
-        /// </summary>
+        /// <summary>valName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valName;
-        /// <summary>
-        /// plDescription control.
-        /// </summary>
+        /// <summary>plDescription control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plDescription;
-        /// <summary>
-        /// txtDescription control.
-        /// </summary>
+        /// <summary>txtDescription control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
-        /// <summary>
-        /// plAddPage control.
-        /// </summary>
+        /// <summary>plAddPage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plAddPage;
-        /// <summary>
-        /// chkAddPage control.
-        /// </summary>
+        /// <summary>chkAddPage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAddPage;
-        /// <summary>
-        /// cmdCreate control.
-        /// </summary>
+        /// <summary>cmdCreate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdCreate;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
-        /// <summary>
-        /// phInstallLogs control.
-        /// </summary>
+        /// <summary>phInstallLogs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

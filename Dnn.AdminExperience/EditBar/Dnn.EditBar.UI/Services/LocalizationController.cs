@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.EditBar.UI.Services
 {
     using System;
@@ -25,12 +24,9 @@ namespace Dnn.EditBar.UI.Services
     {
         private static object threadLocker = new object();
 
-        /// <summary>
-        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieve a list of CMX related Localization Keys with its values for the current culture.</summary>
+        /// <returns>A response with a collection of resources.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetTable(string culture)
         {
             try
@@ -143,10 +139,5 @@ namespace Dnn.EditBar.UI.Services
             var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);
             return Directory.GetFiles(physicalPath, "*.resx");
         }
-    }
-
-    [Serializable]
-    public class CacheDto
-    {
     }
 }

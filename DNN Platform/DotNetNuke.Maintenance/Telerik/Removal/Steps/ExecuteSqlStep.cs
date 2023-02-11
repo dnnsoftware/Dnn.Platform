@@ -16,9 +16,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     {
         private readonly IDataProvider dataProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExecuteSqlStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExecuteSqlStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="dataProvider">An instance of <see cref="IDataProvider"/>.</param>

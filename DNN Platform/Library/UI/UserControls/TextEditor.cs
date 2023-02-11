@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -16,34 +18,46 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// Class:  TextEditor
     /// Project: DotNetNuke
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// TextEditor is a user control that provides a wrapper for the HtmlEditor providers.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>TextEditor is a user control that provides a wrapper for the HtmlEditor providers.</summary>
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-        private const string MyFileName = "TextEditor.ascx";
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel PanelTextEditor;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButtonList OptRender;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButtonList OptView;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected PlaceHolder PlcEditor;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl DivBasicTextBox;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl DivBasicRender;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl DivRichTextBox;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel PanelView;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox TxtDesktopHTML;
+
+        // ReSharper restore InconsistentNaming
+        private const string MyFileName = "TextEditor.ascx";
         private HtmlEditorProvider richTextEditor;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextEditor"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TextEditor"/> class.</summary>
         public TextEditor()
         {
             this.HtmlEncode = true;
@@ -279,13 +293,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -332,19 +340,13 @@ namespace DotNetNuke.UI.UserControls
 
                 this.SetPanels();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// optRender_SelectedIndexChanged runs when Basic Text Box mode is changed.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>optRender_SelectedIndexChanged runs when Basic Text Box mode is changed.</summary>
         protected void OptRenderSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptRender.SelectedIndex != -1)
@@ -360,13 +362,7 @@ namespace DotNetNuke.UI.UserControls
             this.SetPanels();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// optView_SelectedIndexChanged runs when Editor Mode is changed.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>optView_SelectedIndexChanged runs when Editor Mode is changed.</summary>
         protected void OptViewSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptView.SelectedIndex != -1)
@@ -407,41 +403,23 @@ namespace DotNetNuke.UI.UserControls
             return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Decodes the html.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Decodes the html.</summary>
         /// <param name="strHtml">Html to decode.</param>
         /// <returns>The decoded html.</returns>
-        /// -----------------------------------------------------------------------------
         private string Decode(string strHtml)
         {
             return this.HtmlEncode ? this.Server.HtmlDecode(strHtml) : strHtml;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Encodes the html.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Encodes the html.</summary>
         /// <param name="strHtml">Html to encode.</param>
         /// <returns>The encoded html.</returns>
-        /// -----------------------------------------------------------------------------
         private string Encode(string strHtml)
         {
             return this.HtmlEncode ? this.Server.HtmlEncode(strHtml) : strHtml;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Builds the radio button lists.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Builds the radio button lists.</summary>
         private void PopulateLists()
         {
             if (this.OptRender.Items.Count == 0)
@@ -461,13 +439,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets the Mode displayed.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Sets the Mode displayed.</summary>
         private void SetPanels()
         {
             if (this.OptView.SelectedIndex != -1)

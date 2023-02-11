@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     using System;
@@ -58,9 +57,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private readonly Random random = new Random();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OAuthClientBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OAuthClientBase"/> class.</summary>
         /// <param name="portalId"></param>
         /// <param name="mode"></param>
         /// <param name="service"></param>
@@ -153,11 +150,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected string APIResource { get; set; }
 
         /// <summary>
-        /// This is a different Url Encode implementation since the default .NET one outputs the percent encoding in lower case.
+        /// This is a different URL Encode implementation since the default .NET one outputs the percent encoding in lower case.
         /// While this is not a problem with the percent encoding spec, it is used in upper case throughout OAuth.
         /// </summary>
-        /// <param name="value">The value to Url encode.</param>
-        /// <returns>Returns a Url encoded string.</returns>
+        /// <param name="value">The value to URL encode.</param>
+        /// <returns>Returns a URL encoded string.</returns>
         public static string UrlEncode(string value)
         {
             var result = new StringBuilder();
@@ -200,10 +197,15 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
             }
 
-            objUserInfo = UserController.ValidateUser(settings.PortalId, userName, string.Empty,
-                                                                this.Service, token,
-                                                                settings.PortalName, ipAddress,
-                                                                ref loginStatus);
+            objUserInfo = UserController.ValidateUser(
+                settings.PortalId,
+                userName,
+                string.Empty,
+                this.Service,
+                token,
+                settings.PortalName,
+                ipAddress,
+                ref loginStatus);
 
             // Raise UserAuthenticated Event
             var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, this.Service)
@@ -296,9 +298,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return this.AuthorizeV2();
         }
 
-        /// <summary>
-        /// Generates a signature using the HMAC-SHA1 algorithm.
-        /// </summary>
+        /// <summary>Generates a signature using the HMAC-SHA1 algorithm.</summary>
         /// <param name="url">The full url that needs to be signed including its non OAuth url parameters.</param>
         /// <param name="token">The token, if available. If not available pass null or an empty string.</param>
         /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string.</param>
@@ -316,10 +316,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             var hmacsha1 = new HMACSHA1
             {
-                Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(this.APISecret),
-                                                                             string.IsNullOrEmpty(tokenSecret)
-                                                                                 ? string.Empty
-                                                                                 : UrlEncode(tokenSecret))),
+                Key = Encoding.ASCII.GetBytes($"{UrlEncode(this.APISecret)}&{(string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncode(tokenSecret))}"),
             };
 
             return this.GenerateSignatureUsingHash(signatureBase, hmacsha1);
@@ -369,10 +366,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             HttpContext.Current.Response.SetCookie(authTokenCookie);
         }
 
-        /// <summary>
-        /// Generate the timestamp for the signature.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Generate the timestamp for the signature.</summary>
+        /// <returns>A string representation of <see cref="DateTime.Now"/> in the Unix timestamp format.</returns>
         protected virtual string GenerateTimeStamp()
         {
             // Default implementation of UNIX time of the current UTC time
@@ -380,10 +375,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return Convert.ToInt64(ts.TotalSeconds).ToString(CultureInfo.InvariantCulture);
         }
 
-        /// <summary>
-        /// Generate a nonce.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Generate a nonce.</summary>
+        /// <returns>A 6-7 character length nonce string.</returns>
         protected virtual string GenerateNonce()
         {
             // Just a simple implementation of a random number between 123400 and 9999999

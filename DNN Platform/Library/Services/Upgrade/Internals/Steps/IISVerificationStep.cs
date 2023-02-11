@@ -11,14 +11,10 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Performs verifications about the IIS environment.
-    /// </summary>
+    /// <summary>Performs verifications about the IIS environment.</summary>
     public class IISVerificationStep : BaseInstallationStep
     {
-        /// <summary>
-        /// Executes verifications on the IIS environment.
-        /// </summary>
+        /// <summary>Executes verifications on the IIS environment.</summary>
         public override void Execute()
         {
             this.Status = StepStatus.Running;

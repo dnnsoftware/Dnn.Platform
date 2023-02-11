@@ -36,9 +36,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public TextBoxMode TextMode { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.</summary>
         public bool ClearContentInPasswordMode { get; set; }
 
         /// <inheritdoc/>

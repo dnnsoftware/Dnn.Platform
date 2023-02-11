@@ -23,9 +23,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
-    /// </summary>
+    /// <summary>Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.</summary>
     public class NotificationsController
                         : ServiceLocator<INotificationsController, NotificationsController>,
                         INotificationsController
@@ -110,8 +108,12 @@ namespace DotNetNuke.Services.Social.Notifications
             }
 
             var count = this.dataService.CountNotifications(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 

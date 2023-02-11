@@ -132,9 +132,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
                 notificationId);
         }
 
-        /// <summary>
-        /// Mark a Toast ready for sending.
-        /// </summary>
+        /// <summary>Mark a Toast ready for sending.</summary>
         /// <param name="notificationId">The notification Id. </param>
         /// <param name="userId">The Recipient User Id. </param>
         public void MarkReadyForToast(int notificationId, int userId)
@@ -142,9 +140,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             this.provider.ExecuteNonQuery(GetFullyQualifiedName("MarkReadyForToast"), notificationId, userId);
         }
 
-        /// <summary>
-        /// Mark Toast being already sent.
-        /// </summary>
+        /// <summary>Mark Toast being already sent.</summary>
         /// <param name="notificationId">The notification Id. </param>
         /// <param name="userId">The Recipient User Id. </param>
         public void MarkToastSent(int notificationId, int userId)

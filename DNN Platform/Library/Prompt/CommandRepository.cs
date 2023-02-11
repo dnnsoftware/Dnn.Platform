@@ -19,12 +19,6 @@ namespace DotNetNuke.Prompt
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
         /// <inheritdoc/>
-        protected override Func<ICommandRepository> GetFactory()
-        {
-            return () => new CommandRepository();
-        }
-
-        /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
             return this.CommandList().Values;
@@ -43,12 +37,19 @@ namespace DotNetNuke.Prompt
             return null;
         }
 
-        private SortedDictionary<string, ICommand> CommandList()
+        /// <inheritdoc/>
+        public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
-            return
-                DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
-                    new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
-                    c => GetCommandsInternal());
+            var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
+            return DataCache.GetCachedData<ICommandHelp>(
+                new CacheItemArgs(cacheKey, CacheItemPriority.Low),
+                c => this.GetCommandHelpInternal(consoleCommand));
+        }
+
+        /// <inheritdoc/>
+        protected override Func<ICommandRepository> GetFactory()
+        {
+            return () => new CommandRepository();
         }
 
         private static SortedDictionary<string, ICommand> GetCommandsInternal()
@@ -83,13 +84,29 @@ namespace DotNetNuke.Prompt
             return commands;
         }
 
-        /// <inheritdoc/>
-        public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
+        private static string LocalizeString(string key, string resourcesFile = Constants.DefaultPromptResourceFile)
         {
-            var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
-            return DataCache.GetCachedData<ICommandHelp>(
-                new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => this.GetCommandHelpInternal(consoleCommand));
+            var localizedText = Localization.GetString(key, resourcesFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
+        }
+
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
+        }
+
+        private SortedDictionary<string, ICommand> CommandList()
+        {
+            return
+                DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
+                    new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
+                    c => GetCommandsInternal());
         }
 
         private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
@@ -112,7 +129,7 @@ namespace DotNetNuke.Prompt
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         Description =
-                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
+                            LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
                     }).ToList();
                     commandHelp.Options = options;
                 }
@@ -125,23 +142,6 @@ namespace DotNetNuke.Prompt
             }
 
             return commandHelp;
-        }
-
-        private static string LocalizeString(string key, string resourcesFile = Constants.DefaultPromptResourceFile)
-        {
-            var localizedText = Localization.GetString(key, resourcesFile);
-            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
-        }
-
-        private static string CreateCommandFromClass(string className)
-        {
-            var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
-        }
-
-        private static string[] SplitCamelCase(string source)
-        {
-            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
     }
 }

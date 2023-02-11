@@ -23,9 +23,7 @@ using System.Collections;
 
 namespace log4net
 {
-    /// <summary>
-    /// Implementation of Mapped Diagnostic Contexts.
-    /// </summary>
+    /// <summary>Implementation of Mapped Diagnostic Contexts.</summary>
     /// <remarks>
     /// <note>
     /// <para>
@@ -51,9 +49,7 @@ namespace log4net
     /*[Obsolete("MDC has been replaced by ThreadContext.Properties")]*/
     public sealed class MDC
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MDC" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MDC" /> class. </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.
         /// </remarks>
@@ -61,9 +57,7 @@ namespace log4net
         {
         }
 
-        /// <summary>
-        /// Gets the context value identified by the <paramref name="key" /> parameter.
-        /// </summary>
+        /// <summary>Gets the context value identified by the <paramref name="key" /> parameter.</summary>
         /// <param name="key">The key to lookup in the MDC.</param>
         /// <returns>The string value held for the key, or a <c>null</c> reference if no corresponding value is found.</returns>
         /// <remarks>
@@ -89,9 +83,7 @@ namespace log4net
             return obj.ToString();
         }
 
-        /// <summary>
-        /// Add an entry to the MDC
-        /// </summary>
+        /// <summary>Add an entry to the MDC</summary>
         /// <param name="key">The key to store the value under.</param>
         /// <param name="value">The value to store.</param>
         /// <remarks>
@@ -118,9 +110,7 @@ namespace log4net
             ThreadContext.Properties[key] = value;
         }
 
-        /// <summary>
-        /// Removes the key value mapping for the key specified.
-        /// </summary>
+        /// <summary>Removes the key value mapping for the key specified.</summary>
         /// <param name="key">The key to remove.</param>
         /// <remarks>
         /// <note>
@@ -139,9 +129,7 @@ namespace log4net
             ThreadContext.Properties.Remove(key);
         }
 
-        /// <summary>
-        /// Clear all entries in the MDC
-        /// </summary>
+        /// <summary>Clear all entries in the MDC</summary>
         /// <remarks>
         /// <note>
         /// <para>

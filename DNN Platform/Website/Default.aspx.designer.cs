@@ -15,201 +15,151 @@ namespace DotNetNuke.Framework {
     
     
     public partial class DefaultPage {
-        /// <summary>
-        /// skinDocType control.
-        /// </summary>
+        /// <summary>skinDocType control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal skinDocType;
-        /// <summary>
-        /// attributeList control.
-        /// </summary>
+        /// <summary>attributeList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal attributeList;
-        /// <summary>
-        /// Head control.
-        /// </summary>
+        /// <summary>Head control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlHead Head;
-        /// <summary>
-        /// metaPanel control.
-        /// </summary>
+        /// <summary>metaPanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder metaPanel;
-        /// <summary>
-        /// MetaRefresh control.
-        /// </summary>
+        /// <summary>MetaRefresh control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlMeta MetaRefresh;
-        /// <summary>
-        /// MetaDescription control.
-        /// </summary>
+        /// <summary>MetaDescription control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaDescription;
-        /// <summary>
-        /// MetaKeywords control.
-        /// </summary>
+        /// <summary>MetaKeywords control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaKeywords;
-        /// <summary>
-        /// MetaCopyright control.
-        /// </summary>
+        /// <summary>MetaCopyright control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlMeta MetaCopyright;
-        /// <summary>
-        /// MetaGenerator control.
-        /// </summary>
+        /// <summary>MetaGenerator control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlMeta MetaGenerator;
-        /// <summary>
-        /// MetaAuthor control.
-        /// </summary>
+        /// <summary>MetaAuthor control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlMeta MetaAuthor;
-        /// <summary>
-        /// MetaRobots control.
-        /// </summary>
+        /// <summary>MetaRobots control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlMeta MetaRobots;
-        /// <summary>
-        /// ClientDependencyHeadCss control.
-        /// </summary>
+        /// <summary>ClientDependencyHeadCss control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadCss;
-        /// <summary>
-        /// ClientDependencyHeadJs control.
-        /// </summary>
+        /// <summary>ClientDependencyHeadJs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadJs;
-        /// <summary>
-        /// CSS control.
-        /// </summary>
+        /// <summary>CSS control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder CSS;
-        /// <summary>
-        /// SCRIPTS control.
-        /// </summary>
+        /// <summary>SCRIPTS control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder SCRIPTS;
-        /// <summary>
-        /// Body control.
-        /// </summary>
+        /// <summary>Body control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Body;
-        /// <summary>
-        /// Form control.
-        /// </summary>
+        /// <summary>Form control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected new global::DotNetNuke.Common.Controls.Form Form;
-        /// <summary>
-        /// BodySCRIPTS control.
-        /// </summary>
+        /// <summary>BodySCRIPTS control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder BodySCRIPTS;
-        /// <summary>
-        /// SkinError control.
-        /// </summary>
+        /// <summary>SkinError control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label SkinError;
-        /// <summary>
-        /// SkinPlaceHolder control.
-        /// </summary>
+        /// <summary>SkinPlaceHolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder SkinPlaceHolder;
-        /// <summary>
-        /// ScrollTop control.
-        /// </summary>
+        /// <summary>ScrollTop control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden ScrollTop;
-        /// <summary>
-        /// __dnnVariable control.
-        /// </summary>
+        /// <summary>__dnnVariable control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden @__dnnVariable;
-        /// <summary>
-        /// ClientResourcesFormBottom control.
-        /// </summary>
+        /// <summary>ClientResourcesFormBottom control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientResourcesFormBottom;
-        /// <summary>
-        /// ClientResourceIncludes control.
-        /// </summary>
+        /// <summary>ClientResourceIncludes control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientResourceIncludes;
-        /// <summary>
-        /// ClientResourceLoader control.
-        /// </summary>
+        /// <summary>ClientResourceLoader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

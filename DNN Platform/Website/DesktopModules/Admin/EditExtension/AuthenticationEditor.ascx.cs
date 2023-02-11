@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     using DotNetNuke.Abstractions;
@@ -13,13 +15,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The AuthenticationEditor.ascx control is used to edit the Authentication Properties.</summary>
     public partial class AuthenticationEditor : PackageEditorBase
     {
         private readonly INavigationManager navigationManager;
@@ -27,9 +23,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         private AuthenticationInfo authSystem;
         private AuthenticationSettingsBase settingsControl;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationEditor"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationEditor"/> class.</summary>
         public AuthenticationEditor()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -118,6 +112,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
             this.SettingsControl?.UpdateSettings();
@@ -129,11 +126,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This routine Binds the Authentication System.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>This routine Binds the Authentication System.</summary>
         private void BindAuthentication()
         {
             if (this.AuthSystem != null)

@@ -20,9 +20,7 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
         where TModel : class, new()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.</summary>
         public ProfileModuleViewBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

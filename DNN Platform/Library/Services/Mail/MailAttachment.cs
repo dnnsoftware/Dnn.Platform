@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Mail
     {
         private const string DefaultContentType = "application/octet-stream";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MailAttachment"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MailAttachment"/> class.</summary>
         /// <param name="filePath"></param>
         public MailAttachment(string filePath)
         {
@@ -25,9 +23,7 @@ namespace DotNetNuke.Services.Mail
             this.MailAttachmentInternal(filename, content, contentType);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MailAttachment"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MailAttachment"/> class.</summary>
         /// <param name="filename"></param>
         /// <param name="content"></param>
         public MailAttachment(string filename, byte[] content)
@@ -35,9 +31,7 @@ namespace DotNetNuke.Services.Mail
             this.MailAttachmentInternal(filename, content, MimeMapping.GetMimeMapping(filename));
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MailAttachment"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MailAttachment"/> class.</summary>
         /// <param name="filename"></param>
         /// <param name="content"></param>
         /// <param name="contentType"></param>
@@ -46,17 +40,17 @@ namespace DotNetNuke.Services.Mail
             this.MailAttachmentInternal(filename, content, contentType);
         }
 
+        public byte[] Content { get; set; }
+
+        public string Filename { get; set; }
+
+        public string ContentType { get; set; }
+
         private void MailAttachmentInternal(string filename, byte[] content, string contentType)
         {
             this.Filename = filename;
             this.Content = content;
             this.ContentType = contentType;
         }
-
-        public byte[] Content { get; set; }
-
-        public string Filename { get; set; }
-
-        public string ContentType { get; set; }
     }
 }

@@ -28,9 +28,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Implementation of Stack for the <see cref="log4net.ThreadContext"/>
-    /// </summary>
+    /// <summary>Implementation of Stack for the <see cref="log4net.ThreadContext"/></summary>
     /// <remarks>
     /// <para>
     /// Implementation of Stack for the <see cref="log4net.ThreadContext"/>
@@ -39,14 +37,10 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContextStack : IFixingRequired
     {
-        /// <summary>
-        /// The stack store.
-        /// </summary>
+        /// <summary>The stack store.</summary>
         private Stack m_stack = new Stack();
 
-        /// <summary>
-        /// Internal constructor
-        /// </summary>
+        /// <summary>Internal constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="ThreadContextStack" /> class. 
@@ -56,9 +50,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// The number of messages in the stack
-        /// </summary>
+        /// <summary>The number of messages in the stack</summary>
         /// <value>
         /// The current number of messages in the stack
         /// </value>
@@ -74,9 +66,7 @@ namespace log4net.Util
             get { return this.m_stack.Count; }
         }
 
-        /// <summary>
-        /// Clears all the contextual information held in this stack.
-        /// </summary>
+        /// <summary>Clears all the contextual information held in this stack.</summary>
         /// <remarks>
         /// <para>
         /// Clears all the contextual information held in this stack.
@@ -94,9 +84,7 @@ namespace log4net.Util
             this.m_stack.Clear();
         }
 
-        /// <summary>
-        /// Removes the top context from this stack.
-        /// </summary>
+        /// <summary>Removes the top context from this stack.</summary>
         /// <returns>The message in the context that was removed from the top of this stack.</returns>
         /// <remarks>
         /// <para>
@@ -115,9 +103,7 @@ namespace log4net.Util
             return string.Empty;
         }
 
-        /// <summary>
-        /// Pushes a new context message into this stack.
-        /// </summary>
+        /// <summary>Pushes a new context message into this stack.</summary>
         /// <param name="message">The new context message.</param>
         /// <returns>
         /// An <see cref="IDisposable"/> that can be used to clean up the context stack.
@@ -146,9 +132,7 @@ namespace log4net.Util
             return new AutoPopStackFrame(stack, stack.Count - 1);
         }
 
-        /// <summary>
-        /// Gets the current context information for this stack.
-        /// </summary>
+        /// <summary>Gets the current context information for this stack.</summary>
         /// <returns>The current context information.</returns>
         internal string GetFullMessage() 
         {
@@ -160,9 +144,7 @@ namespace log4net.Util
             return null;
         }
 
-        /// <summary>
-        /// Gets and sets the internal stack used by this <see cref="ThreadContextStack"/>
-        /// </summary>
+        /// <summary>Gets and sets the internal stack used by this <see cref="ThreadContextStack"/></summary>
         /// <value>The internal storage stack</value>
         /// <remarks>
         /// <para>
@@ -177,9 +159,7 @@ namespace log4net.Util
             set { this.m_stack = value; }
         }
 
-        /// <summary>
-        /// Gets the current context information for this stack.
-        /// </summary>
+        /// <summary>Gets the current context information for this stack.</summary>
         /// <returns>Gets the current context information</returns>
         /// <remarks>
         /// <para>
@@ -191,9 +171,7 @@ namespace log4net.Util
             return this.GetFullMessage();
         }
 
-        /// <summary>
-        /// Get a portable version of this object
-        /// </summary>
+        /// <summary>Get a portable version of this object</summary>
         /// <returns>the portable instance of this object</returns>
         /// <remarks>
         /// <para>
@@ -205,9 +183,7 @@ namespace log4net.Util
             return this.GetFullMessage();
         }
 
-        /// <summary>
-        /// Inner class used to represent a single context frame in the stack.
-        /// </summary>
+        /// <summary>Inner class used to represent a single context frame in the stack.</summary>
         /// <remarks>
         /// <para>
         /// Inner class used to represent a single context frame in the stack.
@@ -219,9 +195,7 @@ namespace log4net.Util
             private readonly StackFrame m_parent;
             private string m_fullMessage = null;
 
-            /// <summary>
-            /// Constructor
-            /// </summary>
+            /// <summary>Constructor</summary>
             /// <param name="message">The message for this context.</param>
             /// <param name="parent">The parent context in the chain.</param>
             /// <remarks>
@@ -241,9 +215,7 @@ namespace log4net.Util
                 } 
             }
 
-            /// <summary>
-            /// Get the message.
-            /// </summary>
+            /// <summary>Get the message.</summary>
             /// <value>The message.</value>
             /// <remarks>
             /// <para>
@@ -255,9 +227,7 @@ namespace log4net.Util
                 get { return this.m_message; }
             }
 
-            /// <summary>
-            /// Gets the full text of the context down to the root level.
-            /// </summary>
+            /// <summary>Gets the full text of the context down to the root level.</summary>
             /// <value>
             /// The full text of the context down to the root level.
             /// </value>
@@ -279,9 +249,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Struct returned from the <see cref="ThreadContextStack.Push"/> method.
-        /// </summary>
+        /// <summary>Struct returned from the <see cref="ThreadContextStack.Push"/> method.</summary>
         /// <remarks>
         /// <para>
         /// This struct implements the <see cref="IDisposable"/> and is designed to be used
@@ -290,19 +258,13 @@ namespace log4net.Util
         /// </remarks>
         private struct AutoPopStackFrame : IDisposable
         {
-            /// <summary>
-            /// The ThreadContextStack internal stack
-            /// </summary>
+            /// <summary>The ThreadContextStack internal stack</summary>
             private Stack m_frameStack;
 
-            /// <summary>
-            /// The depth to trim the stack to when this instance is disposed
-            /// </summary>
+            /// <summary>The depth to trim the stack to when this instance is disposed</summary>
             private int m_frameDepth;
 
-            /// <summary>
-            /// Constructor
-            /// </summary>
+            /// <summary>Constructor</summary>
             /// <param name="frameStack">The internal stack used by the ThreadContextStack.</param>
             /// <param name="frameDepth">The depth to return the stack to when this object is disposed.</param>
             /// <remarks>
@@ -317,9 +279,7 @@ namespace log4net.Util
                 this.m_frameDepth = frameDepth;
             }
 
-            /// <summary>
-            /// Returns the stack to the correct depth.
-            /// </summary>
+            /// <summary>Returns the stack to the correct depth.</summary>
             /// <remarks>
             /// <para>
             /// Returns the stack to the correct depth.
@@ -351,9 +311,7 @@ namespace log4net.Util
         /// </remarks>
         public class Stack : System.Collections.Stack
         {
-            /// <summary>
-            /// Clears the stack of all elements.
-            /// </summary>
+            /// <summary>Clears the stack of all elements.</summary>
             /// <remarks>
             /// <para>
             /// Clears the stack of all elements.
@@ -367,9 +325,7 @@ namespace log4net.Util
                 }
             }
 
-            /// <summary>
-            /// Makes a shallow copy of the stack's elements.
-            /// </summary>
+            /// <summary>Makes a shallow copy of the stack's elements.</summary>
             /// <returns>A new stack that has a shallow copy of the stack's elements.</returns>
             /// <remarks>
             /// <para>

@@ -20,18 +20,14 @@ namespace DotNetNuke.Entities.Users.Membership
     {
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        /// <summary>
-        /// returns the password history of the supplied user.
-        /// </summary>
+        /// <summary>returns the password history of the supplied user.</summary>
         /// <returns>list of PasswordHistory objects.</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId)
         {
             return this.GetPasswordHistory(userId, Null.NullInteger);
         }
 
-        /// <summary>
-        /// returns the password history of the supplied user.
-        /// </summary>
+        /// <summary>returns the password history of the supplied user.</summary>
         /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
         /// <returns>list of PasswordHistory objects.</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId, int portalId)
@@ -42,9 +38,7 @@ namespace DotNetNuke.Entities.Users.Membership
             return history;
         }
 
-        /// <summary>
-        /// checks to see if the password is in history and adds it if it is not.
-        /// </summary>
+        /// <summary>checks to see if the password is in history and adds it if it is not.</summary>
         /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
         /// <param name="newPassword">users new password suggestion.</param>
         /// <returns>true if password has not been used in users history, false otherwise.</returns>
@@ -53,9 +47,7 @@ namespace DotNetNuke.Entities.Users.Membership
             return this.IsPasswordInHistory(userId, portalId, newPassword, true);
         }
 
-        /// <summary>
-        /// checks to see if the password is in history and adds it if it is not.
-        /// </summary>
+        /// <summary>checks to see if the password is in history and adds it if it is not.</summary>
         /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
         /// <param name="newPassword">users new password suggestion.</param>
         /// <param name="autoAdd">If set true then add the password into history if its not used yet.</param>
@@ -83,9 +75,7 @@ namespace DotNetNuke.Entities.Users.Membership
             return isPreviouslyUsed;
         }
 
-        /// <summary>
-        /// checks if the new password matches a previously used password when hashed with the same salt.
-        /// </summary>
+        /// <summary>checks if the new password matches a previously used password when hashed with the same salt.</summary>
         /// <param name="password">users entered new password.</param>
         /// <returns>true if previously used, false otherwise.</returns>
         public bool IsPasswordPreviouslyUsed(int userId, string password)
@@ -117,9 +107,7 @@ namespace DotNetNuke.Entities.Users.Membership
             return foundMatch;
         }
 
-        /// <summary>
-        /// checks if the password reset token being used is valid i.e. has not been used before and is within the the expiration period.
-        /// </summary>
+        /// <summary>checks if the password reset token being used is valid i.e. has not been used before and is within the the expiration period.</summary>
         /// <param name="userId">user attempting to reset their password.</param>
         /// <param name="resetToken">reset token supplied via email link.</param>
         /// <returns>true if value matches (so has not been used before) and is within expiration window.</returns>
@@ -147,7 +135,9 @@ namespace DotNetNuke.Entities.Users.Membership
             var listController = new ListController();
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty,
+            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(
+                listName,
+                string.Empty,
                 Null.NullInteger);
             IEnumerable<ListEntryInfo> listEntryPortalInfos =
                 listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);

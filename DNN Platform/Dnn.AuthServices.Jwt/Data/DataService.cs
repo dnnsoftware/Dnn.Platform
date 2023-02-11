@@ -13,9 +13,7 @@ namespace Dnn.AuthServices.Jwt.Data
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
 
-    /// <summary>
-    /// This class provides the Data Access Layer for the JWT Authentication library.
-    /// </summary>
+    /// <summary>This class provides the Data Access Layer for the JWT Authentication library.</summary>
     public class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider dataProvider = DataProvider.Instance();

@@ -21,9 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnSkinComboBox"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnSkinComboBox"/> class.</summary>
         public DnnSkinComboBox()
         {
             this.PortalId = Null.NullInteger;

@@ -265,6 +265,14 @@ class UserSettings extends Component {
                         {Localization.get("AccountData")}
                     </div>
                     <GridSystem className="first">
+                        <GridCell  title={Localization.get("UserId.Help")}>
+                            {Localization.get("UserId")}
+                        </GridCell>
+                        <GridCell>
+                            {state.userDetails.userId}
+                        </GridCell>
+                    </GridSystem>
+                    <GridSystem>
                         <GridCell  title={Localization.get("CreatedDate.Help")}>
                             {Localization.get("CreatedDate")}
                         </GridCell>

@@ -15,41 +15,31 @@ namespace DotNetNuke.UI.Containers {
     
     
     public partial class Title {
-        /// <summary>
-        /// titleLabel control.
-        /// </summary>
+        /// <summary>titleLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNLabelEdit titleLabel;
-        /// <summary>
-        /// titleToolbar control.
-        /// </summary>
+        /// <summary>titleToolbar control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBar titleToolbar;
-        /// <summary>
-        /// tbEdit2 control.
-        /// </summary>
+        /// <summary>tbEdit2 control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbEdit2;
-        /// <summary>
-        /// tbSave2 control.
-        /// </summary>
+        /// <summary>tbSave2 control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbSave2;
-        /// <summary>
-        /// tbCancel2 control.
-        /// </summary>
+        /// <summary>tbCancel2 control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

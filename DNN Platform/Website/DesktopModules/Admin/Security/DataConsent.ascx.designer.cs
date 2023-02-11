@@ -15,41 +15,31 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class DataConsent {
-        /// <summary>
-        /// chkAgree control.
-        /// </summary>
+        /// <summary>chkAgree control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAgree;
-        /// <summary>
-        /// pnlNoAgreement control.
-        /// </summary>
+        /// <summary>pnlNoAgreement control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlNoAgreement;
-        /// <summary>
-        /// cmdSubmit control.
-        /// </summary>
+        /// <summary>cmdSubmit control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdSubmit;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCancel;
-        /// <summary>
-        /// cmdDeleteMe control.
-        /// </summary>
+        /// <summary>cmdDeleteMe control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

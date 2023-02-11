@@ -12,19 +12,13 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Terms : SkinObjectBase
     {
         private const string MyFileName = "Terms.ascx";
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Terms"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Terms"/> class.</summary>
         public Terms()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

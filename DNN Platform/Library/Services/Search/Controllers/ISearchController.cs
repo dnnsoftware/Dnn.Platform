@@ -7,16 +7,12 @@ namespace DotNetNuke.Services.Search.Controllers
 
     public interface ISearchController
     {
-        /// <summary>
-        /// Get Search Result for the searchQuery at the Site Level.
-        /// </summary>
+        /// <summary>Get Search Result for the searchQuery at the Site Level.</summary>
         /// <param name="searchQuery">SearchQuery object with various search criteria.</param>
         /// <returns>SearchResults.</returns>
         SearchResults SiteSearch(SearchQuery searchQuery);
 
-        /// <summary>
-        /// Get Search Result for the searchQuery at the Module Level.
-        /// </summary>
+        /// <summary>Get Search Result for the searchQuery at the Module Level.</summary>
         /// <param name="searchQuery">SearchQuery object with various search criteria.</param>
         /// <returns>SearchResults.</returns>
         /// <remarks>SearchTypeIds provided in the searchQuery will be ignored.</remarks>

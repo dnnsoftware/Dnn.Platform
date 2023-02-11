@@ -27,14 +27,10 @@ namespace DotNetNuke.Services.Mail
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// SendTokenizedBulkEmail Class is a class to manage the sending of bulk mails
     /// that contains tokens, which might be replaced with individual user properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
@@ -43,18 +39,6 @@ namespace DotNetNuke.Services.Mail
         private readonly List<string> addressedRoles = new List<string>();
         private readonly List<UserInfo> addressedUsers = new List<UserInfo>();
         private readonly List<Attachment> attachments = new List<Attachment>();
-
-        /// <summary>
-        /// Addressing Methods (personalized or hidden).
-        /// </summary>
-        // ReSharper disable InconsistentNaming
-        // Existing public API
-        public enum AddressMethods
-        {
-            Send_TO = 1,
-            Send_BCC = 2,
-            Send_Relay = 3,
-        }
 
         private UserInfo replyToUser;
         private bool smtpEnableSSL;
@@ -74,9 +58,7 @@ namespace DotNetNuke.Services.Mail
         private string strSenderLanguage;
         private bool isDisposed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
         public SendTokenizedBulkEmail()
         {
             this.ReportRecipients = true;
@@ -87,9 +69,7 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
         /// <param name="addressedRoles"></param>
         /// <param name="addressedUsers"></param>
         /// <param name="removeDuplicates"></param>
@@ -110,28 +90,30 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="SendTokenizedBulkEmail"/> class.
-        /// </summary>
+        /// <summary>Finalizes an instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
         ~SendTokenizedBulkEmail()
         {
             this.Dispose(false);
         }
 
-        /// <summary>
-        /// Gets or sets priority of emails to be sent.
-        /// </summary>
+        /// <summary>Addressing Methods (personalized or hidden).</summary>
+        // ReSharper disable InconsistentNaming
+        // Existing public API
+        public enum AddressMethods
+        {
+            Send_TO = 1,
+            Send_BCC = 2,
+            Send_Relay = 3,
+        }
+
+        /// <summary>Gets or sets priority of emails to be sent.</summary>
         public MailPriority Priority { get; set; }
 
-        /// <summary>
-        /// Gets or sets subject of the emails to be sent.
-        /// </summary>
+        /// <summary>Gets or sets subject of the emails to be sent.</summary>
         /// <remarks>may contain tokens.</remarks>
         public string Subject { get; set; }
 
-        /// <summary>
-        /// Gets or sets body text of the email to be sent.
-        /// </summary>
+        /// <summary>Gets or sets body text of the email to be sent.</summary>
         /// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically.</remarks>
         public string Body
         {
@@ -253,150 +235,6 @@ namespace DotNetNuke.Services.Mail
             this.attachments.Add(new Attachment(localPath));
         }
 
-        /// <summary>internal method to initialize used objects, depending on parameters of construct method.</summary>
-        private void Initialize()
-        {
-            this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            this.PortalAlias = this.portalSettings.PortalAlias.HTTPAlias;
-            this.SendingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
-            this.tokenReplace = new TokenReplace();
-            this.confirmBodyHTML = Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.GlobalResourceFile, this.strSenderLanguage);
-            this.confirmBodyText = Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.GlobalResourceFile, this.strSenderLanguage);
-            this.confirmSubject = Localization.GetString("EMAIL_BulkMailConf_Subject", Localization.GlobalResourceFile, this.strSenderLanguage);
-            this.noError = Localization.GetString("NoErrorsSending", Localization.GlobalResourceFile, this.strSenderLanguage);
-            this.smtpEnableSSL = Host.EnableSMTPSSL;
-        }
-
-        /// <summary>Send bulkmail confirmation to admin.</summary>
-        /// <param name="numRecipients">number of email recipients.</param>
-        /// <param name="numMessages">number of messages sent, -1 if not determinable.</param>
-        /// <param name="numErrors">number of emails not sent.</param>
-        /// <param name="subject">Subject of BulkMail sent (to be used as reference).</param>
-        /// <param name="startedAt">date/time, sendout started.</param>
-        /// <param name="mailErrors">mail error texts.</param>
-        /// <param name="recipientList">List of recipients as formatted string.</param>
-        /// <remarks></remarks>
-        private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
-        {
-            // send confirmation, use resource string like:
-            // Operation started at: [Custom:0]<br>
-            // EmailRecipients:      [Custom:1]<b
-            // EmailMessages sent:   [Custom:2]<br>
-            // Operation Completed:  [Custom:3]<br>
-            // Number of Errors:     [Custom:4]<br>
-            // Error Report:<br>
-            // [Custom:5]
-            //--------------------------------------
-            // Recipients:
-            // [custom:6]
-            var parameters = new ArrayList
-                                 {
-                                     startedAt,
-                                     numRecipients.ToString(CultureInfo.InvariantCulture),
-                                     numMessages >= 0 ? numMessages.ToString(CultureInfo.InvariantCulture) : "***",
-                                     DateTime.Now.ToString(CultureInfo.InvariantCulture),
-                                     numErrors > 0 ? numErrors.ToString(CultureInfo.InvariantCulture) : string.Empty,
-                                     mailErrors != string.Empty ? mailErrors : this.noError,
-                                     this.ReportRecipients ? recipientList : string.Empty,
-                                 };
-            this.tokenReplace.User = this.sendingUser;
-            string body = this.tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this.confirmBodyHTML : this.confirmBodyText, parameters, "Custom");
-            string strSubject = string.Format(this.confirmSubject, subject);
-            if (!this.SuppressTokenReplace)
-            {
-                strSubject = this.tokenReplace.ReplaceEnvironmentTokens(strSubject);
-            }
-
-            var message = new Message { FromUserID = this.sendingUser.UserID, ToUserID = this.sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread };
-
-            Mail.SendEmail(this.sendingUser.Email, this.sendingUser.Email, message.Subject, message.Body);
-        }
-
-        /// <summary>check, if the user's language matches the current language filter.</summary>
-        /// <param name="userLanguage">Language of the user.</param>
-        /// <returns>userlanguage matches current languageFilter.</returns>
-        /// <remarks>if filter not set, true is returned.</remarks>
-        private bool MatchLanguageFilter(string userLanguage)
-        {
-            if (this.LanguageFilter == null || this.LanguageFilter.Length == 0)
-            {
-                return true;
-            }
-
-            if (string.IsNullOrEmpty(userLanguage))
-            {
-                userLanguage = this.portalSettings.DefaultLanguage;
-            }
-
-            return this.LanguageFilter.Any(s => userLanguage.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        /// <summary>add a user to the userlist, if it is not already in there.</summary>
-        /// <param name="user">user to add.</param>
-        /// <param name="keyList">list of key (either email addresses or userid's).</param>
-        /// <param name="userList">List of users.</param>
-        /// <remarks>for use by Recipients method only.</remarks>
-        private void ConditionallyAddUser(UserInfo user, ref List<string> keyList, ref List<UserInfo> userList)
-        {
-            if (((user.UserID <= 0 || user.Membership.Approved) && user.Email != string.Empty) && this.MatchLanguageFilter(user.Profile.PreferredLocale))
-            {
-                string key;
-                if (this.RemoveDuplicates || user.UserID == Null.NullInteger)
-                {
-                    key = user.Email;
-                }
-                else
-                {
-                    key = user.UserID.ToString(CultureInfo.InvariantCulture);
-                }
-
-                if (key != string.Empty && !keyList.Contains(key))
-                {
-                    userList.Add(user);
-                    keyList.Add(key);
-                }
-            }
-        }
-
-        private List<Attachment> LoadAttachments()
-        {
-            var attachments = new List<Attachment>();
-            foreach (var attachment in this.attachments)
-            {
-                Attachment newAttachment;
-                MemoryStream memoryStream = null;
-                var buffer = new byte[4096];
-                try
-                {
-                    memoryStream = new MemoryStream();
-                    while (true)
-                    {
-                        var read = attachment.ContentStream.Read(buffer, 0, 4096);
-                        if (read <= 0)
-                        {
-                            break;
-                        }
-
-                        memoryStream.Write(buffer, 0, read);
-                    }
-
-                    newAttachment = new Attachment(memoryStream, attachment.ContentType);
-                    newAttachment.ContentStream.Position = 0;
-                    attachments.Add(newAttachment);
-
-                    // reset original position
-                    attachment.ContentStream.Position = 0;
-                    memoryStream = null;
-                }
-                finally
-                {
-                    memoryStream?.Dispose();
-                }
-            }
-
-            return attachments;
-        }
-
         public void AddAttachment(Stream contentStream, ContentType contentType)
         {
             this.EnsureNotDisposed();
@@ -473,8 +311,9 @@ namespace DotNetNuke.Services.Mail
             {
                 // send to recipients
                 string body = this.body;
-                if (this.BodyFormat == MailFormat.Html) // Add Base Href for any images inserted in to the email.
+                if (this.BodyFormat == MailFormat.Html)
                 {
+                    // Add Base Href for any images inserted in to the email.
                     var host = this.PortalAlias.Contains("/") ? this.PortalAlias.Substring(0, this.PortalAlias.IndexOf('/')) : this.PortalAlias;
                     body = "<html><head><base href='http://" + host + "'><title>" + this.Subject + "</title></head><body>" + body + "</body></html>";
                 }
@@ -625,8 +464,9 @@ namespace DotNetNuke.Services.Mail
 
                 this.SendConfirmationMail(recipients, messagesSent, errors, subject, startedAt, mailErrors.ToString(), mailRecipients.ToString());
             }
-            catch (Exception exc) // send mail failure
+            catch (Exception exc)
             {
+                // send mail failure
                 Logger.Error(exc);
 
                 Debug.Write(exc.Message);
@@ -672,6 +512,149 @@ namespace DotNetNuke.Services.Mail
 
                 // get rid of unmanaged resources
             }
+        }
+
+        /// <summary>internal method to initialize used objects, depending on parameters of construct method.</summary>
+        private void Initialize()
+        {
+            this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            this.PortalAlias = this.portalSettings.PortalAlias.HTTPAlias;
+            this.SendingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
+            this.tokenReplace = new TokenReplace();
+            this.confirmBodyHTML = Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.GlobalResourceFile, this.strSenderLanguage);
+            this.confirmBodyText = Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.GlobalResourceFile, this.strSenderLanguage);
+            this.confirmSubject = Localization.GetString("EMAIL_BulkMailConf_Subject", Localization.GlobalResourceFile, this.strSenderLanguage);
+            this.noError = Localization.GetString("NoErrorsSending", Localization.GlobalResourceFile, this.strSenderLanguage);
+            this.smtpEnableSSL = Host.EnableSMTPSSL;
+        }
+
+        /// <summary>Send bulkmail confirmation to admin.</summary>
+        /// <param name="numRecipients">number of email recipients.</param>
+        /// <param name="numMessages">number of messages sent, -1 if not determinable.</param>
+        /// <param name="numErrors">number of emails not sent.</param>
+        /// <param name="subject">Subject of BulkMail sent (to be used as reference).</param>
+        /// <param name="startedAt">date/time, sendout started.</param>
+        /// <param name="mailErrors">mail error texts.</param>
+        /// <param name="recipientList">List of recipients as formatted string.</param>
+        private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
+        {
+            // send confirmation, use resource string like:
+            // Operation started at: [Custom:0]<br>
+            // EmailRecipients:      [Custom:1]<b
+            // EmailMessages sent:   [Custom:2]<br>
+            // Operation Completed:  [Custom:3]<br>
+            // Number of Errors:     [Custom:4]<br>
+            // Error Report:<br>
+            // [Custom:5]
+            //--------------------------------------
+            // Recipients:
+            // [custom:6]
+            var parameters = new ArrayList
+            {
+                startedAt,
+                numRecipients.ToString(CultureInfo.InvariantCulture),
+                numMessages >= 0 ? numMessages.ToString(CultureInfo.InvariantCulture) : "***",
+                DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                numErrors > 0 ? numErrors.ToString(CultureInfo.InvariantCulture) : string.Empty,
+                mailErrors != string.Empty ? mailErrors : this.noError,
+                this.ReportRecipients ? recipientList : string.Empty,
+            };
+            this.tokenReplace.User = this.sendingUser;
+            string body = this.tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this.confirmBodyHTML : this.confirmBodyText, parameters, "Custom");
+            string strSubject = string.Format(this.confirmSubject, subject);
+            if (!this.SuppressTokenReplace)
+            {
+                strSubject = this.tokenReplace.ReplaceEnvironmentTokens(strSubject);
+            }
+
+            var message = new Message { FromUserID = this.sendingUser.UserID, ToUserID = this.sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread };
+
+            Mail.SendEmail(this.sendingUser.Email, this.sendingUser.Email, message.Subject, message.Body);
+        }
+
+        /// <summary>check, if the user's language matches the current language filter.</summary>
+        /// <param name="userLanguage">Language of the user.</param>
+        /// <returns>userlanguage matches current languageFilter.</returns>
+        /// <remarks>if filter not set, true is returned.</remarks>
+        private bool MatchLanguageFilter(string userLanguage)
+        {
+            if (this.LanguageFilter == null || this.LanguageFilter.Length == 0)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(userLanguage))
+            {
+                userLanguage = this.portalSettings.DefaultLanguage;
+            }
+
+            return this.LanguageFilter.Any(s => userLanguage.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <summary>add a user to the userlist, if it is not already in there.</summary>
+        /// <param name="user">user to add.</param>
+        /// <param name="keyList">list of key (either email addresses or userid's).</param>
+        /// <param name="userList">List of users.</param>
+        /// <remarks>for use by Recipients method only.</remarks>
+        private void ConditionallyAddUser(UserInfo user, ref List<string> keyList, ref List<UserInfo> userList)
+        {
+            if (((user.UserID <= 0 || user.Membership.Approved) && user.Email != string.Empty) && this.MatchLanguageFilter(user.Profile.PreferredLocale))
+            {
+                string key;
+                if (this.RemoveDuplicates || user.UserID == Null.NullInteger)
+                {
+                    key = user.Email;
+                }
+                else
+                {
+                    key = user.UserID.ToString(CultureInfo.InvariantCulture);
+                }
+
+                if (key != string.Empty && !keyList.Contains(key))
+                {
+                    userList.Add(user);
+                    keyList.Add(key);
+                }
+            }
+        }
+
+        private List<Attachment> LoadAttachments()
+        {
+            var attachments = new List<Attachment>();
+            foreach (var attachment in this.attachments)
+            {
+                Attachment newAttachment;
+                MemoryStream memoryStream = null;
+                var buffer = new byte[4096];
+                try
+                {
+                    memoryStream = new MemoryStream();
+                    while (true)
+                    {
+                        var read = attachment.ContentStream.Read(buffer, 0, 4096);
+                        if (read <= 0)
+                        {
+                            break;
+                        }
+
+                        memoryStream.Write(buffer, 0, read);
+                    }
+
+                    newAttachment = new Attachment(memoryStream, attachment.ContentType);
+                    newAttachment.ContentStream.Position = 0;
+                    attachments.Add(newAttachment);
+
+                    // reset original position
+                    attachment.ContentStream.Position = 0;
+                    memoryStream = null;
+                }
+                finally
+                {
+                    memoryStream?.Dispose();
+                }
+            }
+
+            return attachments;
         }
 
         private void EnsureNotDisposed()

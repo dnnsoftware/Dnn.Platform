@@ -64,13 +64,11 @@ namespace DotNetNuke.Entities.Urls
             DataCache.RemoveCache(TabPathsKey);
         }
 
-        /// <summary>
-        /// Returns a portal info object for the portal.
-        /// </summary>
+        /// <summary>Returns a portal info object for the portal.</summary>
         /// <param name="portalId"></param>
         /// <param name="exceptionOnNull"></param>
-        /// <remarks>This method wraps the PortalController.GetPortal method, and adds a check if the reuslt is null.</remarks>.
-        /// <returns></returns>
+        /// <remarks>This method wraps the PortalController.GetPortal method, and adds a check if the result is null.</remarks>.
+        /// <returns>A <see cref="PortalInfo"/> instance or <see langword="null"/> if the portal isn't found and <paramref name="exceptionOnNull"/> is <see langword="false"/>.</returns>
         public static PortalInfo GetPortal(int portalId, bool exceptionOnNull)
         {
             PortalInfo pi = null;
@@ -128,10 +126,8 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    // ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable once EmptyGeneralCatchClause
                     catch
-
-                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1
@@ -238,9 +234,7 @@ namespace DotNetNuke.Entities.Urls
 #endif
         }
 
-        /// <summary>
-        /// Finds the best match friendlyurlparms.config file path.
-        /// </summary>
+        /// <summary>Finds the best match friendlyurlparms.config file path.</summary>
         /// <param name="portalId">The portalId to search for. -1 if all portals required.</param>
         /// <param name="portalSpecificFound"></param>
         /// <returns>If a non-zero length string, a valid file path.  If a zero length string, no file was found.</returns>
@@ -258,29 +252,33 @@ namespace DotNetNuke.Entities.Urls
             string rootPath = Globals.ApplicationMapPath + "\\";
 
             string filePath;
-            if (portalId > -1) // specific portal
+            if (portalId > -1)
             {
+                // specific portal
                 // first look in the root folder with the portalid as a prefix
                 filePath = rootPath + portalId.ToString() + "." + fileName;
             }
-            else // no specific portal
+            else
             {
+                // no specific portal
                 filePath = rootPath + fileName; // just the pathname
             }
 
             if (File.Exists(filePath))
             {
                 result = filePath;
-                if (portalId > -1) // if there was a portal specified, this was a portal specific path
+                if (portalId > -1)
                 {
+                    // if there was a portal specified, this was a portal specific path
                     portalSpecificFound = true;
                 }
             }
             else
             {
                 // no portal specific name in the root folder
-                if (portalId > Null.NullInteger) // at this point, only interested if a specific portal is requested
+                if (portalId > Null.NullInteger)
                 {
+                    // at this point, only interested if a specific portal is requested
                     var portal = PortalController.Instance.GetPortal(portalId);
                     if (portal != null)
                     {
@@ -530,7 +528,8 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-            if (checkThisTab) // the specified tab
+            // the specified tab
+            if (checkThisTab)
             {
                 // tab exists, get the providers for this tab
                 string key = string.Format(PortalModuleProvidersForTabKey, portalId, tabId);
@@ -742,14 +741,10 @@ namespace DotNetNuke.Entities.Urls
             SetPortalCache(PortalAliasesKey, aliasList, settings);
         }
 
-        /// <summary>
-        /// Retrieve the Url Dictionary for the installation.
-        /// </summary>
+        /// <summary>Retrieve the Url Dictionary for the installation.</summary>
         /// <param name="urlDict"></param>
         /// <param name="urlPortals"></param>
         /// <param name="customAliasTabs"></param>
-        /// <remarks>
-        /// </remarks>
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             out ConcurrentBag<int> urlPortals,
@@ -800,16 +795,12 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        /// <summary>
-        /// Store the Url Dictionary (all tab urls / tabids) for the installation.
-        /// </summary>
+        /// <summary>Store the Url Dictionary (all tab urls / tabids) for the installation.</summary>
         /// <param name="urlDict"></param>
         /// <param name="urlPortals"></param>
         /// <param name="customAliasTabs"></param>
         /// <param name="settings"></param>
         /// <param name="reason"></param>
-        /// <remarks>
-        /// </remarks>
         internal void StoreFriendlyUrlIndexInCache(
             SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             ConcurrentBag<int> urlPortals,

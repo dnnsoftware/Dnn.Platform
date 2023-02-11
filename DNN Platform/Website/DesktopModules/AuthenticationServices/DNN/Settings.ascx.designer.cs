@@ -15,9 +15,7 @@ namespace DotNetNuke.Modules.Admin.Authentication {
     
     
     public partial class Settings {
-        /// <summary>
-        /// SettingsEditor control.
-        /// </summary>
+        /// <summary>SettingsEditor control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

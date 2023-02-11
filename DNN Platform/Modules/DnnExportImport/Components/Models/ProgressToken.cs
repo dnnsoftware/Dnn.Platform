@@ -12,9 +12,7 @@ namespace Dnn.ExportImport.Components.Models
         /// </summary>
         public string ContinuationKey { get; set; }
 
-        /// <summary>
-        ///  Gets or sets indicates the completed percentage progress of export/import operation.
-        /// </summary>
+        /// <summary> Gets or sets indicates the completed percentage progress of export/import operation.</summary>
         public uint Progress { get; set; }
     }
 }

@@ -69,9 +69,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             return list;
         }
 
-        /// <summary>
-        /// Instantiates a new instance of the PortalTemplateController.
-        /// </summary>
+        /// <summary>Instantiates a new instance of the PortalTemplateController.</summary>
         /// <returns>An instance of IPortalTemplateController.</returns>
         protected override Func<IPortalTemplateController> GetFactory()
         {

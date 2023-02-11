@@ -15,17 +15,13 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class ViewProfile {
-        /// <summary>
-        /// lblNoProperties control.
-        /// </summary>
+        /// <summary>lblNoProperties control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoProperties;
-        /// <summary>
-        /// ctlProfile control.
-        /// </summary>
+        /// <summary>ctlProfile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

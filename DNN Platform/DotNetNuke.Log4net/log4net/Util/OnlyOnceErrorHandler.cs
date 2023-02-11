@@ -43,9 +43,7 @@ namespace log4net.Util
     /// <author>Ron Grabowski</author>
     public class OnlyOnceErrorHandler : IErrorHandler
     {
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
+        /// <summary>Default Constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="OnlyOnceErrorHandler" /> class.
@@ -56,9 +54,7 @@ namespace log4net.Util
             this.m_prefix = string.Empty;
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="prefix">The prefix to use for each message.</param>
         /// <remarks>
         /// <para>
@@ -71,9 +67,7 @@ namespace log4net.Util
             this.m_prefix = prefix;
         }
 
-        /// <summary>
-        /// Reset the error handler back to its initial disabled state.
-        /// </summary>
+        /// <summary>Reset the error handler back to its initial disabled state.</summary>
         public void Reset()
         {
             this.m_enabledDateUtc = DateTime.MinValue;
@@ -83,9 +77,7 @@ namespace log4net.Util
             this.m_firstTime = true;
         }
 
-        /// <summary>
-        /// Log an Error
-        /// </summary>
+        /// <summary>Log an Error</summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
         /// <param name="errorCode">The internal error code.</param>
@@ -102,9 +94,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Log the very first error
-        /// </summary>
+        /// <summary>Log the very first error</summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
         /// <param name="errorCode">The internal error code.</param>
@@ -125,9 +115,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Log an Error
-        /// </summary>
+        /// <summary>Log an Error</summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
         /// <remarks>
@@ -140,9 +128,7 @@ namespace log4net.Util
             this.Error(message, e, ErrorCode.GenericFailure);
         }
 
-        /// <summary>
-        /// Log an error
-        /// </summary>
+        /// <summary>Log an error</summary>
         /// <param name="message">The error message.</param>
         /// <remarks>
         /// <para>
@@ -154,9 +140,7 @@ namespace log4net.Util
             this.Error(message, null, ErrorCode.GenericFailure);
         }
 
-        /// <summary>
-        /// Is error logging enabled
-        /// </summary>
+        /// <summary>Is error logging enabled</summary>
         /// <remarks>
         /// <para>
         /// Is error logging enabled. Logging is only enabled for the
@@ -168,9 +152,7 @@ namespace log4net.Util
             get { return this.m_firstTime; }
         }
 
-        /// <summary>
-        /// The date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.
-        /// </summary>
+        /// <summary>The date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.</summary>
         public DateTime EnabledDate
         {
             get 
@@ -184,25 +166,19 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// The UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.
-        /// </summary>
+        /// <summary>The UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.</summary>
         public DateTime EnabledDateUtc
         {
             get { return this.m_enabledDateUtc; }
         }
 
-        /// <summary>
-        /// The message from the first error that trigged this error handler.
-        /// </summary>
+        /// <summary>The message from the first error that trigged this error handler.</summary>
         public string ErrorMessage
         {
             get { return this.m_message; }
         }
 
-        /// <summary>
-        /// The exception from the first error that trigged this error handler.
-        /// </summary>
+        /// <summary>The exception from the first error that trigged this error handler.</summary>
         /// <remarks>
         /// May be <see langword="null" />.
         /// </remarks>
@@ -211,9 +187,7 @@ namespace log4net.Util
             get { return this.m_exception; }
         }
 
-        /// <summary>
-        /// The error code from the first error that trigged this error handler.
-        /// </summary>
+        /// <summary>The error code from the first error that trigged this error handler.</summary>
         /// <remarks>
         /// Defaults to <see cref="log4net.Core.ErrorCode.GenericFailure"/>
         /// </remarks>
@@ -222,39 +196,25 @@ namespace log4net.Util
             get { return this.m_errorCode; }
         }
 
-        /// <summary>
-        /// The UTC date the error was recorded.
-        /// </summary>
+        /// <summary>The UTC date the error was recorded.</summary>
         private DateTime m_enabledDateUtc;
 
-        /// <summary>
-        /// Flag to indicate if it is the first error
-        /// </summary>
+        /// <summary>Flag to indicate if it is the first error</summary>
         private bool m_firstTime = true;
 
-        /// <summary>
-        /// The message recorded during the first error.
-        /// </summary>
+        /// <summary>The message recorded during the first error.</summary>
         private string m_message = null;
 
-        /// <summary>
-        /// The exception recorded during the first error.
-        /// </summary>
+        /// <summary>The exception recorded during the first error.</summary>
         private Exception m_exception = null;
 
-        /// <summary>
-        /// The error code recorded during the first error.
-        /// </summary>
+        /// <summary>The error code recorded during the first error.</summary>
         private ErrorCode m_errorCode = ErrorCode.GenericFailure;
 
-        /// <summary>
-        /// String to prefix each message with
-        /// </summary>
+        /// <summary>String to prefix each message with</summary>
         private readonly string m_prefix;
 
-        /// <summary>
-        /// The fully qualified type of the OnlyOnceErrorHandler class.
-        /// </summary>
+        /// <summary>The fully qualified type of the OnlyOnceErrorHandler class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

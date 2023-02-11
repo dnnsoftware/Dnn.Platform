@@ -25,9 +25,7 @@ using System.Runtime.Serialization;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Exception base type for log4net.
-    /// </summary>
+    /// <summary>Exception base type for log4net.</summary>
     /// <remarks>
     /// <para>
     /// This type extends <see cref="ApplicationException"/>. It
@@ -46,9 +44,7 @@ namespace log4net.Core
     public class LogException : ApplicationException 
 #endif
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="LogException" /> class.
@@ -58,9 +54,7 @@ namespace log4net.Core
         {
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="message">A message to include with the exception.</param>
         /// <remarks>
         /// <para>
@@ -72,9 +66,7 @@ namespace log4net.Core
         {
         }
         
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="message">A message to include with the exception.</param>
         /// <param name="innerException">A nested exception to include.</param>
         /// <remarks>
@@ -88,9 +80,7 @@ namespace log4net.Core
         }
 
 #if !NETCF && !NETSTANDARD1_3
-        /// <summary>
-        /// Serialization constructor
-        /// </summary>
+        /// <summary>Serialization constructor</summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
         /// <remarks>

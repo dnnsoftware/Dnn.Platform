@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
     using DotNetNuke.Data;
 
-    /// <summary>
-    /// DatabaseProvider implements the OutputCachingProvider for database storage.
-    /// </summary>
+    /// <summary>DatabaseProvider implements the OutputCachingProvider for database storage.</summary>
     public class DatabaseProvider : OutputCachingProvider
     {
         /// <inheritdoc/>

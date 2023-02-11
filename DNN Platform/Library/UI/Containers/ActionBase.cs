@@ -14,17 +14,13 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>
-    /// ActionBase is an abstract base control for Action objects that inherit from UserControl.
-    /// </summary>
+    /// <summary>ActionBase is an abstract base control for Action objects that inherit from UserControl.</summary>
     /// <remarks>
     /// ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
-        /// <summary>
-        /// Defines if the action supports icons.
-        /// </summary>
+        /// <summary>Defines if the action supports icons.</summary>
         [Obsolete("Deprecates in v9.8.1, sheduled removal in v11.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
@@ -42,9 +38,7 @@ namespace DotNetNuke.UI.Containers
         /// <inheritdoc/>
         public event ActionEventHandler Action;
 
-        /// <summary>
-        /// Gets a value indicating whether the page is in edit mode.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the page is in edit mode.</summary>
         public bool EditMode
         {
             get
@@ -53,9 +47,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the action supports icons.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the action supports icons.</summary>
         public bool SupportsIcons
         {
             get
@@ -64,9 +56,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
+        /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>
         public ActionManager ActionManager
         {
@@ -81,15 +71,11 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control.
-        /// </summary>
+        /// <summary>Gets or sets the ModuleControl instance for this Action control.</summary>
         /// <returns>An IModuleControl object.</returns>
         public IModuleControl ModuleControl { get; set; }
 
-        /// <summary>
-        /// Gets the Actions Collection.
-        /// </summary>
+        /// <summary>Gets the Actions Collection.</summary>
         /// <returns>A ModuleActionCollection.</returns>
         protected ModuleActionCollection Actions
         {
@@ -99,9 +85,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets the ActionRoot.
-        /// </summary>
+        /// <summary>Gets the ActionRoot.</summary>
         /// <returns>A ModuleActionCollection.</returns>
         protected ModuleAction ActionRoot
         {
@@ -116,9 +100,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets the ModuleContext.
-        /// </summary>
+        /// <summary>Gets the ModuleContext.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
         protected ModuleInstanceContext ModuleContext
         {
@@ -128,9 +110,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets the PortalSettings.
-        /// </summary>
+        /// <summary>Gets the PortalSettings.</summary>
         /// <returns>A PortalSettings object.</returns>
         protected PortalSettings PortalSettings
         {
@@ -140,9 +120,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// DisplayControl determines whether the control should be displayed.
-        /// </summary>
+        /// <summary>DisplayControl determines whether the control should be displayed.</summary>
         /// <param name="objNodes">A collection of Dnn nodes, <see cref="DNNNodeCollection"/>.</param>
         /// <returns>A value indicating whether the control should be displayed.</returns>
         protected bool DisplayControl(DNNNodeCollection objNodes)
@@ -150,9 +128,7 @@ namespace DotNetNuke.UI.Containers
             return this.ActionManager.DisplayControl(objNodes);
         }
 
-        /// <summary>
-        /// OnAction raises the Action Event for this control.
-        /// </summary>
+        /// <summary>OnAction raises the Action Event for this control.</summary>
         /// <param name="e">The action event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
@@ -162,9 +138,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// ProcessAction processes the action event.
-        /// </summary>
+        /// <summary>ProcessAction processes the action event.</summary>
         /// <param name="actionID">The id of the action.</param>
         protected void ProcessAction(string actionID)
         {
@@ -182,9 +156,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the class is loaded.
-        /// </summary>
+        /// <summary>Page_Load runs when the class is loaded.</summary>
         /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {

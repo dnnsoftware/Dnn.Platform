@@ -18,17 +18,13 @@ namespace DotNetNuke.Modules.Html
     ///   The Settings ModuleSettingsBase is used to manage the
     ///   settings for the HTML Module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Settings : ModuleSettingsBase
     {
-        private HtmlModuleSettings moduleSettings;
-
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Settings"/> class.
-        /// </summary>
+        private HtmlModuleSettings moduleSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
         public Settings()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -42,11 +38,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   LoadSettings loads the settings from the Database and displays them.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>  LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
         {
             try
@@ -95,9 +87,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   UpdateSettings saves the modified settings to the Database.
-        /// </summary>
+        /// <summary>  UpdateSettings saves the modified settings to the Database.</summary>
         public override void UpdateSettings()
         {
             try

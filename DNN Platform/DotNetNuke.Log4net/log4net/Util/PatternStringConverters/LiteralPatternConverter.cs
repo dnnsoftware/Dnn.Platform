@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Util.PatternStringConverters
 {
-    /// <summary>
-    /// Pattern converter for literal string instances in the pattern
-    /// </summary>
+    /// <summary>Pattern converter for literal string instances in the pattern</summary>
     /// <remarks>
     /// <para>
     /// Writes the literal string value specified in the 
@@ -39,9 +37,7 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal class LiteralPatternConverter : PatternConverter 
     {
-        /// <summary>
-        /// Set the next converter in the chain
-        /// </summary>
+        /// <summary>Set the next converter in the chain</summary>
         /// <param name="pc">The next pattern converter in the chain</param>
         /// <returns>The next pattern converter</returns>
         /// <remarks>
@@ -70,9 +66,7 @@ namespace log4net.Util.PatternStringConverters
             return base.SetNext(pc);
         }
 
-        /// <summary>
-        /// Write the literal to the output
-        /// </summary>
+        /// <summary>Write the literal to the output</summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="state">null, not set</param>
         /// <remarks>
@@ -90,9 +84,7 @@ namespace log4net.Util.PatternStringConverters
             writer.Write(this.Option);
         }
 
-        /// <summary>
-        /// Convert this pattern into the rendered message
-        /// </summary>
+        /// <summary>Convert this pattern into the rendered message</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="state">null, not set</param>
         /// <remarks>

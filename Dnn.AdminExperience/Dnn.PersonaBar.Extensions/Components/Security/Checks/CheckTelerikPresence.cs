@@ -24,17 +24,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         private readonly ITelerikUtils telerikUtils;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.</summary>
         public CheckTelerikPresence()
             : this(Globals.DependencyProvider.GetRequiredService<ITelerikUtils>())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.</summary>
         /// <param name="telerikUtils">
         /// An instance of the <see cref="ITelerikUtils"/> interface.
         /// </param>

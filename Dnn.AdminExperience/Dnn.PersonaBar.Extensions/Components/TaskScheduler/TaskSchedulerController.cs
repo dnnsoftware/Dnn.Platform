@@ -86,9 +86,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", this.LocalResourcesFile));
         }
 
-        public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement,
-            int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled,
-            bool enabled, string objectDependencies, string scheduleStartDate, string servers)
+        public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string scheduleStartDate, string servers)
         {
             var scheduleItem = new ScheduleItem();
             scheduleItem.TypeFullName = typeFullName;
@@ -161,9 +159,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             }
         }
 
-        /// <summary>
-        /// Gets a list of servers to be recommended for a particular scheduler.
-        /// </summary>
+        /// <summary>Gets a list of servers to be recommended for a particular scheduler.</summary>
         /// <param name="schedulerId">Scheduler Id.</param>
         /// <returns>List of recommended servers for specified <paramref name="schedulerId"/>.</returns>
         public IEnumerable<string> GetRecommendedServers(int schedulerId)

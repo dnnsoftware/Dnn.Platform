@@ -40,17 +40,6 @@ namespace DotNetNuke.Framework
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Class    : CDefault
-    ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
@@ -72,16 +61,10 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
-        /// </summary>
+        /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
         /// <value>
         /// Property to allow the programmatic assigning of ScrollTop position.
         /// </value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public int PageScrollTop
         {
             get
@@ -171,10 +154,7 @@ namespace DotNetNuke.Framework
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Contains the functionality to populate the Root aspx page with controls.
-        /// </summary>
+        /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
         /// <param name="e"></param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
@@ -182,7 +162,6 @@ namespace DotNetNuke.Framework
         /// - initialise reference paths to load the cascading style sheets
         /// - add skin control placeholder.  This holds all the modules and content of the page.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -224,8 +203,11 @@ namespace DotNetNuke.Framework
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, heading, message,
-                                                 ModuleMessage.ModuleMessageType.YellowWarning);
+                    UI.Skins.Skin.AddPageMessage(
+                        ctlSkin,
+                        heading,
+                        message,
+                        ModuleMessage.ModuleMessageType.YellowWarning);
                 }
                 else
                 {
@@ -244,8 +226,9 @@ namespace DotNetNuke.Framework
             if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
             {
                 string primaryHttpAlias = null;
-                if (Config.GetFriendlyUrlProvider() == "advanced") // advanced mode compares on the primary alias as set during alias identification
+                if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
+                    // advanced mode compares on the primary alias as set during alias identification
                     if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
                     {
                         if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
@@ -254,16 +237,18 @@ namespace DotNetNuke.Framework
                         }
                     }
                 }
-                else // other modes just depend on the default alias
+                else
                 {
+                    // other modes just depend on the default alias
                     if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
                     {
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                     }
                 }
 
-                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl))
                 {
+                    // a primary http alias was identified
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
                     this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
 
@@ -305,14 +290,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
-        /// </summary>
+        /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
         /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -389,7 +368,6 @@ namespace DotNetNuke.Framework
             base.Render(writer);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///
         /// </summary>
@@ -402,7 +380,6 @@ namespace DotNetNuke.Framework
         /// - set the background image if there is one selected
         /// - set META tags, copyright, keywords and description.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
             // There could be a pending installation/upgrade process
@@ -509,8 +486,10 @@ namespace DotNetNuke.Framework
                         default:
                             control.LocalResourceFile = string.Concat(
                                 slaveModule.ModuleControl.ControlSrc.Replace(
-                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
-                                Localization.LocalResourceDirectory, "/",
+                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc),
+                                    string.Empty),
+                                Localization.LocalResourceDirectory,
+                                "/",
                                 Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                             break;
                     }
@@ -630,8 +609,8 @@ namespace DotNetNuke.Framework
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
-                string versionString = string.Format(" ({0} Version: {1})", DotNetNukeContext.Current.Application.Status,
-                                                     DotNetNukeContext.Current.Application.Version);
+                string versionString =
+                    $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
                 this.Title += versionString;
             }
 
@@ -666,14 +645,11 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         private void SetSkinDoctype()
         {
             string strLang = CultureInfo.CurrentCulture.ToString();

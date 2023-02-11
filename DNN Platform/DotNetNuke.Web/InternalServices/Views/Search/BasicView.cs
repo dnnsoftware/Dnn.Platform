@@ -5,47 +5,31 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Detailed Search Result View.
-    /// </summary>
+    /// <summary>Detailed Search Result View.</summary>
     public class BasicView
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasicView"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasicView"/> class.</summary>
         public BasicView()
         {
             this.Attributes = new Dictionary<string, string>();
         }
 
-        /// <summary>
-        /// Gets or sets document's Title.
-        /// </summary>
+        /// <summary>Gets or sets document's Title.</summary>
         public string Title { get; set; }
 
-        /// <summary>
-        /// Gets or sets highlighted snippet from document.
-        /// </summary>
+        /// <summary>Gets or sets highlighted snippet from document.</summary>
         public string Snippet { get; set; }
 
-        /// <summary>
-        /// Gets or sets description from document.
-        /// </summary>
+        /// <summary>Gets or sets description from document.</summary>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets link to the Document.
-        /// </summary>
+        /// <summary>Gets or sets link to the Document.</summary>
         public string DocumentUrl { get; set; }
 
-        /// <summary>
-        /// Gets or sets display Name of the Document Type.
-        /// </summary>
+        /// <summary>Gets or sets display Name of the Document Type.</summary>
         public string DocumentTypeName { get; set; }
 
-        /// <summary>
-        /// Gets or sets custom Attributes of the document.
-        /// </summary>
+        /// <summary>Gets or sets custom Attributes of the document.</summary>
         public IDictionary<string, string> Attributes { get; set; }
     }
 }

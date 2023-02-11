@@ -11,16 +11,12 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : TreeViewMenu
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// TreeViewMenu is a Skin Object that creates a Menu using the DNN Treeview Control
     /// to provide a Windows Explore like Menu.
     /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class TreeViewMenu : NavObjectBase
     {
         private const string MyFileName = "TreeViewMenu.ascx";
@@ -315,15 +311,11 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Page_Load server event handler on this user control is used
         /// to populate the tree with the Pages.
         /// </summary>
         /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -417,13 +409,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The BuildTree helper method is used to build the tree.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The BuildTree helper method is used to build the tree.</summary>
         private void BuildTree(DNNNode objNode, bool blnPODRequest)
         {
             bool blnAddUpNode = false;
@@ -466,8 +452,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 objNodes.InsertBefore(0, objParentNode);
             }
 
-            foreach (DNNNode objPNode in objNodes) // clean up to do in processnodes???
+            foreach (DNNNode objPNode in objNodes)
             {
+                // clean up to do in processnodes???
                 this.ProcessNodes(objPNode);
             }
 
@@ -480,8 +467,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (objTree.SelectedTreeNodes.Count > 0)
                 {
                     var objTNode = (TreeNode)objTree.SelectedTreeNodes[1];
-                    if (objTNode.DNNNodes.Count > 0) // only expand it if nodes are not pending
+                    if (objTNode.DNNNodes.Count > 0)
                     {
+                        // only expand it if nodes are not pending
                         objTNode.Expand();
                     }
                 }
@@ -493,8 +481,9 @@ namespace DotNetNuke.UI.Skins.Controls
             if (!string.IsNullOrEmpty(objParent.Image))
             {
             }
-            else if (objParent.HasNodes) // imagepath applied in provider...
+            else if (objParent.HasNodes)
             {
+                // imagepath applied in provider...
                 objParent.Image = this.ResolveUrl(this.NodeClosedImage);
             }
             else
@@ -508,13 +497,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets common properties on DNNTree control.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Sets common properties on DNNTree control.</summary>
         private void InitializeTree()
         {
             if (string.IsNullOrEmpty(this.PathImage))
@@ -578,7 +561,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DNNTree_NodeClick server event handler on this user control runs when a
         /// Node (Page) in the TreeView is clicked.
@@ -586,7 +568,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <remarks>The event only fires when the Node contains child nodes, as leaf nodes
         /// have their NavigateUrl Property set.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void DNNTree_NodeClick(NavigationEventArgs args)
         {
             if (args.Node == null)

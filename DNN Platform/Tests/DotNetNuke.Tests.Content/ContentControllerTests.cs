@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Content
     using System.Collections.Specialized;
     using System.Linq;
     using System.Web;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -31,9 +32,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ContentItemTests.
-    /// </summary>
+    /// <summary>  Summary description for ContentItemTests.</summary>
     [TestFixture]
     public class ContentControllerTests
     {

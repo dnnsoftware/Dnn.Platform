@@ -26,17 +26,7 @@ namespace DotNetNuke.Services.Sitemap
 
         private bool useLevelBasedPagePriority;
 
-        /// <summary>
-        ///   Includes page urls on the sitemap.
-        /// </summary>
-        /// <remarks>
-        ///   Pages that are included:
-        ///   - are not deleted
-        ///   - are not disabled
-        ///   - are normal pages (not links,...)
-        ///   - are visible (based on date and permissions).
-        /// </remarks>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
         {
             SitemapUrl pageUrl = null;
@@ -80,10 +70,14 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(new Exception(Localization.GetExceptionMessage(
-                        "SitemapUrlGenerationError",
-                        "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
-                        tab.TabID, tab.TabName, ex.Message)));
+                    Services.Exceptions.Exceptions.LogException(
+                        new Exception(
+                            Localization.GetExceptionMessage(
+                                "SitemapUrlGenerationError",
+                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+                                tab.TabID,
+                                tab.TabName,
+                                ex.Message)));
                 }
             }
 
@@ -134,10 +128,8 @@ namespace DotNetNuke.Services.Sitemap
         ///   the hierarchy level of the page.
         ///   Top level pages will have a value of 1, second level 0.9, third level 0.8, ...
         /// </summary>
-        /// <param name = "objTab">The page being indexed.</param>
+        /// <param name="objTab">The page being indexed.</param>
         /// <returns>The priority assigned to the page.</returns>
-        /// <remarks>
-        /// </remarks>
         protected float GetPriority(TabInfo objTab)
         {
             float priority = objTab.SiteMapPriority;
@@ -162,14 +154,10 @@ namespace DotNetNuke.Services.Sitemap
             return priority;
         }
 
-        /// <summary>
-        ///   Return the sitemap url node for the page.
-        /// </summary>
-        /// <param name = "objTab">The page being indexed.</param>
+        /// <summary>Return the sitemap url node for the page.</summary>
+        /// <param name="objTab">The page being indexed.</param>
         /// <param name="language">Culture code to use in the URL.</param>
         /// <returns>A SitemapUrl object for the current page.</returns>
-        /// <remarks>
-        /// </remarks>
         private SitemapUrl GetPageUrl(TabInfo objTab, string language, PortalSettings ps)
         {
             var pageUrl = new SitemapUrl();

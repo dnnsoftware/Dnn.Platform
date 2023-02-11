@@ -13,18 +13,14 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Implements the AddScript view logic.
-    /// </summary>
+    /// <summary>Implements the AddScript view logic.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddScript"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AddScript"/> class.</summary>
         public AddScript()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -54,9 +50,7 @@ namespace DotNetNuke.Modules.RazorHost
             this.DisplayExtension();
         }
 
-        /// <summary>
-        /// Cancel button click event handler.
-        /// </summary>
+        /// <summary>Cancel button click event handler.</summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event arguments.</param>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -72,9 +66,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
-        /// <summary>
-        /// Add button event handler.
-        /// </summary>
+        /// <summary>Add button event handler.</summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event arguments.</param>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]

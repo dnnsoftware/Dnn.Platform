@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Upgrade
 
     using DotNetNuke.Services.Upgrade.Internals;
 
-    /// <summary>
-    /// This class is used to write log into separate installer log file.
-    /// </summary>
+    /// <summary>This class is used to write log into separate installer log file.</summary>
     internal class DnnInstallLogger
     {
         private static StackFrame CallingFrame

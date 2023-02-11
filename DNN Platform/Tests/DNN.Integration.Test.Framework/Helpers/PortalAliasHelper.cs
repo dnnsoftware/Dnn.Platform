@@ -11,7 +11,6 @@ namespace DNN.Integration.Test.Framework.Helpers
 
     public class PortalAliasHelper
     {
-
         public static PortalAliasInfo GetPrimaryPortalAlias(int portalId = 0)
         {
             return DatabaseHelper.ExecuteStoredProcedure<PortalAliasInfo>("GetPortalAliases").First(p => p.PortalID == portalId && p.IsPrimary);

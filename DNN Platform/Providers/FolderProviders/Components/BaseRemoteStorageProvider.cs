@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Providers.FolderProviders.Components
 {
     using System;
@@ -18,9 +17,9 @@ namespace DotNetNuke.Providers.FolderProviders.Components
     using DotNetNuke.Security;
     using DotNetNuke.Services.FileSystem;
 
+    /// <inheritdoc />
     public abstract class BaseRemoteStorageProvider : FolderProvider
     {
-
         private readonly string encryptionKey = Host.GUID;
         private readonly PortalSecurity portalSecurity = PortalSecurity.Instance;
 
@@ -67,17 +66,13 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             get { return 300; }
         }
 
-        /// <summary>
-        /// Adds a new folder.
-        /// </summary>
+        /// <inheritdoc />
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
         {
             this.AddFolder(folderPath, folderMapping, folderPath);
         }
 
-        /// <summary>
-        /// Adds a new file to the specified folder.
-        /// </summary>
+        /// <inheritdoc />
         public override void AddFile(IFolderInfo folder, string fileName, Stream content)
         {
             Requires.NotNull("folder", folder);
@@ -96,9 +91,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             DataCache.ClearCache(string.Format(this.ObjectCacheKey, folderMappingId, string.Empty));
         }
 
-        /// <summary>
-        /// Copies the specified file to the destination folder.
-        /// </summary>
+        /// <inheritdoc />
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
@@ -114,9 +107,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.CopyFileInternal(folderMapping, folderPath + fileName, newFolderPath + fileName);
         }
 
-        /// <summary>
-        /// Deletes the specified file.
-        /// </summary>
+        /// <inheritdoc />
         public override void DeleteFile(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -128,9 +119,8 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.DeleteFileInternal(folderMapping, folder.MappedPath + file.FileName);
         }
 
-        /// <remarks>
-        /// Azure Storage doesn't support folders, but we need to delete the file added while creating the folder.
-        /// </remarks>
+        /// <remarks>Azure Storage doesn't support folders, but we need to delete the file added while creating the folder.</remarks>
+        /// <inheritdoc />
         public override void DeleteFolder(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -140,10 +130,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.DeleteFolderInternal(folderMapping, folder);
         }
 
-        /// <summary>
-        /// Checks the existence of the specified file.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -154,10 +141,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return item != null;
         }
 
-        /// <summary>
-        /// Checks the existence of the specified folder.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
@@ -174,19 +158,14 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return list.Any(o => o.Key.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        /// <remarks>
-        /// Amazon doesn't support file attributes.
-        /// </remarks>
-        /// <returns></returns>
+        /// <remarks>Amazon doesn't support file attributes.</remarks>
+        /// <inheritdoc />
         public override FileAttributes? GetFileAttributes(IFileInfo file)
         {
             return null;
         }
 
-        /// <summary>
-        /// Gets the list of file names contained in the specified folder.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string[] GetFiles(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -208,10 +187,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                     select Path.GetFileName(f)).ToArray();
         }
 
-        /// <summary>
-        /// Gets the file length.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override long GetFileSize(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -228,10 +204,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return item.Size;
         }
 
-        /// <summary>
-        ///   Gets a file Stream of the specified file.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override Stream GetFileStream(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -243,10 +216,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return this.GetFileStreamInternal(folderMapping, folder.MappedPath + file.FileName);
         }
 
-        /// <summary>
-        /// Gets a file Stream of the specified file.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override Stream GetFileStream(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -257,10 +227,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return this.GetFileStreamInternal(folderMapping, folder.MappedPath + fileName);
         }
 
-        /// <summary>
-        /// Gets the time when the specified file was last modified.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override DateTime GetLastModificationTime(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -277,10 +244,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return item.LastModified;
         }
 
-        /// <summary>
-        /// Gets the list of subfolders for the specified folder.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
@@ -312,21 +276,14 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             // return mylist;
         }
 
-        /// <summary>
-        /// Indicates if the specified file is synchronized.
-        /// </summary>
-        /// <remarks>
-        /// For now, it returns false always until we find a better way to check if the file is synchronized.
-        /// </remarks>
-        /// <returns></returns>
+        /// <remarks>For now, it returns false always until we find a better way to check if the file is synchronized.</remarks>
+        /// <inheritdoc />
         public override bool IsInSync(IFileInfo file)
         {
             return Convert.ToInt32((file.LastModificationTime - this.GetLastModificationTime(file)).TotalSeconds) == 0;
         }
 
-        /// <summary>
-        /// Moves the folder and files at the specified folder path to the new folder path.
-        /// </summary>
+        /// <inheritdoc />
         public override void MoveFolder(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNullOrEmpty("folderPath", folderPath);
@@ -336,9 +293,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.MoveFolderInternal(folderMapping, folderPath, newFolderPath);
         }
 
-        /// <summary>
-        /// Renames the specified file using the new filename.
-        /// </summary>
+        /// <inheritdoc />
         public override void RenameFile(IFileInfo file, string newFileName)
         {
             Requires.NotNull("file", file);
@@ -351,9 +306,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.MoveFileInternal(folderMapping, folder.MappedPath + file.FileName, folder.MappedPath + newFileName);
         }
 
-        /// <summary>
-        /// Renames the specified folder using the new foldername.
-        /// </summary>
+        /// <inheritdoc />
         public override void RenameFolder(IFolderInfo folder, string newFolderName)
         {
             Requires.NotNull("folder", folder);
@@ -372,25 +325,20 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             }
         }
 
-        /// <remarks>
-        /// No implementation needed because this provider doesn't support FileAttributes.
-        /// </remarks>
+        /// <remarks>No implementation needed because this provider doesn't support <see cref="FileAttributes"/>.</remarks>
+        /// <inheritdoc />
         public override void SetFileAttributes(IFileInfo file, FileAttributes fileAttributes)
         {
         }
 
-        /// <remarks>
-        /// Amazon doesn't support file attributes.
-        /// </remarks>
-        /// <returns></returns>
+        /// <remarks>Amazon doesn't support file attributes.</remarks>
+        /// <inheritdoc />
         public override bool SupportsFileAttributes()
         {
             return false;
         }
 
-        /// <summary>
-        /// Updates the content of the specified file. It creates it if it doesn't exist.
-        /// </summary>
+        /// <inheritdoc />
         public override void UpdateFile(IFileInfo file, Stream content)
         {
             Requires.NotNull("file", file);
@@ -403,9 +351,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.UpdateFileInternal(content, folderMapping, folder.MappedPath + file.FileName);
         }
 
-        /// <summary>
-        /// Updates the content of the specified file. It creates it if it doesn't exist.
-        /// </summary>
+        /// <inheritdoc />
         public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
         {
             Requires.NotNull("folder", folder);

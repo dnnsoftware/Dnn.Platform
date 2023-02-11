@@ -42,9 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Use container to add custom control hierarchy to.
-        /// </summary>
+        /// <summary>Use container to add custom control hierarchy to.</summary>
         /// <param name="container"></param>
         /// <returns>An "input" control that can be used for attaching validators.</returns>
         protected override WebControl CreateControlInternal(Control container)
@@ -92,9 +90,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var options = new DnnPaswordStrengthOptions();
             var optionsAsJsonString = Json.Serialize(options);
-            var script = string.Format(
-                "dnn.initializePasswordStrength('.{0}', {1});{2}",
-                this.TextBoxCssClass, optionsAsJsonString, Environment.NewLine);
+            var script =
+                $"dnn.initializePasswordStrength('.{this.TextBoxCssClass}', {optionsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

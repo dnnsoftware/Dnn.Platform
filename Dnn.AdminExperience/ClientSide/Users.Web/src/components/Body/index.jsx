@@ -93,7 +93,7 @@ class Body extends Component {
     }
 
     toggleCreateBox() {
-        this.userTable.wrappedInstance.onAddUser();
+        this.userTable.current.onAddUser();
     }
     canAddUser()
     {
@@ -119,7 +119,7 @@ class Body extends Component {
                     }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
-                    <UserTable ref={(node) => this.userTable = node} appSettings={appSettings} filter={state.searchParameters.filter} 
+                    <UserTable ref={this.userTable} appSettings={appSettings} filter={state.searchParameters.filter} 
                         changeSortOrder={(c, a) => this.onSortChanged(c, a)} currentSortAscending={state.searchParameters.sortAscending} currentSortColumn={state.searchParameters.sortColumn} />
                     {
                         <div className="users-paging">

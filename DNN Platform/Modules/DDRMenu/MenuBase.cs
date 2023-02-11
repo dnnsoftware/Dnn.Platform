@@ -25,9 +25,7 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
-    /// <summary>
-    /// Base class for multiple DDR Menu classes.
-    /// </summary>
+    /// <summary>Base class for multiple DDR Menu classes.</summary>
     public class MenuBase
     {
         private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
@@ -43,14 +41,10 @@ namespace DotNetNuke.Web.DDRMenu
 
         private PortalSettings hostPortalSettings;
 
-        /// <summary>
-        /// Gets or sets the template definition.
-        /// </summary>
+        /// <summary>Gets or sets the template definition.</summary>
         public TemplateDefinition TemplateDef { get; set; }
 
-        /// <summary>
-        /// Gets the portal settings for the current portal.
-        /// </summary>
+        /// <summary>Gets the portal settings for the current portal.</summary>
         // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
         [Obsolete("Deprecated in Dnn 9.8.1, scheduled removal in v11.")]
         internal PortalSettings HostPortalSettings
@@ -58,14 +52,10 @@ namespace DotNetNuke.Web.DDRMenu
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
         }
 
-        /// <summary>
-        /// Gets or sets the root node.
-        /// </summary>
+        /// <summary>Gets or sets the root node.</summary>
         internal MenuNode RootNode { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to skip localization.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to skip localization.</summary>
         internal bool SkipLocalisation { get; set; }
 
         private HttpContext CurrentContext
@@ -73,9 +63,7 @@ namespace DotNetNuke.Web.DDRMenu
             get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
         }
 
-        /// <summary>
-        /// Instantiates the MenuBase.
-        /// </summary>
+        /// <summary>Instantiates the MenuBase.</summary>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
         public static MenuBase Instantiate(string menuStyle)
@@ -91,18 +79,14 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <summary>
-        /// Applies the provided settings.
-        /// </summary>
+        /// <summary>Applies the provided settings.</summary>
         /// <param name="settings">The settings to apply.</param>
         internal void ApplySettings(Settings settings)
         {
             this.menuSettings = settings;
         }
 
-        /// <summary>
-        /// Runs menu initialization logic that should be done before rendering the menu.
-        /// </summary>
+        /// <summary>Runs menu initialization logic that should be done before rendering the menu.</summary>
         internal virtual void PreRender()
         {
             this.TemplateDef.AddTemplateArguments(this.menuSettings.TemplateArguments, true);
@@ -154,9 +138,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.PreRender();
         }
 
-        /// <summary>
-        /// Renders the menu.
-        /// </summary>
+        /// <summary>Renders the menu.</summary>
         /// <param name="htmlWriter">The html writer to which to render the menu.</param>
         internal void Render(HtmlTextWriter htmlWriter)
         {
@@ -177,9 +159,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
         }
 
-        /// <summary>
-        /// Gets the physical path from a virtual path.
-        /// </summary>
+        /// <summary>Gets the physical path from a virtual path.</summary>
         /// <param name="path">The virtual path to map.</param>
         /// <returns>The full physical path to the file.</returns>
         protected string MapPath(string path)

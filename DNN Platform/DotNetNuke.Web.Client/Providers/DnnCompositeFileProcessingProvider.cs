@@ -11,9 +11,7 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.CompositeFiles;
     using ClientDependency.Core.CompositeFiles.Providers;
 
-    /// <summary>
-    /// A provider for combining, minifying, compressing and saving composite scripts/css files.
-    /// </summary>
+    /// <summary>A provider for combining, minifying, compressing and saving composite scripts/css files.</summary>
     public class DnnCompositeFileProcessingProvider : CompositeFileProcessingProvider
     {
         private readonly ClientResourceSettings clientResourceSettings = new ClientResourceSettings();

@@ -6,12 +6,9 @@ namespace Dnn.PersonaBar.Library
 {
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// The base class for persona bar api.
-    /// </summary>
+    /// <summary>The base class for persona bar api.</summary>
     public abstract class PersonaBarApiController : DnnApiController
     {
-
         public int PortalId => this.PortalSettings.PortalId;
     }
 }

@@ -16,9 +16,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public class ModuleSettingsPresenter : ModuleSettingsPresenter<ISettingsView<MemberDirectorySettingsModel>, MemberDirectorySettingsModel>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleSettingsPresenter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPresenter"/> class.</summary>
         /// <param name="view"></param>
         public ModuleSettingsPresenter(ISettingsView<MemberDirectorySettingsModel> view)
             : base(view)

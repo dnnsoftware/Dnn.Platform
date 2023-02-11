@@ -4,24 +4,16 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Step to install packages.
-    /// </summary>
+    /// <summary>Step to install packages.</summary>
     internal interface IInstallAvailablePackageStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the package file name pattern.
-        /// </summary>
+        /// <summary>Gets or sets the package file name pattern.</summary>
         string PackageFileNamePattern { get; set; }
 
-        /// <summary>
-        /// Gets or sets the package name.
-        /// </summary>
+        /// <summary>Gets or sets the package name.</summary>
         string PackageName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the package type.
-        /// </summary>
+        /// <summary>Gets or sets the package type.</summary>
         string PackageType { get; set; }
     }
 }

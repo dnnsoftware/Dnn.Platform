@@ -6,9 +6,7 @@ namespace DotNetNuke.Maintenance.Shims
 {
     using DotNetNuke.Services.Installer;
 
-    /// <summary>
-    /// An abstraction of the <see cref="Installer"/> class.
-    /// </summary>
+    /// <summary>An abstraction of the <see cref="Installer"/> class.</summary>
     internal interface IInstaller
     {
         /// <inheritdoc cref="Installer.UnInstall(bool)"/>

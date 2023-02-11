@@ -1,6 +1,6 @@
 {
   "name": "pages",
-  "version": "9.11.0",
+  "version": "9.11.1",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -24,7 +24,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.11.0",
+    "@dnnsoftware/dnn-react-common": "9.11.1",
     "@types/knockout": "^3.4.66",
     "@types/redux": "3.6.31",
     "babel-eslint": "^10.0.1",
@@ -52,7 +52,7 @@
     "lodash": "4.17.11",
     "raw-loader": "2.0.0",
     "react-custom-scrollbars": "4.2.1",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.14.0",
     "react-hot-loader": "4.8.5",
     "react-test-renderer": "^17.0.2",
     "react-widgets": "4.4.7",
@@ -70,7 +70,7 @@
     "dayjs": "^1.10.4",
     "promise": "^8.0.2",
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
+    "react": "^16.14.0",
     "react-day-picker": "^7.2.4",
     "url-parse": "^1.2.0"
   }

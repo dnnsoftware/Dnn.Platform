@@ -9,27 +9,20 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      SettingsEditorInfoAdapter
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SettingsEditorInfoAdapter control provides a factory for creating the
     /// appropriate EditInfo object.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SettingsEditorInfoAdapter : IEditorInfoAdapter
     {
         private readonly object dataMember;
         private readonly object dataSource;
         private string fieldName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.</summary>
         /// <param name="dataSource"></param>
         /// <param name="dataMember"></param>
         /// <param name="fieldName"></param>

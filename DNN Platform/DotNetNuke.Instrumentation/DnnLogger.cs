@@ -86,10 +86,8 @@ namespace DotNetNuke.Instrumentation
             return new DnnLogger(LogManager.GetLogger(name).Logger);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>DEBUG</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
+        /// <summary>  Logs a message object with the <c>DEBUG</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
         /// <remarks>
         ///   <para>
         ///     This method first checks if this logger is <c>DEBUG</c>
@@ -114,11 +112,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelDebug, message, null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>DEBUG</c> level.</summary>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -141,12 +137,10 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>DEBUG</c> level.</summary>
+        /// <param name="provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -164,10 +158,8 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelDebug, new SystemStringFormat(provider, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>INFO</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
+        /// <summary>  Logs a message object with the <c>INFO</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
         /// <remarks>
         ///   <para>
         ///     This method first checks if this logger is <c>INFO</c>
@@ -192,11 +184,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelInfo, message, null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>INFO</c> level.</summary>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -219,12 +209,10 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>INFO</c> level.</summary>
+        /// <param name="provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -242,10 +230,8 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelInfo, new SystemStringFormat(provider, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>WARN</c> level.
-        /// </summary>
-        /// <param name = "message">the message object to log.</param>
+        /// <summary>  Logs a message object with the <c>WARN</c> level.</summary>
+        /// <param name="message">the message object to log.</param>
         /// <remarks>
         ///   <para>
         ///     This method first checks if this logger is <c>WARN</c>
@@ -270,11 +256,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelWarn, message, null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>WARN</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
-        /// <param name = "exception">The exception to log, including its stack trace.</param>
+        /// <summary>  Logs a message object with the <c>WARN</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
+        /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
         ///   <para>
         ///     Logs a message object with the <c>WARN</c> level including
@@ -291,11 +275,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelWarn, message, exception);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>WARN</c> level.</summary>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -318,12 +300,10 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>WARN</c> level.</summary>
+        /// <param name="provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -341,10 +321,8 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelWarn, new SystemStringFormat(provider, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>ERROR</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
+        /// <summary>  Logs a message object with the <c>ERROR</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
         /// <remarks>
         ///   <para>
         ///     This method first checks if this logger is <c>ERROR</c>
@@ -369,11 +347,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelError, message, null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>ERROR</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
-        /// <param name = "exception">The exception to log, including its stack trace.</param>
+        /// <summary>  Logs a message object with the <c>ERROR</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
+        /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
         ///   <para>
         ///     Logs a message object with the <c>ERROR</c> level including
@@ -390,11 +366,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelError, message, exception);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>ERROR</c> level.</summary>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -417,12 +391,10 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>ERROR</c> level.</summary>
+        /// <param name="provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -440,10 +412,8 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelError, new SystemStringFormat(provider, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>FATAL</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
+        /// <summary>  Logs a message object with the <c>FATAL</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
         /// <remarks>
         ///   <para>
         ///     This method first checks if this logger is <c>FATAL</c>
@@ -468,11 +438,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelFatal, message, null);
         }
 
-        /// <summary>
-        ///   Logs a message object with the <c>FATAL</c> level.
-        /// </summary>
-        /// <param name = "message">The message object to log.</param>
-        /// <param name = "exception">The exception to log, including its stack trace.</param>
+        /// <summary>  Logs a message object with the <c>FATAL</c> level.</summary>
+        /// <param name="message">The message object to log.</param>
+        /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
         ///   <para>
         ///     Logs a message object with the <c>FATAL</c> level including
@@ -489,11 +457,9 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelFatal, message, exception);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>FATAL</c> level.</summary>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -516,12 +482,10 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
-        /// <summary>
-        ///   Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
-        /// <param name = "format">A String containing zero or more format items.</param>
-        /// <param name = "args">An Object array containing zero or more objects to format.</param>
+        /// <summary>  Logs a formatted message string with the <c>FATAL</c> level.</summary>
+        /// <param name="provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -619,10 +583,8 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this.stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
         }
 
-        /// <summary>
-        ///   Virtual method called when the configuration of the repository changes.
-        /// </summary>
-        /// <param name = "repository">the repository holding the levels.</param>
+        /// <summary>  Virtual method called when the configuration of the repository changes.</summary>
+        /// <param name="repository">the repository holding the levels.</param>
         private static void ReloadLevels(ILoggerRepository repository)
         {
             LevelMap levelMap = repository.LevelMap;

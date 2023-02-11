@@ -18,23 +18,15 @@ namespace DotNetNuke.Services.Installer
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The XmlMerge class is a utility class for XmlSplicing config files.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The XmlMerge class is a utility class for XmlSplicing config files.</summary>
     public class XmlMerge
     {
         private IDictionary<string, XmlDocument> pendingDocuments;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceFileName"></param>
-        /// -----------------------------------------------------------------------------
         public XmlMerge(string sourceFileName, string version, string sender)
         {
             this.Version = version;
@@ -43,14 +35,10 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig.Load(sourceFileName);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceStream"></param>
-        /// -----------------------------------------------------------------------------
         public XmlMerge(Stream sourceStream, string version, string sender)
         {
             this.Version = version;
@@ -59,14 +47,10 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig.Load(sourceStream);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceReader"></param>
-        /// -----------------------------------------------------------------------------
         public XmlMerge(TextReader sourceReader, string version, string sender)
         {
             this.Version = version;
@@ -75,14 +59,10 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig.Load(sourceReader);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceDoc"></param>
-        /// -----------------------------------------------------------------------------
         public XmlMerge(XmlDocument sourceDoc, string version, string sender)
         {
             this.Version = version;
@@ -103,61 +83,35 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Source for the Config file.
-        /// </summary>
+        /// <summary>Gets the Source for the Config file.</summary>
         /// <value>An XmlDocument.</value>
-        /// -----------------------------------------------------------------------------
         public XmlDocument SourceConfig { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Sender (source) of the changes to be merged.
-        /// </summary>
+        /// <summary>Gets the Sender (source) of the changes to be merged.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Sender { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Target Config file.
-        /// </summary>
+        /// <summary>Gets or sets the Target Config file.</summary>
         /// <value>An XmlDocument.</value>
-        /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the File Name of the Target Config file.
-        /// </summary>
+        /// <summary>Gets the File Name of the Target Config file.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string TargetFileName { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Version of the changes to be merged.
-        /// </summary>
+        /// <summary>Gets the Version of the changes to be merged.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Version { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether the last update performed by this instance resulted in any changes.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the last update performed by this instance resulted in any changes.</summary>
         /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document.</value>
-        /// -----------------------------------------------------------------------------
         public bool ConfigUpdateChangedNodes { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UpdateConfig method processes the source file and updates the Target
         /// Config Xml Document.
         /// </summary>
         /// <param name="target">An Xml Document represent the Target Xml File.</param>
-        /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target)
         {
             var changedAnyNodes = false;
@@ -170,14 +124,12 @@ namespace DotNetNuke.Services.Installer
             this.ConfigUpdateChangedNodes = changedAnyNodes;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UpdateConfig method processes the source file and updates the Target
         /// Config file.
         /// </summary>
         /// <param name="target">An Xml Document represent the Target Xml File.</param>
         /// <param name="fileName">The fileName for the Target Xml File - relative to the webroot.</param>
-        /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target, string fileName)
         {
             var changedAnyNodes = false;
@@ -191,12 +143,10 @@ namespace DotNetNuke.Services.Installer
             this.ConfigUpdateChangedNodes = changedAnyNodes;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UpdateConfigs method processes the source file and updates the various config
         /// files.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void UpdateConfigs()
         {
             this.UpdateConfigs(true);
@@ -297,7 +247,7 @@ namespace DotNetNuke.Services.Installer
         private bool InsertNode(XmlNode childRootNode, XmlNode actionNode, NodeInsertType mode)
         {
             XmlNode rootNode = childRootNode.ParentNode;
-            Debug.Assert(rootNode != null);
+            Debug.Assert(rootNode != null, "Root Node was null");
 
             var changedNode = false;
             foreach (XmlNode child in actionNode.ChildNodes)
@@ -468,7 +418,7 @@ namespace DotNetNuke.Services.Installer
 
         private XmlNode FindMatchingNode(XmlNode rootNode, XmlNode mergeNode, string pathAttributeName)
         {
-            Debug.Assert(mergeNode.Attributes != null);
+            Debug.Assert(mergeNode.Attributes != null, "Attributes collection was null");
 
             XmlNode matchingNode = null;
             if (mergeNode.Attributes[pathAttributeName] != null)

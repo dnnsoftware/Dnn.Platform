@@ -14,900 +14,700 @@ namespace DNNConnect.CKEditorProvider.Browser
     public partial class Browser
     {
 
-        /// <summary>
-        /// title control.
-        /// </summary>
+        /// <summary>title control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTitle title;
 
-        /// <summary>
-        /// favicon control.
-        /// </summary>
+        /// <summary>favicon control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder favicon;
 
-        /// <summary>
-        /// ClientDependencyHeadCss control.
-        /// </summary>
+        /// <summary>ClientDependencyHeadCss control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadCss;
 
-        /// <summary>
-        /// ClientDependencyHeadJs control.
-        /// </summary>
+        /// <summary>ClientDependencyHeadJs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadJs;
 
-        /// <summary>
-        /// fBrowser control.
-        /// </summary>
+        /// <summary>fBrowser control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm fBrowser;
 
-        /// <summary>
-        /// BodySCRIPTS control.
-        /// </summary>
+        /// <summary>BodySCRIPTS control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder BodySCRIPTS;
 
-        /// <summary>
-        /// scriptManager1 control.
-        /// </summary>
+        /// <summary>scriptManager1 control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager scriptManager1;
 
-        /// <summary>
-        /// lblModus control.
-        /// </summary>
+        /// <summary>lblModus control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblModus;
 
-        /// <summary>
-        /// BrowserMode control.
-        /// </summary>
+        /// <summary>BrowserMode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList BrowserMode;
 
-        /// <summary>
-        /// panPageMode control.
-        /// </summary>
+        /// <summary>panPageMode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panPageMode;
 
-        /// <summary>
-        /// lblChoosetab control.
-        /// </summary>
+        /// <summary>lblChoosetab control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChoosetab;
 
-        /// <summary>
-        /// dnntreeTabs control.
-        /// </summary>
+        /// <summary>dnntreeTabs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TreeView dnntreeTabs;
 
-        /// <summary>
-        /// ExtraTabOptions control.
-        /// </summary>
+        /// <summary>ExtraTabOptions control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ExtraTabOptions;
 
-        /// <summary>
-        /// chkHumanFriendy control.
-        /// </summary>
+        /// <summary>chkHumanFriendy control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkHumanFriendy;
 
-        /// <summary>
-        /// LabelAnchor control.
-        /// </summary>
+        /// <summary>LabelAnchor control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LabelAnchor;
 
-        /// <summary>
-        /// AnchorList control.
-        /// </summary>
+        /// <summary>AnchorList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList AnchorList;
 
-        /// <summary>
-        /// LanguageRow control.
-        /// </summary>
+        /// <summary>LanguageRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow LanguageRow;
 
-        /// <summary>
-        /// LabelTabLanguage control.
-        /// </summary>
+        /// <summary>LabelTabLanguage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LabelTabLanguage;
 
-        /// <summary>
-        /// LanguageList control.
-        /// </summary>
+        /// <summary>LanguageList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList LanguageList;
 
-        /// <summary>
-        /// panImageEdHead control.
-        /// </summary>
+        /// <summary>panImageEdHead control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panImageEdHead;
 
-        /// <summary>
-        /// lblResizeHeader control.
-        /// </summary>
+        /// <summary>lblResizeHeader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblResizeHeader;
 
-        /// <summary>
-        /// lblOtherTools control.
-        /// </summary>
+        /// <summary>lblOtherTools control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOtherTools;
 
-        /// <summary>
-        /// cmdCrop control.
-        /// </summary>
+        /// <summary>cmdCrop control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCrop;
 
-        /// <summary>
-        /// cmdZoom control.
-        /// </summary>
+        /// <summary>cmdZoom control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdZoom;
 
-        /// <summary>
-        /// cmdRotate control.
-        /// </summary>
+        /// <summary>cmdRotate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdRotate;
 
-        /// <summary>
-        /// cmdResize2 control.
-        /// </summary>
+        /// <summary>cmdResize2 control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdResize2;
 
-        /// <summary>
-        /// panThumb control.
-        /// </summary>
+        /// <summary>panThumb control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panThumb;
 
-        /// <summary>
-        /// lblWidth control.
-        /// </summary>
+        /// <summary>lblWidth control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblWidth;
 
-        /// <summary>
-        /// txtWidth control.
-        /// </summary>
+        /// <summary>txtWidth control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWidth;
 
-        /// <summary>
-        /// lblHeight control.
-        /// </summary>
+        /// <summary>lblHeight control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHeight;
 
-        /// <summary>
-        /// txtHeight control.
-        /// </summary>
+        /// <summary>txtHeight control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHeight;
 
-        /// <summary>
-        /// chkAspect control.
-        /// </summary>
+        /// <summary>chkAspect control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAspect;
 
-        /// <summary>
-        /// lblThumbName control.
-        /// </summary>
+        /// <summary>lblThumbName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblThumbName;
 
-        /// <summary>
-        /// txtThumbName control.
-        /// </summary>
+        /// <summary>txtThumbName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtThumbName;
 
-        /// <summary>
-        /// lblImgQuality control.
-        /// </summary>
+        /// <summary>lblImgQuality control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblImgQuality;
 
-        /// <summary>
-        /// dDlQuality control.
-        /// </summary>
+        /// <summary>dDlQuality control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dDlQuality;
 
-        /// <summary>
-        /// cmdResizeNow control.
-        /// </summary>
+        /// <summary>cmdResizeNow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdResizeNow;
 
-        /// <summary>
-        /// cmdResizeCancel control.
-        /// </summary>
+        /// <summary>cmdResizeCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdResizeCancel;
 
-        /// <summary>
-        /// panImageEditor control.
-        /// </summary>
+        /// <summary>panImageEditor control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panImageEditor;
 
-        /// <summary>
-        /// lblCropImageName control.
-        /// </summary>
+        /// <summary>lblCropImageName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCropImageName;
 
-        /// <summary>
-        /// txtCropImageName control.
-        /// </summary>
+        /// <summary>txtCropImageName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCropImageName;
 
-        /// <summary>
-        /// cmdCropNow control.
-        /// </summary>
+        /// <summary>cmdCropNow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCropNow;
 
-        /// <summary>
-        /// cmdCropCancel control.
-        /// </summary>
+        /// <summary>cmdCropCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCropCancel;
 
-        /// <summary>
-        /// lblShowPreview control.
-        /// </summary>
+        /// <summary>lblShowPreview control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblShowPreview;
 
-        /// <summary>
-        /// lblClearPreview control.
-        /// </summary>
+        /// <summary>lblClearPreview control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblClearPreview;
 
-        /// <summary>
-        /// panImagePreview control.
-        /// </summary>
+        /// <summary>panImagePreview control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panImagePreview;
 
-        /// <summary>
-        /// lblOriginal control.
-        /// </summary>
+        /// <summary>lblOriginal control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOriginal;
 
-        /// <summary>
-        /// lblPreview control.
-        /// </summary>
+        /// <summary>lblPreview control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPreview;
 
-        /// <summary>
-        /// imgOriginal control.
-        /// </summary>
+        /// <summary>imgOriginal control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgOriginal;
 
-        /// <summary>
-        /// lblCropInfo control.
-        /// </summary>
+        /// <summary>lblCropInfo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCropInfo;
 
-        /// <summary>
-        /// imgResized control.
-        /// </summary>
+        /// <summary>imgResized control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgResized;
 
-        /// <summary>
-        /// panLinkMode control.
-        /// </summary>
+        /// <summary>panLinkMode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panLinkMode;
 
-        /// <summary>
-        /// lblCurrent control.
-        /// </summary>
+        /// <summary>lblCurrent control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCurrent;
 
-        /// <summary>
-        /// lblCurrentDir control.
-        /// </summary>
+        /// <summary>lblCurrentDir control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCurrentDir;
 
-        /// <summary>
-        /// panUploadDiv control.
-        /// </summary>
+        /// <summary>panUploadDiv control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panUploadDiv;
 
-        /// <summary>
-        /// UploadTitle control.
-        /// </summary>
+        /// <summary>UploadTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label UploadTitle;
 
-        /// <summary>
-        /// AddFiles control.
-        /// </summary>
+        /// <summary>AddFiles control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label AddFiles;
 
-        /// <summary>
-        /// OverrideFile control.
-        /// </summary>
+        /// <summary>OverrideFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox OverrideFile;
 
-        /// <summary>
-        /// MaximumUploadSizeInfo control.
-        /// </summary>
+        /// <summary>MaximumUploadSizeInfo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label MaximumUploadSizeInfo;
 
-        /// <summary>
-        /// cmdUploadNow control.
-        /// </summary>
+        /// <summary>cmdUploadNow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdUploadNow;
 
-        /// <summary>
-        /// cmdUploadCancel control.
-        /// </summary>
+        /// <summary>cmdUploadCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdUploadCancel;
 
-        /// <summary>
-        /// panCreate control.
-        /// </summary>
+        /// <summary>panCreate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panCreate;
 
-        /// <summary>
-        /// NewFolderTitle control.
-        /// </summary>
+        /// <summary>NewFolderTitle control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label NewFolderTitle;
 
-        /// <summary>
-        /// lblNewFoldName control.
-        /// </summary>
+        /// <summary>lblNewFoldName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNewFoldName;
 
-        /// <summary>
-        /// tbFolderName control.
-        /// </summary>
+        /// <summary>tbFolderName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbFolderName;
 
-        /// <summary>
-        /// cmdCreateFolder control.
-        /// </summary>
+        /// <summary>cmdCreateFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCreateFolder;
 
-        /// <summary>
-        /// cmdCreateCancel control.
-        /// </summary>
+        /// <summary>cmdCreateCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCreateCancel;
 
-        /// <summary>
-        /// cmdCreate control.
-        /// </summary>
+        /// <summary>cmdCreate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdCreate;
 
-        /// <summary>
-        /// Syncronize control.
-        /// </summary>
+        /// <summary>Syncronize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton Syncronize;
 
-        /// <summary>
-        /// cmdUpload control.
-        /// </summary>
+        /// <summary>cmdUpload control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpload;
 
-        /// <summary>
-        /// cmdDownload control.
-        /// </summary>
+        /// <summary>cmdDownload control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdDownload;
 
-        /// <summary>
-        /// cmdDelete control.
-        /// </summary>
+        /// <summary>cmdDelete control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
 
-        /// <summary>
-        /// cmdResizer control.
-        /// </summary>
+        /// <summary>cmdResizer control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdResizer;
 
-        /// <summary>
-        /// lblSubDirs control.
-        /// </summary>
+        /// <summary>lblSubDirs control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSubDirs;
 
-        /// <summary>
-        /// FoldersTree control.
-        /// </summary>
+        /// <summary>FoldersTree control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TreeView FoldersTree;
 
-        /// <summary>
-        /// FileSpaceUsedLabel control.
-        /// </summary>
+        /// <summary>FileSpaceUsedLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label FileSpaceUsedLabel;
 
-        /// <summary>
-        /// lblConFiles control.
-        /// </summary>
+        /// <summary>lblConFiles control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblConFiles;
 
-        /// <summary>
-        /// SwitchDetailView control.
-        /// </summary>
+        /// <summary>SwitchDetailView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label SwitchDetailView;
 
-        /// <summary>
-        /// SwitchListView control.
-        /// </summary>
+        /// <summary>SwitchListView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label SwitchListView;
 
-        /// <summary>
-        /// SwitchIconsView control.
-        /// </summary>
+        /// <summary>SwitchIconsView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label SwitchIconsView;
 
-        /// <summary>
-        /// SortAscending control.
-        /// </summary>
+        /// <summary>SortAscending control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton SortAscending;
 
-        /// <summary>
-        /// SortDescending control.
-        /// </summary>
+        /// <summary>SortDescending control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton SortDescending;
 
-        /// <summary>
-        /// SortByDateAscending control.
-        /// </summary>
+        /// <summary>SortByDateAscending control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton SortByDateAscending;
 
-        /// <summary>
-        /// SortByDateDescending control.
-        /// </summary>
+        /// <summary>SortByDateDescending control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton SortByDateDescending;
 
-        /// <summary>
-        /// ListViewState control.
-        /// </summary>
+        /// <summary>ListViewState control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField ListViewState;
 
-        /// <summary>
-        /// FilesList control.
-        /// </summary>
+        /// <summary>FilesList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater FilesList;
 
-        /// <summary>
-        /// PagerFileLinks control.
-        /// </summary>
+        /// <summary>PagerFileLinks control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DNNConnect.CKEditorProvider.Controls.Pager PagerFileLinks;
 
-        /// <summary>
-        /// panInfo control.
-        /// </summary>
+        /// <summary>panInfo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panInfo;
 
-        /// <summary>
-        /// FileId control.
-        /// </summary>
+        /// <summary>FileId control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label FileId;
 
-        /// <summary>
-        /// lblFileName control.
-        /// </summary>
+        /// <summary>lblFileName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblFileName;
 
-        /// <summary>
-        /// lblUrlType control.
-        /// </summary>
+        /// <summary>lblUrlType control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUrlType;
 
-        /// <summary>
-        /// rblLinkType control.
-        /// </summary>
+        /// <summary>rblLinkType control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rblLinkType;
 
-        /// <summary>
-        /// cmdClose control.
-        /// </summary>
+        /// <summary>cmdClose control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdClose;
 
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCancel;
 
-        /// <summary>
-        /// panelLoading control.
-        /// </summary>
+        /// <summary>panelLoading control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panelLoading;
 
-        /// <summary>
-        /// Wait control.
-        /// </summary>
+        /// <summary>Wait control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Wait;
 
-        /// <summary>
-        /// WaitMessage control.
-        /// </summary>
+        /// <summary>WaitMessage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label WaitMessage;
 
-        /// <summary>
-        /// ClientResourcesFormBottom control.
-        /// </summary>
+        /// <summary>ClientResourcesFormBottom control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientResourcesFormBottom;
 
-        /// <summary>
-        /// ClientResourceIncludes control.
-        /// </summary>
+        /// <summary>ClientResourceIncludes control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientResourceIncludes;
 
-        /// <summary>
-        /// ClientResourceLoader control.
-        /// </summary>
+        /// <summary>ClientResourceLoader control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

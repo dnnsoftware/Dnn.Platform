@@ -30,12 +30,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The emmpty user control used for users account page.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The empty user control used for users account page.</summary>
     public partial class Users : UserUserControlBase
     {
     }

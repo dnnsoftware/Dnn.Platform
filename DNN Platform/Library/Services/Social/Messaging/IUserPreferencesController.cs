@@ -6,20 +6,14 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// This class is responsible to manage the Messaging User Preference.
-    /// </summary>
+    /// <summary>This class is responsible to manage the Messaging User Preference.</summary>
     public interface IUserPreferencesController
     {
-        /// <summary>
-        /// Set the User Messaging Preference.
-        /// </summary>
+        /// <summary>Set the User Messaging Preference.</summary>
         /// <param name="userPreference">User Preference.</param>
         void SetUserPreference(UserPreference userPreference);
 
-        /// <summary>
-        /// Get the User Messaging Preference.
-        /// </summary>
+        /// <summary>Get the User Messaging Preference.</summary>
         /// <param name="userinfo">User info.</param>
         /// <returns>User Messaging Preference.</returns>
         UserPreference GetUserPreference(UserInfo userinfo);

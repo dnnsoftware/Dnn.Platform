@@ -8,9 +8,7 @@ namespace DotNetNuke.Entities.Content.Data
 
     using DotNetNuke.Entities.Content.Taxonomy;
 
-    /// <summary>
-    /// Interface of DataService.
-    /// </summary>
+    /// <summary>Interface of DataService.</summary>
     /// <seealso cref="DataService"/>
     public interface IDataService
     {

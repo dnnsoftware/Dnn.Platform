@@ -19,9 +19,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
     {
         private readonly IWorkflowStateRepository stateRepository;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowRepository"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowRepository"/> class.</summary>
         public WorkflowRepository()
         {
             this.stateRepository = WorkflowStateRepository.Instance;
@@ -162,8 +160,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         private static bool DoesExistWorkflow(Entities.Workflow workflow, IRepository<Entities.Workflow> rep)
         {
             return rep.Find(
-                "WHERE IsDeleted = 0 AND (PortalId = @0 OR PortalId IS NULL) AND WorkflowName = @1 AND WorkflowID != @2",
-                workflow.PortalID, workflow.WorkflowName, workflow.WorkflowID).SingleOrDefault() != null;
+                           "WHERE IsDeleted = 0 AND (PortalId = @0 OR PortalId IS NULL) AND WorkflowName = @1 AND WorkflowID != @2",
+                           workflow.PortalID,
+                           workflow.WorkflowName,
+                           workflow.WorkflowID)
+                       .SingleOrDefault() != null;
         }
 
         private static void CacheWorkflow(Entities.Workflow workflow)
@@ -172,8 +173,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             {
                 CBO.GetCachedObject<Entities.Workflow>(
                     new CacheItemArgs(
-                    GetWorkflowItemKey(workflow.WorkflowID),
-                    DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority), _ => workflow);
+                        GetWorkflowItemKey(workflow.WorkflowID),
+                        DataCache.WorkflowsCacheTimeout,
+                        DataCache.WorkflowsCachePriority),
+                    _ => workflow);
             }
         }
     }

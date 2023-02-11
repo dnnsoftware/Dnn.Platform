@@ -37,9 +37,7 @@ namespace Dnn.EditBar.UI.Controllers
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// Content Editor Manager.
-    /// </summary>
+    /// <summary>Content Editor Manager.</summary>
     public class ContentEditorManager : UserControlBase
     {
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
@@ -274,7 +272,8 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
             ClientResourceManager.RegisterStyleSheet(
                 this.Page,
-                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), CssFileOrder);
+                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"),
+                CssFileOrder);
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);

@@ -54,8 +54,7 @@ namespace DotNetNuke.Web.Api
             {
                 throw new HttpResponseException(request.CreateErrorResponse(
                     HttpStatusCode.NotFound,
-                    "Unable to locate a controller for " +
-                                                                            request.RequestUri));
+                    "Unable to locate a controller for " + request.RequestUri));
             }
 
             var matches = new List<HttpControllerDescriptor>();

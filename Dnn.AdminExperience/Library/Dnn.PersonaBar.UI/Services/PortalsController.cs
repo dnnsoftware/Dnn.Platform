@@ -15,18 +15,14 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Service to perform portal operations.
-    /// </summary>
+    /// <summary>Service to perform portal operations.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class PortalsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalsController));
 
         /// GET: api/Portals/GetPortals
-        /// <summary>
-        /// Gets portals.
-        /// </summary>
+        /// <summary>Gets portals.</summary>
         /// <param></param>
         /// <param name="addAll">Add all portals item in list.</param>
         /// <returns>List of portals.</returns>

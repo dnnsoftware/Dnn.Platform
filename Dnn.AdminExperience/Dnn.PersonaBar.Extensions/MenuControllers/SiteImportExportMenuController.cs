@@ -11,9 +11,7 @@ namespace Dnn.PersonaBar.SiteImportExport.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the site import/export menu.
-    /// </summary>
+    /// <summary>Controls the site import/export menu.</summary>
     public class SiteImportExportMenuController : IMenuItemController
     {
         /// <inheritdoc/>

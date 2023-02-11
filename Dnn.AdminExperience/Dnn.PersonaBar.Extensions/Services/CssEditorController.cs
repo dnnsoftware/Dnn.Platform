@@ -1,15 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.CssEditor.Services
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web;
     using System.Web.Http;
 
     using Dnn.PersonaBar.CssEditor.Services.Dto;
@@ -31,13 +28,10 @@ namespace Dnn.PersonaBar.CssEditor.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CssEditorController));
 
         /// GET: api/CssEditor/GetStyleSheet
-        /// <summary>
-        /// Gets portal.css of specific portal.
-        /// </summary>
+        /// <summary>Gets portal.css of specific portal.</summary>
         /// <param name="portalId">Id of portal.</param>
         /// <returns>Content of portal.css.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetStyleSheet(int portalId)
         {
             try
@@ -78,14 +72,11 @@ namespace Dnn.PersonaBar.CssEditor.Services
         }
 
         /// POST: api/CssEditor/UpdateStyleSheet
-        /// <summary>
-        /// Updates portal.css of specific portal.
-        /// </summary>
+        /// <summary>Updates portal.css of specific portal.</summary>
         /// <param name="request">Content of portal css.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateStyleSheet(UpdateCssRequest request)
         {
             if (!PortalSettings.Current.UserInfo.IsSuperUser && PortalSettings.Current.UserInfo.PortalID != request.PortalId)
@@ -122,7 +113,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
                     var overrideSetting =
                         PortalController.GetPortalSetting(
                             ClientResourceSettings.OverrideDefaultSettingsKey,
-                            request.PortalId, "False");
+                            request.PortalId,
+                            "False");
                     bool overridePortal;
                     if (bool.TryParse(overrideSetting, out overridePortal))
                     {
@@ -151,14 +143,11 @@ namespace Dnn.PersonaBar.CssEditor.Services
         }
 
         /// POST: api/CssEditor/RestoreStyleSheet
-        /// <summary>
-        /// Restores portal.css of specific portal.
-        /// </summary>
+        /// <summary>Restores portal.css of specific portal.</summary>
         /// <param name="request">Id of portal.</param>
         /// <returns>Content of portal.css.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RestoreStyleSheet(RestoreCssRequest request)
         {
             if (!PortalSettings.Current.UserInfo.IsSuperUser &&

@@ -5,6 +5,7 @@
 namespace DotNetNuke.Modules.Groups
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
@@ -13,14 +14,15 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class List : GroupsModuleBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="List"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="List"/> class.</summary>
         public List()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public INavigationManager _navigationManager { get; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -59,6 +61,9 @@ namespace DotNetNuke.Modules.Groups
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             if (!this.Page.IsValid)

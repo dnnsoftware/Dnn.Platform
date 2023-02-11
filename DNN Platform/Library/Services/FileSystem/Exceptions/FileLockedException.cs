@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FileLockedException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileLockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileLockedException"/> class.</summary>
         public FileLockedException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileLockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileLockedException"/> class.</summary>
         /// <param name="message"></param>
         public FileLockedException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileLockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileLockedException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public FileLockedException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileLockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileLockedException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public FileLockedException(SerializationInfo info, StreamingContext context)

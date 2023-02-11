@@ -23,9 +23,7 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Implements the logic for the CreateModule view.
-    /// </summary>
+    /// <summary>Implements the logic for the CreateModule view.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
@@ -35,17 +33,13 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateModule"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CreateModule"/> class.</summary>
         public CreateModule()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets the module control file name without it's extension.
-        /// </summary>
+        /// <summary>Gets the module control file name without it's extension.</summary>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string ModuleControl
         {
@@ -55,9 +49,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
-        /// <summary>
-        /// Gets the razor script path.
-        /// </summary>
+        /// <summary>Gets the razor script path.</summary>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {

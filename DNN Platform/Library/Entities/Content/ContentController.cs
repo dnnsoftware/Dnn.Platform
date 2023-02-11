@@ -22,18 +22,14 @@ namespace DotNetNuke.Entities.Content
     {
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
         public ContentController()
             : this(Util.GetDataService())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentController"/> class.
-        /// </summary>
-        /// <param name="dataService"></param>
+        /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
+        /// <param name="dataService">The data service.</param>
         public ContentController(IDataService dataService)
         {
             this.dataService = dataService;
@@ -127,8 +123,7 @@ namespace DotNetNuke.Entities.Content
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByContentType(contentTypeId));
         }
 
-        /// <summary>Get a list of content items by ContentType.</summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
         {
             return this.GetContentItemsByContentType(contentType.ContentTypeId);
@@ -274,8 +269,10 @@ namespace DotNetNuke.Entities.Content
             {
                 CBO.Instance.GetCachedObject<ContentItem>(
                     new CacheItemArgs(
-                    GetContentItemCacheKey(contentItem.ContentItemId),
-                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem,
+                        GetContentItemCacheKey(contentItem.ContentItemId),
+                        DataCache.ContentItemsCacheTimeOut,
+                        DataCache.ContentItemsCachePriority),
+                    c => contentItem,
                     false);
             }
         }

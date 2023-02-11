@@ -17,18 +17,12 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ViewSocialGroups class displays the content.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ViewSocialGroups class displays the content.</summary>
     public partial class View : GroupsModuleBase
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="View"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         public View()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -46,11 +40,7 @@ namespace DotNetNuke.Modules.Groups
             this.Load += this.Page_Load;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         private void Page_Load(object sender, EventArgs e)
         {
             try
@@ -69,7 +59,7 @@ namespace DotNetNuke.Modules.Groups
                 this.plhContent.Controls.Clear();
                 this.plhContent.Controls.Add(ctl);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

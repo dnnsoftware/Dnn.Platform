@@ -18,9 +18,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// LocaleContrller provides method to manage all pages with localization content.
-    /// </summary>
+    /// <summary>LocaleController provides method to manage all pages with localization content.</summary>
     /// <remarks>
     /// Content localization in DotNetNuke will allow you to easily manage your web pages in a primary language
     /// and then utilize translators to keep the content synchronized in multiple secondary languages.
@@ -38,13 +36,9 @@ namespace DotNetNuke.Services.Localization
                 .Any(c => c.Name == name);
         }
 
-        /// <summary>
-        /// Determines whether the language can be delete.
-        /// </summary>
-        /// <param name="languageId">The language id.</param>
-        /// <returns>
-        ///   <c>true</c> if the language can be delete; otherwise, <c>false</c>.
-        /// </returns>
+        /// <summary>Determines whether the language can be deleted.</summary>
+        /// <param name="languageId">The language ID.</param>
+        /// <returns><c>true</c> if the language can be delete; otherwise, <c>false</c>.</returns>
         public bool CanDeleteLanguage(int languageId)
         {
             return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase))
@@ -52,9 +46,7 @@ namespace DotNetNuke.Services.Localization
                         .All(languagePack => languagePack.LanguageID != languageId);
         }
 
-        /// <summary>
-        /// Gets the cultures from local list.
-        /// </summary>
+        /// <summary>Gets the cultures from local list.</summary>
         /// <param name="locales">The locales.</param>
         /// <returns>culture list.</returns>
         public List<CultureInfo> GetCultures(Dictionary<string, Locale> locales)
@@ -62,11 +54,9 @@ namespace DotNetNuke.Services.Localization
             return locales.Values.Select(locale => new CultureInfo(locale.Code)).ToList();
         }
 
-        /// <summary>
-        /// Gets the current locale for current request to the portal.
-        /// </summary>
+        /// <summary>Gets the current locale for current request to the portal.</summary>
         /// <param name="portalId">The portal id.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Locale"/> instance.</returns>
         public Locale GetCurrentLocale(int portalId)
         {
             Locale locale = null;
@@ -81,11 +71,9 @@ namespace DotNetNuke.Services.Localization
                                 : this.GetDefaultLocale(portalId));
         }
 
-        /// <summary>
-        /// Gets the default locale of the portal.
-        /// </summary>
+        /// <summary>Gets the default locale of the portal.</summary>
         /// <param name="portalId">The portal id.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Locale"/> instance.</returns>
         public Locale GetDefaultLocale(int portalId)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
@@ -102,22 +90,18 @@ namespace DotNetNuke.Services.Localization
             return locale ?? this.GetLocale(Localization.SystemLocale);
         }
 
-        /// <summary>
-        /// Gets the locale by code.
-        /// </summary>
+        /// <summary>Gets the locale by code.</summary>
         /// <param name="code">The code.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Locale"/> instance or <see langword="null"/>.</returns>
         public Locale GetLocale(string code)
         {
             return this.GetLocale(Null.NullInteger, code);
         }
 
-        /// <summary>
-        /// Gets the locale included in the portal.
-        /// </summary>
+        /// <summary>Gets the locale included in the portal.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="code">The code.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Locale"/> instance or <see langword="null"/>.</returns>
         public Locale GetLocale(int portalID, string code)
         {
             Dictionary<string, Locale> dicLocales = this.GetLocales(portalID);
@@ -131,24 +115,19 @@ namespace DotNetNuke.Services.Localization
             return locale;
         }
 
-        /// <summary>
-        /// Gets the locale included in the portal if culture code is not null or empty
-        /// or else gets the current locale for current request to the portal.
-        /// </summary>
+        /// <summary>Gets the locale included in the portal if culture code is not null or empty or else gets the current locale for current request to the portal.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="code">The code.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Locale"/> instance or <see langword="null"/>.</returns>
         public Locale GetLocaleOrCurrent(int portalID, string code)
         {
             return string.IsNullOrEmpty(code)
                        ? LocaleController.Instance.GetCurrentLocale(portalID) : LocaleController.Instance.GetLocale(portalID, code);
         }
 
-        /// <summary>
-        /// Gets the locale.
-        /// </summary>
+        /// <summary>Gets the locale.</summary>
         /// <param name="languageID">The language ID.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Locale"/> instance or <see langword="null"/>.</returns>
         public Locale GetLocale(int languageID)
         {
             Dictionary<string, Locale> dicLocales = this.GetLocales(Null.NullInteger);
@@ -156,11 +135,9 @@ namespace DotNetNuke.Services.Localization
             return (from kvp in dicLocales where kvp.Value.LanguageId == languageID select kvp.Value).FirstOrDefault();
         }
 
-        /// <summary>
-        /// Gets the locales.
-        /// </summary>
+        /// <summary>Gets the locales.</summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping from culture code to <see cref="Locale"/>, or <see langword="null"/>.</returns>
         public Dictionary<string, Locale> GetLocales(int portalID)
         {
             if (Globals.Status != Globals.UpgradeStatus.Error)
@@ -182,24 +159,18 @@ namespace DotNetNuke.Services.Localization
             return null;
         }
 
-        /// <summary>
-        /// Gets the published locales.
-        /// </summary>
+        /// <summary>Gets the published locales.</summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping from culture code to <see cref="Locale"/>.</returns>
         public Dictionary<string, Locale> GetPublishedLocales(int portalID)
         {
             return this.GetLocales(portalID).Where(kvp => kvp.Value.IsPublished).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        /// <summary>
-        /// Determines whether the specified locale code is enabled.
-        /// </summary>
+        /// <summary>Determines whether the specified locale code is enabled.</summary>
         /// <param name="localeCode">The locale code.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified locale code is enabled; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified locale code is enabled; otherwise, <c>false</c>.</returns>
         public bool IsEnabled(ref string localeCode, int portalId)
         {
             try
@@ -241,9 +212,7 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <summary>
-        /// Updates the portal locale.
-        /// </summary>
+        /// <summary>Updates the portal locale.</summary>
         /// <param name="locale">The locale.</param>
         public void UpdatePortalLocale(Locale locale)
         {
@@ -251,25 +220,19 @@ namespace DotNetNuke.Services.Localization
             DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, locale.PortalId));
         }
 
-        /// <summary>
-        /// Determines the language whether is default language.
-        /// </summary>
+        /// <summary>Determines the language whether is default language.</summary>
         /// <param name="code">The code.</param>
-        /// <returns>
-        ///   <c>true</c> if the language is default language; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the language is default language; otherwise, <c>false</c>.</returns>
         public bool IsDefaultLanguage(string code)
         {
             bool returnValue = code == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
             return returnValue;
         }
 
-        /// <summary>
-        /// Activates the language without publishing it.
-        /// </summary>
-        /// <param name="portalid">The portalid.</param>
+        /// <summary>Activates the language without publishing it.</summary>
+        /// <param name="portalid">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="publish">if set to <c>true</c> will publishthe language.</param>
+        /// <param name="publish">if set to <c>true</c> will publish the language, otherwise will "un-publish".</param>
         public void ActivateLanguage(int portalid, string cultureCode, bool publish)
         {
             Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
@@ -281,12 +244,10 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <summary>
-        /// Publishes the language.
-        /// </summary>
-        /// <param name="portalid">The portalid.</param>
+        /// <summary>Publishes the language.</summary>
+        /// <param name="portalid">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="publish">if set to <c>true</c> will publishthe language.</param>
+        /// <param name="publish">if set to <c>true</c> will publish the language.</param>
         public void PublishLanguage(int portalid, string cultureCode, bool publish)
         {
             Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
@@ -306,11 +267,14 @@ namespace DotNetNuke.Services.Localization
 
         private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
-                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
-            return locales;
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            var languages = portalId > Null.NullInteger
+                ? DataProvider.Instance().GetLanguagesByPortal(portalId)
+                : DataProvider.Instance().GetLanguages();
+            return CBO.FillDictionary(
+                "CultureCode",
+                languages,
+                new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
         }
     }
 }

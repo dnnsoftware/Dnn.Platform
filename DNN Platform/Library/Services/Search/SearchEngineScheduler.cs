@@ -9,38 +9,25 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Internals;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchEngineScheduler
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchEngineScheduler implements a SchedulerClient for the Indexing of
     /// portal content.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SearchEngineScheduler : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngineScheduler));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>
         /// <param name="objScheduleHistoryItem"></param>
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DoWork runs the scheduled item.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>DoWork runs the scheduled item.</summary>
         public override void DoWork()
         {
             try

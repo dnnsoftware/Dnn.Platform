@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Text {
-        /// <summary>
-        /// lblText control.
-        /// </summary>
+        /// <summary>lblText control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

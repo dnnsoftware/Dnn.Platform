@@ -10,16 +10,12 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Represents support for HTML input controls in an application.
-    /// </summary>
+    /// <summary>Represents support for HTML input controls in an application.</summary>
     public static class HtmlInputExtensions
     {
         // CheckBox
 
-        /// <summary>
-        /// Returns a check box input element by using the specified HTML helper and the name of the form field.
-        /// </summary>
+        /// <summary>Returns a check box input element by using the specified HTML helper and the name of the form field.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "checkbox".
@@ -30,9 +26,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBox(name);
         }
 
-        /// <summary>
-        /// Returns a check box input element by using the specified HTML helper, the name of the form field, and a value to indicate whether the check box is selected.
-        /// </summary>
+        /// <summary>Returns a check box input element by using the specified HTML helper, the name of the form field, and a value to indicate whether the check box is selected.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "checkbox".
@@ -43,9 +37,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBox(name, isChecked);
         }
 
-        /// <summary>
-        /// Returns a check box input element by using the specified HTML helper, the name of the form field, a value that indicates whether the check box is selected, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a check box input element by using the specified HTML helper, the name of the form field, a value that indicates whether the check box is selected, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "checkbox".
@@ -56,9 +48,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBox(name, isChecked, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a check box input element by using the specified HTML helper, the name of the form field, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a check box input element by using the specified HTML helper, the name of the form field, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "checkbox".
@@ -69,9 +59,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBox(name, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a check box input element by using the specified HTML helper, the name of the form field, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a check box input element by using the specified HTML helper, the name of the form field, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "checkbox".
@@ -82,9 +70,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBox(name, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a check box input element by using the specified HTML helper, the name of the form field, a value to indicate whether the check box is selected, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a check box input element by using the specified HTML helper, the name of the form field, a value to indicate whether the check box is selected, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "checkbox".
@@ -95,9 +81,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBox(name, isChecked, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a check box input element for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns a check box input element for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "checkbox" for each property in the object that is represented by the specified expression.
@@ -108,9 +92,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBoxFor(expression);
         }
 
-        /// <summary>
-        /// Returns a check box input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a check box input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "checkbox" for each property in the object that is represented by the specified expression, using the specified HTML attributes.
@@ -121,9 +103,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.CheckBoxFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a check box input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a check box input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "checkbox" for each property in the object that is represented by the specified expression, using the specified HTML attributes.
@@ -136,9 +116,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // Hidden
 
-        /// <summary>
-        /// Returns a hidden input element by using the specified HTML helper and the name of the form field.
-        /// </summary>
+        /// <summary>Returns a hidden input element by using the specified HTML helper and the name of the form field.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden".
@@ -149,9 +127,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Hidden(name);
         }
 
-        /// <summary>
-        /// Returns a hidden input element by using the specified HTML helper, the name of the form field, and the value.
-        /// </summary>
+        /// <summary>Returns a hidden input element by using the specified HTML helper, the name of the form field, and the value.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden".
@@ -162,9 +138,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Hidden(name, value);
         }
 
-        /// <summary>
-        /// Returns a hidden input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a hidden input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden".
@@ -175,9 +149,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Hidden(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a hidden input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a hidden input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden".
@@ -188,9 +160,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Hidden(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML hidden input element for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML hidden input element for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden" for each property in the object that is represented by the expression.
@@ -201,9 +171,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.HiddenFor(expression);
         }
 
-        /// <summary>
-        /// Returns an HTML hidden input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns an HTML hidden input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden" for each property in the object that is represented by the expression.
@@ -214,9 +182,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.HiddenFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML hidden input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns an HTML hidden input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "hidden" for each property in the object that is represented by the expression.
@@ -229,9 +195,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // Password
 
-        /// <summary>
-        /// Returns a password input element by using the specified HTML helper and the name of the form field.
-        /// </summary>
+        /// <summary>Returns a password input element by using the specified HTML helper and the name of the form field.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "password".
@@ -242,9 +206,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Password(name);
         }
 
-        /// <summary>
-        /// Returns a password input element by using the specified HTML helper, the name of the form field, and the value.
-        /// </summary>
+        /// <summary>Returns a password input element by using the specified HTML helper, the name of the form field, and the value.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "password".
@@ -255,9 +217,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Password(name, value);
         }
 
-        /// <summary>
-        /// Returns a password input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a password input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "password".
@@ -268,9 +228,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Password(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a password input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a password input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "password".
@@ -281,9 +239,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Password(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a password input element for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns a password input element for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "password" for each property in the object that is represented by the specified expression.
@@ -294,9 +250,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.PasswordFor(expression);
         }
 
-        /// <summary>
-        /// Returns a password input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a password input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "password" for each property in the object that is represented by the specified expression, using the specified HTML attributes.
@@ -307,9 +261,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.PasswordFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a password input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a password input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "password" for each property in the object that is represented by the specified expression, using the specified HTML attributes.
@@ -322,9 +274,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // RadioButton
 
-        /// <summary>
-        /// Returns a radio button input element that is used to present mutually exclusive options.
-        /// </summary>
+        /// <summary>Returns a radio button input element that is used to present mutually exclusive options.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "radio".
@@ -335,9 +285,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButton(name, value);
         }
 
-        /// <summary>
-        /// Returns a radio button input element that is used to present mutually exclusive options.
-        /// </summary>
+        /// <summary>Returns a radio button input element that is used to present mutually exclusive options.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "radio".
@@ -348,9 +296,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButton(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a radio button input element that is used to present mutually exclusive options.
-        /// </summary>
+        /// <summary>Returns a radio button input element that is used to present mutually exclusive options.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "radio".
@@ -361,9 +307,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButton(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a radio button input element that is used to present mutually exclusive options.
-        /// </summary>
+        /// <summary>Returns a radio button input element that is used to present mutually exclusive options.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "radio".
@@ -374,9 +318,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButton(name, value, isChecked);
         }
 
-        /// <summary>
-        /// Returns a radio button input element that is used to present mutually exclusive options.
-        /// </summary>
+        /// <summary>Returns a radio button input element that is used to present mutually exclusive options.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "radio".
@@ -387,9 +329,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButton(name, value, isChecked, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a radio button input element that is used to present mutually exclusive options.
-        /// </summary>
+        /// <summary>Returns a radio button input element that is used to present mutually exclusive options.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "radio".
@@ -400,9 +340,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButton(name, value, isChecked, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a radio button input element for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns a radio button input element for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "radio" for each property in the object that is represented by the specified expression.
@@ -413,9 +351,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButtonFor(expression, value);
         }
 
-        /// <summary>
-        /// Returns a radio button input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a radio button input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "radio" for each property in the object that is represented by the specified expression, using the specified HTML attributes.
@@ -426,9 +362,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.RadioButtonFor(expression, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a radio button input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a radio button input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "radio" for each property in the object that is represented by the specified expression, using the specified HTML attributes.
@@ -441,9 +375,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // TextBox
 
-        /// <summary>
-        /// Returns a text input element by using the specified HTML helper and the name of the form field.
-        /// </summary>
+        /// <summary>Returns a text input element by using the specified HTML helper and the name of the form field.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -454,9 +386,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name);
         }
 
-        /// <summary>
-        /// Returns a text input element by using the specified HTML helper, the name of the form field, and the value.
-        /// </summary>
+        /// <summary>Returns a text input element by using the specified HTML helper, the name of the form field, and the value.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -467,9 +397,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name, value);
         }
 
-        /// <summary>
-        /// Returns a text input element.
-        /// </summary>
+        /// <summary>Returns a text input element.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -480,9 +408,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name, value, format);
         }
 
-        /// <summary>
-        /// Returns a text input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a text input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -493,9 +419,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element.
-        /// </summary>
+        /// <summary>Returns a text input element.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -506,9 +430,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name, value, format, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.
-        /// </summary>
+        /// <summary>Returns a text input element by using the specified HTML helper, the name of the form field, the value, and the HTML attributes.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -519,9 +441,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name, value, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element.
-        /// </summary>
+        /// <summary>Returns a text input element.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -532,9 +452,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBox(name, value, format, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns a text input element for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "text" for each property in the object that is represented by the expression.
@@ -545,9 +463,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBoxFor(expression);
         }
 
-        /// <summary>
-        /// Returns a text input element.
-        /// </summary>
+        /// <summary>Returns a text input element.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -558,9 +474,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBoxFor(expression, format);
         }
 
-        /// <summary>
-        /// Returns a text input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a text input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element whose type attribute is set to "text" for each property in the object that is represented by the expression.
@@ -571,9 +485,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBoxFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element.
-        /// </summary>
+        /// <summary>Returns a text input element.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".
@@ -584,9 +496,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBoxFor(expression, format, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.
-        /// </summary>
+        /// <summary>Returns a text input element for each property in the object that is represented by the specified expression, using the specified HTML attributes.</summary>
         ///
         /// <returns>
         /// An HTML input element type attribute is set to "text" for each property in the object that is represented by the expression.
@@ -597,9 +507,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.TextBoxFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns a text input element.
-        /// </summary>
+        /// <summary>Returns a text input element.</summary>
         ///
         /// <returns>
         /// An input element whose type attribute is set to "text".

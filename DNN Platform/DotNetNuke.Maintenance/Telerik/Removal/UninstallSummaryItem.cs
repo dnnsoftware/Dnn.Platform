@@ -9,14 +9,10 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 
     using DotNetNuke.Maintenance.Telerik.Steps;
 
-    /// <summary>
-    /// A data transfer object with an uninstallation summary item.
-    /// </summary>
+    /// <summary>A data transfer object with an uninstallation summary item.</summary>
     public class UninstallSummaryItem
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UninstallSummaryItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UninstallSummaryItem"/> class.</summary>
         /// <param name="step">The step to summarize.</param>
         internal UninstallSummaryItem(IStep step)
         {
@@ -25,19 +21,13 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             this.Success = step.Success;
         }
 
-        /// <summary>
-        /// Gets any remarks collected during step execution.
-        /// </summary>
+        /// <summary>Gets any remarks collected during step execution.</summary>
         public string Notes { get; private set; }
 
-        /// <summary>
-        /// Gets a value indicating whether the step succeeded, failed or was not executed.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the step succeeded, failed or was not executed.</summary>
         public bool? Success { get; private set; }
 
-        /// <summary>
-        /// Gets the step name.
-        /// </summary>
+        /// <summary>Gets the step name.</summary>
         public string StepName { get; private set; }
 
         /// <summary>

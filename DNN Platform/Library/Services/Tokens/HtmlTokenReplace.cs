@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.Tokens
 
     public class HtmlTokenReplace : TokenReplace
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlTokenReplace"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HtmlTokenReplace"/> class.</summary>
         /// <param name="page"></param>
         public HtmlTokenReplace(Page page)
             : base(Scope.DefaultSettings)

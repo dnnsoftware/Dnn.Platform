@@ -9,9 +9,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
     using DotNetNuke.Web.Mvp;
 
-    /// <summary>
-    /// Interface for the Provider Configuration View.
-    /// </summary>
+    /// <summary>Interface for the Provider Configuration View.</summary>
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public interface IProviderConfigurationView : IModuleView<ProviderConfigurationViewModel>
     {
