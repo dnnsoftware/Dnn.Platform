@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/",
         };
 
-        private static readonly int DefaultDimension = 10;
+        private static readonly int DefaultDimension = 0;
         private string defaultImageFile = string.Empty;
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
@@ -356,9 +356,14 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (mode == "profilepic")
                 {
                     resizeMode = ImageResizeMode.FitSquare;
-                    if (width > 0 && height > 0 && width != height)
+                    if (width > 0 && height > 0)
                     {
-                        resizeMode = ImageResizeMode.Fill;
+                        maxHeight = height;
+                        maxWidth = width;
+                        if (width != height)
+                        {
+                            resizeMode = ImageResizeMode.Fill;
+                        }
                     }
                 }
 

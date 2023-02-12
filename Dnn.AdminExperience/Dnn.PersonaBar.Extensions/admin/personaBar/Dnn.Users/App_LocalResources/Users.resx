@@ -294,6 +294,12 @@
   <data name="LockedOut.Text" xml:space="preserve">
     <value>Locked Out:</value>
   </data>
+  <data name="UserId.Text" xml:space="preserve">
+    <value>User ID:</value>
+  </data>
+  <data name="UserId.Help" xml:space="preserve">
+    <value>The unique identifier of the user.</value>
+  </data>
   <data name="ManageProfile.title" xml:space="preserve">
     <value>Profile Settings</value>
   </data>

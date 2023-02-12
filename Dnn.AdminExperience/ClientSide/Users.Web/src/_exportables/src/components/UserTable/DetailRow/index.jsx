@@ -137,7 +137,7 @@ class DetailsRow extends Component {
                     <h6>
                         <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
                     </h6>
-                    {user.displayName !== "-" && <p>{user.userName}</p> }
+                    {user.displayName !== "-" && <p title={`${Localization.get("UserId")} ${user.userId}`}>{user.userName}</p> }
                 </GridCell>
             },
             {
