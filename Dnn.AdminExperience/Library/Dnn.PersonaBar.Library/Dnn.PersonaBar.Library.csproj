@@ -28,7 +28,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SolutionInfo.cs">
