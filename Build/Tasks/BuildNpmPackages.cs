@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
+    using System;
+
     using Cake.Common.IO;
     using Cake.Core.Tooling;
     using Cake.Frosting;
@@ -14,6 +16,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
+            Environment.SetEnvironmentVariable("NODE_OPTIONS", "--openssl-legacy-provider");
             context.Yarn().Install(c => c
                 .WithArgument("--no-immutable")
                 .WithWorkingDirectory(context.Directory("./")));
