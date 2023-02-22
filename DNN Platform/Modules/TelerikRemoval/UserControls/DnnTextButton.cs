@@ -8,9 +8,7 @@ namespace Dnn.Modules.TelerikRemoval.UserControls
 
     using DotNetNuke.Web.UI.WebControls;
 
-    /// <summary>
-    /// A simple wrapper around <see cref="DnnButton"/> to implement <see cref="ITextControl"/>.
-    /// </summary>
+    /// <summary>A simple wrapper around <see cref="DnnButton"/> to implement <see cref="ITextControl"/>.</summary>
     public class DnnTextButton : DnnButton, ITextControl
     {
     }

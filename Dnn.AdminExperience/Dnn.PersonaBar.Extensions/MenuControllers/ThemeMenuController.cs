@@ -12,9 +12,7 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
     using DotNetNuke.Common;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Controls the themes menu.
-    /// </summary>
+    /// <summary>Controls the themes menu.</summary>
     public class ThemeMenuController : IMenuItemController
     {
         /// <inheritdoc/>

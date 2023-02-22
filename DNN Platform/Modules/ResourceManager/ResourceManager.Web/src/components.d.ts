@@ -195,6 +195,14 @@ export interface DnnRmFolderListItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDnnRmFolderListItemElement;
 }
+export interface DnnRmItemsCardviewCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmItemsCardviewElement;
+}
+export interface DnnRmItemsListviewCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmItemsListviewElement;
+}
 export interface DnnRmMoveItemsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDnnRmMoveItemsElement;
@@ -524,6 +532,10 @@ declare namespace LocalJSX {
           * Fires when a folder is picked.
          */
         "onDnnRmFolderListFolderPicked"?: (event: DnnRmFolderListCustomEvent<FolderTreeItem>) => void;
+        /**
+          * Fires when a context menu is opened for this item. Emits the folder ID.
+         */
+        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListCustomEvent<number>) => void;
     }
     interface DnnRmFolderListItem {
         /**
@@ -558,12 +570,20 @@ declare namespace LocalJSX {
           * The list of current items.
          */
         "currentItems": GetFolderContentResponse;
+        /**
+          * Fires when a folder is double-clicked and emits the folder ID into the event.detail
+         */
+        "onDnnRmFolderDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<number>) => void;
     }
     interface DnnRmItemsListview {
         /**
           * The list of current items.
          */
         "currentItems": GetFolderContentResponse;
+        /**
+          * Fires when a folder is double-clicked and emits the folder ID into the event.detail
+         */
+        "onDnnRmFolderDoubleClicked"?: (event: DnnRmItemsListviewCustomEvent<number>) => void;
     }
     interface DnnRmLeftPane {
     }

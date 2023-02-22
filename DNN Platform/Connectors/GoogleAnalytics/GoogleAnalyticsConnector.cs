@@ -13,9 +13,7 @@ namespace DNN.Connectors.GoogleAnalytics
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Connector to provide configuration for Google Analytics support.
-    /// </summary>
+    /// <summary>Connector to provide configuration for Google Analytics support.</summary>
     public class GoogleAnalyticsConnector : IConnector
     {
         private const string DefaultDisplayName = "Google Analytics";

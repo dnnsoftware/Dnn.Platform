@@ -9,16 +9,12 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class InvalidUserRegisterException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.</summary>
         public InvalidUserRegisterException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.</summary>
         /// <param name="message"></param>
         public InvalidUserRegisterException(string message)
             : base(message)

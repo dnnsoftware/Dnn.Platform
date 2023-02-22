@@ -14,18 +14,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-portal", Constants.PortalCategory, "Prompt_GetPortal_Description")]
+
     public class GetPortal : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
+
         private const string FlagId = "id";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        int PortalIdFlagValue { get; set; }
+        private int PortalIdFlagValue { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             // default usage: return current portal if nothing else specified
             if (args.Length == 1)
             {
@@ -46,6 +49,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var pc = new PortalController();
@@ -56,6 +60,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             {
                 return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_GetPortal_NotFound"), this.PortalIdFlagValue));
             }
+
             lst.Add(new PortalModel(portal));
             return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetPortal_Found"), this.PortalIdFlagValue) };
         }

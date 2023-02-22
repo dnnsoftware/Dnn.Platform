@@ -35,18 +35,14 @@ namespace log4net.Core
 #endif
     public class MethodItem
     {
-        /// <summary>
-        /// constructs a method item for an unknown method.
-        /// </summary>
+        /// <summary>constructs a method item for an unknown method.</summary>
         public MethodItem()
         {
             this.m_name = NA;
             this.m_parameters = new string[0];
         }
 
-        /// <summary>
-        /// constructs a method item from the name of the method.
-        /// </summary>
+        /// <summary>constructs a method item from the name of the method.</summary>
         /// <param name="name"></param>
         public MethodItem(string name)
             : this()
@@ -54,9 +50,7 @@ namespace log4net.Core
             this.m_name = name;
         }
 
-        /// <summary>
-        /// constructs a method item from the name of the method and its parameters.
-        /// </summary>
+        /// <summary>constructs a method item from the name of the method and its parameters.</summary>
         /// <param name="name"></param>
         /// <param name="parameters"></param>
         public MethodItem(string name, string[] parameters)
@@ -65,9 +59,7 @@ namespace log4net.Core
             this.m_parameters = parameters;
         }
 
-        /// <summary>
-        /// constructs a method item from a method base by determining the method name and its parameters.
-        /// </summary>
+        /// <summary>constructs a method item from a method base by determining the method name and its parameters.</summary>
         /// <param name="methodBase"></param>
         public MethodItem(System.Reflection.MethodBase methodBase)
             : this(methodBase.Name, GetMethodParameterNames(methodBase))
@@ -137,9 +129,7 @@ namespace log4net.Core
         private readonly string m_name;
         private readonly string[] m_parameters;
 
-        /// <summary>
-        /// The fully qualified type of the StackFrameItem class.
-        /// </summary>
+        /// <summary>The fully qualified type of the StackFrameItem class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

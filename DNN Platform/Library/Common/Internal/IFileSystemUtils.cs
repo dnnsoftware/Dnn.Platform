@@ -6,14 +6,10 @@ namespace DotNetNuke.Common.Internal
 {
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// An abstraction of <see cref="FileSystemUtils"/> to enable unit testing.
-    /// </summary>
+    /// <summary>An abstraction of <see cref="FileSystemUtils"/> to enable unit testing.</summary>
     internal interface IFileSystemUtils
     {
-        /// <summary>
-        /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
-        /// </summary>
+        /// <summary>Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.</summary>
         /// <param name="path">The root folder path.</param>
         void DeleteEmptyFoldersRecursive(string path);
     }

@@ -28,13 +28,15 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         private const string TemplatesFolderPath = "Templates/";
 
-        private readonly ITabController _tabController;
+        private readonly ITabController tabController;
 
+        /// <summary>Initializes a new instance of the <see cref="TemplateController"/> class.</summary>
         public TemplateController()
         {
-            this._tabController = TabController.Instance;
+            this.tabController = TabController.Instance;
         }
 
+        /// <inheritdoc/>
         public string SaveAsTemplate(PageTemplate template)
         {
             string filename;
@@ -81,6 +83,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return filename;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -89,6 +92,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return this.LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
+        /// <inheritdoc/>
         public int GetDefaultTemplateId(IEnumerable<Template> templates)
         {
             var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
@@ -100,6 +104,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return Null.NullInteger;
         }
 
+        /// <inheritdoc/>
         public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)
         {
             // create the page from a template
@@ -118,12 +123,15 @@ namespace Dnn.PersonaBar.Pages.Components
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     throw new PageException(Localization.GetString("BadTemplate"));
                 }
+
                 TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+
                 // save tab permissions
                 RibbonBarManager.DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
 
                 var tabIndex = 0;
                 var exceptions = string.Empty;
+
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (XmlNode tabNode in xmlDoc.SelectSingleNode("//portal/tabs").ChildNodes)
                 {
@@ -142,22 +150,25 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(tab.SkinSrc) && !String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", "")))
+                        if (string.IsNullOrEmpty(tab.SkinSrc) && !string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", string.Empty)))
                         {
-                            tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", "");
+                            tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", string.Empty);
                         }
-                        if (string.IsNullOrEmpty(tab.ContainerSrc) && !String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", "")))
+
+                        if (string.IsNullOrEmpty(tab.ContainerSrc) && !string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", string.Empty)))
                         {
-                            tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", "");
+                            tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", string.Empty);
                         }
+
                         bool isSecure;
-                        if (bool.TryParse(XmlUtils.GetNodeValue(tabNode, "issecure", ""), out isSecure))
+                        if (bool.TryParse(XmlUtils.GetNodeValue(tabNode, "issecure", string.Empty), out isSecure))
                         {
                             tab.IsSecure = isSecure;
                         }
 
                         TabController.Instance.UpdateTab(tab);
                     }
+
                     tabIndex++;
                 }
 
@@ -168,6 +179,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<ITemplateController> GetFactory()
         {
             return () => new TemplateController();
@@ -186,7 +198,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tab = this._tabController.GetTab(template.TabId, portalSettings.PortalId, false);
+            var tab = this.tabController.GetTab(template.TabId, portalSettings.PortalId, false);
             var xmlTab = new XmlDocument { XmlResolver = null };
             var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
@@ -213,7 +225,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 int.TryParse(file.Value, out i);
                 templates.Add(new Template
                 {
-                    Id = file.Text.Replace(".page.template", ""),
+                    Id = file.Text.Replace(".page.template", string.Empty),
                     Value = i,
                 });
             }

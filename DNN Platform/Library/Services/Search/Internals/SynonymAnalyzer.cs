@@ -14,9 +14,7 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Standard;
 
-    /// <summary>
-    /// This is responsible for the filters chain that analyzes search documents/queries.
-    /// </summary>
+    /// <summary>This is responsible for the filters chain that analyzes search documents/queries.</summary>
     internal class SynonymAnalyzer : Analyzer
     {
         /// <inheritdoc/>
@@ -30,8 +28,8 @@ namespace DotNetNuke.Services.Search.Internals
             // According to Lucene's documentaiton the StopFilter performs a case-sensitive lookup of each token in a set of stop
             // words. It relies on being fed already lowercased tokens. Therefore, DO NOT reverse the order of these filters.
             return
-                new PorterStemFilter(// stemming filter
-                    new ASCIIFoldingFilter(// accents filter
+                new PorterStemFilter( // stemming filter
+                    new ASCIIFoldingFilter( // accents filter
                         new SynonymFilter(
                             new StopFilter(
                                 true,
@@ -39,9 +37,9 @@ namespace DotNetNuke.Services.Search.Internals
                                     new LengthFilter(
                                         new StandardFilter(
                                             new StandardTokenizer(Constants.LuceneVersion, reader)),
-                                        wordLengthMinMax.Item1, wordLengthMinMax.Item2)),
-                                stops))))
-            ;
+                                        wordLengthMinMax.Item1,
+                                        wordLengthMinMax.Item2)),
+                                stops))));
         }
 
         private static ISet<string> GetStopWords()

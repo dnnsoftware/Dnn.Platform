@@ -20,12 +20,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Controller class for Installer.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Controller class for Installer.</summary>
     internal class InstallControllerImpl : IInstallController
     {
         /// <inheritdoc/>
@@ -34,9 +29,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
         }
 
-        /// <summary>
-        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.
-        /// </summary>
+        /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
         /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public ConnectionConfig GetConnectionFromWebConfig()
         {
@@ -89,9 +82,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return connectionConfig;
         }
 
-        /// <summary>
-        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.
-        /// </summary>
+        /// <summary>SetInstallConfig - Saves configuration in <c>DotNetNuke.Install.Config</c>.</summary>
         public void SetInstallConfig(InstallConfig installConfig)
         {
             if (installConfig == null)
@@ -275,9 +266,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
-        /// <summary>
-        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.
-        /// </summary>
+        /// <summary>GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.</summary>
         /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public InstallConfig GetInstallConfig()
         {
@@ -571,12 +560,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return pageCulture;
         }
 
-        /// <summary>
-        /// Tests the Database Connection using the database connection config.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <returns></returns>
+        /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>).</returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
             DbConnectionStringBuilder builder = DataProvider.Instance().GetConnectionStringBuilder();

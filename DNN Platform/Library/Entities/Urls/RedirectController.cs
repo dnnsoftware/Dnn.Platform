@@ -16,9 +16,7 @@ namespace DotNetNuke.Entities.Urls
 
     internal class RedirectController
     {
-        /// <summary>
-        /// Cancels a redirect.
-        /// </summary>
+        /// <summary>Cancels a redirect.</summary>
         /// <param name="result"></param>
         /// <param name="context"></param>
         /// <param name="settings"></param>
@@ -40,25 +38,22 @@ namespace DotNetNuke.Entities.Urls
 
             // redo the rewrite to fix up the problem.  The user has ticked 'permanent redirect' but hasn't supplied a forwarding Url
             if (context != null)
-
-            // if no context supplied, means no rewrite was required because querystring didn't contain do301 action
             {
-                // RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
+                // if no context supplied, means no rewrite was required because querystring didn't contain do301 action
+                ////RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
                 RewriterUtils.RewriteUrl(context, result.RewritePath);
             }
 
             result.DebugMessages.Add(message);
         }
 
-        /// <summary>
-        /// Checks for a redirect based on a module friendly url provider rule.
-        /// </summary>
+        /// <summary>Checks for a redirect based on a module friendly url provider rule.</summary>
         /// <param name="requestUri"></param>
         /// <param name="result"></param>
         /// <param name="queryStringCol"></param>
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the <paramref name="result"/> is a redirect, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForModuleProviderRedirect(
             Uri requestUri,
             ref UrlAction result,
@@ -125,8 +120,9 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     // check for 'all tabs' redirections
-                    if (redirectActions.ContainsKey(-1)) // -1 means 'all tabs' - rewriting across all tabs
+                    if (redirectActions.ContainsKey(-1))
                     {
+                        // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab redirects
                         if (parmRedirects == null)
                         {
@@ -400,7 +396,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="result"></param>
         /// <param name="permRedirect"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns>The friendly URL or <see langword="null"/>.</returns>
         /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline.</remarks>
         internal static string GetTabRedirectUrl(
             TabInfo tab,

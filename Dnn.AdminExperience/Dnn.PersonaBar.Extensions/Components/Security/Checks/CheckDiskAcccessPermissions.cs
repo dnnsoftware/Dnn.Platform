@@ -18,10 +18,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private const char Yes = 'Y';
         private const char No = 'N';
 
+        /// <inheritdoc/>
         public string Id => "CheckDiskAccess";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -37,7 +40,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             catch (UnauthorizedAccessException)
             {
                 // The caller does not have the required permission.
-
             }
             catch (System.Security.SecurityException)
             {
@@ -53,6 +55,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 result.Severity = SeverityEnum.Warning;
                 result.Notes = accessErrors;
             }
+
             return result;
         }
 
@@ -63,7 +66,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
             while (dir.Parent != null)
             {
-
                 try
                 {
                     dir = dir.Parent;
@@ -81,9 +83,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 catch (UnauthorizedAccessException)
                 {
                     // The caller does not have the required permission.
-
                 }
-
             }
 
             var drives = DriveInfo.GetDrives();
@@ -129,8 +129,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             var message = ignoreRead
                 ? @"{0} - Write:{2}, Create:{3}, Delete:{4}"
                 : @"{0} - Read:{1}, Write:{2}, Create:{3}, Delete:{4}";
-            return string.Format(@"{0} - Read:{1}, Write:{2}, Create:{3}, Delete:{4}",
-                dir.FullName, permissions.Read, permissions.Write, permissions.Create, permissions.Delete);
+            return
+                $@"{dir.FullName} - Read:{permissions.Read}, Write:{permissions.Write}, Create:{permissions.Create}, Delete:{permissions.Delete}";
         }
 
         private static Permissions CheckPermissionOnDir(DirectoryInfo dir)
@@ -148,33 +148,49 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                         if ((rule.FileSystemRights & (FileSystemRights.CreateDirectories | FileSystemRights.CreateFiles)) != 0)
                         {
                             if (rule.AccessControlType == AccessControlType.Allow)
+                            {
                                 permissions.Create = Yes;
+                            }
                             else
+                            {
                                 permissions.SetThenLockCreate(No);
+                            }
                         }
 
                         if ((rule.FileSystemRights & FileSystemRights.Write) != 0)
                         {
                             if (rule.AccessControlType == AccessControlType.Allow)
+                            {
                                 permissions.Write = Yes;
+                            }
                             else
+                            {
                                 permissions.SetThenLockWrite(No);
+                            }
                         }
 
                         if ((rule.FileSystemRights & (FileSystemRights.Read | FileSystemRights.ReadData)) != 0)
                         {
                             if (rule.AccessControlType == AccessControlType.Allow)
+                            {
                                 permissions.Read = Yes;
+                            }
                             else
+                            {
                                 permissions.SetThenLockRead(No);
+                            }
                         }
 
                         if ((rule.FileSystemRights & (FileSystemRights.Delete | FileSystemRights.DeleteSubdirectoriesAndFiles)) != 0)
                         {
                             if (rule.AccessControlType == AccessControlType.Allow)
+                            {
                                 permissions.Delete = Yes;
+                            }
                             else
+                            {
                                 permissions.SetThenLockDelete(No);
+                            }
                         }
                     }
                 }
@@ -185,20 +201,20 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         private class Permissions
         {
-            private char _create;
+            private char create;
 
-            private bool _createLocked;
-            private char _delete;
-            private bool _deleteLocked;
-            private char _read;
-            private bool _readLocked;
+            private bool createLocked;
+            private char delete;
+            private bool deleteLocked;
+            private char read;
+            private bool readLocked;
 
-            private char _write;
-            private bool _writeLocked;
+            private char write;
+            private bool writeLocked;
 
             public Permissions(char initial)
             {
-                this._create = this._write = this._read = this._delete = initial;
+                this.create = this.write = this.read = this.delete = initial;
             }
 
             public bool AnyYes
@@ -208,61 +224,101 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
             public char Create
             {
-                get { return this._create; }
-                set { if (!this._createLocked) this._create = value; }
+                get
+                {
+                    return this.create;
+                }
+
+                set
+                {
+                    if (!this.createLocked)
+                    {
+                        this.create = value;
+                    }
+                }
             }
 
             public char Write
             {
-                get { return this._write; }
-                set { if (!this._writeLocked) this._write = value; }
+                get
+                {
+                    return this.write;
+                }
+
+                set
+                {
+                    if (!this.writeLocked)
+                    {
+                        this.write = value;
+                    }
+                }
             }
 
             public char Read
             {
-                get { return this._read; }
-                set { if (!this._readLocked) this._read = value; }
+                get
+                {
+                    return this.read;
+                }
+
+                set
+                {
+                    if (!this.readLocked)
+                    {
+                        this.read = value;
+                    }
+                }
             }
 
             public char Delete
             {
-                get { return this._delete; }
-                set { if (!this._deleteLocked) this._delete = value; }
+                get
+                {
+                    return this.delete;
+                }
+
+                set
+                {
+                    if (!this.deleteLocked)
+                    {
+                        this.delete = value;
+                    }
+                }
             }
 
             public void SetThenLockCreate(char value)
             {
-                if (!this._createLocked)
+                if (!this.createLocked)
                 {
-                    this._createLocked = true;
-                    this._create = value;
+                    this.createLocked = true;
+                    this.create = value;
                 }
             }
 
             public void SetThenLockWrite(char value)
             {
-                if (!this._writeLocked)
+                if (!this.writeLocked)
                 {
-                    this._writeLocked = true;
-                    this._write = value;
+                    this.writeLocked = true;
+                    this.write = value;
                 }
             }
 
             public void SetThenLockRead(char value)
             {
-                if (!this._readLocked)
+                if (!this.readLocked)
                 {
-                    this._readLocked = true;
-                    this._read = value;
+                    this.readLocked = true;
+                    this.read = value;
                 }
             }
 
             public void SetThenLockDelete(char value)
             {
-                if (!this._deleteLocked)
+                if (!this.deleteLocked)
                 {
-                    this._deleteLocked = true;
-                    this._delete = value;
+                    this.deleteLocked = true;
+                    this.delete = value;
                 }
             }
         }

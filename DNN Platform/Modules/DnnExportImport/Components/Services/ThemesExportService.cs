@@ -27,12 +27,16 @@ namespace Dnn.ExportImport.Components.Services
         private PortalSettings portalSettings;
         private int importCount;
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Themes;
 
+        /// <inheritdoc/>
         public override string ParentCategory => Constants.Category_Pages;
 
+        /// <inheritdoc/>
         public override uint Priority => 10;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -111,6 +115,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -208,6 +213,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.importCount;

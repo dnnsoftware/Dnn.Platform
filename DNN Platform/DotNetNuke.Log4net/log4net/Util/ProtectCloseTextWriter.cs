@@ -26,9 +26,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// A <see cref="TextWriter"/> that ignores the <see cref="Close"/> message
-    /// </summary>
+    /// <summary>A <see cref="TextWriter"/> that ignores the <see cref="Close"/> message</summary>
     /// <remarks>
     /// <para>
     /// This writer is used in special cases where it is necessary 
@@ -38,9 +36,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class ProtectCloseTextWriter : TextWriterAdapter
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="writer">the writer to actually write to</param>
         /// <remarks>
         /// <para>
@@ -51,9 +47,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Attach this instance to a different underlying <see cref="TextWriter"/>
-        /// </summary>
+        /// <summary>Attach this instance to a different underlying <see cref="TextWriter"/></summary>
         /// <param name="writer">the writer to attach to</param>
         /// <remarks>
         /// <para>
@@ -65,9 +59,7 @@ namespace log4net.Util
             this.Writer = writer;
         }
 
-        /// <summary>
-        /// Does not close the underlying output writer.
-        /// </summary>
+        /// <summary>Does not close the underlying output writer.</summary>
         /// <remarks>
         /// <para>
         /// Does not close the underlying output writer.

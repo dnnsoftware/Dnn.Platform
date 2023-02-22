@@ -4,21 +4,18 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
-    using System.Collections.Generic;
     using System.Xml;
 
-    /// <summary>
-    ///   Class for managing an OPML feed outline.
-    /// </summary>
+    /// <summary>  Class for managing an OPML feed outline.</summary>
     public class OpmlOutline
     {
-        private string _category = string.Empty;
-        private DateTime _created = DateTime.MinValue;
-        private string _description = string.Empty;
-        private string _language = string.Empty;
-        private string _text = string.Empty;
-        private string _title = string.Empty;
-        private string _type = "rss";
+        private string category = string.Empty;
+        private DateTime created = DateTime.MinValue;
+        private string description = string.Empty;
+        private string language = string.Empty;
+        private string text = string.Empty;
+        private string title = string.Empty;
+        private string type = "rss";
 
         public OpmlOutline()
         {
@@ -106,12 +103,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._description;
+                return this.description;
             }
 
             set
             {
-                this._description = value;
+                this.description = value;
             }
         }
 
@@ -119,12 +116,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._title;
+                return this.title;
             }
 
             set
             {
-                this._title = value;
+                this.title = value;
             }
         }
 
@@ -132,12 +129,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._type;
+                return this.type;
             }
 
             set
             {
-                this._type = value;
+                this.type = value;
             }
         }
 
@@ -145,12 +142,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._text;
+                return this.text;
             }
 
             set
             {
-                this._text = value;
+                this.text = value;
             }
         }
 
@@ -164,12 +161,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._created;
+                return this.created;
             }
 
             set
             {
-                this._created = value;
+                this.created = value;
             }
         }
 
@@ -181,12 +178,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._category;
+                return this.category;
             }
 
             set
             {
-                this._category = value;
+                this.category = value;
             }
         }
 
@@ -194,19 +191,15 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._language;
+                return this.language;
             }
 
             set
             {
-                this._language = value;
+                this.language = value;
             }
         }
 
         public OpmlOutlines Outlines { get; set; }
-    }
-
-    public class OpmlOutlines : List<OpmlOutline>
-    {
     }
 }

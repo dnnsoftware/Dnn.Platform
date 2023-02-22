@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     public partial class PayPalIPN : PageBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -31,6 +32,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -209,7 +211,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                 }
             }
-            catch (Exception exc) // Page failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessPageLoadException(exc);
             }

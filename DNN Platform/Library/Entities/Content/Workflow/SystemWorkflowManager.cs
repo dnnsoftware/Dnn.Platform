@@ -17,16 +17,14 @@ namespace DotNetNuke.Entities.Content.Workflow
         public const string DirectPublishWorkflowKey = "DirectPublish";
         public const string SaveDraftWorkflowKey = "SaveDraft";
         public const string ContentAprovalWorkflowKey = "ContentApproval";
-        private readonly IWorkflowRepository _workflowRepository;
-        private readonly IWorkflowStateRepository _workflowStateRepository;
+        private readonly IWorkflowRepository workflowRepository;
+        private readonly IWorkflowStateRepository workflowStateRepository;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SystemWorkflowManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SystemWorkflowManager"/> class.</summary>
         public SystemWorkflowManager()
         {
-            this._workflowRepository = WorkflowRepository.Instance;
-            this._workflowStateRepository = WorkflowStateRepository.Instance;
+            this.workflowRepository = WorkflowRepository.Instance;
+            this.workflowStateRepository = WorkflowStateRepository.Instance;
         }
 
         /// <inheritdoc/>
@@ -40,19 +38,19 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public Entities.Workflow GetDirectPublishWorkflow(int portalId)
         {
-            return this._workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
+            return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
         }
 
         /// <inheritdoc/>
         public Entities.Workflow GetSaveDraftWorkflow(int portalId)
         {
-            return this._workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == SaveDraftWorkflowKey);
+            return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == SaveDraftWorkflowKey);
         }
 
         /// <inheritdoc/>
         public Entities.Workflow GetContentApprovalWorkflow(int portalId)
         {
-            return this._workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == ContentAprovalWorkflowKey);
+            return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == ContentAprovalWorkflowKey);
         }
 
         /// <inheritdoc/>
@@ -108,10 +106,10 @@ namespace DotNetNuke.Entities.Content.Workflow
                 IsSystem = true,
                 PortalID = portalId,
             };
-            this._workflowRepository.AddWorkflow(workflow);
+            this.workflowRepository.AddWorkflow(workflow);
             var publishedState = this.GetPublishedStateDefinition(1);
             publishedState.WorkflowID = workflow.WorkflowID;
-            this._workflowStateRepository.AddWorkflowState(publishedState);
+            this.workflowStateRepository.AddWorkflowState(publishedState);
         }
 
         private void CreateSaveDraftWorkflow(int portalId)
@@ -124,15 +122,15 @@ namespace DotNetNuke.Entities.Content.Workflow
                 IsSystem = true,
                 PortalID = portalId,
             };
-            this._workflowRepository.AddWorkflow(workflow);
+            this.workflowRepository.AddWorkflow(workflow);
 
             var state = this.GetDraftStateDefinition(1);
             state.WorkflowID = workflow.WorkflowID;
-            this._workflowStateRepository.AddWorkflowState(state);
+            this.workflowStateRepository.AddWorkflowState(state);
 
             state = this.GetPublishedStateDefinition(2);
             state.WorkflowID = workflow.WorkflowID;
-            this._workflowStateRepository.AddWorkflowState(state);
+            this.workflowStateRepository.AddWorkflowState(state);
         }
 
         private void CreateContentApprovalWorkflow(int portalId)
@@ -145,19 +143,19 @@ namespace DotNetNuke.Entities.Content.Workflow
                 IsSystem = true,
                 PortalID = portalId,
             };
-            this._workflowRepository.AddWorkflow(workflow);
+            this.workflowRepository.AddWorkflow(workflow);
 
             var state = this.GetDraftStateDefinition(1);
             state.WorkflowID = workflow.WorkflowID;
-            this._workflowStateRepository.AddWorkflowState(state);
+            this.workflowStateRepository.AddWorkflowState(state);
 
             state = this.GetReadyForReviewStateDefinition(2);
             state.WorkflowID = workflow.WorkflowID;
-            this._workflowStateRepository.AddWorkflowState(state);
+            this.workflowStateRepository.AddWorkflowState(state);
 
             state = this.GetPublishedStateDefinition(3);
             state.WorkflowID = workflow.WorkflowID;
-            this._workflowStateRepository.AddWorkflowState(state);
+            this.workflowStateRepository.AddWorkflowState(state);
         }
     }
 }

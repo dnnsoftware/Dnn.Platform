@@ -12,16 +12,10 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// InstallSslStep - Step that checks and sets SSL where needed.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>InstallSslStep - Step that checks and sets SSL where needed.</summary>
     public class InstallSslStep : BaseInstallationStep
     {
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
             this.Percentage = 0;

@@ -30,9 +30,7 @@ using log4net.Util;
 
 namespace log4net.Appender 
 {
-    /// <summary>
-    /// Logs events to a local syslog service.
-    /// </summary>
+    /// <summary>Logs events to a local syslog service.</summary>
     /// <remarks>
     /// <note>
     /// This appender uses the POSIX libc library functions <c>openlog</c>, <c>syslog</c>, and <c>closelog</c>.
@@ -65,9 +63,7 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class LocalSyslogAppender : AppenderSkeleton 
     {
-        /// <summary>
-        /// syslog severities
-        /// </summary>
+        /// <summary>syslog severities</summary>
         /// <remarks>
         /// <para>
         /// The log4net Level maps to a syslog severity using the
@@ -77,50 +73,32 @@ namespace log4net.Appender
         /// </remarks>
         public enum SyslogSeverity
         {
-            /// <summary>
-            /// system is unusable
-            /// </summary>
+            /// <summary>system is unusable</summary>
             Emergency = 0,
 
-            /// <summary>
-            /// action must be taken immediately
-            /// </summary>
+            /// <summary>action must be taken immediately</summary>
             Alert = 1,
 
-            /// <summary>
-            /// critical conditions
-            /// </summary>
+            /// <summary>critical conditions</summary>
             Critical = 2,
 
-            /// <summary>
-            /// error conditions
-            /// </summary>
+            /// <summary>error conditions</summary>
             Error = 3,
 
-            /// <summary>
-            /// warning conditions
-            /// </summary>
+            /// <summary>warning conditions</summary>
             Warning = 4,
 
-            /// <summary>
-            /// normal but significant condition
-            /// </summary>
+            /// <summary>normal but significant condition</summary>
             Notice = 5,
 
-            /// <summary>
-            /// informational
-            /// </summary>
+            /// <summary>informational</summary>
             Informational = 6,
 
-            /// <summary>
-            /// debug-level messages
-            /// </summary>
+            /// <summary>debug-level messages</summary>
             Debug = 7
         };
 
-        /// <summary>
-        /// syslog facilities
-        /// </summary>
+        /// <summary>syslog facilities</summary>
         /// <remarks>
         /// <para>
         /// The syslog facility defines which subsystem the logging comes from.
@@ -129,130 +107,80 @@ namespace log4net.Appender
         /// </remarks>
         public enum SyslogFacility
         {
-            /// <summary>
-            /// kernel messages
-            /// </summary>
+            /// <summary>kernel messages</summary>
             Kernel = 0,
 
-            /// <summary>
-            /// random user-level messages
-            /// </summary>
+            /// <summary>random user-level messages</summary>
             User = 1,
 
-            /// <summary>
-            /// mail system
-            /// </summary>
+            /// <summary>mail system</summary>
             Mail = 2,
 
-            /// <summary>
-            /// system daemons
-            /// </summary>
+            /// <summary>system daemons</summary>
             Daemons = 3,
 
-            /// <summary>
-            /// security/authorization messages
-            /// </summary>
+            /// <summary>security/authorization messages</summary>
             Authorization = 4,
 
-            /// <summary>
-            /// messages generated internally by syslogd
-            /// </summary>
+            /// <summary>messages generated internally by syslogd</summary>
             Syslog = 5,
 
-            /// <summary>
-            /// line printer subsystem
-            /// </summary>
+            /// <summary>line printer subsystem</summary>
             Printer = 6,
 
-            /// <summary>
-            /// network news subsystem
-            /// </summary>
+            /// <summary>network news subsystem</summary>
             News = 7,
 
-            /// <summary>
-            /// UUCP subsystem
-            /// </summary>
+            /// <summary>UUCP subsystem</summary>
             Uucp = 8,
 
-            /// <summary>
-            /// clock (cron/at) daemon
-            /// </summary>
+            /// <summary>clock (cron/at) daemon</summary>
             Clock = 9,
 
-            /// <summary>
-            /// security/authorization  messages (private)
-            /// </summary>
+            /// <summary>security/authorization  messages (private)</summary>
             Authorization2 = 10,
 
-            /// <summary>
-            /// ftp daemon
-            /// </summary>
+            /// <summary>ftp daemon</summary>
             Ftp = 11,
 
-            /// <summary>
-            /// NTP subsystem
-            /// </summary>
+            /// <summary>NTP subsystem</summary>
             Ntp = 12,
 
-            /// <summary>
-            /// log audit
-            /// </summary>
+            /// <summary>log audit</summary>
             Audit = 13,
 
-            /// <summary>
-            /// log alert
-            /// </summary>
+            /// <summary>log alert</summary>
             Alert = 14,
 
-            /// <summary>
-            /// clock daemon
-            /// </summary>
+            /// <summary>clock daemon</summary>
             Clock2 = 15,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local0 = 16,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local1 = 17,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local2 = 18,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local3 = 19,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local4 = 20,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local5 = 21,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local6 = 22,
 
-            /// <summary>
-            /// reserved for local use
-            /// </summary>
+            /// <summary>reserved for local use</summary>
             Local7 = 23
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalSyslogAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LocalSyslogAppender" /> class.</summary>
         /// <remarks>
         /// This instance of the <see cref="LocalSyslogAppender" /> class is set up to write 
         /// to a local syslog service.
@@ -261,9 +189,7 @@ namespace log4net.Appender
         {
         }
 
-        /// <summary>
-        /// Message identity
-        /// </summary>
+        /// <summary>Message identity</summary>
         /// <remarks>
         /// <para>
         /// An identifier is specified with each log message. This can be specified
@@ -278,9 +204,7 @@ namespace log4net.Appender
             set { this.m_identity = value; }
         }
 
-        /// <summary>
-        /// Syslog facility
-        /// </summary>
+        /// <summary>Syslog facility</summary>
         /// <remarks>
         /// Set to one of the <see cref="SyslogFacility"/> values. The list of
         /// facilities is predefined and cannot be extended. The default value
@@ -292,9 +216,7 @@ namespace log4net.Appender
             set { this.m_facility = value; }
         }
 
-        /// <summary>
-        /// Add a mapping of level to severity
-        /// </summary>
+        /// <summary>Add a mapping of level to severity</summary>
         /// <param name="mapping">The mapping to add</param>
         /// <remarks>
         /// <para>
@@ -306,9 +228,7 @@ namespace log4net.Appender
             this.m_levelMapping.Add(mapping);
         }
 
-        /// <summary>
-        /// Initialize the appender based on the options set.
-        /// </summary>
+        /// <summary>Initialize the appender based on the options set.</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -347,9 +267,7 @@ namespace log4net.Appender
             openlog(this.m_handleToIdentity, 1, this.m_facility);
         }
 
-        /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
-        /// </summary>
+        /// <summary>This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
@@ -375,9 +293,7 @@ namespace log4net.Appender
             syslog(priority, "%s", message);
         }
 
-        /// <summary>
-        /// Close the syslog when the appender is closed
-        /// </summary>
+        /// <summary>Close the syslog when the appender is closed</summary>
         /// <remarks>
         /// <para>
         /// Close the syslog when the appender is closed
@@ -407,9 +323,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="AppenderSkeleton.Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="AppenderSkeleton.Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -421,9 +335,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Translates a log4net level to a syslog severity.
-        /// </summary>
+        /// <summary>Translates a log4net level to a syslog severity.</summary>
         /// <param name="level">A log4net level.</param>
         /// <returns>A syslog severity.</returns>
         /// <remarks>
@@ -471,9 +383,7 @@ namespace log4net.Appender
             return SyslogSeverity.Debug;
         }
 
-        /// <summary>
-        /// Generate a syslog priority.
-        /// </summary>
+        /// <summary>Generate a syslog priority.</summary>
         /// <param name="facility">The syslog facility.</param>
         /// <param name="severity">The syslog severity.</param>
         /// <returns>A syslog priority.</returns>
@@ -482,14 +392,10 @@ namespace log4net.Appender
             return ((int)facility * 8) + (int)severity;
         }
 
-        /// <summary>
-        /// The facility. The default facility is <see cref="SyslogFacility.User"/>.
-        /// </summary>
+        /// <summary>The facility. The default facility is <see cref="SyslogFacility.User"/>.</summary>
         private SyslogFacility m_facility = SyslogFacility.User;
 
-        /// <summary>
-        /// The message identity
-        /// </summary>
+        /// <summary>The message identity</summary>
         private string m_identity;
 
         /// <summary>
@@ -499,20 +405,14 @@ namespace log4net.Appender
         /// </summary>
         private IntPtr m_handleToIdentity = IntPtr.Zero;
 
-        /// <summary>
-        /// Mapping from level object to syslog severity
-        /// </summary>
+        /// <summary>Mapping from level object to syslog severity</summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
-        /// <summary>
-        /// Open connection to system logger.
-        /// </summary>
+        /// <summary>Open connection to system logger.</summary>
         [DllImport("libc")]
         private static extern void openlog(IntPtr ident, int option, SyslogFacility facility);
 
-        /// <summary>
-        /// Generate a log message.
-        /// </summary>
+        /// <summary>Generate a log message.</summary>
         /// <remarks>
         /// <para>
         /// The libc syslog method takes a format string and a variable argument list similar
@@ -525,9 +425,7 @@ namespace log4net.Appender
         [DllImport("libc", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern void syslog(int priority, string format, string message);
 
-        /// <summary>
-        /// Close descriptor used to write to system logger.
-        /// </summary>
+        /// <summary>Close descriptor used to write to system logger.</summary>
         [DllImport("libc")]
         private static extern void closelog();
 
@@ -545,9 +443,7 @@ namespace log4net.Appender
         {
             private SyslogSeverity m_severity;
 
-            /// <summary>
-            /// The mapped syslog severity for the specified level
-            /// </summary>
+            /// <summary>The mapped syslog severity for the specified level</summary>
             /// <remarks>
             /// <para>
             /// Required property.

@@ -8,15 +8,14 @@ namespace Dnn.PersonaBar.Servers.Services
     using System.Net;
     using System.Net.Http;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Servers.Services.Dto;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Providers;
@@ -25,12 +24,24 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Web.Api;
 
+    /// <summary>Provides the APIs for SMTP settings management.</summary>
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class ServerSettingsSmtpAdminController : PersonaBarApiController
     {
         private const string ObfuscateString = "*****";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
+        private readonly IHostSettingsService hostSettingsService;
 
+        /// <summary>Initializes a new instance of the <see cref="ServerSettingsSmtpAdminController"/> class.</summary>
+        /// <param name="hostSettingsService">A service to manage host settings.</param>
+        public ServerSettingsSmtpAdminController(
+            IHostSettingsService hostSettingsService)
+        {
+            this.hostSettingsService = hostSettingsService;
+        }
+
+        /// <summary>Gets the SMTP settings.</summary>
+        /// <returns>An object representing the SMTP settings for the current portal.</returns>
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()
         {
@@ -64,6 +75,9 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
+        /// <summary>Updates the SMTP settings for the current portal.</summary>
+        /// <param name="request"><see cref="UpdateSmtpSettingsRequest"/>.</param>
+        /// <returns>A value indicating whether the operation succeeded.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSmtpSettings(UpdateSmtpSettingsRequest request)
@@ -82,10 +96,16 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
-                PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication",
-                    request.SmtpAuthentication.ToString(), false);
+                PortalController.UpdatePortalSetting(
+                    portalId,
+                    "SMTPAuthentication",
+                    request.SmtpAuthentication.ToString(),
+                    false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
-                PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword,
+                PortalController.UpdateEncryptedString(
+                    portalId,
+                    "SMTPPassword",
+                    request.SmtpPassword,
                     Config.GetDecryptionkey());
                 PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
@@ -99,14 +119,12 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        /// POST: api/Servers/SendTestEmail
-        /// <summary>
-        /// Tests SMTP settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Sends a test email to validate the settings work.</summary>
+        /// <param name="request"><see cref="SendTestEmailRequest"/>.</param>
+        /// <returns>A localized test result message.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage SendTestEmail(SendTestEmailRequest request)
         {
             try
@@ -114,8 +132,14 @@ namespace Dnn.PersonaBar.Servers.Services
                 var smtpHostMode = request.SmtpServerMode == "h";
                 var mailFrom = smtpHostMode ? Host.HostEmail : this.PortalSettings.Email;
                 var mailTo = this.UserInfo.Email;
+                var portalId = PortalSettings.Current.PortalId;
+                if (request.SmtpPassword == ObfuscateString)
+                {
+                    request.SmtpPassword = GetSmtpPassword(portalId, false);
+                }
 
-                var errMessage = Mail.SendMail(mailFrom,
+                var errMessage = Mail.SendMail(
+                    mailFrom,
                     mailTo,
                     string.Empty,
                     string.Empty,
@@ -125,11 +149,11 @@ namespace Dnn.PersonaBar.Servers.Services
                     Encoding.UTF8,
                     string.Empty,
                     string.Empty,
-                    smtpHostMode ? HostController.Instance.GetString("SMTPServer") : request.SmtpServer,
-                    smtpHostMode ? HostController.Instance.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
-                    smtpHostMode ? HostController.Instance.GetString("SMTPUsername") : request.SmtpUsername,
-                    smtpHostMode ? HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
-                    smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
+                    smtpHostMode ? this.hostSettingsService.GetString("SMTPServer") : request.SmtpServer,
+                    smtpHostMode ? this.hostSettingsService.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
+                    smtpHostMode ? this.hostSettingsService.GetString("SMTPUsername") : request.SmtpUsername,
+                    smtpHostMode ? this.hostSettingsService.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
+                    smtpHostMode ? this.hostSettingsService.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
 
                 var success = string.IsNullOrEmpty(errMessage);
                 return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new

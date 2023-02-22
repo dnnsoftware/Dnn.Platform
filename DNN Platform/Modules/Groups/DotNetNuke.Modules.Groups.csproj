@@ -61,8 +61,8 @@
       <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -126,13 +126,13 @@
     </Compile>
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Content.cs" />
-    <Compile Include="Components\GroupItemPropertyAccess.cs" />
+    <Compile Include="Components\GroupItemTokenReplace.cs" />
     <Compile Include="Components\GroupMemberType.cs" />
     <Compile Include="Components\GroupsBusinessController.cs" />
-    <Compile Include="Components\GroupsRouteMapper.cs" />
     <Compile Include="Components\GroupUtilities.cs" />
     <Compile Include="Components\GroupViewParser.cs" />
     <Compile Include="Components\Notifications.cs" />
+    <Compile Include="Components\ServiceRouteMapper.cs" />
     <Compile Include="Components\Utilities.cs" />
     <Compile Include="Create.ascx.cs">
       <DependentUpon>Create.ascx</DependentUpon>

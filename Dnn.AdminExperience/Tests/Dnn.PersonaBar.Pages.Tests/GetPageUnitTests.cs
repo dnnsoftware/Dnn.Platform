@@ -47,6 +47,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_GetPageWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange
@@ -65,6 +66,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_GetPageWithValidCommandForNonExistingTab_ShouldErrorResponse()
         {
             // Arrange
@@ -83,6 +85,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_GetPageWithValidCommandForRequestedPortalNotAllowed_ShouldErrorResponse()
         {
             // Arrange
@@ -99,6 +102,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_GetPageWithValidCommandForPortalNotAllowed_ShouldErrorResponse()
         {
             // Arrange

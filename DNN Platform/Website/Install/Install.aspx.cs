@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Install
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -32,10 +33,16 @@ namespace DotNetNuke.Services.Install
 
     public partial class Install : Page
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
-        private static readonly object installLocker = new object();
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
+        private static readonly object InstallLocker = new object();
+
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -53,6 +60,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -128,6 +136,11 @@ namespace DotNetNuke.Services.Install
         private static void RegisterInstallEnd()
         {
             InstallBlocker.Instance.RegisterInstallEnd();
+        }
+
+        private static ITelerikUtils CreateTelerikUtils()
+        {
+            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
 
         private void ExecuteScripts()
@@ -206,7 +219,7 @@ namespace DotNetNuke.Services.Install
                         }
 
                         // Add the install blocker logic
-                        lock (installLocker)
+                        lock (InstallLocker)
                         {
                             if (InstallBlocker.Instance.IsInstallInProgress())
                             {
@@ -236,9 +249,9 @@ namespace DotNetNuke.Services.Install
                         }
 
                         var licenseConfig = installConfig.License;
-                        bool IsProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
+                        bool isProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
                                                   File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-                        if (IsProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
+                        if (isProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
                             !string.IsNullOrEmpty(licenseConfig.InvoiceNumber))
                         {
                             Upgrade.Upgrade.ActivateLicense();
@@ -339,7 +352,7 @@ namespace DotNetNuke.Services.Install
                 HtmlUtils.WriteHeader(this.Response, "upgrade");
 
                 // There could be an installation in progress
-                lock (installLocker)
+                lock (InstallLocker)
                 {
                     if (InstallBlocker.Instance.IsInstallInProgress())
                     {
@@ -397,8 +410,6 @@ namespace DotNetNuke.Services.Install
 
                     this.Response.Write("<br>");
                     this.Response.Write("<h2>Checking Security Aspects</h2>");
-                    // Check Telerik status
-                    var message = "";
                     var telerikUtils = CreateTelerikUtils();
                     if (telerikUtils.TelerikIsInstalled())
                     {
@@ -614,11 +625,6 @@ namespace DotNetNuke.Services.Install
 
             // Write out Footer
             HtmlUtils.WriteFooter(this.Response);
-        }
-
-        private static ITelerikUtils CreateTelerikUtils()
-        {
-            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
 
         private string LocalizeString(string key)

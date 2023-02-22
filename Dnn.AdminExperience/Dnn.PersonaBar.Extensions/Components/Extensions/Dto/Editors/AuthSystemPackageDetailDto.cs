@@ -9,11 +9,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class AuthSystemPackageDetailDto : PackageInfoDto
     {
+        /// <summary>Initializes a new instance of the <see cref="AuthSystemPackageDetailDto"/> class.</summary>
         public AuthSystemPackageDetailDto()
         {
         }
 
-        public AuthSystemPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        /// <summary>Initializes a new instance of the <see cref="AuthSystemPackageDetailDto"/> class.</summary>
+        /// <param name="portalId"></param>
+        /// <param name="package"></param>
+        public AuthSystemPackageDetailDto(int portalId, PackageInfo package)
+            : base(portalId, package)
         {
         }
 

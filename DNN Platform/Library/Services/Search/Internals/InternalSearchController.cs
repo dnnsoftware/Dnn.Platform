@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Internal Search Controller. This is an Internal class and should not be used outside of Core.
-    /// </summary>
+    /// <summary>Internal Search Controller. This is an Internal class and should not be used outside of Core.</summary>
     public class InternalSearchController : ServiceLocator<IInternalSearchController, InternalSearchController>
     {
         /// <inheritdoc/>

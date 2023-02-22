@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Library.DTO
     [DataContract]
     public class RolePermission
     {
+        /// <summary>Initializes a new instance of the <see cref="RolePermission"/> class.</summary>
         public RolePermission()
         {
             this.Permissions = new List<Permission>();

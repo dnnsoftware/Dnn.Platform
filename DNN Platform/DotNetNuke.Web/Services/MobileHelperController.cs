@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Services
 {
     using System;
@@ -24,12 +23,10 @@ namespace DotNetNuke.Web.Services
     [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
-        private readonly string _dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
+        private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
-        /// <summary>
-        /// Gets the various defined monikers for the various tab modules in the system.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets the various defined monikers for the various tab modules in the system.</summary>
+        /// <returns>A response with a list of objects containing <c>tabModuleId</c> and <c>moniker</c> fields.</returns>
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)
         {
@@ -85,8 +82,7 @@ namespace DotNetNuke.Web.Services
             {
                 var cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalId) + "_" +
                                desktopModule.DesktopModuleID;
-                var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut,
-                                             DataCache.DesktopModuleCachePriority, portalId, desktopModule);
+                var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule);
 
                 return CBO.GetCachedObject<IList<TabModule>>(args, GetTabModulesCallback);
             }
@@ -128,8 +124,7 @@ namespace DotNetNuke.Web.Services
             return tabModules;
         }
 
-        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs,
-            IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
+        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs, IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
         {
             if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
             {
@@ -149,7 +144,7 @@ namespace DotNetNuke.Web.Services
             var siteDetails = new SiteDetail
             {
                 SiteName = this.PortalSettings.PortalName,
-                DnnVersion = this._dnnVersion,
+                DnnVersion = this.dnnVersion,
                 IsHost = this.UserInfo.IsSuperUser,
                 IsAdmin = this.UserInfo.IsInRole("Administrators"),
             };

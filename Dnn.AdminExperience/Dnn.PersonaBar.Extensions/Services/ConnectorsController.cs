@@ -1,12 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Connectors.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -88,9 +86,10 @@ namespace Dnn.PersonaBar.Connectors.Services
                     connector.Id = null;
                     connector.DisplayName = null;
                 }
+
                 if (connector != null && !string.IsNullOrEmpty(displayName) && connector.DisplayName != displayName)
                 {
-                    connector.DisplayName = string.IsNullOrEmpty(displayName) ? "" : displayName;
+                    connector.DisplayName = string.IsNullOrEmpty(displayName) ? string.Empty : displayName;
                 }
 
                 bool validated = false;
@@ -98,8 +97,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                 {
                     var configs = this.GetConfigAsDictionary(postObject.configurations);
                     string customErrorMessage;
-                    var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated,
-                        out customErrorMessage);
+                    var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated, out customErrorMessage);
 
                     if (!saved)
                     {
@@ -114,7 +112,8 @@ namespace Dnn.PersonaBar.Connectors.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Success = true,
@@ -132,16 +131,16 @@ namespace Dnn.PersonaBar.Connectors.Services
                 {
                     Logger.Error(ex);
                 }
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError,
+
+                return this.Request.CreateResponse(
+                    HttpStatusCode.InternalServerError,
                     new { Success = false, Message = ex.Message });
             }
         }
 
-        /// <summary>
-        /// Delete a connector. Supported only for connectors with SupportsMultiple=true.
-        /// </summary>
-        /// <param name="postData"></param>
-        /// <returns></returns>
+        /// <summary>Delete a connector. Supported only for connectors with SupportsMultiple=true.</summary>
+        /// <param name="postData">The connection name and ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteConnection(object postData)
@@ -171,13 +170,16 @@ namespace Dnn.PersonaBar.Connectors.Services
                 if (connector != null)
                 {
                     connector.DeleteConnector(this.PortalId);
-                    return this.Request.CreateResponse(HttpStatusCode.OK,
+                    return this.Request.CreateResponse(
+                        HttpStatusCode.OK,
                         new
                         {
                             Success = true,
                         });
                 }
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Success = true,
@@ -188,7 +190,8 @@ namespace Dnn.PersonaBar.Connectors.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.InternalServerError,
                     new { Success = false, Message = ex.Message });
             }
         }
@@ -231,6 +234,7 @@ namespace Dnn.PersonaBar.Connectors.Services
             {
                 allConnectors.AddRange(con.GetConnectors(portalId));
             }
+
             return allConnectors;
         }
 

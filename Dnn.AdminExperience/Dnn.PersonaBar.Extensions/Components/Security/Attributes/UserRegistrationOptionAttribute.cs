@@ -11,8 +11,9 @@ namespace Dnn.PersonaBar.Security.Attributes
     using DotNetNuke.Services.Localization;
 
     [AttributeUsage(AttributeTargets.Property)]
-    class UserRegistrationOptionAttribute : ValidationAttribute
+    internal class UserRegistrationOptionAttribute : ValidationAttribute
     {
+        /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
@@ -23,7 +24,7 @@ namespace Dnn.PersonaBar.Security.Attributes
                 return new ValidationResult(string.Format(Localization.GetString(Components.Constants.EmptyValue, Components.Constants.LocalResourcesFile), propertyName));
             }
 
-            if (!Int32.TryParse(value.ToString(), out userRegistrationOptionId))
+            if (!int.TryParse(value.ToString(), out userRegistrationOptionId))
             {
                 return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
             }

@@ -10,30 +10,20 @@ namespace DotNetNuke.Entities.Content.Workflow
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// This entity represents a Workflow.
-    /// </summary>
+    /// <summary>This entity represents a Workflow.</summary>
     [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
     public class ContentWorkflow
     {
-        /// <summary>
-        /// Gets or sets workflow Id.
-        /// </summary>
+        /// <summary>Gets or sets workflow Id.</summary>
         public int WorkflowID { get; set; }
 
-        /// <summary>
-        /// Gets or sets portal Id.
-        /// </summary>
+        /// <summary>Gets or sets portal Id.</summary>
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow Name.
-        /// </summary>
+        /// <summary>Gets or sets workflow Name.</summary>
         public string WorkflowName { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow Description.
-        /// </summary>
+        /// <summary>Gets or sets workflow Description.</summary>
         public string Description { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -44,9 +34,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         public bool DispositionEnabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow states.
-        /// </summary>
+        /// <summary>Gets or sets workflow states.</summary>
         public IEnumerable<ContentWorkflowState> States { get; set; }
     }
 }

@@ -6,14 +6,10 @@ namespace DotNetNuke.Maintenance.Shims
 {
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// Abstraction of the <see cref="DataCache"/> class to enable DI and unit testing.
-    /// </summary>
+    /// <summary>Abstraction of the <see cref="DataCache"/> class to enable DI and unit testing.</summary>
     internal interface IDataCache
     {
-        /// <summary>
-        /// Clears the cache.
-        /// </summary>
+        /// <summary>Clears the cache.</summary>
         void ClearCache();
     }
 }

@@ -11,8 +11,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTimeZoneEditControl : TextEditControl
     {
-        private DnnTimeZoneComboBox TimeZones;
+        private DnnTimeZoneComboBox timeZones;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnTimeZoneEditControl"/> class.</summary>
         public DnnTimeZoneEditControl()
         {
         }
@@ -23,7 +24,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 this.EnsureChildControls();
-                return this.TimeZones.ClientID;
+                return this.timeZones.ClientID;
             }
         }
 
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             bool dataChanged = false;
             string presentValue = this.StringValue;
-            string postedValue = this.TimeZones.SelectedValue;
+            string postedValue = this.timeZones.SelectedValue;
             if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue;
@@ -45,11 +46,11 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         protected override void CreateChildControls()
         {
-            this.TimeZones = new DnnTimeZoneComboBox();
-            this.TimeZones.ViewStateMode = ViewStateMode.Disabled;
+            this.timeZones = new DnnTimeZoneComboBox();
+            this.timeZones.ViewStateMode = ViewStateMode.Disabled;
 
             this.Controls.Clear();
-            this.Controls.Add(this.TimeZones);
+            this.Controls.Add(this.timeZones);
 
             base.CreateChildControls();
         }
@@ -61,7 +62,7 @@ namespace DotNetNuke.Web.UI.WebControls
             args.Value = TimeZoneInfo.FindSystemTimeZoneById(this.StringValue);
             args.OldValue = this.OldStringValue;
             args.StringValue = this.StringValue;
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// <inheritdoc/>
@@ -76,7 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            this.TimeZones.DataBind(this.StringValue);
+            this.timeZones.DataBind(this.StringValue);
 
             if ((this.Page != null) && this.EditMode == PropertyEditorMode.Edit)
             {

@@ -26,18 +26,10 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Services.Journal.Internal;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Settings class manages Module Settings.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The Settings class manages Module Settings.</summary>
     public partial class Settings : JournalSettingsBase
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
         {
             try
@@ -144,17 +136,13 @@ namespace DotNetNuke.Modules.Journal
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateSettings saves the modified settings to the Database.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>UpdateSettings saves the modified settings to the Database.</summary>
         public override void UpdateSettings()
         {
             try
@@ -192,7 +180,7 @@ namespace DotNetNuke.Modules.Journal
 
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.JournalFilters, journalTypes);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -10,11 +10,9 @@ namespace DotNetNuke.Services.OutputCache
     // helper class to capture the response into a file
     public abstract class OutputCacheResponseFilter : Stream
     {
-        private Stream _captureStream;
+        private Stream captureStream;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.</summary>
         /// <param name="filterChain"></param>
         /// <param name="cacheKey"></param>
         /// <param name="cacheDuration"></param>
@@ -25,7 +23,7 @@ namespace DotNetNuke.Services.OutputCache
             this.CacheKey = cacheKey;
             this.CacheDuration = cacheDuration;
             this.MaxVaryByCount = maxVaryByCount;
-            this._captureStream = this.CaptureStream;
+            this.captureStream = this.CaptureStream;
         }
 
         /// <inheritdoc/>
@@ -72,12 +70,12 @@ namespace DotNetNuke.Services.OutputCache
         {
             get
             {
-                return this._captureStream;
+                return this.captureStream;
             }
 
             set
             {
-                this._captureStream = value;
+                this.captureStream = value;
             }
         }
 
@@ -110,9 +108,9 @@ namespace DotNetNuke.Services.OutputCache
                 return;
             }
 
-            if (this._captureStream != null)
+            if (this.captureStream != null)
             {
-                this._captureStream.Flush();
+                this.captureStream.Flush();
             }
         }
 
@@ -125,9 +123,9 @@ namespace DotNetNuke.Services.OutputCache
                 return;
             }
 
-            if (this._captureStream != null)
+            if (this.captureStream != null)
             {
-                this._captureStream.Write(buffer, offset, count);
+                this.captureStream.Write(buffer, offset, count);
             }
         }
 

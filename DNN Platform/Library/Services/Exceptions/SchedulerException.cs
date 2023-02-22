@@ -9,17 +9,15 @@ namespace DotNetNuke.Services.Exceptions
     public class SchedulerException : BasePortalException
     {
         // default constructor
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulerException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="SchedulerException"/> class.</summary>
         public SchedulerException()
         {
         }
 
         // constructor with exception message
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulerException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="SchedulerException"/> class.</summary>
         /// <param name="message"></param>
         public SchedulerException(string message)
             : base(message)
@@ -27,9 +25,8 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with message and inner exception
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulerException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="SchedulerException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public SchedulerException(string message, Exception inner)
@@ -37,9 +34,7 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulerException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SchedulerException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected SchedulerException(SerializationInfo info, StreamingContext context)

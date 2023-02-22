@@ -25,9 +25,7 @@ using log4net.Core;
 
 namespace log4net.Repository.Hierarchy
 {
-    /// <summary>
-    /// The <see cref="RootLogger" /> sits at the root of the logger hierarchy tree. 
-    /// </summary>
+    /// <summary>The <see cref="RootLogger" /> sits at the root of the logger hierarchy tree. </summary>
     /// <remarks>
     /// <para>
     /// The <see cref="RootLogger" /> is a regular <see cref="Logger" /> except 
@@ -44,9 +42,7 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     public class RootLogger : Logger
     {
-        /// <summary>
-        /// Construct a <see cref="RootLogger"/>
-        /// </summary>
+        /// <summary>Construct a <see cref="RootLogger"/></summary>
         /// <param name="level">The level to assign to the root logger.</param>
         /// <remarks>
         /// <para>
@@ -63,9 +59,7 @@ namespace log4net.Repository.Hierarchy
             this.Level = level;
         }
 
-        /// <summary>
-        /// Gets the assigned level value without walking the logger hierarchy.
-        /// </summary>
+        /// <summary>Gets the assigned level value without walking the logger hierarchy.</summary>
         /// <value>The assigned level value without walking the logger hierarchy.</value>
         /// <remarks>
         /// <para>
@@ -82,9 +76,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Gets or sets the assigned <see cref="Level"/> for the root logger.  
-        /// </summary>
+        /// <summary>Gets or sets the assigned <see cref="Level"/> for the root logger.  </summary>
         /// <value>
         /// The <see cref="Level"/> of the root logger.
         /// </value>
@@ -110,9 +102,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// The fully qualified type of the RootLogger class.
-        /// </summary>
+        /// <summary>The fully qualified type of the RootLogger class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

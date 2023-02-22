@@ -31,6 +31,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
         // ReSharper disable PossibleNullReferenceException
         [Test]
+
         public void SimpleUpdate()
         {
             XmlDocument targetDoc = this.ExecuteMerge();
@@ -45,6 +46,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleUpdateInLocation()
         {
             XmlDocument targetDoc = this.ExecuteMerge("SimpleUpdate");
@@ -59,6 +61,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleUpdateInLocationWithDistractingLocations()
         {
             XmlDocument targetDoc = this.ExecuteMerge("SimpleUpdate");
@@ -73,6 +76,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateWithTargetPath()
         {
             XmlDocument targetDoc = this.ExecuteMerge();
@@ -87,6 +91,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateInLocationWithTargetPath()
         {
             XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
@@ -101,6 +106,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateWithDistractingLocationAndTargetPath()
         {
             XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
@@ -115,6 +121,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateInLocationWithDistractingLocationAndTargetPath()
         {
             XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
@@ -129,6 +136,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateInFirstLocationWithDistractingLocationAndTargetPath()
         {
             XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
@@ -154,6 +162,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleAdd()
         {
             XmlDocument targetDoc = this.ExecuteMerge();
@@ -164,6 +173,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void AddWithLocation()
         {
             XmlDocument targetDoc = this.ExecuteMerge("SimpleAdd");
@@ -187,6 +197,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleInsertBefore()
         {
             XmlDocument targetDoc = this.ExecuteMerge();
@@ -201,6 +212,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void InsertBeforeInLocation()
         {
             XmlDocument targetDoc = this.ExecuteMerge("SimpleInsertBefore");
@@ -215,6 +227,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleInsertAfter()
         {
             XmlDocument targetDoc = this.ExecuteMerge();
@@ -229,6 +242,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void InsertAfterInLocation()
         {
             XmlDocument targetDoc = this.ExecuteMerge("SimpleInsertAfter");
@@ -243,6 +257,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleRemove()
         {
             XmlDocument targetDoc = this.ExecuteMerge();
@@ -257,6 +272,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void RemoveFromLocation()
         {
             XmlDocument targetDoc = this.ExecuteMerge("SimpleRemove");
@@ -271,6 +287,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleRemoveAttribute()
         {
             var targetDoc = this.ExecuteMerge();
@@ -280,6 +297,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void RemoveAttributeFromLocation()
         {
             var targetDoc = this.ExecuteMerge("SimpleRemoveAttribute");
@@ -289,6 +307,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleInsertAttribute()
         {
             var targetDoc = this.ExecuteMerge();
@@ -299,6 +318,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void InsertAttributeInLocation()
         {
             var targetDoc = this.ExecuteMerge("SimpleInsertAttribute");
@@ -309,6 +329,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateAttributeInLocation()
         {
             var targetDoc = this.ExecuteMerge("SimpleInsertAttribute");
@@ -319,6 +340,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void SimpleUpdateWithKey()
         {
             var targetDoc = this.ExecuteMerge();
@@ -333,6 +355,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void UpdateWithKeyInLocation()
         {
             var targetDoc = this.ExecuteMerge("SimpleUpdateWithKey");
@@ -347,6 +370,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void NoChangeOnOverwrite()
         {
             XmlMerge merge = this.GetXmlMerge(nameof(this.NoChangeOnOverwrite));
@@ -363,6 +387,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void ShouldChangeOnOverwrite()
         {
             XmlMerge merge = this.GetXmlMerge(nameof(this.ShouldChangeOnOverwrite));
@@ -379,6 +404,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
 
         [Test]
+
         public void ShouldPreserveEmptyNamespaceOnSave()
         {
             var targetDoc = this.ExecuteMerge();
@@ -400,9 +426,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             Assert.AreEqual("4.1.0.0", bindingRedirect.Attributes["newVersion"].Value);
         }
 
-        /// <summary>
-        /// Merges the Merge and Target files based on the name of the calling method.
-        /// </summary>
+        /// <summary>Merges the Merge and Target files based on the name of the calling method.</summary>
         /// <remarks>xml files must be embedded resources in the MergeFiles folder named {method}Merge.xml and {method}Target.xml.</remarks>
         /// <returns>XmlDocument with the result of the merge operation.</returns>
         private XmlDocument ExecuteMerge()
@@ -410,9 +434,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             return this.ExecuteMerge(null);
         }
 
-        /// <summary>
-        /// As ExecuteMerge but allows the merge file prefix to be specified.
-        /// </summary>
+        /// <summary>As ExecuteMerge but allows the merge file prefix to be specified.</summary>
         private XmlDocument ExecuteMerge(string mergeName)
         {
             string testMethodName = this.GetTestMethodName();

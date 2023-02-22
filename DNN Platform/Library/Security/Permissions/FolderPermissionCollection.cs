@@ -12,41 +12,33 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class FolderPermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
         public FolderPermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
         /// <param name="folderPermissions"></param>
         public FolderPermissionCollection(ArrayList folderPermissions)
         {
             this.AddRange(folderPermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
         /// <param name="folderPermissions"></param>
         public FolderPermissionCollection(FolderPermissionCollection folderPermissions)
         {
             this.AddRange(folderPermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
         /// <param name="folderPermissions"></param>
-        /// <param name="FolderPath"></param>
-        public FolderPermissionCollection(ArrayList folderPermissions, string FolderPath)
+        /// <param name="folderPath"></param>
+        public FolderPermissionCollection(ArrayList folderPermissions, string folderPath)
         {
             foreach (FolderPermissionInfo permission in folderPermissions)
             {
-                if (permission.FolderPath.Equals(FolderPath, StringComparison.InvariantCultureIgnoreCase))
+                if (permission.FolderPath.Equals(folderPath, StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.Add(permission);
                 }

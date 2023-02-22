@@ -1,6 +1,7 @@
 ﻿namespace DotNetNuke.Tests.Core.Framework
 {
     using System.Text;
+
     using DotNetNuke.Framework;
     using NUnit.Framework;
 

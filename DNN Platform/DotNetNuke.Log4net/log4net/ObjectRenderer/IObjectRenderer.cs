@@ -23,9 +23,7 @@ using System.IO;
 
 namespace log4net.ObjectRenderer
 {
-    /// <summary>
-    /// Implement this interface in order to render objects as strings
-    /// </summary>
+    /// <summary>Implement this interface in order to render objects as strings</summary>
     /// <remarks>
     /// <para>
     /// Certain types require special case conversion to
@@ -38,9 +36,7 @@ namespace log4net.ObjectRenderer
     /// <author>Gert Driesen</author>
     public interface IObjectRenderer
     {
-        /// <summary>
-        /// Render the object <paramref name="obj"/> to a string
-        /// </summary>
+        /// <summary>Render the object <paramref name="obj"/> to a string</summary>
         /// <param name="rendererMap">The map used to lookup renderers</param>
         /// <param name="obj">The object to render</param>
         /// <param name="writer">The writer to render to</param>

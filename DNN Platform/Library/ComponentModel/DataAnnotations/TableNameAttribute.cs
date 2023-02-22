@@ -7,9 +7,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
     public class TableNameAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TableNameAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TableNameAttribute"/> class.</summary>
         /// <param name="tableName"></param>
         public TableNameAttribute(string tableName)
         {

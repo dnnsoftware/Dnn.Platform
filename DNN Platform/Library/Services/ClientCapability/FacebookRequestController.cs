@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.ClientCapability
 {
     using System;
@@ -11,36 +10,7 @@ namespace DotNetNuke.Services.ClientCapability
 
     using DotNetNuke.Common.Utilities;
 
-    internal struct Page
-    {
-        public string id { get; set; }
-
-        public bool liked { get; set; }
-
-        public bool admin { get; set; }
-    }
-
-    internal struct Age
-    {
-        public long min { get; set; }
-
-        public long max { get; set; }
-    }
-
-    internal struct User
-    {
-        public string locale { get; set; }
-
-        public string country { get; set; }
-
-        public Age age { get; set; }
-    }
-
-    /// <summary>
-    /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,
-    /// giving it variables such as if the Page has been Liked, and the age range of the user.
-    ///
-    /// </summary>
+    /// <summary>Make modules that are aware of Facebook’s <c>signed_request</c> – a parameter that is POSTed to the web page being loaded in the iFrame, giving it variables such as if the Page has been Liked, and the age range of the user.</summary>
     public class FacebookRequestController
     {
         private const string SignedRequestParameter = "signed_request";
@@ -61,19 +31,19 @@ namespace DotNetNuke.Services.ClientCapability
 
         public bool IsValid { get; set; }
 
-        public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
+        public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest request)
         {
-            if (Request == null)
+            if (request == null)
             {
                 return null;
             }
 
-            if (Request.RequestType != "POST")
+            if (request.RequestType != "POST")
             {
                 return null;
             }
 
-            string rawSignedRequest = Request[SignedRequestParameter];
+            string rawSignedRequest = request[SignedRequestParameter];
             return GetFacebookDetailsFromRequest(rawSignedRequest);
         }
 
@@ -100,25 +70,25 @@ namespace DotNetNuke.Services.ClientCapability
                 var encoding = new UTF8Encoding();
                 FaceBookData faceBookData = encoding.GetString(base64JsonArray).FromJson<FaceBookData>();
 
-                if (faceBookData.algorithm == "HMAC-SHA256")
+                if (faceBookData.Algorithm == "HMAC-SHA256")
                 {
                     facebookRequest.IsValid = true;
-                    facebookRequest.Algorithm = faceBookData.algorithm;
-                    facebookRequest.ProfileId = faceBookData.profile_id;
-                    facebookRequest.AppData = faceBookData.app_data;
-                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.oauth_token) ? faceBookData.oauth_token : string.Empty;
-                    facebookRequest.Expires = ConvertToTimestamp(faceBookData.expires);
-                    facebookRequest.IssuedAt = ConvertToTimestamp(faceBookData.issued_at);
-                    facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.user_id) ? faceBookData.user_id : string.Empty;
+                    facebookRequest.Algorithm = faceBookData.Algorithm;
+                    facebookRequest.ProfileId = faceBookData.Profile_id;
+                    facebookRequest.AppData = faceBookData.App_data;
+                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.Oauth_token) ? faceBookData.Oauth_token : string.Empty;
+                    facebookRequest.Expires = ConvertToTimestamp(faceBookData.Expires);
+                    facebookRequest.IssuedAt = ConvertToTimestamp(faceBookData.Issued_at);
+                    facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.User_id) ? faceBookData.User_id : string.Empty;
 
-                    facebookRequest.PageId = faceBookData.page.id;
-                    facebookRequest.PageLiked = faceBookData.page.liked;
-                    facebookRequest.PageUserAdmin = faceBookData.page.admin;
+                    facebookRequest.PageId = faceBookData.Page.Id;
+                    facebookRequest.PageLiked = faceBookData.Page.Liked;
+                    facebookRequest.PageUserAdmin = faceBookData.Page.Admin;
 
-                    facebookRequest.UserLocale = faceBookData.user.locale;
-                    facebookRequest.UserCountry = faceBookData.user.country;
-                    facebookRequest.UserMinAge = faceBookData.user.age.min;
-                    facebookRequest.UserMaxAge = faceBookData.user.age.max;
+                    facebookRequest.UserLocale = faceBookData.User.Locale;
+                    facebookRequest.UserCountry = faceBookData.User.Country;
+                    facebookRequest.UserMinAge = faceBookData.User.Age.Min;
+                    facebookRequest.UserMaxAge = faceBookData.User.Age.Max;
                 }
 
                 return facebookRequest;
@@ -153,9 +123,7 @@ namespace DotNetNuke.Services.ClientCapability
             return false;
         }
 
-        /// <summary>
-        /// Converts the base 64 url encoded string to standard base 64 encoding.
-        /// </summary>
+        /// <summary>Converts the base 64 url encoded string to standard base 64 encoding.</summary>
         /// <param name="encodedValue">The encoded value.</param>
         /// <returns>The base 64 string.</returns>
         private static string Base64UrlDecode(string encodedValue)
@@ -183,11 +151,9 @@ namespace DotNetNuke.Services.ClientCapability
             }
         }
 
-        /// <summary>
-        /// method for converting a System.DateTime value to a UNIX Timestamp.
-        /// </summary>
-        /// <param name="value">date to convert.</param>
-        /// <returns></returns>
+        /// <summary>method for converting a Unix Timestamp to a <see cref="DateTime"/>.</summary>
+        /// <param name="value">The number of seconds since the start of the Unix epoch.</param>
+        /// <returns>The corresponding <see cref="DateTime"/> value.</returns>
         private static DateTime ConvertToTimestamp(long value)
         {
             // create Timespan by subtracting the value provided from
@@ -195,26 +161,5 @@ namespace DotNetNuke.Services.ClientCapability
             DateTime epoc = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return epoc.AddSeconds((double)value);
         }
-    }
-
-    internal struct FaceBookData
-    {
-        public User user { get; set; }
-
-        public string algorithm { get; set; }
-
-        public long issued_at { get; set; }
-
-        public string user_id { get; set; }
-
-        public string oauth_token { get; set; }
-
-        public long expires { get; set; }
-
-        public string app_data { get; set; }
-
-        public Page page { get; set; }
-
-        public long profile_id { get; set; }
     }
 }

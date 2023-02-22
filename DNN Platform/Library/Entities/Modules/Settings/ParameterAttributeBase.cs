@@ -13,9 +13,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     [Serializable]
     public abstract class ParameterAttributeBase : Attribute
     {
-        /// <summary>
-        /// Gets or sets the prefix to use when naming the setting in the settings table.
-        /// </summary>
+        /// <summary>Gets or sets the prefix to use when naming the setting in the settings table.</summary>
         /// <remarks>
         /// The settings tables are shared by the core platform and the extensions. Extensions
         /// should use a unique prefix to ensure that name clashes do not occur with settings
@@ -23,9 +21,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// </remarks>
         public string Prefix { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the setting that will be stored in the settings table.
-        /// </summary>
+        /// <summary>Gets or sets the name of the setting that will be stored in the settings table.</summary>
         /// <remarks>
         /// If parametername is not defined, then the name of the property will be used.  If
         /// a prefix is defined, then that will be concatenated with the parametername (or the
@@ -33,17 +29,13 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// </remarks>
         public string ParameterName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the serializer to use when saving or retrieving the setting value.
-        /// </summary>
+        /// <summary>Gets or sets the serializer to use when saving or retrieving the setting value.</summary>
         /// <remarks>
         /// The serializer must implement the <see cref="ISettingsSerializer{T}" /> interface.
         /// </remarks>
         public string Serializer { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the settings should be stored securely. This encrypts the value of the parameter.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the settings should be stored securely. This encrypts the value of the parameter.</summary>
         public bool IsSecure { get; set; } = false;
     }
 }

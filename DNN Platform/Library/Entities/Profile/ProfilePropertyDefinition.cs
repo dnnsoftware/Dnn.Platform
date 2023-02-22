@@ -14,59 +14,50 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.UI.WebControls;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Profile
     /// Class:      ProfilePropertyDefinition
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfilePropertyDefinition class provides a Business Layer entity for
     /// property Definitions.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [XmlRoot("profiledefinition", IsNullable = false)]
     [Serializable]
     public class ProfilePropertyDefinition : BaseEntityInfo
     {
-        private int _dataType = Null.NullInteger;
-        private string _defaultValue;
-        private UserVisibilityMode _defaultVisibility = UserVisibilityMode.AdminOnly;
-        private bool _deleted;
-        private int _length;
-        private int _moduleDefId = Null.NullInteger;
-        private int _portalId;
+        private int dataType = Null.NullInteger;
+        private string defaultValue;
+        private UserVisibilityMode defaultVisibility = UserVisibilityMode.AdminOnly;
+        private bool deleted;
+        private int length;
+        private int moduleDefId = Null.NullInteger;
+        private int portalId;
 
-        private ProfileVisibility _profileVisibility = new ProfileVisibility
+        private ProfileVisibility profileVisibility = new ProfileVisibility
         {
             VisibilityMode = UserVisibilityMode.AdminOnly,
         };
 
-        private string _propertyCategory;
-        private string _propertyName;
-        private string _propertyValue;
-        private bool _readOnly;
-        private bool _required;
-        private string _ValidationExpression;
-        private int _viewOrder;
-        private bool _visible;
+        private string propertyCategory;
+        private string propertyName;
+        private string propertyValue;
+        private bool readOnly;
+        private bool required;
+        private string validationExpression;
+        private int viewOrder;
+        private bool visible;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.</summary>
         public ProfilePropertyDefinition()
         {
             this.PropertyDefinitionId = Null.NullInteger;
 
             // Get the default PortalSettings
-            PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
-            this.PortalId = _Settings.PortalId;
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            this.PortalId = settings.PortalId;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.</summary>
         /// <param name="portalId"></param>
         public ProfilePropertyDefinition(int portalId)
         {
@@ -74,11 +65,7 @@ namespace DotNetNuke.Entities.Profile
             this.PortalId = portalId;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Data Type of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Data Type of the Profile Property.</summary>
         [Editor("DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke", typeof(EditControl))]
         [List("DataType", "", ListBoundField.Id, ListBoundField.Value)]
         [IsReadOnly(true)]
@@ -90,25 +77,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._dataType;
+                return this.dataType;
             }
 
             set
             {
-                if (this._dataType != value)
+                if (this.dataType != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._dataType = value;
+                this.dataType = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Default Value of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Default Value of the Profile Property.</summary>
         [SortOrder(4)]
         [XmlIgnore]
         [JsonIgnore]
@@ -116,25 +99,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._defaultValue;
+                return this.defaultValue;
             }
 
             set
             {
-                if (this._defaultValue != value)
+                if (this.defaultValue != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._defaultValue = value;
+                this.defaultValue = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets and sets the Default Visibility of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  Gets or sets and sets the Default Visibility of the Profile Property.</summary>
         [SortOrder(10)]
         [XmlIgnore]
         [JsonIgnore]
@@ -142,25 +121,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._defaultVisibility;
+                return this.defaultVisibility;
             }
 
             set
             {
-                if (this._defaultVisibility != value)
+                if (this.defaultVisibility != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._defaultVisibility = value;
+                this.defaultVisibility = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets the Deleted.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether gets and sets the Deleted.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
@@ -168,55 +143,43 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._deleted;
+                return this.deleted;
             }
 
             set
             {
-                this._deleted = value;
+                this.deleted = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Definition has been modified since it has been retrieved.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the Definition has been modified since it has been retrieved.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
         public bool IsDirty { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Length of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Length of the Profile Property.</summary>
         [SortOrder(3)]
         [XmlElement("length")]
         public int Length
         {
             get
             {
-                return this._length;
+                return this.length;
             }
 
             set
             {
-                if (this._length != value)
+                if (this.length != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._length = value;
+                this.length = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ModuleDefId.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the ModuleDefId.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
@@ -224,20 +187,16 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._moduleDefId;
+                return this.moduleDefId;
             }
 
             set
             {
-                this._moduleDefId = value;
+                this.moduleDefId = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the PortalId.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the PortalId.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
@@ -245,20 +204,16 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Category of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Category of the Profile Property.</summary>
         [Required(true)]
         [SortOrder(2)]
         [XmlElement("propertycategory")]
@@ -266,35 +221,27 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._propertyCategory;
+                return this.propertyCategory;
             }
 
             set
             {
-                if (this._propertyCategory != value)
+                if (this.propertyCategory != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._propertyCategory = value;
+                this.propertyCategory = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Id of the ProfilePropertyDefinition.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Id of the ProfilePropertyDefinition.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
         public int PropertyDefinitionId { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Name of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Name of the Profile Property.</summary>
         [Required(true)]
         [IsReadOnly(true)]
         [SortOrder(0)]
@@ -304,25 +251,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._propertyName;
+                return this.propertyName;
             }
 
             set
             {
-                if (this._propertyName != value)
+                if (this.propertyName != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._propertyName = value;
+                this.propertyName = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Value of the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Value of the Profile Property.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
@@ -330,25 +273,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._propertyValue;
+                return this.propertyValue;
             }
 
             set
             {
-                if (this._propertyValue != value)
+                if (this.propertyValue != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._propertyValue = value;
+                this.propertyValue = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the property is read only.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the property is read only.</summary>
         [SortOrder(7)]
         [XmlIgnore]
         [JsonIgnore]
@@ -356,25 +295,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._readOnly;
+                return this.readOnly;
             }
 
             set
             {
-                if (this._readOnly != value)
+                if (this.readOnly != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._readOnly = value;
+                this.readOnly = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the property is required.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the property is required.</summary>
         [SortOrder(6)]
         [XmlIgnore]
         [JsonIgnore]
@@ -382,25 +317,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._required;
+                return this.required;
             }
 
             set
             {
-                if (this._required != value)
+                if (this.required != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._required = value;
+                this.required = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets a Validation Expression (RegEx) for the Profile Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a Validation Expression (RegEx) for the Profile Property.</summary>
         [SortOrder(5)]
         [XmlIgnore]
         [JsonIgnore]
@@ -408,25 +339,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._ValidationExpression;
+                return this.validationExpression;
             }
 
             set
             {
-                if (this._ValidationExpression != value)
+                if (this.validationExpression != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._ValidationExpression = value;
+                this.validationExpression = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the View Order of the Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the View Order of the Property.</summary>
         [IsReadOnly(true)]
         [SortOrder(9)]
         [XmlIgnore]
@@ -435,25 +362,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._viewOrder;
+                return this.viewOrder;
             }
 
             set
             {
-                if (this._viewOrder != value)
+                if (this.viewOrder != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._viewOrder = value;
+                this.viewOrder = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the property is visible.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the property is visible.</summary>
         [SortOrder(8)]
         [XmlIgnore]
         [JsonIgnore]
@@ -461,25 +384,21 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._visible;
+                return this.visible;
             }
 
             set
             {
-                if (this._visible != value)
+                if (this.visible != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._visible = value;
+                this.visible = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets whether the property is visible.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets whether the property is visible.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
@@ -487,17 +406,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._profileVisibility;
+                return this.profileVisibility;
             }
 
             set
             {
-                if (this._profileVisibility != value)
+                if (this.profileVisibility != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._profileVisibility = value;
+                this.profileVisibility = value;
             }
         }
 
@@ -523,19 +442,13 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Clears the IsDirty Flag.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Clears the IsDirty Flag.</summary>
         public void ClearIsDirty()
         {
             this.IsDirty = false;
         }
 
-        /// <summary>
-        /// Clone a ProfilePropertyDefinition.
-        /// </summary>
+        /// <summary>Clone a ProfilePropertyDefinition.</summary>
         /// <returns>A ProfilePropertyDefinition.</returns>
         public ProfilePropertyDefinition Clone()
         {

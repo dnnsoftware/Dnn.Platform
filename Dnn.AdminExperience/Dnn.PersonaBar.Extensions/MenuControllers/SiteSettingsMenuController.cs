@@ -11,9 +11,7 @@ namespace Dnn.PersonaBar.SiteSettings.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the site settings menu.
-    /// </summary>
+    /// <summary>Controls the site settings menu.</summary>
     public class SiteSettingsMenuController : IMenuItemController
     {
         /// <inheritdoc/>

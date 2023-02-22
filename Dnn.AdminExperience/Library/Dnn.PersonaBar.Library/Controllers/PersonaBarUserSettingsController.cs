@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         private const string ContainerName = "AdminPersonaBar";
         private const string UserSettingsKey = "UserSettings";
 
+        /// <inheritdoc/>
         public void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId)
         {
             var controller = new PersonalizationController();
@@ -23,12 +24,14 @@ namespace Dnn.PersonaBar.Library.Controllers
             controller.SaveProfile(personalizationInfo);
         }
 
+        /// <inheritdoc/>
         public UserSettings GetPersonaBarUserSettings()
         {
             var settings = (UserSettings)Personalization.GetProfile(ContainerName, UserSettingsKey);
             return settings ?? GetDefaultSettings();
         }
 
+        /// <inheritdoc/>
         protected override Func<IPersonaBarUserSettingsController> GetFactory()
         {
             return () => new PersonaBarUserSettingsController();

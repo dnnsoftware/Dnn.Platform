@@ -20,50 +20,48 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex FriendlyPathRx = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex DefaultPageRx = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        private readonly string _fileExtension;
-        private readonly bool _includePageName;
-        private readonly string _regexMatch;
+        private readonly string fileExtension;
+        private readonly bool includePageName;
+        private readonly string regexMatch;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasicFriendlyUrlProvider"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasicFriendlyUrlProvider"/> class.</summary>
         /// <param name="attributes"></param>
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
             // Read the attributes for this provider
-            this._includePageName = string.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
-            this._regexMatch = !string.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
-            this._fileExtension = !string.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
+            this.includePageName = string.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
+            this.regexMatch = !string.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
+            this.fileExtension = !string.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
         }
 
         public string FileExtension
         {
-            get { return this._fileExtension; }
+            get { return this.fileExtension; }
         }
 
         public bool IncludePageName
         {
-            get { return this._includePageName; }
+            get { return this.includePageName; }
         }
 
         public string RegexMatch
         {
-            get { return this._regexMatch; }
+            get { return this.regexMatch; }
         }
 
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, _portalSettings);
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, portalSettings);
         }
 
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return this.FriendlyUrl(tab, path, pageName, _portalSettings);
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return this.FriendlyUrl(tab, path, pageName, portalSettings);
         }
 
         /// <inheritdoc/>
@@ -78,12 +76,7 @@ namespace DotNetNuke.Entities.Urls
             return this.FriendlyUrl(tab, path, pageName, portalAlias, null);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddPage adds the page to the friendly url.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>AddPage adds the page to the friendly url.</summary>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page name.</param>
         /// <returns>The formatted url.</returns>
@@ -112,12 +105,7 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetFriendlyAlias gets the Alias root of the friendly url.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetFriendlyAlias gets the Alias root of the friendly url.</summary>
         /// <param name="path">The path to format.</param>
         /// <param name="portalAlias">The portal alias of the site.</param>
         /// <param name="isPagePath">Whether is a relative page path.</param>
@@ -202,12 +190,7 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetFriendlyQueryString gets the Querystring part of the friendly url.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetFriendlyQueryString gets the Querystring part of the friendly url.</summary>
         /// <param name="tab">The tab whose url is being formatted.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The Page name.</param>
@@ -247,7 +230,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (!string.IsNullOrEmpty(pair[1]))
                         {
-                            if (Regex.IsMatch(pair[1], this._regexMatch) == false)
+                            if (Regex.IsMatch(pair[1], this.regexMatch) == false)
                             {
                                 // Contains Non-AlphaNumeric Characters
                                 if (pair[0].ToLowerInvariant() == "tabid")

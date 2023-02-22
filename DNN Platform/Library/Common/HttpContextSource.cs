@@ -6,16 +6,12 @@ namespace DotNetNuke.Common
 {
     using System.Web;
 
-    /// <summary>
-    /// A unit testable alternative to HttpContext.Current.
-    /// </summary>
+    /// <summary>A unit testable alternative to HttpContext.Current.</summary>
     public class HttpContextSource
     {
         private static HttpContextBase fakeContext;
 
-        /// <summary>
-        /// Gets the current HttpContext.
-        /// </summary>
+        /// <summary>Gets the current HttpContext.</summary>
         public static HttpContextBase Current
         {
             get
@@ -34,9 +30,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Injects a fake/mock context for unit testing.
-        /// </summary>
+        /// <summary>Injects a fake/mock context for unit testing.</summary>
         /// <param name="instance">The fake context to inject.</param>
         public static void RegisterInstance(HttpContextBase instance)
         {

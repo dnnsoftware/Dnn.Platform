@@ -6,11 +6,15 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 {
     public class PageModel : PageModelBase
     {
+        /// <summary>Initializes a new instance of the <see cref="PageModel"/> class.</summary>
         public PageModel()
         {
         }
 
-        public PageModel(DotNetNuke.Entities.Tabs.TabInfo tab) : base(tab)
+        /// <summary>Initializes a new instance of the <see cref="PageModel"/> class.</summary>
+        /// <param name="tab"></param>
+        public PageModel(DotNetNuke.Entities.Tabs.TabInfo tab)
+            : base(tab)
         {
             this.Container = tab.ContainerSrc;
             this.Url = tab.Url;

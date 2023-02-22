@@ -7,9 +7,7 @@ namespace DotNetNuke.Entities.Users.Social
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Business Layer to manage Relationships. Also contains CRUD methods.
-    /// </summary>
+    /// <summary>Business Layer to manage Relationships. Also contains CRUD methods.</summary>
     public class RelationshipController : ServiceLocator<IRelationshipController, RelationshipController>
     {
         /// <inheritdoc/>

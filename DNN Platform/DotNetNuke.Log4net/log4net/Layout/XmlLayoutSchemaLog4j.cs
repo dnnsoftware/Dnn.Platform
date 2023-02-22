@@ -28,9 +28,7 @@ using log4net.Util;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Layout that formats the log events as XML elements compatible with the log4j schema
-    /// </summary>
+    /// <summary>Layout that formats the log events as XML elements compatible with the log4j schema</summary>
     /// <remarks>
     /// <para>
     /// Formats the log events according to the http://logging.apache.org/log4j schema.
@@ -39,21 +37,15 @@ namespace log4net.Layout
     /// <author>Nicko Cadell</author>
     public class XmlLayoutSchemaLog4j : XmlLayoutBase
     {
-        /// <summary>
-        /// The 1st of January 1970 in UTC
-        /// </summary>
+        /// <summary>The 1st of January 1970 in UTC</summary>
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
 
-        /// <summary>
-        /// Constructs an XMLLayoutSchemaLog4j
-        /// </summary>
+        /// <summary>Constructs an XMLLayoutSchemaLog4j</summary>
         public XmlLayoutSchemaLog4j() : base()
         {
         }
 
-        /// <summary>
-        /// Constructs an XMLLayoutSchemaLog4j.
-        /// </summary>
+        /// <summary>Constructs an XMLLayoutSchemaLog4j.</summary>
         /// <remarks>
         /// <para>
         /// The <b>LocationInfo</b> option takes a boolean value. By
@@ -72,9 +64,7 @@ namespace log4net.Layout
         {
         }
 
-        /// <summary>
-        /// The version of the log4j schema to use.
-        /// </summary>
+        /// <summary>The version of the log4j schema to use.</summary>
         /// <remarks>
         /// <para>
         /// Only version 1.2 of the log4j schema is supported.
@@ -115,9 +105,7 @@ method="run" file="Generator.java" line="94"/>
 
         /* Since log4j 1.3 the log4j:MDC has been combined into the log4j:properties element */
 
-        /// <summary>
-        /// Actually do the writing of the xml
-        /// </summary>
+        /// <summary>Actually do the writing of the xml</summary>
         /// <param name="writer">the writer to use</param>
         /// <param name="loggingEvent">the event to write</param>
         /// <remarks>

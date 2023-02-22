@@ -43,9 +43,7 @@ namespace DNNConnect.CKEditorProvider
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// The CKEditor options page.
-    /// </summary>
+    /// <summary>The CKEditor options page.</summary>
     public partial class CKEditorOptions : PortalModuleBase
     {
         /// <summary>The provider type.</summary>
@@ -59,51 +57,33 @@ namespace DNNConnect.CKEditorProvider
         private const string KeyCurrentPortalOnly = "CurrentPortalOnly";
         private const string KeyCurrentSettingsMode = "CurrentSettingsMode";
 
-        /// <summary>
-        ///   The provider config.
-        /// </summary>
+        /// <summary>  The provider config.</summary>
         private readonly ProviderConfiguration provConfig = ProviderConfiguration.GetProviderConfiguration(ProviderType);
 
-        /// <summary>
-        ///   The request.
-        /// </summary>
+        /// <summary>  The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
 
-        /// <summary>
-        ///   The _portal settings.
-        /// </summary>
+        /// <summary>  The _portal settings.</summary>
         private IPortalSettings portalSettings;
 
-        /// <summary>
-        /// Override Default Config Folder from Web.config.
-        /// </summary>
+        /// <summary>Override Default Config Folder from Web.config.</summary>
         private string configFolder = string.Empty;
 
-        /// <summary>
-        ///   The list toolbars.
-        /// </summary>
+        /// <summary>  The list toolbars.</summary>
         private List<ToolbarSet> listToolbars;
 
-        /// <summary>
-        ///   The list of all available toolbar buttons.
-        /// </summary>
+        /// <summary>  The list of all available toolbar buttons.</summary>
         private List<ToolbarButton> listButtons;
 
-        /// <summary>
-        ///   The list of all available toolbar buttons.
-        /// </summary>
+        /// <summary>  The list of all available toolbar buttons.</summary>
         private List<ToolbarButton> allListButtons;
 
         private EditorProviderSettings currentSettings;
 
-        /// <summary>
-        ///   The module instance name.
-        /// </summary>
+        /// <summary>  The module instance name.</summary>
         private string moduleInstanceName;
 
-        /// <summary>
-        ///   Gets or sets The Full Toolbar Set.
-        /// </summary>
+        /// <summary>  Gets or sets The Full Toolbar Set.</summary>
         private ToolbarSet toolbarSets;
 
         /// <summary>The _current module.</summary>
@@ -126,18 +106,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Gets or sets a value indicating whether [current portal only].</summary>
         /// <value><c>true</c> if [current portal only]; otherwise, <c>false</c>.</value>
-        public bool CurrentPortalOnly
-        {
-            get
-            {
-                return this.ViewState[KeyCurrentPortalOnly] != null && (bool)this.ViewState[KeyCurrentPortalOnly];
-            }
-
-            set
-            {
-                this.ViewState[KeyCurrentPortalOnly] = value;
-            }
-        }
+        public bool CurrentPortalOnly { get; set; }
 
         /// <summary>Gets or sets the Current or selected Tab ID.</summary>
         public int CurrentOrSelectedTabId
@@ -259,9 +228,7 @@ namespace DNNConnect.CKEditorProvider
         /// <value>The home directory.</value>
         private string HomeDirectory => this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
 
-        /// <summary>
-        /// Binds the options data.
-        /// </summary>
+        /// <summary>Binds the options data.</summary>
         /// <param name="reloadOptionsfromModule">if set to <c>true</c> [reload options from module].</param>
         internal void BindOptionsData(bool reloadOptionsfromModule = false)
         {
@@ -336,9 +303,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Web.UI.Control.Init" /> event.
-        /// </summary>
+        /// <summary>Raises the <see cref="E:System.Web.UI.Control.Init" /> event.</summary>
         /// <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
@@ -357,9 +322,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
+        /// <summary>Handles the Load event of the Page control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
@@ -413,9 +376,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Import Current Settings.
-        /// </summary>
+        /// <summary>Import Current Settings.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Import_Click(object sender, EventArgs e)
@@ -453,9 +414,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Export Current Settings.
-        /// </summary>
+        /// <summary>Export Current Settings.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Export_Click(object sender, EventArgs e)
@@ -498,9 +457,7 @@ namespace DNNConnect.CKEditorProvider
             this.upOptions.Update();
         }
 
-        /// <summary>
-        /// Adds the Java scripts.
-        /// </summary>
+        /// <summary>Adds the Java scripts.</summary>
         private void AddJavaScripts()
         {
             ClientResourceManager.RegisterStyleSheet(
@@ -530,9 +487,7 @@ namespace DNNConnect.CKEditorProvider
                 this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/Options.js"));
         }
 
-        /// <summary>
-        /// Imports the XML file.
-        /// </summary>
+        /// <summary>Imports the XML file.</summary>
         /// <param name="xmlFilePath">The XML file path.</param>
         /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
         private void ImportXmlFile(string xmlFilePath, bool changeMode = true)
@@ -612,9 +567,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Fills the setting controls with the loaded Setting Values.
-        /// </summary>
+        /// <summary>Fills the setting controls with the loaded Setting Values.</summary>
         /// <param name="importedSettings">The imported settings.</param>
         /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
         private void FillSettings(EditorProviderSettings importedSettings, bool changeMode = true)
@@ -813,23 +766,40 @@ namespace DNNConnect.CKEditorProvider
 
             this.OverrideFileOnUpload.Checked = importedSettings.OverrideFileOnUpload;
 
+            // get the all-sites settings to be able to to show overridden values
+            // when we're not in all-sites mode
+            var allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
+                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), "DNNCKP#-1#", new List<RoleInfo>());
+
+            this.HostBrowserRootDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostBrowserRootDir.Text = this.HostBrowserRootDir.ReadOnly ? allPortalsSettings.HostBrowserRootDir : importedSettings.HostBrowserRootDir;
+
             this.BrowserRootDir.SelectedValue =
                  this.BrowserRootDir.Items.FindByValue(importedSettings.BrowserRootDirId.ToString()) != null
                      ? importedSettings.BrowserRootDirId.ToString()
                      : "-1";
+
+            this.HostBrowserRootDirForImg.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostBrowserRootDirForImg.Text = this.HostBrowserRootDirForImg.ReadOnly ? allPortalsSettings.HostBrowserRootDirForImg : importedSettings.HostBrowserRootDirForImg;
 
             this.BrowserRootDirForImg.SelectedValue =
                  this.BrowserRootDirForImg.Items.FindByValue(importedSettings.BrowserRootDirForImgId.ToString()) != null
                      ? importedSettings.BrowserRootDirForImgId.ToString()
                      : "-1";
 
+            this.HostUploadDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostUploadDir.Text = this.HostUploadDir.ReadOnly ? allPortalsSettings.HostUploadDir : importedSettings.HostUploadDir;
+
             this.UploadDir.SelectedValue = this.UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
                                            != null
                                                ? importedSettings.UploadDirId.ToString()
                                                : "-1";
 
+            this.HostUploadDirForImg.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostUploadDirForImg.Text = this.HostUploadDirForImg.ReadOnly ? allPortalsSettings.HostUploadDirForImg : importedSettings.HostUploadDirForImg;
+
             this.UploadDirForImg.SelectedValue = this.UploadDirForImg.Items.FindByValue(importedSettings.UploadDirForImgId.ToString())
-                                           != null
+                                                 != null
                                                ? importedSettings.UploadDirForImgId.ToString()
                                                : "-1";
 
@@ -957,9 +927,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Bind User Groups to GridView.
-        /// </summary>
+        /// <summary>Bind User Groups to GridView.</summary>
         private void BindUserGroupsGridView()
         {
             var lic = new ListItemCollection();
@@ -986,9 +954,7 @@ namespace DNNConnect.CKEditorProvider
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", this.ResXFile, this.LangCode);
         }
 
-        /// <summary>
-        /// Delete Settings only for this Module Instance.
-        /// </summary>
+        /// <summary>Delete Settings only for this Module Instance.</summary>
         private void DelModuleSettings()
         {
             this.moduleInstanceName = this.request.QueryString["minc"];
@@ -1041,9 +1007,7 @@ namespace DNNConnect.CKEditorProvider
             EditorController.ClearEditorCache();
         }
 
-        /// <summary>
-        /// Write Information.
-        /// </summary>
+        /// <summary>Write Information.</summary>
         private void FillInformations()
         {
             var ckEditorPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals("DotNetNuke.CKHtmlEditorProvider", StringComparison.OrdinalIgnoreCase));
@@ -1055,17 +1019,18 @@ namespace DNNConnect.CKEditorProvider
 
             this.lblPortal.Text += !this.IsAllInstances ? this.portalSettings.PortalName : "Host";
 
-            ModuleDefinitionInfo moduleDefinitionInfo;
+            ModuleDefinitionInfo moduleDefinitionInfo = null;
             var portalId = this.portalSettings?.PortalId ?? Host.HostPortalID;
             var moduleInfo = new ModuleController().GetModuleByDefinition(
                 portalId, "User Accounts");
 
-            try
+            if (this.CurrentModule != null)
             {
                 moduleDefinitionInfo =
                     ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
-            catch (Exception)
+
+            if (moduleDefinitionInfo == null)
             {
                 moduleDefinitionInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
                     "User Accounts", moduleInfo.DesktopModuleID);
@@ -1096,14 +1061,7 @@ namespace DNNConnect.CKEditorProvider
                 this.lblModType.Text = string.Empty;
             }
 
-            try
-            {
-                this.lblModName.Text += this.CurrentModule.ModuleTitle;
-            }
-            catch (Exception)
-            {
-                this.lblModName.Text += moduleInfo.ModuleTitle;
-            }
+            this.lblModName.Text += this.CurrentModule?.ModuleTitle ?? moduleInfo.ModuleTitle;
 
             if (this.request.QueryString["minc"] != null)
             {
@@ -1121,9 +1079,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Loads all DNN Roles.
-        /// </summary>
+        /// <summary>Loads all DNN Roles.</summary>
         private void FillRoles()
         {
             this.chblBrowsGr.Items.Clear();
@@ -1188,9 +1144,7 @@ namespace DNNConnect.CKEditorProvider
 
         // Reload Settings based on the Selected Mode
 
-        /// <summary>
-        /// Loads the List of available Skins.
-        /// </summary>
+        /// <summary>Loads the List of available Skins.</summary>
         private void FillSkinList()
         {
             this.ddlSkin.Items.Clear();
@@ -1228,9 +1182,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Loads the List of available Folders.
-        /// </summary>
+        /// <summary>Loads the List of available Folders.</summary>
         private void FillFolders()
         {
             this.UploadDir.Items.Clear();
@@ -1274,9 +1226,7 @@ namespace DNNConnect.CKEditorProvider
             this.ExportDir.SelectedValue = "-1";
         }
 
-        /// <summary>
-        /// Gets the portal settings.
-        /// </summary>
+        /// <summary>Gets the portal settings.</summary>
         /// <returns>
         /// Returns the Current Portal Settings.
         /// </returns>
@@ -1321,9 +1271,7 @@ namespace DNNConnect.CKEditorProvider
             return portalSettings;
         }
 
-        /// <summary>
-        /// Hide Add Toolbar Button if all Priorities are used.
-        /// </summary>
+        /// <summary>Hide Add Toolbar Button if all Priorities are used.</summary>
         private void HideAddToolbar()
         {
             var bHideAll = !this.dDlToolbarPrio.Items.Cast<ListItem>().Any(item => item.Enabled);
@@ -1334,9 +1282,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Add new/Save Toolbar Set.
-        /// </summary>
+        /// <summary>Add new/Save Toolbar Set.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbAddClick(object sender, ImageClickEventArgs e)
@@ -1426,9 +1372,7 @@ namespace DNNConnect.CKEditorProvider
             this.HideAddToolbar();
         }
 
-        /// <summary>
-        /// Cancel Edit Toolbar.
-        /// </summary>
+        /// <summary>Cancel Edit Toolbar.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbCancelClick(object sender, ImageClickEventArgs e)
@@ -1463,9 +1407,7 @@ namespace DNNConnect.CKEditorProvider
             this.HideAddToolbar();
         }
 
-        /// <summary>
-        /// Delete Selected Toolbar Set.
-        /// </summary>
+        /// <summary>Delete Selected Toolbar Set.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbDeleteClick(object sender, ImageClickEventArgs e)
@@ -1508,9 +1450,7 @@ namespace DNNConnect.CKEditorProvider
                 "success");
         }
 
-        /// <summary>
-        /// Edit Selected Toolbar.
-        /// </summary>
+        /// <summary>Edit Selected Toolbar.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbEditClick(object sender, ImageClickEventArgs e)
@@ -1657,9 +1597,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Handles the ItemDataBound event of the ToolbarGroupsRepeater control.
-        /// </summary>
+        /// <summary>Handles the ItemDataBound event of the ToolbarGroupsRepeater control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RepeaterItemEventArgs" /> instance containing the event data.</param>
         private void ToolbarGroupsRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -1711,9 +1649,7 @@ namespace DNNConnect.CKEditorProvider
             toolbarButtonsRepeater.DataBind();
         }
 
-        /// <summary>
-        /// Insert Toolbar Names from Serialized Xml File.
-        /// </summary>
+        /// <summary>Insert Toolbar Names from Serialized Xml File.</summary>
         private void InsertToolbars()
         {
             ListItemCollection licToolbars = new ListItemCollection();
@@ -1749,9 +1685,7 @@ namespace DNNConnect.CKEditorProvider
             this.FillAvailableToolbarButtons(null);
         }
 
-        /// <summary>
-        /// Fills the toolbar groups repeater.
-        /// </summary>
+        /// <summary>Fills the toolbar groups repeater.</summary>
         /// <param name="toolbarSet">The toolbar set.</param>
         /// <param name="excludeButtons">The exclude buttons list.</param>
         private void FillToolbarGroupsRepeater(ToolbarSet toolbarSet, out List<string> excludeButtons)
@@ -1780,9 +1714,7 @@ namespace DNNConnect.CKEditorProvider
             this.ToolbarGroupsRepeater.DataBind();
         }
 
-        /// <summary>
-        /// Fills the available toolbar buttons.
-        /// </summary>
+        /// <summary>Fills the available toolbar buttons.</summary>
         /// <param name="excludeItems">The exclude items.</param>
         private void FillAvailableToolbarButtons(ICollection<string> excludeItems)
         {
@@ -1824,9 +1756,7 @@ namespace DNNConnect.CKEditorProvider
             this.AvailableToolbarButtons.DataBind();
         }
 
-        /// <summary>
-        /// Load Default Host Settings from 'web.config'.
-        /// </summary>
+        /// <summary>Load Default Host Settings from 'web.config'.</summary>
         private void LoadDefaultSettings()
         {
             var ckeditorProvider = (Provider)this.provConfig.Providers[this.provConfig.DefaultProvider];
@@ -1873,9 +1803,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Load All Editor Settings.
-        /// </summary>
+        /// <summary>Load All Editor Settings.</summary>
         /// <param name="currentMode">The current mode.</param>
         /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
         private void LoadSettings(int currentMode, bool changeMode = true)
@@ -1910,9 +1838,9 @@ namespace DNNConnect.CKEditorProvider
             var portalRoles = RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID);
 
             var hostKey = "DNNCKH#";
-            var portalKey = string.Format("DNNCKP#{0}#", this.portalSettings?.PortalId ?? Host.HostPortalID);
-            var pageKey = string.Format("DNNCKT#{0}#", this.CurrentOrSelectedTabId);
-            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", this.ModuleId, this.moduleInstanceName);
+            var portalKey = $"DNNCKP#{this.portalSettings?.PortalId ?? Host.HostPortalID}#";
+            var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
+            var moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
             var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
@@ -2057,9 +1985,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Re-Formats Url from the Url Control.
-        /// </summary>
+        /// <summary>Re-Formats Url from the Url Control.</summary>
         /// <param name="inputUrl">The input Url.</param>
         /// <returns>
         /// Returns the Formatted Url.
@@ -2074,9 +2000,7 @@ namespace DNNConnect.CKEditorProvider
             return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this.portalSettings?.PortalId ?? Host.HostPortalID));
         }
 
-        /// <summary>
-        /// Renders the editor config settings.
-        /// </summary>
+        /// <summary>Renders the editor config settings.</summary>
         private void RenderEditorConfigSettings()
         {
             foreach (PropertyInfo info in SettingsUtil.GetEditorConfigProperties())
@@ -2327,9 +2251,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Save Settings only for this Module Instance.
-        /// </summary>
+        /// <summary>Save Settings only for this Module Instance.</summary>
         private void SaveModuleSettings()
         {
             this.moduleInstanceName = this.request.QueryString["minc"];
@@ -2588,9 +2510,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Save Settings for this Page Or Portal.
-        /// </summary>
+        /// <summary>Save Settings for this Page Or Portal.</summary>
         /// <param name="key">
         /// The key.
         /// </param>
@@ -2737,9 +2657,13 @@ namespace DNNConnect.CKEditorProvider
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTBROWSERROOTDIR}", this.HostBrowserRootDir.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTBROWSERROOTDIRFORIMG}", this.HostBrowserRootDirForImg.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTUPLOADDIR}", this.HostUploadDir.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTUPLOADDIRFORIMG}", this.HostUploadDirForImg.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
@@ -2843,9 +2767,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Save all Settings for the Current Selected Mode.
-        /// </summary>
+        /// <summary>Save all Settings for the Current Selected Mode.</summary>
         private void SaveSettings()
         {
             ModuleDefinitionInfo objm;
@@ -2886,9 +2808,7 @@ namespace DNNConnect.CKEditorProvider
             EditorController.ClearEditorCache();
         }
 
-        /// <summary>
-        /// Set Current Language.
-        /// </summary>
+        /// <summary>Set Current Language.</summary>
         private void SetLanguage()
         {
             this.lblHeader.Text = Localization.GetString("lblHeader.Text", this.ResXFile, this.LangCode);
@@ -2988,9 +2908,7 @@ namespace DNNConnect.CKEditorProvider
             this.DefaultLinkMode.Items[3].Text = Localization.GetString("DefaultLinkMode3.Text", this.ResXFile, this.LangCode);
         }
 
-        /// <summary>
-        /// Saves all Settings and Close Options.
-        /// </summary>
+        /// <summary>Saves all Settings and Close Options.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void OK_Click(object sender, EventArgs e)
@@ -3017,9 +2935,7 @@ namespace DNNConnect.CKEditorProvider
             this.BindOptionsData(true);
         }
 
-        /// <summary>
-        /// Remove Current selected Settings.
-        /// </summary>
+        /// <summary>Remove Current selected Settings.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Remove_Click(object sender, EventArgs e)
@@ -3043,9 +2959,7 @@ namespace DNNConnect.CKEditorProvider
             this.ShowNotification(Localization.GetString("lblInfoDel.Text", this.ResXFile, this.LangCode), "success");
         }
 
-        /// <summary>
-        /// Remove selected all Settings.
-        /// </summary>
+        /// <summary>Remove selected all Settings.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void RemoveAll_Click(object sender, EventArgs e)
@@ -3069,9 +2983,7 @@ namespace DNNConnect.CKEditorProvider
             this.ShowNotification(Localization.GetString("lblInfoDel.Text", this.ResXFile, this.LangCode), "success");
         }
 
-        /// <summary>
-        /// Handles the Click event of the RemoveChild control.
-        /// </summary>
+        /// <summary>Handles the Click event of the RemoveChild control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void RemoveChild_Click(object sender, EventArgs e)
@@ -3099,9 +3011,7 @@ namespace DNNConnect.CKEditorProvider
             this.ShowNotification(Localization.GetString("lblInfoDel.Text", this.ResXFile, this.LangCode), "success");
         }
 
-        /// <summary>
-        /// Copies the current Page Settings to all Child Pages.
-        /// </summary>
+        /// <summary>Copies the current Page Settings to all Child Pages.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void CopyToAllChild_Click(object sender, EventArgs e)
@@ -3120,9 +3030,7 @@ namespace DNNConnect.CKEditorProvider
             this.ShowNotification(Localization.GetString("lblInfoCopyAll.Text", this.ResXFile, this.LangCode), "success");
         }
 
-        /// <summary>
-        /// Reloaded the Settings of the Selected Mode.
-        /// </summary>
+        /// <summary>Reloaded the Settings of the Selected Mode.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void SetMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -3131,9 +3039,7 @@ namespace DNNConnect.CKEditorProvider
             this.BindUserGroupsGridView();
         }
 
-        /// <summary>
-        /// Shows the info notification.
-        /// </summary>
+        /// <summary>Shows the info notification.</summary>
         /// <param name="message">The message.</param>
         /// <param name="type">The type.</param>
         private void ShowNotification(string message, string type)
@@ -3146,9 +3052,7 @@ namespace DNNConnect.CKEditorProvider
                 true);
         }
 
-        /// <summary>
-        /// Renders the URL controls.
-        /// </summary>
+        /// <summary>Renders the URL controls.</summary>
         /// <param name="reloadControls">if set to <c>true</c> [reload controls].</param>
         private void RenderUrlControls(bool reloadControls = false)
         {
@@ -3171,9 +3075,7 @@ namespace DNNConnect.CKEditorProvider
             this.ImportFile.ReloadFiles = true;
         }
 
-        /// <summary>
-        /// Exports the settings.
-        /// </summary>
+        /// <summary>Exports the settings.</summary>
         /// <returns>Returns the exported EditorProviderSettings.</returns>
         private EditorProviderSettings ExportSettings()
         {
@@ -3387,9 +3289,13 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.ShowPageLinksTabFirst = this.ShowPageLinksTabFirst.Checked;
             exportSettings.OverrideFileOnUpload = this.OverrideFileOnUpload.Checked;
             exportSettings.SubDirs = this.cbBrowserDirs.Checked;
+            exportSettings.HostBrowserRootDir = this.HostBrowserRootDir.Text;
             exportSettings.BrowserRootDirId = int.Parse(this.BrowserRootDir.SelectedValue);
+            exportSettings.HostBrowserRootDirForImg = this.HostBrowserRootDirForImg.Text;
             exportSettings.BrowserRootDirForImgId = int.Parse(this.BrowserRootDirForImg.SelectedValue);
+            exportSettings.HostUploadDir = this.HostUploadDir.Text;
             exportSettings.UploadDirId = int.Parse(this.UploadDir.SelectedValue);
+            exportSettings.HostUploadDirForImg = this.HostUploadDirForImg.Text;
             exportSettings.UploadDirForImgId = int.Parse(this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
@@ -3519,9 +3425,7 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.UploadSizeRoles = listUploadSizeRoles;
         }
 
-        /// <summary>
-        /// Adds the other upload roles.
-        /// </summary>
+        /// <summary>Adds the other upload roles.</summary>
         /// <param name="roleName">Name of the role.</param>
         /// <param name="listUploadSizeRoles">The list upload size roles.</param>
         /// <param name="sizeLimit">The size limit.</param>
@@ -3542,9 +3446,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Adds the other toolbar roles.
-        /// </summary>
+        /// <summary>Adds the other toolbar roles.</summary>
         /// <param name="listToolbarRoles">The list toolbar roles.</param>
         /// <param name="roleName">Name of the role.</param>
         /// <param name="value">The value.</param>
@@ -3565,9 +3467,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets default upload size limits for each existent role.
-        /// </summary>
+        /// <summary>Gets default upload size limits for each existent role.</summary>
         /// <param name="portalRoles">A list of roles.</param>
         /// <returns>A list of <see cref="UploadSizeRoles"/> instances.</returns>
         private List<UploadSizeRoles> GetDefaultUploadFileSettings(IList<RoleInfo> portalRoles)

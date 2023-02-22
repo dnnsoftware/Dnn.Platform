@@ -17,32 +17,32 @@ namespace DotNetNuke.UI.Skins
     [Serializable]
     public class SkinDefaults
     {
-        private string _adminDefaultName;
-        private string _defaultName;
-        private string _folder;
+        private string adminDefaultName;
+        private string defaultName;
+        private string folder;
 
-        private SkinDefaults(SkinDefaultType DefaultType)
+        private SkinDefaults(SkinDefaultType defaultType)
         {
-            string nodename = Enum.GetName(DefaultType.GetType(), DefaultType).ToLowerInvariant();
+            string nodename = Enum.GetName(defaultType.GetType(), defaultType).ToLowerInvariant();
             string filePath = Config.GetPathToFile(Config.ConfigFileType.DotNetNuke);
             var dnndoc = new XmlDocument { XmlResolver = null };
             dnndoc.Load(filePath);
             XmlNode defaultElement = dnndoc.SelectSingleNode("/configuration/skinningdefaults/" + nodename);
-            this._folder = defaultElement.Attributes["folder"].Value;
-            this._defaultName = defaultElement.Attributes["default"].Value;
-            this._adminDefaultName = defaultElement.Attributes["admindefault"].Value;
+            this.folder = defaultElement.Attributes["folder"].Value;
+            this.defaultName = defaultElement.Attributes["default"].Value;
+            this.adminDefaultName = defaultElement.Attributes["admindefault"].Value;
         }
 
         public string AdminDefaultName
         {
             get
             {
-                return this._adminDefaultName;
+                return this.adminDefaultName;
             }
 
             set
             {
-                this._adminDefaultName = value;
+                this.adminDefaultName = value;
             }
         }
 
@@ -50,12 +50,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._defaultName;
+                return this.defaultName;
             }
 
             set
             {
-                this._defaultName = value;
+                this.defaultName = value;
             }
         }
 
@@ -63,20 +63,20 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._folder;
+                return this.folder;
             }
 
             set
             {
-                this._folder = value;
+                this.folder = value;
             }
         }
 
-        public static SkinDefaults GetSkinDefaults(SkinDefaultType DefaultType)
+        public static SkinDefaults GetSkinDefaults(SkinDefaultType defaultType)
         {
             return
                 CBO.GetCachedObject<SkinDefaults>(
-                    new CacheItemArgs(string.Format(DataCache.SkinDefaultsCacheKey, DefaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, DefaultType),
+                    new CacheItemArgs(string.Format(DataCache.SkinDefaultsCacheKey, defaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, defaultType),
                     GetSkinDefaultsCallback);
         }
 

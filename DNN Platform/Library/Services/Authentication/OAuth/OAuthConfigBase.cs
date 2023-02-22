@@ -11,17 +11,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// The Config class provides a central area for management of Module Configuration Settings.
-    /// </summary>
+    /// <summary>The Config class provides a central area for management of Module Configuration Settings.</summary>
     [Serializable]
     public class OAuthConfigBase : AuthenticationConfigBase
     {
-        private const string _cacheKey = "Authentication";
+        private const string CacheKey = "Authentication";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OAuthConfigBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OAuthConfigBase"/> class.</summary>
         /// <param name="service"></param>
         /// <param name="portalId"></param>
         protected OAuthConfigBase(string service, int portalId)
@@ -107,7 +103,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private static string GetCacheKey(string service, int portalId)
         {
-            return _cacheKey + "." + service + "_" + portalId;
+            return CacheKey + "." + service + "_" + portalId;
         }
     }
 }

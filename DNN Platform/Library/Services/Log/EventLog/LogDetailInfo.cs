@@ -13,17 +13,13 @@ namespace DotNetNuke.Services.Log.EventLog
     [Serializable]
     public class LogDetailInfo : ILogDetailInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogDetailInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LogDetailInfo"/> class.</summary>
         public LogDetailInfo()
             : this(string.Empty, string.Empty)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogDetailInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LogDetailInfo"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
         public LogDetailInfo(string name, string value)

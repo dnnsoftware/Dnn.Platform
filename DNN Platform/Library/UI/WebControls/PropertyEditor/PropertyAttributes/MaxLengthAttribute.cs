@@ -10,21 +10,19 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class MaxLengthAttribute : Attribute
     {
-        private readonly int _Length = Null.NullInteger;
+        private readonly int length = Null.NullInteger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaxLengthAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MaxLengthAttribute"/> class.</summary>
         public MaxLengthAttribute(int length)
         {
-            this._Length = length;
+            this.length = length;
         }
 
         public int Length
         {
             get
             {
-                return this._Length;
+                return this.length;
             }
         }
     }

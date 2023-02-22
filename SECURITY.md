@@ -12,4 +12,6 @@ All submitted information is viewed only by members of the DNN Security Task For
 * **Moderate** means the issue can compromise data or functionality on a portal/website only if some other condition is met (e.g. a particular module or a user within a particular role is required). Moderate issue security bulletins typically include recommended actions to resolve the issue.
 * **Low** means the issue is very difficult to exploit or has a limited potential impact.
 
-The Security Task Force then issues a security bulletin via DNN security forum posts and, where judged necessary, email. The bulletin provides details about the issue, the DNN versions impacted, and suggested fixes or workarounds. Security bulletins are issued as required. 
+Once an issue has been resolved via a public release of DNN Platform the release notes on GitHub are updated to reflect that security bulletins exist for the release.  Additionally the [DNN Community Security Center](https://dnncommunity.org/security) is updated with the vulnerability details.  We strongly suggest using the "Watch" option on GitHub for "Releases" at a minimum to receive notifications of updated DNN Platform Releases.
+
+As a general policy, DNN Platform does not issue Hot Fix releases to prior versions of DNN Platform.  If a remediation is possible via configuration it shall be noted as applicable in the posted bulletins.

@@ -12,6 +12,13 @@
 | `currentItems` _(required)_ | --        | The list of current items. | `GetFolderContentResponse` | `undefined` |
 
 
+## Events
+
+| Event                      | Description                                                                         | Type                  |
+| -------------------------- | ----------------------------------------------------------------------------------- | --------------------- |
+| `dnnRmFolderDoubleClicked` | Fires when a folder is double-clicked and emits the folder ID into the event.detail | `CustomEvent<number>` |
+
+
 ## Dependencies
 
 ### Used by
@@ -59,6 +66,8 @@ graph TD;
   dnn-rm-move-items --> dnn-rm-folder-list
   dnn-rm-move-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-button
+  dnn-rm-folder-list --> dnn-collapsible
+  dnn-rm-folder-list --> dnn-rm-folder-context-menu
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-collapsible
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu

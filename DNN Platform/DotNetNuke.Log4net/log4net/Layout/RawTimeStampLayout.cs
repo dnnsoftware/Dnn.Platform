@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Extract the date from the <see cref="LoggingEvent"/>
-    /// </summary>
+    /// <summary>Extract the date from the <see cref="LoggingEvent"/></summary>
     /// <remarks>
     /// <para>
     /// Extract the date from the <see cref="LoggingEvent"/>
@@ -38,16 +36,12 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class RawTimeStampLayout : IRawLayout
     {
-        /// <summary>
-        /// Constructs a RawTimeStampLayout
-        /// </summary>
+        /// <summary>Constructs a RawTimeStampLayout</summary>
         public RawTimeStampLayout()
         {
         }
 
-        /// <summary>
-        /// Gets the <see cref="LoggingEvent.TimeStamp"/> as a <see cref="DateTime"/>.
-        /// </summary>
+        /// <summary>Gets the <see cref="LoggingEvent.TimeStamp"/> as a <see cref="DateTime"/>.</summary>
         /// <param name="loggingEvent">The event to format</param>
         /// <returns>returns the time stamp</returns>
         /// <remarks>

@@ -27,15 +27,14 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for TermTests.
-    /// </summary>
+    /// <summary>  Summary description for TermTests.</summary>
     [TestFixture]
     public class TermControllerTests
     {
         private Mock<CachingProvider> mockCache;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -59,6 +58,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Throws_On_Null_Term()
         {
             // Arrange
@@ -70,6 +70,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Throws_On_Invalid_Term()
         {
             // Arrange
@@ -84,6 +85,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Throws_On_Negative_VocabularyId()
         {
             // Arrange
@@ -97,6 +99,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Should_Call_DataService_AddSimpleTerm_If_Term_Is_Simple_Term()
         {
             // Arrange
@@ -113,6 +116,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Should_Call_DataService_AddHeirarchicalTerm_If_Term_Is_Heirarchical_Term()
         {
             // Arrange
@@ -129,6 +133,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Returns_Valid_Id_On_Valid_Term_If_Term_Is_Simple_Term()
         {
             // Arrange
@@ -146,6 +151,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Sets_Valid_Id_On_Valid_Term_If_Term_Is_Simple_Term()
         {
             // Arrange
@@ -163,6 +169,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Returns_Valid_Id_On_Valid_Term_If_Term_Is_Heirarchical_Term()
         {
             // Arrange
@@ -180,6 +187,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Sets_Valid_Id_On_Valid_Term_If_Term_Is_Heirarchical_Term()
         {
             // Arrange
@@ -197,6 +205,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTerm_Clears_Term_Cache_On_Valid_Term()
         {
             // Arrange
@@ -226,6 +235,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTermToContent_Throws_On_Null_ContentItem()
         {
             // Arrange
@@ -239,6 +249,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_AddTermToContent_Should_Call_DataService_If_Valid_Params()
         {
             // Arrange
@@ -267,6 +278,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_DeleteTerm_Throws_On_Negative_TermId()
         {
             // Arrange
@@ -281,6 +293,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_DeleteTerm_Should_Call_DataService_DeleteSimpleTerm_If_Term_Is_Simple_Term()
         {
             // Arrange
@@ -298,6 +311,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_DeleteTerm_Should_Call_DataService_DeleteHeirarchicalTerm_If_Term_Is_Heirarchical_Term()
         {
             // Arrange
@@ -315,6 +329,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_DeleteTerm_Clears_Term_Cache_On_Valid_Term()
         {
             // Arrange
@@ -331,6 +346,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTerm_Throws_On_Negative_TermId()
         {
             // Arrange
@@ -342,6 +358,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTerm_Returns_Null_On_InValidTermId()
         {
             // Arrange
@@ -358,6 +375,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTerm_Calls_DataService()
         {
             // Arrange
@@ -373,6 +391,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTerm_Returns_Term_On_Valid_TermId()
         {
             // Arrange
@@ -390,6 +409,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTermsByContent_Throws_On_Invalid_ContentItemId()
         {
             // Arrange
@@ -401,6 +421,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTermsByContent_Calls_DataService()
         {
             // Arrange
@@ -419,6 +440,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTermsByContent_Returns_Terms_On_Valid_ContentItemId()
         {
             // Arrange
@@ -444,6 +466,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTermsByVocabulary_Throws_On_Invalid_VocabularyId()
         {
             // Arrange
@@ -456,6 +479,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTermsByVocabulary_Returns_Terms_On_Valid_VocabularyId()
         {
             // Arrange
@@ -482,6 +506,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_GetTermsByVocabulary_Throws_On_Invalid_VocabularyName()
         {
             // Arrange
@@ -520,6 +545,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Throws_On_Null_Term()
         {
             // Arrange
@@ -531,6 +557,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Throws_On_Negative_TermId()
         {
             // Arrange
@@ -544,6 +571,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Throws_On_Invalid_Term()
         {
             // Arrange
@@ -558,6 +586,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Throws_On_Negative_VocabularyId()
         {
             // Arrange
@@ -571,6 +600,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Should_Call_DataService_UpdateSimpleTerm_If_Term_Is_Simple_Term()
         {
             // Arrange
@@ -590,6 +620,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Should_Call_DataService_UpdateHeirarchicalTerm_If_Term_Is_Heirarchical_Term()
         {
             // Arrange
@@ -609,6 +640,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void TermController_UpdateTerm_Clears_Term_Cache_On_Valid_Term()
         {
             // Arrange

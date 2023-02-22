@@ -13,14 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: peterjgrainger/action-create-branch@v2.2.0
+      - uses: peterjgrainger/action-create-branch@v2.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
 
       - name: Create Pull Request
-        uses: repo-sync/pull-request@v2.6
+        uses: repo-sync/pull-request@v2.12
         with:
           source_branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
           destination_branch: release/10.0.0

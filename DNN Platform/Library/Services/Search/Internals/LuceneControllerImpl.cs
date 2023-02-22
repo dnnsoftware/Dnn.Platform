@@ -27,11 +27,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Impl Controller class for Lucene.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>  The Impl Controller class for Lucene.</summary>
     internal class LuceneControllerImpl : ILuceneController, IDisposable
     {
         internal const int DefaultRereadTimeSpan = 30; // in seconds
@@ -47,23 +43,21 @@ namespace DotNetNuke.Services.Search.Internals
         private const string HtmlPostTag = "</b>";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
-        private readonly object _writerLock = new object();
-        private readonly double _readerTimeSpan; // in seconds
-        private readonly int _searchRetryTimes; // search retry times if exception thrown during search process
-        private readonly List<CachedReader> _oldReaders = new List<CachedReader>();
+        private readonly object writerLock = new object();
+        private readonly double readerTimeSpan; // in seconds
+        private readonly int searchRetryTimes; // search retry times if exception thrown during search process
+        private readonly List<CachedReader> oldReaders = new List<CachedReader>();
 
-        private IndexWriter _writer;
-        private IndexReader _idxReader;
-        private CachedReader _reader;
-        private FastVectorHighlighter _fastHighlighter;
-        private int _isDisposed = UNDISPOSED;
+        private IndexWriter writer;
+        private IndexReader idxReader;
+        private CachedReader reader;
+        private FastVectorHighlighter fastHighlighter;
+        private int isDisposed = UNDISPOSED;
 
-        private DateTime _lastReadTimeUtc;
-        private DateTime _lastDirModifyTimeUtc;
+        private DateTime lastReadTimeUtc;
+        private DateTime lastDirModifyTimeUtc;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LuceneControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LuceneControllerImpl"/> class.</summary>
         public LuceneControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -75,8 +69,8 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             this.IndexFolder = Path.Combine(Globals.ApplicationMapPath, folder);
-            this._readerTimeSpan = hostController.GetDouble(Constants.SearchReaderRefreshTimeKey, DefaultRereadTimeSpan);
-            this._searchRetryTimes = hostController.GetInteger(Constants.SearchRetryTimesKey, DefaultSearchRetryTimes);
+            this.readerTimeSpan = hostController.GetDouble(Constants.SearchReaderRefreshTimeKey, DefaultRereadTimeSpan);
+            this.searchRetryTimes = hostController.GetInteger(Constants.SearchRetryTimesKey, DefaultSearchRetryTimes);
         }
 
         internal string IndexFolder { get; private set; }
@@ -85,11 +79,11 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (this._writer == null)
+                if (this.writer == null)
                 {
-                    lock (this._writerLock)
+                    lock (this.writerLock)
                     {
-                        if (this._writer == null)
+                        if (this.writer == null)
                         {
                             var lockFile = Path.Combine(this.IndexFolder, WriteLockFile);
                             if (File.Exists(lockFile))
@@ -104,8 +98,11 @@ namespace DotNetNuke.Services.Search.Internals
                                 {
 #pragma warning disable 0618
                                     throw new SearchException(
-                                        Localization.GetExceptionMessage("UnableToCreateLuceneWriter", "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
-                                        e, new SearchItemInfo());
+                                        Localization.GetExceptionMessage(
+                                            "UnableToCreateLuceneWriter",
+                                            "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
+                                        e,
+                                        new SearchItemInfo());
 #pragma warning restore 0618
                                 }
                             }
@@ -113,15 +110,16 @@ namespace DotNetNuke.Services.Search.Internals
                             this.CheckDisposed();
                             var writer = new IndexWriter(
                                 FSDirectory.Open(this.IndexFolder),
-                                this.GetCustomAnalyzer() ?? new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
-                            this._idxReader = writer.GetReader();
+                                this.GetCustomAnalyzer() ?? new SynonymAnalyzer(),
+                                IndexWriter.MaxFieldLength.UNLIMITED);
+                            this.idxReader = writer.GetReader();
                             Thread.MemoryBarrier();
-                            this._writer = writer;
+                            this.writer = writer;
                         }
                     }
                 }
 
-                return this._writer;
+                return this.writer;
             }
         }
 
@@ -129,9 +127,9 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                return (DateTime.UtcNow - this._lastReadTimeUtc).TotalSeconds >= this._readerTimeSpan &&
+                return (DateTime.UtcNow - this.lastReadTimeUtc).TotalSeconds >= this.readerTimeSpan &&
                     System.IO.Directory.Exists(this.IndexFolder) &&
-                    System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder) != this._lastDirModifyTimeUtc;
+                    System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder) != this.lastDirModifyTimeUtc;
             }
         }
 
@@ -139,15 +137,15 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (this._fastHighlighter == null)
+                if (this.fastHighlighter == null)
                 {
                     FragListBuilder fragListBuilder = new SimpleFragListBuilder();
                     FragmentsBuilder fragmentBuilder = new ScoreOrderFragmentsBuilder(
                         new[] { HighlightPreTag }, new[] { HighlightPostTag });
-                    this._fastHighlighter = new FastVectorHighlighter(true, true, fragListBuilder, fragmentBuilder);
+                    this.fastHighlighter = new FastVectorHighlighter(true, true, fragListBuilder, fragmentBuilder);
                 }
 
-                return this._fastHighlighter;
+                return this.fastHighlighter;
             }
         }
 
@@ -173,7 +171,7 @@ namespace DotNetNuke.Services.Search.Internals
             var maxResults = searchContext.LuceneQuery.PageIndex * searchContext.LuceneQuery.PageSize;
             var minResults = maxResults - searchContext.LuceneQuery.PageSize + 1;
 
-            for (var i = 0; i < this._searchRetryTimes; i++)
+            for (var i = 0; i < this.searchRetryTimes; i++)
             {
                 try
                 {
@@ -220,7 +218,7 @@ namespace DotNetNuke.Services.Search.Internals
                     this.DisposeReaders();
                     this.DisposeWriter(false);
 
-                    if (i == this._searchRetryTimes - 1)
+                    if (i == this.searchRetryTimes - 1)
                     {
                         throw;
                     }
@@ -246,7 +244,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
                 catch (OutOfMemoryException)
                 {
-                    lock (this._writerLock)
+                    lock (this.writerLock)
                     {
                         // as suggested by Lucene's doc
                         this.DisposeWriter();
@@ -266,14 +264,14 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc/>
         public void Commit()
         {
-            if (this._writer != null)
+            if (this.writer != null)
             {
-                lock (this._writerLock)
+                lock (this.writerLock)
                 {
-                    if (this._writer != null)
+                    if (this.writer != null)
                     {
                         this.CheckDisposed();
-                        this._writer.Commit();
+                        this.writer.Commit();
                         this.RescheduleAccessTimes();
                     }
                 }
@@ -283,7 +281,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc/>
         public bool OptimizeSearchIndex(bool doWait)
         {
-            var writer = this._writer;
+            var writer = this.writer;
             if (writer != null && writer.HasDeletions())
             {
                 if (doWait)
@@ -294,7 +292,7 @@ namespace DotNetNuke.Services.Search.Internals
                 this.CheckDisposed();
 
                 // optimize down to "> 1 segments" for better performance than down to 1
-                this._writer.Optimize(4, doWait);
+                this.writer.Optimize(4, doWait);
 
                 if (doWait)
                 {
@@ -355,7 +353,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc/>
         public void Dispose()
         {
-            var status = Interlocked.CompareExchange(ref this._isDisposed, DISPOSED, UNDISPOSED);
+            var status = Interlocked.CompareExchange(ref this.isDisposed, DISPOSED, UNDISPOSED);
             if (status == UNDISPOSED)
             {
                 this.DisposeWriter();
@@ -410,14 +408,14 @@ namespace DotNetNuke.Services.Search.Internals
         // made internal to be used in unit tests only; otherwise could be made private
         internal IndexSearcher GetSearcher()
         {
-            if (this._reader == null || this.MustRereadIndex)
+            if (this.reader == null || this.MustRereadIndex)
             {
                 this.CheckValidIndexFolder();
                 this.UpdateLastAccessTimes();
                 this.InstantiateReader();
             }
 
-            return this._reader.GetSearcher();
+            return this.reader.GetSearcher();
         }
 
         private static StringBuilder GetSearcResultExplanation(LuceneQuery luceneQuery, IEnumerable<ScoreDoc> scoreDocs, IndexSearcher searcher)
@@ -438,7 +436,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void CheckDisposed()
         {
-            if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
+            if (Thread.VolatileRead(ref this.isDisposed) == DISPOSED)
             {
                 throw new ObjectDisposedException(Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
             }
@@ -447,17 +445,17 @@ namespace DotNetNuke.Services.Search.Internals
         private void InstantiateReader()
         {
             IndexSearcher searcher;
-            if (this._idxReader != null)
+            if (this.idxReader != null)
             {
                 // use the Reopen() method for better near-realtime when the _writer ins't null
-                var newReader = this._idxReader.Reopen();
-                if (this._idxReader != newReader)
+                var newReader = this.idxReader.Reopen();
+                if (this.idxReader != newReader)
                 {
                     // _idxReader.Dispose(); -- will get disposed upon disposing the searcher
-                    Interlocked.Exchange(ref this._idxReader, newReader);
+                    Interlocked.Exchange(ref this.idxReader, newReader);
                 }
 
-                searcher = new IndexSearcher(this._idxReader);
+                searcher = new IndexSearcher(this.idxReader);
             }
             else
             {
@@ -467,22 +465,22 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var reader = new CachedReader(searcher);
-            var cutoffTime = DateTime.Now - TimeSpan.FromSeconds(this._readerTimeSpan * 10);
-            lock (((ICollection)this._oldReaders).SyncRoot)
+            var cutoffTime = DateTime.Now - TimeSpan.FromSeconds(this.readerTimeSpan * 10);
+            lock (((ICollection)this.oldReaders).SyncRoot)
             {
                 this.CheckDisposed();
-                this._oldReaders.RemoveAll(r => r.LastUsed <= cutoffTime);
-                this._oldReaders.Add(reader);
-                Interlocked.Exchange(ref this._reader, reader);
+                this.oldReaders.RemoveAll(r => r.LastUsed <= cutoffTime);
+                this.oldReaders.Add(reader);
+                Interlocked.Exchange(ref this.reader, reader);
             }
         }
 
         private void UpdateLastAccessTimes()
         {
-            this._lastReadTimeUtc = DateTime.UtcNow;
+            this.lastReadTimeUtc = DateTime.UtcNow;
             if (System.IO.Directory.Exists(this.IndexFolder))
             {
-                this._lastDirModifyTimeUtc = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder);
+                this.lastDirModifyTimeUtc = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder);
             }
         }
 
@@ -490,9 +488,9 @@ namespace DotNetNuke.Services.Search.Internals
         {
             // forces re-opening the reader within 30 seconds from now (used mainly by commit)
             var now = DateTime.UtcNow;
-            if (this._readerTimeSpan > DefaultRereadTimeSpan && (now - this._lastReadTimeUtc).TotalSeconds > DefaultRereadTimeSpan)
+            if (this.readerTimeSpan > DefaultRereadTimeSpan && (now - this.lastReadTimeUtc).TotalSeconds > DefaultRereadTimeSpan)
             {
-                this._lastReadTimeUtc = now - TimeSpan.FromSeconds(this._readerTimeSpan - DefaultRereadTimeSpan);
+                this.lastReadTimeUtc = now - TimeSpan.FromSeconds(this.readerTimeSpan - DefaultRereadTimeSpan);
             }
         }
 
@@ -521,9 +519,7 @@ namespace DotNetNuke.Services.Search.Internals
             return s;
         }
 
-        /// <summary>
-        /// Extract the Score portion of the match.ToString().
-        /// </summary>
+        /// <summary>Extract the Score portion of the match.ToString().</summary>
         private string GetDisplayScoreFromMatch(string match)
         {
             var displayScore = string.Empty;
@@ -542,22 +538,22 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void DisposeWriter(bool commit = true)
         {
-            if (this._writer != null)
+            if (this.writer != null)
             {
-                lock (this._writerLock)
+                lock (this.writerLock)
                 {
-                    if (this._writer != null)
+                    if (this.writer != null)
                     {
-                        this._idxReader.Dispose();
-                        this._idxReader = null;
+                        this.idxReader.Dispose();
+                        this.idxReader = null;
 
                         if (commit)
                         {
-                            this._writer.Commit();
+                            this.writer.Commit();
                         }
 
-                        this._writer.Dispose();
-                        this._writer = null;
+                        this.writer.Dispose();
+                        this.writer = null;
                     }
                 }
             }
@@ -565,25 +561,25 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void DisposeReaders()
         {
-            lock (((ICollection)this._oldReaders).SyncRoot)
+            lock (((ICollection)this.oldReaders).SyncRoot)
             {
-                foreach (var rdr in this._oldReaders)
+                foreach (var rdr in this.oldReaders)
                 {
                     rdr.Dispose();
                 }
 
-                this._oldReaders.Clear();
-                this._reader = null;
+                this.oldReaders.Clear();
+                this.reader = null;
             }
         }
 
         private class CachedReader : IDisposable
         {
-            private readonly IndexSearcher _searcher;
+            private readonly IndexSearcher searcher;
 
             public CachedReader(IndexSearcher searcher)
             {
-                this._searcher = searcher;
+                this.searcher = searcher;
                 this.UpdateLastUsed();
             }
 
@@ -592,13 +588,13 @@ namespace DotNetNuke.Services.Search.Internals
             public IndexSearcher GetSearcher()
             {
                 this.UpdateLastUsed();
-                return this._searcher;
+                return this.searcher;
             }
 
             public void Dispose()
             {
-                this._searcher.Dispose();
-                this._searcher.IndexReader.Dispose();
+                this.searcher.Dispose();
+                this.searcher.IndexReader.Dispose();
             }
 
             private void UpdateLastUsed()

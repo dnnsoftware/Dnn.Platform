@@ -4,14 +4,10 @@
 
 namespace DotNetNuke.Common
 {
-    /// <summary>
-    /// This class handles basic elements about File Items. Is is a basic Get/Set for Value and Text.
-    /// </summary>
+    /// <summary>This class handles basic elements about File Items. Is is a basic Get/Set for Value and Text.</summary>
     public class FileItem
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileItem" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileItem" /> class.</summary>
         /// <param name="value">The value.</param>
         /// <param name="text">The text.</param>
         public FileItem(string value, string text)
@@ -20,15 +16,11 @@ namespace DotNetNuke.Common
             this.Text = text;
         }
 
-        /// <summary>
-        /// Gets the text.
-        /// </summary>
+        /// <summary>Gets the text.</summary>
         /// <value>The text.</value>
         public string Text { get; private set; }
 
-        /// <summary>
-        /// Gets the value.
-        /// </summary>
+        /// <summary>Gets the value.</summary>
         /// <value>The value.</value>
         public string Value { get; private set; }
     }

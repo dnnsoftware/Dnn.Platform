@@ -15,17 +15,13 @@ namespace DotNetNuke.Application
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Defines the context for the environment of the DotNetNuke application.
-    /// </summary>
+    /// <summary>Defines the context for the environment of the DotNetNuke application.</summary>
     public class DotNetNukeContext : IDnnContext
     {
         private static IDnnContext current;
         private readonly IApplicationInfo applicationInfo;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DotNetNukeContext" /> class using the provided application as base.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeContext" /> class using the provided application as base.</summary>
         /// <param name="applicationInfo">The application.</param>
         /// <remarks>
         /// This constructor is designed to be used with Dependency Injection.
@@ -37,9 +33,7 @@ namespace DotNetNuke.Application
             this.SkinEventListeners = new NaiveLockingList<SkinEventListener>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DotNetNukeContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeContext"/> class.</summary>
         /// <remarks>
         /// Initialize using the public constructor for Dependency Injection, this method will be removed.
         /// </remarks>
@@ -49,9 +43,7 @@ namespace DotNetNuke.Application
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DotNetNukeContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeContext"/> class.</summary>
         /// <param name="application">A reference to the .Net application.</param>
         /// <remarks>
         /// Initialize using the public constructor for Dependency Injection, this method will be removed.
@@ -62,9 +54,7 @@ namespace DotNetNuke.Application
         {
         }
 
-        /// <summary>
-        /// Gets or sets the current app context.
-        /// </summary>
+        /// <summary>Gets or sets the current app context.</summary>
         public static DotNetNukeContext Current
         {
             get
@@ -83,17 +73,13 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets get the application.
-        /// </summary>
+        /// <summary>Gets get the application.</summary>
         public Application Application { get => this.applicationInfo is Application app ? app : new Application(); }
 
         /// <inheritdoc />
         IApplicationInfo IDnnContext.Application { get => this.applicationInfo; }
 
-        /// <summary>
-        /// Gets the container event listeners. The listeners will be called in each life cycle of load container.
-        /// </summary>
+        /// <summary>Gets the container event listeners. The listeners will be called in each life cycle of load container.</summary>
         /// <see cref="ContainerEventListener"/>
         /// <seealso cref="DotNetNuke.UI.Containers.Container.OnInit"/>
         /// <seealso cref="DotNetNuke.UI.Containers.Container.OnLoad"/>
@@ -101,9 +87,7 @@ namespace DotNetNuke.Application
         /// <seealso cref="DotNetNuke.UI.Containers.Container.OnUnload"/>
         public IList<ContainerEventListener> ContainerEventListeners { get; }
 
-        /// <summary>
-        /// Gets the skin event listeners. The listeners will be called in each life cycle of load skin.
-        /// </summary>
+        /// <summary>Gets the skin event listeners. The listeners will be called in each life cycle of load skin.</summary>
         /// <see cref="SkinEventListener"/>
         /// <seealso cref="DotNetNuke.UI.Skins.Skin.OnInit"/>
         /// <seealso cref="DotNetNuke.UI.Skins.Skin.OnLoad"/>

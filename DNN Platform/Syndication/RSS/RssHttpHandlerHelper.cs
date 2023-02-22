@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Syndication
     using System.Web;
     using System.Web.Security;
 
-    /// <summary>
-    ///   Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string.
-    /// </summary>
+    /// <summary>  Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string.</summary>
     public class RssHttpHandlerHelper
     {
         private RssHttpHandlerHelper()

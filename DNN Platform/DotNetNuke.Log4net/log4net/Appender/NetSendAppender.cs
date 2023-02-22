@@ -141,29 +141,19 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class NetSendAppender : AppenderSkeleton 
     {
-        /// <summary>
-        /// The DNS or NetBIOS name of the server on which the function is to execute.
-        /// </summary>
+        /// <summary>The DNS or NetBIOS name of the server on which the function is to execute.</summary>
         private string m_server;
 
-        /// <summary>
-        /// The sender of the network message.
-        /// </summary>
+        /// <summary>The sender of the network message.</summary>
         private string m_sender;
 
-        /// <summary>
-        /// The message alias to which the message should be sent.
-        /// </summary>
+        /// <summary>The message alias to which the message should be sent.</summary>
         private string m_recipient;
 
-        /// <summary>
-        /// The security context to use for privileged calls
-        /// </summary>
+        /// <summary>The security context to use for privileged calls</summary>
         private SecurityContext m_securityContext;
 
-        /// <summary>
-        /// Initializes the appender.
-        /// </summary>
+        /// <summary>Initializes the appender.</summary>
         /// <remarks>
         /// The default constructor initializes all fields to their default values.
         /// </remarks>
@@ -171,9 +161,7 @@ namespace log4net.Appender
         {
         }
 
-        /// <summary>
-        /// Gets or sets the sender of the message.
-        /// </summary>
+        /// <summary>Gets or sets the sender of the message.</summary>
         /// <value>
         /// The sender of the message.
         /// </value>
@@ -186,9 +174,7 @@ namespace log4net.Appender
             set { this.m_sender = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the message alias to which the message should be sent.
-        /// </summary>
+        /// <summary>Gets or sets the message alias to which the message should be sent.</summary>
         /// <value>
         /// The recipient of the message.
         /// </value>
@@ -201,9 +187,7 @@ namespace log4net.Appender
             set { this.m_recipient = value; }
         }
         
-        /// <summary>
-        /// Gets or sets the DNS or NetBIOS name of the remote server on which the function is to execute.
-        /// </summary>
+        /// <summary>Gets or sets the DNS or NetBIOS name of the remote server on which the function is to execute.</summary>
         /// <value>
         /// DNS or NetBIOS name of the remote server on which the function is to execute.
         /// </value>
@@ -221,9 +205,7 @@ namespace log4net.Appender
             set { this.m_server = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="SecurityContext"/> used to call the NetSend method.
-        /// </summary>
+        /// <summary>Gets or sets the <see cref="SecurityContext"/> used to call the NetSend method.</summary>
         /// <value>
         /// The <see cref="SecurityContext"/> used to call the NetSend method.
         /// </value>
@@ -241,9 +223,7 @@ namespace log4net.Appender
             set { this.m_securityContext = value; }
         }
 
-        /// <summary>
-        /// Initialize the appender based on the options set.
-        /// </summary>
+        /// <summary>Initialize the appender based on the options set.</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -276,9 +256,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
-        /// </summary>
+        /// <summary>This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
@@ -318,9 +296,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -332,9 +308,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Sends a buffer of information to a registered message alias.
-        /// </summary>
+        /// <summary>Sends a buffer of information to a registered message alias.</summary>
         /// <param name="serverName">The DNS or NetBIOS name of the server on which the function is to execute.</param>
         /// <param name="msgName">The message alias to which the message buffer should be sent</param>
         /// <param name="fromName">The originator of the message.</param>

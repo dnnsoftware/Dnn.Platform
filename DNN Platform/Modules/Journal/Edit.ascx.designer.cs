@@ -15,9 +15,7 @@
 
 namespace DotNetNuke.Modules.Journal {
 
-    /// <summary>
-    /// EditJournal class.
-    /// </summary>
+    /// <summary>EditJournal class.</summary>
     /// <remarks>
     /// Auto-generated class.
     /// </remarks>

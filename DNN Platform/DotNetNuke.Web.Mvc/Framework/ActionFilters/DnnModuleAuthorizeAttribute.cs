@@ -25,6 +25,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         public string PermissionKey { get; set; }
 
+        /// <inheritdoc/>
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
@@ -39,6 +40,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             base.OnAuthorization(filterContext);
         }
 
+        /// <inheritdoc/>
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (this.module != null)

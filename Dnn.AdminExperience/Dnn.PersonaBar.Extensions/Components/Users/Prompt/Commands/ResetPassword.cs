@@ -11,45 +11,54 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("reset-password", Constants.UsersCategory, "Prompt_ResetPassword_Description")]
+
     public class ResetPassword : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_ResetPassword_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("notify", "Prompt_ResetPassword_FlagNotify", "Boolean", "false")]
+
         private const string FlagNotify = "notify";
 
-        private IUserValidator _userValidator;
+        private IUserValidator userValidator;
 
-        public ResetPassword() : this(new UserValidator())
+        /// <summary>Initializes a new instance of the <see cref="ResetPassword"/> class.</summary>
+        public ResetPassword()
+            : this(new UserValidator())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ResetPassword"/> class.</summary>
+        /// <param name="userValidator"></param>
         public ResetPassword(IUserValidator userValidator)
         {
-            this._userValidator = userValidator;
+            this.userValidator = userValidator;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private bool Notify { get; set; }
 
         private int? UserId { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
             this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
 
             if (
-                (errorResultModel = this._userValidator.ValidateUser(
+                (errorResultModel = this.userValidator.ValidateUser(
                     this.UserId,
                     this.PortalSettings,
                     this.User,
@@ -66,7 +75,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             var success = UsersController.Instance.ForceChangePassword(userInfo, this.PortalId, this.Notify);
             return success
-                ? new ConsoleResultModel(this.LocalizeString("Prompt_PasswordReset") + (this.Notify ? this.LocalizeString("Prompt_EmailSent") : "")) { Records = 1 }
+                ? new ConsoleResultModel(this.LocalizeString("Prompt_PasswordReset") + (this.Notify ? this.LocalizeString("Prompt_EmailSent") : string.Empty)) { Records = 1 }
                 : new ConsoleErrorResultModel(this.LocalizeString("OptionUnavailable"));
         }
     }

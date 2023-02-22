@@ -70,9 +70,7 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class SmtpAppender : BufferingAppenderSkeleton
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor
@@ -82,9 +80,7 @@ namespace log4net.Appender
         {	
         }
 
-        /// <summary>
-        /// Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses (use semicolon on .NET 1.1 and comma for later versions).
-        /// </summary>
+        /// <summary>Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses (use semicolon on .NET 1.1 and comma for later versions).</summary>
         /// <value>
         /// <para>
         /// For .NET 1.1 (System.Web.Mail): A semicolon-delimited list of e-mail addresses.
@@ -151,9 +147,7 @@ namespace log4net.Appender
             set { this.m_bcc = MaybeTrimSeparators(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the e-mail address of the sender.
-        /// </summary>
+        /// <summary>Gets or sets the e-mail address of the sender.</summary>
         /// <value>
         /// The e-mail address of the sender.
         /// </value>
@@ -168,9 +162,7 @@ namespace log4net.Appender
             set { this.m_from = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the subject line of the e-mail message.
-        /// </summary>
+        /// <summary>Gets or sets the subject line of the e-mail message.</summary>
         /// <value>
         /// The subject line of the e-mail message.
         /// </value>
@@ -205,9 +197,7 @@ namespace log4net.Appender
             set { this.m_smtpHost = value; }
         }
 
-        /// <summary>
-        /// Obsolete
-        /// </summary>
+        /// <summary>Obsolete</summary>
         /// <remarks>
         /// Use the BufferingAppenderSkeleton Fix methods instead 
         /// </remarks>
@@ -223,9 +213,7 @@ namespace log4net.Appender
             set { ; }
         }
 
-        /// <summary>
-        /// The mode to use to authentication with the SMTP server
-        /// </summary>
+        /// <summary>The mode to use to authentication with the SMTP server</summary>
         /// <remarks>
         /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
         /// <para>
@@ -244,9 +232,7 @@ namespace log4net.Appender
             set { this.m_authentication = value; }
         }
 
-        /// <summary>
-        /// The username to use to authenticate with the SMTP server
-        /// </summary>
+        /// <summary>The username to use to authenticate with the SMTP server</summary>
         /// <remarks>
         /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
         /// <para>
@@ -261,9 +247,7 @@ namespace log4net.Appender
             set { this.m_username = value; }
         }
 
-        /// <summary>
-        /// The password to use to authenticate with the SMTP server
-        /// </summary>
+        /// <summary>The password to use to authenticate with the SMTP server</summary>
         /// <remarks>
         /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
         /// <para>
@@ -278,9 +262,7 @@ namespace log4net.Appender
             set { this.m_password = value; }
         }
 
-        /// <summary>
-        /// The port on which the SMTP server is listening
-        /// </summary>
+        /// <summary>The port on which the SMTP server is listening</summary>
         /// <remarks>
         /// <note type="caution">Server Port is only available on the MS .NET 1.1 runtime.</note>
         /// <para>
@@ -295,9 +277,7 @@ namespace log4net.Appender
             set { this.m_port = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the priority of the e-mail message
-        /// </summary>
+        /// <summary>Gets or sets the priority of the e-mail message</summary>
         /// <value>
         /// One of the <see cref="MailPriority"/> values.
         /// </value>
@@ -318,9 +298,7 @@ namespace log4net.Appender
         }
 
 #if NET_2_0 || MONO_2_0 || NETSTANDARD2_0
-        /// <summary>
-        /// Enable or disable use of SSL when sending e-mail message
-        /// </summary>
+        /// <summary>Enable or disable use of SSL when sending e-mail message</summary>
         /// <remarks>
         /// This is available on MS .NET 2.0 runtime and higher
         /// </remarks>
@@ -330,9 +308,7 @@ namespace log4net.Appender
             set { this.m_enableSsl = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the reply-to e-mail address.
-        /// </summary>
+        /// <summary>Gets or sets the reply-to e-mail address.</summary>
         /// <remarks>
         /// This is available on MS .NET 2.0 runtime and higher
         /// </remarks>
@@ -343,9 +319,7 @@ namespace log4net.Appender
         }
 #endif
 
-        /// <summary>
-        /// Gets or sets the subject encoding to be used.
-        /// </summary>
+        /// <summary>Gets or sets the subject encoding to be used.</summary>
         /// <remarks>
         /// The default encoding is the operating system's current ANSI codepage.
         /// </remarks>
@@ -355,9 +329,7 @@ namespace log4net.Appender
             set { this.m_subjectEncoding = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the body encoding to be used.
-        /// </summary>
+        /// <summary>Gets or sets the body encoding to be used.</summary>
         /// <remarks>
         /// The default encoding is the operating system's current ANSI codepage.
         /// </remarks>
@@ -367,9 +339,7 @@ namespace log4net.Appender
             set { this.m_bodyEncoding = value; }
         }
 
-        /// <summary>
-        /// Sends the contents of the cyclic buffer as an e-mail message.
-        /// </summary>
+        /// <summary>Sends the contents of the cyclic buffer as an e-mail message.</summary>
         /// <param name="events">The logging events to send.</param>
         protected override void SendBuffer(LoggingEvent[] events) 
         {
@@ -406,9 +376,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -420,9 +388,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Send the email message
-        /// </summary>
+        /// <summary>Send the email message</summary>
         /// <param name="messageBody">the body text to include in the mail</param>
         protected virtual void SendEmail(string messageBody)
         {
@@ -599,9 +565,7 @@ namespace log4net.Appender
         private string m_replyTo;
 #endif
 
-        /// <summary>
-        /// Values for the <see cref="SmtpAppender.Authentication"/> property.
-        /// </summary>
+        /// <summary>Values for the <see cref="SmtpAppender.Authentication"/> property.</summary>
         /// <remarks>
         /// <para>
         /// SMTP authentication modes.
@@ -609,22 +573,16 @@ namespace log4net.Appender
         /// </remarks>
         public enum SmtpAuthentication
         {
-            /// <summary>
-            /// No authentication
-            /// </summary>
+            /// <summary>No authentication</summary>
             None,
 
-            /// <summary>
-            /// Basic authentication.
-            /// </summary>
+            /// <summary>Basic authentication.</summary>
             /// <remarks>
             /// Requires a username and password to be supplied
             /// </remarks>
             Basic,
 
-            /// <summary>
-            /// Integrated authentication
-            /// </summary>
+            /// <summary>Integrated authentication</summary>
             /// <remarks>
             /// Uses the Windows credentials from the current thread or process to authenticate.
             /// </remarks>
@@ -633,9 +591,7 @@ namespace log4net.Appender
 
         private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };
             
-            /// <summary>
-            ///   trims leading and trailing commas or semicolons
-            /// </summary>
+            /// <summary>  trims leading and trailing commas or semicolons</summary>
             private static string MaybeTrimSeparators(string s) {
 #if NET_2_0 || MONO_2_0 || NETSTANDARD2_0
                 return string.IsNullOrEmpty(s) ? s : s.Trim(ADDRESS_DELIMITERS);

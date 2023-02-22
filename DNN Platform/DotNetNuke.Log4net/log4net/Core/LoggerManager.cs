@@ -29,9 +29,7 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Static manager that controls the creation of repositories
-    /// </summary>
+    /// <summary>Static manager that controls the creation of repositories</summary>
     /// <remarks>
     /// <para>
     /// Static manager that controls the creation of repositories
@@ -52,9 +50,7 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public sealed class LoggerManager
     {
-        /// <summary>
-        /// Private constructor to prevent instances. Only static methods should be used.
-        /// </summary>
+        /// <summary>Private constructor to prevent instances. Only static methods should be used.</summary>
         /// <remarks>
         /// <para>
         /// Private constructor to prevent instances. Only static methods should be used.
@@ -64,9 +60,7 @@ namespace log4net.Core
         {
         }
 
-        /// <summary>
-        /// Hook the shutdown event
-        /// </summary>
+        /// <summary>Hook the shutdown event</summary>
         /// <remarks>
         /// <para>
         /// On the full .NET runtime, the static constructor hooks up the 
@@ -145,9 +139,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Register for ProcessExit and DomainUnload events on the AppDomain
-        /// </summary>
+        /// <summary>Register for ProcessExit and DomainUnload events on the AppDomain</summary>
         /// <remarks>
         /// <para>
         /// This needs to be in a separate method because the events make
@@ -168,9 +160,7 @@ namespace log4net.Core
 #endif
         }
 
-        /// <summary>
-        /// Return the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Return the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <param name="repository">the repository to lookup in</param>
         /// <returns>Return the default <see cref="ILoggerRepository"/> instance</returns>
         /// <remarks>
@@ -185,9 +175,7 @@ namespace log4net.Core
             return GetRepository(repository);
         }
 
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
         [Obsolete("Use GetRepository instead of GetLoggerRepository")]
@@ -196,9 +184,7 @@ namespace log4net.Core
             return GetRepository(repositoryAssembly);
         }
 
-        /// <summary>
-        /// Return the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Return the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <param name="repository">the repository to lookup in</param>
         /// <returns>Return the default <see cref="ILoggerRepository"/> instance</returns>
         /// <remarks>
@@ -216,9 +202,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repository);
         }
 
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
@@ -235,9 +219,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repositoryAssembly);
         }
 
-        /// <summary>
-        /// Returns the named logger if it exists.
-        /// </summary>
+        /// <summary>Returns the named logger if it exists.</summary>
         /// <param name="repository">The repository to lookup in.</param>
         /// <param name="name">The fully qualified logger name to look for.</param>
         /// <returns>
@@ -264,9 +246,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repository).Exists(name);
         }
 
-        /// <summary>
-        /// Returns the named logger if it exists.
-        /// </summary>
+        /// <summary>Returns the named logger if it exists.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <param name="name">The fully qualified logger name to look for.</param>
         /// <returns>
@@ -293,9 +273,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repositoryAssembly).Exists(name);
         }
 
-        /// <summary>
-        /// Returns all the currently defined loggers in the specified repository.
-        /// </summary>
+        /// <summary>Returns all the currently defined loggers in the specified repository.</summary>
         /// <param name="repository">The repository to lookup in.</param>
         /// <returns>All the defined loggers.</returns>
         /// <remarks>
@@ -312,9 +290,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repository).GetCurrentLoggers();
         }
 
-        /// <summary>
-        /// Returns all the currently defined loggers in the specified assembly's repository.
-        /// </summary>
+        /// <summary>Returns all the currently defined loggers in the specified assembly's repository.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <returns>All the defined loggers.</returns>
         /// <remarks>
@@ -331,9 +307,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repositoryAssembly).GetCurrentLoggers();
         }
 
-        /// <summary>
-        /// Retrieves or creates a named logger.
-        /// </summary>
+        /// <summary>Retrieves or creates a named logger.</summary>
         /// <param name="repository">The repository to lookup in.</param>
         /// <param name="name">The name of the logger to retrieve.</param>
         /// <returns>The logger with the name specified.</returns>
@@ -363,9 +337,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repository).GetLogger(name);
         }
 
-        /// <summary>
-        /// Retrieves or creates a named logger.
-        /// </summary>
+        /// <summary>Retrieves or creates a named logger.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <param name="name">The name of the logger to retrieve.</param>
         /// <returns>The logger with the name specified.</returns>
@@ -395,9 +367,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repositoryAssembly).GetLogger(name);
         }	
 
-        /// <summary>
-        /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
-        /// </summary>
+        /// <summary>Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.</summary>
         /// <param name="repository">The repository to lookup in.</param>
         /// <param name="type">The <paramref name="type"/> of which the fullname will be used as the name of the logger to retrieve.</param>
         /// <returns>The logger with the name specified.</returns>
@@ -419,9 +389,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repository).GetLogger(type.FullName);
         }
 
-        /// <summary>
-        /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
-        /// </summary>
+        /// <summary>Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.</summary>
         /// <param name="repositoryAssembly">the assembly to use to lookup the repository</param>
         /// <param name="type">The <paramref name="type"/> of which the fullname will be used as the name of the logger to retrieve.</param>
         /// <returns>The logger with the name specified.</returns>
@@ -443,9 +411,7 @@ namespace log4net.Core
             return RepositorySelector.GetRepository(repositoryAssembly).GetLogger(type.FullName);
         }	
 
-        /// <summary>
-        /// Shuts down the log4net system.
-        /// </summary>
+        /// <summary>Shuts down the log4net system.</summary>
         /// <remarks>
         /// <para>
         /// Calling this method will <b>safely</b> close and remove all
@@ -471,9 +437,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Shuts down the repository for the repository specified.
-        /// </summary>
+        /// <summary>Shuts down the repository for the repository specified.</summary>
         /// <param name="repository">The repository to shutdown.</param>
         /// <remarks>
         /// <para>
@@ -501,9 +465,7 @@ namespace log4net.Core
             RepositorySelector.GetRepository(repository).Shutdown();
         }
 
-        /// <summary>
-        /// Shuts down the repository for the repository specified.
-        /// </summary>
+        /// <summary>Shuts down the repository for the repository specified.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <remarks>
         /// <para>
@@ -532,9 +494,7 @@ namespace log4net.Core
             RepositorySelector.GetRepository(repositoryAssembly).Shutdown();
         }
 
-        /// <summary>
-        /// Resets all values contained in this repository instance to their defaults.
-        /// </summary>
+        /// <summary>Resets all values contained in this repository instance to their defaults.</summary>
         /// <param name="repository">The repository to reset.</param>
         /// <remarks>
         /// <para>
@@ -555,9 +515,7 @@ namespace log4net.Core
             RepositorySelector.GetRepository(repository).ResetConfiguration();
         }
 
-        /// <summary>
-        /// Resets all values contained in this repository instance to their defaults.
-        /// </summary>
+        /// <summary>Resets all values contained in this repository instance to their defaults.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository to reset.</param>
         /// <remarks>
         /// <para>
@@ -578,9 +536,7 @@ namespace log4net.Core
             RepositorySelector.GetRepository(repositoryAssembly).ResetConfiguration();
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name.</summary>
         /// <param name="repository">The name of the repository, this must be unique amongst repositories.</param>
         /// <returns>The <see cref="ILoggerRepository"/> created for the repository.</returns>
         /// <remarks>
@@ -603,9 +559,7 @@ namespace log4net.Core
             return CreateRepository(repository);
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name.</summary>
         /// <param name="repository">The name of the repository, this must be unique amongst repositories.</param>
         /// <returns>The <see cref="ILoggerRepository"/> created for the repository.</returns>
         /// <remarks>
@@ -628,9 +582,7 @@ namespace log4net.Core
             return RepositorySelector.CreateRepository(repository, null);
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name and repository type.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name and repository type.</summary>
         /// <param name="repository">The name of the repository, this must be unique to the repository.</param>
         /// <param name="repositoryType">A <see cref="Type"/> that implements <see cref="ILoggerRepository"/>
         /// and has a no arg constructor. An instance of this type will be created to act
@@ -652,9 +604,7 @@ namespace log4net.Core
             return CreateRepository(repository, repositoryType);
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name and repository type.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name and repository type.</summary>
         /// <param name="repository">The name of the repository, this must be unique to the repository.</param>
         /// <param name="repositoryType">A <see cref="Type"/> that implements <see cref="ILoggerRepository"/>
         /// and has a no arg constructor. An instance of this type will be created to act
@@ -680,9 +630,7 @@ namespace log4net.Core
             return RepositorySelector.CreateRepository(repository, repositoryType);
         }
 
-        /// <summary>
-        /// Creates a repository for the specified assembly and repository type.
-        /// </summary>
+        /// <summary>Creates a repository for the specified assembly and repository type.</summary>
         /// <param name="repositoryAssembly">The assembly to use to get the name of the repository.</param>
         /// <param name="repositoryType">A <see cref="Type"/> that implements <see cref="ILoggerRepository"/>
         /// and has a no arg constructor. An instance of this type will be created to act
@@ -704,9 +652,7 @@ namespace log4net.Core
             return CreateRepository(repositoryAssembly, repositoryType);
         }
 
-        /// <summary>
-        /// Creates a repository for the specified assembly and repository type.
-        /// </summary>
+        /// <summary>Creates a repository for the specified assembly and repository type.</summary>
         /// <param name="repositoryAssembly">The assembly to use to get the name of the repository.</param>
         /// <param name="repositoryType">A <see cref="Type"/> that implements <see cref="ILoggerRepository"/>
         /// and has a no arg constructor. An instance of this type will be created to act
@@ -732,9 +678,7 @@ namespace log4net.Core
             return RepositorySelector.CreateRepository(repositoryAssembly, repositoryType);
         }
 
-        /// <summary>
-        /// Gets an array of all currently defined repositories.
-        /// </summary>
+        /// <summary>Gets an array of all currently defined repositories.</summary>
         /// <returns>An array of all the known <see cref="ILoggerRepository"/> objects.</returns>
         /// <remarks>
         /// <para>
@@ -746,9 +690,7 @@ namespace log4net.Core
             return RepositorySelector.GetAllRepositories();
         }
 
-        /// <summary>
-        /// Gets or sets the repository selector used by the <see cref="LogManager" />.
-        /// </summary>
+        /// <summary>Gets or sets the repository selector used by the <see cref="LogManager" />.</summary>
         /// <value>
         /// The repository selector used by the <see cref="LogManager" />.
         /// </value>
@@ -778,9 +720,7 @@ namespace log4net.Core
             set { s_repositorySelector = value; }
         }
 
-        /// <summary>
-        /// Internal method to get pertinent version info.
-        /// </summary>
+        /// <summary>Internal method to get pertinent version info.</summary>
         /// <returns>A string of version info.</returns>
         private static string GetVersionInfo()
         {
@@ -805,9 +745,7 @@ namespace log4net.Core
         }
 
 #if (!NETCF)
-        /// <summary>
-        /// Called when the <see cref="AppDomain.DomainUnload"/> event fires
-        /// </summary>
+        /// <summary>Called when the <see cref="AppDomain.DomainUnload"/> event fires</summary>
         /// <param name="sender">the <see cref="AppDomain"/> that is exiting</param>
         /// <param name="e">null</param>
         /// <remarks>
@@ -823,9 +761,7 @@ namespace log4net.Core
             Shutdown();
         }
 
-        /// <summary>
-        /// Called when the <see cref="AppDomain.ProcessExit"/> event fires
-        /// </summary>
+        /// <summary>Called when the <see cref="AppDomain.ProcessExit"/> event fires</summary>
         /// <param name="sender">the <see cref="AppDomain"/> that is exiting</param>
         /// <param name="e">null</param>
         /// <remarks>
@@ -842,18 +778,14 @@ namespace log4net.Core
         }
 #endif
 
-        /// <summary>
-        /// The fully qualified type of the LoggerManager class.
-        /// </summary>
+        /// <summary>The fully qualified type of the LoggerManager class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(LoggerManager);
 
-        /// <summary>
-        /// Initialize the default repository selector
-        /// </summary>
+        /// <summary>Initialize the default repository selector</summary>
         private static IRepositorySelector s_repositorySelector;
     }
 }

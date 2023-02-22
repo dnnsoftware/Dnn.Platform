@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Provides Dnn specific details authorization filter.
-    /// </summary>
+    /// <summary>Provides Dnn specific details authorization filter.</summary>
     public sealed class DnnAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
         private static readonly List<string> DefaultAuthTypes = new List<string>();
@@ -30,9 +28,7 @@ namespace DotNetNuke.Web.Api
         private string authTypes;
         private string[] authTypesSplit = new string[0];
 
-        /// <summary>
-        /// Gets or sets the authorized roles (separated by comma).
-        /// </summary>
+        /// <summary>Gets or sets the authorized roles (separated by comma).</summary>
         public string StaticRoles
         {
             get
@@ -47,9 +43,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        /// <summary>
-        /// Gets or sets the denied roles (separated by comma).
-        /// </summary>
+        /// <summary>Gets or sets the denied roles (separated by comma).</summary>
         public string DenyRoles
         {
             get
@@ -64,9 +58,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        /// <summary>
-        /// Gets or sets the allowed authentication types (separated by comma).
-        /// </summary>
+        /// <summary>Gets or sets the allowed authentication types (separated by comma).</summary>
         public string AuthTypes
         {
             get
@@ -126,9 +118,7 @@ namespace DotNetNuke.Web.Api
             return true;
         }
 
-        /// <summary>
-        /// Adds an authentication type to the default authentication types.
-        /// </summary>
+        /// <summary>Adds an authentication type to the default authentication types.</summary>
         /// <param name="authType">The name of the authentication type to add.</param>
         internal static void AppendToDefaultAuthTypes(string authType)
         {

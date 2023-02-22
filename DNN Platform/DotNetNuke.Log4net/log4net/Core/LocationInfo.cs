@@ -28,9 +28,7 @@ using log4net.Util;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// The internal representation of caller location information.
-    /// </summary>
+    /// <summary>The internal representation of caller location information.</summary>
     /// <remarks>
     /// <para>
     /// This class uses the <c>System.Diagnostics.StackTrace</c> class to generate
@@ -64,9 +62,7 @@ namespace log4net.Core
 #endif
     public class LocationInfo
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
         /// the stack boundary into the logging system for this call.</param>
         /// <remarks>
@@ -161,9 +157,7 @@ namespace log4net.Core
 #endif
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="className">The fully qualified class name.</param>
         /// <param name="methodName">The method name.</param>
         /// <param name="fileName">The file name.</param>
@@ -203,9 +197,7 @@ namespace log4net.Core
             get { return this.m_className; }
         }
 
-        /// <summary>
-        /// Gets the file name of the caller.
-        /// </summary>
+        /// <summary>Gets the file name of the caller.</summary>
         /// <value>
         /// The file name of the caller.
         /// </value>
@@ -219,9 +211,7 @@ namespace log4net.Core
             get { return this.m_fileName; }
         }
 
-        /// <summary>
-        /// Gets the line number of the caller.
-        /// </summary>
+        /// <summary>Gets the line number of the caller.</summary>
         /// <value>
         /// The line number of the caller.
         /// </value>
@@ -235,9 +225,7 @@ namespace log4net.Core
             get { return this.m_lineNumber; }
         }
 
-        /// <summary>
-        /// Gets the method name of the caller.
-        /// </summary>
+        /// <summary>Gets the method name of the caller.</summary>
         /// <value>
         /// The method name of the caller.
         /// </value>
@@ -251,9 +239,7 @@ namespace log4net.Core
             get { return this.m_methodName; }
         }
 
-        /// <summary>
-        /// Gets all available caller information
-        /// </summary>
+        /// <summary>Gets all available caller information</summary>
         /// <value>
         /// All available caller information, in the format
         /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
@@ -270,9 +256,7 @@ namespace log4net.Core
         }
         
 #if !NETCF && !NETSTANDARD1_3
-        /// <summary>
-        /// Gets the stack frames from the stack trace of the caller making the log request
-        /// </summary>
+        /// <summary>Gets the stack frames from the stack trace of the caller making the log request</summary>
         public StackFrameItem[] StackFrames
         {
             get { return this.m_stackFrames; }
@@ -288,9 +272,7 @@ namespace log4net.Core
         private readonly StackFrameItem[] m_stackFrames;
 #endif
 
-        /// <summary>
-        /// The fully qualified type of the LocationInfo class.
-        /// </summary>
+        /// <summary>The fully qualified type of the LocationInfo class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

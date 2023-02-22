@@ -49,12 +49,13 @@ namespace DotNetNuke.Modules.Admin.Users
             this.DataConsentCompleted?.Invoke(this, e);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdSubmit.Click += this.cmdSubmit_Click;
-            this.cmdDeleteMe.Click += this.cmdDeleteMe_Click;
+            this.cmdCancel.Click += this.CmdCancel_Click;
+            this.cmdSubmit.Click += this.CmdSubmit_Click;
+            this.cmdDeleteMe.Click += this.CmdDeleteMe_Click;
             this.cmdDeleteMe.Visible = this.PortalSettings.DataConsentUserDeleteAction != PortalSettings.UserDeleteAction.Off;
             if (!this.Page.IsPostBack)
             {
@@ -67,12 +68,12 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", this.DeleteMeConfirmString));
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancel_Click(object sender, EventArgs e)
         {
             this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Cancelled));
         }
 
-        private void cmdSubmit_Click(object sender, EventArgs e)
+        private void CmdSubmit_Click(object sender, EventArgs e)
         {
             if (this.chkAgree.Checked)
             {
@@ -82,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdDeleteMe_Click(object sender, EventArgs e)
+        private void CmdDeleteMe_Click(object sender, EventArgs e)
         {
             var success = false;
             switch (this.PortalSettings.DataConsentUserDeleteAction)
@@ -114,14 +115,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DataConsentEventArgs class provides a customised EventArgs class for
         /// the DataConsent Event.
         /// </summary>
         public class DataConsentEventArgs
         {
-            /// -----------------------------------------------------------------------------
             /// <summary>
             /// Initializes a new instance of the <see cref="DataConsentEventArgs"/> class.
             /// Constructs a new DataConsentEventArgs.
@@ -132,10 +131,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.Status = status;
             }
 
-            /// -----------------------------------------------------------------------------
-            /// <summary>
-            /// Gets or sets and sets the Update Status.
-            /// </summary>
+            /// <summary>Gets or sets the Update Status.</summary>
             public DataConsentStatus Status { get; set; }
         }
     }

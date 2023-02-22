@@ -16,38 +16,32 @@ namespace DotNetNuke.Services.Mobile
     [Serializable]
     public class Redirection : IRedirection, IHydratable
     {
-        private int _id = -1;
+        private int id = -1;
 
         [XmlIgnore]
         [JsonIgnore]
-        private IList<IMatchRule> _matchRules;
+        private IList<IMatchRule> matchRules;
 
-        /// <summary>
-        /// Gets or sets redirection's primary key.
-        /// </summary>
+        /// <summary>Gets or sets redirection's primary key.</summary>
         public int Id
         {
             get
             {
-                return this._id;
+                return this.id;
             }
 
             set
             {
-                this._id = value;
-                this._matchRules = null;
+                this.id = value;
+                this.matchRules = null;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the portal Redirection is belong to.
-        /// </summary>
+        /// <summary>Gets or sets the portal Redirection is belong to.</summary>
         [XmlAttribute]
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection name.
-        /// </summary>
+        /// <summary>Gets or sets redirection name.</summary>
         [XmlAttribute]
         public string Name { get; set; }
 
@@ -65,46 +59,40 @@ namespace DotNetNuke.Services.Mobile
         [XmlAttribute]
         public bool IncludeChildTabs { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection Type: Mobile, Tablet, Both or Other.
-        /// </summary>
+        /// <summary>Gets or sets redirection Type: Mobile, Tablet, Both or Other.</summary>
         [XmlAttribute]
         public RedirectionType Type { get; set; }
 
-        /// <summary>
-        /// Gets or sets when redirection type is RedirectionType.Other, should use this collection to match the request by capability info.
-        /// </summary>
+        /// <summary>Gets or sets when redirection type is RedirectionType.Other, should use this collection to match the request by capability info.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public IList<IMatchRule> MatchRules
         {
             get
             {
-                if (this._matchRules == null)
+                if (this.matchRules == null)
                 {
-                    if (this._id == Null.NullInteger)
+                    if (this.id == Null.NullInteger)
                     {
-                        this._matchRules = new List<IMatchRule>();
+                        this.matchRules = new List<IMatchRule>();
                     }
                     else
                     {
                         // get from database
-                        this._matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
+                        this.matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
                     }
                 }
 
-                return this._matchRules;
+                return this.matchRules;
             }
 
             set
             {
-                this._matchRules = value;
+                this.matchRules = value;
             }
         }
 
-        /// <summary>
-        /// Gets or sets redirection's target type, should be: Portal, Tab, Url.
-        /// </summary>
+        /// <summary>Gets or sets redirection's target type, should be: Portal, Tab, Url.</summary>
         [XmlAttribute]
         public TargetType TargetType { get; set; }
 
@@ -119,21 +107,15 @@ namespace DotNetNuke.Services.Mobile
         [XmlAttribute]
         public object TargetValue { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether this redirection is available.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether this redirection is available.</summary>
         [XmlAttribute]
         public bool Enabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets redirection's piority.
-        /// </summary>
+        /// <summary>Gets or sets redirection's piority.</summary>
         [XmlAttribute]
         public int SortOrder { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -149,9 +131,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(System.Data.IDataReader dr)
         {

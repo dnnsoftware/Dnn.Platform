@@ -25,38 +25,31 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Framework
     /// Project:    DotNetNuke
     /// Class:      PageBase
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// PageBase provides a custom DotNetNuke base class for pages.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>PageBase provides a custom DotNetNuke base class for pages.</summary>
     public abstract class PageBase : Page
     {
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly NameValueCollection _htmlAttributes = new NameValueCollection();
-        private readonly ArrayList _localizedControls;
+        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly NameValueCollection htmlAttributes = new NameValueCollection();
+        private readonly ArrayList localizedControls;
 
-        private PageStatePersister _persister;
-        private CultureInfo _pageCulture;
-        private string _localResourceFile;
+        private PageStatePersister persister;
+        private CultureInfo pageCulture;
+        private string localResourceFile;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PageBase"/> class.
         /// Creates the Page.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected PageBase()
         {
-            this._localizedControls = new ArrayList();
+            this.localizedControls = new ArrayList();
         }
 
         public PortalSettings PortalSettings
@@ -71,7 +64,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return this._htmlAttributes;
+                return this.htmlAttributes;
             }
         }
 
@@ -79,7 +72,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return this._pageCulture ?? (this._pageCulture = Localization.GetPageLocale(this.PortalSettings));
+                return this.pageCulture ?? (this.pageCulture = Localization.GetPageLocale(this.PortalSettings));
             }
         }
 
@@ -89,13 +82,13 @@ namespace DotNetNuke.Framework
             {
                 string fileRoot;
                 var page = this.Request.ServerVariables["SCRIPT_NAME"].Split('/');
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = string.Concat(this.TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -103,47 +96,41 @@ namespace DotNetNuke.Framework
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
         public string CanonicalLinkUrl { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether indicate whether http headers has been sent to client.
-        /// </summary>
+        /// <summary>Gets a value indicating whether indicate whether http headers has been sent to client.</summary>
         public bool HeaderIsWritten { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.
-        /// </summary>
+        /// <summary>Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.</summary>
         /// <returns>A System.Web.UI.PageStatePersister.</returns>
-        /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
             get
             {
                 // Set ViewState Persister to default (as defined in Base Class)
-                if (this._persister == null)
+                if (this.persister == null)
                 {
-                    this._persister = base.PageStatePersister;
+                    this.persister = base.PageStatePersister;
 
                     if (Globals.Status == Globals.UpgradeStatus.None)
                     {
                         switch (Host.PageStatePersister)
                         {
                             case "M":
-                                this._persister = new CachePageStatePersister(this);
+                                this.persister = new CachePageStatePersister(this);
                                 break;
                             case "D":
-                                this._persister = new DiskPageStatePersister(this);
+                                this.persister = new DiskPageStatePersister(this);
                                 break;
                         }
                     }
                 }
 
-                return this._persister;
+                return this.persister;
             }
         }
 
@@ -170,9 +157,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// <para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para>
-        /// </summary>
+        /// <summary><para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="attributeName">Name of key to search for.</param>
@@ -227,9 +212,7 @@ namespace DotNetNuke.Framework
             return key;
         }
 
-        /// <summary>
-        /// <para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para>
-        /// </summary>
+        /// <summary><para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="includeChildren">If true, causes this method to process children of this controls.</param>
@@ -400,8 +383,7 @@ namespace DotNetNuke.Framework
 
                     if (this.PortalSettings?.ErrorPage500 != -1)
                     {
-                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc,
-                            false);
+                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc, false);
                         HttpContext.Current.Response.Redirect(url);
                     }
                     else
@@ -478,8 +460,8 @@ namespace DotNetNuke.Framework
         {
             this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");
 
-            this.IterateControls(this.Controls, this._localizedControls, this.LocalResourceFile);
-            RemoveKeyAttribute(this._localizedControls);
+            this.IterateControls(this.Controls, this.localizedControls, this.LocalResourceFile);
+            RemoveKeyAttribute(this.localizedControls);
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
 
@@ -529,9 +511,9 @@ namespace DotNetNuke.Framework
                 tabId = this.PortalSettings.ActiveTab.TabID;
             }
 
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+                this.tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
             }
         }
 

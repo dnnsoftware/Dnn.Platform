@@ -7,9 +7,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
     public class ColumnNameAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnNameAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ColumnNameAttribute"/> class.</summary>
         /// <param name="columnName"></param>
         public ColumnNameAttribute(string columnName)
         {

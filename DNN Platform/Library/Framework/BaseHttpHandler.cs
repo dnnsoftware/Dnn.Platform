@@ -11,22 +11,18 @@ namespace DotNetNuke.Framework
 
     public abstract class BaseHttpHandler : IHttpHandler
     {
-        private HttpContext _context;
+        private HttpContext context;
 
-        /// <summary>
-        ///   Gets the <see cref = "HttpContext" /> object for the incoming HTTP request.
-        /// </summary>
+        /// <summary>  Gets the <see cref = "HttpContext" /> object for the incoming HTTP request.</summary>
         public HttpContext Context
         {
             get
             {
-                return this._context;
+                return this.context;
             }
         }
 
-        /// <summary>
-        ///   Gets the <see cref = "HttpRequest" /> object for the incoming HTTP request.
-        /// </summary>
+        /// <summary>  Gets the <see cref = "HttpRequest" /> object for the incoming HTTP request.</summary>
         public HttpRequest Request
         {
             get
@@ -47,17 +43,15 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   Gets the string representation of the body of the incoming request.
-        /// </summary>
+        /// <summary>  Gets the string representation of the body of the incoming request.</summary>
         public string Content
         {
             get
             {
                 this.Request.InputStream.Position = 0;
-                using (var Reader = new StreamReader(this.Request.InputStream))
+                using (var reader = new StreamReader(this.Request.InputStream))
                 {
-                    return Reader.ReadToEnd();
+                    return reader.ReadToEnd();
                 }
             }
         }
@@ -98,11 +92,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   Gets the content MIME type for the response object.
-        /// </summary>
+        /// <summary>  Gets the content MIME type for the response object.</summary>
         /// <value>
-        /// <placeholder>The content MIME type for the response object.</placeholder>
+        /// The content MIME type for the response object.
         /// </value>
         public virtual string ContentMimeType
         {
@@ -112,11 +104,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   Gets the content encoding for the response object.
-        /// </summary>
+        /// <summary>  Gets the content encoding for the response object.</summary>
         /// <value>
-        /// <placeholder>The content encoding for the response object.</placeholder>
+        /// The content encoding for the response object.
         /// </value>
         public virtual Encoding ContentEncoding
         {
@@ -135,13 +125,11 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   Processs the incoming HTTP request.
-        /// </summary>
-        /// <param name = "context">Context.</param>
+        /// <summary>  Processs the incoming HTTP request.</summary>
+        /// <param name="context">Context.</param>
         public void ProcessRequest(HttpContext context)
         {
-            this._context = context;
+            this.context = context;
 
             this.SetResponseCachePolicy(this.Response.Cache);
 
@@ -205,7 +193,7 @@ namespace DotNetNuke.Framework
         ///   this method, handlers will not allow a respons to be
         ///   cached.
         /// </summary>
-        /// <param name = "cache">Cache.</param>
+        /// <param name="cache">Cache.</param>
         public virtual void SetResponseCachePolicy(HttpCachePolicy cache)
         {
             cache.SetCacheability(HttpCacheability.NoCache);

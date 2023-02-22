@@ -27,9 +27,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// This class implements a patterned string.
-    /// </summary>
+    /// <summary>This class implements a patterned string.</summary>
     /// <remarks>
     /// <para>
     /// This string has embedded patterns that are resolved and expanded
@@ -256,29 +254,19 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class PatternString : IOptionHandler
     {
-        /// <summary>
-        /// Internal map of converter identifiers to converter types.
-        /// </summary>
+        /// <summary>Internal map of converter identifiers to converter types.</summary>
         private static Hashtable s_globalRulesRegistry;
 
-        /// <summary>
-        /// the pattern
-        /// </summary>
+        /// <summary>the pattern</summary>
         private string m_pattern;
   
-        /// <summary>
-        /// the head of the pattern converter chain
-        /// </summary>
+        /// <summary>the head of the pattern converter chain</summary>
         private PatternConverter m_head;
 
-        /// <summary>
-        /// patterns defined on this PatternString only
-        /// </summary>
+        /// <summary>patterns defined on this PatternString only</summary>
         private Hashtable m_instanceRulesRegistry = new Hashtable();
 
-        /// <summary>
-        /// Initialize the global registry
-        /// </summary>
+        /// <summary>Initialize the global registry</summary>
         static PatternString()
         {
             s_globalRulesRegistry = new Hashtable(18);
@@ -311,9 +299,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Initialize a new instance of <see cref="PatternString"/>
@@ -323,9 +309,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Constructs a PatternString
-        /// </summary>
+        /// <summary>Constructs a PatternString</summary>
         /// <param name="pattern">The pattern to use with this PatternString</param>
         /// <remarks>
         /// <para>
@@ -338,9 +322,7 @@ namespace log4net.Util
             this.ActivateOptions();
         }
 
-        /// <summary>
-        /// Gets or sets the pattern formatting string
-        /// </summary>
+        /// <summary>Gets or sets the pattern formatting string</summary>
         /// <value>
         /// The pattern formatting string
         /// </value>
@@ -357,9 +339,7 @@ namespace log4net.Util
             set { this.m_pattern = value; }
         }
 
-        /// <summary>
-        /// Initialize object options
-        /// </summary>
+        /// <summary>Initialize object options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -378,9 +358,7 @@ namespace log4net.Util
             this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
         }
 
-        /// <summary>
-        /// Create the <see cref="PatternParser"/> used to parse the pattern
-        /// </summary>
+        /// <summary>Create the <see cref="PatternParser"/> used to parse the pattern</summary>
         /// <param name="pattern">the pattern to parse</param>
         /// <returns>The <see cref="PatternParser"/></returns>
         /// <remarks>
@@ -411,9 +389,7 @@ namespace log4net.Util
             return patternParser;
         }
   
-        /// <summary>
-        /// Produces a formatted string as specified by the conversion pattern.
-        /// </summary>
+        /// <summary>Produces a formatted string as specified by the conversion pattern.</summary>
         /// <param name="writer">The TextWriter to write the formatted event to</param>
         /// <remarks>
         /// <para>
@@ -437,9 +413,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Format the pattern as a string
-        /// </summary>
+        /// <summary>Format the pattern as a string</summary>
         /// <returns>the pattern formatted as a string</returns>
         /// <remarks>
         /// <para>
@@ -455,9 +429,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Add a converter to this PatternString
-        /// </summary>
+        /// <summary>Add a converter to this PatternString</summary>
         /// <param name="converterInfo">the converter info</param>
         /// <remarks>
         /// <para>
@@ -480,9 +452,7 @@ namespace log4net.Util
             this.m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
         }
 
-        /// <summary>
-        /// Add a converter to this PatternString
-        /// </summary>
+        /// <summary>Add a converter to this PatternString</summary>
         /// <param name="name">the name of the conversion pattern for this converter</param>
         /// <param name="type">the type of the converter</param>
         /// <remarks>

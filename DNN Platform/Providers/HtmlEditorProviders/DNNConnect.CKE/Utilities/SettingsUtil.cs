@@ -25,14 +25,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
 
-    /// <summary>
-    /// Settings Base Helper Class.
-    /// </summary>
+    /// <summary>Settings Base Helper Class.</summary>
     public class SettingsUtil
     {
-        /// <summary>
-        /// Checks the exists portal or page settings.
-        /// </summary>
+        /// <summary>Checks the exists portal or page settings.</summary>
         /// <param name="editorHostSettings">The editor host settings.</param>
         /// <param name="key">The key.</param>
         /// <returns>
@@ -54,9 +50,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks there are any Module Settings.
-        /// </summary>
+        /// <summary>Checks there are any Module Settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -72,9 +66,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks the exists of the module instance settings.
-        /// </summary>
+        /// <summary>Checks the exists of the module instance settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -91,9 +83,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Loads the portal or page settings.
-        /// </summary>
+        /// <summary>Loads the portal or page settings.</summary>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>
@@ -186,7 +176,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             typeof(CodeMirror).GetProperties()
                                 .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))).Value;
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name)))?.Value;
                             switch (codeMirrorInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -217,7 +207,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     case "WordCount":
                         foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))).Value;
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name)))?.Value;
                             switch (wordCountInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -722,6 +712,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIR))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIR))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostBrowserRootDir = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRID))))
             {
                 var settingValue =
@@ -738,6 +742,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         currentSettings.BrowserRootDirId = -1;
                     }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIRFORIMG))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIRFORIMG))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostBrowserRootDirForImg = settingValue;
                 }
             }
 
@@ -764,6 +782,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIR))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIR))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostUploadDir = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID))))
             {
                 var settingValue =
@@ -780,6 +812,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         currentSettings.UploadDirId = -1;
                     }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIRFORIMG))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIRFORIMG))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostUploadDirForImg = settingValue;
                 }
             }
 
@@ -891,9 +937,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Loads the module settings.
-        /// </summary>
+        /// <summary>Loads the module settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="key">The module key.</param>
@@ -1389,9 +1433,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
+        /// <summary>Gets the default settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="alternateSubFolder">The alternate Sub Folder.</param>
@@ -1545,9 +1587,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return settings;
         }
 
-        /// <summary>
-        /// Creates the default settings file.
-        /// </summary>
+        /// <summary>Creates the default settings file.</summary>
         internal static void CreateDefaultSettingsFile()
         {
             var newSettings = new EditorProviderSettings();
@@ -1567,9 +1607,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             textWriter.Close();
         }
 
-        /// <summary>
-        /// Gets the editor config properties.
-        /// </summary>
+        /// <summary>Gets the editor config properties.</summary>
         /// <returns>Returns the EditorConfig Properties.</returns>
         internal static IEnumerable<PropertyInfo> GetEditorConfigProperties()
         {
@@ -1594,9 +1632,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
-        /// <summary>
-        /// Imports the old SettingsBase Xml File.
-        /// </summary>
+        /// <summary>Imports the old SettingsBase Xml File.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="isDefaultXmlFile">if set to <c>true</c> [is default XML file].</param>
         internal static void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile = false)
@@ -1717,9 +1753,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets the size of the current user upload.
-        /// </summary>
+        /// <summary>Gets the size of the current user upload.</summary>
         /// <param name="settings">The settings.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="httpRequest">The HTTP request.</param>

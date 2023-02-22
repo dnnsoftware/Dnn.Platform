@@ -14,14 +14,10 @@ namespace DotNetNuke.Services.Personalization
 
     using static DotNetNuke.Entities.Portals.PortalSettings;
 
-    /// <summary>
-    /// Provides access to user personalization.
-    /// </summary>
+    /// <summary>Provides access to user personalization.</summary>
     public class Personalization
     {
-        /// <summary>
-        /// load users profile and extract value base on naming container and key.
-        /// </summary>
+        /// <summary>load users profile and extract value base on naming container and key.</summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         /// <returns>The profile as an object.</returns>
@@ -30,9 +26,7 @@ namespace DotNetNuke.Services.Personalization
             return GetProfile(LoadProfile(), namingContainer, key);
         }
 
-        /// <summary>
-        /// extract value base on naming container and key from PersonalizationInfo object.
-        /// </summary>
+        /// <summary>extract value base on naming container and key from PersonalizationInfo object.</summary>
         /// <param name="personalization">Object containing user personalization info.</param>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
@@ -42,9 +36,7 @@ namespace DotNetNuke.Services.Personalization
             return personalization != null ? personalization.Profile[namingContainer + ":" + key] : string.Empty;
         }
 
-        /// <summary>
-        /// load users profile and extract secure value base on naming container and key.
-        /// </summary>
+        /// <summary>load users profile and extract secure value base on naming container and key.</summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         /// <returns>The profile as an object.</returns>
@@ -99,9 +91,7 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
-        /// <summary>
-        /// persist profile value -use naming container and key to orgainize.
-        /// </summary>
+        /// <summary>persist profile value -use naming container and key to orgainize.</summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         /// <param name="value">Individual profile value.</param>
@@ -110,9 +100,7 @@ namespace DotNetNuke.Services.Personalization
             SetProfile(LoadProfile(), namingContainer, key, value);
         }
 
-        /// <summary>
-        /// persist value stored in PersonalizationInfo obhect - use naming container and key to organize.
-        /// </summary>
+        /// <summary>persist value stored in PersonalizationInfo obhect - use naming container and key to organize.</summary>
         /// <param name="personalization">Object containing user personalization info.</param>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
@@ -156,9 +144,7 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
-        /// <summary>
-        /// Gets the mode the user is viewing the page in.
-        /// </summary>
+        /// <summary>Gets the mode the user is viewing the page in.</summary>
         /// <returns><see cref="Mode"/>.</returns>
         public static Mode GetUserMode()
         {

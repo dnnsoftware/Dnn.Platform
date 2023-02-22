@@ -23,9 +23,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IFileSystemProvider fsProvider;
         private readonly IPackageController packageController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InstallAvailablePackageStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InstallAvailablePackageStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="appStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>

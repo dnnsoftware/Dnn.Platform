@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
         where TModel : class, new()
     {
+        /// <summary>Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.</summary>
         public ProfileModuleViewBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -33,13 +34,13 @@ namespace DotNetNuke.Web.Mvp
         {
             get
             {
-                int UserId = Null.NullInteger;
+                int userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    UserId = int.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"]);
                 }
 
-                return UserId;
+                return userId;
             }
         }
 

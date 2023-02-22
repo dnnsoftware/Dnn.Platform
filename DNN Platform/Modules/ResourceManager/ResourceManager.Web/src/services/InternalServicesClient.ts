@@ -13,9 +13,9 @@ export class InternalServicesClient{
         this.requestUrl = `${this.sf.getServiceRoot("InternalServices")}ItemListService/`
     }
 
-    public getFolders(){
+    public getFolders(parentFolderId: number){
         return new Promise<GetFoldersResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolders`
+            const url = `${this.requestUrl}GetFolders?parentFolderId=${parentFolderId}`;
             fetch(url, {
                 headers: this.sf.getModuleHeaders(),
             })

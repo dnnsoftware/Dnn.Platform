@@ -10,7 +10,7 @@ import { UploadFromLocalResponse } from './UploadFromLocalResponse';
     shadow: true,
 })
 export class DnnRmQueuedFile {
-    
+
     /** The file to upload. */
     @Prop() file!: File;
 
@@ -78,7 +78,7 @@ export class DnnRmQueuedFile {
 
     private uploadFile(){
         return new Promise<string>((resolve, reject) => {
-            const extension = this.file.name.split('.').pop();
+            const extension = this.file.name.split('.').pop().toLowerCase();
             if (this.filter.split(',').indexOf(extension) === -1) {
                 const message = `'.${extension}' ${state.localization.InvalidExtensionMessage}`;
                 this.fileUploadResults = {
@@ -94,7 +94,7 @@ export class DnnRmQueuedFile {
             }
 
             if (this.file.size > this.maxUploadFileSize) {
-                const message = `${this.file.name} ${state.localization.FileSizeErrorMessage} ${getFileSize(this.maxUploadFileSize)}`; 
+                const message = `${this.file.name} ${state.localization.FileSizeErrorMessage} ${getFileSize(this.maxUploadFileSize)}`;
                 this.fileUploadResults = {
                     alreadyExists: false,
                     message: message,
@@ -106,16 +106,16 @@ export class DnnRmQueuedFile {
                 reject(message);
                 return;
             }
-            
+
             const headers = this.servicesFramework.getModuleHeaders();
-    
+
             const formData = new FormData();
             formData.append("folder", state.currentItems.folder.folderPath);
             formData.append("filter", this.filter);
             formData.append("extract", this.extract ? "true" : "false");
             formData.append("overwrite", this.overwrite ? "true" : "false");
             formData.append("validationCode", this.validationCode);
-            formData.append("isHostPortal", "false");
+            formData.append("isHostPortal", state.settings.IsHostPortal ? "true" : "false");
             formData.append("postfile", this.file);
             this.xhr.onload = () => {
                 if (this.xhr.status === 200) {
@@ -124,7 +124,7 @@ export class DnnRmQueuedFile {
                     reject(this.xhr.statusText);
                 }
             }
-            
+
             this.xhr.upload.onprogress = e => {
                 if (e.lengthComputable) {
                     const percent = Math.round((e.loaded / e.total) * 100);
@@ -135,7 +135,7 @@ export class DnnRmQueuedFile {
             this.xhr.onabort = () => {
                 this.dismiss();
             };
-            
+
             const url = this.servicesFramework.getServiceRoot('InternalServices') + 'FileUpload/UploadFromLocal';
             this.xhr.open("POST", url);
             headers.forEach((value, key) => {

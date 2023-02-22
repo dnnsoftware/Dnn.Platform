@@ -19,9 +19,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core.Config;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.
-    /// </summary>
+    /// <summary>Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.</summary>
     public class ClientResourceManager
     {
         /// <summary>The default css provider.</summary>
@@ -169,9 +167,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
         }
 
-        /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         public static void RegisterScript(Page page, string filePath)

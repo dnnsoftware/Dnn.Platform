@@ -10,9 +10,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using ClientDependency.Core.Controls;
 
-    /// <summary>
-    /// The central control with which all client resources are registered.
-    /// </summary>
+    /// <summary>The central control with which all client resources are registered.</summary>
     public class ClientResourceLoader : ClientDependencyLoader
     {
         private bool AsyncPostBackHandlerEnabled
@@ -24,6 +22,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(System.EventArgs e)
         {
             foreach (var path in this.Paths)

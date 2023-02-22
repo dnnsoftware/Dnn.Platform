@@ -6,14 +6,10 @@ namespace Dnn.ExportImport.Dto
 {
     public abstract class BasicExportImportDto
     {
-        /// <summary>
-        /// Gets or sets id of the object in the export/import database.
-        /// </summary>
+        /// <summary>Gets or sets id of the object in the export/import database.</summary>
         public virtual int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets referenced Id (i.e., foreighn key) for another object in the export/import database.
-        /// </summary>
+        /// <summary>Gets or sets referenced Id (i.e., foreighn key) for another object in the export/import database.</summary>
         public virtual int? ReferenceId { get; set; }
 
         /// <summary>

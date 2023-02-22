@@ -23,9 +23,7 @@ using System.Collections;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Defines the default set of levels recognized by the system.
-    /// </summary>
+    /// <summary>Defines the default set of levels recognized by the system.</summary>
     /// <remarks>
     /// <para>
     /// Each <see cref="LoggingEvent"/> has an associated <see cref="Level"/>.
@@ -86,9 +84,7 @@ namespace log4net.Core
 #endif
     public sealed class Level : IComparable
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
         /// <param name="levelName">The string name of this level.</param>
         /// <param name="displayName">The display name for this level. This may be localized or otherwise different from the name</param>
@@ -118,9 +114,7 @@ namespace log4net.Core
             this.m_levelDisplayName = displayName;
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
         /// <param name="levelName">The string name of this level.</param>
         /// <remarks>
@@ -133,9 +127,7 @@ namespace log4net.Core
         {
         }
 
-        /// <summary>
-        /// Gets the name of this level.
-        /// </summary>
+        /// <summary>Gets the name of this level.</summary>
         /// <value>
         /// The name of this level.
         /// </value>
@@ -149,9 +141,7 @@ namespace log4net.Core
             get { return this.m_levelName; }
         }
 
-        /// <summary>
-        /// Gets the value of this level.
-        /// </summary>
+        /// <summary>Gets the value of this level.</summary>
         /// <value>
         /// The value of this level.
         /// </value>
@@ -165,9 +155,7 @@ namespace log4net.Core
             get { return this.m_levelValue; }
         }
 
-        /// <summary>
-        /// Gets the display name of this level.
-        /// </summary>
+        /// <summary>Gets the display name of this level.</summary>
         /// <value>
         /// The display name of this level.
         /// </value>
@@ -198,9 +186,7 @@ namespace log4net.Core
             return this.m_levelName;
         }
 
-        /// <summary>
-        /// Compares levels.
-        /// </summary>
+        /// <summary>Compares levels.</summary>
         /// <param name="o">The object to compare against.</param>
         /// <returns><c>true</c> if the objects are equal.</returns>
         /// <remarks>
@@ -223,9 +209,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Returns a hash code
-        /// </summary>
+        /// <summary>Returns a hash code</summary>
         /// <returns>A hash code for the current <see cref="Level" />.</returns>
         /// <remarks>
         /// <para>
@@ -416,9 +400,7 @@ namespace log4net.Core
             return !(l == r);
         }
 
-        /// <summary>
-        /// Compares two specified <see cref="Level"/> instances.
-        /// </summary>
+        /// <summary>Compares two specified <see cref="Level"/> instances.</summary>
         /// <param name="l">The first <see cref="Level"/> to compare.</param>
         /// <param name="r">The second <see cref="Level"/> to compare.</param>
         /// <returns>
@@ -472,9 +454,7 @@ namespace log4net.Core
             return l.m_levelValue.CompareTo(r.m_levelValue);
         }
 
-        /// <summary>
-        /// The <see cref="Off" /> level designates a higher level than all the rest.
-        /// </summary>
+        /// <summary>The <see cref="Off" /> level designates a higher level than all the rest.</summary>
         public static readonly Level Off = new Level(int.MaxValue, "OFF");
 
         /// <summary>
@@ -507,9 +487,7 @@ namespace log4net.Core
         /// </summary>
         public static readonly Level Critical = new Level(90000, "CRITICAL");
 
-        /// <summary>
-        /// The <see cref="Severe" /> level designates very severe error events.
-        /// </summary>
+        /// <summary>The <see cref="Severe" /> level designates very severe error events.</summary>
         public static readonly Level Severe = new Level(80000, "SEVERE");
 
         /// <summary>
@@ -572,9 +550,7 @@ namespace log4net.Core
         /// </summary>
         public static readonly Level Finest = new Level(10000, "FINEST");
 
-        /// <summary>
-        /// The <see cref="All" /> level designates the lowest level possible.
-        /// </summary>
+        /// <summary>The <see cref="All" /> level designates the lowest level possible.</summary>
         public static readonly Level All = new Level(int.MinValue, "ALL");
 
         private readonly int m_levelValue;

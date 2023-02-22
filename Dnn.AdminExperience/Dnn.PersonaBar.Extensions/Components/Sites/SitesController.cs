@@ -10,7 +10,6 @@ namespace Dnn.PersonaBar.Sites.Components
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Web;
     using System.Web.UI.WebControls;
@@ -21,24 +20,22 @@ namespace Dnn.PersonaBar.Sites.Components
     using Dnn.PersonaBar.Sites.Components.Dto;
     using Dnn.PersonaBar.Sites.Services.Dto;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
@@ -47,7 +44,7 @@ namespace Dnn.PersonaBar.Sites.Components
     {
         internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
-        private readonly TabsController _tabsController = new TabsController();
+        private readonly TabsController tabsController = new TabsController();
 
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
@@ -97,22 +94,23 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 strDate = dateTime.ToShortDateString();
             }
+
             return strDate;
         }
 
-        public IList<PortalController.PortalTemplateInfo> GetPortalTemplates()
+        public IList<IPortalTemplateInfo> GetPortalTemplates()
         {
-            var templates = PortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalTemplateController.Instance.GetPortalTemplates();
             templates = templates.OrderBy(x => x, new TemplateDisplayComparer()).ToList();
             return templates;
         }
 
-        public PortalController.PortalTemplateInfo GetPortalTemplate(string fileName, string cultureCode)
+        public IPortalTemplateInfo GetPortalTemplate(string fileName, string cultureCode)
         {
-            return PortalController.Instance.GetPortalTemplate(fileName, cultureCode);
+            return PortalTemplateController.Instance.GetPortalTemplate(fileName, cultureCode);
         }
 
-        public ListItem CreateListItem(PortalController.PortalTemplateInfo template)
+        public ListItem CreateListItem(IPortalTemplateInfo template)
         {
             string text, value;
             var fileName = Path.GetFileName(template.TemplateFilePath);
@@ -125,8 +123,8 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 if (this.DisplayType == 0)
                 {
-                    var _ViewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId));
-                    switch (_ViewType)
+                    var viewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId));
+                    switch (viewType)
                     {
                         case "NATIVE":
                             this.DisplayType = CultureDropDownTypes.NativeName;
@@ -161,22 +159,22 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 match = defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2)));
             }
+
             if (match == null)
             {
                 match = defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode));
             }
 
-            return match != null ? string.Format("{0}|{1}", Path.GetFileName(match.TemplateFilePath), match.CultureCode) : "";
+            return match != null ? string.Format("{0}|{1}", Path.GetFileName(match.TemplateFilePath), match.CultureCode) : string.Empty;
         }
 
         public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
         {
-            return this._tabsController.GetTabByCulture(tabId, portalId, cultureCode);
+            return this.tabsController.GetTabByCulture(tabId, portalId, cultureCode);
         }
 
         public string ExportPortalTemplate(ExportTemplateRequest request, UserInfo userInfo, out bool success)
         {
-            var locales = request.Locales.ToList();
             var pages = request.Pages.ToList();
             var isValid = true;
             success = false;
@@ -185,8 +183,11 @@ namespace Dnn.PersonaBar.Sites.Components
             foreach (var page in pages)
             {
                 if (page.ParentTabId != Null.NullInteger && pages.All(p => p.TabId != page.ParentTabId.ToString(CultureInfo.InvariantCulture)))
+                {
                     isValid = false;
+                }
             }
+
             if (!isValid)
             {
                 return Localization.GetString("ErrorAncestorPages", this.LocalResourcesFile);
@@ -197,94 +198,37 @@ namespace Dnn.PersonaBar.Sites.Components
                 return Localization.GetString("ErrorPages", this.LocalResourcesFile);
             }
 
-            var xmlSettings = new XmlWriterSettings
-            {
-                ConformanceLevel = ConformanceLevel.Fragment,
-                OmitXmlDeclaration = true,
-                Indent = true,
-                IndentChars = "  ",
-                Encoding = Encoding.UTF8,
-                WriteEndDocumentOnClose = true,
-            };
+            var portal = PortalController.Instance.GetPortal(request.PortalId);
+            var tabsToExport = this.GetTabsToExport(userInfo, request.PortalId, portal.DefaultLanguage, request.IsMultilanguage, pages, null)
+                                    .Select(t => int.Parse(t.TabId))
+                                    .ToList();
 
-            var filename = Globals.HostMapPath + request.FileName.Replace("/", @"\");
-            if (!filename.EndsWith(".template", StringComparison.OrdinalIgnoreCase))
-            {
-                filename += ".template";
-            }
+            var exportResult = DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ExportPortalTemplate(
+                request.PortalId,
+                request.FileName,
+                request.Description,
+                request.IsMultilanguage,
+                request.Locales,
+                request.LocalizationCulture,
+                tabsToExport,
+                request.IncludeContent,
+                request.IncludeFiles,
+                request.IncludeModules,
+                request.IncludeProfile,
+                request.IncludeRoles);
 
-            using (var writer = XmlWriter.Create(filename, xmlSettings))
-            {
-                writer.WriteStartElement("portal");
-                writer.WriteAttributeString("version", "5.0");
-
-                // Add template description
-                writer.WriteElementString("description", HttpUtility.HtmlEncode(request.Description));
-
-                // Serialize portal settings
-                var portal = PortalController.Instance.GetPortal(request.PortalId);
-
-                this.SerializePortalSettings(writer, portal, request.IsMultilanguage);
-                this.SerializeEnabledLocales(writer, portal, request.IsMultilanguage, locales);
-                this.SerializeExtensionUrlProviders(writer, request.PortalId);
-
-                if (request.IncludeProfile)
-                {
-                    // Serialize Profile Definitions
-                    this.SerializeProfileDefinitions(writer, portal);
-                }
-
-                if (request.IncludeModules)
-                {
-                    // Serialize Portal Desktop Modules
-                    DesktopModuleController.SerializePortalDesktopModules(writer, request.PortalId);
-                }
-
-                if (request.IncludeRoles)
-                {
-                    // Serialize Roles
-                    RoleController.SerializeRoleGroups(writer, request.PortalId);
-                }
-
-                // Serialize tabs
-                this.SerializeTabs(writer, portal, request.IsMultilanguage, pages, userInfo, request.IncludeContent, locales, request.LocalizationCulture);
-
-                if (request.IncludeFiles)
-                {
-                    // Create Zip File to hold files
-                    var resourcesFile = new ZipArchive(File.Create(filename + ".resources"));
-
-                    // Serialize folders (while adding files to zip file)
-                    this.SerializeFolders(writer, portal, ref resourcesFile);
-
-                    // Finish and Close Zip file
-                    resourcesFile.Dispose();
-                }
-                writer.WriteEndElement();
-                writer.Close();
-            }
-
-            EventManager.Instance.OnPortalTemplateCreated(new PortalTemplateEventArgs()
-            {
-                PortalId = request.PortalId,
-                TemplatePath = filename,
-            });
-
-            success = true;
-            return string.Format(Localization.GetString("ExportedMessage", this.LocalResourcesFile), filename);
+            success = exportResult.Item1;
+            return exportResult.Item2;
         }
 
-        public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
-            string siteDescription, string siteKeywords,
-            bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email,
-            string password,
-            string confirm, string question = "", string answer = "")
+        public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias, string siteDescription, string siteKeywords, bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email, string password, string confirm, string question = "", string answer = "")
         {
             var template = this.LoadPortalTemplateInfoForSelectedItem(siteTemplate);
 
             var strChildPath = string.Empty;
             var closePopUpStr = string.Empty;
             var intPortalId = -1;
+
             // check template validity
             var schemaFilename = HttpContext.Current.Server.MapPath("~/DesktopModules/Admin/Portals/portal.template.xsd");
             var xmlFilename = template.TemplateFilePath;
@@ -296,7 +240,7 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             // Set Portal Name
-            siteAlias = siteAlias.ToLowerInvariant().Replace("http://", "").Replace("https://", "");
+            siteAlias = siteAlias.ToLowerInvariant().Replace("http://", string.Empty).Replace("https://", string.Empty);
 
             // Validate Portal Name
             var strPortalAlias = isChildSite
@@ -324,7 +268,11 @@ namespace Dnn.PersonaBar.Sites.Components
             if (password != confirm)
             {
                 error = true;
-                if (!string.IsNullOrEmpty(message)) message += "<br/>";
+                if (!string.IsNullOrEmpty(message))
+                {
+                    message += "<br/>";
+                }
+
                 message += Localization.GetString("InvalidPassword", this.LocalResourcesFile);
             }
 
@@ -348,7 +296,7 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             // Get Home Directory
-            var homeDir = homeDirectory != @"Portals/[PortalID]" ? homeDirectory : "";
+            var homeDir = homeDirectory != @"Portals/[PortalID]" ? homeDirectory : string.Empty;
 
             // Validate Home Folder
             if (!string.IsNullOrEmpty(homeDir))
@@ -359,6 +307,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     error = true;
                     message = string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error", this.LocalResourcesFile), homeDir);
                 }
+
                 if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.ToLowerInvariant() == "portals/")
                 {
                     error = true;
@@ -396,7 +345,8 @@ namespace Dnn.PersonaBar.Sites.Components
                     if (useCurrent)
                     {
                         adminUser = PortalSettings.Current.UserInfo;
-                        intPortalId = PortalController.Instance.CreatePortal(siteName,
+                        intPortalId = PortalController.Instance.CreatePortal(
+                            siteName,
                             adminUser.UserID,
                             siteDescription,
                             siteKeywords,
@@ -427,11 +377,12 @@ namespace Dnn.PersonaBar.Sites.Components
                             Profile =
                             {
                                 FirstName = firstname,
-                                LastName = lastname
+                                LastName = lastname,
                             },
                         };
 
-                        intPortalId = PortalController.Instance.CreatePortal(siteName,
+                        intPortalId = PortalController.Instance.CreatePortal(
+                            siteName,
                             adminUser,
                             siteDescription,
                             siteKeywords,
@@ -479,17 +430,18 @@ namespace Dnn.PersonaBar.Sites.Components
                     {
                         message = string.IsNullOrEmpty(Host.HostEmail)
                             ? string.Format(Localization.GetString("UnknownEmailAddress.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr)
-                            : Mail.SendMail(Host.HostEmail,
+                            : Mail.SendMail(
+                                Host.HostEmail,
                                 email,
                                 Host.HostEmail,
                                 Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
                                 Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "");
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty);
                     }
                     catch (Exception exc)
                     {
@@ -498,9 +450,8 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
 
                     // mark default language as published if content localization is enabled
-                    var ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId,
-                        false);
-                    if (ContentLocalizationEnabled)
+                    var contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId, false);
+                    if (contentLocalizationEnabled)
                     {
                         var lc = new LocaleController();
                         lc.PublishLanguage(intPortalId, objPortal.DefaultLanguage, true);
@@ -522,17 +473,17 @@ namespace Dnn.PersonaBar.Sites.Components
             return intPortalId;
         }
 
-        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
-            IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
+        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
         {
             if (tabsCollection == null)
             {
-                var tab = this._tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
+                var tab = this.tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
                 tabsCollection = tab.ChildTabs;
                 tab.ChildTabs = null;
                 tab.HasChildren = false;
                 tabsCollection.Add(tab);
             }
+
             var selectedTabs = userSelection as List<TabDto> ?? userSelection.ToList();
             foreach (var tab in tabsCollection)
             {
@@ -559,568 +510,20 @@ namespace Dnn.PersonaBar.Sites.Components
                         checkedState = NodeCheckedState.Checked;
                     }
 
-                    var descendants = this._tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
-                        isMultiLanguage).ToList();
+                    var descendants = this.tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode, isMultiLanguage).ToList();
                     descendants.ForEach(x => { x.CheckedState = checkedState; });
 
-                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
-                        descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
+                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs, descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
                 }
             }
+
             return selectedTabs;
         }
 
-        private TabCollection GetExportableTabs(TabCollection tabs)
-        {
-            var exportableTabs = tabs.Where(kvp => !kvp.Value.IsSystem).Select(kvp => kvp.Value);
-            return new TabCollection(exportableTabs);
-        }
-
-#if false
-        private void AddChildNodes(TabDto parentNode, PortalInfo portal, string cultureCode)
-        {
-            if (parentNode.ChildTabs != null)
-            {
-                parentNode.ChildTabs.Clear();
-
-                int tabId;
-                int.TryParse(parentNode.TabId, out tabId);
-
-                var tabs =
-                    GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID)
-                        .WithCulture(cultureCode, true)).WithParentId(parentId);
-
-                foreach (var tab in tabs)
-                {
-                    if (tab.ParentId == parentId)
-                    {
-                        string tooltip;
-                        var nodeIcon = GetNodeIcon(tab, out tooltip);
-                        var node = new TabDto
-                        {
-                            Name = string.Format("{0} {1}", tab.TabName, GetNodeStatusIcon(tab)),
-                            TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                            ImageUrl = nodeIcon,
-                            Tooltip = tooltip,
-                            ParentTabId = tab.ParentId
-                        };
-                        AddChildNodes(node, portal, cultureCode);
-                        parentNode.ChildTabs.Add(node);
-                    }
-                }
-            }
-        }
-
-        private string GetNodeIcon(TabInfo tab, out string toolTip)
-        {
-            if (PortalSettings.HomeTabId == tab.TabID)
-            {
-                toolTip = Localization.GetString("lblHome", LocalResourcesFile);
-                return IconHome;
-            }
-
-            if (IsSecuredTab(tab))
-            {
-                if (IsAdminTab(tab))
-                {
-                    toolTip = Localization.GetString("lblAdminOnly", LocalResourcesFile);
-                    return AdminOnlyIcon;
-                }
-
-                if (IsRegisteredUserTab(tab))
-                {
-                    toolTip = Localization.GetString("lblRegistered", LocalResourcesFile);
-                    return RegisteredUsersIcon;
-                }
-
-                toolTip = Localization.GetString("lblSecure", LocalResourcesFile);
-                return SecuredIcon;
-            }
-
-            toolTip = Localization.GetString("lblEveryone", LocalResourcesFile);
-            return AllUsersIcon;
-        }
-
-        private bool IsAdminTab(TabInfo tab)
-        {
-            var perms = tab.TabPermissions;
-            return perms.Cast<TabPermissionInfo>().All(perm => perm.RoleName == PortalSettings.AdministratorRoleName || !perm.AllowAccess);
-        }
-
-        private bool IsRegisteredUserTab(TabInfo tab)
-        {
-            var perms = tab.TabPermissions;
-            return perms.Cast<TabPermissionInfo>().Any(perm => perm.RoleName == PortalSettings.RegisteredRoleName && perm.AllowAccess);
-        }
-
-        private static bool IsSecuredTab(TabInfo tab)
-        {
-            var perms = tab.TabPermissions;
-            return perms.Cast<TabPermissionInfo>().All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
-        }
-
-        private string GetNodeStatusIcon(TabInfo tab)
-        {
-            var s = "";
-            if (tab.DisableLink)
-            {
-                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageDisabled, Localization.GetString("lblDisabled", LocalResourcesFile));
-            }
-            if (tab.IsVisible == false)
-            {
-                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageHidden, Localization.GetString("lblHidden", LocalResourcesFile));
-            }
-            if (tab.Url != "")
-            {
-                s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconRedirect, Localization.GetString("lblRedirect", LocalResourcesFile));
-            }
-            return s;
-        }
-#endif
-
-        private void SerializePortalSettings(XmlWriter writer, PortalInfo portal, bool isMultilanguage)
-        {
-            writer.WriteStartElement("settings");
-
-            writer.WriteElementString("logofile", portal.LogoFile);
-            writer.WriteElementString("footertext", portal.FooterText);
-            writer.WriteElementString("userregistration", portal.UserRegistration.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("defaultlanguage", portal.DefaultLanguage);
-
-            var settingsDictionary = PortalController.Instance.GetPortalSettings(portal.PortalID);
-
-            string setting;
-            settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("skinsrc", setting);
-            }
-            settingsDictionary.TryGetValue("DefaultAdminSkin", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("skinsrcadmin", setting);
-            }
-            settingsDictionary.TryGetValue("DefaultPortalContainer", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("containersrc", setting);
-            }
-            settingsDictionary.TryGetValue("DefaultAdminContainer", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("containersrcadmin", setting);
-            }
-            settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("enableskinwidgets", setting);
-            }
-            settingsDictionary.TryGetValue("portalaliasmapping", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("portalaliasmapping", setting);
-            }
-
-            writer.WriteElementString("contentlocalizationenabled", isMultilanguage.ToString());
-
-            settingsDictionary.TryGetValue("TimeZone", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("timezone", setting);
-            }
-
-            settingsDictionary.TryGetValue("EnablePopUps", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("enablepopups", setting);
-            }
-
-            settingsDictionary.TryGetValue("InlineEditorEnabled", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("inlineeditorenabled", setting);
-            }
-
-            settingsDictionary.TryGetValue("HideFoldersEnabled", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("hidefoldersenabled", setting);
-            }
-
-            settingsDictionary.TryGetValue("ControlPanelMode", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("controlpanelmode", setting);
-            }
-
-            settingsDictionary.TryGetValue("ControlPanelSecurity", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("controlpanelsecurity", setting);
-            }
-
-            settingsDictionary.TryGetValue("ControlPanelVisibility", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("controlpanelvisibility", setting);
-            }
-
-            writer.WriteElementString("hostspace", portal.HostSpace.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("userquota", portal.UserQuota.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("pagequota", portal.PageQuota.ToString(CultureInfo.InvariantCulture));
-
-            settingsDictionary.TryGetValue("PageHeadText", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("pageheadtext", setting);
-            }
-            settingsDictionary.TryGetValue("InjectModuleHyperLink", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("injectmodulehyperlink", setting);
-            }
-            settingsDictionary.TryGetValue("AddCompatibleHttpHeader", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("addcompatiblehttpheader", setting);
-            }
-
-            settingsDictionary.TryGetValue("ShowCookieConsent", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("showcookieconsent", setting);
-            }
-
-            settingsDictionary.TryGetValue("CookieMoreLink", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("cookiemorelink", setting);
-            }
-
-            settingsDictionary.TryGetValue("DataConsentActive", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("dataconsentactive", setting);
-            }
-
-            settingsDictionary.TryGetValue("DataConsentTermsLastChange", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("dataconsenttermslastchange", setting);
-            }
-
-            settingsDictionary.TryGetValue("DataConsentConsentRedirect", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("dataconsentconsentredirect", setting);
-            }
-
-            settingsDictionary.TryGetValue("DataConsentUserDeleteAction", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("dataconsentuserdeleteaction", setting);
-            }
-
-            settingsDictionary.TryGetValue("DataConsentDelay", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("dataconsentdelay", setting);
-            }
-
-            settingsDictionary.TryGetValue("DataConsentDelayMeasurement", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("dataconsentdelaymeasurement", setting);
-            }
-
-            settingsDictionary.TryGetValue("ShowQuickModuleAddMenu", out setting);
-            if (!string.IsNullOrEmpty(setting))
-            {
-                writer.WriteElementString("showquickmoduleaddmenu", setting);
-            }
-
-            //End Portal Settings
-            writer.WriteEndElement();
-        }
-
-        private void SerializeEnabledLocales(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<string> locales)
-        {
-            var enabledLocales = LocaleController.Instance.GetLocales(portal.PortalID);
-            if (enabledLocales.Count > 1)
-            {
-                writer.WriteStartElement("locales");
-                if (isMultilanguage)
-                {
-                    foreach (var cultureCode in locales)
-                    {
-                        writer.WriteElementString("locale", cultureCode);
-                    }
-                }
-                else
-                {
-                    foreach (var enabledLocale in enabledLocales)
-                    {
-                        writer.WriteElementString("locale", enabledLocale.Value.Code);
-                    }
-                }
-
-                writer.WriteEndElement();
-            }
-        }
-
-        private void SerializeExtensionUrlProviders(XmlWriter writer, int portalId)
-        {
-            var providers = ExtensionUrlProviderController.GetModuleProviders(portalId);
-            if (!providers.Any())
-            {
-                return;
-            }
-
-            writer.WriteStartElement("extensionUrlProviders");
-
-            foreach (var provider in providers)
-            {
-                writer.WriteStartElement("extensionUrlProvider");
-                writer.WriteElementString("name", provider.ProviderConfig.ProviderName);
-                writer.WriteElementString("active", provider.ProviderConfig.IsActive.ToString());
-                var settings = provider.ProviderConfig.Settings;
-                if (settings.Any())
-                {
-                    writer.WriteStartElement("settings");
-                    foreach (var setting in settings)
-                    {
-                        writer.WriteStartElement("setting");
-                        writer.WriteAttributeString("name", setting.Key);
-                        writer.WriteAttributeString("value", setting.Value);
-                        writer.WriteEndElement();
-                    }
-
-                    writer.WriteEndElement();
-                }
-
-                ////if (provider.ProviderConfig.TabIds.Any())
-                ////{
-                ////    writer.WriteStartElement("tabIds");
-                ////    foreach (var tabId in provider.ProviderConfig.TabIds)
-                ////    {
-                ////        writer.WriteElementString("tabId", tabId.ToString(CultureInfo.InvariantCulture));
-                ////    }
-                ////    writer.WriteEndElement();
-                ////}
-
-                writer.WriteEndElement();
-            }
-
-            writer.WriteEndElement();
-        }
-
-        private void SerializeFolders(XmlWriter writer, PortalInfo objportal, ref ZipArchive zipFile)
-        {
-            // Sync db and filesystem before exporting so all required files are found
-            var folderManager = FolderManager.Instance;
-            folderManager.Synchronize(objportal.PortalID);
-            writer.WriteStartElement("folders");
-
-            foreach (var folder in folderManager.GetFolders(objportal.PortalID))
-            {
-                writer.WriteStartElement("folder");
-
-                writer.WriteElementString("folderpath", folder.FolderPath);
-                writer.WriteElementString("storagelocation", folder.StorageLocation.ToString());
-
-                // Serialize Folder Permissions
-                this.SerializeFolderPermissions(writer, objportal, folder.FolderPath);
-
-                // Serialize files
-                this.SerializeFiles(writer, objportal, folder.FolderPath, ref zipFile);
-
-                writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-        }
-
-        private void SerializeFiles(XmlWriter writer, IPortalInfo portal, string folderPath, ref ZipArchive zipFile)
-        {
-            var folderManager = FolderManager.Instance;
-            var objFolder = folderManager.GetFolder(portal.PortalId, folderPath);
-
-            writer.WriteStartElement("files");
-            foreach (var fileInfo in folderManager.GetFiles(objFolder))
-            {
-                var objFile = (FileInfo)fileInfo;
-
-                // verify that the file exists on the file system
-                var filePath = portal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
-                if (File.Exists(filePath))
-                {
-                    writer.WriteStartElement("file");
-
-                    writer.WriteElementString("contenttype", objFile.ContentType);
-                    writer.WriteElementString("extension", objFile.Extension);
-                    writer.WriteElementString("filename", objFile.FileName);
-                    writer.WriteElementString("height", objFile.Height.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteElementString("size", objFile.Size.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteElementString("width", objFile.Width.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteEndElement();
-
-                    FileSystemUtils.AddToZip(
-                        zipFile: ref zipFile,
-                        filePath: filePath,
-                        fileName: this.GetActualFileName(objFile),
-                        folder: folderPath);
-                }
-            }
-
-            writer.WriteEndElement();
-        }
-
-        private string GetActualFileName(IFileInfo objFile)
-        {
-            return (objFile.StorageLocation == (int)FolderController.StorageLocationTypes.SecureFileSystem)
-                ? objFile.FileName + Globals.glbProtectedExtension
-                : objFile.FileName;
-        }
-
-        private void SerializeFolderPermissions(XmlWriter writer, PortalInfo objportal, string folderPath)
-        {
-            var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(objportal.PortalID, folderPath);
-
-            writer.WriteStartElement("folderpermissions");
-
-            foreach (FolderPermissionInfo permission in permissions)
-            {
-                writer.WriteStartElement("permission");
-
-                writer.WriteElementString("permissioncode", permission.PermissionCode);
-                writer.WriteElementString("permissionkey", permission.PermissionKey);
-                writer.WriteElementString("rolename", permission.RoleName);
-                writer.WriteElementString("allowaccess", permission.AllowAccess.ToString().ToLowerInvariant());
-
-                writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-        }
-
-        private void SerializeProfileDefinitions(XmlWriter writer, PortalInfo objportal)
-        {
-            var objListController = new ListController();
-
-            writer.WriteStartElement("profiledefinitions");
-            foreach (ProfilePropertyDefinition objProfileProperty in
-                ProfileController.GetPropertyDefinitionsByPortal(objportal.PortalID, false, false))
-            {
-                writer.WriteStartElement("profiledefinition");
-
-                writer.WriteElementString("propertycategory", objProfileProperty.PropertyCategory);
-                writer.WriteElementString("propertyname", objProfileProperty.PropertyName);
-
-                var objList = objListController.GetListEntryInfo("DataType", objProfileProperty.DataType);
-                writer.WriteElementString("datatype", objList == null ? "Unknown" : objList.Value);
-                writer.WriteElementString("length", objProfileProperty.Length.ToString(CultureInfo.InvariantCulture));
-                writer.WriteElementString("defaultvisibility", Convert.ToInt32(objProfileProperty.DefaultVisibility).ToString(CultureInfo.InvariantCulture));
-                writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-        }
-
-        private void SerializeTabs(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<TabDto> pages, UserInfo userInfo,
-            bool includeContent, IEnumerable<string> locales, string localizationCulture = "")
-        {
-            // supporting object to build the tab hierarchy
-            var tabs = new Hashtable();
-
-            writer.WriteStartElement("tabs");
-            var tabsToExport = this.GetTabsToExport(userInfo, portal.PortalID, portal.DefaultLanguage, isMultilanguage, pages, null).ToList();
-
-            if (isMultilanguage)
-            {
-                // Process Default Language first
-                this.SerializeTabs(writer, portal, tabs,
-                    this.GetExportableTabs(
-                        TabController.Instance.GetTabsByPortal(portal.PortalID)
-                            .WithCulture(portal.DefaultLanguage, true)), tabsToExport, includeContent);
-
-                // Process other locales
-                foreach (var cultureCode in locales)
-                {
-                    if (cultureCode != portal.DefaultLanguage)
-                    {
-                        this.SerializeTabs(writer, portal, tabs,
-                            this.GetExportableTabs(
-                                TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, false)),
-                            tabsToExport, includeContent);
-                    }
-                }
-            }
-            else
-            {
-                string contentLocalizable;
-                if (PortalController.Instance.GetPortalSettings(portal.PortalID)
-                    .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
-                    Convert.ToBoolean(contentLocalizable))
-                {
-                    this.SerializeTabs(writer, portal, tabs,
-                     this.GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(localizationCulture, true)), tabsToExport,
-                     includeContent);
-                }
-                else
-                {
-                    this.SerializeTabs(writer, portal, tabs,
-                        this.GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID)), tabsToExport,
-                        includeContent);
-                }
-            }
-
-            writer.WriteEndElement();
-        }
-
-        private void SerializeTabs(XmlWriter writer, PortalInfo portal, Hashtable tabs, TabCollection tabCollection, IEnumerable<TabDto> pages, bool chkContent)
-        {
-            pages = pages.ToList();
-            foreach (var tab in tabCollection.Values.OrderBy(x => x.Level))
-            {
-                // if not deleted
-                if (!tab.IsDeleted)
-                {
-                    XmlNode tabNode = null;
-                    if (string.IsNullOrEmpty(tab.CultureCode) || tab.CultureCode == portal.DefaultLanguage)
-                    {
-                        // page in default culture and checked or page doesn't exist in tree(which should always export).
-                        var tabId = tab.TabID.ToString(CultureInfo.InvariantCulture);
-                        if (pages.Any(p => p.TabId == tabId && (p.CheckedState == NodeCheckedState.Checked || p.CheckedState == NodeCheckedState.Partial)) ||
-                            pages.All(p => p.TabId != tabId))
-                        {
-                            tabNode = TabController.SerializeTab(new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
-                        }
-                    }
-                    else
-                    {
-                        // check if default culture page is selected or default page doesn't exist in tree(which should always export).
-                        var defaultTab = tab.DefaultLanguageTab;
-                        if (defaultTab == null
-                            || pages.All(p => p.TabId != defaultTab.TabID.ToString(CultureInfo.InvariantCulture))
-                            ||
-                            pages.Count(
-                                p =>
-                                    p.TabId == defaultTab.TabID.ToString(CultureInfo.InvariantCulture) &&
-                                    (p.CheckedState == NodeCheckedState.Checked || p.CheckedState == NodeCheckedState.Partial)) > 0)
-                        {
-                            tabNode = TabController.SerializeTab(new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
-                        }
-                    }
-
-                    if (tabNode != null)
-                        tabNode.WriteTo(writer);
-                }
-            }
-        }
-
-        private PortalController.PortalTemplateInfo LoadPortalTemplateInfoForSelectedItem(string template)
+        private IPortalTemplateInfo LoadPortalTemplateInfoForSelectedItem(string template)
         {
             var values = template.Split('|');
-            return PortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+            return PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
         }
 
         private void TryDeleteCreatingPortal(string serverPath, string childPath)
@@ -1166,29 +569,9 @@ namespace Dnn.PersonaBar.Sites.Components
             return Globals.ResolveUrl(imagePath);
         }
 
-        // private void CreateThumbnailFromOriginal(string templatePath, string oldTemplateImg)
-        // {
-        //    try
-        //    {
-        //        var originalPath = Path.Combine(Globals.HostMapPath, oldTemplateImg.Replace("/", @"\"));
-        //        if (File.Exists(originalPath))
-        //        {
-        //            var newPath = Path.ChangeExtension(templatePath, ImageExtensions.First());
-        //            if (!File.Exists(newPath))
-        //            {
-        //                File.Copy(originalPath, newPath);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Error(ex);
-        //    }
-        // }
-
-        private class TemplateDisplayComparer : IComparer<PortalController.PortalTemplateInfo>
+        private class TemplateDisplayComparer : IComparer<IPortalTemplateInfo>
         {
-            public int Compare(PortalController.PortalTemplateInfo x, PortalController.PortalTemplateInfo y)
+            public int Compare(IPortalTemplateInfo x, IPortalTemplateInfo y)
             {
                 var cultureCompare = string.Compare(x.CultureCode, y.CultureCode, StringComparison.CurrentCulture);
                 if (cultureCompare == 0)

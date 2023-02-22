@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.UI
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -20,9 +21,7 @@ namespace DotNetNuke.Web.UI
 
     public class Utilities
     {
-        /// <summary>
-        /// Applies a custom CSS file for a control using a consistent naming pattern.
-        /// </summary>
+        /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>
         /// <param name="targetControl">The control that should have a skin injected.</param>
         /// <param name="controlSubSkinName">An optional sub-skin.</param>
         /// <param name="controlName">An optional control name that might differ from the type.</param>
@@ -272,13 +271,12 @@ namespace DotNetNuke.Web.UI
 
         public static string GetViewStateAsString(object value, string defaultValue)
         {
-            string _Value = defaultValue;
             if (value != null)
             {
-                _Value = Convert.ToString(value);
+                return Convert.ToString(value);
             }
 
-            return _Value;
+            return defaultValue;
         }
 
         public static void RegisterAlertOnPageLoad(Control ctrl, string message)

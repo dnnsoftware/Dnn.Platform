@@ -15,14 +15,10 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// A collection of Dnn global methods and properties.
-    /// </summary>
+    /// <summary>A collection of Dnn global methods and properties.</summary>
     public class GlobalsImpl : IGlobals
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GlobalsImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GlobalsImpl"/> class.</summary>
         public GlobalsImpl()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -40,9 +36,7 @@ namespace DotNetNuke.Common.Internal
             get { return Globals.HostMapPath; }
         }
 
-        /// <summary>
-        /// Gets a navigation manager to provide navigation services.
-        /// </summary>
+        /// <summary>Gets a navigation manager to provide navigation services.</summary>
         protected INavigationManager NavigationManager { get; }
 
         /// <inheritdoc/>

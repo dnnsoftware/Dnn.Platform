@@ -71,6 +71,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         // Note: this is the only test in core unit testing project that requires a working db connection to run.
         [Test]
         [Ignore("TODO: Must be moved to integration tests.")]
+
         public void Password_Should_Saved_In_History_During_Create_User()
         {
             var user = CreateNewUser();
@@ -87,6 +88,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
 
         [Test]
         [Ignore("The reasons have been lost to the sands of time…")]
+
         public void ChangeUserName_Should_Success_With_Valid_Username()
         {
             var user = CreateNewUser();
@@ -101,6 +103,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         [TestCase("<img onerror=alert(1)>")]
         [TestCase("<img onload=document.write(1)>")]
         [Ignore("The reasons have been lost to the sands of time…")]
+
         public void ChangeUserName_Should_Throw_Exception_With_Invalid_Username(string invalidParts)
         {
             var user = CreateNewUser();

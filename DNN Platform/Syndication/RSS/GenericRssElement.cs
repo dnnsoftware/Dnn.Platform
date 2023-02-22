@@ -5,9 +5,7 @@ namespace DotNetNuke.Services.Syndication
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    ///   Late-bound RSS element (used for late bound item and image).
-    /// </summary>
+    /// <summary>  Late-bound RSS element (used for late bound item and image).</summary>
     public sealed class GenericRssElement : RssElementBase
     {
         public new Dictionary<string, string> Attributes

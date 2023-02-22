@@ -6,6 +6,7 @@
     using System.IO;
     using System.Reflection;
     using System.Web;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
@@ -31,6 +32,7 @@
         private const string GenericHost = "dnn";
 
         [Test]
+
         public void CheckForRedirects_WithUmlautUrls_DontRedirectInfinitely()
         {
             // Arrange

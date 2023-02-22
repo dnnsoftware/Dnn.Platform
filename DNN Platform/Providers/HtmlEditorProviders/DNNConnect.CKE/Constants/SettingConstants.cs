@@ -5,185 +5,125 @@ namespace DNNConnect.CKEditorProvider.Constants
 {
     using System;
 
-    /// <summary>
-    /// Provider Constants.
-    /// </summary>
+    /// <summary>Provider Constants.</summary>
     public static class SettingConstants
     {
-        /// <summary>
-        /// The Legacy Toolbar Setting XML File Name.
-        /// </summary>
+        /// <summary>The Legacy Toolbar Setting XML File Name.</summary>
         [Obsolete("Legacy XML File")]
         public const string ToolbarXmlFileName = "Dnn.CKToolbar.xml";
 
-        /// <summary>
-        /// The Legacy Toolbar Setting XML File Name.
-        /// </summary>
+        /// <summary>The Legacy Toolbar Setting XML File Name.</summary>
         public const string ToolbarSetXmlFileName = "Dnn.CKToolbarSets.xml";
 
-        /// <summary>
-        /// The Toolbar Buttons XML File Name.
-        /// </summary>
+        /// <summary>The Toolbar Buttons XML File Name.</summary>
         public const string ToolbarButtonXmlFileName = "Dnn.CKToolbarButtons.xml";
 
-        /// <summary>
-        /// The Default Setting XML File Name.
-        /// </summary>
+        /// <summary>The Default Setting XML File Name.</summary>
         public const string XmlDefaultFileName = "Dnn.CKEditorDefaultSettings.xml";
 
-        /// <summary>
-        /// The Default Setting XML File Name.
-        /// </summary>
+        /// <summary>The Default Setting XML File Name.</summary>
         public const string XmlSettingsFileName = "Dnn.CKEditorSettings.xml";
 
-        /// <summary>
-        /// The blank text setting name.
-        /// </summary>
+        /// <summary>The blank text setting name.</summary>
         public const string BLANKTEXT = "blanktext";
 
-        /// <summary>
-        /// The browser setting name.
-        /// </summary>
+        /// <summary>The browser setting name.</summary>
         public const string BROWSER = "browser";
 
-        /// <summary>
-        /// The image button setting name.
-        /// </summary>
+        /// <summary>The image button setting name.</summary>
         public const string IMAGEBUTTON = "imagebutton";
 
-        /// <summary>
-        /// The browser root folder id setting name.
-        /// </summary>
+        /// <summary>The Browser Root Directory Host level setting name.</summary>
+        public const string HOSTBROWSERROOTDIR = "hostBrowserRootDir";
+
+        /// <summary>The Browser Root Directory for images Host level setting name.</summary>
+        public const string HOSTBROWSERROOTDIRFORIMG = "hostBrowserRootDirForImg";
+
+        /// <summary>The browser root folder id setting name.</summary>
         public const string BROWSERROOTDIRID = "browserRootDirId";
 
-        /// <summary>
-        /// The browser root folder for images id setting name.
-        /// </summary>
+        /// <summary>The browser root folder for images id setting name.</summary>
         public const string BROWSERROOTDIRFORIMGID = "browserRootDirForImgId";
 
-        /// <summary>
-        /// The config setting name.
-        /// </summary>
+        /// <summary>The config setting name.</summary>
         public const string CONFIG = "config";
 
-        /// <summary>
-        /// The CSS setting name.
-        /// </summary>
+        /// <summary>The CSS setting name.</summary>
         public const string CSS = "css";
 
-        /// <summary>
-        /// The OverrideFileOnUpload setting name.
-        /// </summary>
+        /// <summary>The OverrideFileOnUpload setting name.</summary>
         public const string OVERRIDEFILEONUPLOAD = "OverrideFileOnUpload";
 
-        /// <summary>
-        /// The file list page size setting name.
-        /// </summary>
+        /// <summary>The file list page size setting name.</summary>
         public const string FILELISTPAGESIZE = "FileListPageSize";
 
-        /// <summary>
-        /// The file list view mode setting name.
-        /// </summary>
+        /// <summary>The file list view mode setting name.</summary>
         public const string FILELISTVIEWMODE = "FileListViewMode";
 
-        /// <summary>
-        /// The default link mode setting name.
-        /// </summary>
+        /// <summary>The default link mode setting name.</summary>
         public const string DEFAULTLINKMODE = "DefaultLinkMode";
 
-        /// <summary>
-        /// The height setting name.
-        /// </summary>
+        /// <summary>The height setting name.</summary>
         public const string HEIGHT = "height";
 
-        /// <summary>
-        /// The inject JS setting name.
-        /// </summary>
+        /// <summary>The inject JS setting name.</summary>
         public const string INJECTJS = "injectjs";
 
-        /// <summary>
-        /// The roles setting name.
-        /// </summary>
+        /// <summary>The roles setting name.</summary>
         public const string ROLES = "roles";
 
-        /// <summary>
-        /// The show page links tab first setting name.
-        /// </summary>
+        /// <summary>The show page links tab first setting name.</summary>
         public const string SHOWPAGELINKSTABFIRST = "ShowPageLinksTabFirst";
 
-        /// <summary>
-        /// The skin setting name.
-        /// </summary>
+        /// <summary>The skin setting name.</summary>
         public const string SKIN = "skin";
 
-        /// <summary>
-        /// The CodeMirror theme setting name.
-        /// </summary>
+        /// <summary>The CodeMirror theme setting name.</summary>
         public const string CODEMIRRORTHEME = "Codemirror_theme";
 
-        /// <summary>
-        /// The sub directory setting name.
-        /// </summary>
+        /// <summary>The sub directory setting name.</summary>
         public const string SUBDIRS = "subdirs";
 
-        /// <summary>
-        /// The templates setting name.
-        /// </summary>
+        /// <summary>The templates setting name.</summary>
         public const string TEMPLATEFILES = "templates_files";
 
-        /// <summary>
-        /// The custom JS File setting name.
-        /// </summary>
+        /// <summary>The custom JS File setting name.</summary>
         public const string CUSTOMJSFILE = "customJsFile";
 
-        /// <summary>
-        /// The toolbar setting name.
-        /// </summary>
+        /// <summary>The toolbar setting name.</summary>
         public const string TOOLB = "toolb";
 
-        /// <summary>
-        /// The Upload file limits setting name.
-        /// </summary>
+        /// <summary>The Upload file limits setting name.</summary>
         public const string UPLOADFILELIMITS = "uploadfileRoles";
 
-        /// <summary>
-        /// The upload folder id setting name.
-        /// </summary>
+        /// <summary>The upload folder for all portals setting name.</summary>
+        public const string HOSTUPLOADDIR = "hostUploadDir";
+
+        /// <summary>The upload folder setting name.</summary>
         public const string UPLOADDIRID = "uploadDirId";
 
-        /// <summary>
-        /// The upload folder for images id setting name.
-        /// </summary>
+        /// <summary>The upload folder for images for all portals setting name.</summary>
+        public const string HOSTUPLOADDIRFORIMG = "hostUploadDirForImg";
+
+        /// <summary>The upload folder for images id setting name.</summary>
         public const string UPLOADDIRFORIMGID = "uploadDirForImgId";
 
-        /// <summary>
-        /// The use anchor selector setting name.
-        /// </summary>
+        /// <summary>The use anchor selector setting name.</summary>
         public const string USEANCHORSELECTOR = "UseAnchorSelector";
 
-        /// <summary>
-        /// The width setting name.
-        /// </summary>
+        /// <summary>The width setting name.</summary>
         public const string WIDTH = "width";
 
-        /// <summary>
-        /// The Resize width setting name.
-        /// </summary>
+        /// <summary>The Resize width setting name.</summary>
         public const string RESIZEWIDTH = "resizewidth";
 
-        /// <summary>
-        /// The resize height setting name.
-        /// </summary>
+        /// <summary>The resize height setting name.</summary>
         public const string RESIZEHEIGHT = "resizeheight";
 
-        /// <summary>
-        /// The Resize Upload width setting name.
-        /// </summary>
+        /// <summary>The Resize Upload width setting name.</summary>
         public const string RESIZEWIDTHUPLOAD = "resizewidthupload";
 
-        /// <summary>
-        /// The resize Upload height setting name.
-        /// </summary>
+        /// <summary>The resize Upload height setting name.</summary>
         public const string RESIZEHEIGHTUPLOAD = "resizeheightupload";
     }
 }

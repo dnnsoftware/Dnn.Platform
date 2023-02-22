@@ -10,16 +10,12 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalEntity : IPropertyAccess
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalEntity"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalEntity"/> class.</summary>
         public JournalEntity()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalEntity"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalEntity"/> class.</summary>
         /// <param name="entityXML"></param>
         public JournalEntity(string entityXML)
         {
@@ -62,14 +58,14 @@ namespace DotNetNuke.Services.Journal
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            string OutputFormat = string.Empty;
+            string outputFormat = string.Empty;
             if (format == string.Empty)
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
             else
             {
-                OutputFormat = format;
+                outputFormat = format;
             }
 
             propertyName = propertyName.ToLowerInvariant();

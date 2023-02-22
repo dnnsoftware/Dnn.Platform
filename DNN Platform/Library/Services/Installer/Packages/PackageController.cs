@@ -24,14 +24,10 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageController class provides the business class for the packages.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageController class provides the business class for the packages.</summary>
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
-        private static readonly DataProvider provider = DataProvider.Instance();
+        private static readonly DataProvider Provider = DataProvider.Instance();
 
         public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
         {
@@ -66,14 +62,14 @@ namespace DotNetNuke.Services.Installer.Packages
                     case "Container":
                         // Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
                         string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
-                        SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                        SkinPackageInfo skinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
+                        string strFolderPath = Path.Combine(skinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
 
                         bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
-                        if (_SkinPackageInfo.PortalID != Null.NullInteger)
+                        if (skinPackageInfo.PortalID != Null.NullInteger)
                         {
                             // To be compliant with all versions
-                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
                             bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
                         }
 
@@ -111,7 +107,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public static IDictionary<int, PackageInfo> GetModulePackagesInUse(int portalID, bool forHost)
         {
-            return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
+            return CBO.FillDictionary<int, PackageInfo>("PackageID", Provider.GetModulePackagesInUse(portalID, forHost));
         }
 
         public static void ParsePackage(string file, string installPath, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
@@ -423,7 +419,7 @@ namespace DotNetNuke.Services.Installer.Packages
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
             return CBO.GetCachedObject<List<PackageInfo>>(
                 cacheItemArgs,
-                c => CBO.FillCollection<PackageInfo>(provider.GetPackages(portalId)));
+                c => CBO.FillCollection<PackageInfo>(Provider.GetPackages(portalId)));
         }
 
         /// <inheritdoc/>
@@ -432,9 +428,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return this.GetExtensionPackages(portalId).Where(predicate).ToList();
         }
 
-        /// <summary>
-        /// Save or update the package.
-        /// </summary>
+        /// <summary>Save or update the package.</summary>
         /// <param name="package"></param>
         public void SaveExtensionPackage(PackageInfo package)
         {
@@ -462,7 +456,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 DataCache.PackageTypesCacheKey,
                 DataCache.PackageTypesCacheTimeout,
                 DataCache.PackageTypesCachePriority),
-                c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
+                c => CBO.FillCollection<PackageType>(Provider.GetPackageTypes()));
         }
 
         /// <inheritdoc/>
@@ -510,7 +504,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void AddPackageInternal(PackageInfo package)
         {
-            package.PackageID = provider.AddPackage(
+            package.PackageID = Provider.AddPackage(
                 package.PortalID,
                 package.Name,
                 package.FriendlyName,
@@ -552,7 +546,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void DeletePackageInternal(PackageInfo package)
         {
-            provider.DeletePackage(package.PackageID);
+            Provider.DeletePackage(package.PackageID);
             AddLog(package, EventLogController.EventLogType.PACKAGE_DELETED);
 
             if (PortalSettings.Current != null)
@@ -570,12 +564,12 @@ namespace DotNetNuke.Services.Installer.Packages
                 DataCache.PackageDependenciesCacheKey,
                 DataCache.PackagesCacheTimeout,
                 DataCache.PackagesCachePriority),
-                c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
+                c => CBO.FillCollection<PackageDependencyInfo>(Provider.GetPackageDependencies()));
         }
 
         private static void UpdatePackageInternal(PackageInfo package)
         {
-            provider.UpdatePackage(
+            Provider.UpdatePackage(
                 package.PackageID,
                 package.PortalID,
                 package.FriendlyName,
@@ -607,8 +601,11 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void SavePackageDependency(PackageDependencyInfo dependency)
         {
-            dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-                           dependency.Version.ToString());
+            dependency.PackageDependencyId = Provider.SavePackageDependency(
+                dependency.PackageDependencyId,
+                dependency.PackageId,
+                dependency.PackageName,
+                dependency.Version.ToString());
 
             ClearDependenciesCache();
         }

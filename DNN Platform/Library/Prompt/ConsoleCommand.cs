@@ -16,11 +16,14 @@ namespace DotNetNuke.Prompt
 
     public abstract class ConsoleCommand : IConsoleCommand
     {
-        private static ISerializationManager SerializationManager =>
-            Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
-
         /// <inheritdoc/>
         public abstract string LocalResourceFile { get; }
+
+        /// <inheritdoc/>
+        public string ValidationMessage { get; private set; }
+
+        /// <summary>Gets resource key for the result html.</summary>
+        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
         protected IPortalSettings PortalSettings { get; private set; }
 
@@ -34,7 +37,30 @@ namespace DotNetNuke.Prompt
 
         protected IDictionary<string, string> Flags { get; private set; }
 
-        #region Protected Methods
+        private static ISerializationManager SerializationManager =>
+            Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+
+        /// <inheritdoc/>
+        public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
+        {
+            this.Args = args;
+            this.PortalSettings = portalSettings;
+            this.User = userInfo;
+            this.PortalId = portalSettings.PortalId;
+            this.TabId = activeTabId;
+            this.ValidationMessage = string.Empty;
+            this.ParseFlags();
+        }
+
+        /// <inheritdoc/>
+        public abstract IConsoleResultModel Run();
+
+        /// <inheritdoc/>
+        public virtual bool IsValid()
+        {
+            return string.IsNullOrEmpty(this.ValidationMessage);
+        }
+
         protected string LocalizeString(string key)
         {
             var localizedText = Localization.GetString(key, this.LocalResourceFile);
@@ -46,7 +72,8 @@ namespace DotNetNuke.Prompt
             this.ValidationMessage += message;
         }
 
-        protected void ParseParameters<T>(T myCommand) where T : class, new()
+        protected void ParseParameters<T>(T myCommand)
+            where T : class, new()
         {
             // LoadMapping();
             var mpg = this.CreateMapping();
@@ -62,32 +89,33 @@ namespace DotNetNuke.Prompt
                 }
             });
         }
-        #endregion
 
-        #region Public Methods
-        /// <inheritdoc/>
-        public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
+        protected virtual IList<ParameterMapping> CreateMapping()
         {
-            this.Args = args;
-            this.PortalSettings = portalSettings;
-            this.User = userInfo;
-            this.PortalId = portalSettings.PortalId;
-            this.TabId = activeTabId;
-            this.ValidationMessage = "";
-            this.ParseFlags();
+            var mapping = new List<ParameterMapping>();
+            this.GetType().GetProperties().ForEach(property =>
+            {
+                var attributes = property.GetCustomAttributes<ConsoleCommandParameterAttribute>(true);
+                attributes.ForEach(attribute => mapping.Add(new ParameterMapping() { Attribute = attribute, Property = property }));
+            });
+            return mapping;
         }
 
-        /// <inheritdoc/>
-        public abstract IConsoleResultModel Run();
-
-        /// <inheritdoc/>
-        public virtual bool IsValid()
+        private static string NormalizeFlagName(string flagName)
         {
-            return string.IsNullOrEmpty(this.ValidationMessage);
-        }
-        #endregion
+            if (flagName == null)
+            {
+                return string.Empty;
+            }
 
-        #region Private Methods
+            if (flagName.StartsWith("--"))
+            {
+                flagName = flagName.Substring(2);
+            }
+
+            return flagName.ToLower().Trim();
+        }
+
         private void ParseFlags()
         {
             this.Flags = new Dictionary<string, string>();
@@ -95,7 +123,10 @@ namespace DotNetNuke.Prompt
             // loop through arguments, skipping the first one (the command)
             for (var i = 1; i <= this.Args.Length - 1; i++)
             {
-                if (!this.Args[i].StartsWith("--")) continue;
+                if (!this.Args[i].StartsWith("--"))
+                {
+                    continue;
+                }
 
                 // found a flag
                 var flagName = NormalizeFlagName(this.Args[i]);
@@ -119,48 +150,16 @@ namespace DotNetNuke.Prompt
                         flagValue = string.Empty;
                     }
                 }
+
                 this.Flags.Add(flagName.ToLower(), flagValue);
             }
         }
-        #endregion
 
-        #region Helper Methods
-        private static string NormalizeFlagName(string flagName)
-        {
-            if (flagName == null)
-                return string.Empty;
-            if (flagName.StartsWith("--"))
-                flagName = flagName.Substring(2);
-            return flagName.ToLower().Trim();
-        }
-        #endregion
-
-        /// <inheritdoc/>
-        public string ValidationMessage { get; private set; }
-
-        /// <summary>
-        /// Resource key for the result html.
-        /// </summary>
-        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
-
-        #region Mapping Properties
         public struct ParameterMapping
         {
             public ConsoleCommandParameterAttribute Attribute { get; set; }
 
             public PropertyInfo Property { get; set; }
         }
-
-        protected virtual IList<ParameterMapping> CreateMapping()
-        {
-            var mapping = new List<ParameterMapping>();
-            this.GetType().GetProperties().ForEach(property =>
-            {
-                var attributes = property.GetCustomAttributes<ConsoleCommandParameterAttribute>(true);
-                attributes.ForEach(attribute => mapping.Add(new ParameterMapping() { Attribute = attribute, Property = property }));
-            });
-            return mapping;
-        }
-        #endregion
     }
 }

@@ -20,10 +20,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     [JsonObject]
     public class PackageInfoDto
     {
+        /// <summary>Initializes a new instance of the <see cref="PackageInfoDto"/> class.</summary>
         public PackageInfoDto()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="PackageInfoDto"/> class.</summary>
+        /// <param name="portalId"></param>
+        /// <param name="package"></param>
         public PackageInfoDto(int portalId, PackageInfo package)
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -53,13 +57,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tabId = portalSettings.ActiveTab.TabID;
-            this.SiteSettingsLink = this.NavigationManager.NavigateURL(tabId, "EditExtension",
-                new[]
-                {
-                    $"packageid={this.PackageId}",
-                    "Display=editor",
-                    "popUp=true",
-                });
+            this.SiteSettingsLink = this.NavigationManager.NavigateURL(
+                tabId,
+                "EditExtension",
+                $"packageid={this.PackageId}",
+                "Display=editor",
+                "popUp=true");
         }
 
         [JsonProperty("packageId")]

@@ -7,14 +7,13 @@ namespace DotNetNuke.Services.Syndication
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>
-    ///   RssHyperLink control - works with RssHttpHandler.
-    /// </summary>
+    /// <summary>  RssHyperLink control - works with RssHttpHandler.</summary>
     public class RssHyperLink : HyperLink
     {
-        private string _channelName;
-        private bool _includeUserName;
+        private string channelName;
+        private bool includeUserName;
 
+        /// <summary>Initializes a new instance of the <see cref="RssHyperLink"/> class.</summary>
         public RssHyperLink()
         {
             this.Text = "RSS";
@@ -25,12 +24,12 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._channelName;
+                return this.channelName;
             }
 
             set
             {
-                this._channelName = value;
+                this.channelName = value;
             }
         }
 
@@ -39,20 +38,21 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._includeUserName;
+                return this.includeUserName;
             }
 
             set
             {
-                this._includeUserName = value;
+                this.includeUserName = value;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             // modify the NavigateUrl to include optional user name and channel name
-            string channel = this._channelName != null ? this._channelName : string.Empty;
-            string user = this._includeUserName ? this.Context.User.Identity.Name : string.Empty;
+            string channel = this.channelName != null ? this.channelName : string.Empty;
+            string user = this.includeUserName ? this.Context.User.Identity.Name : string.Empty;
             this.NavigateUrl = RssHttpHandlerHelper.GenerateChannelLink(this.NavigateUrl, channel, user);
 
             // add <link> to <head> tag (if <head runat=server> is present)

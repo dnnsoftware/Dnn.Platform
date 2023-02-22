@@ -143,7 +143,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// </summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobType">The job type.</param>
-
         /// <returns>The last job time.</returns>
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {

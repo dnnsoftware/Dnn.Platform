@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DotNetNukeWebPage.cs" />
+    <Compile Include="DotNetNukeWebPage{TModel}.cs" />
     <Compile Include="Helpers\DnnHelper.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />

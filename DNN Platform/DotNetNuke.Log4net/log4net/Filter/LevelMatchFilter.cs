@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// This is a very simple filter based on <see cref="Level"/> matching.
-    /// </summary>
+    /// <summary>This is a very simple filter based on <see cref="Level"/> matching.</summary>
     /// <remarks>
     /// <para>
     /// The filter admits two options <see cref="LevelToMatch"/> and
@@ -45,26 +43,18 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class LevelMatchFilter : FilterSkeleton
     {
-        /// <summary>
-        /// flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match
-        /// </summary>
+        /// <summary>flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match</summary>
         private bool m_acceptOnMatch = true;
 
-        /// <summary>
-        /// the <see cref="Level"/> to match against
-        /// </summary>
+        /// <summary>the <see cref="Level"/> to match against</summary>
         private Level m_levelToMatch;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         public LevelMatchFilter()
         {
         }
 
-        /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/>
-        /// </summary>
+        /// <summary><see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/></summary>
         /// <remarks>
         /// <para>
         /// The <see cref="AcceptOnMatch"/> property is a flag that determines
@@ -82,9 +72,7 @@ namespace log4net.Filter
             set { this.m_acceptOnMatch = value; }
         }
 
-        /// <summary>
-        /// The <see cref="Level"/> that the filter will match
-        /// </summary>
+        /// <summary>The <see cref="Level"/> that the filter will match</summary>
         /// <remarks>
         /// <para>
         /// The level that this filter will attempt to match against the 
@@ -98,9 +86,7 @@ namespace log4net.Filter
             set { this.m_levelToMatch = value; }
         }
 
-        /// <summary>
-        /// Tests if the <see cref="Level"/> of the logging event matches that of the filter
-        /// </summary>
+        /// <summary>Tests if the <see cref="Level"/> of the logging event matches that of the filter</summary>
         /// <param name="loggingEvent">the event to filter</param>
         /// <returns>see remarks</returns>
         /// <remarks>

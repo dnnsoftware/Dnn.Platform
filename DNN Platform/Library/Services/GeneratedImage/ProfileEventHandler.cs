@@ -11,16 +11,12 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Profile;
 
-    /// <summary>
-    /// this class handles profile changes.
-    /// </summary>
+    /// <summary>this class handles profile changes.</summary>
     [Export(typeof(IProfileEventHandlers))]
     [ExportMetadata("MessageType", "ProfileEventHandler")]
     public class ProfileEventHandler : IProfileEventHandlers
     {
-        /// <summary>
-        /// This method add the updated user id into cache to clear image from disk before returning to UI.
-        /// </summary>
+        /// <summary>This method add the updated user id into cache to clear image from disk before returning to UI.</summary>
         /// <param name="sender"></param>
         /// <param name="profileArgs"></param>
         public void ProfileUpdated(object sender, ProfileEventArgs profileArgs)

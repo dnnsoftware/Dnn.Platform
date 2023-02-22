@@ -5,14 +5,10 @@ namespace DotNetNuke.Services.Search.Internals
 {
     using Lucene.Net.Search;
 
-    /// <summary>
-    /// Lucene Specific Query Object to be passed into Lucene for Search.
-    /// </summary>
+    /// <summary>Lucene Specific Query Object to be passed into Lucene for Search.</summary>
     internal class LuceneQuery
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LuceneQuery"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LuceneQuery"/> class.</summary>
         public LuceneQuery()
         {
             this.PageIndex = 1;
@@ -22,34 +18,22 @@ namespace DotNetNuke.Services.Search.Internals
             this.Sort = Sort.RELEVANCE;
         }
 
-        /// <summary>
-        /// Gets or sets lucene's original Query Object.
-        /// </summary>
+        /// <summary>Gets or sets lucene's original Query Object.</summary>
         public Query Query { get; set; }
 
-        /// <summary>
-        /// Gets or sets lucene's original Sort Object. Default is by Relevance.
-        /// </summary>
+        /// <summary>Gets or sets lucene's original Sort Object. Default is by Relevance.</summary>
         public Sort Sort { get; set; }
 
-        /// <summary>
-        /// Gets or sets page Index for the result, e.g. pageIndex=1 and pageSize=10 indicates first 10 hits. Default value is 1.
-        /// </summary>
+        /// <summary>Gets or sets page Index for the result, e.g. pageIndex=1 and pageSize=10 indicates first 10 hits. Default value is 1.</summary>
         public int PageIndex { get; set; }
 
-        /// <summary>
-        /// Gets or sets page size of the search result. Default value is 10.
-        /// </summary>
+        /// <summary>Gets or sets page size of the search result. Default value is 10.</summary>
         public int PageSize { get; set; }
 
-        /// <summary>
-        /// Gets or sets maximum length of highlighted title field in the results.
-        /// </summary>
+        /// <summary>Gets or sets maximum length of highlighted title field in the results.</summary>
         public int TitleSnippetLength { get; set; }
 
-        /// <summary>
-        /// Gets or sets maximum length of highlighted title field in the results.
-        /// </summary>
+        /// <summary>Gets or sets maximum length of highlighted title field in the results.</summary>
         public int BodySnippetLength { get; set; }
     }
 }

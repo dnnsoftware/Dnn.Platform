@@ -11,11 +11,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class CoreLanguagePackageDetailDto : PackageInfoDto
     {
+        /// <summary>Initializes a new instance of the <see cref="CoreLanguagePackageDetailDto"/> class.</summary>
         public CoreLanguagePackageDetailDto()
         {
         }
 
-        public CoreLanguagePackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        /// <summary>Initializes a new instance of the <see cref="CoreLanguagePackageDetailDto"/> class.</summary>
+        /// <param name="portalId"></param>
+        /// <param name="package"></param>
+        public CoreLanguagePackageDetailDto(int portalId, PackageInfo package)
+            : base(portalId, package)
         {
         }
 

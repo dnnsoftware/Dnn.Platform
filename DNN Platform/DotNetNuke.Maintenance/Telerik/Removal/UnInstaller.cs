@@ -11,17 +11,13 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 
     using DotNetNuke.Maintenance.Telerik.Steps;
 
-    /// <summary>
-    /// Base class for uninstalling Telerik and related components.
-    /// </summary>
+    /// <summary>Base class for uninstalling Telerik and related components.</summary>
     internal class UnInstaller
     {
         private readonly IServiceProvider serviceProvider;
         private readonly ILocalizer localizer;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UnInstaller"/> class.</summary>
         /// <param name="serviceProvider">Instance of <see cref="IServiceProvider"/>.</param>
         /// <param name="localizer">Instance of <see cref="ILocalizer"/>.</param>
         public UnInstaller(IServiceProvider serviceProvider, ILocalizer localizer)
@@ -47,9 +43,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         /// </summary>
         private protected List<UninstallSummaryItem> ProgressInternal { get; set; }
 
-        /// <summary>
-        /// Returns a step to replace one module by another.
-        /// </summary>
+        /// <summary>Returns a step to replace one module by another.</summary>
         /// <param name="oldModuleName">Modulename of the module to be replaced.</param>
         /// <param name="newModuleName">Modulename of the module to be put in its place.</param>
         /// <param name="migrateSettings">Callback function to migrate settings.</param>
@@ -63,9 +57,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
-        /// <summary>
-        /// Returns a step to remove a package from the DNN installation.
-        /// </summary>
+        /// <summary>Returns a step to remove a package from the DNN installation.</summary>
         /// <param name="packageName">Name of the package.</param>
         /// <param name="deleteFiles">Whether to delete installed files.</param>
         /// <returns><see cref="IStep"/> of the package remover.</returns>
@@ -77,9 +69,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
-        /// <summary>
-        /// Returns a step to remove a file from the DNN installation.
-        /// </summary>
+        /// <summary>Returns a step to remove a file from the DNN installation.</summary>
         /// <param name="relativePath">Path to the directory to search, relative to the application root path.</param>
         /// <param name="searchPattern">Search string to match against the names of files in path.</param>
         /// <returns><see cref="IStep"/> of the file remover.</returns>
@@ -92,9 +82,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
-        /// <summary>
-        /// Returns a step to replace a data type's editor.
-        /// </summary>
+        /// <summary>Returns a step to replace a data type's editor.</summary>
         /// <param name="value">Data type's name.</param>
         /// <returns><see cref="IStep"/> of the data type updater.</returns>
         private protected IStep UpdateDataTypeList(string value)
@@ -111,18 +99,14 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
-        /// <summary>
-        /// Returns a step to remove Telerik rewriter rules in the siteurls.config.
-        /// </summary>
+        /// <summary>Returns a step to remove Telerik rewriter rules in the siteurls.config.</summary>
         /// <returns><see cref="IStep"/> of the Telerik rewriter remover.</returns>
         private protected IStep UpdateSiteUrlsConfig()
         {
             return this.GetService<IRemoveTelerikRewriterRulesStep>();
         }
 
-        /// <summary>
-        /// Returns step to remove items from the web.config.
-        /// </summary>
+        /// <summary>Returns step to remove items from the web.config.</summary>
         /// <param name="collectionPath">Collection path.</param>
         /// <param name="attributeNames">Attribute names.</param>
         /// <returns><see cref="IStep"/> of the web.config editor.</returns>
@@ -137,18 +121,14 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
-        /// <summary>
-        /// Returns a step to remove Telerik binding redirects from the web.config.
-        /// </summary>
+        /// <summary>Returns a step to remove Telerik binding redirects from the web.config.</summary>
         /// <returns><see cref="IStep"/> of the Telerik binding redirect remover.</returns>
         private protected IStep RemoveTelerikBindingRedirects()
         {
             return this.GetService<IRemoveTelerikBindingRedirectsStep>();
         }
 
-        /// <summary>
-        /// Returns a step to remove uninstalled extensions from the install folder so they can't get installed by mistake.
-        /// </summary>
+        /// <summary>Returns a step to remove uninstalled extensions from the install folder so they can't get installed by mistake.</summary>
         /// <param name="relativePath">Path to where the extension is.</param>
         /// <param name="searchPattern">Pattern to get the right files.</param>
         /// <param name="recurse">Whether to recurse folders.</param>
@@ -164,9 +144,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
-        /// <summary>
-        /// Returns a service dependency.
-        /// </summary>
+        /// <summary>Returns a service dependency.</summary>
         /// <typeparam name="T">Dependency type.</typeparam>
         /// <returns>Requested Service.</returns>
         private protected T GetService<T>()

@@ -28,18 +28,14 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.</summary>
         /// <param name="attributes"></param>
         internal AdvancedFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
         }
 
-        /// <summary>
-        /// Return a full-improved Friendly Url for the supplied tab.
-        /// </summary>
+        /// <summary>Return a full-improved Friendly Url for the supplied tab.</summary>
         /// <param name="tab">The current page.</param>
         /// <param name="path">The non-friendly path to the page.</param>
         /// <param name="pageName">The name of the page.</param>
@@ -47,7 +43,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="ignoreCustomRedirects">If true, then the Friendly Url will be constructed without using any custom redirects.</param>
         /// <param name="settings">The current Friendly Url Settings to use.</param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns>The friendly URL.</returns>
         public static string ImprovedFriendlyUrl(
             TabInfo tab,
             string path,
@@ -69,10 +65,8 @@ namespace DotNetNuke.Entities.Urls
                 parentTraceId);
         }
 
-        /// <summary>
-        /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.</summary>
+        /// <returns>The friendly URL.</returns>
         internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
         {
             bool cultureSpecificAlias;
@@ -201,13 +195,13 @@ namespace DotNetNuke.Entities.Urls
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentSettings());
         }
 
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
+            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentSettings());
         }
 
         /// <inheritdoc/>
@@ -300,8 +294,9 @@ namespace DotNetNuke.Entities.Urls
         {
             var finalPathBuilder = new StringBuilder();
 
-            if (changeToSiteRoot) // no page path if changing to site root because of parameter replacement rule (593)
+            if (changeToSiteRoot)
             {
+                // no page path if changing to site root because of parameter replacement rule (593)
                 if (newPath.StartsWith("/"))
                 {
                     newPath = newPath.Substring(1);
@@ -332,7 +327,8 @@ namespace DotNetNuke.Entities.Urls
                     && (langParms == string.Empty || dropLangParms)
 
                     // doesn't have any language parms, or we're intentionally getting rid of them
-                    && !builtInUrl) // builtin Url == login, terms, privacy, register
+                    // builtin Url == login, terms, privacy, register
+                    && !builtInUrl)
                 {
                     // Url is home page, and there's no friendly path to add, so we don't need the home page path (ie, /home is unneeded, just use the site root)
                     if (newPageName.Length == 0 && pageAndExtension.StartsWith("."))
@@ -349,10 +345,9 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 else
-
-                // this is the normal case
                 {
-                    // finalPath += newTabPath.TrimStart('/') + newPath + newPageName + pageAndExtension + qs;
+                    // this is the normal case
+                    ////finalPath += newTabPath.TrimStart('/') + newPath + newPageName + pageAndExtension + qs;
                     finalPathBuilder.Append(newTabPath.TrimStart('/'));
                     finalPathBuilder.Append(newPath);
                     finalPathBuilder.Append(newPageName);
@@ -367,8 +362,9 @@ namespace DotNetNuke.Entities.Urls
         private static string DetermineExtension(bool isHomePage, string pageName, FriendlyUrlSettings settings)
         {
             string extension = string.Empty;
-            if (!isHomePage) // no pageAndExtension for the home page when no query string specified
+            if (!isHomePage)
             {
+                // no pageAndExtension for the home page when no query string specified
                 // the ending of the url depends on the current page pageAndExtension settings
                 if (settings.PageExtensionUsageType == PageExtensionUsageType.AlwaysUse
                     || settings.PageExtensionUsageType == PageExtensionUsageType.PageOnly)
@@ -666,9 +662,8 @@ namespace DotNetNuke.Entities.Urls
                 friendlyPath = queryStringMatch.Groups[1].Value;
                 friendlyPath = DefaultPageRegex.Replace(friendlyPath, string.Empty);
                 if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
-
-                // take out the end page name, it will get re-added
                 {
+                    // take out the end page name, it will get re-added
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     friendlyPath = pgNameRx.Replace(friendlyPath, string.Empty);
                 }
@@ -692,8 +687,9 @@ namespace DotNetNuke.Entities.Urls
                         // Add name part of name/value pair
                         if (friendlyPath.EndsWith("/"))
                         {
-                            if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase)) // always lowercase the tabid part of the path
+                            if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                             {
+                                // always lowercase the tabid part of the path
                                 pathToAppend = pathToAppend + pair[0].ToLowerInvariant();
                             }
                             else
@@ -873,8 +869,9 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // no improved friendly urls for super tabs, admin tabs
-            if ((tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)) && settings.FriendlyAdminHostUrls == false) // 811 : allow for friendly admin/host urls
+            if ((tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)) && settings.FriendlyAdminHostUrls == false)
             {
+                // 811 : allow for friendly admin/host urls
                 return friendlyPath;
             }
 
@@ -1399,9 +1396,8 @@ namespace DotNetNuke.Entities.Urls
 
         private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
-            Guid parentTraceId = Guid.Empty;
-            int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
-            bool cultureSpecificAlias;
+            var parentTraceId = Guid.Empty;
+            var portalId = portalSettings?.PortalId ?? tab.PortalID;
             var localSettings = new FriendlyUrlSettings(portalId);
 
             // Call GetFriendlyAlias to get the Alias part of the url
@@ -1410,13 +1406,13 @@ namespace DotNetNuke.Entities.Urls
                 portalAlias = portalSettingsAlias.HttpAlias;
             }
 
-            string friendlyPath = GetFriendlyAlias(
+            var friendlyPath = GetFriendlyAlias(
                 path,
                 ref portalAlias,
                 portalId,
                 localSettings,
                 portalSettings,
-                out cultureSpecificAlias);
+                out var cultureSpecificAlias);
 
             if (portalSettings != null)
             {
@@ -1425,7 +1421,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (tab == null && path == "~/" && string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
             {
-                // this is a request for the site root for he dnn logo skin object (642)
+                // this is a request for the site root for the dnn logo skin object (642)
                 // do nothing, the friendly alias is already correct - we don't want to append 'default.aspx' on the end
             }
             else
@@ -1435,8 +1431,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (portalSettings == null)
                 {
-                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
-
+                    var alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
                     portalSettings = new PortalSettings(tab.TabID, alias);
                 }
 
@@ -1462,7 +1457,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
-                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
+                // If portal's "SSL URL" setting is defined: Use "SSL URL" instead of current portal alias
                 var sslUrl = portalSettings.SSLURL;
                 if (!string.IsNullOrEmpty(sslUrl))
                 {

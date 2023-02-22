@@ -27,9 +27,7 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// Simple filter to match a string an event property
-    /// </summary>
+    /// <summary>Simple filter to match a string an event property</summary>
     /// <remarks>
     /// <para>
     /// Simple filter to match a string in the value for a
@@ -39,21 +37,15 @@ namespace log4net.Filter
     /// <author>Nicko Cadell</author>
     public class PropertyFilter : StringMatchFilter
     {
-        /// <summary>
-        /// The key to use to lookup the string from the event properties
-        /// </summary>
+        /// <summary>The key to use to lookup the string from the event properties</summary>
         private string m_key;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         public PropertyFilter()
         {
         }
 
-        /// <summary>
-        /// The key to lookup in the event properties and then match against.
-        /// </summary>
+        /// <summary>The key to lookup in the event properties and then match against.</summary>
         /// <remarks>
         /// <para>
         /// The key name to use to lookup in the properties map of the
@@ -67,9 +59,7 @@ namespace log4net.Filter
             set { this.m_key = value; }
         }
 
-        /// <summary>
-        /// Check if this filter should allow the event to be logged
-        /// </summary>
+        /// <summary>Check if this filter should allow the event to be logged</summary>
         /// <param name="loggingEvent">the event being logged</param>
         /// <returns>see remarks</returns>
         /// <remarks>

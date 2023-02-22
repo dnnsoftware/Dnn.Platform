@@ -14,12 +14,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     using DotNetNuke.Services.Localization;
 
     [ConsoleCommand("clh", Constants.GeneralCategory, "Prompt_ClearHistory_Description")]
+
     public class Clh : IConsoleCommand
     {
+        /// <inheritdoc/>
         public string LocalResourceFile => Constants.LocalResourcesFile;
 
+        /// <inheritdoc/>
         public string ResultHtml => Localization.GetString("Prompt_ClearHistory_ResultHtml", this.LocalResourceFile);
 
+        /// <inheritdoc/>
         public string ValidationMessage
         {
             get
@@ -28,16 +32,19 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
             }
         }
 
+        /// <inheritdoc/>
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool IsValid()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ConsoleResultModel Run()
         {
             throw new NotImplementedException();

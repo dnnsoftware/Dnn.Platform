@@ -16,16 +16,12 @@ namespace DotNetNuke.Web.Api.Auth
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
 
-    /// <summary>
-    /// Basic authentication message handler.
-    /// </summary>
+    /// <summary>Basic authentication message handler.</summary>
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
         private readonly Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasicAuthMessageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasicAuthMessageHandler"/> class.</summary>
         /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
         /// <param name="forceSsl">Should this handler enforce SSL usage.</param>
         public BasicAuthMessageHandler(bool includeByDefault, bool forceSsl)
@@ -33,9 +29,7 @@ namespace DotNetNuke.Web.Api.Auth
         {
         }
 
-        /// <summary>
-        /// Gets the name of the authentication scheme.
-        /// </summary>
+        /// <summary>Gets the name of the authentication scheme.</summary>
         public override string AuthScheme => "Basic";
 
         /// <inheritdoc/>
@@ -126,14 +120,10 @@ namespace DotNetNuke.Web.Api.Auth
             return new UserCredentials(parts[0], parts[1]);
         }
 
-        /// <summary>
-        /// Represents the user credentials.
-        /// </summary>
+        /// <summary>Represents the user credentials.</summary>
         internal class UserCredentials
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="UserCredentials"/> class.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="UserCredentials"/> class.</summary>
             /// <param name="userName">The user username.</param>
             /// <param name="password">The user password.</param>
             public UserCredentials(string userName, string password)
@@ -142,14 +132,10 @@ namespace DotNetNuke.Web.Api.Auth
                 this.Password = password;
             }
 
-            /// <summary>
-            /// Gets or sets the password for the user.
-            /// </summary>
+            /// <summary>Gets or sets the password for the user.</summary>
             public string Password { get; set; }
 
-            /// <summary>
-            /// Gets or sets the username for the user.
-            /// </summary>
+            /// <summary>Gets or sets the username for the user.</summary>
             public string UserName { get; set; }
         }
     }

@@ -108,6 +108,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void NameSpaceRequiredOnMapRouteCalls([ValueSource(nameof(EmptyStringArrays))] string[] namespaces)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
@@ -116,6 +117,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RegisterRoutesIsCalledOnAllServiceRouteMappersEvenWhenSomeThrowExceptions()
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
@@ -137,6 +139,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RegisterRoutesIsCalledOnServiceRouteMappers()
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
@@ -155,6 +158,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         [TestCase("")]
         [TestCase(null)]
+
         public void UniqueNameRequiredOnMapRouteCalls(string uniqueName)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
@@ -163,6 +167,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void UrlCanStartWithSlash()
         {
             // Arrange
@@ -176,6 +181,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void NameIsInsertedInRouteDataTokens()
         {
             // Arrange
@@ -197,6 +203,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void TwoRoutesOnTheSameFolderHaveSimilarNames()
         {
             // Arrange
@@ -221,6 +228,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RoutesShouldHaveBackwardCompability()
         {
             // Arrange

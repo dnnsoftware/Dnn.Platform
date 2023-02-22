@@ -1,14 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#if INDIVIDUAL_LOCKS
-using System.Collections;
-#endif
-
 namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
+    #if INDIVIDUAL_LOCKS
+    using System.Collections;
+    #endif
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -16,31 +14,22 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
     using System.Web.Hosting;
 
-    internal interface IImageStore
-    {
-        void Add(string id, byte[] data);
-
-        bool TryTransmitIfContains(string id, HttpResponseBase response);
-
-        void ForcePurgeFromServerCache(string cacheId);
-    }
-
     public class DiskImageStore : IImageStore
     {
         private const string TempFileExtension = ".tmp";
         private const string CacheAppRelativePath = @"~\App_Data\_imagecache\";
-        private static DiskImageStore _diskImageStore;
         private static readonly object InstanceLock = new object();
-        private static string _cachePath;
-        private static TimeSpan _purgeInterval;
-        private DateTime _lastPurge;
-        private readonly object _purgeQueuedLock = new object();
-        private bool _purgeQueued;
+        private static DiskImageStore diskImageStore;
+        private static string cachePath;
+        private static TimeSpan purgeInterval;
+        private readonly object purgeQueuedLock = new object();
+        private readonly object fileLock = new object();
+        private DateTime lastPurge;
+        private bool purgeQueued;
 
 #if INDIVIDUAL_LOCKS
         private Hashtable _fileLocks = new Hashtable();
 #else
-        private readonly object _fileLock = new object();
 
         static DiskImageStore()
         {
@@ -49,9 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiskImageStore"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DiskImageStore"/> class.</summary>
         internal DiskImageStore()
         {
             if (CachePath != null && !Directory.Exists(CachePath))
@@ -59,7 +46,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 Directory.CreateDirectory(CachePath);
             }
 
-            this._lastPurge = DateTime.Now;
+            this.lastPurge = DateTime.Now;
         }
 
 #endif
@@ -68,7 +55,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _cachePath;
+                return cachePath;
             }
 
             set
@@ -78,7 +65,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     throw new ArgumentNullException(nameof(value));
                 }
 
-                _cachePath = value;
+                cachePath = value;
             }
         }
 
@@ -88,7 +75,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _purgeInterval;
+                return purgeInterval;
             }
 
             set
@@ -103,7 +90,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _purgeInterval = value;
+                purgeInterval = value;
             }
         }
 
@@ -111,18 +98,18 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                if (_diskImageStore == null)
+                if (diskImageStore == null)
                 {
                     lock (InstanceLock)
                     {
-                        if (_diskImageStore == null)
+                        if (diskImageStore == null)
                         {
-                            _diskImageStore = new DiskImageStore();
+                            diskImageStore = new DiskImageStore();
                         }
                     }
                 }
 
-                return _diskImageStore;
+                return diskImageStore;
             }
         }
 
@@ -130,17 +117,17 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                if (this._lastPurge < new DateTime(1990, 1, 1))
+                if (this.lastPurge < new DateTime(1990, 1, 1))
                 {
-                    this._lastPurge = DateTime.Now.Subtract(PurgeInterval);
+                    this.lastPurge = DateTime.Now.Subtract(PurgeInterval);
                 }
 
-                return this._lastPurge;
+                return this.lastPurge;
             }
 
             set
             {
-                this._lastPurge = value;
+                this.lastPurge = value;
             }
         }
 
@@ -264,7 +251,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             this.LastPurge = DateTime.Now;
-            this._purgeQueued = false;
+            this.purgeQueued = false;
         }
 
         private void Add(string id, byte[] data)
@@ -306,13 +293,13 @@ namespace DotNetNuke.Services.GeneratedImage
         private void QueueAutoPurge()
         {
             var now = DateTime.Now;
-            if (!this._purgeQueued && now.Subtract(this.LastPurge) > PurgeInterval)
+            if (!this.purgeQueued && now.Subtract(this.LastPurge) > PurgeInterval)
             {
-                lock (this._purgeQueuedLock)
+                lock (this.purgeQueuedLock)
                 {
-                    if (!this._purgeQueued)
+                    if (!this.purgeQueued)
                     {
-                        this._purgeQueued = true;
+                        this.purgeQueued = true;
                         ThreadPool.QueueUserWorkItem(this.PurgeCallback);
                     }
                 }
@@ -334,7 +321,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             return lockObject;
 #else
-            return this._fileLock;
+            return this.fileLock;
 #endif
         }
     }

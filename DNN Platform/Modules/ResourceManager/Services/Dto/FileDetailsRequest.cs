@@ -5,32 +5,22 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
 {
     using System.Runtime.Serialization;
 
-    /// <summary>
-    /// Represents a request to get file details.
-    /// </summary>
+    /// <summary>Represents a request to get file details.</summary>
     public class FileDetailsRequest
     {
-        /// <summary>
-        /// Gets or sets the id of the file.
-        /// </summary>
+        /// <summary>Gets or sets the id of the file.</summary>
         [DataMember(Name = "fileId")]
         public int FileId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the file name.
-        /// </summary>
+        /// <summary>Gets or sets the file name.</summary>
         [DataMember(Name = "fileName")]
         public string FileName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the file title.
-        /// </summary>
+        /// <summary>Gets or sets the file title.</summary>
         [DataMember(Name = "title")]
         public string Title { get; set; }
 
-        /// <summary>
-        /// Gets or sets the description of the file.
-        /// </summary>
+        /// <summary>Gets or sets the description of the file.</summary>
         [DataMember(Name = "description")]
         public string Description { get; set; }
     }

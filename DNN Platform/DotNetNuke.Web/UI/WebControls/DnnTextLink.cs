@@ -12,9 +12,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTextLink : WebControl, ILocalizable
     {
-        private bool _localize = true;
-        private HyperLink _textHyperlinkControl;
+        private bool localize = true;
+        private HyperLink textHyperlinkControl;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnTextLink"/> class.</summary>
         public DnnTextLink()
             : base("span")
         {
@@ -113,12 +114,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._localize;
+                return this.localize;
             }
 
             set
             {
-                this._localize = value;
+                this.localize = value;
             }
         }
 
@@ -129,12 +130,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._textHyperlinkControl == null)
+                if (this.textHyperlinkControl == null)
                 {
-                    this._textHyperlinkControl = new HyperLink();
+                    this.textHyperlinkControl = new HyperLink();
                 }
 
-                return this._textHyperlinkControl;
+                return this.textHyperlinkControl;
             }
         }
 

@@ -62,12 +62,14 @@ namespace Dnn.ExportImport.Components.Entities
 
         public int ProcessedItems { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.CheckpointId; }
             set { this.CheckpointId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.CheckpointId = Null.SetNullInteger(dr[nameof(this.CheckpointId)]);

@@ -26,9 +26,7 @@ using log4net.Core;
 
 namespace log4net.Repository.Hierarchy
 {
-    /// <summary>
-    /// Implementation of <see cref="ILogger"/> used by <see cref="Hierarchy"/>
-    /// </summary>
+    /// <summary>Implementation of <see cref="ILogger"/> used by <see cref="Hierarchy"/></summary>
     /// <remarks>
     /// <para>
     /// Internal class used to provide implementation of <see cref="ILogger"/>
@@ -79,9 +77,7 @@ namespace log4net.Repository.Hierarchy
 #endif
         }
 
-        /// <summary>
-        /// Gets or sets the parent logger in the hierarchy.
-        /// </summary>
+        /// <summary>Gets or sets the parent logger in the hierarchy.</summary>
         /// <value>
         /// The parent logger in the hierarchy.
         /// </value>
@@ -97,9 +93,7 @@ namespace log4net.Repository.Hierarchy
             set { this.m_parent = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating if child loggers inherit their parent's appenders.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating if child loggers inherit their parent's appenders.</summary>
         /// <value>
         /// <c>true</c> if child loggers inherit their parent's appenders.
         /// </value>
@@ -120,9 +114,7 @@ namespace log4net.Repository.Hierarchy
             set { this.m_additive = value; }
         }
 
-        /// <summary>
-        /// Gets the effective level for this logger.
-        /// </summary>
+        /// <summary>Gets the effective level for this logger.</summary>
         /// <returns>The nearest level in the logger hierarchy.</returns>
         /// <remarks>
         /// <para>
@@ -167,9 +159,7 @@ namespace log4net.Repository.Hierarchy
             set { this.m_hierarchy = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the assigned <see cref="Level"/>, if any, for this Logger.  
-        /// </summary>
+        /// <summary>Gets or sets the assigned <see cref="Level"/>, if any, for this Logger.  </summary>
         /// <value>
         /// The <see cref="Level"/> of this logger.
         /// </value>
@@ -257,9 +247,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Look for the appender named as <c>name</c>
-        /// </summary>
+        /// <summary>Look for the appender named as <c>name</c></summary>
         /// <param name="name">The name of the appender to lookup</param>
         /// <returns>The appender with the name specified, or <c>null</c>.</returns>
         /// <remarks>
@@ -285,9 +273,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Remove all previously added appenders from this Logger instance.
-        /// </summary>
+        /// <summary>Remove all previously added appenders from this Logger instance.</summary>
         /// <remarks>
         /// <para>
         /// Remove all previously added appenders from this Logger instance.
@@ -313,9 +299,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Remove the appender passed as parameter form the list of appenders.
-        /// </summary>
+        /// <summary>Remove the appender passed as parameter form the list of appenders.</summary>
         /// <param name="appender">The appender to remove</param>
         /// <returns>The appender removed from the list</returns>
         /// <remarks>
@@ -343,9 +327,7 @@ namespace log4net.Repository.Hierarchy
             return null;
         }
 
-        /// <summary>
-        /// Remove the appender passed as parameter form the list of appenders.
-        /// </summary>
+        /// <summary>Remove the appender passed as parameter form the list of appenders.</summary>
         /// <param name="name">The name of the appender to remove</param>
         /// <returns>The appender removed from the list</returns>
         /// <remarks>
@@ -373,9 +355,7 @@ namespace log4net.Repository.Hierarchy
             return null;
         }
 
-        /// <summary>
-        /// Gets the logger name.
-        /// </summary>
+        /// <summary>Gets the logger name.</summary>
         /// <value>
         /// The name of the logger.
         /// </value>
@@ -389,9 +369,7 @@ namespace log4net.Repository.Hierarchy
             get { return this.m_name; }
         }
 
-        /// <summary>
-        /// This generic form is intended to be used by wrappers.
-        /// </summary>
+        /// <summary>This generic form is intended to be used by wrappers.</summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
         /// the stack boundary into the logging system for this call.</param>
         /// <param name="level">The level of the message to be logged.</param>
@@ -464,9 +442,7 @@ namespace log4net.Repository.Hierarchy
 #endif
         }
 
-        /// <summary>
-        /// Checks if this logger is enabled for a given <see cref="Level"/> passed as parameter.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for a given <see cref="Level"/> passed as parameter.</summary>
         /// <param name="level">The level to check.</param>
         /// <returns>
         /// <c>true</c> if this logger is enabled for <c>level</c>, otherwise <c>false</c>.
@@ -523,9 +499,7 @@ namespace log4net.Repository.Hierarchy
             get { return this.m_hierarchy; }
         }
 
-        /// <summary>
-        /// Deliver the <see cref="LoggingEvent"/> to the attached appenders.
-        /// </summary>
+        /// <summary>Deliver the <see cref="LoggingEvent"/> to the attached appenders.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
@@ -603,9 +577,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Closes all attached appenders implementing the <see cref="IAppenderAttachable"/> interface.
-        /// </summary>
+        /// <summary>Closes all attached appenders implementing the <see cref="IAppenderAttachable"/> interface.</summary>
         /// <remarks>
         /// <para>
         /// Used to ensure that the appenders are correctly shutdown.
@@ -634,9 +606,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// This is the most generic printing method. This generic form is intended to be used by wrappers
-        /// </summary>
+        /// <summary>This is the most generic printing method. This generic form is intended to be used by wrappers</summary>
         /// <param name="level">The level of the message to be logged.</param>
         /// <param name="message">The message object to log.</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
@@ -654,9 +624,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        /// <summary>
-        /// Creates a new logging event and logs the event without further checks.
-        /// </summary>
+        /// <summary>Creates a new logging event and logs the event without further checks.</summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
         /// the stack boundary into the logging system for this call.</param>
         /// <param name="level">The level of the message to be logged.</param>
@@ -673,9 +641,7 @@ namespace log4net.Repository.Hierarchy
             this.CallAppenders(new LoggingEvent(callerStackBoundaryDeclaringType, this.Hierarchy, this.Name, level, message, exception));
         }
 
-        /// <summary>
-        /// Creates a new logging event and logs the event without further checks.
-        /// </summary>
+        /// <summary>Creates a new logging event and logs the event without further checks.</summary>
         /// <param name="logEvent">The event being logged.</param>
         /// <remarks>
         /// <para>
@@ -692,19 +658,13 @@ namespace log4net.Repository.Hierarchy
             this.CallAppenders(logEvent);
         }
 
-        /// <summary>
-        /// The fully qualified type of the Logger class.
-        /// </summary>
+        /// <summary>The fully qualified type of the Logger class.</summary>
         private static readonly Type declaringType = typeof(Logger);
 
-        /// <summary>
-        /// The name of this logger.
-        /// </summary>
+        /// <summary>The name of this logger.</summary>
         private readonly string m_name;  
 
-        /// <summary>
-        /// The assigned level of this logger. 
-        /// </summary>
+        /// <summary>The assigned level of this logger. </summary>
         /// <remarks>
         /// <para>
         /// The <c>level</c> variable need not be 
@@ -714,9 +674,7 @@ namespace log4net.Repository.Hierarchy
         /// </remarks>
         private Level m_level;
 
-        /// <summary>
-        /// The parent of this logger.
-        /// </summary>
+        /// <summary>The parent of this logger.</summary>
         /// <remarks>
         /// <para>
         /// The parent of this logger. 
@@ -725,9 +683,7 @@ namespace log4net.Repository.Hierarchy
         /// </remarks>
         private Logger m_parent;
 
-        /// <summary>
-        /// Loggers need to know what Hierarchy they are in.
-        /// </summary>
+        /// <summary>Loggers need to know what Hierarchy they are in.</summary>
         /// <remarks>
         /// <para>
         /// Loggers need to know what Hierarchy they are in.
@@ -737,14 +693,10 @@ namespace log4net.Repository.Hierarchy
         /// </remarks>
         private Hierarchy m_hierarchy;
 
-        /// <summary>
-        /// Helper implementation of the <see cref="IAppenderAttachable"/> interface
-        /// </summary>
+        /// <summary>Helper implementation of the <see cref="IAppenderAttachable"/> interface</summary>
         private AppenderAttachedImpl m_appenderAttachedImpl;
 
-        /// <summary>
-        /// Flag indicating if child loggers inherit their parents appenders
-        /// </summary>
+        /// <summary>Flag indicating if child loggers inherit their parents appenders</summary>
         /// <remarks>
         /// <para>
         /// Additivity is set to true by default, that is children inherit
@@ -758,9 +710,7 @@ namespace log4net.Repository.Hierarchy
         /// </remarks>
         private bool m_additive = true;
 
-        /// <summary>
-        /// Lock to protect AppenderAttachedImpl variable m_appenderAttachedImpl
-        /// </summary>
+        /// <summary>Lock to protect AppenderAttachedImpl variable m_appenderAttachedImpl</summary>
         private readonly ReaderWriterLock m_appenderLock = new ReaderWriterLock();
     }
 }

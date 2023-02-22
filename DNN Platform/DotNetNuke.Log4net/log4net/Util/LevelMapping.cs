@@ -25,9 +25,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Manages a mapping from levels to <see cref="LevelMappingEntry"/>
-    /// </summary>
+    /// <summary>Manages a mapping from levels to <see cref="LevelMappingEntry"/></summary>
     /// <remarks>
     /// <para>
     /// Manages an ordered mapping from <see cref="Level"/> instances 
@@ -37,9 +35,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class LevelMapping : IOptionHandler
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Initialise a new instance of <see cref="LevelMapping"/>.
@@ -49,9 +45,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Add a <see cref="LevelMappingEntry"/> to this mapping
-        /// </summary>
+        /// <summary>Add a <see cref="LevelMappingEntry"/> to this mapping</summary>
         /// <param name="entry">the entry to add</param>
         /// <remarks>
         /// <para>
@@ -70,9 +64,7 @@ namespace log4net.Util
             this.m_entriesMap.Add(entry.Level, entry);
         }
 
-        /// <summary>
-        /// Lookup the mapping for the specified level
-        /// </summary>
+        /// <summary>Lookup the mapping for the specified level</summary>
         /// <param name="level">the level to lookup</param>
         /// <returns>the <see cref="LevelMappingEntry"/> for the level or <c>null</c> if no mapping found</returns>
         /// <remarks>
@@ -100,9 +92,7 @@ namespace log4net.Util
             return null;
         }
 
-        /// <summary>
-        /// Initialize options
-        /// </summary>
+        /// <summary>Initialize options</summary>
         /// <remarks>
         /// <para>
         /// Caches the sorted list of <see cref="LevelMappingEntry"/> in an array

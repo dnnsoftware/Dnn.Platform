@@ -10,16 +10,12 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <summary>
-    /// A container for an array of steps.
-    /// </summary>
+    /// <summary>A container for an array of steps.</summary>
     internal class RemoveExtensionStep : StepArrayBase, IRemoveExtensionStep
     {
         private readonly IServiceProvider serviceProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RemoveExtensionStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RemoveExtensionStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>

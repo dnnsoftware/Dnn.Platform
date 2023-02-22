@@ -1,4 +1,6 @@
-﻿using DotNetNuke.Abstractions.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
@@ -11,6 +13,7 @@ namespace DotNetNuke.Entities.Users
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Users;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -22,29 +25,20 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The UserInfo class provides Business Layer model for Users.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The UserInfo class provides Business Layer model for Users.</summary>
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo
     {
-        private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
-        private string _administratorRoleName;
-        private UserMembership _membership;
-        private UserProfile _profile;
-        private string[] _roles;
+        private readonly ConcurrentDictionary<int, UserSocial> social = new ConcurrentDictionary<int, UserSocial>();
+        private string administratorRoleName;
+        private UserMembership membership;
+        private UserProfile profile;
+        private string[] roles;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserInfo"/> class.</summary>
         public UserInfo()
         {
             this.IsDeleted = Null.NullBoolean;
@@ -54,9 +48,7 @@ namespace DotNetNuke.Entities.Users
             this.AffiliateID = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the user is in the portal's administrators role.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the user is in the portal's administrators role.</summary>
         public bool IsAdmin
         {
             get
@@ -71,17 +63,13 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Social property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets and sets the Social property.</summary>
         [Browsable(false)]
         public UserSocial Social
         {
             get
             {
-                return this._social.GetOrAdd(this.PortalID, i => new UserSocial(this));
+                return this.social.GetOrAdd(this.PortalID, i => new UserSocial(this));
             }
         }
 
@@ -95,40 +83,24 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the AffiliateId for this user.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the AffiliateId for this user.</summary>
         [Browsable(false)]
         public int AffiliateID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Display Name.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Display Name.</summary>
         [SortOrder(3)]
         [Required(true)]
         [MaxLength(128)]
         public string DisplayName { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Email Address.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Email Address.</summary>
         [SortOrder(4)]
         [MaxLength(256)]
         [Required(true)]
         [RegularExpressionValidator(Globals.glbEmailRegEx)]
         public string Email { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the First Name.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the First Name.</summary>
         [SortOrder(1)]
         [MaxLength(50)]
         public string FirstName
@@ -137,35 +109,19 @@ namespace DotNetNuke.Entities.Users
             set { this.Profile.FirstName = value; }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the User is deleted.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the User is deleted.</summary>
         [Browsable(false)]
         public bool IsDeleted { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the User is a SuperUser.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the User is a SuperUser.</summary>
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Last IP address used by user.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Last IP address used by user.</summary>
         [Browsable(false)]
         public string LastIPAddress { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Last Name.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Last Name.</summary>
         [SortOrder(2)]
         [MaxLength(50)]
         public string LastName
@@ -174,96 +130,74 @@ namespace DotNetNuke.Entities.Users
             set { this.Profile.LastName = value; }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Membership object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Membership object.</summary>
         [Browsable(false)]
         public UserMembership Membership
         {
             get
             {
-                if (this._membership == null)
+                if (this.membership == null)
                 {
-                    this._membership = new UserMembership(this);
+                    this.membership = new UserMembership(this);
                     if ((this.Username != null) && (!string.IsNullOrEmpty(this.Username)))
                     {
                         UserController.GetUserMembership(this);
                     }
                 }
 
-                return this._membership;
+                return this.membership;
             }
 
-            set { this._membership = value; }
+            set
+            {
+                this.membership = value;
+            }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the token created for resetting passwords.
-        /// </summary>
+        /// <summary>Gets or sets the token created for resetting passwords.</summary>
         [Browsable(false)]
         public Guid PasswordResetToken { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the datetime that the PasswordResetToken is valid.
-        /// </summary>
+        /// <summary>Gets or sets the datetime that the PasswordResetToken is valid.</summary>
         [Browsable(false)]
         public DateTime PasswordResetExpiration { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the PortalId.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the PortalId.</summary>
         [Browsable(false)]
         public int PortalID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the user has agreed to the terms and conditions.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the user has agreed to the terms and conditions.</summary>
         [Browsable(false)]
         public bool HasAgreedToTerms { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets when the user last agreed to the terms and conditions.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets when the user last agreed to the terms and conditions.</summary>
         [Browsable(false)]
         public DateTime HasAgreedToTermsOn { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the user has requested they be removed from the site.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the user has requested they be removed from the site.</summary>
         [Browsable(false)]
         public bool RequestsRemoval { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Profile Object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Profile Object.</summary>
         [Browsable(false)]
         public UserProfile Profile
         {
             get
             {
-                if (this._profile == null)
+                if (this.profile == null)
                 {
-                    this._profile = new UserProfile(this);
+                    this.profile = new UserProfile(this);
                     UserInfo userInfo = this;
                     ProfileController.GetUserProfile(ref userInfo);
                 }
 
-                return this._profile;
+                return this.profile;
             }
 
-            set { this._profile = value; }
+            set
+            {
+                this.profile = value;
+            }
         }
 
         /// <inheritdoc/>
@@ -272,16 +206,16 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (this._roles == null)
+                if (this.roles == null)
                 {
                     var socialRoles = this.Social.Roles;
                     if (socialRoles.Count == 0)
                     {
-                        this._roles = new string[0];
+                        this.roles = new string[0];
                     }
                     else
                     {
-                        this._roles = (from r in this.Social.Roles
+                        this.roles = (from r in this.Social.Roles
                                 where
                                     r.Status == RoleStatus.Approved &&
                                     (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
@@ -291,25 +225,19 @@ namespace DotNetNuke.Entities.Users
                     }
                 }
 
-                return this._roles;
+                return this.roles;
             }
 
-            set { }
+            set
+            {
+            }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the User Id.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the User Id.</summary>
         [Browsable(false)]
         public int UserID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the User Name.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the User Name.</summary>
         [SortOrder(0)]
         [MaxLength(100)]
         [IsReadOnly(true)]
@@ -319,9 +247,7 @@ namespace DotNetNuke.Entities.Users
         /// <inheritdoc/>
         public string VanityUrl { get; set; }
 
-        /// <summary>
-        /// Property access, initially provided for TokenReplace.
-        /// </summary>
+        /// <summary>Property access, initially provided for TokenReplace.</summary>
         /// <param name="propertyName">Name of the Property.</param>
         /// <param name="format">format string.</param>
         /// <param name="formatProvider">format provider for numbers, dates, currencies.</param>
@@ -336,7 +262,7 @@ namespace DotNetNuke.Entities.Users
             {
                 internScope = Scope.Configuration; // anonymous users only get access to displayname
             }
-            else if (this.UserID != accessingUser.UserID && !this.isAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
+            else if (this.UserID != accessingUser.UserID && !this.IsAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
             {
                 internScope = Scope.DefaultSettings; // registerd users can access username and userID as well
             }
@@ -457,13 +383,9 @@ namespace DotNetNuke.Entities.Users
             return string.Empty;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// IsInRole determines whether the user is in the role passed.
-        /// </summary>
+        /// <summary>IsInRole determines whether the user is in the role passed.</summary>
         /// <param name="role">The role to check.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
             // super users should always be verified.
@@ -496,24 +418,16 @@ namespace DotNetNuke.Entities.Users
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets current time in User's timezone.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets current time in User's timezone.</summary>
+        /// <returns>The time in the user's (or portal's) preferred time zone.</returns>
         public DateTime LocalTime()
         {
             return this.LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Convert utc time in User's timezone.
-        /// </summary>
+        /// <summary>Convert utc time in User's timezone.</summary>
         /// <param name="utcTime">Utc time to convert.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The time in the user's (or portal's) preferred time zone.</returns>
         public DateTime LocalTime(DateTime utcTime)
         {
             if (this.UserID > Null.NullInteger)
@@ -524,12 +438,8 @@ namespace DotNetNuke.Entities.Users
             return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateDisplayName updates the displayname to the format provided.
-        /// </summary>
+        /// <summary>UpdateDisplayName updates the displayname to the format provided.</summary>
         /// <param name="format">The format to use.</param>
-        /// -----------------------------------------------------------------------------
         public void UpdateDisplayName(string format)
         {
             // Replace Tokens
@@ -540,25 +450,23 @@ namespace DotNetNuke.Entities.Users
             this.DisplayName = format;
         }
 
-        /// <summary>
-        /// Determine, if accessing user is Administrator.
-        /// </summary>
+        /// <summary>Determine, if accessing user is Administrator.</summary>
         /// <param name="accessingUser">userinfo of the user to query.</param>
         /// <returns>true, if user is portal administrator or superuser.</returns>
-        private bool isAdminUser(ref UserInfo accessingUser)
+        private bool IsAdminUser(ref UserInfo accessingUser)
         {
             if (accessingUser == null || accessingUser.UserID == -1)
             {
                 return false;
             }
 
-            if (string.IsNullOrEmpty(this._administratorRoleName))
+            if (string.IsNullOrEmpty(this.administratorRoleName))
             {
                 PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
-                this._administratorRoleName = ps.AdministratorRoleName;
+                this.administratorRoleName = ps.AdministratorRoleName;
             }
 
-            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
+            return accessingUser.IsInRole(this.administratorRoleName) || accessingUser.IsSuperUser;
         }
 
         private string GetMembershipUserId()

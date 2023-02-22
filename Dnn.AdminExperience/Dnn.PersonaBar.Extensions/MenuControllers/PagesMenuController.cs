@@ -13,16 +13,12 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Controls the pages menu.
-    /// </summary>
+    /// <summary>Controls the pages menu.</summary>
     public class PagesMenuController : IMenuItemController
     {
         private readonly ISecurityService securityService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PagesMenuController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PagesMenuController"/> class.</summary>
         public PagesMenuController()
         {
             this.securityService = SecurityService.Instance;

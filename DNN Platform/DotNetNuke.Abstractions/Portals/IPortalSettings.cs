@@ -12,37 +12,25 @@ namespace DotNetNuke.Abstractions.Portals
     /// </summary>
     public interface IPortalSettings
     {
-        /// <summary>
-        /// Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.
-        /// </summary>
+        /// <summary>Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.</summary>
         bool AddCachebusterToResourceUris { get; }
 
-        /// <summary>
-        /// Gets a compatible page header.
-        /// </summary>
+        /// <summary>Gets a compatible page header.</summary>
         /// <remarks>
         /// generates a : Page.Response.AddHeader("X-UA-Compatible", "").
         /// </remarks>
         string AddCompatibleHttpHeader { get; }
 
-        /// <summary>
-        /// Gets or sets the administrator id.
-        /// </summary>
+        /// <summary>Gets or sets the administrator id.</summary>
         int AdministratorId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the administrator role id.
-        /// </summary>
+        /// <summary>Gets or sets the administrator role id.</summary>
         int AdministratorRoleId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the administrator role name.
-        /// </summary>
+        /// <summary>Gets or sets the administrator role name.</summary>
         string AdministratorRoleName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the admin tab id.
-        /// </summary>
+        /// <summary>Gets or sets the admin tab id.</summary>
         int AdminTabId { get; set; }
 
         /// <summary>
@@ -53,24 +41,16 @@ namespace DotNetNuke.Abstractions.Portals
         /// <remarks>Defaults to False.</remarks>
         bool AllowUserUICulture { get; }
 
-        /// <summary>
-        /// Gets or sets the background file.
-        /// </summary>
+        /// <summary>Gets or sets the background file.</summary>
         string BackgroundFile { get; set; }
 
-        /// <summary>
-        /// Gets or sets the banner advertising.
-        /// </summary>
+        /// <summary>Gets or sets the banner advertising.</summary>
         int BannerAdvertising { get; set; }
 
-        /// <summary>
-        /// Gets the CDF version.
-        /// </summary>
+        /// <summary>Gets the CDF version.</summary>
         int CdfVersion { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the control panel is visible.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the control panel is visible.</summary>
         bool ControlPanelVisible { get; }
 
         /// <summary>
@@ -79,19 +59,13 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         string CookieMoreLink { get; }
 
-        /// <summary>
-        /// Gets or sets the culture code.
-        /// </summary>
+        /// <summary>Gets or sets the culture code.</summary>
         string CultureCode { get; set; }
 
-        /// <summary>
-        /// Gets or sets the currency.
-        /// </summary>
+        /// <summary>Gets or sets the currency.</summary>
         string Currency { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow.
-        /// </summary>
+        /// <summary>Gets a value indicating whether if true then all users will be pushed through the data consent workflow.</summary>
         bool DataConsentActive { get; }
 
         /// <summary>
@@ -100,14 +74,10 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         int DataConsentConsentRedirect { get; }
 
-        /// <summary>
-        /// Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction.
-        /// </summary>
+        /// <summary>Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction.</summary>
         int DataConsentDelay { get; }
 
-        /// <summary>
-        /// Gets units for DataConsentDelay.
-        /// </summary>
+        /// <summary>Gets units for DataConsentDelay.</summary>
         string DataConsentDelayMeasurement { get; }
 
         /// <summary>
@@ -117,141 +87,89 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         DateTime DataConsentTermsLastChange { get; }
 
-        /// <summary>
-        /// Gets the default admin container.
-        /// </summary>
+        /// <summary>Gets the default admin container.</summary>
         string DefaultAdminContainer { get; }
 
-        /// <summary>
-        /// Gets the default admin skin.
-        /// </summary>
+        /// <summary>Gets the default admin skin.</summary>
         string DefaultAdminSkin { get; }
 
-        /// <summary>
-        /// Gets the default authentication provider.
-        /// </summary>
+        /// <summary>Gets the default authentication provider.</summary>
         string DefaultAuthProvider { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the default control panel is visible.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the default control panel is visible.</summary>
         bool DefaultControlPanelVisibility { get; }
 
-        /// <summary>
-        /// Gets the default icon location.
-        /// </summary>
+        /// <summary>Gets the default icon location.</summary>
         string DefaultIconLocation { get; }
 
-        /// <summary>
-        /// Gets or sets the default location.
-        /// </summary>
+        /// <summary>Gets or sets the default location.</summary>
         string DefaultLanguage { get; set; }
 
-        /// <summary>
-        /// Gets the default module action menu.
-        /// </summary>
+        /// <summary>Gets the default module action menu.</summary>
         string DefaultModuleActionMenu { get; }
 
-        /// <summary>
-        /// Gets the Default Module Id.
-        /// </summary>
+        /// <summary>Gets the Default Module Id.</summary>
         /// <remarks>Defaults to Null.NullInteger.</remarks>
         int DefaultModuleId { get; }
 
-        /// <summary>
-        /// Gets the default portal alias.
-        /// </summary>
+        /// <summary>Gets the default portal alias.</summary>
         string DefaultPortalAlias { get; }
 
-        /// <summary>
-        /// Gets the default portal container.
-        /// </summary>
+        /// <summary>Gets the default portal container.</summary>
         string DefaultPortalContainer { get; }
 
-        /// <summary>
-        /// Gets the default portal skin.
-        /// </summary>
+        /// <summary>Gets the default portal skin.</summary>
         string DefaultPortalSkin { get; }
 
-        /// <summary>
-        /// Gets the Default Tab Id.
-        /// </summary>
+        /// <summary>Gets the Default Tab Id.</summary>
         /// <remarks>Defaults to Null.NullInteger.</remarks>
         int DefaultTabId { get; }
 
-        /// <summary>
-        /// Gets or sets the portal description.
-        /// </summary>
+        /// <summary>Gets or sets the portal description.</summary>
         string Description { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.
-        /// </summary>
+        /// <summary>Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.</summary>
         bool DisablePrivateMessage { get; }
 
-        /// <summary>
-        /// Gets or sets the portal email.
-        /// </summary>
+        /// <summary>Gets or sets the portal email.</summary>
         string Email { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether Browser Language Detection is Enabled.
-        /// </summary>
+        /// <summary>Gets a value indicating whether Browser Language Detection is Enabled.</summary>
         /// <remarks>Defaults to True.</remarks>
         bool EnableBrowserLanguage { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the composite files for client scripts is enabled.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the composite files for client scripts is enabled.</summary>
         bool EnableCompositeFiles { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether to use the popup.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to use the popup.</summary>
         /// <remarks>Defaults to True.</remarks>
         bool EnablePopUps { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether website Administrator whether receive the notification email when new user register.
-        /// </summary>
+        /// <summary>Gets a value indicating whether website Administrator whether receive the notification email when new user register.</summary>
         bool EnableRegisterNotification { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Skin Widgets are enabled/supported.</summary>
         /// <remarks>Defaults to True.</remarks>
         [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0")]
 
         bool EnableSkinWidgets { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the content is localized.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the content is localized.</summary>
         bool ContentLocalizationEnabled { get; }
 
-        /// <summary>
-        /// Gets the error page 404.
-        /// </summary>
+        /// <summary>Gets the error page 404.</summary>
         int ErrorPage404 { get; }
 
-        /// <summary>
-        /// Gets the error page 500.
-        /// </summary>
+        /// <summary>Gets the error page 500.</summary>
         int ErrorPage500 { get; }
 
-        /// <summary>
-        /// Gets or sets the expiry date.
-        /// </summary>
+        /// <summary>Gets or sets the expiry date.</summary>
         DateTime ExpiryDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portal footer text.
-        /// </summary>
+        /// <summary>Gets or sets the portal footer text.</summary>
         string FooterText { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portal GUID.
-        /// </summary>
+        /// <summary>Gets or sets the portal GUID.</summary>
         Guid GUID { get; set; }
 
         /// <summary>
@@ -263,45 +181,29 @@ namespace DotNetNuke.Abstractions.Portals
         /// </remarks>
         bool HideFoldersEnabled { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether hide the login link.
-        /// </summary>
+        /// <summary>Gets a value indicating whether hide the login link.</summary>
         /// <remarks>Defaults to False.</remarks>
         bool HideLoginControl { get; }
 
-        /// <summary>
-        /// Gets or sets the portal home directory.
-        /// </summary>
+        /// <summary>Gets or sets the portal home directory.</summary>
         string HomeDirectory { get; set; }
 
-        /// <summary>
-        /// Gets the portals home directory mapped path.
-        /// </summary>
+        /// <summary>Gets the portals home directory mapped path.</summary>
         string HomeDirectoryMapPath { get; }
 
-        /// <summary>
-        /// Gets or sets the portals home system directory.
-        /// </summary>
+        /// <summary>Gets or sets the portals home system directory.</summary>
         string HomeSystemDirectory { get; set; }
 
-        /// <summary>
-        /// Gets the portals home directory mapped path.
-        /// </summary>
+        /// <summary>Gets the portals home directory mapped path.</summary>
         string HomeSystemDirectoryMapPath { get; }
 
-        /// <summary>
-        /// Gets or sets the portals home tab id.
-        /// </summary>
+        /// <summary>Gets or sets the portals home tab id.</summary>
         int HomeTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the host fee.
-        /// </summary>
+        /// <summary>Gets or sets the host fee.</summary>
         float HostFee { get; set; }
 
-        /// <summary>
-        /// Gets or sets the host space.
-        /// </summary>
+        /// <summary>Gets or sets the host space.</summary>
         int HostSpace { get; set; }
 
         /*
@@ -312,9 +214,7 @@ namespace DotNetNuke.Abstractions.Portals
          *
          */
 
-        /// <summary>
-        /// Gets a value indicating whether a module can inject a hyperlink.
-        /// </summary>
+        /// <summary>Gets a value indicating whether a module can inject a hyperlink.</summary>
         /// <remarks>
         /// add <![CDATA[<a name="[moduleid]"></a>]]> on the top of the module.
         /// Desactivate this remove the html5 compatibility warnings
@@ -322,9 +222,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// </remarks>
         bool InjectModuleHyperLink { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Inline Editor is enabled.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Inline Editor is enabled.</summary>
         /// <remarks>Defaults to True.</remarks>
         bool InlineEditorEnabled { get; }
 
@@ -345,207 +243,133 @@ namespace DotNetNuke.Abstractions.Portals
         /// </summary>
         bool IsThisPortalLocked { get; }
 
-        /// <summary>
-        /// Gets or sets the portal keywords.
-        /// </summary>
+        /// <summary>Gets or sets the portal keywords.</summary>
         string KeyWords { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals login tab id.
-        /// </summary>
+        /// <summary>Gets or sets the portals login tab id.</summary>
         int LoginTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals logo file.
-        /// </summary>
+        /// <summary>Gets or sets the portals logo file.</summary>
         string LogoFile { get; set; }
 
-        /// <summary>
-        /// Gets the portals page head text.
-        /// </summary>
+        /// <summary>Gets the portals page head text.</summary>
         string PageHeadText { get; }
 
-        /// <summary>
-        /// Gets or sets the portals page quota.
-        /// </summary>
+        /// <summary>Gets or sets the portals page quota.</summary>
         int PageQuota { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals pages.
-        /// </summary>
+        /// <summary>Gets or sets the portals pages.</summary>
         int Pages { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether enable url language.
-        /// </summary>
+        /// <summary>Gets a value indicating whether enable url language.</summary>
         /// <remarks>Defaults to True.</remarks>
         bool EnableUrlLanguage { get; }
 
-        /// <summary>
-        /// Gets or sets the portal id.
-        /// </summary>
+        /// <summary>Gets or sets the portal id.</summary>
         int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portal name.
-        /// </summary>
+        /// <summary>Gets or sets the portal name.</summary>
         string PortalName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals privacy tab id.
-        /// </summary>
+        /// <summary>Gets or sets the portals privacy tab id.</summary>
         int PrivacyTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals registered role id.
-        /// </summary>
+        /// <summary>Gets or sets the portals registered role id.</summary>
         int RegisteredRoleId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals registered role name.
-        /// </summary>
+        /// <summary>Gets or sets the portals registered role name.</summary>
         string RegisteredRoleName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portals register tab id.
-        /// </summary>
+        /// <summary>Gets or sets the portals register tab id.</summary>
         int RegisterTabId { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to include Common Words in the Search Index.</summary>
         /// <remarks>Defaults to False.</remarks>
         bool SearchIncludeCommon { get; }
 
-        /// <summary>
-        /// Gets the filter used for inclusion of tag info.
-        /// </summary>
+        /// <summary>Gets the filter used for inclusion of tag info.</summary>
         /// <remarks>
         /// Defaults to "".
         /// </remarks>
         string SearchIncludedTagInfoFilter { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to include Numbers in the Search Index.</summary>
         /// <remarks>
         /// Defaults to False.
         /// </remarks>
         bool SearchIncludeNumeric { get; }
 
-        /// <summary>
-        /// Gets the maximum Search Word length to index.
-        /// </summary>
+        /// <summary>Gets the maximum Search Word length to index.</summary>
         /// <remarks>
         /// Defaults to 3.
         /// </remarks>
         int SearchMaxWordlLength { get; }
 
-        /// <summary>
-        /// Gets the minum Search Word length to index.
-        /// </summary>
+        /// <summary>Gets the minimum Search Word length to index.</summary>
         /// <remarks>
         /// Defaults to 3.
         /// </remarks>
         int SearchMinWordlLength { get; }
 
-        /// <summary>
-        /// Gets or sets the portals search tab id.
-        /// </summary>
+        /// <summary>Gets or sets the portals search tab id.</summary>
         int SearchTabId { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether a cookie consent popup should be shown.
-        /// </summary>
+        /// <summary>Gets a value indicating whether a cookie consent popup should be shown.</summary>
         /// <remarks>Defaults to False.</remarks>
         bool ShowCookieConsent { get; }
 
-        /// <summary>
-        /// Gets the portals SMTP connection limit.
-        /// </summary>
+        /// <summary>Gets the portals SMTP connection limit.</summary>
         int SMTPConnectionLimit { get; }
 
-        /// <summary>
-        /// Gets the portals SMPT max idle time.
-        /// </summary>
+        /// <summary>Gets the portals SMPT max idle time.</summary>
         int SMTPMaxIdleTime { get; }
 
-        /// <summary>
-        /// Gets or sets the portals splash tab id.
-        /// </summary>
+        /// <summary>Gets or sets the portals splash tab id.</summary>
         int SplashTabId { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating what the SSL setup is for this portal.
-        /// </summary>
+        /// <summary>Gets a value indicating what the SSL setup is for this portal.</summary>
         Security.SiteSslSetup SSLSetup { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether SSL is enabled for the portal.
-        /// </summary>
+        /// <summary>Gets a value indicating whether SSL is enabled for the portal.</summary>
         bool SSLEnabled { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether SLL is enforced for the portal.
-        /// </summary>
+        /// <summary>Gets a value indicating whether SLL is enforced for the portal.</summary>
         bool SSLEnforced { get; }
 
-        /// <summary>
-        /// Gets the SSL url for the portal.
-        /// </summary>
+        /// <summary>Gets the SSL url for the portal.</summary>
         string SSLURL { get; }
 
-        /// <summary>
-        /// Gets the standard url for the portal.
-        /// </summary>
+        /// <summary>Gets the standard url for the portal.</summary>
         string STDURL { get; }
 
-        /// <summary>
-        /// Gets or sets the super tab id.
-        /// </summary>
+        /// <summary>Gets or sets the super tab id.</summary>
         int SuperTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the terms and conditions tab id.
-        /// </summary>
+        /// <summary>Gets or sets the terms and conditions tab id.</summary>
         int TermsTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the timezone for the portal.
-        /// </summary>
+        /// <summary>Gets or sets the timezone for the portal.</summary>
         TimeZoneInfo TimeZone { get; set; }
 
-        /// <summary>
-        /// Gets the currently logged in user identifier.
-        /// </summary>
+        /// <summary>Gets the currently logged in user identifier.</summary>
         /// <value>
         /// The user identifier.
         /// </value>
         int UserId { get; }
 
-        /// <summary>
-        /// Gets or sets the user quota for the portal.
-        /// </summary>
+        /// <summary>Gets or sets the user quota for the portal.</summary>
         int UserQuota { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user registration for the portal.
-        /// </summary>
+        /// <summary>Gets or sets the user registration for the portal.</summary>
         int UserRegistration { get; set; }
 
-        /// <summary>
-        /// Gets or sets the users for the portal.
-        /// </summary>
+        /// <summary>Gets or sets the users for the portal.</summary>
         int Users { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user tab id for the portal.
-        /// </summary>
+        /// <summary>Gets or sets the user tab id for the portal.</summary>
         int UserTabId { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether to display the dropdowns to quickly add a moduel to the page in the edit bar.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to display the dropdowns to quickly add a moduel to the page in the edit bar.</summary>
         bool ShowQuickModuleAddMenu { get; }
     }
 }

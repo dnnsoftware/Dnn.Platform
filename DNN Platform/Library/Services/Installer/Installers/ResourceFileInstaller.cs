@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
     using System.Xml;
@@ -12,25 +13,18 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ResourceFileInstaller installs Resource File Components (zips) to a DotNetNuke site.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ResourceFileInstaller installs Resource File Components (zips) to a DotNetNuke site.</summary>
     public class ResourceFileInstaller : FileInstaller
     {
-        public const string DEFAULT_MANIFESTEXT = ".manifest";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
-        private string _Manifest;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        // ReSharper disable once InconsistentNaming
+        public const string DEFAULT_MANIFESTEXT = ".manifest";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
+        private string manifest;
+
+        /// <inheritdoc />
         public override string AllowableFiles
         {
             get
@@ -39,12 +33,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("resourceFiles").
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the name of the Collection Node (<c>resourceFiles</c>).</summary>
         protected override string CollectionNodeName
         {
             get
@@ -53,12 +42,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("resourceFile").
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the name of the Item Node (<c>resourceFile</c>).</summary>
         protected override string ItemNodeName
         {
             get
@@ -67,41 +51,25 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        // -----------------------------------------------------------------------------
         protected string Manifest
         {
             get
             {
-                return this._Manifest;
+                return this.manifest;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CommitFile method commits a single file.
-        /// </summary>
-        /// <param name="insFile">The InstallFile to commit.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void CommitFile(InstallFile insFile)
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteFile method deletes a single assembly.
-        /// </summary>
-        /// <param name="file">The InstallFile to delete.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void DeleteFile(InstallFile file)
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   The InstallFile method installs a single assembly.
-        /// </summary>
-        /// <param name = "insFile">The InstallFile to install.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         protected override bool InstallFile(InstallFile insFile)
         {
             bool retValue = true;
@@ -110,7 +78,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddInfo(Util.FILES_Expanding);
 
                 // Create the folder for destination
-                this._Manifest = insFile.Name + ".manifest";
+                this.manifest = insFile.Name + ".manifest";
                 if (!Directory.Exists(this.PhysicalBasePath))
                 {
                     Directory.CreateDirectory(this.PhysicalBasePath);
@@ -184,49 +152,29 @@ namespace DotNetNuke.Services.Installer.Installers
             return retValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that determines what type of file this installer supports.
-        /// </summary>
-        /// <param name="type">The type of file being processed.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override bool IsCorrectType(InstallFileType type)
         {
             return type == InstallFileType.Resources;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifestItem method reads a single node.
-        /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// <param name="checkFileExists">Flag that determines whether a check should be made.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {
             InstallFile insFile = base.ReadManifestItem(nav, checkFileExists);
 
-            this._Manifest = Util.ReadElement(nav, "manifest");
+            this.manifest = Util.ReadElement(nav, "manifest");
 
-            if (string.IsNullOrEmpty(this._Manifest))
+            if (string.IsNullOrEmpty(this.manifest))
             {
-                this._Manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
+                this.manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
             }
 
             // Call base method
             return base.ReadManifestItem(nav, checkFileExists);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The RollbackFile method rolls back the install of a single file.
-        /// </summary>
-        /// <remarks>For new installs this removes the added file.  For upgrades it restores the
-        /// backup file created during install.</remarks>
-        /// <param name="insFile">The InstallFile to commit.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void RollbackFile(InstallFile insFile)
         {
             using (var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
@@ -251,7 +199,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <inheritdoc/>
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
-            this._Manifest = unInstallFile.Name + ".manifest";
+            this.manifest = unInstallFile.Name + ".manifest";
             var doc = new XPathDocument(Path.Combine(this.PhysicalBasePath, this.Manifest));
 
             foreach (XPathNavigator fileNavigator in doc.CreateNavigator().Select("dotnetnuke/files/file"))

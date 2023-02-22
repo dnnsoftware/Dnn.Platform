@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.</summary>
     public class HostSettingConfig
     {
         public string Name { get; set; }

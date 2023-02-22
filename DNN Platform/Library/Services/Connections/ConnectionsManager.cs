@@ -18,16 +18,16 @@ namespace DotNetNuke.Services.Connections
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectionsManager));
         private static readonly object LockerObject = new object();
-        private static IDictionary<string, IConnector> _processors;
+        private static IDictionary<string, IConnector> processors;
 
         /// <inheritdoc/>
         public void RegisterConnections()
         {
-            if (_processors == null)
+            if (processors == null)
             {
                 lock (LockerObject)
                 {
-                    if (_processors == null)
+                    if (processors == null)
                     {
                         this.LoadProcessors();
                     }
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Connections
         /// <inheritdoc/>
         public IList<IConnector> GetConnectors()
         {
-            return _processors.Values.Where(x => this.IsPackageInstalled(x.GetType().Assembly)).ToList();
+            return processors.Values.Where(x => this.IsPackageInstalled(x.GetType().Assembly)).ToList();
         }
 
         /// <inheritdoc/>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Connections
 
         private void LoadProcessors()
         {
-            _processors = new Dictionary<string, IConnector>();
+            processors = new Dictionary<string, IConnector>();
 
             var typeLocator = new TypeLocator();
             var types = typeLocator.GetAllMatchingTypes(this.IsValidFilter);
@@ -61,9 +61,9 @@ namespace DotNetNuke.Services.Connections
                     var processor = Activator.CreateInstance(type) as IConnector;
                     if (processor != null
                             && !string.IsNullOrEmpty(processor.Name)
-                            && !_processors.ContainsKey(processor.Name))
+                            && !processors.ContainsKey(processor.Name))
                     {
-                        _processors.Add(processor.Name, processor);
+                        processors.Add(processor.Name, processor);
                     }
                 }
                 catch (Exception e)

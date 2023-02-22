@@ -5,66 +5,37 @@ namespace DotNetNuke.Entities.Modules.Actions
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project     : DotNetNuke
     /// Namespace   : DotNetNuke.Entities.Modules.Actions
     /// Class       : ActionEventArgs
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ActionEventArgs provides a custom EventARgs class for Action Events.
-    /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ActionEventArgs provides a custom EventARgs class for Action Events.</summary>
     public class ActionEventArgs : EventArgs
     {
-        private readonly ModuleAction _action;
-        private readonly ModuleInfo _moduleConfiguration;
+        private readonly ModuleAction action;
+        private readonly ModuleInfo moduleConfiguration;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionEventArgs"/> class.
-        /// </summary>
-        /// <param name="Action"></param>
-        /// <param name="ModuleConfiguration"></param>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
-        public ActionEventArgs(ModuleAction Action, ModuleInfo ModuleConfiguration)
+        /// <summary>Initializes a new instance of the <see cref="ActionEventArgs"/> class.</summary>
+        /// <param name="action"></param>
+        /// <param name="moduleConfiguration"></param>
+        public ActionEventArgs(ModuleAction action, ModuleInfo moduleConfiguration)
         {
-            this._action = Action;
-            this._moduleConfiguration = ModuleConfiguration;
+            this.action = action;
+            this.moduleConfiguration = moduleConfiguration;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleAction Action
         {
             get
             {
-                return this._action;
+                return this.action;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {
             get
             {
-                return this._moduleConfiguration;
+                return this.moduleConfiguration;
             }
         }
     }

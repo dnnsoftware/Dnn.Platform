@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Extract the value of a property from the <see cref="LoggingEvent"/>
-    /// </summary>
+    /// <summary>Extract the value of a property from the <see cref="LoggingEvent"/></summary>
     /// <remarks>
     /// <para>
     /// Extract the value of a property from the <see cref="LoggingEvent"/>
@@ -37,18 +35,14 @@ namespace log4net.Layout
     /// <author>Nicko Cadell</author>
     public class RawPropertyLayout : IRawLayout
     {
-        /// <summary>
-        /// Constructs a RawPropertyLayout
-        /// </summary>
+        /// <summary>Constructs a RawPropertyLayout</summary>
         public RawPropertyLayout()
         {
         }
 
         private string m_key;
 
-        /// <summary>
-        /// The name of the value to lookup in the LoggingEvent Properties collection.
-        /// </summary>
+        /// <summary>The name of the value to lookup in the LoggingEvent Properties collection.</summary>
         /// <value>
         /// Value to lookup in the LoggingEvent Properties collection
         /// </value>
@@ -63,9 +57,7 @@ namespace log4net.Layout
             set { this.m_key = value; }
         }
 
-        /// <summary>
-        /// Lookup the property for <see cref="Key"/>
-        /// </summary>
+        /// <summary>Lookup the property for <see cref="Key"/></summary>
         /// <param name="loggingEvent">The event to format</param>
         /// <returns>returns property value</returns>
         /// <remarks>

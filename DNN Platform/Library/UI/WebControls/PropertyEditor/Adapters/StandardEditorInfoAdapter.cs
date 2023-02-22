@@ -11,41 +11,32 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      StandardEditorInfoAdapter
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The StandardEditorInfoAdapter control provides an Adapter for standard datasources.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The StandardEditorInfoAdapter control provides an Adapter for standard datasources.</summary>
     public class StandardEditorInfoAdapter : IEditorInfoAdapter
     {
-        private readonly object DataSource;
-        private readonly string FieldName;
+        private readonly object dataSource;
+        private readonly string fieldName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.</summary>
         /// <param name="dataSource"></param>
         /// <param name="fieldName"></param>
         public StandardEditorInfoAdapter(object dataSource, string fieldName)
         {
-            this.DataSource = dataSource;
-            this.FieldName = fieldName;
+            this.dataSource = dataSource;
+            this.fieldName = fieldName;
         }
 
         /// <inheritdoc/>
         public EditorInfo CreateEditControl()
         {
             EditorInfo editInfo = null;
-            PropertyInfo objProperty = this.GetProperty(this.DataSource, this.FieldName);
+            PropertyInfo objProperty = this.GetProperty(this.dataSource, this.fieldName);
             if (objProperty != null)
             {
-                editInfo = this.GetEditorInfo(this.DataSource, objProperty);
+                editInfo = this.GetEditorInfo(this.dataSource, objProperty);
             }
 
             return editInfo;
@@ -57,21 +48,21 @@ namespace DotNetNuke.UI.WebControls
             bool changed = e.Changed;
             object oldValue = e.OldValue;
             object newValue = e.Value;
-            bool _IsDirty = Null.NullBoolean;
-            if (this.DataSource != null)
+            bool isDirty = Null.NullBoolean;
+            if (this.dataSource != null)
             {
-                PropertyInfo objProperty = this.DataSource.GetType().GetProperty(e.Name);
+                PropertyInfo objProperty = this.dataSource.GetType().GetProperty(e.Name);
                 if (objProperty != null)
                 {
                     if ((!ReferenceEquals(newValue, oldValue)) || changed)
                     {
-                        objProperty.SetValue(this.DataSource, newValue, null);
-                        _IsDirty = true;
+                        objProperty.SetValue(this.dataSource, newValue, null);
+                        isDirty = true;
                     }
                 }
             }
 
-            return _IsDirty;
+            return isDirty;
         }
 
         /// <inheritdoc/>
@@ -80,11 +71,7 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetEditorInfo builds an EditorInfo object for a propoerty.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetEditorInfo builds an EditorInfo object for a propoerty.</summary>
         private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
         {
             var editInfo = new EditorInfo();
@@ -164,10 +151,10 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Css Style
             editInfo.ControlStyle = new Style();
-            object[] StyleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
-            if (StyleAttributes.Length > 0)
+            object[] styleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
+            if (styleAttributes.Length > 0)
             {
-                var attribute = (ControlStyleAttribute)StyleAttributes[0];
+                var attribute = (ControlStyleAttribute)styleAttributes[0];
                 editInfo.ControlStyle.CssClass = attribute.CssClass;
                 editInfo.ControlStyle.Height = attribute.Height;
                 editInfo.ControlStyle.Width = attribute.Width;
@@ -203,17 +190,13 @@ namespace DotNetNuke.UI.WebControls
             return editInfo;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetProperty returns the property that is being "bound" to.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetProperty returns the property that is being "bound" to.</summary>
         private PropertyInfo GetProperty(object dataSource, string fieldName)
         {
             if (dataSource != null)
             {
-                BindingFlags Bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
-                PropertyInfo objProperty = dataSource.GetType().GetProperty(fieldName, Bindings);
+                BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+                PropertyInfo objProperty = dataSource.GetType().GetProperty(fieldName, bindings);
                 return objProperty;
             }
             else

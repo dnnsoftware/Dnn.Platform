@@ -8,21 +8,21 @@ namespace DotNetNuke.HttpModules.Config
     [Serializable]
     public class AnalyticsEngine
     {
-        private string _elementId;
-        private string _engineType;
-        private bool _injectTop;
-        private string _scriptTemplate;
+        private string elementId;
+        private string engineType;
+        private bool injectTop;
+        private string scriptTemplate;
 
         public string EngineType
         {
             get
             {
-                return this._engineType;
+                return this.engineType;
             }
 
             set
             {
-                this._engineType = value;
+                this.engineType = value;
             }
         }
 
@@ -30,12 +30,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return this._scriptTemplate;
+                return this.scriptTemplate;
             }
 
             set
             {
-                this._scriptTemplate = value;
+                this.scriptTemplate = value;
             }
         }
 
@@ -43,12 +43,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return this._elementId;
+                return this.elementId;
             }
 
             set
             {
-                this._elementId = value;
+                this.elementId = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return this._injectTop;
+                return this.injectTop;
             }
 
             set
             {
-                this._injectTop = value;
+                this.injectTop = value;
             }
         }
     }

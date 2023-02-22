@@ -20,27 +20,17 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Tokens;
-using Newtonsoft.Json;
+    using Newtonsoft.Json;
 
-/// -----------------------------------------------------------------------------
-/// Project:    DotNetNuke
-/// Namespace:  DotNetNuke.Security.Roles
-/// Class:      RoleInfo
-/// -----------------------------------------------------------------------------
-/// <summary>
-/// The RoleInfo class provides the Entity Layer Role object.
-/// </summary>
-/// -----------------------------------------------------------------------------
+    /// <summary>The RoleInfo class provides the Entity Layer Role object.</summary>
     [Serializable]
     public class RoleInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPropertyAccess
     {
-        private RoleType _RoleType = RoleType.None;
-        private bool _RoleTypeSet = Null.NullBoolean;
-        private Dictionary<string, string> _settings;
+        private RoleType roleType = RoleType.None;
+        private bool roleTypeSet = Null.NullBoolean;
+        private Dictionary<string, string> settings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RoleInfo"/> class.</summary>
         public RoleInfo()
         {
             this.TrialFrequency = "N";
@@ -49,38 +39,30 @@ using Newtonsoft.Json;
             this.IsSystemRole = false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Role Type.
-        /// </summary>
+        /// <summary>Gets the Role Type.</summary>
         /// <value>A enum representing the type of the role.</value>
-        /// -----------------------------------------------------------------------------
         public RoleType RoleType
         {
             get
             {
-                if (!this._RoleTypeSet)
+                if (!this.roleTypeSet)
                 {
                     this.GetRoleType();
-                    this._RoleTypeSet = true;
+                    this.roleTypeSet = true;
                 }
 
-                return this._RoleType;
+                return this.roleType;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the role settings.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the role settings.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public Dictionary<string, string> Settings
         {
             get
             {
-                return this._settings ?? (this._settings = (this.RoleID == Null.NullInteger)
+                return this.settings ?? (this.settings = (this.RoleID == Null.NullInteger)
                                                      ? new Dictionary<string, string>()
                                                      : RoleController.Instance.GetRoleSettings(this.RoleID) as
                                                        Dictionary<string, string>);
@@ -116,199 +98,100 @@ using Newtonsoft.Json;
             get { return CacheLevel.fullyCacheable; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets whether this role is a system role.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether this role is a system role.</summary>
         /// <value>A boolean representing whether this is a system role such as Administrators, Registered Users etc.</value>
         public bool IsSystemRole { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether users are automatically assigned to the role.
-        /// </summary>
-        /// <value>A boolean (True/False).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether users are automatically assigned to the role.</summary>
         public bool AutoAssignment { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Billing Frequency for the role.
-        /// </summary>
-        /// <value>A String representing the Billing Frequency of the Role.<br/>
-        /// <ul>
-        /// <list>N - None</list>
-        /// <list>O - One time fee</list>
-        /// <list>D - Daily</list>
-        /// <list>W - Weekly</list>
-        /// <list>M - Monthly</list>
-        /// <list>Y - Yearly</list>
-        /// </ul>
+        /// <summary>Gets or sets the Billing Frequency for the role.</summary>
+        /// <value>A String representing the Billing Frequency of the Role.
+        /// <list>
+        ///     <item>N - None</item>
+        ///     <item>O - One time fee</item>
+        ///     <item>D - Daily</item>
+        ///     <item>W - Weekly</item>
+        ///     <item>M - Monthly</item>
+        ///     <item>Y - Yearly</item>
+        /// </list>
         /// </value>
-        /// -----------------------------------------------------------------------------
         public string BillingFrequency { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the length of the billing period.
-        /// </summary>
-        /// <value>An integer representing the length of the billing period.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the length of the billing period.</summary>
         public int BillingPeriod { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets an sets the Description of the Role.
-        /// </summary>
-        /// <value>A string representing the description of the role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Description of the Role.</summary>
         public string Description { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Icon File for the role.
-        /// </summary>
-        /// <value>A string representing the Icon File for the role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Icon File for the role.</summary>
         public string IconFile { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the role is public.
-        /// </summary>
-        /// <value>A boolean (True/False).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the role is public.</summary>
         public bool IsPublic { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Portal Id for the Role.
-        /// </summary>
-        /// <value>An Integer representing the Id of the Portal.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Portal Id for the Role.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int PortalID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Role Id.
-        /// </summary>
-        /// <value>An Integer representing the Id of the Role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Role Id.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int RoleID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the RoleGroup Id.
-        /// </summary>
-        /// <value>An Integer representing the Id of the RoleGroup.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the RoleGroup Id.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int RoleGroupID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Role Name.
-        /// </summary>
-        /// <value>A string representing the name of the role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Role Name.</summary>
         public string RoleName { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the RSVP Code for the role.
-        /// </summary>
-        /// <value>A string representing the RSVP Code for the role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the RSVP Code for the role.</summary>
         public string RSVPCode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets whether the role is a security role and can be used in Permission
-        /// Grids etc.
-        /// </summary>
-        /// <value>A SecurityMode enum.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets whether the role is a security role and can be used in Permission Grids etc.</summary>
         public SecurityMode SecurityMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the fee for the role.
-        /// </summary>
-        /// <value>A single number representing the fee for the role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the fee for the role.</summary>
         public float ServiceFee { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the status for the role.
-        /// </summary>
+        /// <summary>Gets or sets the status for the role.</summary>
         /// <value>An enumerated value Pending, Disabled, Approved.</value>
-        /// -----------------------------------------------------------------------------
         public RoleStatus Status { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the trial fee for the role.
-        /// </summary>
-        /// <value>A single number representing the trial fee for the role.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the trial fee for the role.</summary>
         public float TrialFee { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Trial Frequency for the role.
-        /// </summary>
-        /// <value>A String representing the Trial Frequency of the Role.<br/>
-        /// <ul>
-        /// <list>N - None</list>
-        /// <list>O - One time fee</list>
-        /// <list>D - Daily</list>
-        /// <list>W - Weekly</list>
-        /// <list>M - Monthly</list>
-        /// <list>Y - Yearly</list>
-        /// </ul>
+        /// <summary>Gets or sets the Trial Frequency for the role.</summary>
+        /// <value>A String representing the Trial Frequency of the Role.
+        /// <list type="bullet">
+        ///     <item>N - None</item>
+        ///     <item>O - One time fee</item>
+        ///     <item>D - Daily</item>
+        ///     <item>W - Weekly</item>
+        ///     <item>M - Monthly</item>
+        ///     <item>Y - Yearly</item>
+        /// </list>
         /// </value>
-        /// -----------------------------------------------------------------------------
         public string TrialFrequency { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the length of the trial period.
-        /// </summary>
-        /// <value>An integer representing the length of the trial period.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the length of the trial period.</summary>
         public int TrialPeriod { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the number of users in the role.
-        /// </summary>
-        /// <value>An integer representing the number of users.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the number of users in the role.</summary>
         public int UserCount { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public virtual int KeyID
         {
             get { return this.RoleID; }
             set { this.RoleID = value; }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a RoleInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a RoleInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
             this.RoleID = Null.SetNullInteger(dr["RoleId"]);
@@ -383,17 +266,16 @@ using Newtonsoft.Json;
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser,
-                                  Scope accessLevel, ref bool propertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            string OutputFormat = string.Empty;
+            string outputFormat = string.Empty;
             if (format == string.Empty)
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
             else
             {
-                OutputFormat = format;
+                outputFormat = format;
             }
 
             string propName = propertyName.ToLowerInvariant();
@@ -456,23 +338,14 @@ using Newtonsoft.Json;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets an XmlSchema for the RoleInfo.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Reads a RoleInfo from an XmlReader.
-        /// </summary>
-        /// <param name="reader">The XmlReader to use.</param>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Reads a RoleInfo from an XmlReader.</summary>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             // Set status to approved by default
@@ -559,23 +432,23 @@ using Newtonsoft.Json;
                             switch (reader.ReadElementContentAsString())
                             {
                                 case "adminrole":
-                                    this._RoleType = RoleType.Administrator;
+                                    this.roleType = RoleType.Administrator;
                                     break;
                                 case "registeredrole":
-                                    this._RoleType = RoleType.RegisteredUser;
+                                    this.roleType = RoleType.RegisteredUser;
                                     break;
                                 case "subscriberrole":
-                                    this._RoleType = RoleType.Subscriber;
+                                    this.roleType = RoleType.Subscriber;
                                     break;
                                 case "unverifiedrole":
-                                    this._RoleType = RoleType.UnverifiedUser;
+                                    this.roleType = RoleType.UnverifiedUser;
                                     break;
                                 default:
-                                    this._RoleType = RoleType.None;
+                                    this.roleType = RoleType.None;
                                     break;
                             }
 
-                            this._RoleTypeSet = true;
+                            this.roleTypeSet = true;
                             break;
                         case "securitymode":
                             switch (reader.ReadElementContentAsString())
@@ -619,15 +492,11 @@ using Newtonsoft.Json;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a RoleInfo to an XmlWriter.
-        /// </summary>
-        /// <param name="writer">The XmlWriter to use.</param>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Writes a RoleInfo to an XmlWriter.</summary>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
-            // Write start of main elemenst
+            // Write start of main elements
             writer.WriteStartElement("role");
 
             // write out properties
@@ -698,19 +567,19 @@ using Newtonsoft.Json;
             var portal = PortalController.Instance.GetPortal(this.PortalID);
             if (this.RoleID == portal.AdministratorRoleId)
             {
-                this._RoleType = RoleType.Administrator;
+                this.roleType = RoleType.Administrator;
             }
             else if (this.RoleID == portal.RegisteredRoleId)
             {
-                this._RoleType = RoleType.RegisteredUser;
+                this.roleType = RoleType.RegisteredUser;
             }
             else if (this.RoleName == "Subscribers")
             {
-                this._RoleType = RoleType.Subscriber;
+                this.roleType = RoleType.Subscriber;
             }
             else if (this.RoleName == "Unverified Users")
             {
-                this._RoleType = RoleType.UnverifiedUser;
+                this.roleType = RoleType.UnverifiedUser;
             }
         }
 

@@ -76,9 +76,7 @@ namespace DotNetNuke.Services.Journal
 
         public int SimilarCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
+        /// <summary>Gets or sets the key ID.</summary>
         /// <value>
         /// The key ID.
         /// </value>
@@ -148,14 +146,14 @@ namespace DotNetNuke.Services.Journal
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            string OutputFormat = string.Empty;
+            string outputFormat = string.Empty;
             if (format == string.Empty)
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
             else
             {
-                OutputFormat = format;
+                outputFormat = format;
             }
 
             propertyName = propertyName.ToLowerInvariant();

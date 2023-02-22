@@ -33,9 +33,7 @@ using log4net.Repository;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Use this class to initialize the log4net environment using an Xml tree.
-    /// </summary>
+    /// <summary>Use this class to initialize the log4net environment using an Xml tree.</summary>
     /// <remarks>
     /// <para>
     /// Configures a <see cref="ILoggerRepository"/> using an Xml tree.
@@ -45,9 +43,7 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public sealed class XmlConfigurator
     {
-        /// <summary>
-        /// Private constructor
-        /// </summary>
+        /// <summary>Private constructor</summary>
         private XmlConfigurator()
         {
         }
@@ -194,9 +190,7 @@ namespace log4net.Config
             return Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
         }
 
-        /// <summary>
-        /// Configures log4net using a <c>log4net</c> element
-        /// </summary>
+        /// <summary>Configures log4net using a <c>log4net</c> element</summary>
         /// <remarks>
         /// <para>
         /// Loads the log4net configuration from the XML element
@@ -221,9 +215,7 @@ namespace log4net.Config
         }
 
 #if !NETCF
-        /// <summary>
-        /// Configures log4net using the specified configuration file.
-        /// </summary>
+        /// <summary>Configures log4net using the specified configuration file.</summary>
         /// <param name="configFile">The XML file to load the configuration from.</param>
         /// <remarks>
         /// <para>
@@ -272,9 +264,7 @@ namespace log4net.Config
         /// </code>
         /// </remarks>
 #else
-        /// <summary>
-        /// Configures log4net using the specified configuration file.
-        /// </summary>
+        /// <summary>Configures log4net using the specified configuration file.</summary>
         /// <param name="configFile">The XML file to load the configuration from.</param>
         /// <remarks>
         /// <para>
@@ -319,9 +309,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        /// <summary>
-        /// Configures log4net using the specified configuration URI.
-        /// </summary>
+        /// <summary>Configures log4net using the specified configuration URI.</summary>
         /// <param name="configUri">A URI to load the XML configuration from.</param>
         /// <remarks>
         /// <para>
@@ -348,9 +336,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        /// <summary>
-        /// Configures log4net using the specified configuration data stream.
-        /// </summary>
+        /// <summary>Configures log4net using the specified configuration data stream.</summary>
         /// <param name="configStream">A stream to load the XML configuration from.</param>
         /// <remarks>
         /// <para>
@@ -901,9 +887,7 @@ namespace log4net.Config
 #endif
 
 #if (!NETCF && !SSCLI)
-        /// <summary>
-        /// Class used to watch config files.
-        /// </summary>
+        /// <summary>Class used to watch config files.</summary>
         /// <remarks>
         /// <para>
         /// Uses the <see cref="FileSystemWatcher"/> to monitor
@@ -919,19 +903,13 @@ namespace log4net.Config
         /// </remarks>
         private sealed class ConfigureAndWatchHandler : IDisposable
         {
-            /// <summary>
-            /// Holds the FileInfo used to configure the XmlConfigurator
-            /// </summary>
+            /// <summary>Holds the FileInfo used to configure the XmlConfigurator</summary>
             private FileInfo m_configFile;
 
-            /// <summary>
-            /// Holds the repository being configured.
-            /// </summary>
+            /// <summary>Holds the repository being configured.</summary>
             private ILoggerRepository m_repository;
 
-            /// <summary>
-            /// The timer used to compress the notification events.
-            /// </summary>
+            /// <summary>The timer used to compress the notification events.</summary>
             private Timer m_timer;
 
             /// <summary>
@@ -987,9 +965,7 @@ namespace log4net.Config
                 this.m_timer = new Timer(new TimerCallback(this.OnWatchedFileChange), null, Timeout.Infinite, Timeout.Infinite);
             }
 
-            /// <summary>
-            /// Event handler used by <see cref="ConfigureAndWatchHandler"/>.
-            /// </summary>
+            /// <summary>Event handler used by <see cref="ConfigureAndWatchHandler"/>.</summary>
             /// <param name="source">The <see cref="FileSystemWatcher"/> firing the event.</param>
             /// <param name="e">The argument indicates the file that caused the event to be fired.</param>
             /// <remarks>
@@ -1006,9 +982,7 @@ namespace log4net.Config
                 this.m_timer.Change(TimeoutMillis, Timeout.Infinite);
             }
 
-            /// <summary>
-            /// Event handler used by <see cref="ConfigureAndWatchHandler"/>.
-            /// </summary>
+            /// <summary>Event handler used by <see cref="ConfigureAndWatchHandler"/>.</summary>
             /// <param name="source">The <see cref="FileSystemWatcher"/> firing the event.</param>
             /// <param name="e">The argument indicates the file that caused the event to be fired.</param>
             /// <remarks>
@@ -1025,18 +999,14 @@ namespace log4net.Config
                 this.m_timer.Change(TimeoutMillis, Timeout.Infinite);
             }
 
-            /// <summary>
-            /// Called by the timer when the configuration has been updated.
-            /// </summary>
+            /// <summary>Called by the timer when the configuration has been updated.</summary>
             /// <param name="state">null</param>
             private void OnWatchedFileChange(object state)
             {
                 InternalConfigure(this.m_repository, this.m_configFile);
             }
 
-            /// <summary>
-            /// Release the handles held by the watcher and timer.
-            /// </summary>
+            /// <summary>Release the handles held by the watcher and timer.</summary>
 #if NET_4_0 || MONO_4_0 || NETSTANDARD
             [System.Security.SecuritySafeCritical]
 #endif
@@ -1049,9 +1019,7 @@ namespace log4net.Config
         }
 #endif
 
-        /// <summary>
-        /// Configures the specified repository using a <c>log4net</c> element.
-        /// </summary>
+        /// <summary>Configures the specified repository using a <c>log4net</c> element.</summary>
         /// <param name="repository">The hierarchy to configure.</param>
         /// <param name="element">The element to parse.</param>
         /// <remarks>
@@ -1108,9 +1076,7 @@ namespace log4net.Config
         /// </summary>
         private static readonly Hashtable m_repositoryName2ConfigAndWatchHandler = new Hashtable();
 
-        /// <summary>
-        /// The fully qualified type of the XmlConfigurator class.
-        /// </summary>
+        /// <summary>The fully qualified type of the XmlConfigurator class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

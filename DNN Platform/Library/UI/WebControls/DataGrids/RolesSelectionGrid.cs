@@ -23,9 +23,9 @@ namespace DotNetNuke.UI.WebControls
 
     public class RolesSelectionGrid : Control, INamingContainer
     {
-        private readonly DataTable _dtRoleSelections = new DataTable();
-        private IList<RoleInfo> _roles;
-        private IList<string> _selectedRoles;
+        private readonly DataTable dtRoleSelections = new DataTable();
+        private IList<RoleInfo> roles;
+        private IList<string> selectedRoles;
         private DropDownList cboRoleGroups;
         private DataGrid dgRoleSelection;
         private Label lblGroups;
@@ -126,9 +126,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets list of the Names of the selected Roles.
-        /// </summary>
+        /// <summary>Gets or sets list of the Names of the selected Roles.</summary>
         public ArrayList SelectedRoleNames
         {
             get
@@ -143,14 +141,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and Sets the ResourceFile to localize permissions.
-        /// </summary>
+        /// <summary>Gets or sets the ResourceFile to localize permissions.</summary>
         public string ResourceFile { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role.</summary>
         public bool ShowUnauthenticatedUsers
         {
             get
@@ -169,9 +163,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role.</summary>
         public bool ShowAllUsers
         {
             get
@@ -190,11 +182,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private DataTable dtRolesSelection
+        private DataTable DtRolesSelection
         {
             get
             {
-                return this._dtRoleSelections;
+                return this.dtRoleSelections;
             }
         }
 
@@ -202,18 +194,16 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._selectedRoles ?? (this._selectedRoles = new List<string>());
+                return this.selectedRoles ?? (this.selectedRoles = new List<string>());
             }
 
             set
             {
-                this._selectedRoles = value;
+                this.selectedRoles = value;
             }
         }
 
-        /// <summary>
-        /// Load the ViewState.
-        /// </summary>
+        /// <summary>Load the ViewState.</summary>
         /// <param name="savedState">The saved state.</param>
         protected override void LoadViewState(object savedState)
         {
@@ -239,10 +229,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Saves the ViewState.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         protected override object SaveViewState()
         {
             var allStates = new object[2];
@@ -271,16 +258,14 @@ namespace DotNetNuke.UI.WebControls
             return allStates;
         }
 
-        /// <summary>
-        /// Creates the Child Controls.
-        /// </summary>
+        /// <summary>Creates the Child Controls.</summary>
         protected override void CreateChildControls()
         {
             this.pnlRoleSlections = new Panel { CssClass = "dnnRolesGrid" };
 
             // Optionally Add Role Group Filter
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            ArrayList arrGroups = RoleController.GetRoleGroups(_portalSettings.PortalId);
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            ArrayList arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
             if (arrGroups.Count > 0)
             {
                 this.lblGroups = new Label { Text = Localization.GetString("RoleGroupFilter") };
@@ -314,20 +299,16 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.pnlRoleSlections);
         }
 
-        /// <summary>
-        /// Overrides the base OnPreRender method to Bind the Grid to the Permissions.
-        /// </summary>
+        /// <summary>Overrides the base OnPreRender method to Bind the Grid to the Permissions.</summary>
         protected override void OnPreRender(EventArgs e)
         {
             this.BindData();
         }
 
-        /// <summary>
-        /// Updates a Selection.
-        /// </summary>
+        /// <summary>Updates a Selection.</summary>
         /// <param name="roleName">The name of the role.</param>
-        /// <param name="Selected"></param>
-        protected virtual void UpdateSelection(string roleName, bool Selected)
+        /// <param name="selected"></param>
+        protected virtual void UpdateSelection(string roleName, bool selected)
         {
             var isMatch = false;
             foreach (string currentRoleName in this.CurrentRoleSelection)
@@ -335,7 +316,7 @@ namespace DotNetNuke.UI.WebControls
                 if (currentRoleName == roleName)
                 {
                     // role is in collection
-                    if (!Selected)
+                    if (!selected)
                     {
                         // Remove from collection as we only keep selected roles
                         this.CurrentRoleSelection.Remove(currentRoleName);
@@ -347,15 +328,13 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Rolename not found so add new
-            if (!isMatch && Selected)
+            if (!isMatch && selected)
             {
                 this.CurrentRoleSelection.Add(roleName);
             }
         }
 
-        /// <summary>
-        /// Updates the Selections.
-        /// </summary>
+        /// <summary>Updates the Selections.</summary>
         protected void UpdateSelections()
         {
             this.EnsureChildControls();
@@ -363,9 +342,7 @@ namespace DotNetNuke.UI.WebControls
             this.UpdateRoleSelections();
         }
 
-        /// <summary>
-        /// Updates the permissions.
-        /// </summary>
+        /// <summary>Updates the permissions.</summary>
         protected void UpdateRoleSelections()
         {
             if (this.dgRoleSelection != null)
@@ -382,9 +359,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Bind the data to the controls.
-        /// </summary>
+        /// <summary>Bind the data to the controls.</summary>
         private void BindData()
         {
             this.EnsureChildControls();
@@ -392,41 +367,39 @@ namespace DotNetNuke.UI.WebControls
             this.BindRolesGrid();
         }
 
-        /// <summary>
-        /// Bind the Roles data to the Grid.
-        /// </summary>
+        /// <summary>Bind the Roles data to the Grid.</summary>
         private void BindRolesGrid()
         {
-            this.dtRolesSelection.Columns.Clear();
-            this.dtRolesSelection.Rows.Clear();
+            this.DtRolesSelection.Columns.Clear();
+            this.DtRolesSelection.Rows.Clear();
 
             // Add Roles Column
             var col = new DataColumn("RoleId", typeof(string));
-            this.dtRolesSelection.Columns.Add(col);
+            this.DtRolesSelection.Columns.Add(col);
 
             // Add Roles Column
             col = new DataColumn("RoleName", typeof(string));
-            this.dtRolesSelection.Columns.Add(col);
+            this.DtRolesSelection.Columns.Add(col);
 
             // Add Selected Column
             col = new DataColumn("Selected", typeof(bool));
-            this.dtRolesSelection.Columns.Add(col);
+            this.DtRolesSelection.Columns.Add(col);
 
             this.GetRoles();
 
             this.UpdateRoleSelections();
-            for (int i = 0; i <= this._roles.Count - 1; i++)
+            for (int i = 0; i <= this.roles.Count - 1; i++)
             {
-                var role = this._roles[i];
-                DataRow row = this.dtRolesSelection.NewRow();
+                var role = this.roles[i];
+                DataRow row = this.DtRolesSelection.NewRow();
                 row["RoleId"] = role.RoleID;
                 row["RoleName"] = Localization.LocalizeRole(role.RoleName);
                 row["Selected"] = this.GetSelection(role.RoleName);
 
-                this.dtRolesSelection.Rows.Add(row);
+                this.DtRolesSelection.Rows.Add(row);
             }
 
-            this.dgRoleSelection.DataSource = this.dtRolesSelection;
+            this.dgRoleSelection.DataSource = this.DtRolesSelection;
             this.dgRoleSelection.DataBind();
         }
 
@@ -435,9 +408,7 @@ namespace DotNetNuke.UI.WebControls
             return this.CurrentRoleSelection.Any(r => r == roleName);
         }
 
-        /// <summary>
-        /// Gets the roles from the Database and loads them into the Roles property.
-        /// </summary>
+        /// <summary>Gets the roles from the Database and loads them into the Roles property.</summary>
         private void GetRoles()
         {
             int roleGroupId = -2;
@@ -446,7 +417,7 @@ namespace DotNetNuke.UI.WebControls
                 roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue);
             }
 
-            this._roles = roleGroupId > -2
+            this.roles = roleGroupId > -2
                     ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
                     : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
@@ -454,21 +425,19 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (this.ShowUnauthenticatedUsers)
                 {
-                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
                 }
 
                 if (this.ShowAllUsers)
                 {
-                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
                 }
             }
 
-            this._roles = this._roles.OrderBy(r => r.RoleName).ToList();
+            this.roles = this.roles.OrderBy(r => r.RoleName).ToList();
         }
 
-        /// <summary>
-        /// Sets up the columns for the Grid.
-        /// </summary>
+        /// <summary>Sets up the columns for the Grid.</summary>
         private void SetUpRolesGrid()
         {
             this.dgRoleSelection.Columns.Clear();

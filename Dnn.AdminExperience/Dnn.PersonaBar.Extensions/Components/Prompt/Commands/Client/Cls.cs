@@ -14,12 +14,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     using DotNetNuke.Services.Localization;
 
     [ConsoleCommand("cls", Constants.GeneralCategory, "Prompt_Cls_Description")]
+
     public class Cls : IConsoleCommand
     {
+        /// <inheritdoc/>
         public string LocalResourceFile => Constants.LocalResourcesFile;
 
+        /// <inheritdoc/>
         public string ResultHtml => Localization.GetString("Prompt_Cls_ResultHtml", this.LocalResourceFile);
 
+        /// <inheritdoc/>
         public string ValidationMessage
         {
             get
@@ -28,16 +32,19 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
             }
         }
 
+        /// <inheritdoc/>
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool IsValid()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ConsoleResultModel Run()
         {
             throw new NotImplementedException();

@@ -38,9 +38,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public abstract class TextWriterAdapter : TextWriter
     {
-        /// <summary>
-        /// The writer to forward messages to
-        /// </summary>
+        /// <summary>The writer to forward messages to</summary>
         private TextWriter m_writer;
 
         /// <summary>
@@ -59,9 +57,7 @@ namespace log4net.Util
             this.m_writer = writer;
         }
 
-        /// <summary>
-        /// Gets or sets the underlying <see cref="TextWriter" />.
-        /// </summary>
+        /// <summary>Gets or sets the underlying <see cref="TextWriter" />.</summary>
         /// <value>
         /// The underlying <see cref="TextWriter" />.
         /// </value>
@@ -76,9 +72,7 @@ namespace log4net.Util
             set { this.m_writer = value; }
         }
 
-        /// <summary>
-        /// The Encoding in which the output is written
-        /// </summary>
+        /// <summary>The Encoding in which the output is written</summary>
         /// <value>
         /// The <see cref="Encoding"/>
         /// </value>
@@ -92,9 +86,7 @@ namespace log4net.Util
             get { return this.m_writer.Encoding; }
         }
 
-        /// <summary>
-        /// Gets an object that controls formatting
-        /// </summary>
+        /// <summary>Gets an object that controls formatting</summary>
         /// <value>
         /// The format provider
         /// </value>
@@ -108,9 +100,7 @@ namespace log4net.Util
             get { return this.m_writer.FormatProvider; }
         }
 
-        /// <summary>
-        /// Gets or sets the line terminator string used by the TextWriter
-        /// </summary>
+        /// <summary>Gets or sets the line terminator string used by the TextWriter</summary>
         /// <value>
         /// The line terminator to use
         /// </value>
@@ -125,9 +115,7 @@ namespace log4net.Util
             set { this.m_writer.NewLine = value; }
         }
 
-        /// <summary>
-        /// Closes the writer and releases any system resources associated with the writer
-        /// </summary>
+        /// <summary>Closes the writer and releases any system resources associated with the writer</summary>
         /// <remarks>
         /// <para>
         /// </para>
@@ -142,9 +130,7 @@ namespace log4net.Util
             this.m_writer.Close();
         }
 
-        /// <summary>
-        /// Dispose this writer
-        /// </summary>
+        /// <summary>Dispose this writer</summary>
         /// <param name="disposing">flag indicating if we are being disposed</param>
         /// <remarks>
         /// <para>
@@ -159,9 +145,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Flushes any buffered output
-        /// </summary>
+        /// <summary>Flushes any buffered output</summary>
         /// <remarks>
         /// <para>
         /// Clears all buffers for the writer and causes any buffered data to be written 
@@ -173,9 +157,7 @@ namespace log4net.Util
             this.m_writer.Flush();
         }
 
-        /// <summary>
-        /// Writes a character to the wrapped TextWriter
-        /// </summary>
+        /// <summary>Writes a character to the wrapped TextWriter</summary>
         /// <param name="value">the value to write to the TextWriter</param>
         /// <remarks>
         /// <para>
@@ -187,9 +169,7 @@ namespace log4net.Util
             this.m_writer.Write(value);
         }
     
-        /// <summary>
-        /// Writes a character buffer to the wrapped TextWriter
-        /// </summary>
+        /// <summary>Writes a character buffer to the wrapped TextWriter</summary>
         /// <param name="buffer">the data buffer</param>
         /// <param name="index">the start index</param>
         /// <param name="count">the number of characters to write</param>
@@ -203,9 +183,7 @@ namespace log4net.Util
             this.m_writer.Write(buffer, index, count);
         }
     
-        /// <summary>
-        /// Writes a string to the wrapped TextWriter
-        /// </summary>
+        /// <summary>Writes a string to the wrapped TextWriter</summary>
         /// <param name="value">the value to write to the TextWriter</param>
         /// <remarks>
         /// <para>

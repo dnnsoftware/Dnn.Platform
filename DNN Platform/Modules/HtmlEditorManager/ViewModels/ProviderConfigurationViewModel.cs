@@ -6,9 +6,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.ViewModels
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Model for provider configuration.
-    /// </summary>
+    /// <summary>Model for provider configuration.</summary>
     public class ProviderConfigurationViewModel
     {
         /// <summary>Gets or sets the editors.</summary>

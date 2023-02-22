@@ -24,18 +24,19 @@ namespace Dnn.PersonaBar.Library.Controllers
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(PersonaBarController));
 
-        private readonly IPersonaBarRepository _personaBarRepository;
+        private readonly IPersonaBarRepository personaBarRepository;
 
         public PersonaBarController()
         {
-            this._personaBarRepository = PersonaBarRepository.Instance;
+            this.personaBarRepository = PersonaBarRepository.Instance;
         }
 
+        /// <inheritdoc/>
         public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
         {
             try
             {
-                var personaBarMenu = this._personaBarRepository.GetMenu();
+                var personaBarMenu = this.personaBarRepository.GetMenu();
                 var filteredMenu = new PersonaBarMenu();
                 var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
                 this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
@@ -50,6 +51,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
+        /// <inheritdoc/>
         public bool IsVisible(PortalSettings portalSettings, UserInfo user, MenuItem menuItem)
         {
             var visible = menuItem.Enabled
@@ -73,6 +75,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return visible;
         }
 
+        /// <inheritdoc/>
         protected override Func<IPersonaBarController> GetFactory()
         {
             return () => new PersonaBarController();
@@ -111,15 +114,15 @@ namespace Dnn.PersonaBar.Library.Controllers
                     this.UpdateParamters(cloneItem);
                     cloneItem.Settings = this.GetMenuSettings(menuItem);
 
-                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
-                        menuItem.Children);
+                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
                     if (!filtered || cloneItem.Children.Count > 0)
                     {
                         filterItems.Add(cloneItem);
                     }
                 }
-                catch (Exception e) // Ignore the failure and still load personaBar
+                catch (Exception e)
                 {
+                    // Ignore the failure and still load personaBar
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
                 }
             }

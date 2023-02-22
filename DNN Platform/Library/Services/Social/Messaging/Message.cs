@@ -12,113 +12,86 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging
     /// Class:      Messages
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Message class describes the content of messages sent via the system
     /// As messaging is system wide process and there may be no portalID context (e.g. a host messaging "all users") the object does not tie to portalID.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class Message : BaseEntityInfo, IHydratable
     {
-        private int _messageID = -1;
-        private string _displayDate;
+        private int messageID = -1;
+        private string displayDate;
 
-        /// <summary>
-        /// Gets a pretty printed string with the time since the message was created.
-        /// </summary>
+        /// <summary>Gets a pretty printed string with the time since the message was created.</summary>
         [XmlAttribute]
         public string DisplayDate
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayDate))
+                if (string.IsNullOrEmpty(this.displayDate))
                 {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
+                    this.displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
 
-                return this._displayDate;
+                return this.displayDate;
             }
         }
 
-        /// <summary>
-        /// Gets or sets messageID - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets messageID - The primary key.</summary>
         [XmlAttribute]
         public int MessageID
         {
             get
             {
-                return this._messageID;
+                return this.messageID;
             }
 
             set
             {
-                this._messageID = value;
+                this.messageID = value;
             }
         }
 
-        /// <summary>
-        /// Gets or sets portalID for the message.
-        /// </summary>
+        /// <summary>Gets or sets portalID for the message.</summary>
         [XmlAttribute]
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message.
-        /// </summary>
+        /// <summary>Gets or sets to list for the message. This information is saved for faster display of To list in the message.</summary>
         [XmlAttribute]
         public string To { get; set; }
 
-        /// <summary>
-        /// Gets or sets message From.
-        /// </summary>
+        /// <summary>Gets or sets message From.</summary>
         [XmlAttribute]
         public string From { get; set; }
 
-        /// <summary>
-        /// Gets or sets message Subject.
-        /// </summary>
+        /// <summary>Gets or sets message Subject.</summary>
         [XmlAttribute]
         public string Subject { get; set; }
 
-        /// <summary>
-        /// Gets or sets message body.
-        /// </summary>
+        /// <summary>Gets or sets message body.</summary>
         [XmlAttribute]
         public string Body { get; set; }
 
-        /// <summary>
-        /// Gets or sets conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId.
-        /// </summary>
+        /// <summary>Gets or sets conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId.</summary>
         [XmlAttribute]
         public int ConversationId { get; set; }
 
-        /// <summary>
-        /// Gets or sets notificationType ID of the Message. Each message is associated with a notification type.
-        /// </summary>
+        /// <summary>Gets or sets notificationType ID of the Message. Each message is associated with a notification type.</summary>
         [XmlAttribute]
         public int NotificationTypeID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether replyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether replyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender.</summary>
         [XmlAttribute]
         public bool ReplyAllAllowed { get; set; }
 
-        /// <summary>
-        /// Gets or sets the UserID of the sender of the message.
-        /// </summary>
+        /// <summary>Gets or sets the UserID of the sender of the message.</summary>
         [XmlAttribute]
         public int SenderUserID { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -134,9 +107,7 @@ namespace DotNetNuke.Services.Social.Messaging
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

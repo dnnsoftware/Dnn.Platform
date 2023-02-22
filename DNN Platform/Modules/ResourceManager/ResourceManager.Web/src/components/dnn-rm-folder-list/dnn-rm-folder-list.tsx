@@ -1,4 +1,4 @@
-import { Component, Host, h, State, Listen, Event, EventEmitter } from '@stencil/core';
+import { Component, Element, Host, h, State, Listen, Event, EventEmitter } from '@stencil/core';
 import { FolderTreeItem, InternalServicesClient } from "../../services/InternalServicesClient";
 import { ItemsClient } from "../../services/ItemsClient";
 import { GetFolderContentResponse } from "../../services/ItemsClient";
@@ -13,9 +13,13 @@ export class DnnRmFolderList {
 
   /** Fires when a folder is picked. */
   @Event() dnnRmFolderListFolderPicked: EventEmitter<FolderTreeItem>;
+  /** Fires when a context menu is opened for this item. Emits the folder ID. */
+  @Event() dnnRmcontextMenuOpened: EventEmitter<number>;
 
   @State() folderContents: GetFolderContentResponse;
   @State() selectedFolder: FolderTreeItem;
+
+  @Element() el!: HTMLDnnRmFolderListElement;
   
   private internalServicesClient: InternalServicesClient;
   private itemsClient: ItemsClient;
@@ -30,23 +34,41 @@ export class DnnRmFolderList {
     this.getFolders();
   }
 
+  @Listen("dnnRmcontextMenuOpened", {target: "body"})
+  handleDnnRmContextMenuOpened(e: CustomEvent<number>){
+    if (state.settings.HomeFolderId != e.detail){
+      this.dismissContextMenu();
+    }
+  }
+
   componentWillLoad() {
     this.getFolders()
     .then(() => {
       this.itemsClient.getFolderContent(
-        Number.parseInt(state.rootFolders.Tree.children[0].data.key),
+        state.settings.HomeFolderId,
         0,
         state.pageSize,
         state.sortField)
       .then(data => state.currentItems = data)
       .catch(error => console.error(error));
     })
-    .catch(error => alert(error.Message));
+    .catch(error => {
+      console.error(error);
+      if (error.Message){
+        alert(error.Message);
+      }
+    });
+      
+  }
+
+  private dismissContextMenu() {
+    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
+    existingMenus?.forEach(contextMenu => this.el.shadowRoot.removeChild(contextMenu));
   }
 
   private getFolders() {
     return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders()
+      this.internalServicesClient.getFolders(state.settings.HomeFolderId)
       .then(data => {
         state.rootFolders = data;
         resolve(data);
@@ -60,14 +82,52 @@ export class DnnRmFolderList {
     this.dnnRmFolderListFolderPicked.emit(e.detail)
   }
 
+  private handleRootClicked(){
+    const item: FolderTreeItem = {
+      data: {
+        hasChildren: false,
+        key: state.settings.HomeFolderId.toString(),
+        selectable: true,
+        value: state.settings.HomeFolderName,
+      },
+    };
+    this.selectedFolder = item;
+    this.dnnRmFolderListFolderPicked.emit(item);
+  }
+
+  private handleContextMenu(e: MouseEvent): void {
+    e.preventDefault();
+    this.itemsClient.getFolderItem(state.settings.HomeFolderId)
+    .then(item => {
+      const collapsible = document.createElement("dnn-collapsible");
+      const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
+      collapsible.appendChild(folderContextMenu);
+      folderContextMenu.item = item;
+      collapsible.style.left = `${e.pageX}px`;
+      collapsible.style.top = `${e.pageY}px`;
+      collapsible.style.display = "block";
+      this.el.shadowRoot.appendChild(collapsible);
+      setTimeout(() => {
+        collapsible.expanded = true;
+      }, 100);
+      this.dnnRmcontextMenuOpened.emit(state.settings.HomeFolderId);
+    })
+    .catch(reason => console.error(reason));
+  }
+
   render() {
     return (
       <Host>
+        <button
+          onClick={() => this.handleRootClicked()}
+          onContextMenu={e => this.handleContextMenu(e)}
+        >
+          <strong>{state.settings.HomeFolderName}</strong>
+        </button>
         {state.rootFolders && state.rootFolders.Tree.children.map(item =>
             <dnn-rm-folder-list-item
               folder={item}
               parentFolderId={Number.parseInt(state.rootFolders.Tree.data.key)}
-              expanded
               onDnnRmFolderListItemClicked={e => this.handleFolderPicked(e)}
               selectedFolder={this.selectedFolder}
             >

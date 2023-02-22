@@ -19,8 +19,10 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class AddExistingModuleMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "AddExistingModule";
 
+        /// <inheritdoc/>
         public override string Text
         {
             get
@@ -29,6 +31,7 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string CssClass
         {
             get
@@ -37,14 +40,19 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string Template { get; } = string.Empty;
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "AddExistingModule";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 10;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit;

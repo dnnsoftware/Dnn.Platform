@@ -10,39 +10,32 @@ namespace DotNetNuke.Services.Messaging.Data
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Info class for Messaging.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  The Info class for Messaging.</summary>
     [Serializable]
     public class Message : IHydratable
     {
-        private string _Body;
-        private Guid _Conversation;
-        private bool _EmailSent;
-        private int _FromUserID;
-        private string _FromUserName;
-        private DateTime _MessageDate;
-        private int _MessageID;
-        private int _PortalID;
-        private int _ReplyTo;
-        private MessageStatusType _Status;
-        private string _Subject;
-        private int _ToRoleId;
-        private int _ToUserID;
-        private string _ToUserName;
+        private string body;
+        private Guid conversation;
+        private bool emailSent;
+        private int fromUserID;
+        private string fromUserName;
+        private DateTime messageDate;
+        private int messageID;
+        private int portalID;
+        private int replyTo;
+        private MessageStatusType status;
+        private string subject;
+        private int toRoleId;
+        private int toUserID;
+        private string toUserName;
 
-        private bool _allowReply;
-        private bool _skipInbox;
+        private bool allowReply;
+        private bool skipInbox;
 
-        private Guid _EmailSchedulerInstance;
-        private DateTime _EmailSentDate;
+        private Guid emailSchedulerInstance;
+        private DateTime emailSentDate;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Message"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Message"/> class.</summary>
         public Message()
         {
             this.Conversation = Guid.Empty;
@@ -54,12 +47,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._FromUserName;
+                return this.fromUserName;
             }
 
             private set
             {
-                this._FromUserName = value;
+                this.fromUserName = value;
             }
         }
 
@@ -67,12 +60,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._FromUserID;
+                return this.fromUserID;
             }
 
             set
             {
-                this._FromUserID = value;
+                this.fromUserID = value;
             }
         }
 
@@ -80,12 +73,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._ToRoleId;
+                return this.toRoleId;
             }
 
             set
             {
-                this._ToRoleId = value;
+                this.toRoleId = value;
             }
         }
 
@@ -93,12 +86,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._allowReply;
+                return this.allowReply;
             }
 
             set
             {
-                this._allowReply = value;
+                this.allowReply = value;
             }
         }
 
@@ -106,12 +99,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._skipInbox;
+                return this.skipInbox;
             }
 
             set
             {
-                this._skipInbox = value;
+                this.skipInbox = value;
             }
         }
 
@@ -119,12 +112,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._EmailSent;
+                return this.emailSent;
             }
 
             set
             {
-                this._EmailSent = value;
+                this.emailSent = value;
             }
         }
 
@@ -132,12 +125,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._Body;
+                return this.body;
             }
 
             set
             {
-                this._Body = value;
+                this.body = value;
             }
         }
 
@@ -145,12 +138,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._MessageDate;
+                return this.messageDate;
             }
 
             set
             {
-                this._MessageDate = value;
+                this.messageDate = value;
             }
         }
 
@@ -158,12 +151,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._Conversation;
+                return this.conversation;
             }
 
             set
             {
-                this._Conversation = value;
+                this.conversation = value;
             }
         }
 
@@ -171,12 +164,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._MessageID;
+                return this.messageID;
             }
 
             private set
             {
-                this._MessageID = value;
+                this.messageID = value;
             }
         }
 
@@ -184,12 +177,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._PortalID;
+                return this.portalID;
             }
 
             set
             {
-                this._PortalID = value;
+                this.portalID = value;
             }
         }
 
@@ -197,12 +190,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._ReplyTo;
+                return this.replyTo;
             }
 
             private set
             {
-                this._ReplyTo = value;
+                this.replyTo = value;
             }
         }
 
@@ -210,12 +203,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._Status;
+                return this.status;
             }
 
             set
             {
-                this._Status = value;
+                this.status = value;
             }
         }
 
@@ -224,14 +217,14 @@ namespace DotNetNuke.Services.Messaging.Data
             get
             {
                 var ps = PortalSecurity.Instance;
-                return ps.InputFilter(this._Subject, PortalSecurity.FilterFlag.NoMarkup);
+                return ps.InputFilter(this.subject, PortalSecurity.FilterFlag.NoMarkup);
             }
 
             set
             {
                 var ps = PortalSecurity.Instance;
                 ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-                this._Subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this.subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -239,12 +232,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._ToUserID;
+                return this.toUserID;
             }
 
             set
             {
-                this._ToUserID = value;
+                this.toUserID = value;
             }
         }
 
@@ -252,12 +245,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._ToUserName;
+                return this.toUserName;
             }
 
             private set
             {
-                this._ToUserName = value;
+                this.toUserName = value;
             }
         }
 
@@ -265,12 +258,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._EmailSentDate;
+                return this.emailSentDate;
             }
 
             private set
             {
-                this._EmailSentDate = value;
+                this.emailSentDate = value;
             }
         }
 
@@ -278,12 +271,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return this._EmailSchedulerInstance;
+                return this.emailSchedulerInstance;
             }
 
             private set
             {
-                this._EmailSchedulerInstance = value;
+                this.emailSchedulerInstance = value;
             }
         }
 

@@ -17,9 +17,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     {
         private readonly IApplicationStatusInfo applicationStatusInfo;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlStepBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlStepBase"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
@@ -37,9 +35,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         [Required]
         public virtual string RelativeFilePath { get; set; }
 
-        /// <summary>
-        /// Gets the <see cref="XmlNamespaceManager"/> instance associated with the XML document.
-        /// </summary>
+        /// <summary>Gets the <see cref="XmlNamespaceManager"/> instance associated with the XML document.</summary>
         protected XmlNamespaceManager NamespaceManager { get; private set; }
 
         /// <inheritdoc/>
@@ -61,16 +57,12 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             }
         }
 
-        /// <summary>
-        /// Provides an opportunity for derived classes to configure the namespace manager.
-        /// </summary>
+        /// <summary>Provides an opportunity for derived classes to configure the namespace manager.</summary>
         protected virtual void ConfigureNamespaceManager()
         {
         }
 
-        /// <summary>
-        /// Performs the actual processing of the XML document.
-        /// </summary>
+        /// <summary>Performs the actual processing of the XML document.</summary>
         /// <param name="doc">The XML document to process.</param>
         protected abstract void ProcessXml(XmlDocument doc);
     }

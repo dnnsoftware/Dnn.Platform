@@ -27,15 +27,10 @@ namespace DotNetNuke.Common.Utilities
         Tab = 3,
     }
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Common.Utilities
     /// Class:      DataCache
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The DataCache class is a facade class for the CachingProvider Instance's.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The DataCache class is a facade class for the CachingProvider Instance's.</summary>
     public class DataCache
     {
         // Host keys
@@ -311,34 +306,34 @@ namespace DotNetNuke.Common.Utilities
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
 
-        private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
-        private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
+        private static readonly ReaderWriterLockSlim DictionaryLock = new ReaderWriterLockSlim();
+        private static readonly Dictionary<string, object> LockDictionary = new Dictionary<string, object>();
 
-        private static readonly SharedDictionary<string, object> dictionaryCache = new SharedDictionary<string, object>();
+        private static readonly SharedDictionary<string, object> DictionaryCache = new SharedDictionary<string, object>();
 
-        private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
+        private static readonly TimeSpan FiveSeconds = new TimeSpan(0, 0, 5);
 
-        private static string _CachePersistenceEnabled = string.Empty;
+        private static string cachePersistenceEnabled = string.Empty;
 
         public static bool CachePersistenceEnabled
         {
             get
             {
-                if (string.IsNullOrEmpty(_CachePersistenceEnabled))
+                if (string.IsNullOrEmpty(cachePersistenceEnabled))
                 {
-                    _CachePersistenceEnabled = Config.GetSetting("EnableCachePersistence") ?? "false";
+                    cachePersistenceEnabled = Config.GetSetting("EnableCachePersistence") ?? "false";
                 }
 
-                return bool.Parse(_CachePersistenceEnabled);
+                return bool.Parse(cachePersistenceEnabled);
             }
         }
 
         public static void ClearCache()
         {
             CachingProvider.Instance().Clear("Prefix", "DNN_");
-            using (dictionaryCache.GetWriteLock())
+            using (DictionaryCache.GetWriteLock())
             {
-                dictionaryCache.Clear();
+                DictionaryCache.Clear();
             }
 
             // log the cache clear event
@@ -352,14 +347,14 @@ namespace DotNetNuke.Common.Utilities
             CachingProvider.Instance().Clear("Prefix", GetDnnCacheKey(cachePrefix));
         }
 
-        public static void ClearFolderCache(int PortalId)
+        public static void ClearFolderCache(int portalId)
         {
-            CachingProvider.Instance().Clear("Folder", PortalId.ToString());
+            CachingProvider.Instance().Clear("Folder", portalId.ToString());
         }
 
-        public static void ClearHostCache(bool Cascade)
+        public static void ClearHostCache(bool cascade)
         {
-            if (Cascade)
+            if (cascade)
             {
                 ClearCache();
             }
@@ -369,46 +364,46 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        public static void ClearModuleCache(int TabId)
+        public static void ClearModuleCache(int tabId)
         {
-            CachingProvider.Instance().Clear("Module", TabId.ToString());
+            CachingProvider.Instance().Clear("Module", tabId.ToString());
             Dictionary<int, int> portals = PortalController.GetPortalDictionary();
-            if (portals.ContainsKey(TabId))
+            if (portals.ContainsKey(tabId))
             {
-                Hashtable tabSettings = TabController.Instance.GetTabSettings(TabId);
+                Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId);
                 if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
                 {
                     OutputCachingProvider outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
                     if (outputProvider != null)
                     {
-                        outputProvider.Remove(TabId);
+                        outputProvider.Remove(tabId);
                     }
                 }
 
-                var portalId = portals[TabId];
+                var portalId = portals[tabId];
                 RemoveCache(string.Format(SharedModulesByPortalCacheKey, portalId));
                 RemoveCache(string.Format(SharedModulesWithPortalCacheKey, portalId));
             }
         }
 
-        public static void ClearModulePermissionsCachesByPortal(int PortalId)
+        public static void ClearModulePermissionsCachesByPortal(int portalId)
         {
-            CachingProvider.Instance().Clear("ModulePermissionsByPortal", PortalId.ToString());
+            CachingProvider.Instance().Clear("ModulePermissionsByPortal", portalId.ToString());
         }
 
-        public static void ClearPortalCache(int PortalId, bool Cascade)
+        public static void ClearPortalCache(int portalId, bool cascade)
         {
-            CachingProvider.Instance().Clear(Cascade ? "PortalCascade" : "Portal", PortalId.ToString());
+            CachingProvider.Instance().Clear(cascade ? "PortalCascade" : "Portal", portalId.ToString());
         }
 
-        public static void ClearTabsCache(int PortalId)
+        public static void ClearTabsCache(int portalId)
         {
-            CachingProvider.Instance().Clear("Tab", PortalId.ToString());
+            CachingProvider.Instance().Clear("Tab", portalId.ToString());
         }
 
-        public static void ClearDefinitionsCache(int PortalId)
+        public static void ClearDefinitionsCache(int portalId)
         {
-            RemoveCache(string.Format(ProfileDefinitionsCacheKey, PortalId));
+            RemoveCache(string.Format(ProfileDefinitionsCacheKey, portalId));
         }
 
         public static void ClearDesktopModulePermissionsCache()
@@ -416,37 +411,37 @@ namespace DotNetNuke.Common.Utilities
             RemoveCache(DesktopModulePermissionCacheKey);
         }
 
-        public static void ClearFolderPermissionsCache(int PortalId)
+        public static void ClearFolderPermissionsCache(int portalId)
         {
             PermissionProvider.ResetCacheDependency(
-                PortalId,
-                () => RemoveCache(string.Format(FolderPermissionCacheKey, PortalId)));
+                portalId,
+                () => RemoveCache(string.Format(FolderPermissionCacheKey, portalId)));
         }
 
-        public static void ClearListsCache(int PortalId)
+        public static void ClearListsCache(int portalId)
         {
-            RemoveCache(string.Format(ListsCacheKey, PortalId));
+            RemoveCache(string.Format(ListsCacheKey, portalId));
         }
 
-        public static void ClearModulePermissionsCache(int TabId)
+        public static void ClearModulePermissionsCache(int tabId)
         {
-            RemoveCache(string.Format(ModulePermissionCacheKey, TabId));
+            RemoveCache(string.Format(ModulePermissionCacheKey, tabId));
         }
 
-        public static void ClearTabPermissionsCache(int PortalId)
+        public static void ClearTabPermissionsCache(int portalId)
         {
-            RemoveCache(string.Format(TabPermissionCacheKey, PortalId));
+            RemoveCache(string.Format(TabPermissionCacheKey, portalId));
         }
 
-        public static void ClearPortalPermissionsCache(int PortalId)
+        public static void ClearPortalPermissionsCache(int portalId)
         {
-            RemoveCache(string.Format(PortalPermissionCacheKey, PortalId));
+            RemoveCache(string.Format(PortalPermissionCacheKey, portalId));
         }
 
-        public static void ClearUserCache(int PortalId, string username)
+        public static void ClearUserCache(int portalId, string username)
         {
-            RemoveCache(string.Format(UserCacheKey, PortalId, username));
-            RemoveCache(string.Format(UserProfileCacheKey, PortalId, username));
+            RemoveCache(string.Format(UserCacheKey, portalId, username));
+            RemoveCache(string.Format(UserProfileCacheKey, portalId, username));
         }
 
         public static void ClearPortalUserCountCache(int portalID)
@@ -470,9 +465,9 @@ namespace DotNetNuke.Common.Utilities
             return GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, false);
         }
 
-        public static TObject GetCache<TObject>(string CacheKey)
+        public static TObject GetCache<TObject>(string cacheKey)
         {
-            object objObject = GetCache(CacheKey);
+            object objObject = GetCache(cacheKey);
             if (objObject == null)
             {
                 return default(TObject);
@@ -481,61 +476,60 @@ namespace DotNetNuke.Common.Utilities
             return (TObject)objObject;
         }
 
-        public static object GetCache(string CacheKey)
+        public static object GetCache(string cacheKey)
         {
-            return CachingProvider.Instance().GetItem(GetDnnCacheKey(CacheKey));
+            return CachingProvider.Instance().GetItem(GetDnnCacheKey(cacheKey));
         }
 
-        public static void RemoveCache(string CacheKey)
+        public static void RemoveCache(string cacheKey)
         {
-            CachingProvider.Instance().Remove(GetDnnCacheKey(CacheKey));
+            CachingProvider.Instance().Remove(GetDnnCacheKey(cacheKey));
         }
 
-        public static void RemoveFromPrivateDictionary(string DnnCacheKey)
+        public static void RemoveFromPrivateDictionary(string dnnCacheKey)
         {
-            using (dictionaryCache.GetWriteLock())
+            using (DictionaryCache.GetWriteLock())
             {
-                dictionaryCache.Remove(CleanCacheKey(DnnCacheKey));
+                DictionaryCache.Remove(CleanCacheKey(dnnCacheKey));
             }
         }
 
-        public static void SetCache(string CacheKey, object objObject)
+        public static void SetCache(string cacheKey, object objObject)
         {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(cacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency)
+        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency)
         {
-            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(cacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string CacheKey, object objObject, DateTime AbsoluteExpiration)
+        public static void SetCache(string cacheKey, object objObject, DateTime absoluteExpiration)
         {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(cacheKey, objObject, (DNNCacheDependency)null, absoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string CacheKey, object objObject, TimeSpan SlidingExpiration)
+        public static void SetCache(string cacheKey, object objObject, TimeSpan slidingExpiration)
         {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(cacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, slidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration)
+        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency, DateTime absoluteExpiration, TimeSpan slidingExpiration)
         {
-            SetCache(CacheKey, objObject, objDependency, AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(cacheKey, objObject, objDependency, absoluteExpiration, slidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
-                                    CacheItemRemovedCallback OnRemoveCallback)
+        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
             if (objObject != null)
             {
                 // if no OnRemoveCallback value is specified, use the default method
-                if (OnRemoveCallback == null)
+                if (onRemoveCallback == null)
                 {
-                    OnRemoveCallback = ItemRemovedCallback;
+                    onRemoveCallback = ItemRemovedCallback;
                 }
 
-                CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
+                CachingProvider.Instance().Insert(GetDnnCacheKey(cacheKey), objObject, objDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
             }
         }
 
@@ -589,9 +583,9 @@ namespace DotNetNuke.Common.Utilities
             return (TObject)objObject;
         }
 
-        private static string GetDnnCacheKey(string CacheKey)
+        private static string GetDnnCacheKey(string cacheKey)
         {
-            return CachingProvider.GetCacheKey(CacheKey);
+            return CachingProvider.GetCacheKey(cacheKey);
         }
 
         private static string CleanCacheKey(string cacheKey)
@@ -669,9 +663,9 @@ namespace DotNetNuke.Common.Utilities
             object cachedObject;
 
             bool isFound;
-            using (dictionaryCache.GetReadLock())
+            using (DictionaryCache.GetReadLock())
             {
-                isFound = dictionaryCache.TryGetValue(cacheItemArgs.CacheKey, out cachedObject);
+                isFound = DictionaryCache.TryGetValue(cacheItemArgs.CacheKey, out cachedObject);
             }
 
             if (!isFound)
@@ -687,13 +681,13 @@ namespace DotNetNuke.Common.Utilities
                     Exceptions.LogException(ex);
                 }
 
-                using (dictionaryCache.GetWriteLock())
+                using (DictionaryCache.GetWriteLock())
                 {
-                    if (!dictionaryCache.ContainsKey(cacheItemArgs.CacheKey))
+                    if (!DictionaryCache.ContainsKey(cacheItemArgs.CacheKey))
                     {
                         if (cachedObject != null)
                         {
-                            dictionaryCache[cacheItemArgs.CacheKey] = cachedObject;
+                            DictionaryCache[cacheItemArgs.CacheKey] = cachedObject;
                         }
                     }
                 }
@@ -705,41 +699,41 @@ namespace DotNetNuke.Common.Utilities
         private static object GetUniqueLockObject(string key)
         {
             object @lock = null;
-            if (dictionaryLock.TryEnterReadLock(_5seconds))
+            if (DictionaryLock.TryEnterReadLock(FiveSeconds))
             {
                 try
                 {
                     // Try to get lock Object (for key) from Dictionary
-                    if (lockDictionary.ContainsKey(key))
+                    if (LockDictionary.ContainsKey(key))
                     {
-                        @lock = lockDictionary[key];
+                        @lock = LockDictionary[key];
                     }
                 }
                 finally
                 {
-                    dictionaryLock.ExitReadLock();
+                    DictionaryLock.ExitReadLock();
                 }
             }
 
             if (@lock == null)
             {
-                if (dictionaryLock.TryEnterWriteLock(_5seconds))
+                if (DictionaryLock.TryEnterWriteLock(FiveSeconds))
                 {
                     try
                     {
                         // Double check dictionary
-                        if (!lockDictionary.ContainsKey(key))
+                        if (!LockDictionary.ContainsKey(key))
                         {
                             // Create new lock
-                            lockDictionary[key] = new object();
+                            LockDictionary[key] = new object();
                         }
 
                         // Retrieve lock
-                        @lock = lockDictionary[key];
+                        @lock = LockDictionary[key];
                     }
                     finally
                     {
-                        dictionaryLock.ExitWriteLock();
+                        DictionaryLock.ExitWriteLock();
                     }
                 }
             }
@@ -749,7 +743,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static void RemoveUniqueLockObject(string key)
         {
-            if (!dictionaryLock.TryEnterWriteLock(_5seconds))
+            if (!DictionaryLock.TryEnterWriteLock(FiveSeconds))
             {
                 return;
             }
@@ -757,15 +751,15 @@ namespace DotNetNuke.Common.Utilities
             try
             {
                 // check dictionary
-                if (lockDictionary.ContainsKey(key))
+                if (LockDictionary.ContainsKey(key))
                 {
                     // Remove lock
-                    lockDictionary.Remove(key);
+                    LockDictionary.Remove(key);
                 }
             }
             finally
             {
-                dictionaryLock.ExitWriteLock();
+                DictionaryLock.ExitWriteLock();
             }
         }
     }

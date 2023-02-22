@@ -12,17 +12,13 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ListInfo"/> class.</summary>
         public ListInfo()
             : this(string.Empty)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ListInfo"/> class.</summary>
         /// <param name="name">The name of the list.</param>
         public ListInfo(string name)
         {
@@ -67,62 +63,40 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Gets or sets the id of the definition.
-        /// </summary>
+        /// <summary>Gets or sets the id of the definition.</summary>
         public int DefinitionID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to enable the sort order.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to enable the sort order.</summary>
         public bool EnableSortOrder { get; set; }
 
-        /// <summary>
-        /// Gets or sets the total number of entries.
-        /// </summary>
+        /// <summary>Gets or sets the total number of entries.</summary>
         public int EntryCount { get; set; }
 
         /// <summary>Gets or sets a value indicating whether this instance is populated.</summary>
         public bool IsPopulated { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating how deep this list in nested into the hierarchy.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating how deep this list in nested into the hierarchy.</summary>
         public int Level { get; set; }
 
-        /// <summary>
-        /// Gets or sets the list name.
-        /// </summary>
+        /// <summary>Gets or sets the list name.</summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the parent.
-        /// </summary>
+        /// <summary>Gets or sets the parent.</summary>
         public string Parent { get; set; }
 
-        /// <summary>
-        /// Gets or sets the id of the parent list.
-        /// </summary>
+        /// <summary>Gets or sets the id of the parent list.</summary>
         public int ParentID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the parent key.
-        /// </summary>
+        /// <summary>Gets or sets the parent key.</summary>
         public string ParentKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the parent list.
-        /// </summary>
+        /// <summary>Gets or sets the parent list.</summary>
         public string ParentList { get; set; }
 
-        /// <summary>
-        /// Gets or sets the id of the site (portal).
-        /// </summary>
+        /// <summary>Gets or sets the id of the site (portal).</summary>
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this list is a system list.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether this list is a system list.</summary>
         public bool SystemList { get; set; }
     }
 }

@@ -23,9 +23,7 @@ using System.Net;
 
 namespace log4net.Util.TypeConverters
 {
-    /// <summary>
-    /// Supports conversion from string to <see cref="IPAddress"/> type.
-    /// </summary>
+    /// <summary>Supports conversion from string to <see cref="IPAddress"/> type.</summary>
     /// <remarks>
     /// <para>
     /// Supports conversion from string to <see cref="IPAddress"/> type.
@@ -36,9 +34,7 @@ namespace log4net.Util.TypeConverters
     /// <author>Nicko Cadell</author>
     internal class IPAddressConverter : IConvertFrom 
     {
-        /// <summary>
-        /// Can the source type be converted to the type supported by this object
-        /// </summary>
+        /// <summary>Can the source type be converted to the type supported by this object</summary>
         /// <param name="sourceType">the type to convert</param>
         /// <returns>true if the conversion is possible</returns>
         /// <remarks>
@@ -52,9 +48,7 @@ namespace log4net.Util.TypeConverters
             return (sourceType == typeof(string));
         }
 
-        /// <summary>
-        /// Overrides the ConvertFrom method of IConvertFrom.
-        /// </summary>
+        /// <summary>Overrides the ConvertFrom method of IConvertFrom.</summary>
         /// <param name="source">the object to convert to an IPAddress</param>
         /// <returns>the IPAddress</returns>
         /// <remarks>
@@ -137,9 +131,7 @@ namespace log4net.Util.TypeConverters
             throw ConversionNotSupportedException.Create(typeof(IPAddress), source);
         }
 
-        /// <summary>
-        /// Valid characters in an IPv4 or IPv6 address string. (Does not support subnets)
-        /// </summary>
+        /// <summary>Valid characters in an IPv4 or IPv6 address string. (Does not support subnets)</summary>
         private static readonly char[] validIpAddressChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F', 'x', 'X', '.', ':', '%' };
     }
 }

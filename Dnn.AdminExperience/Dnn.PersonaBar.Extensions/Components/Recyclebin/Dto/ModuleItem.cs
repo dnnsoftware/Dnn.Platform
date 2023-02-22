@@ -4,7 +4,6 @@
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Dto
 {
-
     public class ModuleItem
     {
         public int Id { get; set; }

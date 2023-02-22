@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.Roles.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));
 
         [HttpGet]
+
         public HttpResponseMessage GetRoles(int groupId, string keyword, int startIndex, int pageSize)
         {
             try
@@ -51,6 +52,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
+
         public HttpResponseMessage SaveRole(RoleDto roleDto, [FromUri] bool assignExistUsers)
         {
             try
@@ -79,6 +81,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
+
         public HttpResponseMessage DeleteRole(RoleDto roleDto)
         {
             KeyValuePair<HttpStatusCode, string> message;
@@ -88,6 +91,7 @@ namespace Dnn.PersonaBar.Roles.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
             try
@@ -96,6 +100,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 {
                     DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
                 }
+
                 var groups = RoleController.GetRoleGroups(this.PortalId)
                     .Cast<RoleGroupInfo>()
                     .Select(RoleGroupDto.FromRoleGroupInfo);
@@ -112,6 +117,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
+
         public HttpResponseMessage SaveRoleGroup(RoleGroupDto roleGroupDto)
         {
             try
@@ -129,7 +135,8 @@ namespace Dnn.PersonaBar.Roles.Services
                     }
                     catch
                     {
-                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        return this.Request.CreateErrorResponse(
+                            HttpStatusCode.BadRequest,
                             Localization.GetString("DuplicateRoleGroup", Components.Constants.LocalResourcesFile));
                     }
                 }
@@ -141,7 +148,8 @@ namespace Dnn.PersonaBar.Roles.Services
                     }
                     catch
                     {
-                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        return this.Request.CreateErrorResponse(
+                            HttpStatusCode.BadRequest,
                             Localization.GetString("DuplicateRoleGroup", Components.Constants.LocalResourcesFile));
                     }
                 }
@@ -165,12 +173,14 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
+
         public HttpResponseMessage DeleteRoleGroup(RoleGroupDto roleGroupDto)
         {
             var roleGroup = RoleController.GetRoleGroup(this.PortalId, roleGroupDto.Id);
             if (roleGroup == null)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                return this.Request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
                     Localization.GetString("RoleGroupNotFound", Components.Constants.LocalResourcesFile));
             }
 
@@ -180,6 +190,7 @@ namespace Dnn.PersonaBar.Roles.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetSuggestUsers(string keyword, int roleId, int count)
         {
             try
@@ -194,8 +205,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 var totalRecords2 = 0;
                 var isAdmin = this.IsAdmin();
 
-                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false);
+                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count, ref totalRecords, false, false);
                 matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
                 var finalUsers = matchedUsers
                     .Cast<UserInfo>()
@@ -206,7 +216,8 @@ namespace Dnn.PersonaBar.Roles.Services
                         DisplayName = $"{u.DisplayName} ({u.Username})",
                     });
 
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     finalUsers.ToList().GroupBy(x => x.UserId).Select(group => group.First()));
             }
             catch (Exception ex)
@@ -214,10 +225,10 @@ namespace Dnn.PersonaBar.Roles.Services
                 Logger.Error(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetRoleUsers(string keyword, int roleId, int pageIndex, int pageSize)
         {
             try
@@ -230,7 +241,8 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 if (role.RoleID == this.PortalSettings.AdministratorRoleId && !this.IsAdmin())
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
                         Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
                 }
 
@@ -268,6 +280,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
+
         public HttpResponseMessage AddUserToRole(UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
             try
@@ -278,28 +291,44 @@ namespace Dnn.PersonaBar.Roles.Services
                 {
                     userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
                 }
+
                 HttpResponseMessage response;
                 var user = this.GetUser(userRoleDto.UserId, out response);
                 if (user == null)
+                {
                     return response;
+                }
 
                 var role = RoleController.Instance.GetRoleById(this.PortalId, userRoleDto.RoleId);
                 if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
+                {
                     isOwner = false;
+                }
+
                 if (role.Status != RoleStatus.Approved)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        Localization.GetString("CannotAssginUserToUnApprovedRole",
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        Localization.GetString(
+                            "CannotAssginUserToUnApprovedRole",
                             Components.Constants.LocalResourcesFile));
                 }
 
-                RoleController.AddUserRole(user, role, this.PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
-                    userRoleDto.ExpiresTime, notifyUser, isOwner);
+                RoleController.AddUserRole(
+                    user,
+                    role,
+                    this.PortalSettings,
+                    RoleStatus.Approved,
+                    userRoleDto.StartTime,
+                    userRoleDto.ExpiresTime,
+                    notifyUser,
+                    isOwner);
 
                 var addedUser = RoleController.Instance.GetUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId);
                 var portal = PortalController.Instance.GetPortal(this.PortalId);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new UserRoleDto
                     {
                         UserId = addedUser.UserID,
@@ -329,6 +358,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
+
         public HttpResponseMessage RemoveUserFromRole(UserRoleDto userRoleDto)
         {
             try
@@ -337,10 +367,17 @@ namespace Dnn.PersonaBar.Roles.Services
                 HttpResponseMessage response;
                 var user = this.GetUser(userRoleDto.UserId, out response);
                 if (user == null)
+                {
                     return response;
+                }
 
-                RoleController.Instance.UpdateUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
-                    RoleStatus.Approved, false, true);
+                RoleController.Instance.UpdateUserRole(
+                    this.PortalId,
+                    userRoleDto.UserId,
+                    userRoleDto.RoleId,
+                    RoleStatus.Approved,
+                    false,
+                    true);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { userRoleDto.UserId, userRoleDto.RoleId });
             }
@@ -412,20 +449,30 @@ namespace Dnn.PersonaBar.Roles.Services
             var user = UserController.Instance.GetUserById(this.PortalId, userId);
             if (user == null)
             {
-                response = this.Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                response = this.Request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
                     Localization.GetString("UserNotFound", Components.Constants.LocalResourcesFile));
                 return null;
             }
-            if (!this.IsAdmin(user)) return user;
+
+            if (!this.IsAdmin(user))
+            {
+                return user;
+            }
 
             if ((user.IsSuperUser && !this.UserInfo.IsSuperUser) || !this.IsAdmin())
             {
-                response = this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                response = this.Request.CreateErrorResponse(
+                    HttpStatusCode.Unauthorized,
                     Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
                 return null;
             }
+
             if (user.IsSuperUser)
+            {
                 user = UserController.Instance.GetUserById(Null.NullInteger, userId);
+            }
+
             return user;
         }
     }

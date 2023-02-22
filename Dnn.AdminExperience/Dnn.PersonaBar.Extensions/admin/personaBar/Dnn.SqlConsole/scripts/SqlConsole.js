@@ -740,11 +740,15 @@ define(['jquery',
     };
 
     var initSqlConsole = function () {
-      let siteRoot = dnn ? dnn.getVar("sf_siteRoot") : '/';
-      if (!siteRoot) siteRoot = '/';
+      const personaBarSettings = window.parent['personaBarSettings'];
+      const debugMode = personaBarSettings['debugMode'] === true;
+      const cdv = personaBarSettings['buildNumber'];
+      const version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random(): '');
+      let siteRoot = personaBarSettings.applicationPath ?? '/';
+      if (!siteRoot.endsWith('/')) siteRoot += '/';
       var monacoEditorLoaderScript = document.createElement('script');
       monacoEditorLoaderScript.type = 'text/javascript';
-      monacoEditorLoaderScript.src = siteRoot + 'Resources/Shared/components/MonacoEditor/loader.js';
+      monacoEditorLoaderScript.src = siteRoot + 'Resources/Shared/components/MonacoEditor/loader.js' + version;
       document.body.appendChild(monacoEditorLoaderScript);
 
       require.config({ paths: { 'vs': siteRoot + 'Resources/Shared/components/MonacoEditor' } });
@@ -780,7 +784,7 @@ define(['jquery',
         theme = e.matches ? "vs-dark" : "vs-light";
       });
 
-      var monacoEditor = sqlConsole.create(document.getElementById("monaco-editor"), {
+      var monacoEditor = sqlConsole.create(document.getElementById("monaco-editor-sql"), {
         model: sqlContent,
         language: "sql",
         wordWrap: 'wordWrapColumn',

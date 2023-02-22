@@ -9,44 +9,27 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      SettingsEditorControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SettingsEditorControl control provides an Editor to edit DotNetNuke
     /// Settings.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the CustomEditors that are used by this control.
-        /// </summary>
+        /// <summary>Gets or sets the CustomEditors that are used by this control.</summary>
         /// <value>The CustomEditors object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public Hashtable CustomEditors { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Visibility values that are used by this control.
-        /// </summary>
+        /// <summary>Gets or sets the Visibility values that are used by this control.</summary>
         /// <value>The CustomEditors object.</value>
-        /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Underlying DataSource.
-        /// </summary>
+        /// <summary>Gets the Underlying DataSource.</summary>
         /// <value>An IEnumerable.</value>
-        /// -----------------------------------------------------------------------------
         protected override IEnumerable UnderlyingDataSource
         {
             get
@@ -76,30 +59,22 @@ namespace DotNetNuke.UI.WebControls
             this.AddEditorRow(this, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetRowVisibility determines the Visibility of a row in the table.
-        /// </summary>
+        /// <summary>GetRowVisibility determines the Visibility of a row in the table.</summary>
         /// <param name="obj">The property.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the row is visible, otherwise <see langword="false"/>.</returns>
         protected override bool GetRowVisibility(object obj)
         {
             var info = (SettingInfo)obj;
-            bool _IsVisible = true;
+            bool isVisible = true;
             if ((this.Visibility != null) && (this.Visibility[info.Name] != null))
             {
-                _IsVisible = Convert.ToBoolean(this.Visibility[info.Name]);
+                isVisible = Convert.ToBoolean(this.Visibility[info.Name]);
             }
 
-            return _IsVisible;
+            return isVisible;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSettings converts the DataSource into an ArrayList (IEnumerable).
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetSettings converts the DataSource into an ArrayList (IEnumerable).</summary>
         private ArrayList GetSettings()
         {
             var settings = (Hashtable)this.DataSource;

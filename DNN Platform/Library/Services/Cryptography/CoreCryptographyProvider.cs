@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Cryptography
 {
     using System;
@@ -11,12 +10,7 @@ namespace DotNetNuke.Services.Cryptography
 
     internal class CoreCryptographyProvider : CryptographyProvider
     {
-        /// <summary>
-        ///     copy of legacy PortalSecurity.Encrypt method.
-        /// </summary>
-        /// <param name="message">string to be encrypted.</param>
-        /// <param name="passphrase">key for encryption.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string EncryptParameter(string message, string passphrase)
         {
             string value;
@@ -42,8 +36,7 @@ namespace DotNetNuke.Services.Cryptography
                 // encrypt
                 using (var objDes = new DESCryptoServiceProvider())
                 using (var objMemoryStream = new MemoryStream())
-                using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector),
-                    CryptoStreamMode.Write))
+                using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector), CryptoStreamMode.Write))
                 {
                     objCryptoStream.Write(byteData, 0, byteData.Length);
                     objCryptoStream.FlushFinalBlock();
@@ -60,12 +53,7 @@ namespace DotNetNuke.Services.Cryptography
             return value;
         }
 
-        /// <summary>
-        ///     copy of legacy PortalSecurity.Decrypt method.
-        /// </summary>
-        /// <param name="message">string to be decrypted.</param>
-        /// <param name="passphrase">key for decryption.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string DecryptParameter(string message, string passphrase)
         {
             string strValue = string.Empty;
@@ -91,9 +79,7 @@ namespace DotNetNuke.Services.Cryptography
                     // decrypt
                     using (var objDes = new DESCryptoServiceProvider())
                     using (var objMemoryStream = new MemoryStream())
-                    using (var objCryptoStream = new CryptoStream(
-                        objMemoryStream,
-                        objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
+                    using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
                     {
                         objCryptoStream.Write(byteData, 0, byteData.Length);
                         objCryptoStream.FlushFinalBlock();
@@ -103,8 +89,9 @@ namespace DotNetNuke.Services.Cryptography
                         strValue = objEncoding.GetString(objMemoryStream.ToArray());
                     }
                 }
-                catch // decryption error
+                catch
                 {
+                    // decryption error
                     strValue = string.Empty;
                 }
             }
@@ -112,12 +99,7 @@ namespace DotNetNuke.Services.Cryptography
             return strValue;
         }
 
-        /// <summary>
-        ///     copy of legacy PortalSecurity.EncryptString method.
-        /// </summary>
-        /// <param name="message">string to be encrypted.</param>
-        /// <param name="passphrase">key for encryption.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string EncryptString(string message, string passphrase)
         {
             byte[] results;
@@ -154,12 +136,7 @@ namespace DotNetNuke.Services.Cryptography
             return Convert.ToBase64String(results);
         }
 
-        /// <summary>
-        ///     copy of legacy PortalSecurity.DecryptString method.
-        /// </summary>
-        /// <param name="message">string to be decrypted.</param>
-        /// <param name="passphrase">key for decryption.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string DecryptString(string message, string passphrase)
         {
             byte[] results;

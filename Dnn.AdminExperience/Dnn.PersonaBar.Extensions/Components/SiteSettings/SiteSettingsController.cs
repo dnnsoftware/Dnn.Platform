@@ -26,8 +26,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
     public class SiteSettingsController
     {
-        private Dictionary<string, InstallFile> _Files;
-        private string _Manifest = Null.NullString;
+        private Dictionary<string, InstallFile> files;
+        private string manifest = Null.NullString;
 
         protected string BasePath
         {
@@ -37,14 +37,13 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
         }
 
-        public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString,
-            string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
+        public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString, string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
         {
             var portalResources = new XmlDocument { XmlResolver = null };
             var defaultResources = new XmlDocument { XmlResolver = null };
             XmlNode parent;
 
-            defaultResources.Load(this.GetResourceFile("", Localization.SystemLocale, portalId));
+            defaultResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
             string filename = this.GetResourceFile("Portal", cultureCode, portalId);
 
             if (File.Exists(filename))
@@ -53,8 +52,9 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
             else
             {
-                portalResources.Load(this.GetResourceFile("", Localization.SystemLocale, portalId));
+                portalResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
             }
+
             this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Text", propertyNameString);
             this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Help", propertyHelpString);
             this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Required", propertyRequiredString);
@@ -81,6 +81,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     parent.RemoveChild(node);
                 }
             }
+
             if (portalResources.SelectNodes("//root/data").Count > 0)
             {
                 // there's something to save
@@ -110,6 +111,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     // do nothing but just ignore the error.
                 }
             }
+
             return analyzers;
         }
 
@@ -137,7 +139,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
             fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
 
-            return this.CreatePackage(cultureCode, package, -2, "", fileName, createZip);
+            return this.CreatePackage(cultureCode, package, -2, string.Empty, fileName, createZip);
         }
 
         public void CreateFullPackage(string cultureCode, string fileName)
@@ -151,20 +153,23 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 PackageType = "CoreLanguagePack",
             };
 
-            this._Files = new Dictionary<string, InstallFile>();
+            this.files = new Dictionary<string, InstallFile>();
             this.CreateCorePackage(cultureCode, fileName, false);
             foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/")))
             {
                 this.CreateModulePackage(cultureCode, desktopModule, false);
             }
+
             foreach (var provider in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Provider"))
             {
                 this.CreateProviderPackage(cultureCode, provider, false);
             }
+
             foreach (var authSystem in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Auth_System"))
             {
                 this.CreateAuthSystemPackage(cultureCode, authSystem, false);
             }
+
             foreach (var library in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Library" || p.PackageType == "EvoqConnector"))
             {
                 // only generate if a folder name is known for the library
@@ -179,12 +184,13 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
             var packageWriter = PackageWriterFactory.GetWriter(package) as LanguagePackWriter;
             packageWriter.Language = language;
-            packageWriter.BasePath = "";
-            foreach (KeyValuePair<string, InstallFile> kvp in this._Files)
+            packageWriter.BasePath = string.Empty;
+            foreach (KeyValuePair<string, InstallFile> kvp in this.files)
             {
                 packageWriter.Files.Add(kvp.Key, kvp.Value);
             }
-            packageWriter.CreatePackage(fileName, package.Name + " " + language.Text + ".dnn", this._Manifest, true);
+
+            packageWriter.CreatePackage(fileName, package.Name + " " + language.Text + ".dnn", this.manifest, true);
         }
 
         public bool CreateLibraryPackage(string cultureCode, PackageInfo library, bool createZip)
@@ -236,6 +242,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
             }
+
             switch (providerName)
             {
                 case "SchedulingProvider":
@@ -248,14 +255,20 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     providerName = "SearchDataStoreProvider";
                     break;
             }
+
             var providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + providerName + "']") ??
                                     configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + package.Name + "']");
 
             if (providerNavigator != null)
             {
-                string providerPath = providerNavigator.GetAttribute("providerPath", "");
-                return this.CreatePackage(cultureCode, package, providerPackage.PackageID,
-                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"), fileName, createZip);
+                string providerPath = providerNavigator.GetAttribute("providerPath", string.Empty);
+                return this.CreatePackage(
+                    cultureCode,
+                    package,
+                    providerPackage.PackageID,
+                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"),
+                    fileName,
+                    createZip);
             }
             else
             {
@@ -270,6 +283,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 resourcefilename = resourcefilename + "." + language;
             }
+
             if (type == "Portal")
             {
                 resourcefilename = resourcefilename + "." + "Portal-" + portalId;
@@ -278,6 +292,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 resourcefilename = resourcefilename + "." + "Host";
             }
+
             return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
         }
 
@@ -298,6 +313,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 package.PackageType = "ExtensionLanguagePack";
             }
+
             package.Name += " " + language.Text;
             package.FriendlyName += " " + language.Text;
 
@@ -315,15 +331,16 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     fileName = fileName + "." + package.Version.ToString(3) + "." + language.Code + ".zip";
                     packageWriter.CreatePackage(fileName, package.Name + ".dnn", manifest, true);
                 }
-                else if (!this._Manifest.Contains($@"package name=""{package.Name}"""))
+                else if (!this.manifest.Contains($@"package name=""{package.Name}"""))
                 {
-                    packageWriter.BasePath = "";
-                    this._Manifest += packageWriter.WriteManifest(true);
+                    packageWriter.BasePath = string.Empty;
+                    this.manifest += packageWriter.WriteManifest(true);
                     foreach (var kvp in packageWriter.Files)
                     {
-                        this._Files[kvp.Key] = kvp.Value;
+                        this.files[kvp.Key] = kvp.Value;
                     }
                 }
+
                 return true;
             }
             else
@@ -358,6 +375,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
                 node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
             }
+
             node.InnerXml = HttpUtility.HtmlEncode(text);
         }
     }

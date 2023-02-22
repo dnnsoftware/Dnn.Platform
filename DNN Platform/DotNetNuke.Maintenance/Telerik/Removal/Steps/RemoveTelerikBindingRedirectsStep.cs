@@ -15,9 +15,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     /// <inheritdoc/>
     internal class RemoveTelerikBindingRedirectsStep : XmlStepBase, IRemoveTelerikBindingRedirectsStep
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RemoveTelerikBindingRedirectsStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RemoveTelerikBindingRedirectsStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>

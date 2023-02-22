@@ -10,14 +10,10 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PermissionInfoBase
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// PermissionInfoBase provides a base class for PermissionInfo classes.
-    /// </summary>
+    /// <summary>PermissionInfoBase provides a base class for PermissionInfo classes.</summary>
     /// <remarks>All Permission calsses have  a common set of properties
     ///   - AllowAccess
     ///   - RoleID
@@ -28,156 +24,125 @@ namespace DotNetNuke.Security.Permissions
     ///
     /// and these are implemented in this base class.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class PermissionInfoBase : PermissionInfo
     {
-        private bool _AllowAccess;
-        private string _DisplayName;
-        private int _RoleID;
-        private string _RoleName;
-        private int _UserID;
-        private string _Username;
+        private bool allowAccess;
+        private string displayName;
+        private int roleID;
+        private string roleName;
+        private int userID;
+        private string username;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionInfoBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionInfoBase"/> class.</summary>
         public PermissionInfoBase()
         {
-            this._RoleID = int.Parse(Globals.glbRoleNothing);
-            this._AllowAccess = false;
-            this._RoleName = Null.NullString;
-            this._UserID = Null.NullInteger;
-            this._Username = Null.NullString;
-            this._DisplayName = Null.NullString;
+            this.roleID = int.Parse(Globals.glbRoleNothing);
+            this.allowAccess = false;
+            this.roleName = Null.NullString;
+            this.userID = Null.NullInteger;
+            this.username = Null.NullString;
+            this.displayName = Null.NullString;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets  aflag that indicates whether the user or role has permission.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets and sets  aflag that indicates whether the user or role has permission.</summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("allowaccess")]
         public bool AllowAccess
         {
             get
             {
-                return this._AllowAccess;
+                return this.allowAccess;
             }
 
             set
             {
-                this._AllowAccess = value;
+                this.allowAccess = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the User's DisplayName.
-        /// </summary>
+        /// <summary>Gets or sets the User's DisplayName.</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("displayname")]
         public string DisplayName
         {
             get
             {
-                return this._DisplayName;
+                return this.displayName;
             }
 
             set
             {
-                this._DisplayName = value;
+                this.displayName = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Role ID.
-        /// </summary>
+        /// <summary>Gets or sets the Role ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("roleid")]
         public int RoleID
         {
             get
             {
-                return this._RoleID;
+                return this.roleID;
             }
 
             set
             {
-                this._RoleID = value;
+                this.roleID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Role Name.
-        /// </summary>
+        /// <summary>Gets or sets the Role Name.</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("rolename")]
         public string RoleName
         {
             get
             {
-                return this._RoleName;
+                return this.roleName;
             }
 
             set
             {
-                this._RoleName = value;
+                this.roleName = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the User ID.
-        /// </summary>
+        /// <summary>Gets or sets the User ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("userid")]
         public int UserID
         {
             get
             {
-                return this._UserID;
+                return this.userID;
             }
 
             set
             {
-                this._UserID = value;
+                this.userID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the User Name.
-        /// </summary>
+        /// <summary>Gets or sets the User Name.</summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("username")]
         public string Username
         {
             get
             {
-                return this._Username;
+                return this.username;
             }
 
             set
             {
-                this._Username = value;
+                this.username = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillInternal fills the PermissionInfoBase from a Data Reader.
-        /// </summary>
+        /// <summary>FillInternal fills the PermissionInfoBase from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {
             // Call the base classes fill method to populate base class proeprties

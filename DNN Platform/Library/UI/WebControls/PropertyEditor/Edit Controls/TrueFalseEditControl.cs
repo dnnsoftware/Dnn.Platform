@@ -10,40 +10,29 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      TrueFalseEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TrueFalseEditControl control provides a standard UI component for editing
     /// true/false (boolean) properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:TrueFalseEditControl runat=server></{0}:TrueFalseEditControl>")]
     public class TrueFalseEditControl : EditControl
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TrueFalseEditControl));
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="TrueFalseEditControl"/> class.
         /// Constructs a TrueFalseEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public TrueFalseEditControl()
         {
             this.SystemType = "System.Boolean";
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether booleanValue returns the Boolean representation of the Value.
-        /// </summary>
+        /// <summary>Gets a value indicating whether booleanValue returns the Boolean representation of the Value.</summary>
         /// <value>A Boolean representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected bool BooleanValue
         {
             get
@@ -63,12 +52,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether oldBooleanValue returns the Boolean representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets a value indicating whether oldBooleanValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A Boolean representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
         protected bool OldBooleanValue
         {
             get
@@ -88,12 +73,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
@@ -108,12 +89,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -123,12 +102,8 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");

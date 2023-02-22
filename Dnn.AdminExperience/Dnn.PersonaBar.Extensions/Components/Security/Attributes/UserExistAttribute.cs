@@ -12,16 +12,17 @@ namespace Dnn.PersonaBar.Security.Attributes
     using DotNetNuke.Services.Localization;
 
     [AttributeUsage(AttributeTargets.Property)]
-    class UserExistAttribute : ValidationAttribute
+    internal class UserExistAttribute : ValidationAttribute
     {
         public string[] RoleNames { get; set; }
 
+        /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
             int userId;
 
-            if (Int32.TryParse(value.ToString(), out userId))
+            if (int.TryParse(value.ToString(), out userId))
             {
                 var portalSetting = PortalController.Instance.GetCurrentPortalSettings();
                 var user = UserController.Instance.GetUserById(portalSetting.PortalId, userId);

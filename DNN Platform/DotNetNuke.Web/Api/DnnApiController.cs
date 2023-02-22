@@ -11,25 +11,19 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Defines properties and methods for Dnn specific API controllers.
-    /// </summary>
+    /// <summary>Defines properties and methods for Dnn specific API controllers.</summary>
     [DnnExceptionFilter]
     public abstract class DnnApiController : ApiController
     {
         private readonly Lazy<ModuleInfo> activeModule;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnApiController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnApiController"/> class.</summary>
         protected DnnApiController()
         {
             this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }
 
-        /// <summary>
-        /// Gets portalSettings for the current portal.
-        /// </summary>
+        /// <summary>Gets portalSettings for the current portal.</summary>
         public PortalSettings PortalSettings
         {
             get
@@ -38,9 +32,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        /// <summary>
-        /// Gets userInfo for the current user.
-        /// </summary>
+        /// <summary>Gets userInfo for the current user.</summary>
         public UserInfo UserInfo
         {
             get { return this.PortalSettings.UserInfo; }

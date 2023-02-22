@@ -25,9 +25,7 @@ using System;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Assembly level attribute that specifies the logging repository for the assembly.
-    /// </summary>
+    /// <summary>Assembly level attribute that specifies the logging repository for the assembly.</summary>
     /// <remarks>
     /// <para>
     /// Assemblies are mapped to logging repository. This attribute specified 
@@ -53,9 +51,7 @@ namespace log4net.Config
         // Class is not sealed because DomainAttribute extends it while it is obsoleted
         // 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RepositoryAttribute" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RepositoryAttribute" /> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -80,9 +76,7 @@ namespace log4net.Config
             this.m_name = name;
         }
 
-        /// <summary>
-        /// Gets or sets the name of the logging repository.
-        /// </summary>
+        /// <summary>Gets or sets the name of the logging repository.</summary>
         /// <value>
         /// The string name to use as the name of the repository associated with this
         /// assembly.
@@ -99,9 +93,7 @@ namespace log4net.Config
             set { this.m_name = value ; }
         }
 
-        /// <summary>
-        /// Gets or sets the type of repository to create for this assembly.
-        /// </summary>
+        /// <summary>Gets or sets the type of repository to create for this assembly.</summary>
         /// <value>
         /// The type of repository to create for this assembly.
         /// </value>

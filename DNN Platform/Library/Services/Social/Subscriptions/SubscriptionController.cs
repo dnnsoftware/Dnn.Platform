@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Social.Subscriptions
 {
     using System;
@@ -15,17 +14,13 @@ namespace DotNetNuke.Services.Social.Subscriptions
     using DotNetNuke.Services.Social.Subscriptions.Data;
     using DotNetNuke.Services.Social.Subscriptions.Entities;
 
-    /// <summary>
-    /// This controller is responsible to manage the user subscriptions.
-    /// </summary>
+    /// <summary>This controller is responsible to manage the user subscriptions.</summary>
     public class SubscriptionController : ServiceLocator<ISubscriptionController, SubscriptionController>, ISubscriptionController
     {
         private readonly IDataService dataService;
         private readonly ISubscriptionSecurityController subscriptionSecurityController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubscriptionController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SubscriptionController"/> class.</summary>
         public SubscriptionController()
         {
             this.dataService = DataService.Instance;

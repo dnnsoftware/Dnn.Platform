@@ -12,8 +12,9 @@ namespace Dnn.PersonaBar.Security.Attributes
     using DotNetNuke.Services.Localization;
 
     [AttributeUsage(AttributeTargets.Property)]
-    class AuthProviderSupportedAttribute : ValidationAttribute
+    internal class AuthProviderSupportedAttribute : ValidationAttribute
     {
+        /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;

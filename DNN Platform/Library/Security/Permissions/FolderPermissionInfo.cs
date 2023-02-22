@@ -15,32 +15,28 @@ namespace DotNetNuke.Security.Permissions
     public class FolderPermissionInfo : PermissionInfoBase, IHydratable
     {
         // local property declarations
-        private int _folderID;
-        private string _folderPath;
-        private int _folderPermissionID;
-        private int _portalID;
+        private int folderID;
+        private string folderPath;
+        private int folderPermissionID;
+        private int portalID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public FolderPermissionInfo()
         {
-            this._folderPermissionID = Null.NullInteger;
-            this._folderPath = Null.NullString;
-            this._portalID = Null.NullInteger;
-            this._folderID = Null.NullInteger;
+            this.folderPermissionID = Null.NullInteger;
+            this.folderPath = Null.NullString;
+            this.portalID = Null.NullInteger;
+            this.folderID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public FolderPermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -57,12 +53,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._folderPermissionID;
+                return this.folderPermissionID;
             }
 
             set
             {
-                this._folderPermissionID = value;
+                this.folderPermissionID = value;
             }
         }
 
@@ -72,12 +68,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._folderID;
+                return this.folderID;
             }
 
             set
             {
-                this._folderID = value;
+                this.folderID = value;
             }
         }
 
@@ -87,12 +83,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._portalID;
+                return this.portalID;
             }
 
             set
             {
-                this._portalID = value;
+                this.portalID = value;
             }
         }
 
@@ -101,21 +97,17 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._folderPath;
+                return this.folderPath;
             }
 
             set
             {
-                this._folderPath = value;
+                this.folderPath = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -131,12 +123,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a FolderPermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a FolderPermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);

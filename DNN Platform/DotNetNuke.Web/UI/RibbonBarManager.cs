@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.UI
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -342,9 +341,9 @@ namespace DotNetNuke.Web.UI
                         }
                     }
 
-                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    if (_PortalSettings.ContentLocalizationEnabled)
+                    if (portalSettings.ContentLocalizationEnabled)
                     {
                         Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(tab.PortalID);
                         tab.CultureCode = defaultLocale.Code;
@@ -367,7 +366,7 @@ namespace DotNetNuke.Web.UI
                         tab.TabID = TabController.Instance.AddTab(tab);
                     }
 
-                    if (_PortalSettings.ContentLocalizationEnabled)
+                    if (portalSettings.ContentLocalizationEnabled)
                     {
                         TabController.Instance.CreateLocalizedCopies(tab);
                     }
@@ -503,50 +502,6 @@ namespace DotNetNuke.Web.UI
             }
 
             TabController.Instance.UpdateTab(tab);
-        }
-    }
-
-    public class DotNetNukeException : Exception
-    {
-        private readonly DotNetNukeErrorCode _ErrorCode = DotNetNukeErrorCode.NotSet;
-
-        public DotNetNukeException()
-        {
-        }
-
-        public DotNetNukeException(string message)
-            : base(message)
-        {
-        }
-
-        public DotNetNukeException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode)
-            : base(message)
-        {
-            this._ErrorCode = errorCode;
-        }
-
-        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode)
-            : base(message, innerException)
-        {
-            this._ErrorCode = errorCode;
-        }
-
-        public DotNetNukeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        public DotNetNukeErrorCode ErrorCode
-        {
-            get
-            {
-                return this._ErrorCode;
-            }
         }
     }
 }

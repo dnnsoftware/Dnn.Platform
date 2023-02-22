@@ -59,56 +59,53 @@ namespace DotNetNuke.Entities.Urls
         public const string ProcessRequestsSetting = "AUM_ProcessRequests";
         public const string CacheTimeSetting = "AUM_CacheTime";
         public const string IncludePageNameSetting = "AUM_IncludePageName";
-
-        private readonly IHostController _hostControllerInstance = HostController.Instance;
+        private readonly IHostController hostControllerInstance = HostController.Instance;
 
         // 894 : new switch to disable custom url provider
-        private bool? _allowDebugCode;
-        private bool? _autoAsciiConvert;
-        private bool? _checkForDuplicateUrls;
-        private bool? _enableCustomProviders;
-        private bool? _forceLowerCase;
-        private bool? _forcePortalDefaultLanguage;
-        private bool? _friendlyAdminHostUrls;
-        private bool? _includePageName;
-        private bool? _logCacheMessages;
-        private bool? _redirectDefaultPage;
-        private bool? _redirectOldProfileUrl;
-        private bool? _redirectUnfriendly;
-        private bool? _redirectWrongCase;
-        private bool? _replaceDoubleChars;
-        private bool? _sslClientRedirect;
-        private string _deletedTabHandling;
-        private string _doNotIncludeInPathRegex;
-        private string _doNotRedirectRegex;
-        private string _doNotRedirectSecureRegex;
-        private string _doNotRewriteRegex;
-        private string _forceLowerCaseRegex;
-        private string _ignoreRegex;
-        private string _illegalChars;
-        private string _internalAliases;
-        private string _noFriendlyUrlRegex;
-        private string _pageExtension;
-        private string _pageExtensionUsage;
-        private string _regex404;
-        private string _regexMatch;
-        private string _replaceChars;
-        private string _replaceSpaceWith;
-        private string _spaceEncodingValue;
-        private string _url404;
-        private string _url500;
-        private string _urlFormat;
-        private string _useBaseFriendlyUrls;
-        private string _useSiteUrlsRegex;
-        private string _validExtensionlessUrlsRegex;
-        private string _vanityUrlPrefix;
-        private TimeSpan? _cacheTime;
-        private List<string> _processRequestList;
-        private Dictionary<string, string> _replaceCharacterDictionary;
+        private bool? allowDebugCode;
+        private bool? autoAsciiConvert;
+        private bool? checkForDuplicateUrls;
+        private bool? enableCustomProviders;
+        private bool? forceLowerCase;
+        private bool? forcePortalDefaultLanguage;
+        private bool? friendlyAdminHostUrls;
+        private bool? includePageName;
+        private bool? logCacheMessages;
+        private bool? redirectDefaultPage;
+        private bool? redirectOldProfileUrl;
+        private bool? redirectUnfriendly;
+        private bool? redirectWrongCase;
+        private bool? replaceDoubleChars;
+        private bool? sslClientRedirect;
+        private string deletedTabHandling;
+        private string doNotIncludeInPathRegex;
+        private string doNotRedirectRegex;
+        private string doNotRedirectSecureRegex;
+        private string doNotRewriteRegex;
+        private string forceLowerCaseRegex;
+        private string ignoreRegex;
+        private string illegalChars;
+        private string internalAliases;
+        private string noFriendlyUrlRegex;
+        private string pageExtension;
+        private string pageExtensionUsage;
+        private string regex404;
+        private string regexMatch;
+        private string replaceChars;
+        private string replaceSpaceWith;
+        private string spaceEncodingValue;
+        private string url404;
+        private string url500;
+        private string urlFormat;
+        private string useBaseFriendlyUrls;
+        private string useSiteUrlsRegex;
+        private string validExtensionlessUrlsRegex;
+        private string vanityUrlPrefix;
+        private TimeSpan? cacheTime;
+        private List<string> processRequestList;
+        private Dictionary<string, string> replaceCharacterDictionary;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
         /// <param name="portalId"></param>
         public FriendlyUrlSettings(int portalId)
         {
@@ -136,19 +133,19 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (this._processRequestList == null)
+                if (this.processRequestList == null)
                 {
                     var processRequests = this.GetStringSetting(ProcessRequestsSetting, null);
                     if (processRequests != null)
                     {
                         processRequests = processRequests.ToLowerInvariant();
-                        this._processRequestList = !string.IsNullOrEmpty(processRequests)
+                        this.processRequestList = !string.IsNullOrEmpty(processRequests)
                             ? new List<string>(processRequests.Split(';'))
                             : new List<string>();
                     }
                 }
 
-                return this._processRequestList;
+                return this.processRequestList;
             }
         }
 
@@ -156,13 +153,13 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._allowDebugCode.HasValue)
+                if (!this.allowDebugCode.HasValue)
                 {
                     // 703 default debug code to false
-                    this._allowDebugCode = Host.Host.DebugMode;
+                    this.allowDebugCode = Host.Host.DebugMode;
                 }
 
-                return this._allowDebugCode.Value;
+                return this.allowDebugCode.Value;
             }
         }
 
@@ -170,12 +167,12 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._cacheTime.HasValue)
+                if (!this.cacheTime.HasValue)
                 {
-                    this._cacheTime = new TimeSpan(0, this.GetIntegerSetting(CacheTimeSetting, 1440), 0);
+                    this.cacheTime = new TimeSpan(0, this.GetIntegerSetting(CacheTimeSetting, 1440), 0);
                 }
 
-                return this._cacheTime.Value;
+                return this.cacheTime.Value;
             }
         }
 
@@ -183,13 +180,13 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._checkForDuplicateUrls.HasValue)
+                if (!this.checkForDuplicateUrls.HasValue)
                 {
                     // 793 : checkforDupUrls not being read
-                    this._checkForDuplicateUrls = this.GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
+                    this.checkForDuplicateUrls = this.GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
                 }
 
-                return this._checkForDuplicateUrls.Value;
+                return this.checkForDuplicateUrls.Value;
             }
         }
 
@@ -205,13 +202,13 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._enableCustomProviders.HasValue)
+                if (!this.enableCustomProviders.HasValue)
                 {
                     // 894 : new switch to disable custom providers if necessary
-                    this._enableCustomProviders = this.GetBooleanSetting(EnableCustomProvidersSetting, true);
+                    this.enableCustomProviders = this.GetBooleanSetting(EnableCustomProvidersSetting, true);
                 }
 
-                return this._enableCustomProviders.Value;
+                return this.enableCustomProviders.Value;
             }
         }
 
@@ -220,7 +217,7 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 922 : new options for allowing user-configured replacement of characters
-                return this._illegalChars ?? (this._illegalChars = this.GetStringSetting(IllegalCharsSetting, @"<>/\?:&=+|%#"));
+                return this.illegalChars ?? (this.illegalChars = this.GetStringSetting(IllegalCharsSetting, @"<>/\?:&=+|%#"));
             }
         }
 
@@ -228,31 +225,31 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._logCacheMessages.HasValue)
+                if (!this.logCacheMessages.HasValue)
                 {
-                    this._logCacheMessages = this.GetBooleanSetting(LogCacheMessagesSetting, false);
+                    this.logCacheMessages = this.GetBooleanSetting(LogCacheMessagesSetting, false);
                 }
 
-                return this._logCacheMessages.Value;
+                return this.logCacheMessages.Value;
             }
         }
 
         public string Regex404
         {
-            get { return this._regex404 ?? (this._regex404 = this.GetStringSetting(Regex404Setting, string.Empty)); }
+            get { return this.regex404 ?? (this.regex404 = this.GetStringSetting(Regex404Setting, string.Empty)); }
         }
 
         public Dictionary<string, string> ReplaceCharacterDictionary
         {
             get
             {
-                if (this._replaceCharacterDictionary == null)
+                if (this.replaceCharacterDictionary == null)
                 {
                     var replaceCharwithChar = this.GetStringSetting(ReplaceCharWithCharSetting, string.Empty);
-                    this._replaceCharacterDictionary = CollectionExtensions.CreateDictionaryFromString(replaceCharwithChar == "[]" ? string.Empty : replaceCharwithChar, ';', ',');
+                    this.replaceCharacterDictionary = CollectionExtensions.CreateDictionaryFromString(replaceCharwithChar == "[]" ? string.Empty : replaceCharwithChar, ';', ',');
                 }
 
-                return this._replaceCharacterDictionary;
+                return this.replaceCharacterDictionary;
             }
         }
 
@@ -261,7 +258,7 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 922 : new options for allowing user-configured replacement of characters
-                return this._replaceChars ?? (this._replaceChars = this.GetStringSetting(ReplaceCharsSetting, @" &$+,/?~#<>()¿¡«»!"""));
+                return this.replaceChars ?? (this.replaceChars = this.GetStringSetting(ReplaceCharsSetting, @" &$+,/?~#<>()¿¡«»!"""));
             }
         }
 
@@ -269,24 +266,24 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._replaceDoubleChars.HasValue)
+                if (!this.replaceDoubleChars.HasValue)
                 {
                     // 922 : new options for allowing user-configured replacement of characters
-                    this._replaceDoubleChars = this.GetBooleanSetting(ReplaceDoubleCharsSetting, true);
+                    this.replaceDoubleChars = this.GetBooleanSetting(ReplaceDoubleCharsSetting, true);
                 }
 
-                return this._replaceDoubleChars.Value;
+                return this.replaceDoubleChars.Value;
             }
         }
 
         public string Url404
         {
-            get { return this._url404 ?? (this._url404 = this.GetStringSetting(Url404Setting, string.Empty)); }
+            get { return this.url404 ?? (this.url404 = this.GetStringSetting(Url404Setting, string.Empty)); }
         }
 
         public string Url500
         {
-            get { return this._url500 ?? (this._url500 = this.GetStringSetting(Url500Setting, null) ?? this.Url404); }
+            get { return this.url500 ?? (this.url500 = this.GetStringSetting(Url500Setting, null) ?? this.Url404); }
         }
 
         public List<InternalAlias> InternalAliasList { get; private set; }
@@ -301,29 +298,32 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._autoAsciiConvert.HasValue)
+                if (!this.autoAsciiConvert.HasValue)
                 {
                     // urls to be modified in the output html stream
-                    this._autoAsciiConvert = this.GetBooleanSetting(AutoAsciiConvertSetting, false);
+                    this.autoAsciiConvert = this.GetBooleanSetting(AutoAsciiConvertSetting, false);
                 }
 
-                return this._autoAsciiConvert.Value;
+                return this.autoAsciiConvert.Value;
             }
 
-            internal set { this._autoAsciiConvert = value; }
+            internal set
+            {
+                this.autoAsciiConvert = value;
+            }
         }
 
         public DeletedTabHandlingType DeletedTabHandlingType
         {
             get
             {
-                if (this._deletedTabHandling == null)
+                if (this.deletedTabHandling == null)
                 {
-                    this._deletedTabHandling = PortalController.GetPortalSetting(
+                    this.deletedTabHandling = PortalController.GetPortalSetting(
                         DeletedTabHandlingTypeSetting, this.PortalId, DeletedTabHandlingType.Do404Error.ToString());
                 }
 
-                return "do301redirecttoportalhome".Equals(this._deletedTabHandling, StringComparison.InvariantCultureIgnoreCase)
+                return "do301redirecttoportalhome".Equals(this.deletedTabHandling, StringComparison.InvariantCultureIgnoreCase)
                     ? DeletedTabHandlingType.Do301RedirectToPortalHome
                     : DeletedTabHandlingType.Do404Error;
             }
@@ -331,7 +331,7 @@ namespace DotNetNuke.Entities.Urls
             internal set
             {
                 var newValue = value.ToString();
-                this._deletedTabHandling = newValue;
+                this.deletedTabHandling = newValue;
             }
         }
 
@@ -342,14 +342,17 @@ namespace DotNetNuke.Entities.Urls
                 // 661 : do not include in path
                 // 742 : was not reading and saving value when 'doNotIncludeInPathRegex' used
                 // FUTURE: DNN 11.x Update to remove the runningDefault value
-                return this._doNotIncludeInPathRegex ??
-                       (this._doNotIncludeInPathRegex =
+                return this.doNotIncludeInPathRegex ??
+                       (this.doNotIncludeInPathRegex =
                            this.GetStringSetting(
                                KeepInQueryStringRegexSetting,
                                @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+|tou/[^/]+|(/utm[^/]+/[^/]+)+"));
             }
 
-            internal set { this._doNotIncludeInPathRegex = value; }
+            internal set
+            {
+                this.doNotIncludeInPathRegex = value;
+            }
         }
 
         public string DoNotRedirectRegex
@@ -357,12 +360,15 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
-                return this._doNotRedirectRegex ?? (this._doNotRedirectRegex = this.GetStringSetting(
+                return this.doNotRedirectRegex ?? (this.doNotRedirectRegex = this.GetStringSetting(
                     DoNotRedirectUrlRegexSetting,
                     @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview|/API/"));
             }
 
-            internal set { this._doNotRedirectRegex = value; }
+            internal set
+            {
+                this.doNotRedirectRegex = value;
+            }
         }
 
         public string DoNotRedirectSecureRegex
@@ -370,103 +376,124 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
-                return this._doNotRedirectSecureRegex ?? (this._doNotRedirectSecureRegex = this.GetStringSetting(DoNotRedirectHttpsUrlRegexSetting, string.Empty));
+                return this.doNotRedirectSecureRegex ?? (this.doNotRedirectSecureRegex = this.GetStringSetting(DoNotRedirectHttpsUrlRegexSetting, string.Empty));
             }
 
-            internal set { this._doNotRedirectSecureRegex = value; }
+            internal set
+            {
+                this.doNotRedirectSecureRegex = value;
+            }
         }
 
         public string DoNotRewriteRegex
         {
             get
             {
-                return this._doNotRewriteRegex ??
-                       (this._doNotRewriteRegex =
+                return this.doNotRewriteRegex ??
+                       (this.doNotRewriteRegex =
                            this.GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/DnnImageHandler\.ashx|/__browserLink/|/API/"));
             }
 
-            internal set { this._doNotRewriteRegex = value; }
+            internal set
+            {
+                this.doNotRewriteRegex = value;
+            }
         }
 
         public bool ForceLowerCase
         {
             get
             {
-                if (!this._forceLowerCase.HasValue)
+                if (!this.forceLowerCase.HasValue)
                 {
-                    this._forceLowerCase = this.GetBooleanSetting(ForceLowerCaseSetting, false);
+                    this.forceLowerCase = this.GetBooleanSetting(ForceLowerCaseSetting, false);
                 }
 
-                return this._forceLowerCase.Value;
+                return this.forceLowerCase.Value;
             }
 
-            internal set { this._forceLowerCase = value; }
+            internal set
+            {
+                this.forceLowerCase = value;
+            }
         }
 
         public string ForceLowerCaseRegex
         {
-            get { return this._forceLowerCaseRegex ?? (this._forceLowerCaseRegex = this.GetStringSetting(PreventLowerCaseUrlRegexSetting, @"\bverificationcode\b")); }
-            internal set { this._forceLowerCaseRegex = value; }
+            get { return this.forceLowerCaseRegex ?? (this.forceLowerCaseRegex = this.GetStringSetting(PreventLowerCaseUrlRegexSetting, @"\bverificationcode\b")); }
+            internal set { this.forceLowerCaseRegex = value; }
         }
 
         public bool ForcePortalDefaultLanguage
         {
             get
             {
-                if (!this._forcePortalDefaultLanguage.HasValue)
+                if (!this.forcePortalDefaultLanguage.HasValue)
                 {
                     // 810 : allow forcing of default language in rewrites
-                    this._forcePortalDefaultLanguage = this.GetBooleanSetting(UsePortalDefaultLanguageSetting, true);
+                    this.forcePortalDefaultLanguage = this.GetBooleanSetting(UsePortalDefaultLanguageSetting, true);
                 }
 
-                return this._forcePortalDefaultLanguage.Value;
+                return this.forcePortalDefaultLanguage.Value;
             }
 
-            internal set { this._forcePortalDefaultLanguage = value; }
+            internal set
+            {
+                this.forcePortalDefaultLanguage = value;
+            }
         }
 
         public bool FriendlyAdminHostUrls
         {
             get
             {
-                if (!this._friendlyAdminHostUrls.HasValue)
+                if (!this.friendlyAdminHostUrls.HasValue)
                 {
-                    this._friendlyAdminHostUrls = this.GetBooleanSetting(FriendlyAdminHostUrlsSetting, true);
+                    this.friendlyAdminHostUrls = this.GetBooleanSetting(FriendlyAdminHostUrlsSetting, true);
                 }
 
-                return this._friendlyAdminHostUrls.Value;
+                return this.friendlyAdminHostUrls.Value;
             }
 
-            internal set { this._friendlyAdminHostUrls = value; }
+            internal set
+            {
+                this.friendlyAdminHostUrls = value;
+            }
         }
 
         public string IgnoreRegex
         {
             get
             {
-                return this._ignoreRegex ??
-                       (this._ignoreRegex =
+                return this.ignoreRegex ??
+                       (this.ignoreRegex =
                            this.GetStringSetting(
                                IgnoreRegexSetting,
                                @"(?<!linkclick\.aspx.+)(?:(?<!\?.+)(\.pdf$|\.gif$|\.png($|\?)|\.css($|\?)|\.js($|\?)|\.jpg$|\.axd($|\?)|\.swf$|\.flv$|\.ico$|\.xml($|\?)|\.txt$))"));
             }
 
-            internal set { this._ignoreRegex = value; }
+            internal set
+            {
+                this.ignoreRegex = value;
+            }
         }
 
         public bool IncludePageName
         {
             get
             {
-                if (!this._includePageName.HasValue)
+                if (!this.includePageName.HasValue)
                 {
-                    this._includePageName = this.GetBooleanSetting(IncludePageNameSetting, true);
+                    this.includePageName = this.GetBooleanSetting(IncludePageNameSetting, true);
                 }
 
-                return this._includePageName.Value;
+                return this.includePageName.Value;
             }
 
-            internal set { this._includePageName = value; }
+            internal set
+            {
+                this.includePageName = value;
+            }
         }
 
         public string NoFriendlyUrlRegex
@@ -474,29 +501,32 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 655 : new noFriendlyUrlRegex value to ignore generation of certain urls
-                return this._noFriendlyUrlRegex ?? (this._noFriendlyUrlRegex = this.GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx"));
+                return this.noFriendlyUrlRegex ?? (this.noFriendlyUrlRegex = this.GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx"));
             }
 
-            internal set { this._noFriendlyUrlRegex = value; }
+            internal set
+            {
+                this.noFriendlyUrlRegex = value;
+            }
         }
 
         public string PageExtension
         {
-            get { return this._pageExtension ?? (this._pageExtension = this.GetStringSetting(PageExtensionSetting, ".aspx")); }
-            internal set { this._pageExtension = value; }
+            get { return this.pageExtension ?? (this.pageExtension = this.GetStringSetting(PageExtensionSetting, ".aspx")); }
+            internal set { this.pageExtension = value; }
         }
 
         public PageExtensionUsageType PageExtensionUsageType
         {
             get
             {
-                if (this._pageExtensionUsage == null)
+                if (this.pageExtensionUsage == null)
                 {
-                    this._pageExtensionUsage = this.GetStringSetting(PageExtensionUsageSetting, PageExtensionUsageType.Never.ToString());
+                    this.pageExtensionUsage = this.GetStringSetting(PageExtensionUsageSetting, PageExtensionUsageType.Never.ToString());
                 }
 
                 PageExtensionUsageType val;
-                switch (this._pageExtensionUsage.ToLowerInvariant())
+                switch (this.pageExtensionUsage.ToLowerInvariant())
                 {
                     case "always":
                     case "alwaysuse":
@@ -519,7 +549,7 @@ namespace DotNetNuke.Entities.Urls
             internal set
             {
                 var newValue = value.ToString();
-                this._pageExtensionUsage = newValue;
+                this.pageExtensionUsage = newValue;
             }
         }
 
@@ -527,66 +557,78 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (!this._redirectDefaultPage.HasValue)
+                if (!this.redirectDefaultPage.HasValue)
                 {
-                    this._redirectDefaultPage = this.GetBooleanSetting(RedirectDefaultPageSetting, false);
+                    this.redirectDefaultPage = this.GetBooleanSetting(RedirectDefaultPageSetting, false);
                 }
 
-                return this._redirectDefaultPage.Value;
+                return this.redirectDefaultPage.Value;
             }
 
-            internal set { this._redirectUnfriendly = value; }
+            internal set
+            {
+                this.redirectUnfriendly = value;
+            }
         }
 
         public bool RedirectOldProfileUrl
         {
             get
             {
-                if (!this._redirectOldProfileUrl.HasValue)
+                if (!this.redirectOldProfileUrl.HasValue)
                 {
-                    this._redirectOldProfileUrl = PortalController.GetPortalSettingAsBoolean(RedirectOldProfileUrlSetting, this.PortalId, true);
+                    this.redirectOldProfileUrl = PortalController.GetPortalSettingAsBoolean(RedirectOldProfileUrlSetting, this.PortalId, true);
                 }
 
-                return this._redirectOldProfileUrl.Value;
+                return this.redirectOldProfileUrl.Value;
             }
 
-            internal set { this._redirectOldProfileUrl = value; }
+            internal set
+            {
+                this.redirectOldProfileUrl = value;
+            }
         }
 
         public bool RedirectUnfriendly
         {
             get
             {
-                if (!this._redirectUnfriendly.HasValue)
+                if (!this.redirectUnfriendly.HasValue)
                 {
-                    this._redirectUnfriendly = this.GetBooleanSetting(RedirectUnfriendlySetting, true);
+                    this.redirectUnfriendly = this.GetBooleanSetting(RedirectUnfriendlySetting, true);
                 }
 
-                return this._redirectUnfriendly.Value;
+                return this.redirectUnfriendly.Value;
             }
 
-            internal set { this._redirectUnfriendly = value; }
+            internal set
+            {
+                this.redirectUnfriendly = value;
+            }
         }
 
         public bool RedirectWrongCase
         {
             get
             {
-                if (!this._redirectWrongCase.HasValue)
+                if (!this.redirectWrongCase.HasValue)
                 {
-                    this._redirectWrongCase = this.GetBooleanSetting(RedirectMixedCaseSetting, false);
+                    this.redirectWrongCase = this.GetBooleanSetting(RedirectMixedCaseSetting, false);
                 }
 
-                return this._redirectWrongCase.Value;
+                return this.redirectWrongCase.Value;
             }
 
-            internal set { this._redirectWrongCase = value; }
+            internal set
+            {
+                this.redirectWrongCase = value;
+            }
         }
 
         public string RegexMatch
         {
-            get { return this._regexMatch ?? (this._regexMatch = this.GetStringSetting(ValidFriendlyUrlRegexSetting, @"[^\w\d _-]")); }
-            internal set { this._regexMatch = value; }
+            get { return this.regexMatch ?? (this.regexMatch = this.GetStringSetting(ValidFriendlyUrlRegexSetting, @"[^\w\d _-]")); }
+            internal set { this.regexMatch = value; }
         }
 
         public string ReplaceSpaceWith
@@ -594,31 +636,37 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 791 : use threadlocking option
-                return this._replaceSpaceWith ?? (this._replaceSpaceWith = this.GetStringSetting(ReplaceSpaceWithSetting, "-"));
+                return this.replaceSpaceWith ?? (this.replaceSpaceWith = this.GetStringSetting(ReplaceSpaceWithSetting, "-"));
             }
 
-            internal set { this._replaceSpaceWith = value; }
+            internal set
+            {
+                this.replaceSpaceWith = value;
+            }
         }
 
         public string SpaceEncodingValue
         {
-            get { return this._spaceEncodingValue ?? (this._spaceEncodingValue = this.GetStringSetting(SpaceEncodingValueSetting, SpaceEncodingHex)); }
-            internal set { this._spaceEncodingValue = value; }
+            get { return this.spaceEncodingValue ?? (this.spaceEncodingValue = this.GetStringSetting(SpaceEncodingValueSetting, SpaceEncodingHex)); }
+            internal set { this.spaceEncodingValue = value; }
         }
 
         public bool SSLClientRedirect
         {
             get
             {
-                if (!this._sslClientRedirect.HasValue)
+                if (!this.sslClientRedirect.HasValue)
                 {
-                    this._sslClientRedirect = this.GetBooleanSetting(SslClientRedirectSetting, false);
+                    this.sslClientRedirect = this.GetBooleanSetting(SslClientRedirectSetting, false);
                 }
 
-                return this._sslClientRedirect.Value;
+                return this.sslClientRedirect.Value;
             }
 
-            internal set { this._sslClientRedirect = value; }
+            internal set
+            {
+                this.sslClientRedirect = value;
+            }
         }
 
         public int TabId404 { get; private set; }
@@ -629,43 +677,52 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                return this._urlFormat ?? (this._urlFormat = this.GetStringSetting(UrlFormatSetting, "advanced"));
+                return this.urlFormat ?? (this.urlFormat = this.GetStringSetting(UrlFormatSetting, "advanced"));
             }
 
-            internal set { this._urlFormat = value; }
+            internal set
+            {
+                this.urlFormat = value;
+            }
         }
 
         public string UseBaseFriendlyUrls
         {
             get
             {
-                if (this._useBaseFriendlyUrls == null)
+                if (this.useBaseFriendlyUrls == null)
                 {
-                    this._useBaseFriendlyUrls = this.GetStringSetting(UseBaseFriendlyUrlsSetting, string.Empty);
-                    if (!string.IsNullOrEmpty(this.UseBaseFriendlyUrls) && !this.UseBaseFriendlyUrls.EndsWith(";"))
+                    this.useBaseFriendlyUrls = this.GetStringSetting(UseBaseFriendlyUrlsSetting, string.Empty);
+                    if (!string.IsNullOrEmpty(this.useBaseFriendlyUrls) && !this.useBaseFriendlyUrls.EndsWith(";"))
                     {
-                        this._useBaseFriendlyUrls += ";";
+                        this.useBaseFriendlyUrls += ";";
                     }
                 }
 
-                return this._useBaseFriendlyUrls;
+                return this.useBaseFriendlyUrls;
             }
 
-            internal set { this._useBaseFriendlyUrls = value; }
+            internal set
+            {
+                this.useBaseFriendlyUrls = value;
+            }
         }
 
         public string UseSiteUrlsRegex
         {
             get
             {
-                return this._useSiteUrlsRegex ??
-                       (this._useSiteUrlsRegex =
+                return this.useSiteUrlsRegex ??
+                       (this.useSiteUrlsRegex =
                            this.GetStringSetting(
                                SiteUrlsOnlyRegexSetting,
                                @"/rss\.aspx|Telerik.RadUploadProgressHandler\.ashx|BannerClickThrough\.aspx|(?:/[^/]+)*/Tabid/\d+/.*default\.aspx"));
             }
 
-            internal set { this._useSiteUrlsRegex = value; }
+            internal set
+            {
+                this.useSiteUrlsRegex = value;
+            }
         }
 
         public string ValidExtensionlessUrlsRegex
@@ -673,37 +730,40 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 893 : new extensionless Urls check for validating urls which have no extension but aren't 404
-                return this._validExtensionlessUrlsRegex ??
-                       (this._validExtensionlessUrlsRegex = this.GetStringSetting(UrlsWithNoExtensionRegexSetting, @"\.asmx/|\.ashx/|\.svc/|\.aspx/|\.axd/"));
+                return this.validExtensionlessUrlsRegex ??
+                       (this.validExtensionlessUrlsRegex = this.GetStringSetting(UrlsWithNoExtensionRegexSetting, @"\.asmx/|\.ashx/|\.svc/|\.aspx/|\.axd/"));
             }
 
-            internal set { this._validExtensionlessUrlsRegex = value; }
+            internal set
+            {
+                this.validExtensionlessUrlsRegex = value;
+            }
         }
 
         public string InternalAliases
         {
             get
             {
-                if (this._internalAliases == null)
+                if (this.internalAliases == null)
                 {
                     // allow for a list of internal aliases
                     this.InternalAliases = this.GetStringSetting(InternalAliasesSetting, string.Empty); // calls the setter
                 }
 
-                return this._internalAliases;
+                return this.internalAliases;
             }
 
             internal set
             {
-                this._internalAliases = value;
+                this.internalAliases = value;
                 this.ParseInternalAliases(); // splits into list
             }
         }
 
         public string VanityUrlPrefix
         {
-            get { return this._vanityUrlPrefix ?? (this._vanityUrlPrefix = this.GetStringSetting(VanityUrlPrefixSetting, "users")); }
-            internal set { this._vanityUrlPrefix = value; }
+            get { return this.vanityUrlPrefix ?? (this.vanityUrlPrefix = this.GetStringSetting(VanityUrlPrefixSetting, "users")); }
+            internal set { this.vanityUrlPrefix = value; }
         }
 
         internal List<string> PortalValues { get; private set; }
@@ -711,7 +771,7 @@ namespace DotNetNuke.Entities.Urls
         private bool GetBooleanSetting(string key, bool defaultValue)
         {
             // First Get the Host Value using the passed in value as default
-            var returnValue = this._hostControllerInstance.GetBoolean(key, defaultValue);
+            var returnValue = this.hostControllerInstance.GetBoolean(key, defaultValue);
 
             if (this.PortalId > -1)
             {
@@ -725,7 +785,7 @@ namespace DotNetNuke.Entities.Urls
         private int GetIntegerSetting(string key, int defaultValue)
         {
             // First Get the Host Value using the passed in value as default
-            var returnValue = this._hostControllerInstance.GetInteger(key, defaultValue);
+            var returnValue = this.hostControllerInstance.GetInteger(key, defaultValue);
 
             if (this.PortalId > -1)
             {
@@ -739,7 +799,7 @@ namespace DotNetNuke.Entities.Urls
         private string GetStringSetting(string key, string defaultValue)
         {
             // First Get the Host Value using the passed in value as default
-            var returnValue = this._hostControllerInstance.GetString(key, defaultValue);
+            var returnValue = this.hostControllerInstance.GetString(key, defaultValue);
 
             if (this.PortalId > -1)
             {
@@ -752,10 +812,10 @@ namespace DotNetNuke.Entities.Urls
 
         private void ParseInternalAliases()
         {
-            if (!string.IsNullOrEmpty(this._internalAliases))
+            if (!string.IsNullOrEmpty(this.internalAliases))
             {
                 this.InternalAliasList = new List<InternalAlias>();
-                var raw = this._internalAliases.Split(';');
+                var raw = this.internalAliases.Split(';');
                 foreach (var rawVal in raw)
                 {
                     if (rawVal.Length > 0)

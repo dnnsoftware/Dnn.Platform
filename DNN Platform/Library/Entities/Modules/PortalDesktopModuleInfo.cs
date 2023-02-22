@@ -13,8 +13,8 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class PortalDesktopModuleInfo : BaseEntityInfo
     {
-        private DesktopModuleInfo _desktopModule;
-        private DesktopModulePermissionCollection _permissions;
+        private DesktopModuleInfo desktopModule;
+        private DesktopModulePermissionCollection permissions;
 
         [XmlIgnore]
         [JsonIgnore]
@@ -22,12 +22,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._desktopModule == null)
+                if (this.desktopModule == null)
                 {
-                    this._desktopModule = this.DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID) : new DesktopModuleInfo();
+                    this.desktopModule = this.DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID) : new DesktopModuleInfo();
                 }
 
-                return this._desktopModule;
+                return this.desktopModule;
             }
         }
 
@@ -35,12 +35,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._permissions == null)
+                if (this.permissions == null)
                 {
-                    this._permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
+                    this.permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
                 }
 
-                return this._permissions;
+                return this.permissions;
             }
         }
 

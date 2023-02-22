@@ -33,12 +33,13 @@ namespace DotNetNuke.Modules.Admin.Security
     {
         private const int RedirectTimeout = 3000;
 
-        private readonly INavigationManager _navigationManager;
-        private string _ipAddress;
+        private readonly INavigationManager navigationManager;
+        private string ipAddress;
 
+        /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
         public PasswordReset()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private string ResetToken
@@ -54,10 +55,11 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this._ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+            this.ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
@@ -69,12 +71,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (this.PortalSettings.LoginTabId != -1 && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.LoginTabId)
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId) + this.Request.Url.Query);
+                this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.LoginTabId) + this.Request.Url.Query);
             }
 
-            this.cmdChangePassword.Click += this.cmdChangePassword_Click;
+            this.cmdChangePassword.Click += this.CmdChangePassword_Click;
 
-            this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
+            this.hlCancel.NavigateUrl = this.navigationManager.NavigateURL();
 
             if (this.Request.QueryString["resetToken"] != null)
             {
@@ -108,6 +110,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -159,9 +162,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// After a successful password change will redirect the user to requested returnurl OR the login page.
-        /// </summary>
+        /// <summary>After a successful password change will redirect the user to requested returnurl OR the login page.</summary>
         protected void RedirectAfterPasswordChange()
         {
             var redirectUrl = string.Empty;
@@ -187,7 +188,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (string.IsNullOrEmpty(redirectUrl))
             {
                 // return to the login page by default to allow users to login
-                redirectUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Login");
+                redirectUrl = this.navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Login");
             }
 
             this.AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -227,7 +228,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        private void cmdChangePassword_Click(object sender, EventArgs e)
+        private void CmdChangePassword_Click(object sender, EventArgs e)
         {
             var username = this.txtUsername.Text;
 
@@ -304,7 +305,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     this.LogSuccess();
                     this.ViewState.Add("PageNo", 3);
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Login"));
+                    this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Login"));
                 }
                 else
                 {
@@ -344,7 +345,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-            log.AddProperty("IP", this._ipAddress);
+            log.AddProperty("IP", this.ipAddress);
 
             LogController.Instance.AddLog(log);
         }

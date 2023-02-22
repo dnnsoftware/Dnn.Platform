@@ -28,9 +28,7 @@ using log4net.Util;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Converter to output and truncate <c>'.'</c> separated strings
-    /// </summary>
+    /// <summary>Converter to output and truncate <c>'.'</c> separated strings</summary>
     /// <remarks>
     /// <para>
     /// This abstract class supports truncating a <c>'.'</c> separated string
@@ -47,9 +45,7 @@ namespace log4net.Layout.Pattern
     {
         private int m_precision = 0;
 
-        /// <summary>
-        /// Initialize the converter 
-        /// </summary>
+        /// <summary>Initialize the converter </summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -92,9 +88,7 @@ namespace log4net.Layout.Pattern
             }
         }
 
-        /// <summary>
-        /// Get the fully qualified string data
-        /// </summary>
+        /// <summary>Get the fully qualified string data</summary>
         /// <param name="loggingEvent">the event being logged</param>
         /// <returns>the fully qualified name</returns>
         /// <remarks>
@@ -108,9 +102,7 @@ namespace log4net.Layout.Pattern
         /// </remarks>
         protected abstract string GetFullyQualifiedName(LoggingEvent loggingEvent);
     
-        /// <summary>
-        /// Convert the pattern to the rendered message
-        /// </summary>
+        /// <summary>Convert the pattern to the rendered message</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">the event being logged</param>
         /// <remarks>
@@ -151,9 +143,7 @@ namespace log4net.Layout.Pattern
             }	  
         }
 
-        /// <summary>
-        /// The fully qualified type of the NamedPatternConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the NamedPatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

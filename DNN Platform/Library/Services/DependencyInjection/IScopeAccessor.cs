@@ -20,25 +20,23 @@ namespace DotNetNuke.Services.DependencyInjection
     {
         private static Func<IDictionary> fallbackGetContextItems = () => HttpContext.Current?.Items;
 
-        private Func<IDictionary> _getContextItems;
+        private Func<IDictionary> getContextItems;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeAccessor"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeAccessor"/> class.</summary>
         public ScopeAccessor()
         {
-            this._getContextItems = fallbackGetContextItems;
+            this.getContextItems = fallbackGetContextItems;
         }
 
         /// <inheritdoc/>
         public IServiceScope GetScope()
         {
-            return HttpContextDependencyInjectionExtensions.GetScope(this._getContextItems());
+            return HttpContextDependencyInjectionExtensions.GetScope(this.getContextItems());
         }
 
         internal void SetContextItemsFunc(Func<IDictionary> getContextItems)
         {
-            this._getContextItems = getContextItems ?? fallbackGetContextItems;
+            this.getContextItems = getContextItems ?? fallbackGetContextItems;
         }
     }
 }

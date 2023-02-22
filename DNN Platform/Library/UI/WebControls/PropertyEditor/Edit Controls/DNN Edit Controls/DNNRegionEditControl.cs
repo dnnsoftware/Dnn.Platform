@@ -18,38 +18,31 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNRegionEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
-        private DropDownList _Regions;
+        private DropDownList regions;
 
-        private TextBox _Region;
+        private TextBox region;
 
-        private HtmlInputHidden _InitialValue;
+        private HtmlInputHidden initialValue;
 
-        private List<ListEntryInfo> _listEntries;
+        private List<ListEntryInfo> listEntries;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         public DNNRegionEditControl()
         {
             this.Init += this.DnnRegionControl_Init;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="type"></param>
         public DNNRegionEditControl(string type)
         {
@@ -57,9 +50,7 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = type;
         }
 
-        /// <summary>
-        /// Gets or sets the parent key of the List to display.
-        /// </summary>
+        /// <summary>Gets or sets the parent key of the List to display.</summary>
         public string ParentKey { get; set; }
 
         protected string OldStringValue
@@ -67,20 +58,18 @@ namespace DotNetNuke.UI.WebControls
             get { return Convert.ToString(this.OldValue); }
         }
 
-        /// <summary>
-        /// Gets the ListEntryInfo objects associated witht the control.
-        /// </summary>
+        /// <summary>Gets the ListEntryInfo objects associated witht the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
             {
-                if (this._listEntries == null)
+                if (this.listEntries == null)
                 {
                     var listController = new ListController();
-                    this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                    this.listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
                 }
 
-                return this._listEntries;
+                return this.listEntries;
             }
         }
 
@@ -106,19 +95,22 @@ namespace DotNetNuke.UI.WebControls
                 return strValue;
             }
 
-            set { this.Value = value; }
+            set
+            {
+                this.Value = value;
+            }
         }
 
         private DropDownList Regions
         {
             get
             {
-                if (this._Regions == null)
+                if (this.regions == null)
                 {
-                    this._Regions = new DropDownList();
+                    this.regions = new DropDownList();
                 }
 
-                return this._Regions;
+                return this.regions;
             }
         }
 
@@ -126,12 +118,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._Region == null)
+                if (this.region == null)
                 {
-                    this._Region = new TextBox();
+                    this.region = new TextBox();
                 }
 
-                return this._Region;
+                return this.region;
             }
         }
 
@@ -139,12 +131,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._InitialValue == null)
+                if (this.initialValue == null)
                 {
-                    this._InitialValue = new HtmlInputHidden();
+                    this.initialValue = new HtmlInputHidden();
                 }
 
-                return this._InitialValue;
+                return this.initialValue;
             }
         }
 
@@ -163,11 +155,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnAttributesChanged runs when the CustomAttributes property has changed.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnAttributesChanged runs when the CustomAttributes property has changed.</summary>
         protected override void OnAttributesChanged()
         {
             // Get the List settings out of the "Attributes"
@@ -179,7 +167,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         var listAtt = (ListAttribute)attribute;
                         this.ParentKey = listAtt.ParentKey;
-                        this._listEntries = null;
+                        this.listEntries = null;
                         break;
                     }
                 }

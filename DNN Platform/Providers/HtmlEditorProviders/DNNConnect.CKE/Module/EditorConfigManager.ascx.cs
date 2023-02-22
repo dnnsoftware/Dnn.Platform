@@ -20,14 +20,10 @@ namespace DNNConnect.CKEditorProvider.Module
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The Editor Config Manger Module.
-    /// </summary>
+    /// <summary>The Editor Config Manger Module.</summary>
     public partial class EditorConfigManager : ModuleSettingsBase
     {
-        /// <summary>
-        ///   Gets Current Language from Url.
-        /// </summary>
+        /// <summary>  Gets Current Language from Url.</summary>
         protected string LangCode
         {
             get
@@ -36,9 +32,7 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        /// <summary>
-        ///   Gets the Name for the Current Resource file name.
-        /// </summary>
+        /// <summary>  Gets the Name for the Current Resource file name.</summary>
         protected string ResXFile
         {
             get
@@ -51,14 +45,10 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        /// <summary>
-        /// Gets or sets the editor options control.
-        /// </summary>
+        /// <summary>Gets or sets the editor options control.</summary>
         private CKEditorOptions EditorOptions { get; set; }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Web.UI.Control.Init" /> event.
-        /// </summary>
+        /// <summary>Raises the <see cref="E:System.Web.UI.Control.Init" /> event.</summary>
         /// <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
@@ -66,9 +56,7 @@ namespace DNNConnect.CKEditorProvider.Module
             base.OnInit(e);
         }
 
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
+        /// <summary>Handles the Load event of the Page control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
@@ -180,9 +168,7 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        /// <summary>
-        /// Handles the CheckedChanged event of the PortalOnly control.
-        /// </summary>
+        /// <summary>Handles the CheckedChanged event of the PortalOnly control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void PortalOnly_CheckedChanged(object sender, EventArgs e)
@@ -216,9 +202,7 @@ namespace DNNConnect.CKEditorProvider.Module
             this.EditorOptions.BindOptionsData(true);
         }
 
-        /// <summary>
-        /// Loads the Settings based on the Selected Portal/Tab/Module.
-        /// </summary>
+        /// <summary>Loads the Settings based on the Selected Portal/Tab/Module.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void PortalTabsAndModulesTree_SelectedNodeChanged(object sender, EventArgs e)
@@ -298,9 +282,7 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        /// <summary>
-        /// Sets the language for all Controls.
-        /// </summary>
+        /// <summary>Sets the language for all Controls.</summary>
         private void SetLanguage()
         {
             this.ModuleHeader.Text = Localization.GetString("ModuleHeader.Text", this.ResXFile, this.LangCode);
@@ -327,9 +309,7 @@ namespace DNNConnect.CKEditorProvider.Module
             this.ModuleInstanceInfo.Text = Localization.GetString("ModuleError.Text", this.ResXFile, this.LangCode);
         }
 
-        /// <summary>
-        /// Renders the Portal <see cref="Tabs"/> and Module Tree.
-        /// </summary>
+        /// <summary>Renders the Portal <see cref="Tabs"/> and Module Tree.</summary>
         private void BindPortalTabsAndModulesTree()
         {
             this.PortalTabsAndModulesTree.Nodes.Clear();
@@ -374,9 +354,7 @@ namespace DNNConnect.CKEditorProvider.Module
             this.PortalTabsAndModulesTree.Nodes.Add(hostNode);
         }
 
-        /// <summary>
-        /// Renders the <paramref name="portal" /> node.
-        /// </summary>
+        /// <summary>Renders the <paramref name="portal" /> node.</summary>
         /// <param name="portal">The <paramref name="portal" />.</param>
         /// <param name="moduleController">The module controller.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>

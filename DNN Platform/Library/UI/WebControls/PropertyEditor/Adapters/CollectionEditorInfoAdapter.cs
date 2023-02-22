@@ -12,35 +12,26 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      CollectionEditorInfoFactory
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The CollectionEditorInfoAdapter control provides an Adapter for Collection Onjects.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The CollectionEditorInfoAdapter control provides an Adapter for Collection Onjects.</summary>
     public class CollectionEditorInfoAdapter : IEditorInfoAdapter
     {
-        private readonly object DataSource;
-        private readonly Hashtable FieldNames;
-        private readonly string Name;
+        private readonly object dataSource;
+        private readonly Hashtable fieldNames;
+        private readonly string name;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionEditorInfoAdapter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CollectionEditorInfoAdapter"/> class.</summary>
         /// <param name="dataSource"></param>
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="fieldNames"></param>
         public CollectionEditorInfoAdapter(object dataSource, string name, string fieldName, Hashtable fieldNames)
         {
-            this.DataSource = dataSource;
-            this.FieldNames = fieldNames;
-            this.Name = name;
+            this.dataSource = dataSource;
+            this.fieldNames = fieldNames;
+            this.name = name;
         }
 
         /// <inheritdoc/>
@@ -52,74 +43,74 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
-            string NameDataField = Convert.ToString(this.FieldNames["Name"]);
-            string ValueDataField = Convert.ToString(this.FieldNames["Value"]);
+            string nameDataField = Convert.ToString(this.fieldNames["Name"]);
+            string valueDataField = Convert.ToString(this.fieldNames["Value"]);
             PropertyInfo objProperty;
-            string PropertyName = string.Empty;
+            string propertyName = string.Empty;
             bool changed = e.Changed;
             string name = e.Name;
             object oldValue = e.OldValue;
             object newValue = e.Value;
             object stringValue = e.StringValue;
-            bool _IsDirty = Null.NullBoolean;
+            bool isDirty = Null.NullBoolean;
 
             // Get the Name Property
-            objProperty = this.DataSource.GetType().GetProperty(NameDataField);
+            objProperty = this.dataSource.GetType().GetProperty(nameDataField);
             if (objProperty != null)
             {
-                PropertyName = Convert.ToString(objProperty.GetValue(this.DataSource, null));
-
-                // Do we have the item in the IEnumerable Collection being changed
-                PropertyName = PropertyName.Replace(" ", "_");
-                if (PropertyName == name)
-                {
-                    // Get the Value Property
-                    objProperty = this.DataSource.GetType().GetProperty(ValueDataField);
-
-                    // Set the Value property to the new value
-                    if ((!ReferenceEquals(newValue, oldValue)) || changed)
-                    {
-                        if (objProperty.PropertyType.FullName == "System.String")
-                        {
-                            objProperty.SetValue(this.DataSource, stringValue, null);
-                        }
-                        else
-                        {
-                            objProperty.SetValue(this.DataSource, newValue, null);
-                        }
-
-                        _IsDirty = true;
-                    }
-                }
-            }
-
-            return _IsDirty;
-        }
-
-        /// <inheritdoc/>
-        public bool UpdateVisibility(PropertyEditorEventArgs e)
-        {
-            string nameDataField = Convert.ToString(this.FieldNames["Name"]);
-            string dataField = Convert.ToString(this.FieldNames["ProfileVisibility"]);
-            string name = e.Name;
-            object newValue = e.Value;
-            bool dirty = Null.NullBoolean;
-
-            // Get the Name Property
-            PropertyInfo property = this.DataSource.GetType().GetProperty(nameDataField);
-            if (property != null)
-            {
-                string propertyName = Convert.ToString(property.GetValue(this.DataSource, null));
+                propertyName = Convert.ToString(objProperty.GetValue(this.dataSource, null));
 
                 // Do we have the item in the IEnumerable Collection being changed
                 propertyName = propertyName.Replace(" ", "_");
                 if (propertyName == name)
                 {
                     // Get the Value Property
-                    property = this.DataSource.GetType().GetProperty(dataField);
+                    objProperty = this.dataSource.GetType().GetProperty(valueDataField);
 
                     // Set the Value property to the new value
-                    property.SetValue(this.DataSource, newValue, null);
+                    if ((!ReferenceEquals(newValue, oldValue)) || changed)
+                    {
+                        if (objProperty.PropertyType.FullName == "System.String")
+                        {
+                            objProperty.SetValue(this.dataSource, stringValue, null);
+                        }
+                        else
+                        {
+                            objProperty.SetValue(this.dataSource, newValue, null);
+                        }
+
+                        isDirty = true;
+                    }
+                }
+            }
+
+            return isDirty;
+        }
+
+        /// <inheritdoc/>
+        public bool UpdateVisibility(PropertyEditorEventArgs e)
+        {
+            string nameDataField = Convert.ToString(this.fieldNames["Name"]);
+            string dataField = Convert.ToString(this.fieldNames["ProfileVisibility"]);
+            string name = e.Name;
+            object newValue = e.Value;
+            bool dirty = Null.NullBoolean;
+
+            // Get the Name Property
+            PropertyInfo property = this.dataSource.GetType().GetProperty(nameDataField);
+            if (property != null)
+            {
+                string propertyName = Convert.ToString(property.GetValue(this.dataSource, null));
+
+                // Do we have the item in the IEnumerable Collection being changed
+                propertyName = propertyName.Replace(" ", "_");
+                if (propertyName == name)
+                {
+                    // Get the Value Property
+                    property = this.dataSource.GetType().GetProperty(dataField);
+
+                    // Set the Value property to the new value
+                    property.SetValue(this.dataSource, newValue, null);
                     dirty = true;
                 }
             }
@@ -127,34 +118,30 @@ namespace DotNetNuke.UI.WebControls
             return dirty;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetEditorInfo builds an EditorInfo object for a propoerty.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetEditorInfo builds an EditorInfo object for a propoerty.</summary>
         private EditorInfo GetEditorInfo()
         {
-            string CategoryDataField = Convert.ToString(this.FieldNames["Category"]);
-            string EditorDataField = Convert.ToString(this.FieldNames["Editor"]);
-            string NameDataField = Convert.ToString(this.FieldNames["Name"]);
-            string RequiredDataField = Convert.ToString(this.FieldNames["Required"]);
-            string TypeDataField = Convert.ToString(this.FieldNames["Type"]);
-            string ValidationExpressionDataField = Convert.ToString(this.FieldNames["ValidationExpression"]);
-            string ValueDataField = Convert.ToString(this.FieldNames["Value"]);
-            string VisibilityDataField = Convert.ToString(this.FieldNames["ProfileVisibility"]);
-            string MaxLengthDataField = Convert.ToString(this.FieldNames["Length"]);
+            string categoryDataField = Convert.ToString(this.fieldNames["Category"]);
+            string editorDataField = Convert.ToString(this.fieldNames["Editor"]);
+            string nameDataField = Convert.ToString(this.fieldNames["Name"]);
+            string requiredDataField = Convert.ToString(this.fieldNames["Required"]);
+            string typeDataField = Convert.ToString(this.fieldNames["Type"]);
+            string validationExpressionDataField = Convert.ToString(this.fieldNames["ValidationExpression"]);
+            string valueDataField = Convert.ToString(this.fieldNames["Value"]);
+            string visibilityDataField = Convert.ToString(this.fieldNames["ProfileVisibility"]);
+            string maxLengthDataField = Convert.ToString(this.fieldNames["Length"]);
 
             var editInfo = new EditorInfo();
             PropertyInfo property;
 
             // Get the Name of the property
             editInfo.Name = string.Empty;
-            if (!string.IsNullOrEmpty(NameDataField))
+            if (!string.IsNullOrEmpty(nameDataField))
             {
-                property = this.DataSource.GetType().GetProperty(NameDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(nameDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Name = Convert.ToString(property.GetValue(this.DataSource, null));
+                    editInfo.Name = Convert.ToString(property.GetValue(this.dataSource, null));
                 }
             }
 
@@ -162,45 +149,45 @@ namespace DotNetNuke.UI.WebControls
             editInfo.Category = string.Empty;
 
             // Get Category Field
-            if (!string.IsNullOrEmpty(CategoryDataField))
+            if (!string.IsNullOrEmpty(categoryDataField))
             {
-                property = this.DataSource.GetType().GetProperty(CategoryDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(categoryDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Category = Convert.ToString(property.GetValue(this.DataSource, null));
+                    editInfo.Category = Convert.ToString(property.GetValue(this.dataSource, null));
                 }
             }
 
             // Get Value Field
             editInfo.Value = string.Empty;
-            if (!string.IsNullOrEmpty(ValueDataField))
+            if (!string.IsNullOrEmpty(valueDataField))
             {
-                property = this.DataSource.GetType().GetProperty(ValueDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(valueDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Value = Convert.ToString(property.GetValue(this.DataSource, null));
+                    editInfo.Value = Convert.ToString(property.GetValue(this.dataSource, null));
                 }
             }
 
             // Get the type of the property
             editInfo.Type = "System.String";
-            if (!string.IsNullOrEmpty(TypeDataField))
+            if (!string.IsNullOrEmpty(typeDataField))
             {
-                property = this.DataSource.GetType().GetProperty(TypeDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(typeDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Type = Convert.ToString(property.GetValue(this.DataSource, null));
+                    editInfo.Type = Convert.ToString(property.GetValue(this.dataSource, null));
                 }
             }
 
             // Get Editor Field
             editInfo.Editor = "DotNetNuke.UI.WebControls.TextEditControl, DotNetNuke";
-            if (!string.IsNullOrEmpty(EditorDataField))
+            if (!string.IsNullOrEmpty(editorDataField))
             {
-                property = this.DataSource.GetType().GetProperty(EditorDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(editorDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Editor = EditorInfo.GetEditor(Convert.ToInt32(property.GetValue(this.DataSource, null)));
+                    editInfo.Editor = EditorInfo.GetEditor(Convert.ToInt32(property.GetValue(this.dataSource, null)));
                 }
             }
 
@@ -209,18 +196,18 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Required Field
             editInfo.Required = false;
-            if (!string.IsNullOrEmpty(RequiredDataField))
+            if (!string.IsNullOrEmpty(requiredDataField))
             {
-                property = this.DataSource.GetType().GetProperty(RequiredDataField);
-                if (!((property == null) || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(requiredDataField);
+                if (!((property == null) || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Required = Convert.ToBoolean(property.GetValue(this.DataSource, null));
+                    editInfo.Required = Convert.ToBoolean(property.GetValue(this.dataSource, null));
                 }
             }
 
             // Set ResourceKey Field
             editInfo.ResourceKey = editInfo.Name;
-            editInfo.ResourceKey = string.Format("{0}_{1}", this.Name, editInfo.Name);
+            editInfo.ResourceKey = string.Format("{0}_{1}", this.name, editInfo.Name);
 
             // Set Style
             editInfo.ControlStyle = new Style();
@@ -230,33 +217,33 @@ namespace DotNetNuke.UI.WebControls
             {
                 VisibilityMode = UserVisibilityMode.AllUsers,
             };
-            if (!string.IsNullOrEmpty(VisibilityDataField))
+            if (!string.IsNullOrEmpty(visibilityDataField))
             {
-                property = this.DataSource.GetType().GetProperty(VisibilityDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(visibilityDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.ProfileVisibility = (ProfileVisibility)property.GetValue(this.DataSource, null);
+                    editInfo.ProfileVisibility = (ProfileVisibility)property.GetValue(this.dataSource, null);
                 }
             }
 
             // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;
-            if (!string.IsNullOrEmpty(ValidationExpressionDataField))
+            if (!string.IsNullOrEmpty(validationExpressionDataField))
             {
-                property = this.DataSource.GetType().GetProperty(ValidationExpressionDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(validationExpressionDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.ValidationExpression = Convert.ToString(property.GetValue(this.DataSource, null));
+                    editInfo.ValidationExpression = Convert.ToString(property.GetValue(this.dataSource, null));
                 }
             }
 
             // Get Length Field
-            if (!string.IsNullOrEmpty(MaxLengthDataField))
+            if (!string.IsNullOrEmpty(maxLengthDataField))
             {
-                property = this.DataSource.GetType().GetProperty(MaxLengthDataField);
-                if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
+                property = this.dataSource.GetType().GetProperty(maxLengthDataField);
+                if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    int length = Convert.ToInt32(property.GetValue(this.DataSource, null));
+                    int length = Convert.ToInt32(property.GetValue(this.dataSource, null));
                     var attributes = new object[1];
                     attributes[0] = new MaxLengthAttribute(length);
                     editInfo.Attributes = attributes;

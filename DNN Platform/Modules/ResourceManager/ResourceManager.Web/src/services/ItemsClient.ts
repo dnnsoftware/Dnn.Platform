@@ -19,13 +19,36 @@ export class ItemsClient{
         this.requestUrl = `${this.sf.getServiceRoot("ResourceManager")}Items/`
     }
 
+    public getSettings() {
+        return new Promise<GetSettingsResponse>((resolve, reject) => {
+            const url = `${this.requestUrl}GetSettings`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("groupId", this.getGroupId());
+            fetch(url, {
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json()
+                    .then(data => {
+                        resolve(data);
+                    });
+                }
+                else{
+                    response.json().then(error => reject(error));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
+
     /**
      * Gets a specific folder contents.
      * @param folderId Gets the content of a folder.
      * @param startIndex Which item to start at in the paging mechanism.
      * @param numItems How many items to return.
      * @param sorting How to sort the items returned.
-     * @returns 
+     * @returns
      */
     public getFolderContent(
         folderId: number,
@@ -96,7 +119,7 @@ export class ItemsClient{
      * @param numItems The number of items.
      * @param sorting The sorting.
      * @param recursive If true sync recursively.
-     * @returns 
+     * @returns
      */
      public syncFolderContent(
         folderId: number,
@@ -128,7 +151,7 @@ export class ItemsClient{
     /**
      * Downloads a file.
      * @param fileId The id of the file to download.
-     * @param forceDownload A value indicating whether to force the download. 
+     * @param forceDownload A value indicating whether to force the download.
      *                      When true, will download the file as an attachment and ensures the browser won't just render the file if supported.
      *                      When false, the browser may render the file instead of downloading it for some formats like pdf or images.
      * @returns The actual requested file.
@@ -166,7 +189,7 @@ export class ItemsClient{
             .catch(error => reject(error));
         });
     }
-    
+
     public search(
         folderId: number,
         search: string,
@@ -213,6 +236,23 @@ export class ItemsClient{
             })
             .catch(error => reject(error));
         });
+    }
+
+    public canManageFolderTypes(){
+        return new Promise<boolean>((resolve, reject) => {
+            const url = `${this.requestUrl}CanManageFolderTypes`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                } else {
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        })
     }
 
     public getAddFolderTypeUrl(){
@@ -511,7 +551,7 @@ export class ItemsClient{
             result = parts[groupIdIndex + 1];
             return result;
         }
-        
+
         const searchParams = new URLSearchParams(window.location.search);
         const groupId = searchParams.get("groupid");
         if (groupId){
@@ -520,6 +560,32 @@ export class ItemsClient{
 
         return result;
     }
+}
+
+/** Represents the module settings. */
+export interface GetSettingsResponse{
+        /** The name of the root folder (could be an actual folder name or "Site Assets" or "Global Assets") */
+        HomeFolderName: string;
+
+        /** The ID of the home folder configures in the settings */
+        HomeFolderId: number;
+
+        /** The current module mode configured in the settings */
+        Mode: ModuleMode;
+
+        /** Whether folder is global or for current portal */
+        IsHostPortal: boolean;
+}
+
+export enum ModuleMode{
+    /** Normal mode is when the module is used to manage site or host files. */
+    Normal = 0,
+
+    /** User mode is for when a module is used for a specific user to manage his files. */
+    User = 1,
+
+    /** Group mode is for when the module is used by a social group. */
+    Group = 2,
 }
 
 export interface GetFolderContentResponse{
