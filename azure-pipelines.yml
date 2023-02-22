@@ -53,6 +53,11 @@ steps:
     restoreKeys: 'yarn | "$(Agent.OS)"'
     path: $(YARN_CACHE_FOLDER)
 
+- task: NodeTool@0
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '>=18.x'
+  
 - task: UseDotNet@2
   displayName: 'Use .NET 6.x SDK'
   inputs:
