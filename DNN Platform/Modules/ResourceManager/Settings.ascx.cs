@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace Dnn.Modules.ResourceManager
@@ -28,8 +28,8 @@ namespace Dnn.Modules.ResourceManager
                 }
 
                 var displayTypesValues = Enum.GetValues(typeof(Constants.ModuleModes)).Cast<Constants.ModuleModes>();
-                var displayTypes = displayTypesValues.Select(t => new ListItem(Utils.GetEnumDescription(t), ((int)t).ToString())).ToArray();
-
+                var displayTypes = displayTypesValues.Select(t => new ListItem(Localization.GetString(string.Format("ModuleModes.{0}", Utils.GetEnumDescription(t)), LocalResourceFile), ((int)t).ToString())).ToArray();
+                
                 this.ddlMode.Items.AddRange(displayTypes);
 
                 this.ddlMode.SelectedValue = this.Settings.Contains(Constants.ModeSettingName)
