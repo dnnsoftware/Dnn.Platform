@@ -18,5 +18,6 @@ namespace DotNetNuke.Services.Mail
         PasswordReminderUserIsNotApproved = 9,
         UserAuthorized = 10,
         UserUnAuthorized = 11,
+        PasswordReminderUserIsNotApprovedAdmin = 12,
     }
 }

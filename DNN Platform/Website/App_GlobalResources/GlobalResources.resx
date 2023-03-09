@@ -1361,9 +1361,8 @@ Sincerely,
   <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_BODY.Text" xml:space="preserve">
     <value>Dear [User:DisplayName],
 
-You have requested a Password Reset Token from [Portal:PortalName], but Your account is pending approval.
-
-Password can be reset after account is approved.
+You have requested a Password Reset Token from [Portal:PortalName], but your account is pending approval.
+The administrator for [Portal:PortalName] has been notified for review and will issue another password reset email if your account is approved.
 
 Sincerely,
 [Portal:PortalName]
@@ -1373,6 +1372,18 @@ Sincerely,
   </data>
   <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] Password Reminder</value>
+  </data>
+  <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_ADMINISTRATOR_BODY.Text" xml:space="preserve">
+    <value>
+The following user has requested a Password Reset Token from [Portal:PortalName], but the user account is pending approval.
+User Name: [User:UserName]
+Display Name: [User:DisplayName]
+
+After reviewing this user, if the account is authorized, resend the user a password reset email.
+    </value>
+  </data>
+  <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_ADMINISTRATOR_SUBJECT.Text" xml:space="preserve">
+    <value>[Portal:PortalName] Password Reminder requested for unapproved User [User:Username]</value>
   </data>
   <data name="503.Error" xml:space="preserve">
     <value>{0} - 503 Service Unavailable</value>
