@@ -253,7 +253,7 @@
 
             // TODO: check the structure of the tree, maybe using reflection?
             packagesTree.ShouldNotBeNull();
-            var treeSegments = ((IRenderable)packagesTree).Render(new RenderContext(new TestCapabilities()), 80);
+            var treeSegments = ((IRenderable)packagesTree).Render(RenderOptions.Create(console, new TestCapabilities()), 80);
 
             var joinedSegments = string.Join(string.Empty, treeSegments.Select(s => s.Text));
             joinedSegments.ShouldContainStringsInOrder(
