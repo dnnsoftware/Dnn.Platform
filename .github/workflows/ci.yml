@@ -59,7 +59,7 @@ jobs:
           cd ..
 
       - name: Restore NuGet packages
-        run: nuget restore
+        run: nuget restore -LockedMode
 
       - name: Build and package the application
         run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true /p:VersionSuffix=${{ env.VERSION_SUFFIX }}
