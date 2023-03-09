@@ -23,6 +23,9 @@ jobs:
         configuration: [Release]
 
     runs-on: windows-latest
+    
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
       - name: Checkout
@@ -57,6 +60,13 @@ jobs:
           cd ../PolyDeploy
           npm ci
           cd ..
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Restore NuGet packages
         run: nuget restore -LockedMode
