@@ -30,14 +30,14 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Spectre.Console" Version="0.45.0" />
-		<PackageReference Include="Spectre.Console.Analyzer" Version="0.45.0">
+		<PackageReference Include="Spectre.Console" Version="0.46.0" />
+		<PackageReference Include="Spectre.Console.Analyzer" Version="0.46.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Spectre.Console.Cli" Version="0.45.0" />
+		<PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
 		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.2.0" />
-		<PackageReference Include="System.IO.Abstractions" Version="19.1.1" />
+		<PackageReference Include="System.IO.Abstractions" Version="19.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>
