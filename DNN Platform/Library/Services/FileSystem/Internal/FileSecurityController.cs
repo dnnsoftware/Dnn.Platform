@@ -42,6 +42,23 @@ namespace DotNetNuke.Services.FileSystem.Internal
         }
 
         /// <inheritdoc/>
+        public bool ValidateNotExectuable(Stream fileContent)
+        {
+            Requires.NotNull("fileContent", fileContent);
+
+            using (var copyStream = this.CopyStream(fileContent))
+            {
+                using (var binaryReader = new BinaryReader(copyStream))
+                {
+                    var firstBytes = binaryReader.ReadBytes(2);
+
+                    // Windows exectuable files start with 0x4D 0x5A
+                    return firstBytes.Length < 2 || firstBytes[0] != 0x4D || firstBytes[1] != 0x5A;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         protected override Func<IFileSecurityController> GetFactory()
         {
             return () => new FileSecurityController();

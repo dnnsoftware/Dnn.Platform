@@ -211,7 +211,7 @@ namespace DotNetNuke.Services.FileSystem
                         usingSeekableStream = true;
                     }
 
-                    this.CheckFileWritingRestrictions(folder, fileName, fileContent, oldFile, createdByUserID);
+                    this.CheckFileWritingRestrictions(folder, fileName, fileContent, oldFile, createdByUserID, ignoreWhiteList);
 
                     // Retrieve Metadata
                     this.SetInitialFileMetadata(ref fileContent, file, folderProvider);
@@ -1823,7 +1823,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void CheckFileWritingRestrictions(IFolderInfo folder, string fileName, Stream fileContent, IFileInfo oldFile, int createdByUserId)
+        private void CheckFileWritingRestrictions(IFolderInfo folder, string fileName, Stream fileContent, IFileInfo oldFile, int createdByUserId, bool ignoreWhiteList)
         {
             if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileContent.Length))
             {
@@ -1843,6 +1843,14 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             if (!FileSecurityController.Instance.Validate(fileName, fileContent))
+            {
+                var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
+                var errorMessage = Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
+                throw new InvalidFileContentException(string.Format(errorMessage, fileName));
+            }
+
+            var checkWhiteList = !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList);
+            if (checkWhiteList && !this.WhiteList.IsAllowedExtension(".exe") && !FileSecurityController.Instance.ValidateNotExectuable(fileContent))
             {
                 var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
                 var errorMessage = Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
