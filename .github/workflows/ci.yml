@@ -25,10 +25,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Set VERSION_SUFFIX
-        if: github.event_name == 'release' && github.event.action == 'created'
-        run: "'VERSION_SUFFIX=' >> $env:GITHUB_ENV"
-
       - name: Checkout
         uses: actions/checkout@v3.1.0
 
@@ -76,8 +72,13 @@ jobs:
       - name: Publish Deploy Client
         run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 
-      - name: Pack Deploy Client
+      - name: Pack Deploy Client (alpha)
+        if: github.event_name != 'release' || github.event.action != 'created'
         run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/ --version-suffix ${{ env.VERSION_SUFFIX }}
+
+      - name: Pack Deploy Client (stable)
+        if: github.event_name == 'release' && github.event.action == 'created'
+        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3.1.1
