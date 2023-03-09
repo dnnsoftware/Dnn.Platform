@@ -113,7 +113,7 @@ namespace PolyDeploy.DeployClient.Tests
             await deployer.StartAsync(options);
 
             uploads.ShouldNotBeNull();
-            var (file, task) = uploads.ShouldHaveSingleItem();
+            var (file, _) = uploads.ShouldHaveSingleItem();
             file.ShouldBe("Install.zip");
         }
 

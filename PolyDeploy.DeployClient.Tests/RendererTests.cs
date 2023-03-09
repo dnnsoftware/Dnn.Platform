@@ -56,6 +56,70 @@
             console.Output.ShouldBeEmpty();
         }
 
+        [Fact]
+        public void RenderListOfFiles_DisplaysFilePath()
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+            renderer.RenderListOfFiles(LogLevel.Information, new[] { @"E:\foo\bar\OpenContent_4.5.0_Install.zip", @"E:\foo\bar\2sxc_12.4.4_Install.zip", });
+
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, @"E:\foo\bar", "OpenContent_4.5.0_Install.zip", "2sxc_12.4.4_Install.zip");
+        }
+
+        [Fact]
+        public void RenderListOfFiles_WithTopLevelMultiplePaths_DisplaysFilePathsInTree()
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+            renderer.RenderListOfFiles(LogLevel.Information, new[]
+            {
+                @"E:\my-top-level.zip",
+                @"E:\foo\Modules\the-module.zip",
+                @"E:\foo\Modules\the-templates.zip",
+                @"E:\foo\Skins\themezilla.zip",
+            });
+
+            console.Output.ShouldContainStringsInOrder(
+                onlyOnce: true,
+                @"E:\",
+                "my-top-level.zip",
+                "foo",
+                "Modules",
+                "the-module.zip",
+                "the-templates.zip",
+                "Skins",
+                "themezilla.zip");
+        }
+
+        [Fact]
+        public void RenderListOfFiles_WithMultiplePaths_DisplaysFilePathsInTree()
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+            renderer.RenderListOfFiles(LogLevel.Information, new[]
+            {
+                @"E:\foo\Containers\my-containers.zip",
+                @"E:\foo\Modules\the-module.zip",
+                @"E:\foo\Modules\the-templates.zip",
+                @"E:\foo\Skins\themezilla.zip",
+            });
+
+            console.Output.ShouldContainStringsInOrder(
+                onlyOnce: true,
+                @"E:\foo",
+                "Containers",
+                "my-containers.zip",
+                "Modules",
+                "the-module.zip",
+                "the-templates.zip",
+                "Skins",
+                "themezilla.zip");
+        }
+
+
         [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
         [Theory]
         public async Task RenderFileUploadsAsync_InteractiveWithLogging_RendersSomething(LogLevel logLevel)
@@ -259,7 +323,7 @@
             renderer.RenderInstallationOverview(logLevel, new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
             console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "DNNJWT" });
         }
-        
+
         [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
         [Theory]
         public void RenderInstallationOverview_LogLevelAboveInformation_DoesNotRender(LogLevel logLevel)

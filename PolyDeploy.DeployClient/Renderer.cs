@@ -14,10 +14,8 @@
         public void Welcome(LogLevel level)
         {
             var shouldLog = level <= LogLevel.Information;
-            if (shouldLog)
-            {
-                this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
-            }
+            if (!shouldLog) return;
+            this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
         }
 
         public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string file, Task uploadTask)> uploads)
@@ -57,7 +55,7 @@
             {
                 return;
             }
-            
+
             var tree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
             foreach (var packageFile in packageFiles.Values)
             {
@@ -110,12 +108,88 @@
         public void RenderListOfFiles(LogLevel level, IEnumerable<string> files)
         {
             var shouldLog = level <= LogLevel.Information;
-            if (shouldLog)
+            if (!shouldLog)
             {
-                var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
-                fileTree.AddNodes(files.Select(f => Markup.FromInterpolated($":page_facing_up: [aqua]{f}[/]")));
+                return;
+            }
 
-                this.console.Write(fileTree);
+            var separatedFiles = files.Select(GetFileParts).Select(fileParts => fileParts.ToArray());
+
+            var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
+            fileTree.AddNodes(MakeNode(separatedFiles));
+
+            console.Write(fileTree);
+
+            static TreeNode MakeNode(IEnumerable<string[]> files)
+            {
+                var filesList = files.ToList();
+                if (filesList is [ [var fileName,],])
+                {
+                    return new TreeNode(Markup.FromInterpolated($":page_facing_up: [aqua]{fileName}[/]"));
+                }
+
+                var (joinedPath, groupedFiles) = GetGroupedFiles(filesList);
+
+                var folderNode =
+                    new TreeNode(Markup.FromInterpolated($":file_folder: [yellow]{joinedPath}[/]"));
+
+                folderNode.AddNodes(groupedFiles.Select(MakeNode));
+
+                return folderNode;
+            }
+
+            static (string JoinedPath, IEnumerable<IEnumerable<string[]>> GroupedParts) GetGroupedFiles(IReadOnlyList<string[]> files)
+            {
+                string joinedPath;
+                IEnumerable<IEnumerable<string[]>> groupedParts;
+
+                var firstFile = files[0];
+                var minParts = files.Min(parts => parts.Length);
+                for (var i = 0; i < minParts; i++)
+                {
+                    if (!files.Any(parts => parts[i] != firstFile[i]))
+                    {
+                        continue;
+                    }
+
+                    joinedPath = string.Concat(firstFile.Take(i));
+                    groupedParts = files.GroupBy(
+                        parts => string.Concat(parts.Take(i + 1)), 
+                        parts => parts[i..]);
+                    return (joinedPath, groupedParts);
+                }
+
+                joinedPath = string.Concat(firstFile.Take(minParts));
+                groupedParts = Enumerable.Empty<IEnumerable<string[]>>();
+                return (joinedPath, groupedParts);
+            }
+
+            static IEnumerable<string> GetFileParts(string filePath)
+            {
+                var directory = Path.GetDirectoryName(filePath);
+                if (directory == null)
+                {
+                    yield return EnsureEndsWithSlash(filePath);
+                    yield break;
+                }
+
+                foreach (var part in GetFileParts(directory))
+                {
+                    yield return EnsureEndsWithSlash(part);
+                }
+
+                yield return Path.GetFileName(filePath);
+            }
+
+
+            static string EnsureEndsWithSlash(string str)
+            {
+                if (str.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    return str;
+                }
+
+                return str + Path.DirectorySeparatorChar;
             }
         }
 
@@ -154,7 +228,7 @@
             {
                 return;
             }
-            
+
             this.console.WriteLine(message);
             this.console.WriteException(exception);
         }
