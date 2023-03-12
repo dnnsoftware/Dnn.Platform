@@ -74,6 +74,10 @@ module.exports = (env, argv) => {
                         loader: "url-loader?limit=8192",
                     },
                 },
+                {
+                    test: /\.(d.ts)$/,
+                    use: ["null-loader"],
+                }
             ],
         },
         externals: webpackExternals,

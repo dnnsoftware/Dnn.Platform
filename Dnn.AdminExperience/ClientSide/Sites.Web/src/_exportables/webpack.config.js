@@ -8,9 +8,6 @@ module.exports = (env, argv) => {
         optimization: {
             minimize: true,
         },
-        node: {
-            fs: "empty",
-        },
         output: {
             path:
         isProduction || settings.WebsitePath == ""
@@ -57,6 +54,12 @@ module.exports = (env, argv) => {
                     test: /\.(less|css)$/,
                     use:["style-loader", "css-loader", "less-loader"],
                 },
+                {
+                    test: /\.(d.ts)$/,
+                    use:{
+                        loader: "null-loader",
+                    },
+                },
             ],
         },
         externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
@@ -69,6 +72,9 @@ module.exports = (env, argv) => {
                 path.resolve(__dirname, "../../node_modules"),
                 path.resolve(__dirname, "../../../../../node_modules"),
             ],
+            fallback: {
+                fs: false,
+            }
         },
     };
 };

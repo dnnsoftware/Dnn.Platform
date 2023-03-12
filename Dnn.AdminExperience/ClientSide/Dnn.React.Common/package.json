@@ -83,9 +83,9 @@
     "react-test-renderer": "^17.0.2",
     "style-loader": "^0.23.0",
     "url-loader": "1.1.2",
-    "webpack": "4.46.0",
+    "webpack": "5.76.1",
     "webpack-bundle-size-analyzer": "3.1.0",
-    "webpack-cli": "4.10.0",
+    "webpack-cli": "5.0.1",
     "webpack-dev-server": "4.11.1",
     "webpack-node-externals": "^3.0.0"
   },

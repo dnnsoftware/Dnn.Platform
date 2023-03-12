@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "set NODE_ENV=production&&webpack --mode production",
     "debug": "set NODE_ENV=debug&&webpack --mode production",
-    "watch": "set NODE_ENV=debug & webpack --mode=development --progress --colors --watch",
-    "webpack": "4.46.0"
+    "watch": "set NODE_ENV=debug & webpack --mode=development --progress --colors --watch"
   },
   "license": "UNLICENSED",
   "devDependencies": {
@@ -32,6 +31,7 @@
     "less": "4.1.2",
     "less-loader": "5.0.0",
     "localization": "^1.0.2",
+    "null-loader": "^4.0.1",
     "prop-types": "15.6.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -42,8 +42,8 @@
     "style-loader": "^0.23.1",
     "throttle-debounce": "^5.0.0",
     "utils": "^0.3.1",
-    "webpack": "4.46.0",
-    "webpack-cli": "4.10.0",
+    "webpack": "5.76.1",
+    "webpack-cli": "5.0.1",
     "webpack-dev-server": "4.11.1"
   }
 }

@@ -6,7 +6,6 @@
     "build": "set NODE_ENV=production&&webpack --mode production --progress",
     "debug": "set NODE_ENV=debug&&webpack --mode production --progress",
     "watch": "set NODE_ENV=debug & webpack --mode=development --progress --colors --watch",
-    "webpack": "4.46.0",
     "analyze": "set NODE_ENV=production&&webpack --config webpack.config.js --profile --json > stats.json&&webpack-bundle-analyzer stats.json",
     "lint": "eslint --fix"
   },
@@ -61,9 +60,9 @@
     "style-loader": "0.23.1",
     "throttle-debounce": "5.0.0",
     "url-loader": "1.1.2",
-    "webpack": "4.46.0",
+    "webpack": "5.76.1",
     "webpack-bundle-analyzer": "^4.4.1",
-    "webpack-cli": "4.10.0",
+    "webpack-cli": "5.0.1",
     "webpack-dev-server": "4.11.1"
   },
   "dependencies": {
