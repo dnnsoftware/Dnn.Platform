@@ -16,7 +16,6 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            Environment.SetEnvironmentVariable("NODE_OPTIONS", "--openssl-legacy-provider");
             context.Yarn().Install(c => c
                 .WithArgument("--no-immutable")
                 .WithWorkingDirectory(context.Directory("./")));
