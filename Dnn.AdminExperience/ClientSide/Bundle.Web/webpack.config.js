@@ -33,27 +33,34 @@ module.exports = (env, argv) => {
                     test: /\.(js|jsx)$/,
                     enforce: "pre",
                     exclude: /node_modules/,
-                    loader: "eslint-loader",
-                    options: { fix: true },
+                    use:[
+                        {
+                            loader: "eslint-loader",
+                            options: { fix: true },
+                        }
+                    ]
                 },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader: "babel-loader",
+                    use: ["babel-loader"],
                 },
                 {
                     test: /\.(less|css)$/,
-                    loader: "style-loader!css-loader!less-loader",
+                    use: ["style-loader", "css-loader", "less-loader"],
                 },
                 {
                     test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
-                    loader: "url-loader?mimetype=application/font-woff",
+                    use: ["url-loader?mimetype=application/font-woff"],
                 },
                 {
                     test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-                    loader: "file-loader?name=[name].[ext]",
+                    use: ["file-loader?name=[name].[ext]"],
                 },
-                { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
+                {
+                    test: /\.(gif|png)$/,
+                    use: ["url-loader?mimetype=image/png"],
+                },
             ],
         },
         resolve: {

@@ -34,20 +34,28 @@ module.exports = (env, argv) => {
                     test: /\.(js|jsx)$/,
                     enforce: "pre",
                     exclude: /node_modules/,
-                    loader: "eslint-loader",
-                    options: { fix: true },
+                    use: [
+                        {
+                            loader: "eslint-loader",
+                            options: { fix: true },
+                        }
+                    ] 
                 },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loaders: "babel-loader",
-                    options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"],
-                        plugins: [
-                            "@babel/plugin-transform-react-jsx",
-                            "@babel/plugin-proposal-object-rest-spread",
-                        ],
-                    },
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                presets: ["@babel/preset-env", "@babel/preset-react"],
+                                plugins: [
+                                    "@babel/plugin-transform-react-jsx",
+                                    "@babel/plugin-proposal-object-rest-spread",
+                                ],
+                            },
+                        }
+                    ],
                 },
                 {
                     test: /\.(less|css)$/,
@@ -57,7 +65,7 @@ module.exports = (env, argv) => {
                         { loader: "less-loader" },
                     ],
                 },
-                { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
+                { test: /\.(ttf|woff)$/, use: "url-loader?limit=8192" },
             ],
         },
         resolve: {
