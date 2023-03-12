@@ -35,9 +35,7 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader",
-                    },
+                    use: [ "babel-loader" ],
                 },
                 {
                     test: /\.less$/,
@@ -68,10 +66,12 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(ttf|woff|gif|png)$/,
-                    use: {
-                        loader: "url-loader?limit=8192",
-                    },
+                    use: ["url-loader?limit=8192"],
                 },
+                {
+                    test: /\.(d.ts)$/,
+                    use: ["null-loader"],
+                }
             ],
         },
         resolve: {

@@ -32,13 +32,17 @@ module.exports = (env, argv) => {
                     test: /\.(js|jsx)$/,
                     enforce: "pre",
                     exclude: /node_modules/,
-                    loader: "eslint-loader",
-                    options: { fix: true },
+                    use: [
+                        {
+                            loader: "eslint-loader",
+                            options: { fix: true },
+                        },
+                    ],
                 },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader: "babel-loader",
+                    use: ["babel-loader"],
                 },
                 {
                     test: /\.(less|css)$/,
@@ -48,7 +52,7 @@ module.exports = (env, argv) => {
                         { loader: "less-loader" },
                     ],
                 },
-                { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
+                { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
             ],
         },
 

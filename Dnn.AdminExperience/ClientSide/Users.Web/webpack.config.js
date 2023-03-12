@@ -33,22 +33,28 @@ module.exports = (env, argv) => {
                     test: /\.(js|jsx)$/,
                     enforce: "pre",
                     exclude: [/node_modules/],
-                    loader: "eslint-loader",
-                    options: { fix: true },
+                    use: [
+                        {
+                            loader: "eslint-loader",
+                            options: { fix: true },
+                        },
+                    ],
                 },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: [/node_modules/],
-                    use: {
-                        loader: "babel-loader",
-                        options: {
-                            presets: ["@babel/preset-env", "@babel/preset-react"],
-                            plugins: [
-                                "@babel/plugin-transform-react-jsx",
-                                "@babel/plugin-proposal-object-rest-spread",
-                            ],
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                presets: ["@babel/preset-env", "@babel/preset-react"],
+                                plugins: [
+                                    "@babel/plugin-transform-react-jsx",
+                                    "@babel/plugin-proposal-object-rest-spread",
+                                ],
+                            },
                         },
-                    },
+                    ],
                 },
                 {
                     test: /\.(less|css)$/,
@@ -58,16 +64,20 @@ module.exports = (env, argv) => {
                         { loader: "less-loader" },
                     ],
                 },
-                { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
-                { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
+                { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
+                { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },
                 {
                     test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
-                    loader: "url-loader?mimetype=application/font-woff",
+                    use: ["url-loader?mimetype=application/font-woff"],
                 },
                 {
                     test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-                    loader: "file-loader?name=[name].[ext]",
+                    use: ["file-loader?name=[name].[ext]"],
                 },
+                {
+                    test: /\.(d.ts)$/,
+                    use: ["null-loader"],
+                }
             ],
         },
         resolve: {
