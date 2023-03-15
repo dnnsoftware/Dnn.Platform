@@ -31,9 +31,6 @@ namespace DotNetNuke.UI.UserControls
         protected Panel pnlRule;
         private bool includeRule;
         private bool isExpanded = true;
-        private string javaScript = "__dnn_SectionMaxMin";
-        private string maxImageUrl = "images/plus.gif";
-        private string minImageUrl = "images/minus.gif";
 
         /// <summary>Gets or sets cssClass determines the Css Class used for the Title Text.</summary>
         /// <value>A string representing the name of the css class.</value>
@@ -87,54 +84,21 @@ namespace DotNetNuke.UI.UserControls
 
         /// <summary>Gets or sets javaScript is the name of the javascript function implementation.</summary>
         /// <value>A string representing the name of the javascript function implementation.</value>
-        public string JavaScript
-        {
-            get
-            {
-                return this.javaScript;
-            }
-
-            set
-            {
-                this.javaScript = value;
-            }
-        }
+        public string JavaScript { get; set; } = "__dnn_SectionMaxMin";
 
         /// <summary>
         /// Gets or sets the MaxImageUrl is the url of the image displayed when the contained panel is
         /// collapsed.
         /// </summary>
         /// <value>A string representing the url of the Max Image.</value>
-        public string MaxImageUrl
-        {
-            get
-            {
-                return this.maxImageUrl;
-            }
-
-            set
-            {
-                this.maxImageUrl = value;
-            }
-        }
+        public string MaxImageUrl { get; set; } = "images/plus.gif";
 
         /// <summary>
         /// Gets or sets the MinImageUrl is the url of the image displayed when the contained panel is
         /// expanded.
         /// </summary>
         /// <value>A string representing the url of the Min Image.</value>
-        public string MinImageUrl
-        {
-            get
-            {
-                return this.minImageUrl;
-            }
-
-            set
-            {
-                this.minImageUrl = value;
-            }
-        }
+        public string MinImageUrl { get; set; } = "images/minus.gif";
 
         /// <summary>
         /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the

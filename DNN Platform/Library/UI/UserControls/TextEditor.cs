@@ -110,7 +110,7 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>Gets or sets a value indicating whether enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
         public bool ChooseMode { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether determines wether or not the Text/Html button is rendered for Basic mode, Default is True.</summary>
+        /// <summary>Gets or sets a value indicating whether determines whether or not the Text/Html button is rendered for Basic mode, Default is True.</summary>
         public bool ChooseRender { get; set; }
 
         /// <summary>Gets or sets /Sets the Default mode of the control, either "RICH" or "BASIC", Defaults to Rich.</summary>

@@ -76,50 +76,15 @@ namespace DotNetNuke.UI.UserControls
         protected CompareValidator valEndDate;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CompareValidator valStartDate;
-        private string formattedURL = string.Empty;
+
         private int moduleID = -2;
-        private string trackingURL = string.Empty;
-        private string url = string.Empty;
         private string localResourceFile;
 
-        public string FormattedURL
-        {
-            get
-            {
-                return this.formattedURL;
-            }
+        public string FormattedURL { get; set; } = string.Empty;
 
-            set
-            {
-                this.formattedURL = value;
-            }
-        }
+        public string TrackingURL { get; set; } = string.Empty;
 
-        public string TrackingURL
-        {
-            get
-            {
-                return this.trackingURL;
-            }
-
-            set
-            {
-                this.trackingURL = value;
-            }
-        }
-
-        public string URL
-        {
-            get
-            {
-                return this.url;
-            }
-
-            set
-            {
-                this.url = value;
-            }
-        }
+        public string URL { get; set; } = string.Empty;
 
         public int ModuleID
         {
