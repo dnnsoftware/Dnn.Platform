@@ -125,7 +125,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                int moduleID = this.ModuleID;
+                int moduleID = this.moduleID;
                 if (moduleID == -2)
                 {
                     if (this.Request.QueryString["mid"] != null)
