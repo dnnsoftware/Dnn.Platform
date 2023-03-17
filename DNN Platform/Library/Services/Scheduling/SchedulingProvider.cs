@@ -7,7 +7,7 @@ namespace DotNetNuke.Services.Scheduling
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Linq;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -248,5 +248,45 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
+
+        /// <summary>
+        /// Checks the scheduled item if it has servers specified to run on. If it does, then it checks to see if the server is active.
+        /// </summary>
+        /// <param name="scheduleItem">The schedule to check</param>
+        /// <returns>True if nothing happens to the scheduled item. Returns false if the scheduled item was updated.</returns>
+        /// <remarks>
+        /// If the server specified is not active then the scheduled item will be assigned to the most recent active server.
+        /// This assumes that all schedules will run on a single server if none of the servers specified are active.
+        /// </remarks>
+        protected virtual bool ValidateServersForScheduledItem(ScheduleItem scheduleItem)
+        {
+            // If there are servers specified, verify requested server has been active within the last 10 minutes.
+            if (string.IsNullOrEmpty(scheduleItem.Servers))
+            {
+                return true;
+            }
+
+            // Get the individual server names from the scheduled item
+            var servers = scheduleItem.Servers.ToLowerInvariant().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Get the enabled servers with recent activity.
+            var enabledServers = ServerController.GetEnabledServersWithActivity();
+
+            // Validate that any server in the scheduled item is in the enabled server list with activity in the last 10 minutes.
+            bool serverHasRecentActivity = enabledServers.Any(i => servers.Contains(i.ServerName.ToLowerInvariant()));
+
+            // If no servers in the scheduled item had recent activity, assign this scheduled item to the server with the most recent activity
+            if (!serverHasRecentActivity)
+            {
+                // Assign a new server to this task then run it
+                scheduleItem.Servers = $",{enabledServers.First().ServerName.ToLowerInvariant()},";
+
+                // Save the scheduled item back to the database.
+                this.UpdateSchedule(scheduleItem);
+                return false;
+            }
+
+            return true;
+        }
     }
 }

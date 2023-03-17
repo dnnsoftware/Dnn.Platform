@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Scheduling
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Host;
     using Microsoft.VisualBasic;
 
     public class DNNScheduler : SchedulingProvider
@@ -192,6 +193,12 @@ namespace DotNetNuke.Services.Scheduling
         /// <inheritdoc/>
         public override void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
+            // If the validation for the server failed, then the server was updated. The update has requeued the scheduled item, so we can exit the request for this instance to run.
+            if (!this.ValidateServersForScheduledItem(scheduleItem))
+            {
+                return;
+            }
+
             // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
             var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem) { NextStart = runNow ? DateTime.Now : (scheduleItem.ScheduleStartDate != Null.NullDate ? scheduleItem.ScheduleStartDate : DateTime.Now) };

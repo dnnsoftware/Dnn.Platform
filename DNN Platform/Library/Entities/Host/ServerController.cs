@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.WebControls;
 
     public class ServerController
     {
@@ -53,20 +54,20 @@ namespace DotNetNuke.Entities.Host
 
         public static List<ServerInfo> GetEnabledServers()
         {
-            var servers = new List<ServerInfo>();
-            var storedServers = GetServers();
-            if (storedServers != null)
-            {
-                foreach (ServerInfo server in storedServers)
-                {
-                    if (server.Enabled)
-                    {
-                        servers.Add(server);
-                    }
-                }
-            }
+            return GetServers()?.Where(i => i.Enabled).ToList() ?? new List<ServerInfo>();
+        }
 
-            return servers;
+        /// <summary>
+        /// Gets the servers, order by last activity date in descending order.
+        /// </summary>
+        /// <param name="lastMinutes">The number of recent minutes activity had to occur</param>
+        /// <returns>A list of servers with activity within the specified minutes</returns>
+        public static List<ServerInfo> GetEnabledServersWithActivity(int lastMinutes = 10)
+        {
+            return GetEnabledServers()
+                .Where(i => DateTime.Now.Subtract(i.LastActivityDate).TotalMinutes <= lastMinutes)
+                .OrderByDescending(i => i.LastActivityDate)
+                .ToList();
         }
 
         public static string GetExecutingServerName()
