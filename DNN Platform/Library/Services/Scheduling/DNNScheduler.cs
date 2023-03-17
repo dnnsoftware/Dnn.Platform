@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Scheduling
         public override void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
             // If the validation for the server failed, then the server was updated. The update has requeued the scheduled item, so we can exit the request for this instance to run.
-            if (!this.ValidateServersForScheduledItem(scheduleItem))
+            if (!this.ValidateServersAreActiveForScheduledItem(scheduleItem))
             {
                 return;
             }

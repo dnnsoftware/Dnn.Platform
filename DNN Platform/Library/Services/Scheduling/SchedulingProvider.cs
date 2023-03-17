@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Scheduling
         /// If the server specified is not active then the scheduled item will be assigned to the most recent active server.
         /// This assumes that all schedules will run on a single server if none of the servers specified are active.
         /// </remarks>
-        protected virtual bool ValidateServersForScheduledItem(ScheduleItem scheduleItem)
+        protected virtual bool ValidateServersAreActiveForScheduledItem(ScheduleItem scheduleItem)
         {
             // If there are servers specified, verify requested server has been active within the last 10 minutes.
             if (string.IsNullOrEmpty(scheduleItem.Servers))
