@@ -70,6 +70,19 @@ namespace DotNetNuke.Entities.Host
                 .ToList();
         }
 
+        /// <summary>
+        /// Gets the servers, that have no activtiy in the specified time frame.
+        /// </summary>
+        /// <param name="lastMinutes">The number of recent minutes activity had to occur</param>
+        /// <returns>A list of servers with no activity for the specified minutes. Defaults to 24 hours</returns>
+        public static List<ServerInfo> GetInActiveServers(int lastMinutes = 1440)
+        {
+            return GetServers()
+                .Where(i => DateTime.Now.Subtract(i.LastActivityDate).TotalMinutes > lastMinutes && i.ServerName != Environment.MachineName)
+                .OrderByDescending(i => i.LastActivityDate)
+                .ToList();
+        }
+
         public static string GetExecutingServerName()
         {
             string executingServerName = Globals.ServerName;

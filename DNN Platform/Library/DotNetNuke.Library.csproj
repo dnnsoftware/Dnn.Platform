@@ -917,6 +917,7 @@
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />
     <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
+    <Compile Include="Services\SystemHealth\WebServerMonitor.cs" />
     <Compile Include="Services\Tokens\CacheLevel.cs" />
     <Compile Include="Services\Tokens\HtmlTokenReplace.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
