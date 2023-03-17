@@ -1,11 +1,15 @@
 ﻿namespace DotNetNuke.Services.SystemHealth
 {
     using System;
+
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
 
+    /// <summary>
+    /// When run on each server it updates the last activity date for the server and removes any servers that havent been seen in 24 hours.
+    /// </summary>
     public class WebServerMonitor : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebServerMonitor));
