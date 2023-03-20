@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Scheduling
         /// </remarks>
         protected virtual bool ValidateServersAreActiveForScheduledItem(ScheduleItem scheduleItem)
         {
-            // If there are servers specified, verify requested server has been active within the last 10 minutes.
+            // If this scheduled items runs on all servers, continue.
             if (string.IsNullOrEmpty(scheduleItem.Servers))
             {
                 return true;
