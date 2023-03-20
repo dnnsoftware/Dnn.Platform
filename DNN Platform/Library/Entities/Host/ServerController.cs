@@ -136,6 +136,12 @@ namespace DotNetNuke.Entities.Host
                 server.UniqueId = existServer == null || string.IsNullOrEmpty(existServer.UniqueId) ? GetServerUniqueId() : existServer.UniqueId;
 
                 UpdateServer(server);
+                ClearCachedServers(); // Only clear the cache if we added a server
+            }
+            else 
+            {
+                // Just update the existing item in the cache
+                existServer.LastActivityDate = server.LastActivityDate;
             }
 
             // log the server info
@@ -146,8 +152,6 @@ namespace DotNetNuke.Entities.Host
             log.LogTypeKey = existServer != null ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString()
                                         : EventLogController.EventLogType.WEBSERVER_CREATED.ToString();
             LogController.Instance.AddLog(log);
-
-            ClearCachedServers();
         }
 
         public static IServerWebRequestAdapter GetServerWebRequestAdapter()

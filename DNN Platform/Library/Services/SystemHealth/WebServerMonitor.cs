@@ -1,7 +1,7 @@
 ﻿namespace DotNetNuke.Services.SystemHealth
 {
     using System;
-
+    using System.Linq;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
@@ -67,10 +67,18 @@
         private void RemoveInActiveServers()
         {
             Logger.Info("Starting RemoveInActiveServers");
+            var serversWithActivity = ServerController.GetEnabledServersWithActivity();
+            var newServer = serversWithActivity.FirstOrDefault();
 
             foreach (var s in ServerController.GetInActiveServers(1440))
             {
                 ServerController.DeleteServer(s.ServerID);
+
+                // Update the schedules that were running on that server, that may never have been loaded
+                if (newServer != null)
+                {
+                    SchedulingController.ReplaceServer(s, newServer);
+                }
             }
 
             Logger.Info("Finished RemoveInActiveServers");
