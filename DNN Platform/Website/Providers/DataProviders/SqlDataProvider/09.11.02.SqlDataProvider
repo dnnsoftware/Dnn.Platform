@@ -161,6 +161,25 @@ BEGIN
 END
 GO
 
+/****************************************************************
+ * SPROC: Journal_ListForSummary 
+ ****************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]
+    @oldServerName nvarchar(50),
+    @newServerName nvarchar(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    UPDATE {databaseOwner}[{objectQualifier}Schedule] SET Servers = REPLACE(Servers, @oldServerName, @newServerName) WHERE Servers LIKE '%' + @oldServerName + '%'
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

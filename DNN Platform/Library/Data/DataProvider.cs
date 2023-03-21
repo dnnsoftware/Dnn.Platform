@@ -2206,6 +2206,11 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("RemoveUser", userId, this.GetNull(portalId));
         }
 
+        public virtual void ReplaceServerOnSchedules(string oldServername, string newServerName)
+        {
+            this.ExecuteNonQuery("ReplaceServerOnSchedules", oldServername, newServerName);
+        }
+        
         public virtual void ResetTermsAgreement(int portalId)
         {
             this.ExecuteNonQuery("ResetTermsAgreement", portalId);
