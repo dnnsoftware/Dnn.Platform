@@ -77,12 +77,9 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                foreach (var s in DotNetNuke.Entities.Host.ServerController.GetServers())
+                foreach (var s in DotNetNuke.Entities.Host.ServerController.GetInActiveServers(1440))
                 {
-                    if (s.LastActivityDate.AddDays(1) < DateTime.Now && s.ServerName != Environment.MachineName)
-                    {
-                        DotNetNuke.Entities.Host.ServerController.DeleteServer(s.ServerID);
-                    }
+                    DotNetNuke.Entities.Host.ServerController.DeleteServer(s.ServerID);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, true);
