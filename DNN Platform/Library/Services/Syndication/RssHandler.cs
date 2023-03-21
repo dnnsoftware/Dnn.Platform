@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    /// <summary>An HTTP handler for serving an RSS feed.</summary>
     public class RssHandler : SyndicationHandlerBase
     {
         /// <inheritdoc />
@@ -99,7 +100,7 @@ namespace DotNetNuke.Services.Syndication
         }
 
         /// <summary>Creates an RSS Item.</summary>
-        /// <param name="searchResult"></param>
+        /// <param name="searchResult">The search result to convert to an RSS item.</param>
         /// <returns>A new <see cref="GenericRssElement"/> instance.</returns>
         private GenericRssElement GetRssItem(SearchResult searchResult)
         {

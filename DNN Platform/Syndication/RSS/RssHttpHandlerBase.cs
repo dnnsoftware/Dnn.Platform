@@ -7,8 +7,14 @@ namespace DotNetNuke.Services.Syndication
     using System.Web;
     using System.Xml;
 
+    /// <summary>A function which handles the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}.Init"/> event.</summary>
+    /// <param name="source">The event source, i.e. the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}"/> instance.</param>
+    /// <param name="e">Empty event args.</param>
     public delegate void InitEventHandler(object source, EventArgs e);
 
+    /// <summary>A function which handles the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}.PreRender"/> event.</summary>
+    /// <param name="source">The event source, i.e. the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}"/> instance.</param>
+    /// <param name="e">Empty event args.</param>
     public delegate void PreRenderEventHandler(object source, EventArgs e);
 
     /// <summary>Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.</summary>
@@ -20,37 +26,20 @@ namespace DotNetNuke.Services.Syndication
         where TRssItemType : RssElementBase, new()
         where TRssImageType : RssElementBase, new()
     {
-        private TRssChannelType channel;
-        private HttpContext context;
-
+        /// <summary>An event which is fired when the handler is initialized.</summary>
         public event InitEventHandler Init;
 
+        /// <summary>An event which is fired just before the handler's contents are rendered.</summary>
         public event PreRenderEventHandler PreRender;
 
         /// <inheritdoc/>
-        bool IHttpHandler.IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        bool IHttpHandler.IsReusable => false;
 
-        protected TRssChannelType Channel
-        {
-            get
-            {
-                return this.channel;
-            }
-        }
+        /// <summary>Gets the channel.</summary>
+        protected TRssChannelType Channel { get; private set; }
 
-        protected HttpContext Context
-        {
-            get
-            {
-                return this.context;
-            }
-        }
+        /// <summary>Gets the HTTP context.</summary>
+        protected HttpContext Context { get; private set; }
 
         /// <inheritdoc/>
         void IHttpHandler.ProcessRequest(HttpContext context)
@@ -61,9 +50,7 @@ namespace DotNetNuke.Services.Syndication
             this.OnInit(EventArgs.Empty);
 
             // parse the channel name and the user name from the query string
-            string userName;
-            string channelName;
-            RssHttpHandlerHelper.ParseChannelQueryString(context.Request, out channelName, out userName);
+            RssHttpHandlerHelper.ParseChannelQueryString(context.Request, out var channelName, out var userName);
 
             // populate items (call the derived class)
             this.PopulateChannel(channelName, userName);
@@ -73,41 +60,42 @@ namespace DotNetNuke.Services.Syndication
             this.Render(new XmlTextWriter(this.Context.Response.OutputStream, null));
         }
 
-        /// <summary>  Triggers the Init event.</summary>
+        /// <summary>Triggers the <see cref="Init"/> event.</summary>
+        /// <param name="ea">The event args.</param>
         protected virtual void OnInit(EventArgs ea)
         {
-            if (this.Init != null)
-            {
-                this.Init(this, ea);
-            }
+            this.Init?.Invoke(this, ea);
         }
 
-        /// <summary>  Triggers the PreRender event.</summary>
+        /// <summary>Triggers the <see cref="PreRender"/> event.</summary>
+        /// <param name="ea">The event args.</param>
         protected virtual void OnPreRender(EventArgs ea)
         {
-            if (this.PreRender != null)
-            {
-                this.PreRender(this, ea);
-            }
+            this.PreRender?.Invoke(this, ea);
         }
 
+        /// <summary>When overridden in a derived class, populates the channel name and user name.</summary>
+        /// <param name="channelName">The channel name.</param>
+        /// <param name="userName">The user name.</param>
         protected virtual void PopulateChannel(string channelName, string userName)
         {
         }
 
+        /// <summary>Renders the channel as XML to the <paramref name="writer"/>.</summary>
+        /// <param name="writer">The write to which the channel should be rendered.</param>
         protected virtual void Render(XmlTextWriter writer)
         {
-            XmlDocument doc = this.channel.SaveAsXml();
+            XmlDocument doc = this.Channel.SaveAsXml();
             doc.Save(writer);
         }
 
         private void InternalInit(HttpContext context)
         {
-            this.context = context;
+            this.Context = context;
 
             // create the channel
-            this.channel = new TRssChannelType();
-            this.channel.SetDefaults();
+            this.Channel = new TRssChannelType();
+            this.Channel.SetDefaults();
 
             this.Context.Response.ContentType = "text/xml";
         }

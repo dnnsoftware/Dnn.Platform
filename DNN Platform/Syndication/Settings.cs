@@ -5,8 +5,10 @@ namespace DotNetNuke.Services.Syndication
 {
     using System.Diagnostics.CodeAnalysis;
 
+    /// <summary>Holder of settings values.</summary>
     internal static class Settings
     {
+        /// <summary>The path to the root of the cache folder.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal static string CacheRoot = "Portals/_default/Cache";
     }
