@@ -65,8 +65,8 @@ namespace DotNetNuke.Entities.Host
         /// <returns>A list of servers with activity within the specified minutes</returns>
         public static List<ServerInfo> GetEnabledServersWithActivity(int lastMinutes = 10)
         {
-            return GetEnabledServers()
-                .Where(i => DateTime.Now.Subtract(i.LastActivityDate).TotalMinutes <= lastMinutes)
+            return GetServersNoCache()
+                .Where(i => i.Enabled == true && DateTime.Now.Subtract(i.LastActivityDate).TotalMinutes <= lastMinutes)
                 .OrderByDescending(i => i.LastActivityDate)
                 .ToList();
         }
@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Host
         /// <returns>A list of servers with no activity for the specified minutes. Defaults to 24 hours</returns>
         public static List<ServerInfo> GetInActiveServers(int lastMinutes = 1440)
         {
-            return GetServers()
+            return GetServersNoCache()
                 .Where(i => DateTime.Now.Subtract(i.LastActivityDate).TotalMinutes > lastMinutes && i.ServerName != Environment.MachineName)
                 .OrderByDescending(i => i.LastActivityDate)
                 .ToList();
@@ -140,10 +140,11 @@ namespace DotNetNuke.Entities.Host
                 UpdateServer(server);
                 ClearCachedServers(); // Only clear the cache if we added a server
             }
-            else 
+            else
             {
                 // Just update the existing item in the cache
                 existServer.LastActivityDate = server.LastActivityDate;
+                existServer.Enabled = server.Enabled;
                 DataCache.SetCache(ServerController.CacheKey, allServers);
             }
 
@@ -162,6 +163,11 @@ namespace DotNetNuke.Entities.Host
             var adapterConfig = HostController.Instance.GetString("WebServer_ServerRequestAdapter", DefaultUrlAdapter);
             var adapterType = Reflection.CreateType(adapterConfig);
             return Reflection.CreateInstance(adapterType) as IServerWebRequestAdapter;
+        }
+
+        private static List<ServerInfo> GetServersNoCache()
+        {
+            return CBO.FillCollection<ServerInfo>(DataProvider.GetServers());
         }
 
         private static object GetServersCallBack(CacheItemArgs cacheItemArgs)

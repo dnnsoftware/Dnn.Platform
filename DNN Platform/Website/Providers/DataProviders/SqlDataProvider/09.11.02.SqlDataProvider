@@ -157,12 +157,12 @@ GO
 IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke')
 BEGIN
 	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
-	VALUES ('DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke', 5, 'm', 10, 'm', 10, '', 0, 1, '', NULL, NULL, GETDATE(), NULL, GETDATE(), N'Monitor Web Servers')
+	VALUES ('DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke', 5, 'm', 10, 'm', 10, '', 0, 1, '', NULL, -1, GETDATE(), NULL, GETDATE(), N'Monitor Web Servers')
 END
 GO
 
 /****************************************************************
- * SPROC: Journal_ListForSummary 
+ * SPROC: ReplaceServerOnSchedules 
  ****************************************************************/
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]') AND type in (N'P', N'PC'))
