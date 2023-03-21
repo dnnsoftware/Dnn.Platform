@@ -66,10 +66,19 @@
 
         private void DisableServersWithoutRecentActivity()
         {
+            var serversWithActivity = ServerController.GetEnabledServersWithActivity();
+            var newServer = serversWithActivity.FirstOrDefault();
+
             foreach (var s in ServerController.GetInActiveServers(10))
             {
                 s.Enabled = false;
                 ServerController.UpdateServerActivity(s);
+
+                // Update the schedules that were running on that server, that may never have been loaded
+                if (newServer != null)
+                {
+                    SchedulingController.ReplaceServer(s, newServer);
+                }
             }
         }
 
