@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Host
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Web.Caching;
 
     using DotNetNuke.Common;
@@ -121,7 +122,8 @@ namespace DotNetNuke.Entities.Host
 
         public static void UpdateServerActivity(ServerInfo server)
         {
-            var existServer = GetServers().FirstOrDefault(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
+            var allServers = GetServers();
+            var existServer = allServers.FirstOrDefault(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
             var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount, server.Enabled);
 
             server.ServerID = serverId;
@@ -142,6 +144,7 @@ namespace DotNetNuke.Entities.Host
             {
                 // Just update the existing item in the cache
                 existServer.LastActivityDate = server.LastActivityDate;
+                DataCache.SetCache(ServerController.CacheKey, allServers);
             }
 
             // log the server info

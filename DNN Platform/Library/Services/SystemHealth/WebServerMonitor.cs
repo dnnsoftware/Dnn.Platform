@@ -37,7 +37,7 @@
                 Logger.Info("Starting WebServerMonitor");
 
                 this.UpdateCurrentServerActivity();
-
+                this.DisableServersWithoutRecentActivity();
                 this.RemoveInActiveServers();
 
                 Logger.Info("Finished WebServerMonitor");
@@ -62,6 +62,15 @@
             ServerController.UpdateServerActivity(currentServer);
 
             Logger.Info("Finished UpdateCurrentServerActivity");
+        }
+
+        private void DisableServersWithoutRecentActivity()
+        {
+            foreach (var s in ServerController.GetInActiveServers(10))
+            {
+                s.Enabled = false;
+                ServerController.UpdateServerActivity(s);
+            }
         }
 
         private void RemoveInActiveServers()
