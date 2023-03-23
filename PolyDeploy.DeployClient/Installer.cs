@@ -109,7 +109,7 @@ namespace PolyDeploy.DeployClient
         {
             this.stopwatch.StartNew();
 
-            async Task<HttpResponseMessage> SendRequest()
+            async Task<(HttpResponseMessage?, Exception?)> SendRequest()
             {
                 using var request = new HttpRequestMessage
                 {
@@ -121,19 +121,31 @@ namespace PolyDeploy.DeployClient
                 request.Headers.Add("x-api-key", options.ApiKey);
                 request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", DeployClientVersion));
 
-                return await this.httpClient.SendAsync(request);
+                try
+                {
+                    return (await this.httpClient.SendAsync(request), null);
+                }
+                catch (HttpRequestException exception)
+                {
+                    return (null, exception);
+                }
             }
 
-            var response = await SendRequest();
-            while (!response.IsSuccessStatusCode)
+            var (response, exception) = await SendRequest();
+            while (exception != null || !response.IsSuccessStatusCode)
             {
                 if (options.InstallationStatusTimeout <= stopwatch.Elapsed.TotalSeconds || content != null)
                 {
+                    if (exception != null)
+                    {
+                        throw exception;
+                    }
+
                     response.EnsureSuccessStatusCode();
                 }
                 else
                 {
-                    response = await SendRequest();
+                    (response, exception) = await SendRequest();
                 }
             }
             return response;
