@@ -13,4 +13,5 @@ instead of this one.
     --dnn-color-pb-menu-text-highlight: #3c7a9a;
     
     --dnn-pb-menu-brand-background: url('../images/Logo.svg') no-repeat center center;
+    --dnn-pb-menu-brand-background-size: 32px auto;
 }
