@@ -47,7 +47,7 @@
     "file-loader": "3.0.1",
     "jest": "^28.1.2",
     "less": "4.1.2",
-    "less-loader": "5.0.0",
+    "less-loader": "11.1.0",
     "lodash": "4.17.11",
     "raw-loader": "2.0.0",
     "react-custom-scrollbars": "4.2.1",

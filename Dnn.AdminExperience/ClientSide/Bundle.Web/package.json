@@ -34,7 +34,7 @@
     "json-loader": "^0.5.7",
     "jwt-decode": "2.2.0",
     "less": "4.1.2",
-    "less-loader": "5.0.0",
+    "less-loader": "11.1.0",
     "moment": "^2.29.2",
     "prop-types": "^15.6.2",
     "raw-loader": "2.0.0",
