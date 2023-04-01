@@ -1,0 +1,96 @@
+name: CI (Build and Package)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+  release:
+    types: [created]
+
+defaults:
+  run:
+    shell: pwsh
+
+env:
+  VERSION_SUFFIX: alpha-${{ github.run_number }}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: windows-latest
+    
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.1.3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3.0.3
+        with:
+          dotnet-version: "7.0.x"
+
+      - name: Setup NuGet.exe for use with actions
+        uses: NuGet/setup-nuget@v1.1.1
+        with:
+          nuget-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version-file: ".node-version"
+          cache: "npm"
+          cache-dependency-path: |
+            DeployClient/package-lock.json
+            PolyDeploy/package-lock.json
+
+      - name: Install npm modules
+        run: |
+          cd DeployClient
+          npm ci
+          cd ../PolyDeploy
+          npm ci
+          cd ..
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore NuGet packages
+        run: nuget restore -LockedMode
+
+      - name: Build and package the application
+        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true /p:VersionSuffix=${{ env.VERSION_SUFFIX }}
+        env:
+          Configuration: ${{ matrix.configuration }}
+
+      - name: Test
+        run: dotnet test PolyDeploy.sln --configuration ${{ matrix.configuration }} --no-build
+
+      - name: Publish Deploy Client
+        run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
+
+      - name: Pack Deploy Client (alpha)
+        if: github.event_name != 'release' || github.event.action != 'created'
+        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/ --version-suffix ${{ env.VERSION_SUFFIX }}
+
+      - name: Pack Deploy Client (stable)
+        if: github.event_name == 'release' && github.event.action == 'created'
+        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          path: dist/

@@ -80,12 +80,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Encryption\Encryption.csproj">
-      <Project>{ab5a3320-f260-42ee-8f19-ccf7546ca511}</Project>
-      <Name>Encryption</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="gulpfile.js" />
     <Content Include="project.config.js" />
   </ItemGroup>
