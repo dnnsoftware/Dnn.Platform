@@ -27,8 +27,8 @@ namespace DotNetNuke.Modules.SearchResults
 
         private const string MyFileName = "SearchResults.ascx";
 
-        private IList<string> _searchContentSources;
-        private IList<int> _searchPortalIds;
+        private IList<string> searchContentSources;
+        private IList<int> searchPortalIds;
 
         protected string SearchTerm
         {
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get
             {
-                if (this._searchContentSources == null)
+                if (this.searchContentSources == null)
                 {
                     IList<int> portalIds = this.SearchPortalIds;
                     var list = new List<SearchContentSource>();
@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.SearchResults
                         configuredList = Convert.ToString(this.Settings["ScopeForFilters"]).Split('|').ToList();
                     }
 
-                    this._searchContentSources = new List<string>();
+                    this.searchContentSources = new List<string>();
 
                     // add other searchable module defs
                     foreach (SearchContentSource contentSource in list)
@@ -193,15 +193,15 @@ namespace DotNetNuke.Modules.SearchResults
                         if (configuredList == null ||
                             configuredList.Any(l => l.Equals(contentSource.LocalizedName)))
                         {
-                            if (!this._searchContentSources.Equals(contentSource.LocalizedName))
+                            if (!this.searchContentSources.Equals(contentSource.LocalizedName))
                             {
-                                this._searchContentSources.Add(contentSource.LocalizedName);
+                                this.searchContentSources.Add(contentSource.LocalizedName);
                             }
                         }
                     }
                 }
 
-                return this._searchContentSources;
+                return this.searchContentSources;
             }
         }
 
@@ -314,27 +314,28 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get
             {
-                if (this._searchPortalIds == null)
+                if (this.searchPortalIds == null)
                 {
-                    this._searchPortalIds = new List<int>();
+                    this.searchPortalIds = new List<int>();
                     if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
                     {
                         List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
                         foreach (string l in list)
                         {
-                            this._searchPortalIds.Add(Convert.ToInt32(l));
+                            this.searchPortalIds.Add(Convert.ToInt32(l));
                         }
                     }
                     else
                     {
-                        this._searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
+                        this.searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
                     }
                 }
 
-                return this._searchPortalIds;
+                return this.searchPortalIds;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

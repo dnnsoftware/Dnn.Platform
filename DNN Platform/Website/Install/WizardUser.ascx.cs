@@ -200,13 +200,7 @@ namespace DotNetNuke.Services.Install
             return strErrorMessage;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs just before the page is rendered.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -233,18 +227,12 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs just before the page is rendered.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            // Make sure that the password is not cleared on pastback
+            // Make sure that the password is not cleared on postback
             this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
             this.txtPassword.Attributes["value"] = this.txtPassword.Text;
         }

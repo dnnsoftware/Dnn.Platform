@@ -23,9 +23,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Provides services to manage items.
-    /// </summary>
+    /// <summary>Provides services to manage items.</summary>
     public class ItemsManager : ServiceLocator<IItemsManager, ItemsManager>, IItemsManager
     {
         private const int MaxDescriptionLength = 500;
@@ -34,9 +32,7 @@ namespace Dnn.Modules.ResourceManager.Components
         private readonly IAssetManager assetManager;
         private readonly IPermissionsManager permissionsManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ItemsManager"/> class.</summary>
         public ItemsManager()
         {
             this.roleController = RoleController.Instance;
@@ -132,7 +128,11 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <inheritdoc />
         public void SaveFolderDetails(IFolderInfo folder, FolderDetailsRequest folderDetails)
         {
-            this.assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
+            if (!string.IsNullOrWhiteSpace(folderDetails.FolderName))
+            {
+                this.assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
+            }
+
             folder.FolderPermissions.Clear();
             folder.FolderPermissions.AddRange(folderDetails.Permissions.RolePermissions.ToPermissionInfos(folderDetails.FolderId));
             folder.FolderPermissions.AddRange(folderDetails.Permissions.UserPermissions.ToPermissionInfos(folderDetails.FolderId));

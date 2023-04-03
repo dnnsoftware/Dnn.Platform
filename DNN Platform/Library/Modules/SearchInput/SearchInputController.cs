@@ -10,9 +10,9 @@ namespace DotNetNuke.Modules.SearchInput
 
     public class SearchInputController
     {
-        public ArrayList GetSearchResultModules(int PortalID)
+        public ArrayList GetSearchResultModules(int portalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetSearchResultModules(PortalID), typeof(SearchResultsModuleInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetSearchResultModules(portalID), typeof(SearchResultsModuleInfo));
         }
     }
 }

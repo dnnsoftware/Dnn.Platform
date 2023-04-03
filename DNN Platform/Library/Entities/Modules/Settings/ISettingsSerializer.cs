@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Entities.Modules.Settings
 {
-    /// <summary>
-    /// Implement this interface to control how property values are serialized and deserialized.
-    /// </summary>
+    /// <summary>Implement this interface to control how property values are serialized and deserialized.</summary>
     /// <typeparam name="T">The type that will be serialized or deserialized.</typeparam>
     /// <remarks>
     /// The <see cref="ParameterAttributeBase"/> serialize property will identify a serialization
@@ -14,16 +12,12 @@ namespace DotNetNuke.Entities.Modules.Settings
     /// </remarks>
     public interface ISettingsSerializer<T>
     {
-        /// <summary>
-        /// Serialize the property value into a string.
-        /// </summary>
+        /// <summary>Serialize the property value into a string.</summary>
         /// <param name="value">The value of the associated settings property.</param>
         /// <returns>String.</returns>
         string Serialize(T value);
 
-        /// <summary>
-        /// Deserialize the property value from a string into the defined type.
-        /// </summary>
+        /// <summary>Deserialize the property value from a string into the defined type.</summary>
         /// <param name="value">The serialized value of the associated settings property.</param>
         /// <returns>An object of the specified type.</returns>
         T Deserialize(string value);

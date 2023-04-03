@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DNN.Connectors.GoogleTagManager" type="Connector" isSystem="false" version="09.09.01">
+        <package name="DNN.Connectors.GoogleTagManager" type="Connector" isSystem="false" version="09.11.02">
             <friendlyName>Google Tag Manager Connector</friendlyName>
             <description>Configure your sites Google Tag Manager settings.</description>
             <iconFile>~/DesktopModules/Connectors/GoogleTagManager/Images/GoogleTagManager_32X32_Standard.png</iconFile>
@@ -8,10 +8,10 @@
             <dependency type="CoreVersion">09.02.00</dependency>
           </dependencies>
           <owner>
-              <name>DNN Community</name>
-              <organization>.NET Foundation and Contributors</organization>
-              <url>https://dnncommunity.org</url>
-              <email>info@dnncommunity.org</email>
+              <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
             </owner>
             <license src="license.txt" />
             <releaseNotes src="releaseNotes.txt" />

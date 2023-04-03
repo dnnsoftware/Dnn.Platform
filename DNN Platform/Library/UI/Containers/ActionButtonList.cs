@@ -10,144 +10,115 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.UI.Modules;
 
-    /// <summary>
-    /// ActionButtonList provides a list of buttons for a group of actions of the same type.
-    /// </summary>
+    /// <summary>ActionButtonList provides a list of buttons for a group of actions of the same type.</summary>
     /// <remarks>
     /// ActionButtonList inherits from CompositeControl, and implements the IActionControl
     /// Interface.  It uses a single ActionCommandButton for each Action.
     /// </remarks>
     public class ActionButtonList : CompositeControl, IActionControl
     {
-        private ActionManager _ActionManager;
-        private ModuleActionCollection _ModuleActions;
-        private string _buttonSeparator = "&nbsp;&nbsp;";
-        private string _commandName = string.Empty;
-        private bool _displayLink = true;
+        private ActionManager actionManager;
+        private ModuleActionCollection moduleActions;
+        private string buttonSeparator = "&nbsp;&nbsp;";
+        private string commandName = string.Empty;
+        private bool displayLink = true;
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionManager instance for this Action control.
-        /// </summary>
+        /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>
         public ActionManager ActionManager
         {
             get
             {
-                if (this._ActionManager == null)
+                if (this.actionManager == null)
                 {
-                    this._ActionManager = new ActionManager(this);
+                    this.actionManager = new ActionManager(this);
                 }
 
-                return this._ActionManager;
+                return this.actionManager;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Separator between Buttons.
-        /// </summary>
+        /// <summary>Gets or sets the Separator between Buttons.</summary>
         /// <remarks>Defaults to 2 non-breaking spaces.</remarks>
         /// <value>A String.</value>
         public string ButtonSeparator
         {
             get
             {
-                return this._buttonSeparator;
+                return this.buttonSeparator;
             }
 
             set
             {
-                this._buttonSeparator = value;
+                this.buttonSeparator = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Command Name.
-        /// </summary>
+        /// <summary>Gets or sets the Command Name.</summary>
         /// <remarks>Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions.</remarks>
         /// <value>A String.</value>
         public string CommandName
         {
             get
             {
-                return this._commandName;
+                return this.commandName;
             }
 
             set
             {
-                this._commandName = value;
+                this.commandName = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
         /// <remarks>Defaults to False.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayIcon { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether the link is displayed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayLink
         {
             get
             {
-                return this._displayLink;
+                return this.displayLink;
             }
 
             set
             {
-                this._displayLink = value;
+                this.displayLink = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Icon used.
-        /// </summary>
+        /// <summary>Gets or sets the Icon used.</summary>
         /// <remarks>Defaults to the icon defined in Action.</remarks>
         /// <value>A String.</value>
         public string ImageURL { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control.
-        /// </summary>
+        /// <summary>Gets or sets the ModuleControl instance for this Action control.</summary>
         /// <returns>An IModuleControl object.</returns>
         public IModuleControl ModuleControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleActionCollection to bind to the list.
-        /// </summary>
+        /// <summary>Gets the ModuleActionCollection to bind to the list.</summary>
         /// <value>A ModuleActionCollection.</value>
         protected ModuleActionCollection ModuleActions
         {
             get
             {
-                if (this._ModuleActions == null)
+                if (this.moduleActions == null)
                 {
-                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
+                    this.moduleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
                 }
 
-                return this._ModuleActions;
+                return this.moduleActions;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnAction raises the Action Event.
-        /// </summary>
+        /// <summary>OnAction raises the Action Event.</summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -156,10 +127,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs when the control is loaded into the Control Tree.
-        /// </summary>
+        /// <summary>OnLoad runs when the control is loaded into the Control Tree.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -196,10 +164,7 @@ namespace DotNetNuke.UI.Containers
             this.Visible = this.Controls.Count > 0;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ActionButtonClick handles the Action event of the contained ActionCommandButton(s).
-        /// </summary>
+        /// <summary>ActionButtonClick handles the Action event of the contained ActionCommandButton(s).</summary>
         private void ActionButtonClick(object sender, ActionEventArgs e)
         {
             this.OnAction(e);

@@ -4,19 +4,13 @@
 
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    /// <summary>
-    /// Toolbar List.
-    /// </summary>
+    /// <summary>Toolbar List.</summary>
     public class ToolbarRoles
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether Role ID.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether Role ID.</summary>
         public int RoleId { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether Toolbar Name.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether Toolbar Name.</summary>
         public string Toolbar { get; set; }
     }
 }

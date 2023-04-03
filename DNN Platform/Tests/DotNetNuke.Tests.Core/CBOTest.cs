@@ -13,9 +13,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     using DotNetNuke.Tests.Utilities.Mocks;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for DataCacheTests.
-    /// </summary>
+    /// <summary>  Summary description for DataCacheTests.</summary>
     [TestFixture]
     public class CBOTest
     {
@@ -28,6 +26,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_int()
         {
             var cboTable = new DataTable("CBOTable");
@@ -44,6 +43,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_string()
         {
             var cboTable = new DataTable("CBOTable");
@@ -60,6 +60,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_datetime()
         {
             var cboTable = new DataTable("CBOTable");
@@ -95,6 +96,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_binary_to_Array()
         {
             var cboTable = new DataTable("CBOTable");
@@ -111,6 +113,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_bit()
         {
             var cboTable = new DataTable("CBOTable");
@@ -127,6 +130,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_decimal()
         {
             var cboTable = new DataTable("CBOTable");
@@ -143,6 +147,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_int_to_boolean_true()
         {
             var cboTable = new DataTable("CBOTable");
@@ -159,6 +164,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void CBO_FillObject_int_to_boolean_false()
         {
             var cboTable = new DataTable("CBOTable");

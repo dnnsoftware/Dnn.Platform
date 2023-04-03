@@ -30,9 +30,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of RelationshipController.
-    /// </summary>
+    /// <summary> Testing various aspects of RelationshipController.</summary>
     [TestFixture]
     public class RelationshipControllerTests
     {
@@ -46,6 +44,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         private DataTable dtUserRelationshipPreferences;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -112,14 +111,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteRelationshipType_Throws_On_Null_RelationshipType()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteRelationshipType(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteRelationshipType(null));
         }
 
         [Test]
@@ -181,6 +179,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetAllRelationshipTypes_Calls_DataService()
         {
             // Arrange
@@ -195,6 +194,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipType_Calls_DataService_If_Not_Cached()
         {
             // Arrange
@@ -211,6 +211,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [Test]
         [TestCase(Constants.SOCIAL_FriendRelationshipTypeID)]
         [TestCase(Constants.SOCIAL_FollowerRelationshipTypeID)]
+
         public void RelationshipController_GetRelationshipType_Returns_RelationshipType_For_Valid_ID(int relationshipTypeId)
         {
             // Arrange
@@ -225,6 +226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipType_Returns_Null_For_InValid_ID()
         {
             // Arrange
@@ -239,14 +241,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveRelationshipType_Throws_On_Null_RelationshipType()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveRelationshipType(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveRelationshipType(null));
         }
 
         [Test]
@@ -309,14 +310,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteRelationship_Throws_On_Null_Relationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteRelationship(null));
         }
 
         [Test]
@@ -384,6 +384,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [Test]
         [TestCase(Constants.SOCIAL_FriendRelationshipID, DefaultRelationshipTypes.Friends)]
         [TestCase(Constants.SOCIAL_FollowerRelationshipID, DefaultRelationshipTypes.Followers)]
+
         public void RelationshipController_GetRelationship_Returns_Relationship_For_Valid_ID(int relationshipId, DefaultRelationshipTypes defaultType)
         {
             // Arrange
@@ -401,6 +402,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationship_Returns_Null_For_InValid_ID()
         {
             // Arrange
@@ -417,6 +419,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipsByUserID_Returns_List_Of_Relationships_For_Valid_User()
         {
             // Arrange
@@ -443,6 +446,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipsByUserID_Returns_EmptyList_Of_Relationships_For_InValid_User()
         {
             // Arrange
@@ -460,6 +464,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipsByPortalID_Returns_List_Of_Relationships_For_Valid_Portal()
         {
             // Arrange
@@ -489,6 +494,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipsByPortalID_Returns_List_Of_Relationships_For_Valid_Portal_When_Portal_Is_In_Group()
         {
             // Arrange
@@ -521,6 +527,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetRelationshipsByPortalID_Returns_EmptyList_Of_Relationships_For_InValid_Portal()
         {
             // Arrange
@@ -541,14 +548,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveRelationship_Throws_On_Null_Relationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveRelationship(null));
         }
 
         [Test]
@@ -611,17 +617,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void RelationshipController_DeleteUserRelationship_Throws_On_Null_UserRelationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteUserRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteUserRelationship(null));
         }
 
         [Test]
+
         public void RelationshipController_DeleteUserRelationship_Calls_DataService()
         {
             // Arrange
@@ -640,6 +647,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_DeleteUserRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
@@ -666,6 +674,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [Test]
         [TestCase(Constants.SOCIAL_UserRelationshipIDUser10User11, Constants.USER_TenId, Constants.USER_ElevenId)]
         [TestCase(Constants.SOCIAL_UserRelationshipIDUser12User13, 12, 13)]
+
         public void RelationshipController_GetUserRelationship_Returns_Relationship_For_Valid_ID(int userRelationshipId, int userId, int relatedUserId)
         {
             // Arrange
@@ -683,6 +692,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetUserRelationship_Returns_Null_For_InValid_ID()
         {
             // Arrange
@@ -699,6 +709,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetUserRelationships_Returns_List_Of_UserRelationships_For_Valid_User()
         {
             // Arrange
@@ -723,6 +734,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetUserRelationships_Returns_EmptyList_Of_UserRelationships_For_InValid_User()
         {
             // Arrange
@@ -742,17 +754,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void RelationshipController_SaveUserRelationship_Throws_On_Null_UserRelationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveUserRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveUserRelationship(null));
         }
 
         [Test]
+
         public void RelationshipController_SaveUserRelationship_Calls_DataService()
         {
             // Arrange
@@ -771,6 +784,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_SaveUserRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
@@ -798,14 +812,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteUserRelationshipPreference_Throws_On_Null_UserRelationshipPreference()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteUserRelationshipPreference(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteUserRelationshipPreference(null));
         }
 
         [Test]
@@ -851,6 +864,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetUserRelationshipPreference_Calls_DataService()
         {
             // Arrange
@@ -867,6 +881,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_GetUserRelationshipPreference_Overload_Calls_DataService()
         {
             // Arrange
@@ -883,14 +898,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveUserRelationshipPreference_Throws_On_Null_UserRelationshipPreference()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveUserRelationshipPreference(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveUserRelationshipPreference(null));
         }
 
         [Test]
@@ -941,7 +955,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+
         public void RelationshipController_InitiateUserRelationship_Throws_On_Negative_RelationshipID()
         {
             // Arrange
@@ -951,10 +965,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationship = new Relationship();
 
             // Act, Assert
-            relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
+            Assert.Throws<ArgumentOutOfRangeException>(() => relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship));
         }
 
         [Test]
+
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Accepted_When_Default_Relationship_Action_Is_Accepted()
         {
             // Arrange
@@ -981,6 +996,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Initiated_When_Default_Relationship_Action_Is_None()
         {
             // Arrange
@@ -1007,6 +1023,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Accepted_When_TargetUsers_Relationship_Action_Is_Accepted()
         {
             // Arrange
@@ -1034,6 +1051,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Initiated_When_TargetUsers_Relationship_Action_Is_None()
         {
             // Arrange
@@ -1061,7 +1079,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(UserRelationshipDoesNotExistException))]
+
         public void RelationshipController_RemoveUserRelationship_Throws_On_NonExistent_Relationship()
         {
             // Arrange
@@ -1076,11 +1094,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             // Act, Assert
-            relationshipController.RemoveUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11);
+            Assert.Throws<UserRelationshipDoesNotExistException>(() => relationshipController.RemoveUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11));
         }
 
         [Test]
-        [ExpectedException(typeof(UserRelationshipDoesNotExistException))]
+
         public void RelationshipController_AcceptRelationship_Throws_On_NonExistent_Relationship()
         {
             // Arrange
@@ -1095,10 +1113,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             // Act, Assert
-            relationshipController.AcceptUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11);
+            Assert.Throws<UserRelationshipDoesNotExistException>(() => relationshipController.AcceptUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11));
         }
 
         [Test]
+
         public void RelationshipController_AcceptUserRelationship_Calls_DataService_On_Valid_RelationshipID()
         {
             // Arrange
@@ -1122,6 +1141,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
+
         public void RelationshipController_RemoveUserRelationship_Calls_DataService_On_Valid_RelationshipID()
         {
             // Arrange

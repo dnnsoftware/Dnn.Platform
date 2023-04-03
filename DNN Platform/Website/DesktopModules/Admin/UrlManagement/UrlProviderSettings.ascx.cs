@@ -15,29 +15,31 @@ namespace DotNetNuke.Modules.UrlManagement
 
     public partial class ProviderSettings : ModuleUserControlBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private int _providerId;
-        private IExtensionUrlProviderSettingsControl _providerSettingsControl;
+        private int providerId;
+        private IExtensionUrlProviderSettingsControl providerSettingsControl;
 
+        /// <summary>Initializes a new instance of the <see cref="ProviderSettings"/> class.</summary>
         public ProviderSettings()
         {
-            this._navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
 
         private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdUpdate.Click += this.CmdUpdate_Click;
+            this.cmdCancel.Click += this.CmdCancel_Click;
 
-            this._providerId = Convert.ToInt32(this.Request.Params["ProviderId"]);
+            this.providerId = Convert.ToInt32(this.Request.Params["ProviderId"]);
 
             var provider = ExtensionUrlProviderController.GetModuleProviders(this.ModuleContext.PortalId)
-                                .SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == this._providerId);
+                                .SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == this.providerId);
 
             if (provider != null)
             {
@@ -48,22 +50,23 @@ namespace DotNetNuke.Modules.UrlManagement
                 this.providerSettingsPlaceHolder.Controls.Add(settingsControl);
 
                 // ReSharper disable SuspiciousTypeConversion.Global
-                this._providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
+                this.providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
 
                 // ReSharper restore SuspiciousTypeConversion.Global
-                if (this._providerSettingsControl != null)
+                if (this.providerSettingsControl != null)
                 {
-                    this._providerSettingsControl.Provider = provider.ProviderConfig;
+                    this.providerSettingsControl.Provider = provider.ProviderConfig;
                 }
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (this._providerSettingsControl != null)
+            if (this.providerSettingsControl != null)
             {
-                this._providerSettingsControl.LoadSettings();
+                this.providerSettingsControl.LoadSettings();
             }
 
             if (this.DisplayMode == "editor" || this.DisplayMode == "settings")
@@ -72,30 +75,30 @@ namespace DotNetNuke.Modules.UrlManagement
             }
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancel_Click(object sender, EventArgs e)
         {
-            this.Response.Redirect(this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
+            this.Response.Redirect(this.navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdate_Click(object sender, EventArgs e)
         {
             if (!this.Page.IsValid)
             {
                 return;
             }
 
-            if (this._providerSettingsControl != null)
+            if (this.providerSettingsControl != null)
             {
-                var settings = this._providerSettingsControl.SaveSettings();
+                var settings = this.providerSettingsControl.SaveSettings();
                 foreach (var setting in settings)
                 {
-                    ExtensionUrlProviderController.SaveSetting(this._providerId, this.ModuleContext.PortalId, setting.Key, setting.Value);
+                    ExtensionUrlProviderController.SaveSetting(this.providerId, this.ModuleContext.PortalId, setting.Key, setting.Value);
                 }
             }
 
             if (this.DisplayMode != "editor" && this.DisplayMode != "settings")
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
+                this.Response.Redirect(this.navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
             }
         }
     }

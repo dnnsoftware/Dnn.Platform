@@ -11,31 +11,16 @@ namespace DotNetNuke.Services.Tokens
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using Newtonsoft.Json;
-
-    public class StylesheetDto
-    {
-        [JsonProperty("path")]
-        public string Path { get; set; }
-
-        [JsonProperty("priority")]
-        public int Priority { get; set; }
-
-        [JsonProperty("provider")]
-        public string Provider { get; set; }
-    }
 
     public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
     {
-        private readonly Page _page;
+        private readonly Page page;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CssPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
         /// <param name="page"></param>
         public CssPropertyAccess(Page page)
         {
-            this._page = page;
+            this.page = page;
         }
 
         /// <inheritdoc/>
@@ -53,11 +38,11 @@ namespace DotNetNuke.Services.Tokens
 
             if (string.IsNullOrEmpty(model.Provider))
             {
-                ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority);
+                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority);
             }
             else
             {
-                ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority, model.Provider);
+                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority, model.Provider);
             }
 
             return string.Empty;

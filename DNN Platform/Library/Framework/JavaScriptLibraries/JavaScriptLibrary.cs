@@ -12,24 +12,16 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     [Serializable]
     public class JavaScriptLibrary : IXmlSerializable
     {
-        /// <summary>
-        /// Gets or sets unique identifier id for a javscript library package.
-        /// </summary>
+        /// <summary>Gets or sets unique identifier id for a javscript library package.</summary>
         public int JavaScriptLibraryID { get; set; }
 
-        /// <summary>
-        /// Gets or sets package id associated with the javscript library package.
-        /// </summary>
+        /// <summary>Gets or sets package id associated with the javscript library package.</summary>
         public int PackageID { get; set; }
 
-        /// <summary>
-        /// Gets or sets name of the javscript library package (used when requesting library).
-        /// </summary>
+        /// <summary>Gets or sets name of the javscript library package (used when requesting library).</summary>
         public string LibraryName { get; set; }
 
-        /// <summary>
-        /// Gets or sets version of the the javscript library package from the database.
-        /// </summary>
+        /// <summary>Gets or sets version of the the javscript library package from the database.</summary>
         public Version Version { get; set; }
 
         /// <summary>
@@ -38,19 +30,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// </summary>
         public string ObjectName { get; set; }
 
-        /// <summary>
-        /// Gets or sets filename of the script in the filesystem.
-        /// </summary>
+        /// <summary>Gets or sets filename of the script in the filesystem.</summary>
         public string FileName { get; set; }
 
-        /// <summary>
-        /// Gets or sets position in the page the script reference is injected.
-        /// </summary>
+        /// <summary>Gets or sets position in the page the script reference is injected.</summary>
         public ScriptLocation PreferredScriptLocation { get; set; }
 
-        /// <summary>
-        /// Gets or sets location of the content delivery network (CDN) where the script is loaded from when CDN has been enabled in host.
-        /// </summary>
+        /// <summary>Gets or sets location of the content delivery network (CDN) where the script is loaded from when CDN has been enabled in host.</summary>
         public string CDNPath { get; set; }
 
         /// <inheritdoc/>
@@ -59,12 +45,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             throw new NotImplementedException();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Reads a JavaScriptLibrary from an XmlReader.
-        /// </summary>
+        /// <summary>Reads a JavaScriptLibrary from an XmlReader.</summary>
         /// <param name="reader">The XmlReader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -124,12 +106,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a JavaScriptLibrary to an XmlWriter.
-        /// </summary>
+        /// <summary>Writes a JavaScriptLibrary to an XmlWriter.</summary>
         /// <param name="writer">The XmlWriter to use.</param>
-        /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elemenst

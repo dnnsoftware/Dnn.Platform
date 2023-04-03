@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="1.0">
   <packages>
-    <package name="Skin.Xcillion" type="Skin" version="09.09.01">
+    <package name="Skin.Xcillion" type="Skin" version="09.11.02">
       <friendlyName>Xcillion</friendlyName>
       <iconFile></iconFile>
       <description><![CDATA[A new default DNN skin]]></description>
       <owner>
-        <name>XCESS</name>
-        <organization><![CDATA[XCESS expertise center b.v.]]></organization>
-        <url><![CDATA[http://www.xcess.nl]]></url>
-        <email><![CDATA[info@xcess.nl]]></email>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="license.htm" />
       <releaseNotes src="release_notes.htm" />
@@ -29,7 +29,7 @@
         </component>
       </components>
     </package>
-    <package name="Container.Xcillion" type="Container" version="09.09.01">
+    <package name="Container.Xcillion" type="Container" version="09.11.02">
       <friendlyName>Xcillion</friendlyName>
       <iconFile></iconFile>
       <description><![CDATA[DNN container]]></description>

@@ -21,23 +21,21 @@ namespace DotNetNuke.UI.WebControls.Internal
     /// </summary>
     public class PermissionTriState : HiddenField
     {
-        private readonly string _grantImagePath;
-        private readonly string _denyImagePath;
-        private readonly string _nullImagePath;
-        private readonly string _lockImagePath;
-        private readonly string _grantAltText;
-        private readonly string _denyAltText;
-        private readonly string _nullAltText;
+        private readonly string grantImagePath;
+        private readonly string denyImagePath;
+        private readonly string nullImagePath;
+        private readonly string lockImagePath;
+        private readonly string grantAltText;
+        private readonly string denyAltText;
+        private readonly string nullAltText;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionTriState"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionTriState"/> class.</summary>
         public PermissionTriState()
         {
             // kind of ugly to lookup this data each time, but doesn't seem worth the effort to
             // maintain statics for the paths but require a control instance to initialize them
             // and lazy load the text bits when the page instance (or localization) changes
-            LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
+            LookupScriptValues(this, out this.grantImagePath, out this.denyImagePath, out this.nullImagePath, out this.lockImagePath, out this.grantAltText, out this.denyAltText, out this.nullAltText);
         }
 
         public bool IsFullControl { get; set; }
@@ -108,25 +106,25 @@ namespace DotNetNuke.UI.WebControls.Internal
             switch (this.Value)
             {
                 case "True":
-                    imagePath = this._grantImagePath;
-                    altText = this._grantAltText;
+                    imagePath = this.grantImagePath;
+                    altText = this.grantAltText;
                     break;
 
                 case "False":
-                    imagePath = this._denyImagePath;
-                    altText = this._denyAltText;
+                    imagePath = this.denyImagePath;
+                    altText = this.denyAltText;
                     break;
 
                 default:
-                    imagePath = this._nullImagePath;
-                    altText = this._nullAltText;
+                    imagePath = this.nullImagePath;
+                    altText = this.nullAltText;
                     break;
             }
 
             string cssClass = "tristate";
             if (this.Locked)
             {
-                imagePath = this._lockImagePath;
+                imagePath = this.lockImagePath;
                 cssClass += " lockedPerm";
 
                 // altText is set based on Value

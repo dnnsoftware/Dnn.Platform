@@ -17,11 +17,12 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     public partial class ViewSource : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>Initializes a new instance of the <see cref="ViewSource"/> class.</summary>
         public ViewSource()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected bool CanEditSource
@@ -50,10 +51,11 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -197,7 +199,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Response.Redirect(this.ReturnURL, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

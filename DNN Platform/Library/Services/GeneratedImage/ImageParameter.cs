@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.GeneratedImage
     [Bindable(true)]
     public class ImageParameter : IDataBindingsAccessor
     {
-        private readonly DataBindingCollection _dataBindings = new DataBindingCollection();
+        private readonly DataBindingCollection dataBindings = new DataBindingCollection();
 
         public event EventHandler DataBinding;
 
@@ -23,10 +23,10 @@ namespace DotNetNuke.Services.GeneratedImage
         public Control BindingContainer { get; internal set; }
 
         /// <inheritdoc/>
-        DataBindingCollection IDataBindingsAccessor.DataBindings => this._dataBindings;
+        DataBindingCollection IDataBindingsAccessor.DataBindings => this.dataBindings;
 
         /// <inheritdoc/>
-        bool IDataBindingsAccessor.HasDataBindings => this._dataBindings.Count != 0;
+        bool IDataBindingsAccessor.HasDataBindings => this.dataBindings.Count != 0;
 
         /// <inheritdoc/>
         public override string ToString()

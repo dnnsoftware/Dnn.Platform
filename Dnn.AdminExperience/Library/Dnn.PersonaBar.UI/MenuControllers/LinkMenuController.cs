@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
     public class LinkMenuController : IMenuItemController
     {
+        /// <summary>Initializes a new instance of the <see cref="LinkMenuController"/> class.</summary>
         public LinkMenuController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -27,6 +28,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
             if (this.Visible(menuItem))
@@ -53,6 +55,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             }
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             var query = this.GetPathQuery(menuItem);
@@ -96,6 +99,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                     && tab != null && !tab.IsDeleted && !tab.DisableLink && tab.IsVisible;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

@@ -15,10 +15,14 @@ namespace DotNetNuke.Entities.Groups
     public class GroupInfo : RoleInfo, IPropertyAccess
     {
         // private RoleInfo roleInfo;
+
+        /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
         public GroupInfo()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
+        /// <param name="roleInfo"></param>
         public GroupInfo(RoleInfo roleInfo)
         {
             this.RoleID = roleInfo.RoleID;

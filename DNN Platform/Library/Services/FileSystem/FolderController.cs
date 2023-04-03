@@ -3,18 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.FileSystem
 {
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : FolderController
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Business Class that provides access to the Database for the functions within the calling classes
     /// Instantiates the instance of the DataProvider and returns the object, if any.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class FolderController
     {
         public enum StorageLocationTypes

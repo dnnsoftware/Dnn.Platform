@@ -16,16 +16,25 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
     public class DnnHtmlHelper
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnHtmlHelper"/> class.</summary>
+        /// <param name="viewContext">The view context.</param>
+        /// <param name="viewDataContainer">The ViewData container.</param>
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DnnHtmlHelper"/> class.</summary>
+        /// <param name="viewContext">The view context.</param>
+        /// <param name="viewDataContainer">The ViewData container.</param>
+        /// <param name="routeCollection">The route collection.</param>
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
             : this(new HtmlHelper(viewContext, viewDataContainer, routeCollection))
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DnnHtmlHelper"/> class.</summary>
+        /// <param name="htmlHelper">The HtmlHelper to wrap.</param>
         protected DnnHtmlHelper(HtmlHelper htmlHelper)
         {
             this.HtmlHelper = htmlHelper;

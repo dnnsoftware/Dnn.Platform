@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteGroupsController));
 
-        IManagePortalGroups GroupManager
+        private IManagePortalGroups GroupManager
         {
             get
             {

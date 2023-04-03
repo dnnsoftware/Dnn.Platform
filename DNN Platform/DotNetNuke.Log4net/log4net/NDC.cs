@@ -1,6 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
 
 #if NETCF_1_0
 using Stack = log4net.Util.ThreadContextStack.Stack;
@@ -8,28 +27,7 @@ using Stack = log4net.Util.ThreadContextStack.Stack;
 
 namespace log4net
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
-    /// <summary>
-    /// Implementation of Nested Diagnostic Contexts.
-    /// </summary>
+    /// <summary>Implementation of Nested Diagnostic Contexts.</summary>
     /// <remarks>
     /// <note>
     /// <para>
@@ -54,24 +52,22 @@ namespace log4net
     /// calling thread.
     /// </para>
     /// </remarks>
-    /// <example>How to push a message into the context.
+    /// <example>How to push a message into the context
     /// <code lang="C#">
     ///     using(NDC.Push("my context message"))
     ///     {
     ///         ... all log calls will have 'my context message' included ...
-    ///
-    ///     } // at the end of the using block the message is automatically removed
+    ///    
+    ///     } // at the end of the using block the message is automatically removed 
     /// </code>
     /// </example>
     /// <threadsafety static="true" instance="true" />
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
     public sealed class NDC
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NDC" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NDC" /> class. </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.
         /// </remarks>
@@ -79,9 +75,7 @@ namespace log4net
         {
         }
 
-        /// <summary>
-        /// Gets the current context depth.
-        /// </summary>
+        /// <summary>Gets the current context depth.</summary>
         /// <value>The current context depth.</value>
         /// <remarks>
         /// <note>
@@ -94,20 +88,18 @@ namespace log4net
         /// The number of context values pushed onto the context stack.
         /// </para>
         /// <para>
-        /// Used to record the current depth of the context. This can then
+        /// Used to record the current depth of the context. This can then 
         /// be restored using the <see cref="SetMaxDepth"/> method.
         /// </para>
         /// </remarks>
         /// <seealso cref="SetMaxDepth"/>
-        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v11.0.0.")]*/
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
         public static int Depth
         {
             get { return ThreadContext.Stacks["NDC"].Count; }
         }
 
-        /// <summary>
-        /// Clears all the contextual information held on the current thread.
-        /// </summary>
+        /// <summary>Clears all the contextual information held on the current thread.</summary>
         /// <remarks>
         /// <note>
         /// <para>
@@ -119,15 +111,13 @@ namespace log4net
         /// Clears the stack of NDC data held on the current thread.
         /// </para>
         /// </remarks>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
-        public static void Clear()
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+        public static void Clear() 
         {
             ThreadContext.Stacks["NDC"].Clear();
         }
 
-        /// <summary>
-        /// Creates a clone of the stack of context information.
-        /// </summary>
+        /// <summary>Creates a clone of the stack of context information.</summary>
         /// <returns>A clone of the context info for this thread.</returns>
         /// <remarks>
         /// <note>
@@ -137,20 +127,18 @@ namespace log4net
         /// </para>
         /// </note>
         /// <para>
-        /// The results of this method can be passed to the <see cref="Inherit"/>
-        /// method to allow child threads to inherit the context of their
+        /// The results of this method can be passed to the <see cref="Inherit"/> 
+        /// method to allow child threads to inherit the context of their 
         /// parent thread.
         /// </para>
         /// </remarks>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
-        public static Stack CloneStack()
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+        public static Stack CloneStack() 
         {
             return ThreadContext.Stacks["NDC"].InternalStack;
         }
 
-        /// <summary>
-        /// Inherits the contextual information from another thread.
-        /// </summary>
+        /// <summary>Inherits the contextual information from another thread.</summary>
         /// <param name="stack">The context stack to inherit.</param>
         /// <remarks>
         /// <note>
@@ -169,17 +157,15 @@ namespace log4net
         /// this method.
         /// </para>
         /// </remarks>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.", true)]
-        public static void Inherit(Stack stack)
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks", true)]*/
+        public static void Inherit(Stack stack) 
         {
             ThreadContext.Stacks["NDC"].InternalStack = stack;
         }
 
-        /// <summary>
-        /// Removes the top context from the stack.
-        /// </summary>
+        /// <summary>Removes the top context from the stack.</summary>
         /// <returns>
-        /// The message in the context that was removed from the top
+        /// The message in the context that was removed from the top 
         /// of the stack.
         /// </returns>
         /// <remarks>
@@ -195,18 +181,16 @@ namespace log4net
         /// empty string (not <c>null</c>) is returned.
         /// </para>
         /// </remarks>
-        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v11.0.0.")]*/
-        public static string Pop()
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+        public static string Pop() 
         {
             return ThreadContext.Stacks["NDC"].Pop();
         }
 
-        /// <summary>
-        /// Pushes a new context message.
-        /// </summary>
+        /// <summary>Pushes a new context message.</summary>
         /// <param name="message">The new context message.</param>
         /// <returns>
-        /// An <see cref="IDisposable"/> that can be used to clean up
+        /// An <see cref="IDisposable"/> that can be used to clean up 
         /// the context stack.
         /// </returns>
         /// <remarks>
@@ -227,23 +211,21 @@ namespace log4net
         /// <code lang="C#">
         /// using(log4net.NDC.Push("NDC_Message"))
         /// {
-        ///         log.Warn("This should have an NDC message");
-        ///     }
+        ///        log.Warn("This should have an NDC message");
+        ///    }
         /// </code>
         /// </example>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
-        public static IDisposable Push(string message)
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+        public static IDisposable Push(string message) 
         {
             return ThreadContext.Stacks["NDC"].Push(message);
         }
 
-        /// <summary>
-        /// Pushes a new context message.
-        /// </summary>
+        /// <summary>Pushes a new context message.</summary>
         /// <param name="messageFormat">The new context message string format.</param>
         /// <param name="args">Arguments to be passed into messageFormat.</param>
         /// <returns>
-        /// An <see cref="IDisposable"/> that can be used to clean up
+        /// An <see cref="IDisposable"/> that can be used to clean up 
         /// the context stack.
         /// </returns>
         /// <remarks>
@@ -265,11 +247,11 @@ namespace log4net
         /// var someValue = "ExampleContext"
         /// using(log4net.NDC.PushFormat("NDC_Message {0}", someValue))
         /// {
-        ///         log.Warn("This should have an NDC message");
-        ///     }
+        ///        log.Warn("This should have an NDC message");
+        ///    }
         /// </code>
         /// </example>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
         public static IDisposable PushFormat(string messageFormat, params object[] args)
         {
             return Push(string.Format(messageFormat, args));
@@ -290,15 +272,13 @@ namespace log4net
         /// This method is not implemented.
         /// </para>
         /// </remarks>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
-        public static void Remove()
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+        public static void Remove() 
         {
         }
 
-        /// <summary>
-        /// Forces the stack depth to be at most <paramref name="maxDepth"/>.
-        /// </summary>
-        /// <param name="maxDepth">The maximum depth of the stack.</param>
+        /// <summary>Forces the stack depth to be at most <paramref name="maxDepth"/>.</summary>
+        /// <param name="maxDepth">The maximum depth of the stack</param>
         /// <remarks>
         /// <note>
         /// <para>
@@ -308,18 +288,18 @@ namespace log4net
         /// </note>
         /// <para>
         /// Forces the stack depth to be at most <paramref name="maxDepth"/>.
-        /// This may truncate the head of the stack. This only affects the
+        /// This may truncate the head of the stack. This only affects the 
         /// stack in the current thread. Also it does not prevent it from
         /// growing, it only sets the maximum depth at the time of the
         /// call. This can be used to return to a known context depth.
         /// </para>
         /// </remarks>
-        [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
-        public static void SetMaxDepth(int maxDepth)
+        /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+        public static void SetMaxDepth(int maxDepth) 
         {
             if (maxDepth >= 0)
             {
-                log4net.Util.ThreadContextStack stack = ThreadContext.Stacks["NDC"];
+                Util.ThreadContextStack stack = ThreadContext.Stacks["NDC"];
 
                 if (maxDepth == 0)
                 {
@@ -327,7 +307,7 @@ namespace log4net
                 }
                 else
                 {
-                    while (stack.Count > maxDepth)
+                    while(stack.Count > maxDepth)
                     {
                         stack.Pop();
                     }

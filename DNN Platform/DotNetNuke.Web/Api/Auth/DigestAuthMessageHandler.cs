@@ -15,14 +15,10 @@ namespace DotNetNuke.Web.Api.Auth
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Web.Api.Internal.Auth;
 
-    /// <summary>
-    /// Digest authentication message handler.
-    /// </summary>
+    /// <summary>Digest authentication message handler.</summary>
     public class DigestAuthMessageHandler : AuthMessageHandlerBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DigestAuthMessageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DigestAuthMessageHandler"/> class.</summary>
         /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
         /// <param name="forceSsl">Should this handler enforce SSL usage.</param>
         public DigestAuthMessageHandler(bool includeByDefault, bool forceSsl)

@@ -7,23 +7,12 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageWriterFactory is a factory class that is used to instantiate the
-    /// appropriate Package Writer.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageWriterFactory is a factory class that is used to instantiate the appropriate Package Writer.</summary>
     public class PackageWriterFactory
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The GetWriter method instantiates the relevant PackageWriter Installer.
-        /// </summary>
+        /// <summary>The GetWriter method instantiates the relevant PackageWriter Installer.</summary>
         /// <param name="package">The associated PackageInfo instance.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A <see cref="PackageWriterBase"/> instance or <see langword="null"/>.</returns>
         public static PackageWriterBase GetWriter(PackageInfo package)
         {
             PackageWriterBase writer = null;

@@ -1,18 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Similar to ModuleInfoModel, however this one has information more specific to a module's
     /// implementation on a particular page (like the PaneName).
     /// </summary>
     public class ModuleInstanceModel
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int TabId;
 
         // command link
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __ModuleId { get; set; }
 
         public int ModuleId { get; set; }
@@ -24,6 +29,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string ModuleName { get; set; }
 
         // command link
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __ModuleName { get; set; }
 
         public string FriendlyName { get; set; }

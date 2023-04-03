@@ -39,10 +39,3 @@ branches:
     prevent-increment-of-merged-branch-version: false
     is-release-branch: false
     source-branches: []
-  catch-all:
-    regex: (.*?)
-    tag: 'unstable'
-    increment: Patch
-    prevent-increment-of-merged-branch-version: false
-    is-release-branch: false
-    source-branches: []

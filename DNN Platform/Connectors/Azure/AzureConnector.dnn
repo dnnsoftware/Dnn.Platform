@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.AzureConnector" type="Connector" isSystem="false" version="09.09.01">
+        <package name="Dnn.AzureConnector" type="Connector" isSystem="false" version="09.11.02">
             <friendlyName>Dnn Azure Connector</friendlyName>
             <description>The Azure Connector allows you to integrate Azure as your commenting solution with the Publisher module.</description>
             <iconFile>~/DesktopModules/Connectors/Azure/Images/icon-azure-32px.png</iconFile>
@@ -8,8 +8,8 @@
             <dependency type="CoreVersion">09.02.00</dependency>
           </dependencies>
             <owner>
-                <name>DNN</name>
-                <organization>.NET Foundation</organization>
+                <name>.NET Foundation and Contributors</name>
+                <organization>DNN Community</organization>
                 <url>https://dnncommunity.org</url>
                 <email>info@dnncommunity.org</email>
             </owner>

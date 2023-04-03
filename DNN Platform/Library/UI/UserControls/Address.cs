@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -16,86 +17,125 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>
-    /// The Address UserControl is used to manage User Addresses.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Address UserControl is used to manage User Addresses.</summary>
     public abstract class Address : UserControlBase
     {
-        private const string MyFileName = "Address.ascx";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CountryListBox cboCountry;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboRegion;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkCell;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkCity;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkCountry;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkFax;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkPostal;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkRegion;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkStreet;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkTelephone;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plCell;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plCity;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plCountry;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plFax;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plPostal;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plRegion;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plStreet;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plTelephone;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LabelControl plUnit;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divCell;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divCity;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divCountry;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divFax;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divPostal;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divRegion;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divStreet;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divTelephone;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlGenericControl divUnit;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtCell;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtCity;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtFax;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtPostal;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtRegion;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtStreet;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtTelephone;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtUnit;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valCell;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valCity;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valCountry;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valFax;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valPostal;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valRegion1;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valRegion2;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valStreet;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RequiredFieldValidator valTelephone;
-        private string _cell;
-        private string _city;
-        private string _controlColumnWidth = string.Empty;
-        private string _country;
-        private string _countryData = "Text";
-        private string _fax;
-        private string _labelColumnWidth = string.Empty;
-        private int _moduleId;
-        private string _postal;
-        private string _region;
-        private string _regionData = "Text";
-        private bool _showCell = true;
-        private bool _showCity = true;
-        private bool _showCountry = true;
-        private bool _showFax = true;
-        private bool _showPostal = true;
-        private bool _showRegion = true;
-        private bool _showStreet = true;
-        private bool _showTelephone = true;
-        private bool _showUnit = true;
-        private string _street;
-        private string _telephone;
-        private string _unit;
+        private const string MyFileName = "Address.ascx";
+        private string cell;
+        private string city;
+        private string controlColumnWidth = string.Empty;
+        private string country;
+        private string countryData = "Text";
+        private string fax;
+        private string labelColumnWidth = string.Empty;
+        private int moduleId;
+        private string postal;
+        private string region;
+        private string regionData = "Text";
+        private bool showCell = true;
+        private bool showCity = true;
+        private bool showCountry = true;
+        private bool showFax = true;
+        private bool showPostal = true;
+        private bool showRegion = true;
+        private bool showStreet = true;
+        private bool showTelephone = true;
+        private bool showUnit = true;
+        private string street;
+        private string telephone;
+        private string unit;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Address"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Address"/> class.</summary>
         protected Address()
         {
             this.StartTabIndex = 1;
@@ -118,7 +158,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
@@ -131,7 +171,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._labelColumnWidth = value;
+                this.labelColumnWidth = value;
             }
         }
 
@@ -144,7 +184,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._controlColumnWidth = value;
+                this.controlColumnWidth = value;
             }
         }
 
@@ -159,7 +199,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._street = value;
+                this.street = value;
             }
         }
 
@@ -172,7 +212,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._unit = value;
+                this.unit = value;
             }
         }
 
@@ -185,7 +225,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._city = value;
+                this.city = value;
             }
         }
 
@@ -196,7 +236,7 @@ namespace DotNetNuke.UI.UserControls
                 var retValue = string.Empty;
                 if (this.cboCountry.SelectedItem != null)
                 {
-                    switch (this._countryData.ToLowerInvariant())
+                    switch (this.countryData.ToLowerInvariant())
                     {
                         case "text":
                             retValue = this.cboCountry.SelectedIndex == 0 ? string.Empty : this.cboCountry.SelectedItem.Text;
@@ -212,7 +252,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._country = value;
+                this.country = value;
             }
         }
 
@@ -225,7 +265,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     if (this.cboRegion.SelectedItem != null)
                     {
-                        switch (this._regionData.ToLowerInvariant())
+                        switch (this.regionData.ToLowerInvariant())
                         {
                             case "text":
                                 if (this.cboRegion.SelectedIndex > 0)
@@ -250,7 +290,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._region = value;
+                this.region = value;
             }
         }
 
@@ -263,7 +303,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._postal = value;
+                this.postal = value;
             }
         }
 
@@ -276,7 +316,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._telephone = value;
+                this.telephone = value;
             }
         }
 
@@ -289,7 +329,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._cell = value;
+                this.cell = value;
             }
         }
 
@@ -302,7 +342,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._fax = value;
+                this.fax = value;
             }
         }
 
@@ -310,7 +350,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showStreet = value;
+                this.showStreet = value;
             }
         }
 
@@ -318,7 +358,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showUnit = value;
+                this.showUnit = value;
             }
         }
 
@@ -326,7 +366,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showCity = value;
+                this.showCity = value;
             }
         }
 
@@ -334,7 +374,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showCountry = value;
+                this.showCountry = value;
             }
         }
 
@@ -342,7 +382,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showRegion = value;
+                this.showRegion = value;
             }
         }
 
@@ -350,7 +390,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showPostal = value;
+                this.showPostal = value;
             }
         }
 
@@ -358,7 +398,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showTelephone = value;
+                this.showTelephone = value;
             }
         }
 
@@ -366,7 +406,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showCell = value;
+                this.showCell = value;
             }
         }
 
@@ -374,7 +414,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._showFax = value;
+                this.showFax = value;
             }
         }
 
@@ -382,7 +422,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._countryData = value;
+                this.countryData = value;
             }
         }
 
@@ -390,15 +430,11 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._regionData = value;
+                this.regionData = value;
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -447,28 +483,28 @@ namespace DotNetNuke.UI.UserControls
                     this.cboCountry.DataBind();
                     this.cboCountry.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
 
-                    switch (this._countryData.ToLowerInvariant())
+                    switch (this.countryData.ToLowerInvariant())
                     {
                         case "text":
-                            if (string.IsNullOrEmpty(this._country))
+                            if (string.IsNullOrEmpty(this.country))
                             {
                                 this.cboCountry.SelectedIndex = 0;
                             }
                             else
                             {
-                                if (this.cboCountry.Items.FindByText(this._country) != null)
+                                if (this.cboCountry.Items.FindByText(this.country) != null)
                                 {
                                     this.cboCountry.ClearSelection();
-                                    this.cboCountry.Items.FindByText(this._country).Selected = true;
+                                    this.cboCountry.Items.FindByText(this.country).Selected = true;
                                 }
                             }
 
                             break;
                         case "value":
-                            if (this.cboCountry.Items.FindByValue(this._country) != null)
+                            if (this.cboCountry.Items.FindByValue(this.country) != null)
                             {
                                 this.cboCountry.ClearSelection();
-                                this.cboCountry.Items.FindByValue(this._country).Selected = true;
+                                this.cboCountry.Items.FindByValue(this.country).Selected = true;
                             }
 
                             break;
@@ -478,26 +514,26 @@ namespace DotNetNuke.UI.UserControls
 
                     if (this.cboRegion.Visible)
                     {
-                        switch (this._regionData.ToLowerInvariant())
+                        switch (this.regionData.ToLowerInvariant())
                         {
                             case "text":
-                                if (string.IsNullOrEmpty(this._region))
+                                if (string.IsNullOrEmpty(this.region))
                                 {
                                     this.cboRegion.SelectedIndex = 0;
                                 }
                                 else
                                 {
-                                    if (this.cboRegion.Items.FindByText(this._region) != null)
+                                    if (this.cboRegion.Items.FindByText(this.region) != null)
                                     {
-                                        this.cboRegion.Items.FindByText(this._region).Selected = true;
+                                        this.cboRegion.Items.FindByText(this.region).Selected = true;
                                     }
                                 }
 
                                 break;
                             case "value":
-                                if (this.cboRegion.Items.FindByValue(this._region) != null)
+                                if (this.cboRegion.Items.FindByValue(this.region) != null)
                                 {
-                                    this.cboRegion.Items.FindByValue(this._region).Selected = true;
+                                    this.cboRegion.Items.FindByValue(this.region).Selected = true;
                                 }
 
                                 break;
@@ -505,26 +541,26 @@ namespace DotNetNuke.UI.UserControls
                     }
                     else
                     {
-                        this.txtRegion.Text = this._region;
+                        this.txtRegion.Text = this.region;
                     }
 
-                    this.txtStreet.Text = this._street;
-                    this.txtUnit.Text = this._unit;
-                    this.txtCity.Text = this._city;
-                    this.txtPostal.Text = this._postal;
-                    this.txtTelephone.Text = this._telephone;
-                    this.txtCell.Text = this._cell;
-                    this.txtFax.Text = this._fax;
+                    this.txtStreet.Text = this.street;
+                    this.txtUnit.Text = this.unit;
+                    this.txtCity.Text = this.city;
+                    this.txtPostal.Text = this.postal;
+                    this.txtTelephone.Text = this.telephone;
+                    this.txtCell.Text = this.cell;
+                    this.txtFax.Text = this.fax;
 
-                    this.divStreet.Visible = this._showStreet;
-                    this.divUnit.Visible = this._showUnit;
-                    this.divCity.Visible = this._showCity;
-                    this.divCountry.Visible = this._showCountry;
-                    this.divRegion.Visible = this._showRegion;
-                    this.divPostal.Visible = this._showPostal;
-                    this.divTelephone.Visible = this._showTelephone;
-                    this.divCell.Visible = this._showCell;
-                    this.divFax.Visible = this._showFax;
+                    this.divStreet.Visible = this.showStreet;
+                    this.divUnit.Visible = this.showUnit;
+                    this.divCity.Visible = this.showCity;
+                    this.divCountry.Visible = this.showCountry;
+                    this.divRegion.Visible = this.showRegion;
+                    this.divPostal.Visible = this.showPostal;
+                    this.divTelephone.Visible = this.showTelephone;
+                    this.divCell.Visible = this.showCell;
+                    this.divFax.Visible = this.showFax;
 
                     if (TabPermissionController.CanAdminPage())
                     {
@@ -538,9 +574,9 @@ namespace DotNetNuke.UI.UserControls
                         this.chkFax.Visible = true;
                     }
 
-                    this.ViewState["ModuleId"] = Convert.ToString(this._moduleId);
-                    this.ViewState["LabelColumnWidth"] = this._labelColumnWidth;
-                    this.ViewState["ControlColumnWidth"] = this._controlColumnWidth;
+                    this.ViewState["ModuleId"] = Convert.ToString(this.moduleId);
+                    this.ViewState["LabelColumnWidth"] = this.labelColumnWidth;
+                    this.ViewState["ControlColumnWidth"] = this.controlColumnWidth;
 
                     this.ShowRequiredFields();
                 }
@@ -569,7 +605,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.UpdateRequiredFields();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -659,11 +695,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Localize correctly sets up the control for US/Canada/Other Countries.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Localize correctly sets up the control for US/Canada/Other Countries.</summary>
         private void Localize()
         {
             var countryCode = this.cboCountry.SelectedItem.Value;
@@ -728,11 +760,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// ShowRequiredFields sets up displaying which fields are required.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>ShowRequiredFields sets up displaying which fields are required.</summary>
         private void ShowRequiredFields()
         {
             var reqStreet = PortalController.GetPortalSettingAsBoolean("addressstreet", this.PortalSettings.PortalId, true);
@@ -857,11 +885,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// UpdateRequiredFields updates which fields are required.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>UpdateRequiredFields updates which fields are required.</summary>
         private void UpdateRequiredFields()
         {
             if (this.chkCountry.Checked == false)

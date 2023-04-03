@@ -38,6 +38,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
         }
 
         [Test]
+
         public void Using_Image_Handler_From_All_Alias_ShouldPass()
         {
             PortalAliasInfo pai;
@@ -71,6 +72,17 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
                 var response = session.GetContent(absoluteUrl).Content.ReadAsStringAsync().Result;
                 Assert.IsTrue(response.StartsWith("GIF89a"), $"Url: {absoluteUrl} / Content = {response}");
             }
+        }
+
+        [TestCase("80", "50", "0")] // integer
+        [TestCase("74.98", "42.01", "0")] // decimal
+        [TestCase("0x8", "-584", "0")] // use default size for invalid size
+        public void Using_Image_Handler_For_Images_with_max_size_ShouldPass(string maxWidth, string maxHeight, string fileId)
+        {
+            var session = WebApiTestHelper.GetAnnonymousConnector();
+            var relativeUrl = $"/DnnImageHandler.ashx?mode=securefile&fileId={fileId}&MaxWidth={maxWidth}&MaxHeight={maxHeight}";
+            var response = session.GetContent(relativeUrl);
+            Assert.IsTrue(response.StatusCode == System.Net.HttpStatusCode.OK);
         }
     }
 }

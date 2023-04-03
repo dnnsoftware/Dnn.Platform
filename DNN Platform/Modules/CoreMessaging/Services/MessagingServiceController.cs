@@ -26,9 +26,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// Provides messaging web services.
-    /// </summary>
+    /// <summary>Provides messaging web services.</summary>
     [SupportedModules("DotNetNuke.Modules.CoreMessaging")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DnnAuthorize]
@@ -36,13 +34,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
 
-        /// <summary>
-        /// Provides access to the user inbox.
-        /// </summary>
+        /// <summary>Provides access to the user inbox.</summary>
         /// <param name="afterMessageId">After which message id to start returning new messages.</param>
         /// <param name="numberOfRecords">How many messges to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Inbox(int afterMessageId, int numberOfRecords)
         {
             try
@@ -63,13 +60,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Provides access to the sent box view.
-        /// </summary>
+        /// <summary>Provides access to the sent box view.</summary>
         /// <param name="afterMessageId">After which message to obtain new messages.</param>
         /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Sentbox(int afterMessageId, int numberOfRecords)
         {
             try
@@ -89,13 +85,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Provides access to the archived box.
-        /// </summary>
+        /// <summary>Provides access to the archived box.</summary>
         /// <param name="afterMessageId">After which message to get new messages.</param>
         /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Archived(int afterMessageId, int numberOfRecords)
         {
             try
@@ -115,14 +110,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Provides access to a message thread.
-        /// </summary>
+        /// <summary>Provides access to a message thread.</summary>
         /// <param name="conversationId">The conversation id to get the thread from.</param>
         /// <param name="afterMessageId">After which message to get new messages.</param>
         /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageThreadsView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Thread(int conversationId, int afterMessageId, int numberOfRecords)
         {
             try
@@ -144,13 +138,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Provides access to post a reply to a message.
-        /// </summary>
+        /// <summary>Provides access to post a reply to a message.</summary>
         /// <param name="postData">The information about the reply, <see cref="ReplyDTO"/>.</param>
         /// <returns>Information about the conversation and message thread.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage Reply(ReplyDTO postData)
         {
             try
@@ -175,13 +168,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Marks a conversation as archived.
-        /// </summary>
+        /// <summary>Marks a conversation as archived.</summary>
         /// <param name="postData">The information about the conversation, <see cref="ConversationDTO"/>.</param>
         /// <returns>A "success" result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkArchived(ConversationDTO postData)
         {
             try
@@ -197,13 +189,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Restores a conversation out of the archive.
-        /// </summary>
+        /// <summary>Restores a conversation out of the archive.</summary>
         /// <param name="postData">The information about the conversation, <see cref="ConversationDTO"/>.</param>
         /// <returns>A "success" result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkUnArchived(ConversationDTO postData)
         {
             try
@@ -219,13 +210,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Marks a conversation as read.
-        /// </summary>
+        /// <summary>Marks a conversation as read.</summary>
         /// <param name="postData">The information about the conversation to mark as read, <see cref="ConversationDTO"/>.</param>
         /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkRead(ConversationDTO postData)
         {
             try
@@ -241,13 +231,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Marks a conversation as unread.
-        /// </summary>
+        /// <summary>Marks a conversation as unread.</summary>
         /// <param name="postData">The information about the conversation to mark unread, <see cref="ConversationDTO"/>.</param>
         /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkUnRead(ConversationDTO postData)
         {
             try
@@ -263,13 +252,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Deletes a user from a conversation.
-        /// </summary>
+        /// <summary>Deletes a user from a conversation.</summary>
         /// <param name="postData">The information about the conversation, <see cref="ConversationDTO"/>.</param>
         /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeleteUserFromConversation(ConversationDTO postData)
         {
             try
@@ -285,13 +273,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Gets the user notifications.
-        /// </summary>
+        /// <summary>Gets the user notifications.</summary>
         /// <param name="afterNotificationId">After which notification to get new ones.</param>
         /// <param name="numberOfRecords">How many notifications to get.</param>
         /// <returns>A see <see cref="NotificationViewModel"/> object.</returns>
         [HttpGet]
+
         public HttpResponseMessage Notifications(int afterNotificationId, int numberOfRecords)
         {
             try
@@ -363,9 +350,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Checks if a reply has recipients.
-        /// </summary>
+        /// <summary>Checks if a reply has recipients.</summary>
         /// <param name="conversationId">The id of conversation to check./>.</param>
         /// <returns>The recipient count or an InternalServerError.</returns>
         [HttpGet]
@@ -384,11 +369,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Gets the notifications count.
-        /// </summary>
+        /// <summary>Gets the notifications count.</summary>
         /// <returns>A number representing the notification count.</returns>
         [HttpGet]
+
         public HttpResponseMessage CountNotifications()
         {
             try
@@ -405,11 +389,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Gets the number of unread messages.
-        /// </summary>
+        /// <summary>Gets the number of unread messages.</summary>
         /// <returns>The number of unread messages.</returns>
         [HttpGet]
+
         public HttpResponseMessage CountUnreadMessages()
         {
             try
@@ -426,11 +409,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Gets both the total number of unread messages and new notifications.
-        /// </summary>
+        /// <summary>Gets both the total number of unread messages and new notifications.</summary>
         /// <returns><see cref="TotalsViewModel"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetTotals()
         {
             try
@@ -452,12 +434,11 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Dismisses all new notifications.
-        /// </summary>
+        /// <summary>Dismisses all new notifications.</summary>
         /// <returns>A "success" Result and a deleteCount representing how many notifications where deleted.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DismissAllNotifications()
         {
             try
@@ -526,30 +507,20 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             return messageObj;
         }
 
-        /// <summary>
-        /// Represents a conversation.
-        /// </summary>
+        /// <summary>Represents a conversation.</summary>
         public class ConversationDTO
         {
-            /// <summary>
-            /// Gets or sets id of the conversation.
-            /// </summary>
+            /// <summary>Gets or sets id of the conversation.</summary>
             public int ConversationId { get; set; }
         }
 
-        /// <summary>
-        /// Represents a message reply.
-        /// </summary>
+        /// <summary>Represents a message reply.</summary>
         public class ReplyDTO : ConversationDTO
         {
-            /// <summary>
-            /// Gets or sets the body of the reply.
-            /// </summary>
+            /// <summary>Gets or sets the body of the reply.</summary>
             public string Body { get; set; }
 
-            /// <summary>
-            /// Gets or sets the ids of the attached files.
-            /// </summary>
+            /// <summary>Gets or sets the ids of the attached files.</summary>
             public IList<int> FileIds { get; set; }
         }
     }

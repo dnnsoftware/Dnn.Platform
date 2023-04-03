@@ -18,47 +18,63 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
+
     public class SetUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
+
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
+
         private const string FlagUsername = "username";
 
         [FlagParameter("displayname", "Prompt_SetUser_FlagDisplayname", "String")]
+
         private const string FlagDisplayname = "displayname";
 
         [FlagParameter("firstname", "Prompt_SetUser_FlagFirstname", "String")]
+
         private const string FlagFirstname = "firstname";
 
         [FlagParameter("lastname", "Prompt_SetUser_FlagLastname", "String")]
+
         private const string FlagLastname = "lastname";
 
         [FlagParameter("approved", "Prompt_SetUser_FlagApproved", "Boolean")]
+
         private const string FlagApproved = "approved";
 
         [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
+
         private const string FlagPassword = "password";
 
-        private readonly IUserValidator _userValidator;
-        private readonly IUsersController _usersController;
-        private readonly IUserControllerWrapper _userControllerWrapper;
+        private readonly IUserValidator userValidator;
+        private readonly IUsersController usersController;
+        private readonly IUserControllerWrapper userControllerWrapper;
 
-        public SetUser() : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
+        /// <summary>Initializes a new instance of the <see cref="SetUser"/> class.</summary>
+        public SetUser()
+            : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="SetUser"/> class.</summary>
+        /// <param name="userValidator"></param>
+        /// <param name="usersController"></param>
+        /// <param name="userControllerWrapper"></param>
         public SetUser(IUserValidator userValidator, IUsersController usersController, IUserControllerWrapper userControllerWrapper)
         {
-            this._userValidator = userValidator;
-            this._usersController = usersController;
-            this._userControllerWrapper = userControllerWrapper;
+            this.userValidator = userValidator;
+            this.usersController = usersController;
+            this.userControllerWrapper = userControllerWrapper;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int? UserId { get; set; }
@@ -77,9 +93,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private string Password { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
@@ -102,6 +118,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var sbResults = new StringBuilder();
@@ -110,7 +127,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             UserInfo userInfo;
 
             if (
-                (errorResultModel = this._userValidator.ValidateUser(
+                (errorResultModel = this.userValidator.ValidateUser(
                     this.UserId,
                     this.PortalSettings,
                     this.User,
@@ -125,7 +142,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 try
                 {
-                    this._usersController.ChangePassword(userInfo.PortalID, userInfo.UserID, this.Password);
+                    this.usersController.ChangePassword(userInfo.PortalID, userInfo.UserID, this.Password);
                     sbResults.Append(this.LocalizeString("ChangeSuccessful"));
                 }
                 catch (Exception ex)
@@ -136,7 +153,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (this.Approved.HasValue && userInfo.Membership.Approved != this.Approved.Value)
             {
-                this._usersController.UpdateAuthorizeStatus(userInfo, userInfo.PortalID, this.Approved.Value);
+                this.usersController.UpdateAuthorizeStatus(userInfo, userInfo.PortalID, this.Approved.Value);
                 sbResults.Append(this.LocalizeString(this.Approved.Value ? "UserAuthorized" : "UserUnAuthorized"));
             }
 
@@ -151,23 +168,39 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Firstname = userInfo.FirstName,
                 Lastname = userInfo.LastName,
             };
+
             // Update Username
             if (!string.IsNullOrEmpty(this.Username))
+            {
                 userBasicDto.Username = this.Username;
+            }
+
             // Update other properties
             if (!string.IsNullOrEmpty(this.DisplayName))
+            {
                 userBasicDto.Displayname = this.DisplayName;
+            }
+
             if (!string.IsNullOrEmpty(this.FirstName))
+            {
                 userBasicDto.Firstname = this.FirstName;
+            }
+
             if (!string.IsNullOrEmpty(this.LastName))
+            {
                 userBasicDto.Lastname = this.LastName;
+            }
+
             if (!string.IsNullOrEmpty(this.Email))
+            {
                 userBasicDto.Email = this.Email;
+            }
+
             if (basicUpdated)
             {
                 try
                 {
-                    this._usersController.UpdateUserBasicInfo(userBasicDto, userInfo.PortalID);
+                    this.usersController.UpdateUserBasicInfo(userBasicDto, userInfo.PortalID);
                 }
                 catch (SqlException)
                 {
@@ -178,8 +211,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     return new ConsoleErrorResultModel(ex.Message + sbResults);
                 }
             }
+
             // retrieve the updated user
-            var updatedUser = this._userControllerWrapper.GetUserById(userInfo.PortalID, userInfo.UserID);
+            var updatedUser = this.userControllerWrapper.GetUserById(userInfo.PortalID, userInfo.UserID);
 
             var lst = new List<UserModel> { new UserModel(updatedUser) };
 

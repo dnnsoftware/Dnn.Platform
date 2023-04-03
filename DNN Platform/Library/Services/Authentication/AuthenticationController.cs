@@ -20,28 +20,19 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The AuthenticationController class provides the Business Layer for the
-    /// Authentication Systems.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The AuthenticationController class provides the Business Layer for the Authentication Systems.</summary>
     public class AuthenticationController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
-        private static readonly DataProvider provider = DataProvider.Instance();
+        private static readonly DataProvider Provider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddAuthentication adds a new Authentication System to the Data Store.
-        /// </summary>
+        /// <summary>AddAuthentication adds a new Authentication System to the Data Store.</summary>
         /// <param name="authSystem">The new Authentication System to add.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The authentication system ID.</returns>
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
-            return provider.AddAuthentication(
+            return Provider.AddAuthentication(
                 authSystem.PackageID,
                 authSystem.AuthenticationType,
                 authSystem.IsEnabled,
@@ -51,15 +42,11 @@ namespace DotNetNuke.Services.Authentication
                 UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddUserAuthentication adds a new UserAuthentication to the User.
-        /// </summary>
+        /// <summary>AddUserAuthentication adds a new UserAuthentication to the User.</summary>
         /// <param name="userID">The new Authentication System to add.</param>
         /// <param name="authenticationType">The authentication type.</param>
         /// <param name="authenticationToken">The authentication token.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The user authentication ID.</returns>
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
             UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
@@ -72,7 +59,7 @@ namespace DotNetNuke.Services.Authentication
                     PortalController.Instance.GetCurrentPortalSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
+                return Provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -87,30 +74,24 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// <summary>
-        /// Retrieves authentication information for an user.
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
+        /// <summary>Retrieves authentication information for an user.</summary>
+        /// <param name="userID">The user ID.</param>
+        /// <returns>A <see cref="UserAuthenticationInfo"/> instance or <see langword="null"/>.</returns>
         public static UserAuthenticationInfo GetUserAuthentication(int userID)
         {
             // Go to database
-            return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
+            return CBO.FillObject<UserAuthenticationInfo>(Provider.GetUserAuthentication(userID));
         }
 
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
-            provider.DeleteAuthentication(authSystem.AuthenticationID);
+            Provider.DeleteAuthentication(authSystem.AuthenticationID);
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAuthenticationService fetches a single Authentication Systems.
-        /// </summary>
+        /// <summary>GetAuthenticationService fetches a single Authentication Systems.</summary>
         /// <param name="authenticationID">The ID of the Authentication System.</param>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationService(int authenticationID)
         {
             AuthenticationInfo authInfo = null;
@@ -126,19 +107,15 @@ namespace DotNetNuke.Services.Authentication
             if (authInfo == null)
             {
                 // Go to database
-                return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationService(authenticationID));
+                return CBO.FillObject<AuthenticationInfo>(Provider.GetAuthenticationService(authenticationID));
             }
 
             return authInfo;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAuthenticationServiceByPackageID fetches a single Authentication System.
-        /// </summary>
+        /// <summary>GetAuthenticationServiceByPackageID fetches a single Authentication System.</summary>
         /// <param name="packageID">The id of the Package.</param>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationServiceByPackageID(int packageID)
         {
             AuthenticationInfo authInfo = null;
@@ -154,19 +131,15 @@ namespace DotNetNuke.Services.Authentication
             if (authInfo == null)
             {
                 // Go to database
-                return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByPackageID(packageID));
+                return CBO.FillObject<AuthenticationInfo>(Provider.GetAuthenticationServiceByPackageID(packageID));
             }
 
             return authInfo;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAuthenticationServiceByType fetches a single Authentication Systems.
-        /// </summary>
+        /// <summary>GetAuthenticationServiceByType fetches a single Authentication Systems.</summary>
         /// <param name="authenticationType">The type of the Authentication System.</param>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationServiceByType(string authenticationType)
         {
             AuthenticationInfo authInfo = null;
@@ -182,19 +155,14 @@ namespace DotNetNuke.Services.Authentication
             if (authInfo == null)
             {
                 // Go to database
-                return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByType(authenticationType));
+                return CBO.FillObject<AuthenticationInfo>(Provider.GetAuthenticationServiceByType(authenticationType));
             }
 
             return authInfo;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAuthenticationServices fetches a list of all the Authentication Systems
-        /// installed in the system.
-        /// </summary>
+        /// <summary>GetAuthenticationServices fetches a list of all the Authentication Systems installed in the system.</summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         public static List<AuthenticationInfo> GetAuthenticationServices()
         {
             return
@@ -203,12 +171,8 @@ namespace DotNetNuke.Services.Authentication
                     GetAuthenticationServicesCallBack);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAuthenticationType fetches the authentication method used by the currently logged on user.
-        /// </summary>
+        /// <summary>GetAuthenticationType fetches the authentication method used by the currently logged on user.</summary>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationType()
         {
             AuthenticationInfo objAuthentication = null;
@@ -227,13 +191,8 @@ namespace DotNetNuke.Services.Authentication
             return objAuthentication;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetEnabledAuthenticationServices fetches a list of all the Authentication Systems
-        /// installed in the system that have been enabled by the Host user.
-        /// </summary>
+        /// <summary>GetEnabledAuthenticationServices fetches a list of all the Authentication Systems installed in the system that have been enabled by the Host user.</summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         public static List<AuthenticationInfo> GetEnabledAuthenticationServices()
         {
             var enabled = new List<AuthenticationInfo>();
@@ -248,9 +207,7 @@ namespace DotNetNuke.Services.Authentication
             return enabled;
         }
 
-        /// <summary>
-        /// Determines whether the current portal has any Non-DNN authentication providers enabled.
-        /// </summary>
+        /// <summary>Determines whether the current portal has any Non-DNN authentication providers enabled.</summary>
         /// <param name="control">The control.</param>
         /// <returns><c>true</c> if the portal has any Non-DNN authentication enabled, Otherwise <c>false</c>.</returns>
         public static bool HasSocialAuthenticationEnabled(UserControl control = null)
@@ -266,11 +223,9 @@ namespace DotNetNuke.Services.Authentication
                     select a).Any();
         }
 
-        /// <summary>
-        /// Determines whether the authentication is enabled for the specified portal.
-        /// </summary>
+        /// <summary>Determines whether the authentication is enabled for the specified portal.</summary>
         /// <param name="authentication">The authentication.</param>
-        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns><c>true</c> if OAuth Provider and it is enabled for the portal, Otherwise <c>false</c>.</returns>
         public static bool IsEnabledForPortal(AuthenticationInfo authentication, int portalId)
         {
@@ -279,17 +234,13 @@ namespace DotNetNuke.Services.Authentication
                 : HostController.Instance.GetBoolean(authentication.AuthenticationType + "_Enabled", false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetLogoffRedirectURL fetches the url to redirect too after logoff.
-        /// </summary>
+        /// <summary>GetLogoffRedirectURL fetches the URL to redirect to after logoff.</summary>
         /// <param name="settings">A PortalSettings object.</param>
         /// <param name="request">The current Request.</param>
-        /// <returns>The Url.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The URL.</returns>
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
-            string _RedirectURL = string.Empty;
+            string redirectURL = string.Empty;
             if (settings.Registration.RedirectAfterLogout == Null.NullInteger)
             {
                 if (TabPermissionController.CanViewPage())
@@ -297,67 +248,65 @@ namespace DotNetNuke.Services.Authentication
                     // redirect to current page (or home page if current page is a profile page to reduce redirects)
                     if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
                     {
-                        _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
+                        redirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                     }
                     else
                     {
-                        _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
+                        redirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
                     }
                 }
                 else if (settings.HomeTabId != -1)
                 {
                     // redirect to portal home page specified
-                    _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
+                    redirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                 }
-                else // redirect to default portal root
+                else
                 {
-                    _RedirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
+                    // redirect to default portal root
+                    redirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
                 }
             }
-            else // redirect to after logout page
+            else
             {
-                _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
+                // redirect to after logout page
+                redirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
 
-            return _RedirectURL;
+            return redirectURL;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SetAuthenticationType sets the authentication method used by the currently logged on user.
-        /// </summary>
+        /// <summary>SetAuthenticationType sets the authentication method used by the currently logged on user.</summary>
         /// <param name="value">The Authentication type.</param>
-        /// -----------------------------------------------------------------------------
         public static void SetAuthenticationType(string value)
         {
             SetAuthenticationType(value, false);
         }
 
-        public static void SetAuthenticationType(string value, bool CreatePersistentCookie)
+        public static void SetAuthenticationType(string value, bool createPersistentCookie)
         {
             try
             {
-                int PersistentCookieTimeout = Config.GetPersistentCookieTimeout();
-                HttpResponse Response = HttpContext.Current.Response;
-                if (Response == null)
+                int persistentCookieTimeout = Config.GetPersistentCookieTimeout();
+                HttpResponse response = HttpContext.Current.Response;
+                if (response == null)
                 {
                     return;
                 }
 
                 // save the authenticationmethod as a cookie
                 HttpCookie cookie = null;
-                cookie = Response.Cookies.Get("authentication");
+                cookie = response.Cookies.Get("authentication");
                 if (cookie == null)
                 {
                     if (!string.IsNullOrEmpty(value))
                     {
                         cookie = new HttpCookie("authentication", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
-                        if (CreatePersistentCookie)
+                        if (createPersistentCookie)
                         {
-                            cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
+                            cookie.Expires = DateTime.Now.AddMinutes(persistentCookieTimeout);
                         }
 
-                        Response.Cookies.Add(cookie);
+                        response.Cookies.Add(cookie);
                     }
                 }
                 else
@@ -365,16 +314,16 @@ namespace DotNetNuke.Services.Authentication
                     cookie.Value = value;
                     if (!string.IsNullOrEmpty(value))
                     {
-                        if (CreatePersistentCookie)
+                        if (createPersistentCookie)
                         {
-                            cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
+                            cookie.Expires = DateTime.Now.AddMinutes(persistentCookieTimeout);
                         }
 
-                        Response.Cookies.Set(cookie);
+                        response.Cookies.Set(cookie);
                     }
                     else
                     {
-                        Response.Cookies.Remove("authentication");
+                        response.Cookies.Remove("authentication");
                     }
                 }
             }
@@ -384,15 +333,11 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateAuthentication updates an existing Authentication System in the Data Store.
-        /// </summary>
+        /// <summary>UpdateAuthentication updates an existing Authentication System in the Data Store.</summary>
         /// <param name="authSystem">The new Authentication System to update.</param>
-        /// -----------------------------------------------------------------------------
         public static void UpdateAuthentication(AuthenticationInfo authSystem)
         {
-            provider.UpdateAuthentication(
+            Provider.UpdateAuthentication(
                 authSystem.AuthenticationID,
                 authSystem.PackageID,
                 authSystem.AuthenticationType,
@@ -406,7 +351,7 @@ namespace DotNetNuke.Services.Authentication
 
         private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
+            return CBO.FillCollection<AuthenticationInfo>(Provider.GetAuthenticationServices());
         }
     }
 }

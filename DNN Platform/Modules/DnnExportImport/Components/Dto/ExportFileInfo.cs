@@ -7,20 +7,14 @@ namespace Dnn.ExportImport.Components.Dto
     using DotNetNuke.Entities.Users;
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Export file(s) info.
-    /// </summary>
+    /// <summary>Export file(s) info.</summary>
     [JsonObject]
     public class ExportFileInfo : IDateTimeConverter
     {
-        /// <summary>
-        /// Gets or sets path for exported files.
-        /// </summary>
+        /// <summary>Gets or sets path for exported files.</summary>
         public string ExportPath { get; set; }
 
-        /// <summary>
-        /// Gets or sets formatted size of export file.
-        /// </summary>
+        /// <summary>Gets or sets formatted size of export file.</summary>
         public string ExportSize { get; set; }
 
         /// <inheritdoc/>

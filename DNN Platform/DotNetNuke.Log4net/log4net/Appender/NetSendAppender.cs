@@ -1,59 +1,57 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
 // MONO 1.0 Beta mcs does not like #if !A && !B && !C syntax
 
 // .NET Compact Framework 1.0 has no support for Win32 NetMessageBufferSend API
-#if !NETCF
+#if !NETCF 
 // MONO 1.0 has no support for Win32 NetMessageBufferSend API
-#if !MONO
+#if !MONO 
 // SSCLI 1.0 has no support for Win32 NetMessageBufferSend API
 #if !SSCLI
 // We don't want framework or platform specific code in the CLI version of log4net
 #if !CLI_1_0
 
 using System;
-using System.Globalization;
 using System.Runtime.InteropServices;
 
-using log4net.Core;
-using log4net.Layout;
 using log4net.Util;
+using log4net.Core;
 
-namespace log4net.Appender
+
+namespace log4net.Appender 
 {
     /// <summary>
-    /// Logs entries by sending network messages using the
+    /// Logs entries by sending network messages using the 
     /// <see cref="NetMessageBufferSend" /> native function.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// You can send messages only to names that are active
-    /// on the network. If you send the message to a user name,
-    /// that user must be logged on and running the Messenger
+    /// You can send messages only to names that are active 
+    /// on the network. If you send the message to a user name, 
+    /// that user must be logged on and running the Messenger 
     /// service to receive the message.
     /// </para>
     /// <para>
-    /// The receiver will get a top most window displaying the
-    /// messages one at a time, therefore this appender should
+    /// The receiver will get a top most window displaying the 
+    /// messages one at a time, therefore this appender should 
     /// not be used to deliver a high volume of messages.
     /// </para>
     /// <para>
@@ -120,15 +118,15 @@ namespace log4net.Appender
     /// </list>
     /// </para>
     /// <para>
-    /// <b>Note :</b> security restrictions apply for sending
-    /// network messages, see <see cref="NetMessageBufferSend" />
+    /// <b>Note :</b> security restrictions apply for sending 
+    /// network messages, see <see cref="NetMessageBufferSend" /> 
     /// for more information.
     /// </para>
     /// </remarks>
     /// <example>
     /// <para>
-    /// An example configuration section to log information
-    /// using this appender from the local machine, named
+    /// An example configuration section to log information 
+    /// using this appender from the local machine, named 
     /// LOCAL_PC, to machine OPERATOR_PC :
     /// </para>
     /// <code lang="XML" escaped="true">
@@ -139,74 +137,57 @@ namespace log4net.Appender
     /// </appender>
     /// </code>
     /// </example>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    public class NetSendAppender : AppenderSkeleton
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    public class NetSendAppender : AppenderSkeleton 
     {
-        /// <summary>
-        /// The DNS or NetBIOS name of the server on which the function is to execute.
-        /// </summary>
+        /// <summary>The DNS or NetBIOS name of the server on which the function is to execute.</summary>
         private string m_server;
 
-        /// <summary>
-        /// The sender of the network message.
-        /// </summary>
+        /// <summary>The sender of the network message.</summary>
         private string m_sender;
 
-        /// <summary>
-        /// The message alias to which the message should be sent.
-        /// </summary>
+        /// <summary>The message alias to which the message should be sent.</summary>
         private string m_recipient;
 
-        /// <summary>
-        /// The security context to use for privileged calls.
-        /// </summary>
+        /// <summary>The security context to use for privileged calls</summary>
         private SecurityContext m_securityContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NetSendAppender"/> class.
-        /// Initializes the appender.
-        /// </summary>
+        /// <summary>Initializes the appender.</summary>
         /// <remarks>
         /// The default constructor initializes all fields to their default values.
         /// </remarks>
-        public NetSendAppender()
+        public NetSendAppender() 
         {
         }
 
-        /// <summary>
-        /// Gets or sets the sender of the message.
-        /// </summary>
+        /// <summary>Gets or sets the sender of the message.</summary>
         /// <value>
         /// The sender of the message.
         /// </value>
         /// <remarks>
         /// If this property is not specified, the message is sent from the local computer.
         /// </remarks>
-        public string Sender
+        public string Sender 
         {
             get { return this.m_sender; }
             set { this.m_sender = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the message alias to which the message should be sent.
-        /// </summary>
+        /// <summary>Gets or sets the message alias to which the message should be sent.</summary>
         /// <value>
         /// The recipient of the message.
         /// </value>
         /// <remarks>
         /// This property should always be specified in order to send a message.
         /// </remarks>
-        public string Recipient
+        public string Recipient 
         {
             get { return this.m_recipient; }
             set { this.m_recipient = value; }
         }
-
-        /// <summary>
-        /// Gets or sets the DNS or NetBIOS name of the remote server on which the function is to execute.
-        /// </summary>
+        
+        /// <summary>Gets or sets the DNS or NetBIOS name of the remote server on which the function is to execute.</summary>
         /// <value>
         /// DNS or NetBIOS name of the remote server on which the function is to execute.
         /// </value>
@@ -215,18 +196,16 @@ namespace log4net.Appender
         /// For Windows NT 4.0 and earlier, the string should begin with \\.
         /// </para>
         /// <para>
-        /// If this property is not specified, the local computer is used.
+        /// If this property is not specified, the local computer is used. 
         /// </para>
         /// </remarks>
-        public string Server
+        public string Server 
         {
             get { return this.m_server; }
             set { this.m_server = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="SecurityContext"/> used to call the NetSend method.
-        /// </summary>
+        /// <summary>Gets or sets the <see cref="SecurityContext"/> used to call the NetSend method.</summary>
         /// <value>
         /// The <see cref="SecurityContext"/> used to call the NetSend method.
         /// </value>
@@ -238,25 +217,23 @@ namespace log4net.Appender
         /// of the current thread.
         /// </para>
         /// </remarks>
-        public SecurityContext SecurityContext
+        public SecurityContext SecurityContext 
         {
             get { return this.m_securityContext; }
             set { this.m_securityContext = value; }
         }
 
-        /// <summary>
-        /// Initialize the appender based on the options set.
-        /// </summary>
+        /// <summary>Initialize the appender based on the options set.</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must
+        /// activation scheme. The <see cref="ActivateOptions"/> method must 
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used.
+        /// object is in an undefined state and must not be used. 
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then
+        /// If any of the configuration properties are modified then 
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
@@ -267,8 +244,8 @@ namespace log4net.Appender
         public override void ActivateOptions()
         {
             base.ActivateOptions();
-
-            if (this.Recipient == null)
+    
+            if (this.Recipient == null) 
             {
                 throw new ArgumentNullException("Recipient", "The required property 'Recipient' was not specified.");
             }
@@ -279,35 +256,33 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
-        /// </summary>
+        /// <summary>This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
         /// Sends the event using a network message.
         /// </para>
         /// </remarks>
-#if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
+#if NET_4_0 || MONO_4_0 || NETSTANDARD
         [System.Security.SecuritySafeCritical]
 #endif
 #if !NETSTANDARD1_3
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
 #endif
-        protected override void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent) 
         {
             NativeError nativeError = null;
 
             // Render the event in the callers security context
             string renderedLoggingEvent = this.RenderLoggingEvent(loggingEvent);
 
-            using (this.m_securityContext.Impersonate(this))
+            using(this.m_securityContext.Impersonate(this))
             {
                 // Send the message
-                int returnValue = NetMessageBufferSend(this.Server, this.Recipient, this.Sender, renderedLoggingEvent, renderedLoggingEvent.Length * Marshal.SystemDefaultCharSize);
+                int returnValue = NetMessageBufferSend(this.Server, this.Recipient, this.Sender, renderedLoggingEvent, renderedLoggingEvent.Length * Marshal.SystemDefaultCharSize);   
 
                 // Log the error if the message could not be sent
-                if (returnValue != 0)
+                if (returnValue != 0) 
                 {
                     // Lookup the native error
                     nativeError = NativeError.GetError(returnValue);
@@ -321,10 +296,8 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
-        /// <value><c>true</c>.</value>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
+        /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -335,11 +308,9 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Sends a buffer of information to a registered message alias.
-        /// </summary>
+        /// <summary>Sends a buffer of information to a registered message alias.</summary>
         /// <param name="serverName">The DNS or NetBIOS name of the server on which the function is to execute.</param>
-        /// <param name="msgName">The message alias to which the message buffer should be sent.</param>
+        /// <param name="msgName">The message alias to which the message buffer should be sent</param>
         /// <param name="fromName">The originator of the message.</param>
         /// <param name="buffer">The message text.</param>
         /// <param name="bufferSize">The length, in bytes, of the message text.</param>
@@ -360,7 +331,7 @@ namespace log4net.Appender
         ///             No special group membership is required to send a network message.
         ///             </para>
         ///             <para>
-        ///             Admin, Accounts, Print, or Server Operator group membership is required to
+        ///             Admin, Accounts, Print, or Server Operator group membership is required to 
         ///             successfully send a network message on a remote server.
         ///             </para>
         ///         </description>
@@ -369,12 +340,12 @@ namespace log4net.Appender
         ///         <term>Windows 2000 or later</term>
         ///         <description>
         ///             <para>
-        ///             If you send a message on a domain controller that is running Active Directory,
-        ///             access is allowed or denied based on the access control list (ACL) for the securable
-        ///             object. The default ACL permits only Domain Admins and Account Operators to send a network message.
+        ///             If you send a message on a domain controller that is running Active Directory, 
+        ///             access is allowed or denied based on the access control list (ACL) for the securable 
+        ///             object. The default ACL permits only Domain Admins and Account Operators to send a network message. 
         ///             </para>
         ///             <para>
-        ///             On a member server or workstation, only Administrators and Server Operators can send a network message.
+        ///             On a member server or workstation, only Administrators and Server Operators can send a network message. 
         ///             </para>
         ///         </description>
         ///     </item>
@@ -389,8 +360,8 @@ namespace log4net.Appender
         /// If the function succeeds, the return value is zero.
         /// </para>
         /// </returns>
-        [DllImport("netapi32.dll", SetLastError = true)]
-        protected static extern int NetMessageBufferSend(
+        [DllImport("netapi32.dll", SetLastError=true)] 
+        protected static extern int NetMessageBufferSend(	   
             [MarshalAs(UnmanagedType.LPWStr)] string serverName,
             [MarshalAs(UnmanagedType.LPWStr)] string msgName,
             [MarshalAs(UnmanagedType.LPWStr)] string fromName,

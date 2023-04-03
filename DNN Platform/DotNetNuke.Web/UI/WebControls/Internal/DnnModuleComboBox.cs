@@ -22,8 +22,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
-        private DnnComboBox _moduleCombo;
-        private string _originalValue;
+        private DnnComboBox moduleCombo;
+        private string originalValue;
 
         public event EventHandler ItemChanged;
 
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return this._moduleCombo.Items.Count;
+                return this.moduleCombo.Items.Count;
             }
         }
 
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return this._moduleCombo.ClientID;
+                return this.moduleCombo.ClientID;
             }
         }
 
@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return this._moduleCombo.SelectedValue;
+                return this.moduleCombo.SelectedValue;
             }
         }
 
@@ -59,51 +59,51 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return this._moduleCombo.Enabled;
+                return this.moduleCombo.Enabled;
             }
 
             set
             {
-                this._moduleCombo.Enabled = value;
+                this.moduleCombo.Enabled = value;
             }
         }
 
         public void BindAllPortalDesktopModules()
         {
-            this._moduleCombo.SelectedValue = null;
-            this._moduleCombo.DataSource = this.GetPortalDesktopModules();
-            this._moduleCombo.DataBind();
+            this.moduleCombo.SelectedValue = null;
+            this.moduleCombo.DataSource = this.GetPortalDesktopModules();
+            this.moduleCombo.DataBind();
             this.BindPortalDesktopModuleImages();
         }
 
         public void BindTabModulesByTabID(int tabID)
         {
-            this._moduleCombo.SelectedValue = null;
-            this._moduleCombo.DataSource = GetTabModules(tabID);
-            this._moduleCombo.DataBind();
+            this.moduleCombo.SelectedValue = null;
+            this.moduleCombo.DataSource = GetTabModules(tabID);
+            this.moduleCombo.DataBind();
             this.BindTabModuleImages(tabID);
         }
 
         public void SetModule(string code)
         {
-            this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
+            this.moduleCombo.SelectedIndex = this.moduleCombo.FindItemIndexByValue(code);
         }
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this._moduleCombo = new DnnComboBox();
-            this._moduleCombo.DataValueField = "key";
-            this._moduleCombo.DataTextField = "value";
-            this.Controls.Add(this._moduleCombo);
+            this.moduleCombo = new DnnComboBox();
+            this.moduleCombo.DataValueField = "key";
+            this.moduleCombo.DataTextField = "value";
+            this.Controls.Add(this.moduleCombo);
         }
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this._originalValue = this.SelectedValue;
+            this.originalValue = this.SelectedValue;
         }
 
         protected virtual void OnItemChanged()
@@ -117,12 +117,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            if (this._moduleCombo.FindItemByValue(this._originalValue) != null)
+            if (this.moduleCombo.FindItemByValue(this.originalValue) != null)
             {
-                this._moduleCombo.FindItemByValue(this._originalValue).Selected = true;
+                this.moduleCombo.FindItemByValue(this.originalValue).Selected = true;
             }
 
-            this._moduleCombo.Width = this.Width;
+            this.moduleCombo.Width = this.Width;
             base.OnPreRender(e);
         }
 

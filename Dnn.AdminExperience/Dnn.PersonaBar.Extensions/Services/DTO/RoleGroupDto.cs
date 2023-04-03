@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
             {
                 RoleGroupID = this.Id,
                 RoleGroupName = this.Name?.Trim(),
-                Description = this.Description ?? "",
+                Description = this.Description ?? string.Empty,
             };
         }
     }

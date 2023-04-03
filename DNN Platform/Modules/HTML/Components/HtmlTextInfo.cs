@@ -8,24 +8,18 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Entities;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   Defines an instance of an HtmlText object.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  Defines an instance of an HtmlText object.</summary>
     [Serializable]
     public class HtmlTextInfo : BaseEntityInfo
     {
         // local property declarations
-        private bool _Approved = true;
-        private string _Comment = string.Empty;
-        private bool _IsActive = true;
-        private int _ItemID = -1;
+        private bool approved = true;
+        private string comment = string.Empty;
+        private bool isActive = true;
+        private int itemID = -1;
 
         // initialization
 
@@ -34,12 +28,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return this._ItemID;
+                return this.itemID;
             }
 
             set
             {
-                this._ItemID = value;
+                this.itemID = value;
             }
         }
 
@@ -67,12 +61,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return this._IsActive;
+                return this.isActive;
             }
 
             set
             {
-                this._IsActive = value;
+                this.isActive = value;
             }
         }
 
@@ -80,12 +74,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return this._Comment;
+                return this.comment;
             }
 
             set
             {
-                this._Comment = value;
+                this.comment = value;
             }
         }
 
@@ -93,12 +87,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return this._Approved;
+                return this.approved;
             }
 
             set
             {
-                this._Approved = value;
+                this.approved = value;
             }
         }
 

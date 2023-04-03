@@ -25,12 +25,10 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class LocalizationController : PersonaBarApiController
     {
-        private static object _threadLocker = new object();
+        private static object threadLocker = new object();
 
-        /// <summary>
-        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieve a list of CMX related Localization Keys with its values for the current culture.</summary>
+        /// <returns>A response with a dictionary of resource file names to resource dictionaries.</returns>
         [HttpGet]
         public HttpResponseMessage GetTable(string culture)
         {
@@ -39,7 +37,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var resources = this.GetResourcesFromFile(culture);
                 if (resources == null)
                 {
-                    lock (_threadLocker)
+                    lock (threadLocker)
                     {
                         resources = this.GetResourcesFromFile(culture);
                         if (resources == null)
@@ -241,10 +239,5 @@ namespace Dnn.PersonaBar.UI.Services
 
             return resourceFiles;
         }
-    }
-
-    [Serializable]
-    public class CacheDto
-    {
     }
 }

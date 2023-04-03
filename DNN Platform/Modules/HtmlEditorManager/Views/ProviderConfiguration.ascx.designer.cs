@@ -16,27 +16,21 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views {
     
     public partial class ProviderConfiguration {
         
-        /// <summary>
-        /// ProvidersDropDownList control.
-        /// </summary>
+        /// <summary>ProvidersDropDownList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ProvidersDropDownList;
         
-        /// <summary>
-        /// SaveButton control.
-        /// </summary>
+        /// <summary>SaveButton control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SaveButton;
         
-        /// <summary>
-        /// EditorPanel control.
-        /// </summary>
+        /// <summary>EditorPanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

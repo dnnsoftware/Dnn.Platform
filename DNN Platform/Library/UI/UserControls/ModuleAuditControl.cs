@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -18,16 +19,16 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class ModuleAuditControl : UserControl
     {
-        private const string MyFileName = "ModuleAuditControl.ascx";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblCreatedBy;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUpdatedBy;
+        private const string MyFileName = "ModuleAuditControl.ascx";
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
-        private string _systemUser;
+        private string systemUser;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAuditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAuditControl"/> class.</summary>
         public ModuleAuditControl()
         {
             this.LastModifiedDate = string.Empty;
@@ -91,7 +92,7 @@ namespace DotNetNuke.UI.UserControls
                 var isCreatorAndUpdater = this.CreatedByUser == this.LastModifiedByUser &&
                     Globals.NumberMatchRegex.IsMatch(this.CreatedByUser) && Globals.NumberMatchRegex.IsMatch(this.LastModifiedByUser);
 
-                this._systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
+                this.systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
                 var displayMode = this.DisplayMode;
                 if (displayMode != "editor" && displayMode != "settings")
                 {
@@ -99,7 +100,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ShowUpdatedString(isCreatorAndUpdater);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -111,7 +112,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (int.Parse(this.CreatedByUser) == Null.NullInteger)
                 {
-                    this.CreatedByUser = this._systemUser;
+                    this.CreatedByUser = this.systemUser;
                 }
                 else
                 {
@@ -144,7 +145,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else if (int.Parse(this.LastModifiedByUser) == Null.NullInteger)
                 {
-                    this.LastModifiedByUser = this._systemUser;
+                    this.LastModifiedByUser = this.systemUser;
                 }
                 else
                 {

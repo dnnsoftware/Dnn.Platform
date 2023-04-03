@@ -8,7 +8,11 @@ namespace Dnn.PersonaBar.Pages.Components.Exceptions
 
     public class BulkPagesException : Exception
     {
-        public BulkPagesException(string field, string message) : base(message)
+        /// <summary>Initializes a new instance of the <see cref="BulkPagesException"/> class.</summary>
+        /// <param name="field"></param>
+        /// <param name="message"></param>
+        public BulkPagesException(string field, string message)
+            : base(message)
         {
             this.Field = field;
         }

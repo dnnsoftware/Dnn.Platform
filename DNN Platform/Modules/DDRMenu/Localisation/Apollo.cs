@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>
-    /// Deprecated Apollo localization.
-    /// </summary>
+    /// <summary>Deprecated Apollo localization.</summary>
     [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
     public class Apollo : ILocalisation
     {

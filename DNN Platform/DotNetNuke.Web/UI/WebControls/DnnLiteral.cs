@@ -11,19 +11,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnLiteral : Literal, ILocalizable
     {
-        private bool _Localize = true;
+        private bool localize = true;
 
         /// <inheritdoc/>
         public bool Localize
         {
             get
             {
-                return this._Localize;
+                return this.localize;
             }
 
             set
             {
-                this._Localize = value;
+                this.localize = value;
             }
         }
 

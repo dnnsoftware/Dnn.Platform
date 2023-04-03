@@ -1,42 +1,38 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 
-#if NETSTANDARD1_3
-using System.Reflection;
-#endif
+using System;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
     /// <summary>
-    /// An evaluator that triggers on an Exception type.
+    /// An evaluator that triggers on an Exception type
     /// </summary>
     /// <remarks>
     /// <para>
     /// This evaluator will trigger if the type of the Exception
     /// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
-    /// is equal to a Type in <see cref="ExceptionType"/>.    ///.
+    /// is equal to a Type in <see cref="ExceptionType"/>.    /// 
     /// </para>
     /// </remarks>
-    /// <author>Drew Schaeffer.</author>
+    /// <author>Drew Schaeffer</author>
     public class ExceptionEvaluator : ITriggeringEventEvaluator
     {
         /// <summary>
@@ -50,7 +46,6 @@ namespace log4net.Core
         private bool m_triggerOnSubclass;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionEvaluator"/> class.
         /// Default ctor to allow dynamic creation through a configurator.
         /// </summary>
         public ExceptionEvaluator()
@@ -59,8 +54,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionEvaluator"/> class.
-        /// Constructs an evaluator and initializes to trigger on <paramref name="exType"/>.
+        /// Constructs an evaluator and initializes to trigger on <paramref name="exType"/>
         /// </summary>
         /// <param name="exType">the type that triggers this evaluator.</param>
         /// <param name="triggerOnSubClass">If true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.</param>
@@ -76,7 +70,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets or sets the type that triggers this evaluator.
+        /// The type that triggers this evaluator.
         /// </summary>
         public Type ExceptionType
         {
@@ -85,7 +79,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.
+        /// If true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.
         /// </summary>
         public bool TriggerOnSubclass
         {
@@ -94,12 +88,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Is this <paramref name="loggingEvent"/> the triggering event?.
+        /// Is this <paramref name="loggingEvent"/> the triggering event?
         /// </summary>
-        /// <param name="loggingEvent">The event to check.</param>
-        /// <returns>This method returns <c>true</c>, if the logging event Exception
-        /// Type is <see cref="ExceptionType"/>.
-        /// Otherwise it returns <c>false</c>.</returns>
+        /// <param name="loggingEvent">The event to check</param>
+        /// <returns>This method returns <c>true</c>, if the logging event Exception 
+        /// Type is <see cref="ExceptionType"/>. 
+        /// Otherwise it returns <c>false</c></returns>
         /// <remarks>
         /// <para>
         /// This evaluator will trigger if the Exception Type of the event
@@ -118,14 +112,14 @@ namespace log4net.Core
             {
                 // check if loggingEvent.ExceptionObject is of type ExceptionType or subclass of ExceptionType
                 Type exceptionObjectType = loggingEvent.ExceptionObject.GetType();
-                return exceptionObjectType == this.m_type || exceptionObjectType.IsSubclassOf(this.m_type);
+                return exceptionObjectType == this.m_type || this.m_type.IsAssignableFrom(exceptionObjectType);
             }
             else if (!this.m_triggerOnSubclass && loggingEvent.ExceptionObject != null)
-            { // check if loggingEvent.ExceptionObject is of type ExceptionType
+            {   // check if loggingEvent.ExceptionObject is of type ExceptionType
                 return loggingEvent.ExceptionObject.GetType() == this.m_type;
             }
             else
-            { // loggingEvent.ExceptionObject is null
+            {   // loggingEvent.ExceptionObject is null
                 return false;
             }
         }

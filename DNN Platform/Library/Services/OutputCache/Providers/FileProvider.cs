@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web;
@@ -15,9 +16,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// FileProvider implements the OutputCachingProvider for file storage.
-    /// </summary>
+    /// <summary>FileProvider implements the OutputCachingProvider for file storage.</summary>
     public class FileProvider : OutputCachingProvider
     {
         public const string DataFileExtension = ".data.resources";
@@ -131,10 +130,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                             var logDetail = new LogDetailInfo
                             {
                                 PropertyName = "FileOutputCacheProvider",
-                                PropertyValue =
-                                    string.Format(
-                                        "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}",
-                                        i, filesNotDeleted),
+                                PropertyValue = $"Deleted {i} files, however, some files are locked.  Could not delete the following files: {filesNotDeleted}",
                             };
                             var properties = new LogProperties { logDetail };
                             log.LogProperties = properties;
@@ -171,7 +167,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                 using (var oWrite = File.CreateText(attribFile))
                 {
-                    oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString());
+                    oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString(CultureInfo.InvariantCulture));
                     oWrite.Close();
                 }
             }
@@ -193,6 +189,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
             try
             {
                 string attribFile = GetAttribFileName(tabId, cacheKey);
+                if (!File.Exists(attribFile))
+                {
+                    return false;
+                }
+
                 string captureFile = GetCachedOutputFileName(tabId, cacheKey);
                 StreamReader oRead = File.OpenText(attribFile);
                 DateTime expires = Convert.ToDateTime(oRead.ReadLine());

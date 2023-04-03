@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     using System;
@@ -29,9 +28,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of SearchController.
-    /// </summary>
+    /// <summary> Testing various aspects of SearchController.</summary>
     [TestFixture]
     public class InternalSearchControllerTests
     {
@@ -97,6 +94,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [SetUp]
+
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
@@ -131,10 +129,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TearDown]
         public void TearDown()
         {
+            this.DeleteIndexFolder();
             this.mockHostController = null;
             Globals.DependencyProvider = null;
             this.luceneController.Dispose();
-            this.DeleteIndexFolder();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
             SearchHelper.ClearInstance();
@@ -508,7 +506,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void SetupHostController()
         {
-            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder + DateTime.UtcNow.Ticks);
             this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this.readerStaleTimeSpan);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
@@ -701,9 +699,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             try
             {
-                if (Directory.Exists(SearchIndexFolder))
+                var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, SearchIndexFolder);
+                if (Directory.Exists(searchIndexFolder))
                 {
-                    Directory.Delete(SearchIndexFolder, true);
+                    Directory.Delete(searchIndexFolder, true);
                 }
             }
             catch (Exception ex)

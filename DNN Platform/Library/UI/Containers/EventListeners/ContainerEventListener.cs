@@ -6,25 +6,23 @@ namespace DotNetNuke.UI.Containers.EventListeners
 {
     public class ContainerEventListener
     {
-        private readonly ContainerEventHandler _ContainerEvent;
-        private readonly ContainerEventType _Type;
+        private readonly ContainerEventHandler containerEvent;
+        private readonly ContainerEventType type;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerEventListener"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContainerEventListener"/> class.</summary>
         /// <param name="type"></param>
         /// <param name="e"></param>
         public ContainerEventListener(ContainerEventType type, ContainerEventHandler e)
         {
-            this._Type = type;
-            this._ContainerEvent = e;
+            this.type = type;
+            this.containerEvent = e;
         }
 
         public ContainerEventType EventType
         {
             get
             {
-                return this._Type;
+                return this.type;
             }
         }
 
@@ -32,7 +30,7 @@ namespace DotNetNuke.UI.Containers.EventListeners
         {
             get
             {
-                return this._ContainerEvent;
+                return this.containerEvent;
             }
         }
     }

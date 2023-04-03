@@ -31,14 +31,14 @@ namespace Dnn.PersonaBar.Themes.Services
     public class ThemesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
-        private IThemesController _controller = Components.ThemesController.Instance;
+        private IThemesController controller = Components.ThemesController.Instance;
 
         [HttpGet]
+
         public HttpResponseMessage GetCurrentTheme(string language)
         {
             try
             {
-
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetCurrentThemeObject());
             }
             catch (Exception ex)
@@ -49,14 +49,15 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetThemes(ThemeLevel level)
         {
             try
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Layouts = this._controller.GetLayouts(this.PortalSettings, level),
-                    Containers = this._controller.GetContainers(this.PortalSettings, level),
+                    Layouts = this.controller.GetLayouts(this.PortalSettings, level),
+                    Containers = this.controller.GetContainers(this.PortalSettings, level),
                 });
             }
             catch (Exception ex)
@@ -67,12 +68,13 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetThemeFiles(string themeName, ThemeType type, ThemeLevel level)
         {
             try
             {
-                var theme = (type == ThemeType.Skin ? this._controller.GetLayouts(this.PortalSettings, level)
-                                                    : this._controller.GetContainers(this.PortalSettings, level))
+                var theme = (type == ThemeType.Skin ? this.controller.GetLayouts(this.PortalSettings, level)
+                                                    : this.controller.GetContainers(this.PortalSettings, level))
                             .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase));
 
                 if (theme == null)
@@ -80,7 +82,7 @@ namespace Dnn.PersonaBar.Themes.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, this._controller.GetThemeFiles(this.PortalSettings, theme));
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.controller.GetThemeFiles(this.PortalSettings, theme));
             }
             catch (Exception ex)
             {
@@ -92,11 +94,12 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
+
         public HttpResponseMessage ApplyTheme(ApplyThemeInfo applyTheme, string language)
         {
             try
             {
-                this._controller.ApplyTheme(this.PortalId, applyTheme.ThemeFile, applyTheme.Scope);
+                this.controller.ApplyTheme(this.PortalId, applyTheme.ThemeFile, applyTheme.Scope);
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetCurrentThemeObject());
             }
             catch (Exception ex)
@@ -109,11 +112,12 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
+
         public HttpResponseMessage ApplyDefaultTheme(ApplyDefaultThemeInfo defaultTheme, string language)
         {
             try
             {
-                var themeInfo = this._controller.GetLayouts(this.PortalSettings, ThemeLevel.All)
+                var themeInfo = this.controller.GetLayouts(this.PortalSettings, ThemeLevel.All)
                                     .FirstOrDefault(
                                         t => t.PackageName.Equals(defaultTheme.ThemeName, StringComparison.OrdinalIgnoreCase)
                                                 && t.Level == defaultTheme.Level);
@@ -123,13 +127,13 @@ namespace Dnn.PersonaBar.Themes.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
                 }
 
-                var themeFiles = this._controller.GetThemeFiles(this.PortalSettings, themeInfo);
+                var themeFiles = this.controller.GetThemeFiles(this.PortalSettings, themeInfo);
                 if (themeFiles.Count == 0)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "NoThemeFile");
                 }
 
-                this._controller.ApplyDefaultTheme(this.PortalSettings, defaultTheme.ThemeName, defaultTheme.Level);
+                this.controller.ApplyDefaultTheme(this.PortalSettings, defaultTheme.ThemeName, defaultTheme.Level);
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetCurrentThemeObject());
             }
             catch (Exception ex)
@@ -142,6 +146,7 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
+
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
@@ -151,7 +156,7 @@ namespace Dnn.PersonaBar.Themes.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "NoPermission");
                 }
 
-                this._controller.DeleteThemePackage(this.PortalSettings, theme);
+                this.controller.DeleteThemePackage(this.PortalSettings, theme);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             catch (InvalidOperationException ex)
@@ -167,6 +172,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpGet]
         [RequireHost]
+
         public HttpResponseMessage GetEditableTokens()
         {
             try
@@ -185,6 +191,7 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetEditableSettings(string token)
         {
             try
@@ -211,6 +218,7 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetEditableValues(string token, string setting)
         {
             try
@@ -253,6 +261,7 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
+
         public HttpResponseMessage UpdateTheme(UpdateThemeInfo updateTheme)
         {
             try
@@ -271,7 +280,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 }
 
                 updateTheme.Token = token.ControlKey;
-                this._controller.UpdateTheme(this.PortalSettings, updateTheme);
+                this.controller.UpdateTheme(this.PortalSettings, updateTheme);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             catch (Exception ex)
@@ -284,26 +293,27 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
+
         public HttpResponseMessage ParseTheme(ParseThemeInfo parseTheme)
         {
             try
             {
                 var themeName = parseTheme.ThemeName;
 
-                var layout = this._controller.GetLayouts(this.PortalSettings, ThemeLevel.All)
+                var layout = this.controller.GetLayouts(this.PortalSettings, ThemeLevel.All)
                                 .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == parseTheme.Level);
 
                 if (layout != null)
                 {
-                    this._controller.ParseTheme(this.PortalSettings, layout, parseTheme.ParseType);
+                    this.controller.ParseTheme(this.PortalSettings, layout, parseTheme.ParseType);
                 }
 
-                var container = this._controller.GetContainers(this.PortalSettings, ThemeLevel.All)
+                var container = this.controller.GetContainers(this.PortalSettings, ThemeLevel.All)
                                 .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == parseTheme.Level);
 
                 if (container != null)
                 {
-                    this._controller.ParseTheme(this.PortalSettings, container, parseTheme.ParseType);
+                    this.controller.ParseTheme(this.PortalSettings, container, parseTheme.ParseType);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { });
@@ -318,14 +328,15 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
+
         public HttpResponseMessage RestoreTheme(string language)
         {
             try
             {
-                SkinController.SetSkin(SkinController.RootSkin, this.PortalId, SkinType.Portal, "");
-                SkinController.SetSkin(SkinController.RootContainer, this.PortalId, SkinType.Portal, "");
-                SkinController.SetSkin(SkinController.RootSkin, this.PortalId, SkinType.Admin, "");
-                SkinController.SetSkin(SkinController.RootContainer, this.PortalId, SkinType.Admin, "");
+                SkinController.SetSkin(SkinController.RootSkin, this.PortalId, SkinType.Portal, string.Empty);
+                SkinController.SetSkin(SkinController.RootContainer, this.PortalId, SkinType.Portal, string.Empty);
+                SkinController.SetSkin(SkinController.RootSkin, this.PortalId, SkinType.Admin, string.Empty);
+                SkinController.SetSkin(SkinController.RootContainer, this.PortalId, SkinType.Admin, string.Empty);
                 DataCache.ClearPortalCache(this.PortalId, true);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetCurrentThemeObject());
@@ -347,11 +358,10 @@ namespace Dnn.PersonaBar.Themes.Services
 
             var currentTheme = new
             {
-                SiteLayout = this._controller.GetThemeFile(this.PortalSettings, siteLayout, ThemeType.Skin),
-                SiteContainer = this._controller.GetThemeFile(this.PortalSettings, siteContainer, ThemeType.Container),
-                EditLayout = this._controller.GetThemeFile(this.PortalSettings, editLayout, ThemeType.Skin),
-                EditContainer = this._controller.GetThemeFile(this.PortalSettings, editContainer, ThemeType.Container),
-
+                SiteLayout = this.controller.GetThemeFile(this.PortalSettings, siteLayout, ThemeType.Skin),
+                SiteContainer = this.controller.GetThemeFile(this.PortalSettings, siteContainer, ThemeType.Container),
+                EditLayout = this.controller.GetThemeFile(this.PortalSettings, editLayout, ThemeType.Skin),
+                EditContainer = this.controller.GetThemeFile(this.PortalSettings, editContainer, ThemeType.Container),
             };
 
             return currentTheme;

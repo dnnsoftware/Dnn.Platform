@@ -14,9 +14,9 @@ namespace DotNetNuke.Modules.Groups
 
     public class Utilities
     {
-        public static string NavigateUrl(int TabId, string[] @params)
+        public static string NavigateUrl(int tabId, string[] @params)
         {
-            return Globals.DependencyProvider.GetRequiredService<INavigationManager>()?.NavigateURL(TabId, string.Empty, @params);
+            return Globals.DependencyProvider.GetRequiredService<INavigationManager>()?.NavigateURL(tabId, string.Empty, @params);
         }
 
         public static string[] AddParams(string param, string[] currParams)
@@ -29,17 +29,17 @@ namespace DotNetNuke.Modules.Groups
             return tmpParams;
         }
 
-        internal static string ParseTokenWrapper(string Template, string Token, bool Condition)
+        internal static string ParseTokenWrapper(string template, string token, bool condition)
         {
-            var pattern = "(\\[" + Token + "\\](.*?)\\[\\/" + Token + "\\])";
+            var pattern = "(\\[" + token + "\\](.*?)\\[\\/" + token + "\\])";
             var regExp = RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            var matches = regExp.Matches(Template);
+            var matches = regExp.Matches(template);
             foreach (Match match in matches)
             {
-                Template = Template.Replace(match.Value, Condition ? match.Groups[2].Value : string.Empty);
+                template = template.Replace(match.Value, condition ? match.Groups[2].Value : string.Empty);
             }
 
-            return Template;
+            return template;
         }
     }
 }

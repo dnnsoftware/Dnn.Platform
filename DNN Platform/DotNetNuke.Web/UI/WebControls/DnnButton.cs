@@ -10,8 +10,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnButton : Button, ILocalizable
     {
-        private bool _Localize = true;
+        private bool localize = true;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnButton"/> class.</summary>
         public DnnButton()
         {
             this.CssClass = "CommandButton";
@@ -62,12 +63,12 @@ namespace DotNetNuke.Web.UI.WebControls
                     return false;
                 }
 
-                return this._Localize;
+                return this.localize;
             }
 
             set
             {
-                this._Localize = value;
+                this.localize = value;
             }
         }
 

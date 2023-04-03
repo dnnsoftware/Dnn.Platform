@@ -6,10 +6,14 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
     public class TemplateArgument
     {
+        /// <summary>Initializes a new instance of the <see cref="TemplateArgument"/> class.</summary>
         public TemplateArgument()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="TemplateArgument"/> class.</summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         public TemplateArgument(string name, string value)
         {
             this.Name = name;

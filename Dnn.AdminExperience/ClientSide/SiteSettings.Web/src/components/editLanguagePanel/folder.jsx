@@ -30,7 +30,7 @@ class Folder extends Component {
                 {isFolder && <div onClick={this.toggleCollapse.bind(this)} className="edit-svg" dangerouslySetInnerHTML={{ __html: isOpenIcon }}></div>}
                 <div className="resource-type-icon" onClick={this.toggleCollapse.bind(this)} dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
                 <span className={props.isSelected ? "selected-resource" : ""} onClick={this.toggleCollapse.bind(this)}>{props.folder.Name}</span>
-                <Collapsible isOpened={this.state.isOpen} keepCollapsedContent={true}>
+                <Collapsible isOpened={this.state.isOpen}>
                     <ul>{props.children}</ul>
                 </Collapsible>
             </li>

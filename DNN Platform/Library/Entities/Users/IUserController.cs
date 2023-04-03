@@ -6,57 +6,46 @@ namespace DotNetNuke.Entities.Users
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Provides access to manage users.
-    /// </summary>
+    /// <summary>Provides access to manage users.</summary>
     public interface IUserController
     {
-        /// <summary>
-        /// Gets the current logged in user information.
-        /// </summary>
-        /// <returns>A <see cref="UserInfo"/> object.</returns>
+        /// <summary>Gets the current logged in user's information.</summary>
+        /// <returns>The logged in user's <see cref="UserInfo"/> object or an empty <see cref="UserInfo"/> if the current user is not logged in.</returns>
         UserInfo GetCurrentUserInfo();
 
-        /// <summary>
-        /// Gets a specific user informaiton.
-        /// </summary>
+        /// <summary>Gets a specific user information.</summary>
         /// <param name="portalId">The site (portal) id on which to get the user from.</param>
         /// <param name="userId">The user id to get the information for.</param>
-        /// <returns>A <see cref="UserInfo"/> object.</returns>
+        /// <returns>A <see cref="UserInfo"/> instance or <see langword="null" />.</returns>
         UserInfo GetUser(int portalId, int userId);
 
-        /// <summary>
-        /// Get a user based on their display name and portal.
-        /// </summary>
-        /// <param name="portalId">the portalid.</param>
-        /// <param name="displayName">the displayname.</param>
-        /// <returns>The User as a UserInfo object.</returns>
+        /// <summary>Get a user based on their display name and portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <returns>A <see cref="UserInfo"/> instance or <see langword="null" />.</returns>
         UserInfo GetUserByDisplayname(int portalId, string displayName);
 
-        /// <summary>
-        /// GetUser retrieves a User from the DataStore.
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
+        /// <summary>Retrieves a User from the DataStore.</summary>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="userId">The ID of the user being retrieved from the Data Store.</param>
+        /// <returns>A <see cref="UserInfo"/> instance or <see langword="null" />.</returns>
         UserInfo GetUserById(int portalId, int userId);
 
-        /// <summary>
-        /// Get a filtered list of users based on a number of criteria and filters - utilised for advanced searches.
-        /// </summary>
-        /// <param name="portalId">the portalid of the user(s).</param>
-        /// <param name="userId">the userid accessing - for determining correct visibility permissions.</param>
-        /// <param name="filterUserId">for filtering relationships on.</param>
-        /// <param name="filterRoleId">for filtering by roles.</param>
-        /// <param name="relationTypeId">for filtering by relationships.</param>
-        /// <param name="isAdmin">determines visibility.</param>
-        /// <param name="pageIndex">0 based page index.</param>
-        /// <param name="pageSize">page size.</param>
-        /// <param name="sortColumn">sort field.</param>
-        /// <param name="sortAscending">sort flag indicating whether sort is asc or desc.</param>
-        /// <param name="propertyNames">list of property names to filter.</param>
-        /// <param name="propertyValues">list of property values to filter.</param>
-        /// <returns>Users as a list of UserInfo objects.</returns>
+        /// <summary>Searches for users via user fields and profile properties.</summary>
+        /// <param name="portalId">The portal ID in which to search for users.</param>
+        /// <param name="userId">The ID of the user searching. This is used to determine access to view profile properties. Can be <see cref="Null.NullInteger"/> to get anonymous results.</param>
+        /// <param name="filterUserId">The ID of a user with whom the resulting user must have a relationship. Only applies if <paramref name="relationTypeId"/> is supplied. Can be <see cref="Null.NullInteger"/> for no filter.</param>
+        /// <param name="filterRoleId">The ID of a role which the resulting user must hold. Can be <see cref="Null.NullInteger"/> for no filter.</param>
+        /// <param name="relationTypeId">The ID of a relationship type by which the resulting user and the <paramref name="filterUserId"/> are related. Can be <see cref="Null.NullInteger"/> for no filter.</param>
+        /// <param name="isAdmin">Whether the requesting user is an admin (i.e. whether they can view admin-only profile properties).</param>
+        /// <param name="pageIndex">The 0-based page index.</param>
+        /// <param name="pageSize">The number of results to return in each page.</param>
+        /// <param name="sortColumn">The name of the column/property to sort by. Sorts by <see cref="IUserInfo.UserID"/> if not supplied.</param>
+        /// <param name="sortAscending">Whether the sort is ascending or descending.</param>
+        /// <param name="propertyNames">A comma-delimited list of property names (e.g. <c>"Username,Street1"</c>).</param>
+        /// <param name="propertyValues">A comma-delimited list of property values (e.g. <c>"jane,123 Street"</c>).</param>
+        /// <returns>A list of <see cref="UserInfo"/> instances.</returns>
+        /// <remarks>All property values must match for a result to be included (i.e. this is an <c>AND</c> search).</remarks>
         IList<UserInfo> GetUsersAdvancedSearch(
             int portalId,
             int userId,
@@ -71,17 +60,15 @@ namespace DotNetNuke.Entities.Users
             string propertyNames,
             string propertyValues);
 
-        /// <summary>
-        /// Get a filtered list of users based on a set of simple filters - utilised for basic searches.
-        /// </summary>
-        /// <param name="portalId">the portalid of the user(s).</param>
-        /// <param name="pageIndex">0 based page index.</param>
-        /// <param name="pageSize">page size.</param>
-        /// <param name="sortColumn">sort field.</param>
-        /// <param name="sortAscending">sort flag indicating whether sort is asc or desc.</param>
-        /// <param name="propertyName">list of property names to filter.</param>
-        /// <param name="propertyValue">list of property values to filter.</param>
-        /// <returns>Users as a list of UserInfo objects.</returns>
+        /// <summary>Searches for users via a user property.</summary>
+        /// <param name="portalId">The portal ID in which to search for users.</param>
+        /// <param name="pageIndex">The 0-based page index.</param>
+        /// <param name="pageSize">The number of results to return in each page.</param>
+        /// <param name="sortColumn">The name of the column/property to sort by. Sorts by <see cref="IUserInfo.UserID"/> if not supplied.</param>
+        /// <param name="sortAscending">Whether the sort is ascending or descending.</param>
+        /// <param name="propertyName">A property name (i.e. a column from <c>vw_Users</c>, for example <c>"Username"</c>, <c>"DisplayName"</c> or <c>"Email"</c>).</param>
+        /// <param name="propertyValue">The value to search by, results will contain this text in the property.</param>
+        /// <returns>A list of <see cref="UserInfo"/> instances.</returns>
         IList<UserInfo> GetUsersBasicSearch(
             int portalId,
             int pageIndex,
@@ -91,39 +78,42 @@ namespace DotNetNuke.Entities.Users
             string propertyName,
             string propertyValue);
 
-        /// <summary>
-        /// Return User Profile Picture relative Url.
-        /// </summary>
-        /// <param name="userId">User Id.</param>
-        /// <param name="width">Width in pixel.</param>
-        /// <param name="height">Height in pixel.</param>
-        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal.</returns>
-        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
-        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32).
-        /// </remarks>
+        /// <summary>Gets the (relative) URL to the given user's profile picture in the current portal.</summary>
+        /// <param name="userId">User ID.</param>
+        /// <param name="width">Width in pixels.</param>
+        /// <param name="height">Height in pixels.</param>
+        /// <returns>Relative URL, e.g. <c>/DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32</c>, considering child portal.</returns>
+        /// <example>
+        /// Usage: ascx:
+        /// <code>&lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;</code>
+        /// code behind:
+        /// <code>avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32)</code>
+        /// </example>
         string GetUserProfilePictureUrl(int userId, int width, int height);
 
-        /// <summary>
-        /// Return User Profile Picture relative Url.
-        /// </summary>
-        /// <param name="portalId">Portal Id.</param>
-        /// <param name="userId">User Id.</param>
-        /// <param name="width">Width in pixel.</param>
-        /// <param name="height">Height in pixel.</param>
-        /// <returns>Relative url, e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal.</returns>
-        /// <remarks>IMPORTANT NOTE: this overloaded method does not depend on the current portal setting so it can be used
+        /// <summary>Gets the (relative) URL to the given user's profile picture in the given portal.</summary>
+        /// <param name="portalId">Portal ID.</param>
+        /// <param name="userId">User ID.</param>
+        /// <param name="width">Width in pixels.</param>
+        /// <param name="height">Height in pixels.</param>
+        /// <returns>Relative URL, e.g. <c>/DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32</c>, considering child portal.</returns>
+        /// <remarks>
+        /// IMPORTANT NOTE: this overloaded method does not depend on the current portal setting so it can be used
         /// in background threads or scheduler jobs.
         /// </remarks>
         string GetUserProfilePictureUrl(int portalId, int userId, int width, int height);
 
-        /// <summary>
-        /// Check username parameter against :
-        /// Invalid charaters,
-        /// length check for 5 chars,
-        /// for space between username.
-        /// </summary>
-        /// <param name="userName">UserName as string.</param>
-        /// <returns>true/false.</returns>
+        /// <summary>Check if <paramref name="userName"/> is a valid username.</summary>
+        /// <remarks>
+        /// Checks the <paramref name="userName"/> against the following rules:
+        /// <list type="bullet">
+        /// <item><description>Invalid characters (based on a host setting or <see cref="Globals.USERNAME_UNALLOWED_ASCII"/>).</description></item>
+        /// <item><description>Length check for 5 chars</description></item>
+        /// <item><description>It must not start or end with space</description></item>
+        /// </list>
+        /// </remarks>
+        /// <param name="userName">The username to check.</param>
+        /// <returns><see langword="true"/> is the <paramref name="userName"/> is valid, <see langword="false"/> if invalid.</returns>
         bool IsValidUserName(string userName);
     }
 }

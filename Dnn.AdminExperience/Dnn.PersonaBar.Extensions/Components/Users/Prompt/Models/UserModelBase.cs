@@ -4,12 +4,15 @@
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Entities.Users;
 
     public class UserModelBase
     {
         // provide a default field order for use of callers
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string[] FieldOrder =
         {
             "UserId",
@@ -36,12 +39,17 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             this.IsLockedOut = userInfo.Membership.LockedOut;
         }
 
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         public string __Email => $"get-user '{this.Email}'";
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         public string __UserId => $"get-user {this.UserId}";
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         public string __Username => $"get-user '{this.Username}'";
 
+        // ReSharper restore InconsistentNaming
         public int UserId { get; set; }
 
         public string Username { get; set; }

@@ -21,18 +21,19 @@ namespace Dnn.PersonaBar.Library.AppEvents
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventsController));
 
         private static readonly object LockThis = new object();
-        private static bool _isInitialized;
+        private static bool isInitialized;
 
+        /// <inheritdoc/>
         public void ApplicationStartEvent()
         {
             lock (LockThis)
             {
-                if (_isInitialized)
+                if (isInitialized)
                 {
                     throw new InvalidOperationException("ApplicationStartEvent cannot be called more than once");
                 }
 
-                _isInitialized = true;
+                isInitialized = true;
             }
 
             GetEventsImplements<IAppEvents>().ForEach(instance =>
@@ -45,11 +46,14 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "{0}.ApplicationStart threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName, e.Message, e.StackTrace);
+                        instance.GetType().FullName,
+                        e.Message,
+                        e.StackTrace);
                 }
             });
         }
 
+        /// <inheritdoc/>
         public void ApplicationEndEvent()
         {
             GetEventsImplements<IAppEvents>().ForEach(instance =>
@@ -62,11 +66,14 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "{0}.ApplicationEnd threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName, e.Message, e.StackTrace);
+                        instance.GetType().FullName,
+                        e.Message,
+                        e.StackTrace);
                 }
             });
         }
 
+        /// <inheritdoc/>
         protected override Func<IEventsController> GetFactory()
         {
             return () => new EventsController();
@@ -88,7 +95,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "Unable to create {0} while calling Application start implementors.  {1}",
-                        type.FullName, e.Message);
+                        type.FullName,
+                        e.Message);
                     appEventHandler = null;
                 }
 
@@ -130,7 +138,9 @@ namespace Dnn.PersonaBar.Library.AppEvents
             {
                 Logger.InfoFormat(
                     "Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored",
-                    t.FullName, typeVersion, currentVersion);
+                    t.FullName,
+                    typeVersion,
+                    currentVersion);
             }
 
             return matched;

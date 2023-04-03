@@ -15,11 +15,13 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
         public UserBasicDto()
         {
-
         }
 
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
+        /// <param name="user"></param>
         public UserBasicDto(UserInfo user)
         {
             this.UserId = user.UserID;
@@ -82,7 +84,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {
-            if (user == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
+
             return new UserBasicDto
             {
                 UserId = user.UserID,
@@ -100,7 +106,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public static UserBasicDto FromUserDetails(UserDetailDto user)
         {
-            if (user == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
+
             return new UserBasicDto
             {
                 UserId = user.UserId,

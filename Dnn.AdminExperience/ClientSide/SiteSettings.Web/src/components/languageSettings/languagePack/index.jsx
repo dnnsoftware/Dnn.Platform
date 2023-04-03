@@ -269,7 +269,6 @@ class LanguagePackPanelBody extends Component {
                     </div>
                     <MessageBox
                         message={state.message}
-                        fixedHeight={500}
                         isOpened={state.showMessageBox}
                         onClose={this.closeMessageBox.bind(this)}
                         collapsibleWidth={485}

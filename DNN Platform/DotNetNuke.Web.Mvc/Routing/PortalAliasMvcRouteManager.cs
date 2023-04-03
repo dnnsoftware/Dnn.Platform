@@ -1,25 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web.Routing;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Portals;
 
     internal class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
-        private List<int> _prefixCounts;
+        private List<int> prefixCounts;
 
+        /// <inheritdoc/>
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -28,9 +27,16 @@ namespace DotNetNuke.Web.Mvc.Routing
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.10.0. Scheduled for removal in v11.0.0, use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead.")]
         public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
         {
-            var alias = portalAlias.HTTPAlias;
+            return this.GetRouteName(moduleFolderName, routeName, (IPortalAliasInfo)portalAlias);
+        }
+
+        public string GetRouteName(string moduleFolderName, string routeName, IPortalAliasInfo portalAlias)
+        {
+            var alias = portalAlias.HttpAlias;
             string appPath = TestableGlobals.Instance.ApplicationPath;
             if (!string.IsNullOrEmpty(appPath))
             {
@@ -44,11 +50,18 @@ namespace DotNetNuke.Web.Mvc.Routing
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.10.0. Scheduled for removal in v11.0.0, use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead.")]
         public RouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
+        {
+            return this.GetAllRouteValues((IPortalAliasInfo)portalAliasInfo, routeValues);
+        }
+
+        public RouteValueDictionary GetAllRouteValues(IPortalAliasInfo portalAliasInfo, object routeValues)
         {
             var allRouteValues = new RouteValueDictionary(routeValues);
 
-            var segments = portalAliasInfo.HTTPAlias.Split('/');
+            var segments = portalAliasInfo.HttpAlias.Split('/');
 
             if (segments.Length <= 1)
             {
@@ -65,6 +78,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return allRouteValues;
         }
 
+        /// <inheritdoc/>
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
@@ -73,16 +87,18 @@ namespace DotNetNuke.Web.Mvc.Routing
             return $"{GeneratePrefixString(count)}DesktopModules/MVC/{moduleFolderName}/{url}";
         }
 
+        /// <inheritdoc/>
         public void ClearCachedData()
         {
-            this._prefixCounts = null;
+            this.prefixCounts = null;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (this._prefixCounts != null)
+            if (this.prefixCounts != null)
             {
-                return this._prefixCounts;
+                return this.prefixCounts;
             }
 
             // prefixCounts are required for each route that is mapped but they only change
@@ -92,11 +108,12 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             foreach (
                 var count in
-                portals.Cast<PortalInfo>()
+                portals.Cast<IPortalInfo>()
                     .Select(
                         portal =>
-                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
-                                .Select(x => x.HTTPAlias))
+                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalId)
+                                .Cast<IPortalAliasInfo>()
+                                .Select(x => x.HttpAlias))
                     .Select(this.StripApplicationPath)
                     .SelectMany(
                         aliases =>
@@ -106,9 +123,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             }
 
             IEnumerable<int> segmentCounts = segmentCounts1;
-            this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
+            this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
 
-            return this._prefixCounts;
+            return this.prefixCounts;
         }
 
         private static string GeneratePrefixString(int count)

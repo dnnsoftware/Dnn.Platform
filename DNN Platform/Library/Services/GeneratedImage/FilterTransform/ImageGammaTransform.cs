@@ -8,14 +8,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     using System.Drawing;
     using System.Drawing.Drawing2D;
 
-    /// <summary>
-    /// Gamma ImageTransform class.
-    /// </summary>
+    /// <summary>Gamma ImageTransform class.</summary>
     public class ImageGammaTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageGammaTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageGammaTransform"/> class.</summary>
         public ImageGammaTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -25,19 +21,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.Gamma = 1;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for this class.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for this class.</summary>
         public override string UniqueString => base.UniqueString + "-" + this.Gamma;
 
-        /// <summary>
-        /// Gets or sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5.
-        /// </summary>
+        /// <summary>Gets or sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5.</summary>
         public double Gamma { get; set; }
 
-        /// <summary>
-        /// Processes an input image applying a gamma image transformation.
-        /// </summary>
+        /// <summary>Processes an input image applying a gamma image transformation.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
@@ -56,9 +46,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 for (var j = 0; j < bmap.Height; j++)
                 {
                     c = bmap.GetPixel(i, j);
-                    bmap.SetPixel(i, j, Color.FromArgb(
-                        gammaArray[c.R],
-                        gammaArray[c.G], gammaArray[c.B]));
+                    bmap.SetPixel(
+                        i,
+                        j,
+                        Color.FromArgb(
+                            gammaArray[c.R],
+                            gammaArray[c.G],
+                            gammaArray[c.B]));
                 }
             }
 

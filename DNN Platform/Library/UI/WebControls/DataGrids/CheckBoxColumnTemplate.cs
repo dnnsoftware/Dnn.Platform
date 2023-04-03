@@ -9,15 +9,10 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      CheckBoxColumnTemplate
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The CheckBoxColumnTemplate provides a Template for the CheckBoxColumn.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The CheckBoxColumnTemplate provides a Template for the CheckBoxColumn.</summary>
     public class CheckBoxColumnTemplate : ITemplate
     {
         private string mDataField = Null.NullString;
@@ -27,17 +22,13 @@ namespace DotNetNuke.UI.WebControls
         private ListItemType mItemType = ListItemType.Item;
         private string mText = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.</summary>
         public CheckBoxColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.</summary>
         /// <param name="itemType"></param>
         public CheckBoxColumnTemplate(ListItemType itemType)
         {
@@ -46,29 +37,19 @@ namespace DotNetNuke.UI.WebControls
 
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
         /// changed.
         /// </summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound).
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the checkbox is checked (unless DataBound).</summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool Checked { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Data Field that the column should bind to.
-        /// </summary>
+        /// <summary>Gets or sets the Data Field that the column should bind to.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string DataField
         {
             get
@@ -82,22 +63,16 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether an flag that indicates whether the hcekboxes are enabled (this is overridden if
         /// the EnabledField is set
         /// changed.
         /// </summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool Enabled
         {
             get
@@ -111,13 +86,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Data Field that determines whether the checkbox is Enabled
         /// changed.
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string EnabledField
         {
             get
@@ -131,13 +104,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether a flag that indicates whether there is a checkbox in the Header that sets all
         /// the checkboxes.
         /// </summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool HeaderCheckBox
         {
             get
@@ -151,12 +122,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the type of Template to Create.
-        /// </summary>
+        /// <summary>Gets or sets the type of Template to Create.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public ListItemType ItemType
         {
             get
@@ -170,12 +137,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Text to display in a Header Template.
-        /// </summary>
+        /// <summary>Gets or sets the Text to display in a Header Template.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Text
         {
             get
@@ -189,12 +152,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// InstantiateIn is called when the Template is instantiated by the parent control.
-        /// </summary>
+        /// <summary>InstantiateIn is called when the Template is instantiated by the parent control.</summary>
         /// <param name="container">The container control.</param>
-        /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
             if (!string.IsNullOrEmpty(this.Text))
@@ -212,11 +171,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Called when the template item is Data Bound.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Called when the template item is Data Bound.</summary>
         private void Item_DataBinding(object sender, EventArgs e)
         {
             var box = (CheckBox)sender;
@@ -254,11 +209,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Centralised Event that is raised whenever a check box's state is modified.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Centralised Event that is raised whenever a check box's state is modified.</summary>
         private void OnCheckChanged(object sender, EventArgs e)
         {
             var box = (CheckBox)sender;

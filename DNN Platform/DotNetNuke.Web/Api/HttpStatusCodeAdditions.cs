@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Web.Api
 {
-    /// <summary>
-    /// Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework.
-    /// </summary>
+    /// <summary>Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework.</summary>
     public enum HttpStatusCodeAdditions
     {
         /// <summary>

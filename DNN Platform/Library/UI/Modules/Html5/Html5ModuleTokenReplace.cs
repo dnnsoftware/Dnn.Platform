@@ -19,11 +19,9 @@ namespace DotNetNuke.UI.Modules.Html5
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Html5ModuleTokenReplace));
 
-        private static Hashtable _businessControllers = new Hashtable();
+        private static Hashtable businessControllers = new Hashtable();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Html5ModuleTokenReplace"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Html5ModuleTokenReplace"/> class.</summary>
         /// <param name="page"></param>
         /// <param name="html5File"></param>
         /// <param name="moduleContext"></param>
@@ -62,15 +60,15 @@ namespace DotNetNuke.UI.Modules.Html5
                 return null;
             }
 
-            if (_businessControllers.ContainsKey(bizClass))
+            if (businessControllers.ContainsKey(bizClass))
             {
-                return _businessControllers[bizClass] as ICustomTokenProvider;
+                return businessControllers[bizClass] as ICustomTokenProvider;
             }
 
             try
             {
                 var controller = Reflection.CreateObject(bizClass, bizClass) as ICustomTokenProvider;
-                _businessControllers.Add(bizClass, controller);
+                businessControllers.Add(bizClass, controller);
 
                 return controller;
             }

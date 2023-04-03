@@ -255,18 +255,6 @@ define(['jquery'], function ($) {
                     return trimmed;
                 },
 
-                deserializeCustomDate: function (str) {
-                    if (this.moment) {
-                        return this.moment(str, 'YYYY-MM-DD').toDate();
-                    }
-                },
-
-                serializeCustomDate: function (dateObj) {
-                    if (this.moment) {
-                        return this.moment(dateObj).format('YYYY-MM-DD');
-                    }
-                },
-
                 getObjectCopy: function (object) {
                     if (typeof object === "object") {
                         return JSON.parse(JSON.stringify(object));
@@ -320,7 +308,7 @@ define(['jquery'], function ($) {
                 secondsFormatter: function (seconds) {
                     var oneHour = 3600;
                     var format = seconds >= oneHour ? "H:mm:ss" : "mm:ss";
-                    return moment().startOf('day').add(seconds, 'seconds').format(format);
+                    return dayjs().startOf('day').add(seconds, 'seconds').format(format);
                 },
                 getApplicationRootPath: function getApplicationRootPath() {
                     var rootPath = location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '');

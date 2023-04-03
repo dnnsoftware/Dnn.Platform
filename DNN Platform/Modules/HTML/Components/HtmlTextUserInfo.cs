@@ -9,33 +9,26 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextUserInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   Defines an instance of an HtmlTextUser object.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>  Defines an instance of an HtmlTextUser object.</summary>
     public class HtmlTextUserInfo
     {
         // local property declarations
-        private ModuleInfo _Module;
+        private ModuleInfo module;
 
         public string ModuleTitle
         {
             get
             {
-                string _ModuleTitle = Null.NullString;
+                string moduleTitle = Null.NullString;
                 if (this.Module != null)
                 {
-                    _ModuleTitle = this.Module.ModuleTitle;
+                    moduleTitle = this.Module.ModuleTitle;
                 }
 
-                return _ModuleTitle;
+                return moduleTitle;
             }
         }
 
@@ -43,12 +36,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                if (this._Module == null)
+                if (this.module == null)
                 {
-                    this._Module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
+                    this.module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
                 }
 
-                return this._Module;
+                return this.module;
             }
         }
 

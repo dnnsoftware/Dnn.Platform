@@ -1,28 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Web;
 
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// The UrlAction class keeps state of the current Request throughout the rewriting process.
-    /// </summary>
+    /// <summary>The UrlAction class keeps state of the current Request throughout the rewriting process.</summary>
     public class UrlAction
     {
-        private List<string> _licensedProviders;
-        private PortalAliasInfo _portalAlias;
+        private List<string> licensedProviders;
+        private PortalAliasInfo portalAlias;
 
         // 829 add in constructor that works around physical path length restriction
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlAction"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="UrlAction"/> class.</summary>
         /// <param name="request"></param>
         public UrlAction(HttpRequest request)
         {
@@ -52,9 +51,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UrlAction"/> class.</summary>
         /// <param name="scheme"></param>
         /// <param name="applicationPath"></param>
         /// <param name="physicalPath"></param>
@@ -101,8 +98,14 @@ namespace DotNetNuke.Entities.Urls
 
         public Exception Ex { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string dictKey { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string dictVal { get; set; }
 
         public List<string> DebugMessages { get; set; }
@@ -130,7 +133,10 @@ namespace DotNetNuke.Entities.Urls
         // the alias for the current request
         public PortalAliasInfo PortalAlias
         {
-            get { return this._portalAlias; }
+            get
+            {
+                return this.portalAlias;
+            }
 
             set
             {
@@ -140,7 +146,7 @@ namespace DotNetNuke.Entities.Urls
                     this.HttpAlias = value.HTTPAlias;
                 }
 
-                this._portalAlias = value;
+                this.portalAlias = value;
             }
         }
 
@@ -187,46 +193,44 @@ namespace DotNetNuke.Entities.Urls
 
         public void AddLicensedProviders(List<string> licensedProviders)
         {
-            if (this._licensedProviders == null)
+            if (this.licensedProviders == null)
             {
-                this._licensedProviders = new List<string>();
+                this.licensedProviders = new List<string>();
             }
 
             foreach (string lp in licensedProviders)
             {
-                if (this._licensedProviders.Contains(lp.ToLowerInvariant()) == false)
+                if (this.licensedProviders.Contains(lp.ToLowerInvariant()) == false)
                 {
-                    this._licensedProviders.Add(lp.ToLowerInvariant());
+                    this.licensedProviders.Add(lp.ToLowerInvariant());
                 }
             }
         }
 
         public void AddLicensedProvider(string providerName)
         {
-            if (this._licensedProviders == null)
+            if (this.licensedProviders == null)
             {
-                this._licensedProviders = new List<string>();
+                this.licensedProviders = new List<string>();
             }
 
-            if (this._licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
+            if (this.licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
             {
-                this._licensedProviders.Add(providerName.ToLowerInvariant());
+                this.licensedProviders.Add(providerName.ToLowerInvariant());
             }
         }
 
         public bool IsProviderLicensed(string providerName)
         {
-            if (this._licensedProviders == null)
+            if (this.licensedProviders == null)
             {
                 return false;
             }
 
-            return this._licensedProviders.Contains(providerName.ToLowerInvariant());
+            return this.licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
-        /// <summary>
-        /// Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).
-        /// </summary>
+        /// <summary>Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).</summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>
         public void SetOriginalPath(string path, FriendlyUrlSettings settings)

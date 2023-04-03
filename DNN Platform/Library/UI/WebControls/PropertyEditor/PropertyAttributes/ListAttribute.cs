@@ -8,31 +8,29 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class ListAttribute : Attribute
     {
-        private readonly string _ListName;
-        private readonly string _ParentKey;
-        private readonly ListBoundField _TextField;
-        private readonly ListBoundField _ValueField;
+        private readonly string listName;
+        private readonly string parentKey;
+        private readonly ListBoundField textField;
+        private readonly ListBoundField valueField;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ListAttribute"/> class.</summary>
         /// <param name="listName">The name of the List to use for this property.</param>
         /// <param name="parentKey">The key of the parent for this List.</param>
         /// <param name="textField">Text Field.</param>
         /// <param name="valueField">Value Field.</param>
         public ListAttribute(string listName, string parentKey, ListBoundField valueField, ListBoundField textField)
         {
-            this._ListName = listName;
-            this._ParentKey = parentKey;
-            this._TextField = textField;
-            this._ValueField = valueField;
+            this.listName = listName;
+            this.parentKey = parentKey;
+            this.textField = textField;
+            this.valueField = valueField;
         }
 
         public string ListName
         {
             get
             {
-                return this._ListName;
+                return this.listName;
             }
         }
 
@@ -40,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._ParentKey;
+                return this.parentKey;
             }
         }
 
@@ -48,7 +46,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._TextField;
+                return this.textField;
             }
         }
 
@@ -56,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._ValueField;
+                return this.valueField;
             }
         }
     }

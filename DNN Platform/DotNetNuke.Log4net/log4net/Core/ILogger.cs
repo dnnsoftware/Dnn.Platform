@@ -1,33 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Core;
+using log4net.Repository;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    using log4net.Core;
-    using log4net.Repository;
-
-    /// <summary>
-    /// Interface that all loggers implement.
-    /// </summary>
+    /// <summary>Interface that all loggers implement</summary>
     /// <remarks>
     /// <para>
     /// This interface supports logging events and testing if a level
@@ -39,26 +37,22 @@ namespace log4net.Core
     /// to be thrown to the caller.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface ILogger
     {
-        /// <summary>
-        /// Gets the name of the logger.
-        /// </summary>
+        /// <summary>Gets the name of the logger.</summary>
         /// <value>
         /// The name of the logger.
         /// </value>
         /// <remarks>
         /// <para>
-        /// The name of this logger.
+        /// The name of this logger
         /// </para>
         /// </remarks>
         string Name { get; }
 
-        /// <summary>
-        /// This generic form is intended to be used by wrappers.
-        /// </summary>
+        /// <summary>This generic form is intended to be used by wrappers.</summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
         /// the stack boundary into the logging system for this call.</param>
         /// <param name="level">The level of the message to be logged.</param>
@@ -71,9 +65,9 @@ namespace log4net.Core
         /// </para>
         /// </remarks>
         void Log(Type callerStackBoundaryDeclaringType, Level level, object message, Exception exception);
-
+  
         /// <summary>
-        /// This is the most generic printing method that is intended to be used
+        /// This is the most generic printing method that is intended to be used 
         /// by wrappers.
         /// </summary>
         /// <param name="logEvent">The event being logged.</param>
@@ -84,9 +78,7 @@ namespace log4net.Core
         /// </remarks>
         void Log(LoggingEvent logEvent);
 
-        /// <summary>
-        /// Checks if this logger is enabled for a given <see cref="Level"/> passed as parameter.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for a given <see cref="Level"/> passed as parameter.</summary>
         /// <param name="level">The level to check.</param>
         /// <returns>
         /// <c>true</c> if this logger is enabled for <c>level</c>, otherwise <c>false</c>.
@@ -99,7 +91,7 @@ namespace log4net.Core
         bool IsEnabledFor(Level level);
 
         /// <summary>
-        /// Gets the <see cref="ILoggerRepository"/> where this
+        /// Gets the <see cref="ILoggerRepository"/> where this 
         /// <c>Logger</c> instance is attached to.
         /// </summary>
         /// <value>
@@ -107,7 +99,7 @@ namespace log4net.Core
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets the <see cref="ILoggerRepository"/> where this
+        /// Gets the <see cref="ILoggerRepository"/> where this 
         /// <c>Logger</c> instance is attached to.
         /// </para>
         /// </remarks>

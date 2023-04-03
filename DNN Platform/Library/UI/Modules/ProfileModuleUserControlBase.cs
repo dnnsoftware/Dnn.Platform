@@ -17,9 +17,7 @@ namespace DotNetNuke.UI.Modules
 
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.</summary>
         public ProfileModuleUserControlBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

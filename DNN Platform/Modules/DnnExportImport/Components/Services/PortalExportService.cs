@@ -18,17 +18,19 @@ namespace Dnn.ExportImport.Components.Services
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
-    /// <summary>
-    /// Service to export/import portal data.
-    /// </summary>
+    /// <summary>Service to export/import portal data.</summary>
     public class PortalExportService : BasePortableService
     {
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Portal;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 1;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
@@ -107,6 +109,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             // Update the total items count in the check points. This should be updated only once.
@@ -157,6 +160,7 @@ namespace Dnn.ExportImport.Components.Services
             */
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPortalSetting>() + this.Repository.GetCount<ExportPortalLanguage>();

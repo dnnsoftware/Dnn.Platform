@@ -14,97 +14,97 @@ namespace DotNetNuke.Common.Utilities
 
     public class UrlController
     {
-        public ArrayList GetUrls(int PortalID)
+        public ArrayList GetUrls(int portalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof(UrlInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetUrls(portalID), typeof(UrlInfo));
         }
 
-        public UrlInfo GetUrl(int PortalID, string Url)
+        public UrlInfo GetUrl(int portalID, string url)
         {
-            return CBO.FillObject<UrlInfo>(DataProvider.Instance().GetUrl(PortalID, Url));
+            return CBO.FillObject<UrlInfo>(DataProvider.Instance().GetUrl(portalID, url));
         }
 
-        public UrlTrackingInfo GetUrlTracking(int PortalID, string Url, int ModuleId)
+        public UrlTrackingInfo GetUrlTracking(int portalID, string url, int moduleId)
         {
-            return CBO.FillObject<UrlTrackingInfo>(DataProvider.Instance().GetUrlTracking(PortalID, Url, ModuleId));
+            return CBO.FillObject<UrlTrackingInfo>(DataProvider.Instance().GetUrlTracking(portalID, url, moduleId));
         }
 
-        public void UpdateUrl(int PortalID, string Url, string UrlType, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
+        public void UpdateUrl(int portalID, string url, string urlType, bool logActivity, bool trackClicks, int moduleID, bool newWindow)
         {
-            this.UpdateUrl(PortalID, Url, UrlType, 0, Null.NullDate, Null.NullDate, LogActivity, TrackClicks, ModuleID, NewWindow);
+            this.UpdateUrl(portalID, url, urlType, 0, Null.NullDate, Null.NullDate, logActivity, trackClicks, moduleID, newWindow);
         }
 
-        public void UpdateUrl(int PortalID, string Url, string UrlType, int Clicks, DateTime LastClick, DateTime CreatedDate, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
+        public void UpdateUrl(int portalID, string url, string urlType, int clicks, DateTime lastClick, DateTime createdDate, bool logActivity, bool trackClicks, int moduleID, bool newWindow)
         {
-            if (!string.IsNullOrEmpty(Url))
+            if (!string.IsNullOrEmpty(url))
             {
-                if (UrlType == "U")
+                if (urlType == "U")
                 {
-                    if (this.GetUrl(PortalID, Url) == null)
+                    if (this.GetUrl(portalID, url) == null)
                     {
-                        DataProvider.Instance().AddUrl(PortalID, Url.Replace(@"\", @"/"));
+                        DataProvider.Instance().AddUrl(portalID, url.Replace(@"\", @"/"));
                     }
                 }
 
-                UrlTrackingInfo objURLTracking = this.GetUrlTracking(PortalID, Url, ModuleID);
+                UrlTrackingInfo objURLTracking = this.GetUrlTracking(portalID, url, moduleID);
                 if (objURLTracking == null)
                 {
-                    DataProvider.Instance().AddUrlTracking(PortalID, Url, UrlType, LogActivity, TrackClicks, ModuleID, NewWindow);
+                    DataProvider.Instance().AddUrlTracking(portalID, url, urlType, logActivity, trackClicks, moduleID, newWindow);
                 }
                 else
                 {
-                    DataProvider.Instance().UpdateUrlTracking(PortalID, Url, LogActivity, TrackClicks, ModuleID, NewWindow);
+                    DataProvider.Instance().UpdateUrlTracking(portalID, url, logActivity, trackClicks, moduleID, newWindow);
                 }
             }
         }
 
-        public void DeleteUrl(int PortalID, string Url)
+        public void DeleteUrl(int portalID, string url)
         {
-            DataProvider.Instance().DeleteUrl(PortalID, Url);
+            DataProvider.Instance().DeleteUrl(portalID, url);
         }
 
-        public void UpdateUrlTracking(int PortalID, string Url, int ModuleId, int UserID)
+        public void UpdateUrlTracking(int portalID, string url, int moduleId, int userID)
         {
-            TabType UrlType = Globals.GetURLType(Url);
-            if (UrlType == TabType.File && Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+            TabType urlType = Globals.GetURLType(url);
+            if (urlType == TabType.File && url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
             {
                 // to handle legacy scenarios before the introduction of the FileServerHandler
-                var fileName = Path.GetFileName(Url);
+                var fileName = Path.GetFileName(url);
 
-                var folderPath = Url.Substring(0, Url.LastIndexOf(fileName));
-                var folder = FolderManager.Instance.GetFolder(PortalID, folderPath);
+                var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                var folder = FolderManager.Instance.GetFolder(portalID, folderPath);
 
                 var file = FileManager.Instance.GetFile(folder, fileName);
 
-                Url = "FileID=" + file.FileId;
+                url = "FileID=" + file.FileId;
             }
 
-            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
+            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(portalID, url, moduleId);
             if (objUrlTracking != null)
             {
                 if (objUrlTracking.TrackClicks)
                 {
-                    DataProvider.Instance().UpdateUrlTrackingStats(PortalID, Url, ModuleId);
+                    DataProvider.Instance().UpdateUrlTrackingStats(portalID, url, moduleId);
                     if (objUrlTracking.LogActivity)
                     {
-                        if (UserID == -1)
+                        if (userID == -1)
                         {
-                            UserID = UserController.Instance.GetCurrentUserInfo().UserID;
+                            userID = UserController.Instance.GetCurrentUserInfo().UserID;
                         }
 
-                        DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, UserID);
+                        DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, userID);
                     }
                 }
             }
         }
 
-        public ArrayList GetUrlLog(int PortalID, string Url, int ModuleId, DateTime StartDate, DateTime EndDate)
+        public ArrayList GetUrlLog(int portalID, string url, int moduleId, DateTime startDate, DateTime endDate)
         {
             ArrayList arrUrlLog = null;
-            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
+            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(portalID, url, moduleId);
             if (objUrlTracking != null)
             {
-                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof(UrlLogInfo));
+                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, startDate, endDate), typeof(UrlLogInfo));
             }
 
             return arrUrlLog;

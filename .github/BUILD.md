@@ -11,11 +11,10 @@ When contributing to DNN, you'd typically go through steps 2 and 3 at least and 
 
 ## External sources
 
-There are two projects not included in this repository that are distributed with DNN:
-* [CKEditorProvider](https://github.com/DNN-Connect/CKEditorProvider) - The default HTML Editor Provider
+There is one project not included in this repository that are distributed with DNN:
 * [CDF](https://github.com/dnnsoftware/ClientDependency) - The Dnn Client Dependency Framework
 
-If you wish to make changes to those, please keep this in mind.
+If you wish to make changes to that project, please keep this in mind.
 
 ## Used Build Technologies
 
@@ -152,9 +151,11 @@ The build scripts should leave you with 0 tracked modified files in git.
 If a build fails midway and you have tracked artifacts, you can simply run:
 `git reset --hard` and/or `git clean -dxf` in order to come back to a clean state.
 
-### Running Cake
+### Troubleshooting
 
-If you encounter PowerShell security issues, please read [Cake - PowerShell Security](https://cakebuild.net/docs/tutorials/powershell-security)
+If you encounter PowerShell security issues, please read [Cake - PowerShell Security](http://cakebuildbotdevelop.azurewebsites.net/docs/tutorials/powershell-security).
+
+If you encouter Yarn issues, please [update Yarn to the lastest version](https://yarnpkg.com/getting-started/install).
 
 ### Git branching strategy
 

@@ -14,14 +14,14 @@ namespace DotNetNuke.UI.Containers
 
     public partial class DropDownActions : ActionBase
     {
-        private NavigationProvider m_objControl;
-        private string m_strProviderName = "DNNDropDownNavigationProvider";
+        private NavigationProvider objControl;
+        private string strProviderName = "DNNDropDownNavigationProvider";
 
         public NavigationProvider Control
         {
             get
             {
-                return this.m_objControl;
+                return this.objControl;
             }
         }
 
@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this.m_strProviderName;
+                return this.strProviderName;
             }
 
             set
@@ -51,26 +51,28 @@ namespace DotNetNuke.UI.Containers
             this.Visible = this.DisplayControl(objNodes);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            this.cmdGo.Click += this.cmdGo_Click;
+            this.cmdGo.Click += this.CmdGo_Click;
 
             try
             {
                 this.BindDropDown();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.m_objControl = NavigationProvider.Instance(this.ProviderName);
+            this.objControl = NavigationProvider.Instance(this.ProviderName);
             this.Control.ControlID = "ctl" + this.ID;
             this.Control.Initialize();
             this.spActions.Controls.Add(this.Control.NavigationControl);
@@ -81,7 +83,7 @@ namespace DotNetNuke.UI.Containers
             this.cmdGo.Attributes.Add("onclick", "if (cmdGo_OnClick(dnn.dom.getById('" + this.Control.NavigationControl.ClientID + "')) == false) return false;");
         }
 
-        private void cmdGo_Click(object sender, ImageClickEventArgs e)
+        private void CmdGo_Click(object sender, ImageClickEventArgs e)
         {
             try
             {
@@ -91,7 +93,7 @@ namespace DotNetNuke.UI.Containers
                     this.ProcessAction(cboActions.SelectedItem.Value);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

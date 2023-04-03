@@ -6,45 +6,37 @@ namespace DotNetNuke.Services.Cache
     using System;
     using System.Web.Caching;
 
-    /// <summary>
-    /// DNNCacheDependency provides dependency policies of cache system.
-    /// </summary>
+    /// <summary>DNNCacheDependency provides dependency policies of cache system.</summary>
     /// <remarks>
     /// The CacheDependency class monitors the dependency relationships so that when any of them changes, the cached item will be automatically removed.
     /// </remarks>
     public class DNNCacheDependency : IDisposable
     {
-        private readonly DateTime _utcStart = DateTime.MaxValue;
-        private DNNCacheDependency _cacheDependency;
-        private string[] _cacheKeys;
-        private string[] _fileNames;
-        private CacheDependency _systemCacheDependency;
+        private readonly DateTime utcStart = DateTime.MaxValue;
+        private DNNCacheDependency cacheDependency;
+        private string[] cacheKeys;
+        private string[] fileNames;
+        private CacheDependency systemCacheDependency;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class.</summary>
         /// <param name="systemCacheDependency">The system cache dependency.</param>
         public DNNCacheDependency(CacheDependency systemCacheDependency)
         {
-            this._systemCacheDependency = systemCacheDependency;
+            this.systemCacheDependency = systemCacheDependency;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.</summary>
         /// <param name="filename"></param>
         public DNNCacheDependency(string filename)
         {
-            this._fileNames = new[] { filename };
+            this.fileNames = new[] { filename };
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories) for changes.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories) for changes.</summary>
         /// <param name="filenames">set the cache depend on muti files.</param>
         public DNNCacheDependency(string[] filenames)
         {
-            this._fileNames = filenames;
+            this.fileNames = filenames;
         }
 
         /// <summary>
@@ -55,8 +47,8 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string[] filenames, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
-            this._fileNames = filenames;
+            this.utcStart = start.ToUniversalTime();
+            this.fileNames = filenames;
         }
 
         /// <summary>
@@ -67,21 +59,19 @@ namespace DotNetNuke.Services.Cache
         /// <param name="cachekeys">The cachekeys.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys)
         {
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.</summary>
         /// <param name="filename">The filename.</param>
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string filename, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
+            this.utcStart = start.ToUniversalTime();
             if (filename != null)
             {
-                this._fileNames = new[] { filename };
+                this.fileNames = new[] { filename };
             }
         }
 
@@ -94,9 +84,9 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
+            this.utcStart = start.ToUniversalTime();
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
         }
 
         /// <summary>
@@ -108,9 +98,9 @@ namespace DotNetNuke.Services.Cache
         /// <param name="dependency">The dependency.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys, DNNCacheDependency dependency)
         {
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
-            this._cacheDependency = dependency;
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
+            this.cacheDependency = dependency;
         }
 
         /// <summary>
@@ -124,37 +114,31 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys, DNNCacheDependency dependency, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
-            this._cacheDependency = dependency;
+            this.utcStart = start.ToUniversalTime();
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
+            this.cacheDependency = dependency;
         }
 
-        /// <summary>
-        /// Gets the cache keys.
-        /// </summary>
+        /// <summary>Gets the cache keys.</summary>
         public string[] CacheKeys
         {
             get
             {
-                return this._cacheKeys;
+                return this.cacheKeys;
             }
         }
 
-        /// <summary>
-        /// Gets the file names.
-        /// </summary>
+        /// <summary>Gets the file names.</summary>
         public string[] FileNames
         {
             get
             {
-                return this._fileNames;
+                return this.fileNames;
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance has changed.
-        /// </summary>
+        /// <summary>Gets a value indicating whether this instance has changed.</summary>
         /// <value>
         ///     <c>true</c> if this instance has changed; otherwise, <c>false</c>.
         /// </value>
@@ -166,54 +150,46 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Gets the cache dependency.
-        /// </summary>
+        /// <summary>Gets the cache dependency.</summary>
         public DNNCacheDependency CacheDependency
         {
             get
             {
-                return this._cacheDependency;
+                return this.cacheDependency;
             }
         }
 
-        /// <summary>
-        /// Gets the start time.
-        /// </summary>
+        /// <summary>Gets the start time.</summary>
         public DateTime StartTime
         {
             get
             {
-                return this._utcStart;
+                return this.utcStart;
             }
         }
 
-        /// <summary>
-        /// Gets the system cache dependency.
-        /// </summary>
+        /// <summary>Gets the system cache dependency.</summary>
         public CacheDependency SystemCacheDependency
         {
             get
             {
-                if (this._systemCacheDependency == null)
+                if (this.systemCacheDependency == null)
                 {
-                    if (this._cacheDependency == null)
+                    if (this.cacheDependency == null)
                     {
-                        this._systemCacheDependency = new CacheDependency(this._fileNames, this._cacheKeys, this._utcStart);
+                        this.systemCacheDependency = new CacheDependency(this.fileNames, this.cacheKeys, this.utcStart);
                     }
                     else
                     {
-                        this._systemCacheDependency = new CacheDependency(this._fileNames, this._cacheKeys, this._cacheDependency.SystemCacheDependency, this._utcStart);
+                        this.systemCacheDependency = new CacheDependency(this.fileNames, this.cacheKeys, this.cacheDependency.SystemCacheDependency, this.utcStart);
                     }
                 }
 
-                return this._systemCacheDependency;
+                return this.systemCacheDependency;
             }
         }
 
-        /// <summary>
-        /// Gets the UTC last modified.
-        /// </summary>
+        /// <summary>Gets the UTC last modified.</summary>
         public DateTime UtcLastModified
         {
             get
@@ -222,9 +198,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
             this.Dispose(true);
@@ -236,20 +210,20 @@ namespace DotNetNuke.Services.Cache
         {
             if (disposing)
             {
-                if (this._cacheDependency != null)
+                if (this.cacheDependency != null)
                 {
-                    this._cacheDependency.Dispose(disposing);
+                    this.cacheDependency.Dispose(disposing);
                 }
 
-                if (this._systemCacheDependency != null)
+                if (this.systemCacheDependency != null)
                 {
-                    this._systemCacheDependency.Dispose();
+                    this.systemCacheDependency.Dispose();
                 }
 
-                this._fileNames = null;
-                this._cacheKeys = null;
-                this._cacheDependency = null;
-                this._systemCacheDependency = null;
+                this.fileNames = null;
+                this.cacheKeys = null;
+                this.cacheDependency = null;
+                this.systemCacheDependency = null;
             }
         }
     }

@@ -16,8 +16,14 @@ namespace DotNetNuke.Build.Tasks
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to include other 3rd party packages.</summary>
-    [Dependency(typeof(PackageNewtonsoft))]
-    [Dependency(typeof(PackageMailKit))]
+    [IsDependentOn(typeof(PackageNewtonsoft))]
+    [IsDependentOn(typeof(PackageMailKit))]
+    [IsDependentOn(typeof(PackageAspNetWebApi))]
+    [IsDependentOn(typeof(PackageAspNetWebPages))]
+    [IsDependentOn(typeof(PackageAspNetMvc))]
+    [IsDependentOn(typeof(PackageMicrosoftGlobbing))]
+    [IsDependentOn(typeof(PackageWebFormsMvp))]
+    [IsDependentOn(typeof(PackageSharpZipLib))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
         /// <inheritdoc/>

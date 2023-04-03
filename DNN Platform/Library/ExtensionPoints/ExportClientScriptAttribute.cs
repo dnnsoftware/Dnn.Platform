@@ -9,9 +9,7 @@ namespace DotNetNuke.ExtensionPoints
     [MetadataAttribute]
     public class ExportClientScriptAttribute : ExportAttribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExportClientScriptAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExportClientScriptAttribute"/> class.</summary>
         public ExportClientScriptAttribute()
             : base(typeof(IScriptItemExtensionPoint))
         {

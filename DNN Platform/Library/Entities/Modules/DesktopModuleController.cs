@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Linq;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
@@ -26,15 +27,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : DesktopModuleController
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// DesktopModuleController provides the Busines Layer for Desktop Modules.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>DesktopModuleController provides the Business Layer for Desktop Modules.</summary>
     public class DesktopModuleController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
@@ -65,12 +58,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module.
-        /// </summary>
+        /// <summary>DeleteDesktopModule deletes a Desktop Module.</summary>
         /// <param name="moduleName">The Name of the Desktop Module to delete.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModule(string moduleName)
         {
             DesktopModuleInfo desktopModule = GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
@@ -84,17 +73,13 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModule gets a Desktop Module by its ID.
-        /// </summary>
+        /// <summary>GetDesktopModule gets a Desktop Module by its ID.</summary>
         /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
         /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
         /// to the Dataprovider.</remarks>
         /// <param name="desktopModuleID">The ID of the Desktop Module to get.</param>
         /// <param name="portalID">The ID of the portal.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
         public static DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
         {
             var module = (from kvp in GetDesktopModulesInternal(portalID)
@@ -118,13 +103,9 @@ namespace DotNetNuke.Entities.Modules
             return module;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.
-        /// </summary>
+        /// <summary>GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.</summary>
         /// <param name="packageID">The ID of the Package.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
         public static DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
         {
             DesktopModuleInfo desktopModuleByPackageID = (from kvp in GetDesktopModulesInternal(Null.NullInteger)
@@ -140,17 +121,13 @@ namespace DotNetNuke.Entities.Modules
             return desktopModuleByPackageID;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModuleByModuleName gets a Desktop Module by its Name.
-        /// </summary>
+        /// <summary>GetDesktopModuleByModuleName gets a Desktop Module by its Name.</summary>
         /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
         /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
         /// to the Dataprovider.</remarks>
         /// <param name="moduleName">The name of the Desktop Module to get.</param>
         /// <param name="portalID">The ID of the portal.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
         public static DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
         {
             DesktopModuleInfo desktopModuleByModuleName = (from kvp in GetDesktopModulesInternal(portalID)
@@ -165,14 +142,9 @@ namespace DotNetNuke.Entities.Modules
             return desktopModuleByModuleName;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModules gets a Dictionary of Desktop Modules.
-        /// </summary>
-        /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get
-        /// all the DesktopModules including Modules not allowed for the current portal.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetDesktopModules gets a Dictionary of Desktop Modules.</summary>
+        /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get all the DesktopModules including Modules not allowed for the current portal).</param>
+        /// <returns>A new <see cref="Dictionary{TKey,TValue}"/> mapping desktop module ID to <see cref="DesktopModuleInfo"/>.</returns>
         public static Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
         {
             return new Dictionary<int, DesktopModuleInfo>(GetDesktopModulesInternal(portalID));
@@ -190,15 +162,11 @@ namespace DotNetNuke.Entities.Modules
             return module;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SaveDesktopModule saves the Desktop Module to the database.
-        /// </summary>
+        /// <summary>SaveDesktopModule saves the Desktop Module to the database.</summary>
         /// <param name="desktopModule">The Desktop Module to save.</param>
         /// <param name="saveChildren">A flag that determines whether the child objects are also saved.</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The desktop module ID.</returns>
         public static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache)
         {
             return SaveDesktopModule(desktopModule, saveChildren, clearCache, true);
@@ -230,7 +198,7 @@ namespace DotNetNuke.Entities.Modules
                 EventLogController.Instance.AddLog(
                     "PortalDesktopModuleID",
                     portalDesktopModuleID.ToString(),
-                    PortalController.Instance.GetCurrentPortalSettings(),
+                    PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
                 if (addPermissions)
@@ -263,9 +231,9 @@ namespace DotNetNuke.Entities.Modules
 
         public static void AddDesktopModuleToPortals(int desktopModuleId)
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                AddDesktopModuleToPortal(portal.PortalID, desktopModuleId, true, false);
+                AddDesktopModuleToPortal(portal.PortalId, desktopModuleId, true, false);
             }
 
             DataCache.ClearHostCache(true);
@@ -331,7 +299,7 @@ namespace DotNetNuke.Entities.Modules
             EventLogController.Instance.AddLog(
                 "DesktopModuleID",
                 desktopModuleId.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             if (clearCache)
@@ -346,7 +314,7 @@ namespace DotNetNuke.Entities.Modules
             EventLogController.Instance.AddLog(
                 "DesktopModuleID",
                 desktopModuleId.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
@@ -358,7 +326,7 @@ namespace DotNetNuke.Entities.Modules
             EventLogController.Instance.AddLog(
                 "PortalID",
                 portalId.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearPortalCache(portalId, true);
@@ -389,30 +357,22 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module.
-        /// </summary>
+        /// <summary>DeleteDesktopModule deletes a Desktop Module.</summary>
         /// <param name="objDesktopModule">Desktop Module Info.</param>
-        /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(DesktopModuleInfo objDesktopModule)
         {
             this.DeleteDesktopModule(objDesktopModule.DesktopModuleID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module By ID.
-        /// </summary>
+        /// <summary>DeleteDesktopModule deletes a Desktop Module By ID.</summary>
         /// <param name="desktopModuleID">The ID of the Desktop Module to delete.</param>
-        /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(int desktopModuleID)
         {
             DataProvider.DeleteDesktopModule(desktopModuleID);
             EventLogController.Instance.AddLog(
                 "DesktopModuleID",
                 desktopModuleID.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.DESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
@@ -468,7 +428,8 @@ namespace DotNetNuke.Entities.Modules
                     desktopModule.Permissions,
                     desktopModule.ContentItemId,
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    desktopModule.AdminPage, desktopModule.HostPage);
+                    desktopModule.AdminPage,
+                    desktopModule.HostPage);
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
@@ -618,14 +579,8 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillDictionary("DesktopModuleID", DataProvider.GetDesktopModules(), new Dictionary<int, DesktopModuleInfo>());
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulesByPortalCallBack gets a Dictionary of Desktop Modules by
-        /// Portal from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetDesktopModulesByPortalCallBack gets a Dictionary of Desktop Modules by Portal from the the Database.</summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private static object GetDesktopModulesByPortalCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];

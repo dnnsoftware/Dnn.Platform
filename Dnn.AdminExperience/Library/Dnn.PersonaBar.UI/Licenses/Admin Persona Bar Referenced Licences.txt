@@ -1421,11 +1421,6 @@ MIT License
 License File: Admin Persona Bar Referenced Licences.zip\pify\license
 --------------------------------------------------------------------------------------
 
-pikaday (A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\pikaday\LICENSE
---------------------------------------------------------------------------------------
-
 pinkie (Itty bitty little widdle twinkie pinkie ES2015 Promise implementation)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\pinkie\license
@@ -2424,11 +2419,6 @@ License File: Admin Persona Bar Referenced Licences.zip\remove-trailing-separato
 kw-react-tween-state (React animation.)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\kw-react-tween-state\LICENSE.txt
---------------------------------------------------------------------------------------
-
-nuka-carousel (Pure React Carousel)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\nuka-carousel\LICENSE
 --------------------------------------------------------------------------------------
 
 object-path (Access deep properties using a path)

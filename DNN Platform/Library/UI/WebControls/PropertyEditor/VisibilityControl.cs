@@ -24,33 +24,23 @@ namespace DotNetNuke.UI.WebControls
     /// The VisibilityControl control provides a base control for defining visibility
     /// options.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [ToolboxData("<{0}:VisibilityControl runat=server></{0}:VisibilityControl>")]
     public class VisibilityControl : WebControl, IPostBackDataHandler, INamingContainer
     {
         public event PropertyChangedEventHandler VisibilityChanged;
 
-        /// <summary>
-        /// Gets or sets caption.
-        /// </summary>
+        /// <summary>Gets or sets caption.</summary>
         /// <value>A string representing the Name of the property.</value>
         public string Caption { get; set; }
 
-        /// <summary>
-        /// Gets or sets name is the name of the field as a string.
-        /// </summary>
+        /// <summary>Gets or sets name is the name of the field as a string.</summary>
         /// <value>A string representing the Name of the property.</value>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the UserInfo object that represents the User whose profile is being displayed.
-        /// </summary>
+        /// <summary>Gets or sets the UserInfo object that represents the User whose profile is being displayed.</summary>
         public UserInfo User { get; set; }
 
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
         public object Value { get; set; }
 
@@ -60,12 +50,10 @@ namespace DotNetNuke.UI.WebControls
             set { this.Value = value; }
         }
 
-        /// <summary>
-        /// LoadPostData loads the Post Back Data and determines whether the value has change.
-        /// </summary>
+        /// <summary>LoadPostData loads the Post Back Data and determines whether the value has change.</summary>
         /// <param name="postDataKey">A key to the PostBack Data to load.</param>
         /// <param name="postCollection">A name value collection of postback data.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the value has changed, otherwise <see langword="false"/>.</returns>
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var dataChanged = false;
@@ -154,9 +142,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Render renders the control.
-        /// </summary>
+        /// <summary>Render renders the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void Render(HtmlTextWriter writer)
         {
@@ -271,9 +257,12 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var group in this.User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
             {
-                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture),
-                                        group.RoleName,
-                                        this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
+                this.RenderCheckboxItem(
+                    writer,
+                    ":group_",
+                    group.RoleID.ToString(CultureInfo.InvariantCulture),
+                    group.RoleName,
+                    this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
             }
         }
 
@@ -281,9 +270,13 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var relationship in this.User.Social.Relationships)
             {
-                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
-                                        relationship.Name,
-                                        this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
+                var selected = this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1;
+                this.RenderCheckboxItem(
+                    writer,
+                    ":relationship_",
+                    relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
+                    relationship.Name,
+                    selected);
             }
         }
     }

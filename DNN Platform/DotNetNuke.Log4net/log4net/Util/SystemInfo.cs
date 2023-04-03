@@ -1,73 +1,60 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 
-
+using System;
 #if NETSTANDARD1_3
 using System.Globalization;
 #else
 using System.Configuration;
-
 #endif
-using System.Collections;
-using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.IO;
+using System.Collections;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    /// <summary>
-    /// Utility class for system specific information.
-    /// </summary>
+    /// <summary>Utility class for system specific information.</summary>
     /// <remarks>
     /// <para>
     /// Utility class of static methods for system specific information.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    /// <author>Alexey Solofnenko.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /// <author>Alexey Solofnenko</author>
     public sealed class SystemInfo
     {
         private const string DEFAULT_NULL_TEXT = "(null)";
         private const string DEFAULT_NOT_AVAILABLE_TEXT = "NOT AVAILABLE";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SystemInfo"/> class.
-        /// Private constructor to prevent instances.
-        /// </summary>
+        /// <summary>Private constructor to prevent instances.</summary>
         /// <remarks>
         /// <para>
         /// Only static methods are exposed from this type.
         /// </para>
         /// </remarks>
-        private SystemInfo()
+        private SystemInfo() 
         {
         }
 
-        /// <summary>
-        /// Initializes static members of the <see cref="SystemInfo"/> class.
-        /// Initialize default values for private static fields.
-        /// </summary>
+        /// <summary>Initialize default values for private static fields.</summary>
         /// <remarks>
         /// <para>
         /// Only static methods are exposed from this type.
@@ -80,7 +67,7 @@ namespace log4net.Util
 
 #if !NETCF
             // Look for log4net.NullText in AppSettings
-            string nullTextAppSettingsKey = SystemInfo.GetAppSetting("log4net.NullText");
+            string nullTextAppSettingsKey = GetAppSetting("log4net.NullText");
             if (nullTextAppSettingsKey != null && nullTextAppSettingsKey.Length > 0)
             {
                 LogLog.Debug(declaringType, "Initializing NullText value to [" + nullTextAppSettingsKey + "].");
@@ -88,7 +75,7 @@ namespace log4net.Util
             }
 
             // Look for log4net.NotAvailableText in AppSettings
-            string notAvailableTextAppSettingsKey = SystemInfo.GetAppSetting("log4net.NotAvailableText");
+            string notAvailableTextAppSettingsKey = GetAppSetting("log4net.NotAvailableText");
             if (notAvailableTextAppSettingsKey != null && notAvailableTextAppSettingsKey.Length > 0)
             {
                 LogLog.Debug(declaringType, "Initializing NotAvailableText value to [" + notAvailableTextAppSettingsKey + "].");
@@ -99,9 +86,7 @@ namespace log4net.Util
             s_nullText = nullText;
         }
 
-        /// <summary>
-        /// Gets the system dependent line terminator.
-        /// </summary>
+        /// <summary>Gets the system dependent line terminator.</summary>
         /// <value>
         /// The system dependent line terminator.
         /// </value>
@@ -115,16 +100,14 @@ namespace log4net.Util
             get
             {
 #if NETCF
-				return "\r\n";
+                return "\r\n";
 #else
-                return System.Environment.NewLine;
+                return Environment.NewLine;
 #endif
             }
         }
 
-        /// <summary>
-        /// Gets the base directory for this <see cref="AppDomain"/>.
-        /// </summary>
+        /// <summary>Gets the base directory for this <see cref="AppDomain"/>.</summary>
         /// <value>The base directory path for the current <see cref="AppDomain"/>.</value>
         /// <remarks>
         /// <para>
@@ -136,21 +119,19 @@ namespace log4net.Util
         /// </remarks>
         public static string ApplicationBaseDirectory
         {
-            get
+            get 
             {
 #if NETCF
 -				return System.IO.Path.GetDirectoryName(SystemInfo.EntryAssemblyLocation) + System.IO.Path.DirectorySeparatorChar;
 #elif NETSTANDARD1_3
-				return Directory.GetCurrentDirectory();
+                return Directory.GetCurrentDirectory();
 #else
                 return AppDomain.CurrentDomain.BaseDirectory;
 #endif
             }
         }
 
-        /// <summary>
-        /// Gets the path to the configuration file for the current <see cref="AppDomain"/>.
-        /// </summary>
+        /// <summary>Gets the path to the configuration file for the current <see cref="AppDomain"/>.</summary>
         /// <value>The path to the configuration file for the current <see cref="AppDomain"/>.</value>
         /// <remarks>
         /// <para>
@@ -164,19 +145,17 @@ namespace log4net.Util
         /// </remarks>
         public static string ConfigurationFileLocation
         {
-            get
+            get 
             {
-#if NETCF || NETSTANDARD1_3
-				return SystemInfo.EntryAssemblyLocation+".config";
+#if NETCF || NETSTANDARD
+                return SystemInfo.EntryAssemblyLocation+".config";
 #else
-                return System.AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+                return AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 #endif
             }
         }
 
-        /// <summary>
-        /// Gets the path to the file that first executed in the current <see cref="AppDomain"/>.
-        /// </summary>
+        /// <summary>Gets the path to the file that first executed in the current <see cref="AppDomain"/>.</summary>
         /// <value>The path to the entry assembly.</value>
         /// <remarks>
         /// <para>
@@ -185,63 +164,59 @@ namespace log4net.Util
         /// </remarks>
         public static string EntryAssemblyLocation
         {
-            get
+            get 
             {
 #if NETCF
-				return SystemInfo.NativeEntryAssemblyLocation;
+                return SystemInfo.NativeEntryAssemblyLocation;
 #elif NETSTANDARD1_3 // TODO GetEntryAssembly is available for netstandard1.5
-				return AppContext.BaseDirectory;
+                return AppContext.BaseDirectory;
 #else
-                return System.Reflection.Assembly.GetEntryAssembly().Location;
+                return Assembly.GetEntryAssembly().Location;
 #endif
             }
         }
 
-        /// <summary>
-        /// Gets the ID of the current thread.
-        /// </summary>
+        /// <summary>Gets the ID of the current thread.</summary>
         /// <value>The ID of the current thread.</value>
         /// <remarks>
         /// <para>
         /// On the .NET framework, the <c>AppDomain.GetCurrentThreadId</c> method
-        /// is used to obtain the thread ID for the current thread. This is the
+        /// is used to obtain the thread ID for the current thread. This is the 
         /// operating system ID for the thread.
         /// </para>
         /// <para>
-        /// On the .NET Compact Framework 1.0 it is not possible to get the
-        /// operating system thread ID for the current thread. The native method
+        /// On the .NET Compact Framework 1.0 it is not possible to get the 
+        /// operating system thread ID for the current thread. The native method 
         /// <c>GetCurrentThreadId</c> is implemented inline in a header file
         /// and cannot be called.
         /// </para>
         /// <para>
         /// On the .NET Framework 2.0 the <c>Thread.ManagedThreadId</c> is used as this
-        /// gives a stable id unrelated to the operating system thread ID which may
+        /// gives a stable id unrelated to the operating system thread ID which may 
         /// change if the runtime is using fibers.
         /// </para>
         /// </remarks>
         public static int CurrentThreadId
         {
-            get
+            get 
             {
 #if NETCF_1_0
-				return System.Threading.Thread.CurrentThread.GetHashCode();
-#elif NET_2_0 || NETCF_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD1_3
+                return System.Threading.Thread.CurrentThread.GetHashCode();
+#elif NET_2_0 || NETCF_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD
                 return System.Threading.Thread.CurrentThread.ManagedThreadId;
 #else
-				return AppDomain.GetCurrentThreadId();
+                return AppDomain.GetCurrentThreadId();
 #endif
             }
         }
 
-        /// <summary>
-        /// Gets get the host name or machine name for the current machine.
-        /// </summary>
+        /// <summary>Get the host name or machine name for the current machine</summary>
         /// <value>
-        /// The hostname or machine name.
+        /// The hostname or machine name
         /// </value>
         /// <remarks>
         /// <para>
-        /// Get the host name or machine name for the current machine.
+        /// Get the host name or machine name for the current machine
         /// </para>
         /// <para>
         /// The host name (<see cref="System.Net.Dns.GetHostName"/>) or
@@ -256,6 +231,7 @@ namespace log4net.Util
             {
                 if (s_hostName == null)
                 {
+
                     // Get the DNS host name of the current machine
                     try
                     {
@@ -283,15 +259,15 @@ namespace log4net.Util
                         try
                         {
 #if NETSTANDARD1_3
-							s_hostName = Environment.GetEnvironmentVariable("COMPUTERNAME");
-#elif !SSCLI && !NETCF
+                            s_hostName = Environment.GetEnvironmentVariable("COMPUTERNAME");
+#elif (!SSCLI && !NETCF)
                             s_hostName = Environment.MachineName;
 #endif
                         }
-                        catch (InvalidOperationException)
+                        catch(InvalidOperationException)
                         {
                         }
-                        catch (System.Security.SecurityException)
+                        catch(System.Security.SecurityException)
                         {
                             // We may get a security exception looking up the machine name
                             // You must have Unrestricted EnvironmentPermission to access resource
@@ -305,16 +281,13 @@ namespace log4net.Util
                         LogLog.Debug(declaringType, "Could not determine the hostname. Error Ignored. Empty host name will be used");
                     }
                 }
-
                 return s_hostName;
             }
         }
 
-        /// <summary>
-        /// Gets get this application's friendly name.
-        /// </summary>
+        /// <summary>Get this application's friendly name</summary>
         /// <value>
-        /// The friendly name of this application as a string.
+        /// The friendly name of this application as a string
         /// </value>
         /// <remarks>
         /// <para>
@@ -333,13 +306,13 @@ namespace log4net.Util
                 {
                     try
                     {
-#if !(NETCF || NETSTANDARD1_3)
+#if !NETCF && !NETSTANDARD1_3
                         s_appFriendlyName = AppDomain.CurrentDomain.FriendlyName;
 #endif
                     }
-                    catch (System.Security.SecurityException)
+                    catch(System.Security.SecurityException)
                     {
-                        // This security exception will occur if the caller does not have
+                        // This security exception will occur if the caller does not have 
                         // some undefined set of SecurityPermission flags.
                         LogLog.Debug(declaringType, "Security exception while trying to get current domain friendly name. Error Ignored.");
                     }
@@ -348,10 +321,10 @@ namespace log4net.Util
                     {
                         try
                         {
-                            string assemblyLocation = SystemInfo.EntryAssemblyLocation;
-                            s_appFriendlyName = System.IO.Path.GetFileName(assemblyLocation);
+                            string assemblyLocation = EntryAssemblyLocation;
+                            s_appFriendlyName = Path.GetFileName(assemblyLocation);
                         }
-                        catch (System.Security.SecurityException)
+                        catch(System.Security.SecurityException)
                         {
                             // Caller needs path discovery permission
                         }
@@ -362,14 +335,11 @@ namespace log4net.Util
                         s_appFriendlyName = s_notAvailableText;
                     }
                 }
-
                 return s_appFriendlyName;
             }
         }
 
-        /// <summary>
-        /// Gets get the start time for the current process.
-        /// </summary>
+        /// <summary>Get the start time for the current process.</summary>
         /// <remarks>
         /// <para>
         /// This is the time at which the log4net library was loaded into the
@@ -387,15 +357,13 @@ namespace log4net.Util
         /// will be set per AppDomain.
         /// </para>
         /// </remarks>
-        [Obsolete("Use ProcessStartTimeUtc and convert to local time if needed.. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use ProcessStartTimeUtc and convert to local time if needed.")]
         public static DateTime ProcessStartTime
         {
             get { return s_processStartTimeUtc.ToLocalTime(); }
         }
 
-        /// <summary>
-        /// Gets get the UTC start time for the current process.
-        /// </summary>
+        /// <summary>Get the UTC start time for the current process.</summary>
         /// <remarks>
         /// <para>
         /// This is the UTC time at which the log4net library was loaded into the
@@ -418,9 +386,7 @@ namespace log4net.Util
             get { return s_processStartTimeUtc; }
         }
 
-        /// <summary>
-        /// Gets or sets text to output when a <c>null</c> is encountered.
-        /// </summary>
+        /// <summary>Text to output when a <c>null</c> is encountered.</summary>
         /// <remarks>
         /// <para>
         /// Use this value to indicate a <c>null</c> has been encountered while
@@ -438,9 +404,7 @@ namespace log4net.Util
             set { s_nullText = value; }
         }
 
-        /// <summary>
-        /// Gets or sets text to output when an unsupported feature is requested.
-        /// </summary>
+        /// <summary>Text to output when an unsupported feature is requested.</summary>
         /// <remarks>
         /// <para>
         /// Use this value when an unsupported feature is requested.
@@ -457,9 +421,7 @@ namespace log4net.Util
             set { s_notAvailableText = value; }
         }
 
-        /// <summary>
-        /// Gets the assembly location path for the specified assembly.
-        /// </summary>
+        /// <summary>Gets the assembly location path for the specified assembly.</summary>
         /// <param name="myAssembly">The assembly to get the location for.</param>
         /// <returns>The location of the assembly.</returns>
         /// <remarks>
@@ -472,8 +434,8 @@ namespace log4net.Util
         public static string AssemblyLocationInfo(Assembly myAssembly)
         {
 #if NETCF
-			return "Not supported on Microsoft .NET Compact Framework";
-#elif NETSTANDARD1_3  // TODO Assembly.Location available in netstandard1.5
+            return "Not supported on Microsoft .NET Compact Framework";
+#elif NETSTANDARD1_3
             return "Not supported on .NET Core";
 #else
             if (myAssembly.GlobalAssemblyCache)
@@ -490,14 +452,17 @@ namespace log4net.Util
                         return "Dynamic Assembly";
                     }
 #else
-					if (myAssembly is System.Reflection.Emit.AssemblyBuilder)
-					{
-						return "Dynamic Assembly";
-					}
-					else if(myAssembly.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder")
-					{
-						return "Dynamic Assembly";
-					}
+#if !NETSTANDARD2_0
+                    if (myAssembly is System.Reflection.Emit.AssemblyBuilder)
+                    {
+                        return "Dynamic Assembly";
+                    }
+#endif
+
+                    if (myAssembly.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder")
+                    {
+                        return "Dynamic Assembly";
+                    }
 #endif
                     else
                     {
@@ -530,8 +495,8 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the fully qualified name of the <see cref="Type" />, including
-        /// the name of the assembly from which the <see cref="Type" /> was
+        /// Gets the fully qualified name of the <see cref="Type" />, including 
+        /// the name of the assembly from which the <see cref="Type" /> was 
         /// loaded.
         /// </summary>
         /// <param name="type">The <see cref="Type" /> to get the fully qualified name for.</param>
@@ -547,21 +512,19 @@ namespace log4net.Util
         {
             return type.FullName + ", "
 #if NETSTANDARD1_3
-				+ type.GetTypeInfo().Assembly.FullName;
+                + type.GetTypeInfo().Assembly.FullName;
 #else
                 + type.Assembly.FullName;
 #endif
         }
 
-        /// <summary>
-        /// Gets the short name of the <see cref="Assembly" />.
-        /// </summary>
+        /// <summary>Gets the short name of the <see cref="Assembly" />.</summary>
         /// <param name="myAssembly">The <see cref="Assembly" /> to get the name for.</param>
         /// <returns>The short name of the <see cref="Assembly" />.</returns>
         /// <remarks>
         /// <para>
-        /// The short name of the assembly is the <see cref="Assembly.FullName" />
-        /// without the version, culture, or public key. i.e. it is just the
+        /// The short name of the assembly is the <see cref="Assembly.FullName" /> 
+        /// without the version, culture, or public key. i.e. it is just the 
         /// assembly's file name without the extension.
         /// </para>
         /// <para>
@@ -571,7 +534,7 @@ namespace log4net.Util
         /// <para>
         /// Because of a FileIOPermission security demand we cannot do
         /// the obvious Assembly.GetName().Name. We are allowed to get
-        /// the <see cref="Assembly.FullName" /> of the assembly so we
+        /// the <see cref="Assembly.FullName" /> of the assembly so we 
         /// start from there and strip out just the assembly name.
         /// </para>
         /// </remarks>
@@ -583,17 +546,14 @@ namespace log4net.Util
             {
                 name = name.Substring(0, offset);
             }
-
             return name.Trim();
 
-            // TODO: Do we need to unescape the assembly name string?
-            // Doc says '\' is an escape char but has this already been
+            // TODO: Do we need to unescape the assembly name string? 
+            // Doc says '\' is an escape char but has this already been 
             // done by the string loader?
         }
 
-        /// <summary>
-        /// Gets the file name portion of the <see cref="Assembly" />, including the extension.
-        /// </summary>
+        /// <summary>Gets the file name portion of the <see cref="Assembly" />, including the extension.</summary>
         /// <param name="myAssembly">The <see cref="Assembly" /> to get the file name for.</param>
         /// <returns>The file name of the assembly.</returns>
         /// <remarks>
@@ -604,74 +564,70 @@ namespace log4net.Util
         public static string AssemblyFileName(Assembly myAssembly)
         {
 #if NETCF || NETSTANDARD1_3 // TODO Assembly.Location is in netstandard1.5 System.Reflection
-			// This is not very good because it assumes that only
-			// the entry assembly can be an EXE. In fact multiple
-			// EXEs can be loaded in to a process.
+            // This is not very good because it assumes that only
+            // the entry assembly can be an EXE. In fact multiple
+            // EXEs can be loaded in to a process.
 
-			string assemblyShortName = SystemInfo.AssemblyShortName(myAssembly);
-			string entryAssemblyShortName = System.IO.Path.GetFileNameWithoutExtension(SystemInfo.EntryAssemblyLocation);
+            string assemblyShortName = SystemInfo.AssemblyShortName(myAssembly);
+            string entryAssemblyShortName = System.IO.Path.GetFileNameWithoutExtension(SystemInfo.EntryAssemblyLocation);
 
-			if (string.Compare(assemblyShortName, entryAssemblyShortName, true) == 0)
-			{
-				// assembly is entry assembly
-				return assemblyShortName + ".exe";
-			}
-			else
-			{
-				// assembly is not entry assembly
-				return assemblyShortName + ".dll";
-			}
+            if (string.Compare(assemblyShortName, entryAssemblyShortName, true) == 0)
+            {
+                // assembly is entry assembly
+                return assemblyShortName + ".exe";
+            }
+            else
+            {
+                // assembly is not entry assembly
+                return assemblyShortName + ".dll";
+            }
 #else
-            return System.IO.Path.GetFileName(myAssembly.Location);
+            return Path.GetFileName(myAssembly.Location);
 #endif
         }
 
-        /// <summary>
-        /// Loads the type specified in the type string.
-        /// </summary>
+        /// <summary>Loads the type specified in the type string.</summary>
         /// <param name="relativeType">A sibling type to use to load the type.</param>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
-        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c>.</param>
+        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
-        /// If the type name is fully qualified, i.e. if contains an assembly name in
-        /// the type name, the type will be loaded from the system using
+        /// If the type name is fully qualified, i.e. if contains an assembly name in 
+        /// the type name, the type will be loaded from the system using 
         /// <see cref="M:Type.GetType(string,bool)"/>.
         /// </para>
         /// <para>
         /// If the type name is not fully qualified, it will be loaded from the assembly
-        /// containing the specified relative type. If the type is not found in the assembly
+        /// containing the specified relative type. If the type is not found in the assembly 
         /// then all the loaded assemblies will be searched for the type.
         /// </para>
         /// </remarks>
         public static Type GetTypeFromString(Type relativeType, string typeName, bool throwOnError, bool ignoreCase)
         {
 #if NETSTANDARD1_3
-			return GetTypeFromString(relativeType.GetTypeInfo().Assembly, typeName, throwOnError, ignoreCase);
+            return GetTypeFromString(relativeType.GetTypeInfo().Assembly, typeName, throwOnError, ignoreCase);
 #else
             return GetTypeFromString(relativeType.Assembly, typeName, throwOnError, ignoreCase);
 #endif
         }
-
+        
 #if !NETSTANDARD1_3
-        /// <summary>
-        /// Loads the type specified in the type string.
-        /// </summary>
+        /// <summary>Loads the type specified in the type string.</summary>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
-        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c>.</param>
-        /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
+        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
+        /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>		
         /// <remarks>
         /// <para>
-        /// If the type name is fully qualified, i.e. if contains an assembly name in
-        /// the type name, the type will be loaded from the system using
+        /// If the type name is fully qualified, i.e. if contains an assembly name in 
+        /// the type name, the type will be loaded from the system using 
         /// <see cref="M:Type.GetType(string,bool)"/>.
         /// </para>
         /// <para>
         /// If the type name is not fully qualified it will be loaded from the
-        /// assembly that is directly calling this method. If the type is not found
+        /// assembly that is directly calling this method. If the type is not found 
         /// in the assembly then all the loaded assemblies will be searched for the type.
         /// </para>
         /// </remarks>
@@ -681,43 +637,41 @@ namespace log4net.Util
         }
 #endif
 
-        /// <summary>
-        /// Loads the type specified in the type string.
-        /// </summary>
+        /// <summary>Loads the type specified in the type string.</summary>
         /// <param name="relativeAssembly">An assembly to load the type from.</param>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
-        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c>.</param>
+        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
-        /// If the type name is fully qualified, i.e. if contains an assembly name in
-        /// the type name, the type will be loaded from the system using
+        /// If the type name is fully qualified, i.e. if contains an assembly name in 
+        /// the type name, the type will be loaded from the system using 
         /// <see cref="M:Type.GetType(string,bool)"/>.
         /// </para>
         /// <para>
         /// If the type name is not fully qualified it will be loaded from the specified
-        /// assembly. If the type is not found in the assembly then all the loaded assemblies
+        /// assembly. If the type is not found in the assembly then all the loaded assemblies 
         /// will be searched for the type.
         /// </para>
         /// </remarks>
         public static Type GetTypeFromString(Assembly relativeAssembly, string typeName, bool throwOnError, bool ignoreCase)
         {
             // Check if the type name specifies the assembly name
-            if (typeName.IndexOf(',') == -1)
+            if(typeName.IndexOf(',') == -1)
             {
-                // LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
+                //LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
 #if NETSTANDARD1_3
-				return relativeAssembly.GetType(typeName, throwOnError, ignoreCase);
+                return relativeAssembly.GetType(typeName, throwOnError, ignoreCase);
 #elif NETCF
-				return relativeAssembly.GetType(typeName, throwOnError);
+                return relativeAssembly.GetType(typeName, throwOnError);
 #else
                 // Attempt to lookup the type from the relativeAssembly
                 Type type = relativeAssembly.GetType(typeName, false, ignoreCase);
                 if (type != null)
                 {
                     // Found type in relative assembly
-                    // LogLog.Debug(declaringType, "SystemInfo: Loaded type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
+                    //LogLog.Debug(declaringType, "SystemInfo: Loaded type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
                     return type;
                 }
 
@@ -726,7 +680,7 @@ namespace log4net.Util
                 {
                     loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
                 }
-                catch (System.Security.SecurityException)
+                catch(System.Security.SecurityException)
                 {
                     // Insufficient permissions to get the list of loaded assemblies
                 }
@@ -734,30 +688,28 @@ namespace log4net.Util
                 if (loadedAssemblies != null)
                 {
                     Type fallback = null;
-
                     // Search the loaded assemblies for the type
-                    foreach (Assembly assembly in loadedAssemblies)
+                    foreach (Assembly assembly in loadedAssemblies) 
                     {
                         Type t = assembly.GetType(typeName, false, ignoreCase);
                         if (t != null)
                         {
                             // Found type in loaded assembly
                             LogLog.Debug(declaringType, "Loaded type [" + typeName + "] from assembly [" + assembly.FullName + "] by searching loaded assemblies.");
-                            if (assembly.GlobalAssemblyCache)
-                            {
-                                fallback = t;
-                            }
-                            else
-                            {
-                                return t;
-                            }
+                                                        if (assembly.GlobalAssemblyCache)
+                                                        {
+                                                            fallback = t;
+                                                        }
+                                                        else
+                                                        {
+                                                            return t;
+                                                        }
                         }
                     }
-
-                    if (fallback != null)
-                    {
-                        return fallback;
-                    }
+                                        if (fallback != null)
+                                        {
+                                            return fallback;
+                                        }
                 }
 
                 // Didn't find the type
@@ -765,7 +717,6 @@ namespace log4net.Util
                 {
                     throw new TypeLoadException("Could not load type [" + typeName + "]. Tried assembly [" + relativeAssembly.FullName + "] and all loaded assemblies");
                 }
-
                 return null;
 #endif
             }
@@ -773,45 +724,43 @@ namespace log4net.Util
             {
                 // Includes explicit assembly name
                 // LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from global Type");
+
 #if NETCF
-				// In NETCF 2 and 3 arg versions seem to behave differently
-				// https://issues.apache.org/jira/browse/LOG4NET-113
-				return Type.GetType(typeName, throwOnError);
+                // In NETCF 2 and 3 arg versions seem to behave differently
+                // https://issues.apache.org/jira/browse/LOG4NET-113
+                return Type.GetType(typeName, throwOnError);
 #else
                 return Type.GetType(typeName, throwOnError, ignoreCase);
 #endif
             }
         }
 
-        /// <summary>
-        /// Generate a new guid.
-        /// </summary>
-        /// <returns>A new Guid.</returns>
+
+        /// <summary>Generate a new guid</summary>
+        /// <returns>A new Guid</returns>
         /// <remarks>
         /// <para>
-        /// Generate a new guid.
+        /// Generate a new guid
         /// </para>
         /// </remarks>
         public static Guid NewGuid()
         {
 #if NETCF_1_0
-			return PocketGuid.NewGuid();
+            return PocketGuid.NewGuid();
 #else
             return Guid.NewGuid();
 #endif
         }
 
-        /// <summary>
-        /// Create an <see cref="ArgumentOutOfRangeException"/>.
-        /// </summary>
-        /// <param name="parameterName">The name of the parameter that caused the exception.</param>
-        /// <param name="actualValue">The value of the argument that causes this exception.</param>
-        /// <param name="message">The message that describes the error.</param>
-        /// <returns>the ArgumentOutOfRangeException object.</returns>
+        /// <summary>Create an <see cref="ArgumentOutOfRangeException"/></summary>
+        /// <param name="parameterName">The name of the parameter that caused the exception</param>
+        /// <param name="actualValue">The value of the argument that causes this exception</param>
+        /// <param name="message">The message that describes the error</param>
+        /// <returns>the ArgumentOutOfRangeException object</returns>
         /// <remarks>
         /// <para>
-        /// Create a new instance of the <see cref="ArgumentOutOfRangeException"/> class
-        /// with a specified error message, the parameter name, and the value
+        /// Create a new instance of the <see cref="ArgumentOutOfRangeException"/> class 
+        /// with a specified error message, the parameter name, and the value 
         /// of the argument.
         /// </para>
         /// <para>
@@ -823,20 +772,19 @@ namespace log4net.Util
         public static ArgumentOutOfRangeException CreateArgumentOutOfRangeException(string parameterName, object actualValue, string message)
         {
 #if NETCF_1_0
-			return new ArgumentOutOfRangeException(message + " [param=" + parameterName + "] [value=" + actualValue + "]");
+            return new ArgumentOutOfRangeException(message + " [param=" + parameterName + "] [value=" + actualValue + "]");
 #elif NETCF_2_0
-			return new ArgumentOutOfRangeException(parameterName, message + " [value=" + actualValue + "]");
+            return new ArgumentOutOfRangeException(parameterName, message + " [value=" + actualValue + "]");
 #else
             return new ArgumentOutOfRangeException(parameterName, actualValue, message);
 #endif
         }
 
-        /// <summary>
-        /// Parse a string into an <see cref="int"/> value.
-        /// </summary>
-        /// <param name="s">the string to parse.</param>
-        /// <param name="val">out param where the parsed value is placed.</param>
-        /// <returns><c>true</c> if the string was able to be parsed into an integer.</returns>
+
+        /// <summary>Parse a string into an <see cref="Int32"/> value</summary>
+        /// <param name="s">the string to parse</param>
+        /// <param name="val">out param where the parsed value is placed</param>
+        /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
         /// <remarks>
         /// <para>
         /// Attempts to parse the string into an integer. If the string cannot
@@ -846,17 +794,17 @@ namespace log4net.Util
         public static bool TryParse(string s, out int val)
         {
 #if NETCF
-			val = 0;
-			try
-			{
-				val = int.Parse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture);
-				return true;
-			}
-			catch
-			{
-			}
+            val = 0;
+            try
+            {
+                val = int.Parse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture);
+                return true;
+            }
+            catch
+            {
+            }
 
-			return false;
+            return false;
 #else
             // Initialise out param
             val = 0;
@@ -864,7 +812,7 @@ namespace log4net.Util
             try
             {
                 double doubleVal;
-                if (double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
+                if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
                 {
                     val = Convert.ToInt32(doubleVal);
                     return true;
@@ -879,12 +827,10 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Parse a string into an <see cref="long"/> value.
-        /// </summary>
-        /// <param name="s">the string to parse.</param>
-        /// <param name="val">out param where the parsed value is placed.</param>
-        /// <returns><c>true</c> if the string was able to be parsed into an integer.</returns>
+        /// <summary>Parse a string into an <see cref="Int64"/> value</summary>
+        /// <param name="s">the string to parse</param>
+        /// <param name="val">out param where the parsed value is placed</param>
+        /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
         /// <remarks>
         /// <para>
         /// Attempts to parse the string into an integer. If the string cannot
@@ -894,17 +840,17 @@ namespace log4net.Util
         public static bool TryParse(string s, out long val)
         {
 #if NETCF
-			val = 0;
-			try
-			{
-				val = long.Parse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture);
-				return true;
-			}
-			catch
-			{
-			}
+            val = 0;
+            try
+            {
+                val = long.Parse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture);
+                return true;
+            }
+            catch
+            {
+            }
 
-			return false;
+            return false;
 #else
             // Initialise out param
             val = 0;
@@ -912,7 +858,7 @@ namespace log4net.Util
             try
             {
                 double doubleVal;
-                if (double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
+                if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
                 {
                     val = Convert.ToInt64(doubleVal);
                     return true;
@@ -927,12 +873,10 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Parse a string into an <see cref="short"/> value.
-        /// </summary>
-        /// <param name="s">the string to parse.</param>
-        /// <param name="val">out param where the parsed value is placed.</param>
-        /// <returns><c>true</c> if the string was able to be parsed into an integer.</returns>
+        /// <summary>Parse a string into an <see cref="Int16"/> value</summary>
+        /// <param name="s">the string to parse</param>
+        /// <param name="val">out param where the parsed value is placed</param>
+        /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
         /// <remarks>
         /// <para>
         /// Attempts to parse the string into an integer. If the string cannot
@@ -942,25 +886,25 @@ namespace log4net.Util
         public static bool TryParse(string s, out short val)
         {
 #if NETCF
-			val = 0;
-			try
-			{
-				val = short.Parse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture);
-				return true;
-			}
-			catch
-			{
-			}
+            val = 0;
+            try
+            {
+                val = short.Parse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture);
+                return true;
+            }
+            catch
+            {
+            }
 
-			return false;
+            return false;
 #else
             // Initialise out param
             val = 0;
 
-            try
+            try 
             {
                 double doubleVal;
-                if (double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
+                if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
                 {
                     val = Convert.ToInt16(doubleVal);
                     return true;
@@ -975,14 +919,12 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Lookup an application setting.
-        /// </summary>
-        /// <param name="key">the application settings key to lookup.</param>
-        /// <returns>the value for the key, or <c>null</c>.</returns>
+        /// <summary>Lookup an application setting</summary>
+        /// <param name="key">the application settings key to lookup</param>
+        /// <returns>the value for the key, or <c>null</c></returns>
         /// <remarks>
         /// <para>
-        /// Configuration APIs are not supported under the Compact Framework.
+        /// Configuration APIs are not supported under the Compact Framework
         /// </para>
         /// </remarks>
         public static string GetAppSetting(string key)
@@ -990,32 +932,29 @@ namespace log4net.Util
             try
             {
 #if NETCF || NETSTANDARD1_3
-				// Configuration APIs are not suported under the Compact Framework
-#elif NET_2_0
+                // Configuration APIs are not suported under the Compact Framework
+#elif NET_2_0 || NETSTANDARD2_0
                 return ConfigurationManager.AppSettings[key];
 #else
-				return ConfigurationSettings.AppSettings[key];
+                return ConfigurationSettings.AppSettings[key];
 #endif
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 // If an exception is thrown here then it looks like the config file does not parse correctly.
                 LogLog.Error(declaringType, "Exception while reading ConfigurationSettings. Check your .config file is well formed XML.", ex);
             }
-
             return null;
         }
 
-        /// <summary>
-        /// Convert a path into a fully qualified local file path.
-        /// </summary>
+        /// <summary>Convert a path into a fully qualified local file path.</summary>
         /// <param name="path">The path to convert.</param>
         /// <returns>The fully qualified path.</returns>
         /// <remarks>
         /// <para>
         /// Converts the path specified to a fully
         /// qualified path. If the path is relative it is
-        /// taken as relative from the application base
+        /// taken as relative from the application base 
         /// directory.
         /// </para>
         /// <para>
@@ -1032,7 +971,7 @@ namespace log4net.Util
             string baseDirectory = string.Empty;
             try
             {
-                string applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
+                string applicationBaseDirectory = ApplicationBaseDirectory;
                 if (applicationBaseDirectory != null)
                 {
                     // applicationBaseDirectory may be a URI not a local file path
@@ -1053,14 +992,11 @@ namespace log4net.Util
                 // Note that Path.Combine will return the second path if it is rooted
                 return Path.GetFullPath(Path.Combine(baseDirectory, path));
             }
-
             return Path.GetFullPath(path);
         }
 
-        /// <summary>
-        /// Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity.
-        /// </summary>
-        /// <returns>A new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity.</returns>
+        /// <summary>Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity. </summary>
+        /// <returns>A new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity</returns>
         /// <remarks>
         /// <para>
         /// The new Hashtable instance uses the default load factor, the CaseInsensitiveHashCodeProvider, and the CaseInsensitiveComparer.
@@ -1069,17 +1005,15 @@ namespace log4net.Util
         public static Hashtable CreateCaseInsensitiveHashtable()
         {
 #if NETCF_1_0
-			return new Hashtable(CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default);
+            return new Hashtable(CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default);
 #elif NETCF_2_0 || NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0
             return new Hashtable(StringComparer.OrdinalIgnoreCase);
 #else
-			return System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
+            return System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
 #endif
         }
 
-        /// <summary>
-        /// Tests two strings for equality, the ignoring case.
-        /// </summary>
+        /// <summary>Tests two strings for equality, the ignoring case.</summary>
         /// <remarks>
         /// If the platform permits, culture information is ignored completely (ordinal comparison).
         /// The aim of this method is to provide a fast comparison that deals with <c>null</c> and ignores different casing.
@@ -1089,57 +1023,55 @@ namespace log4net.Util
         /// <param name="a">The one string.</param>
         /// <param name="b">The other string.</param>
         /// <returns><c>true</c> if the strings are equal, <c>false</c> otherwise.</returns>
-        public static bool EqualsIgnoringCase(string a, string b)
+        public static Boolean EqualsIgnoringCase(String a, String b)
         {
 #if NET_1_0 || NET_1_1 || NETCF_1_0
             return string.Compare(a, b, true, System.Globalization.CultureInfo.InvariantCulture) == 0
 #elif NETSTANDARD1_3
             return CultureInfo.InvariantCulture.CompareInfo.Compare(a, b, CompareOptions.IgnoreCase) == 0;
 #else // >= .NET-2.0
-            return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+            return String.Equals(a, b, StringComparison.OrdinalIgnoreCase);
 #endif
         }
 
 #if NETCF
-		private static string NativeEntryAssemblyLocation 
-		{
-			get 
-			{
-				StringBuilder moduleName = null;
+        private static string NativeEntryAssemblyLocation 
+        {
+            get 
+            {
+                StringBuilder moduleName = null;
 
-				IntPtr moduleHandle = GetModuleHandle(IntPtr.Zero);
+                IntPtr moduleHandle = GetModuleHandle(IntPtr.Zero);
 
-				if (moduleHandle != IntPtr.Zero) 
-				{
-					moduleName = new StringBuilder(255);
-					if (GetModuleFileName(moduleHandle, moduleName,	moduleName.Capacity) == 0) 
-					{
-						throw new NotSupportedException(NativeError.GetLastError().ToString());
-					}
-				} 
-				else 
-				{
-					throw new NotSupportedException(NativeError.GetLastError().ToString());
-				}
+                if (moduleHandle != IntPtr.Zero) 
+                {
+                    moduleName = new StringBuilder(255);
+                    if (GetModuleFileName(moduleHandle, moduleName,	moduleName.Capacity) == 0) 
+                    {
+                        throw new NotSupportedException(NativeError.GetLastError().ToString());
+                    }
+                } 
+                else 
+                {
+                    throw new NotSupportedException(NativeError.GetLastError().ToString());
+                }
 
-				return moduleName.ToString();
-			}
-		}
+                return moduleName.ToString();
+            }
+        }
 
-		[DllImport("CoreDll.dll", SetLastError=true, CharSet=CharSet.Unicode)]
-		private static extern IntPtr GetModuleHandle(IntPtr ModuleName);
+        [DllImport("CoreDll.dll", SetLastError=true, CharSet=CharSet.Unicode)]
+        private static extern IntPtr GetModuleHandle(IntPtr ModuleName);
 
-		[DllImport("CoreDll.dll", SetLastError=true, CharSet=CharSet.Unicode)]
-		private static extern Int32 GetModuleFileName(
-			IntPtr hModule,
-			StringBuilder ModuleName,
-			Int32 cch);
+        [DllImport("CoreDll.dll", SetLastError=true, CharSet=CharSet.Unicode)]
+        private static extern Int32 GetModuleFileName(
+            IntPtr hModule,
+            StringBuilder ModuleName,
+            Int32 cch);
 
 #endif
 
-        /// <summary>
-        /// Gets an empty array of types.
-        /// </summary>
+        /// <summary>Gets an empty array of types.</summary>
         /// <remarks>
         /// <para>
         /// The <c>Type.EmptyTypes</c> field is not available on
@@ -1148,157 +1080,141 @@ namespace log4net.Util
         /// </remarks>
         public static readonly Type[] EmptyTypes = new Type[0];
 
-        /// <summary>
-        /// The fully qualified type of the SystemInfo class.
-        /// </summary>
+        /// <summary>The fully qualified type of the SystemInfo class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(SystemInfo);
 
-        /// <summary>
-        /// Cache the host name for the current machine.
-        /// </summary>
+        /// <summary>Cache the host name for the current machine</summary>
         private static string s_hostName;
 
-        /// <summary>
-        /// Cache the application friendly name.
-        /// </summary>
+        /// <summary>Cache the application friendly name</summary>
         private static string s_appFriendlyName;
 
-        /// <summary>
-        /// Text to output when a <c>null</c> is encountered.
-        /// </summary>
+        /// <summary>Text to output when a <c>null</c> is encountered.</summary>
         private static string s_nullText;
 
-        /// <summary>
-        /// Text to output when an unsupported feature is requested.
-        /// </summary>
+        /// <summary>Text to output when an unsupported feature is requested.</summary>
         private static string s_notAvailableText;
 
-        /// <summary>
-        /// Start time for the current process.
-        /// </summary>
+        /// <summary>Start time for the current process.</summary>
         private static DateTime s_processStartTimeUtc = DateTime.UtcNow;
 
 #if NETCF_1_0
-		/// <summary>
-		/// Generate GUIDs on the .NET Compact Framework.
-		/// </summary>
-		public class PocketGuid
-		{
-			// guid variant types
-			private enum GuidVariant
-			{
-				ReservedNCS = 0x00,
-				Standard = 0x02,
-				ReservedMicrosoft = 0x06,
-				ReservedFuture = 0x07
-			}
+        /// <summary>Generate GUIDs on the .NET Compact Framework.</summary>
+        public class PocketGuid
+        {
+            // guid variant types
+            private enum GuidVariant
+            {
+                ReservedNCS = 0x00,
+                Standard = 0x02,
+                ReservedMicrosoft = 0x06,
+                ReservedFuture = 0x07
+            }
 
-			// guid version types
-			private enum GuidVersion
-			{
-				TimeBased = 0x01,
-				Reserved = 0x02,
-				NameBased = 0x03,
-				Random = 0x04
-			}
+            // guid version types
+            private enum GuidVersion
+            {
+                TimeBased = 0x01,
+                Reserved = 0x02,
+                NameBased = 0x03,
+                Random = 0x04
+            }
 
-			// constants that are used in the class
-			private class Const
-			{
-				// number of bytes in guid
-				public const int ByteArraySize = 16;
+            // constants that are used in the class
+            private class Const
+            {
+                // number of bytes in guid
+                public const int ByteArraySize = 16;
 
-				// multiplex variant info
-				public const int VariantByte = 8;
-				public const int VariantByteMask = 0x3f;
-				public const int VariantByteShift = 6;
+                // multiplex variant info
+                public const int VariantByte = 8;
+                public const int VariantByteMask = 0x3f;
+                public const int VariantByteShift = 6;
 
-				// multiplex version info
-				public const int VersionByte = 7;
-				public const int VersionByteMask = 0x0f;
-				public const int VersionByteShift = 4;
-			}
+                // multiplex version info
+                public const int VersionByte = 7;
+                public const int VersionByteMask = 0x0f;
+                public const int VersionByteShift = 4;
+            }
 
-			// imports for the crypto api functions
-			private class WinApi
-			{
-				public const uint PROV_RSA_FULL = 1;
-				public const uint CRYPT_VERIFYCONTEXT = 0xf0000000;
+            // imports for the crypto api functions
+            private class WinApi
+            {
+                public const uint PROV_RSA_FULL = 1;
+                public const uint CRYPT_VERIFYCONTEXT = 0xf0000000;
 
-				[DllImport("CoreDll.dll")] 
-				public static extern bool CryptAcquireContext(
-					ref IntPtr phProv, string pszContainer, string pszProvider,
-					uint dwProvType, uint dwFlags);
+                [DllImport("CoreDll.dll")] 
+                public static extern bool CryptAcquireContext(
+                    ref IntPtr phProv, string pszContainer, string pszProvider,
+                    uint dwProvType, uint dwFlags);
 
-				[DllImport("CoreDll.dll")] 
-				public static extern bool CryptReleaseContext( 
-					IntPtr hProv, uint dwFlags);
+                [DllImport("CoreDll.dll")] 
+                public static extern bool CryptReleaseContext( 
+                    IntPtr hProv, uint dwFlags);
 
-				[DllImport("CoreDll.dll")] 
-				public static extern bool CryptGenRandom(
-					IntPtr hProv, int dwLen, byte[] pbBuffer);
-			}
+                [DllImport("CoreDll.dll")] 
+                public static extern bool CryptGenRandom(
+                    IntPtr hProv, int dwLen, byte[] pbBuffer);
+            }
 
-			// all static methods
-			private PocketGuid()
-			{
-			}
+            // all static methods
+            private PocketGuid()
+            {
+            }
 
-			/// <summary>
-			/// Return a new System.Guid object.
-			/// </summary>
-			public static Guid NewGuid()
-			{
-				IntPtr hCryptProv = IntPtr.Zero;
-				Guid guid = Guid.Empty;
+            /// <summary>Return a new System.Guid object.</summary>
+            public static Guid NewGuid()
+            {
+                IntPtr hCryptProv = IntPtr.Zero;
+                Guid guid = Guid.Empty;
 
-				try
-				{
-					// holds random bits for guid
-					byte[] bits = new byte[Const.ByteArraySize];
+                try
+                {
+                    // holds random bits for guid
+                    byte[] bits = new byte[Const.ByteArraySize];
 
-					// get crypto provider handle
-					if (!WinApi.CryptAcquireContext(ref hCryptProv, null, null, 
-						WinApi.PROV_RSA_FULL, WinApi.CRYPT_VERIFYCONTEXT))
-					{
-						throw new SystemException(
-							"Failed to acquire cryptography handle.");
-					}
+                    // get crypto provider handle
+                    if (!WinApi.CryptAcquireContext(ref hCryptProv, null, null, 
+                        WinApi.PROV_RSA_FULL, WinApi.CRYPT_VERIFYCONTEXT))
+                    {
+                        throw new SystemException(
+                            "Failed to acquire cryptography handle.");
+                    }
 
-					// generate a 128 bit (16 byte) cryptographically random number
-					if (!WinApi.CryptGenRandom(hCryptProv, bits.Length, bits))
-					{
-						throw new SystemException(
-							"Failed to generate cryptography random bytes.");
-					}
+                    // generate a 128 bit (16 byte) cryptographically random number
+                    if (!WinApi.CryptGenRandom(hCryptProv, bits.Length, bits))
+                    {
+                        throw new SystemException(
+                            "Failed to generate cryptography random bytes.");
+                    }
 
-					// set the variant
-					bits[Const.VariantByte] &= Const.VariantByteMask;
-					bits[Const.VariantByte] |= 
-						((int)GuidVariant.Standard << Const.VariantByteShift);
+                    // set the variant
+                    bits[Const.VariantByte] &= Const.VariantByteMask;
+                    bits[Const.VariantByte] |= 
+                        ((int)GuidVariant.Standard << Const.VariantByteShift);
 
-					// set the version
-					bits[Const.VersionByte] &= Const.VersionByteMask;
-					bits[Const.VersionByte] |= 
-						((int)GuidVersion.Random << Const.VersionByteShift);
+                    // set the version
+                    bits[Const.VersionByte] &= Const.VersionByteMask;
+                    bits[Const.VersionByte] |= 
+                        ((int)GuidVersion.Random << Const.VersionByteShift);
 
-					// create the new System.Guid object
-					guid = new Guid(bits);
-				}
-				finally
-				{
-					// release the crypto provider handle
-					if (hCryptProv != IntPtr.Zero)
-						WinApi.CryptReleaseContext(hCryptProv, 0);
-				}
+                    // create the new System.Guid object
+                    guid = new Guid(bits);
+                }
+                finally
+                {
+                    // release the crypto provider handle
+                    if (hCryptProv != IntPtr.Zero)
+                        WinApi.CryptReleaseContext(hCryptProv, 0);
+                }
 
-				return guid;
-			}
-		}
+                return guid;
+            }
+        }
 #endif
     }
 }

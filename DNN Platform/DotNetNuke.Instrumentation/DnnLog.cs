@@ -55,9 +55,7 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        /// <summary>
-        ///   Standard method to use on method entry.
-        /// </summary>
+        /// <summary>  Standard method to use on method entry.</summary>
         public static void MethodEntry()
         {
             EnsureConfig();
@@ -85,9 +83,7 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        /// <summary>
-        ///   Standard method to use on method exit.
-        /// </summary>
+        /// <summary>  Standard method to use on method exit.</summary>
         public static void MethodExit()
         {
             EnsureConfig();

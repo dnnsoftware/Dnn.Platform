@@ -1,32 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
 
 namespace log4net.Appender
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
     /// <summary>
     /// A strongly-typed collection of <see cref="IAppender"/> objects.
     /// </summary>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Nicko Cadell</author>
     public class AppenderCollection : ICollection, IList, IEnumerable
 #if !NETSTANDARD1_3
         , ICloneable
@@ -47,7 +47,7 @@ namespace log4net.Appender
             /// Advances the enumerator to the next element in the collection.
             /// </summary>
             /// <returns>
-            /// <c>true</c> if the enumerator was successfully advanced to the next element;
+            /// <c>true</c> if the enumerator was successfully advanced to the next element; 
             /// <c>false</c> if the enumerator has passed the end of the collection.
             /// </returns>
             /// <exception cref="InvalidOperationException">
@@ -62,6 +62,7 @@ namespace log4net.Appender
         }
 
         private const int DEFAULT_CAPACITY = 16;
+
         private IAppender[] m_array;
         private int m_count = 0;
         private int m_version = 0;
@@ -69,13 +70,13 @@ namespace log4net.Appender
         /// <summary>
         /// Creates a read-only wrapper for a <c>AppenderCollection</c> instance.
         /// </summary>
-        /// <param name="list">list to create a readonly wrapper arround.</param>
+        /// <param name="list">list to create a readonly wrapper arround</param>
         /// <returns>
         /// An <c>AppenderCollection</c> wrapper that is read-only.
         /// </returns>
         public static AppenderCollection ReadOnly(AppenderCollection list)
         {
-            if (list == null)
+            if(list == null)
             {
                 throw new ArgumentNullException("list");
             }
@@ -84,12 +85,11 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// An empty readonly static AppenderCollection.
+        /// An empty readonly static AppenderCollection
         /// </summary>
         public static readonly AppenderCollection EmptyCollection = ReadOnly(new AppenderCollection(0));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppenderCollection"/> class.
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that is empty and has the default initial capacity.
         /// </summary>
@@ -97,9 +97,8 @@ namespace log4net.Appender
         {
             this.m_array = new IAppender[DEFAULT_CAPACITY];
         }
-
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppenderCollection"/> class.
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that has the specified initial capacity.
         /// </summary>
@@ -112,7 +111,6 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppenderCollection"/> class.
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that contains elements copied from the specified <c>AppenderCollection</c>.
         /// </summary>
@@ -124,7 +122,6 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppenderCollection"/> class.
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that contains elements copied from the specified <see cref="IAppender"/> array.
         /// </summary>
@@ -134,9 +131,8 @@ namespace log4net.Appender
             this.m_array = new IAppender[a.Length];
             this.AddRange(a);
         }
-
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppenderCollection"/> class.
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that contains elements copied from the specified <see cref="IAppender"/> collection.
         /// </summary>
@@ -149,24 +145,23 @@ namespace log4net.Appender
 
         /// <summary>
         /// Type visible only to our subclasses
-        /// Used to access protected constructor.
+        /// Used to access protected constructor
         /// </summary>
         /// <exclude/>
-        internal protected enum Tag
+        protected internal enum Tag 
         {
             /// <summary>
             /// A value
             /// </summary>
-            Default,
+            Default
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppenderCollection"/> class.
-        /// Allow subclasses to avoid our default constructors.
+        /// Allow subclasses to avoid our default constructors
         /// </summary>
         /// <param name="tag"></param>
         /// <exclude/>
-        internal protected AppenderCollection(Tag tag)
+        protected internal AppenderCollection(Tag tag)
         {
             this.m_array = null;
         }
@@ -199,10 +194,10 @@ namespace log4net.Appender
         {
             if (this.m_count > array.GetUpperBound(0) + 1 - start)
             {
-                throw new System.ArgumentException("Destination array was not long enough.");
+                throw new ArgumentException("Destination array was not long enough.");
             }
-
-            Array.Copy(this.m_array, 0, array, start, this.m_count);
+            
+            Array.Copy(this.m_array, 0, array, start, this.m_count); 
         }
 
         /// <summary>
@@ -227,23 +222,22 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///         <para><paramref name="index"/> is less than zero.</para>
-        ///         <para>-or-</para>
-        ///         <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
+        ///        <para><paramref name="index"/> is less than zero</para>
+        ///        <para>-or-</para>
+        ///        <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
         public virtual IAppender this[int index]
         {
             get
             {
                 this.ValidateIndex(index); // throws
-                return this.m_array[index];
+                return this.m_array[index]; 
             }
-
             set
             {
                 this.ValidateIndex(index); // throws
                 ++this.m_version;
-                this.m_array[index] = value;
+                this.m_array[index] = value; 
             }
         }
 
@@ -264,7 +258,7 @@ namespace log4net.Appender
 
             return this.m_count++;
         }
-
+        
         /// <summary>
         /// Removes all elements from the <c>AppenderCollection</c>.
         /// </summary>
@@ -274,7 +268,7 @@ namespace log4net.Appender
             this.m_array = new IAppender[DEFAULT_CAPACITY];
             this.m_count = 0;
         }
-
+        
         /// <summary>
         /// Creates a shallow copy of the <see cref="AppenderCollection"/>.
         /// </summary>
@@ -303,7 +297,6 @@ namespace log4net.Appender
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -313,7 +306,7 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="item">The <see cref="IAppender"/> to locate in the <c>AppenderCollection</c>.</param>
         /// <returns>
-        /// The zero-based index of the first occurrence of <paramref name="item"/>
+        /// The zero-based index of the first occurrence of <paramref name="item"/> 
         /// in the entire <c>AppenderCollection</c>, if found; otherwise, -1.
         /// </returns>
         public virtual int IndexOf(IAppender item)
@@ -325,7 +318,6 @@ namespace log4net.Appender
                     return i;
                 }
             }
-
             return -1;
         }
 
@@ -335,14 +327,14 @@ namespace log4net.Appender
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="IAppender"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero.</para>
+        /// <para><paramref name="index"/> is less than zero</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
         public virtual void Insert(int index, IAppender item)
         {
             this.ValidateIndex(index, true); // throws
-
+            
             if (this.m_count == this.m_array.Length)
             {
                 this.EnsureCapacity(this.m_count + 1);
@@ -366,13 +358,13 @@ namespace log4net.Appender
         /// The specified <see cref="IAppender"/> was not found in the <c>AppenderCollection</c>.
         /// </exception>
         public virtual void Remove(IAppender item)
-        {
+        {		   
             int i = this.IndexOf(item);
             if (i < 0)
             {
-                throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
+                throw new ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
             }
-
+            
             ++this.m_version;
             this.RemoveAt(i);
         }
@@ -382,7 +374,7 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero.</para>
+        /// <para><paramref name="index"/> is less than zero</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
@@ -396,9 +388,9 @@ namespace log4net.Appender
             {
                 Array.Copy(this.m_array, index + 1, this.m_array, index, this.m_count - index);
             }
-
+            
             // We can't set the deleted entry equal to null, because it might be a value type.
-            // Instead, we'll create an empty single-element array of the right type and copy it
+            // Instead, we'll create an empty single-element array of the right type and copy it 
             // over the entry we want to erase.
             IAppender[] temp = new IAppender[1];
             Array.Copy(temp, 0, this.m_array, this.m_count, 1);
@@ -408,7 +400,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether the collection has a fixed size.
         /// </summary>
-        /// <value>true if the collection has a fixed size; otherwise, false. The default is false.</value>
+        /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
         public virtual bool IsFixedSize
         {
             get { return false; }
@@ -417,7 +409,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether the IList is read-only.
         /// </summary>
-        /// <value>true if the collection is read-only; otherwise, false. The default is false.</value>
+        /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
         public virtual bool IsReadOnly
         {
             get { return false; }
@@ -437,11 +429,10 @@ namespace log4net.Appender
         /// </summary>
         public virtual int Capacity
         {
-            get
-            {
-                return this.m_array.Length;
+            get 
+            { 
+                return this.m_array.Length; 
             }
-
             set
             {
                 if (value < this.m_count)
@@ -476,7 +467,7 @@ namespace log4net.Appender
             {
                 this.EnsureCapacity(this.m_count + x.Count);
             }
-
+            
             Array.Copy(x.m_array, 0, this.m_array, this.m_count, x.Count);
             this.m_count += x.Count;
             this.m_version++;
@@ -502,7 +493,7 @@ namespace log4net.Appender
 
             return this.m_count;
         }
-
+        
         /// <summary>
         /// Adds the elements of a <see cref="IAppender"/> collection to the current <c>AppenderCollection</c>.
         /// </summary>
@@ -515,7 +506,7 @@ namespace log4net.Appender
                 this.EnsureCapacity(this.m_count + col.Count);
             }
 
-            foreach (object item in col)
+            foreach(object item in col)
             {
                 this.Add((IAppender)item);
             }
@@ -532,9 +523,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Return the collection elements as an array.
+        /// Return the collection elements as an array
         /// </summary>
-        /// <returns>the array.</returns>
+        /// <returns>the array</returns>
         public virtual IAppender[] ToArray()
         {
             IAppender[] resultArray = new IAppender[this.m_count];
@@ -542,12 +533,11 @@ namespace log4net.Appender
             {
                 Array.Copy(this.m_array, 0, resultArray, 0, this.m_count);
             }
-
             return resultArray;
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="i"/> is less than zero.</para>
+        /// <para><paramref name="i"/> is less than zero</para>
         /// <para>-or-</para>
         /// <para><paramref name="i"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
@@ -557,22 +547,22 @@ namespace log4net.Appender
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="i"/> is less than zero.</para>
+        /// <para><paramref name="i"/> is less than zero</para>
         /// <para>-or-</para>
         /// <para><paramref name="i"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
         private void ValidateIndex(int i, bool allowEqualEnd)
         {
-            int max = allowEqualEnd ? this.m_count : (this.m_count - 1);
+            int max = (allowEqualEnd) ? (this.m_count) : (this.m_count-1);
             if (i < 0 || i > max)
             {
-                throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");
+                throw Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");
             }
         }
 
         private void EnsureCapacity(int min)
         {
-            int newCapacity = (this.m_array.Length == 0) ? DEFAULT_CAPACITY : this.m_array.Length * 2;
+            int newCapacity = ((this.m_array.Length == 0) ? DEFAULT_CAPACITY : this.m_array.Length * 2);
             if (newCapacity < min)
             {
                 newCapacity = min;
@@ -627,7 +617,7 @@ namespace log4net.Appender
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)this.GetEnumerator();
+            return (IEnumerator)(this.GetEnumerator());
         }
 
         /// <summary>
@@ -641,7 +631,6 @@ namespace log4net.Appender
             private int m_version;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Enumerator"/> class.
             /// Initializes a new instance of the <c>Enumerator</c> class.
             /// </summary>
             /// <param name="tc"></param>
@@ -664,7 +653,7 @@ namespace log4net.Appender
             /// Advances the enumerator to the next element in the collection.
             /// </summary>
             /// <returns>
-            /// <c>true</c> if the enumerator was successfully advanced to the next element;
+            /// <c>true</c> if the enumerator was successfully advanced to the next element; 
             /// <c>false</c> if the enumerator has passed the end of the collection.
             /// </returns>
             /// <exception cref="InvalidOperationException">
@@ -674,11 +663,11 @@ namespace log4net.Appender
             {
                 if (this.m_version != this.m_collection.m_version)
                 {
-                    throw new System.InvalidOperationException("Collection was modified; enumeration operation may not execute.");
+                    throw new InvalidOperationException("Collection was modified; enumeration operation may not execute.");
                 }
 
                 ++this.m_index;
-                return this.m_index < this.m_collection.Count;
+                return (this.m_index < this.m_collection.Count);
             }
 
             /// <summary>
@@ -700,8 +689,7 @@ namespace log4net.Appender
         {
             private readonly AppenderCollection m_collection;
 
-            internal ReadOnlyAppenderCollection(AppenderCollection list)
-                : base(Tag.Default)
+            internal ReadOnlyAppenderCollection(AppenderCollection list) : base(Tag.Default)
             {
                 this.m_collection = list;
             }
@@ -820,4 +808,5 @@ namespace log4net.Appender
             }
         }
     }
+
 }

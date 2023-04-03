@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -14,6 +15,10 @@ namespace DotNetNuke.UI.Containers
 
     public partial class LinkActions : ActionBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected string _itemSeparator = string.Empty;
 
         public string ItemSeparator
@@ -29,6 +34,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -43,8 +49,8 @@ namespace DotNetNuke.UI.Containers
                             this.Controls.Clear();
                         }
 
-                        var PreSpacer = new LiteralControl(this.ItemSeparator);
-                        this.Controls.Add(PreSpacer);
+                        var preSpacer = new LiteralControl(this.ItemSeparator);
+                        this.Controls.Add(preSpacer);
 
                         // Add Menu Items
                         foreach (ModuleAction action in this.ActionRoot.Actions)
@@ -60,16 +66,16 @@ namespace DotNetNuke.UI.Containers
                                     if ((this.ModuleControl.ModuleContext.EditMode && Globals.IsAdminControl() == false) ||
                                         (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                     {
-                                        var ModuleActionLink = new LinkButton();
-                                        ModuleActionLink.Text = action.Title;
-                                        ModuleActionLink.CssClass = "CommandButton";
-                                        ModuleActionLink.ID = "lnk" + action.ID;
+                                        var moduleActionLink = new LinkButton();
+                                        moduleActionLink.Text = action.Title;
+                                        moduleActionLink.CssClass = "CommandButton";
+                                        moduleActionLink.ID = "lnk" + action.ID;
 
-                                        ModuleActionLink.Click += this.LinkAction_Click;
+                                        moduleActionLink.Click += this.LinkAction_Click;
 
-                                        this.Controls.Add(ModuleActionLink);
-                                        var Spacer = new LiteralControl(this.ItemSeparator);
-                                        this.Controls.Add(Spacer);
+                                        this.Controls.Add(moduleActionLink);
+                                        var spacer = new LiteralControl(this.ItemSeparator);
+                                        this.Controls.Add(spacer);
                                     }
                                 }
                             }
@@ -87,12 +93,13 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -108,7 +115,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((LinkButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

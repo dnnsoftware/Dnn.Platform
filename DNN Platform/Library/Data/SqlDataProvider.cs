@@ -18,10 +18,10 @@ namespace DotNetNuke.Data
     {
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
-        private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
+        private static DatabaseConnectionProvider dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
 
         /// <inheritdoc/>
-        public override bool IsConnectionValid => CanConnect();
+        public override bool IsConnectionValid => this.CanConnect();
 
         /// <inheritdoc/>
         public override Dictionary<string, string> Settings
@@ -35,61 +35,61 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
-            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+            dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         /// <inheritdoc/>
         public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+            dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
+            dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
         {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
+            dbConnectionProvider.BulkInsert(this.ConnectionString, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
         {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         /// <inheritdoc/>
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
         {
-            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+            return dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+            return dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         /// <inheritdoc/>
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+            return dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         /// <inheritdoc/>
         public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+            return dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         /// <inheritdoc/>
@@ -228,7 +228,7 @@ namespace DotNetNuke.Data
                     {
                         Logger.Trace("Executing SQL Script " + sql);
 
-                        _dbConnectionProvider.ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, sql);
+                        dbConnectionProvider.ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, sql);
                     }
                     catch (SqlException objException)
                     {
@@ -259,7 +259,7 @@ namespace DotNetNuke.Data
                     throw new ArgumentNullException(nameof(connectionString));
                 }
 
-                return _dbConnectionProvider.ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
+                return dbConnectionProvider.ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
             }
             catch (SqlException sqlException)
             {
@@ -279,35 +279,35 @@ namespace DotNetNuke.Data
 
         private string GetConnectionStringUserID()
         {
-            string DBUser = "public";
+            string dbUser = "public";
 
             // If connection string does not use integrated security, then get user id.
             // Normalize to uppercase before all of the comparisons
             var connectionStringUppercase = this.ConnectionString.ToUpper();
             if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
             {
-                string[] ConnSettings = connectionStringUppercase.Split(';');
+                string[] connSettings = connectionStringUppercase.Split(';');
 
-                foreach (string s in ConnSettings)
+                foreach (string s in connSettings)
                 {
                     if (s != string.Empty)
                     {
-                        string[] ConnSetting = s.Split('=');
-                        if ("USER ID|UID|USER".Contains(ConnSetting[0].Trim()))
+                        string[] connSetting = s.Split('=');
+                        if ("USER ID|UID|USER".Contains(connSetting[0].Trim()))
                         {
-                            DBUser = ConnSetting[1].Trim();
+                            dbUser = connSetting[1].Trim();
                         }
                     }
                 }
             }
 
-            return DBUser;
+            return dbUser;
         }
 
-        private string GrantStoredProceduresPermission(string Permission, string LoginOrRole)
+        private string GrantStoredProceduresPermission(string permission, string loginOrRole)
         {
             // grant rights to a login or role for all stored procedures
-            var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
+            var sql = "if exists (select * from dbo.sysusers where name='" + loginOrRole + "')"
                 + "  begin"
                 + "    declare @exec nvarchar(2000) "
                 + "    declare @name varchar(150) "
@@ -321,7 +321,7 @@ namespace DotNetNuke.Data
                 + "    fetch sp_cursor into @name "
                 + "    while @@fetch_status >= 0 "
                 + "      begin"
-                + "        select @exec = 'grant " + Permission + " on [' +  @name  + '] to [" + LoginOrRole + "]'"
+                + "        select @exec = 'grant " + permission + " on [' +  @name  + '] to [" + loginOrRole + "]'"
                 + "        execute (@exec)"
                 + "        fetch sp_cursor into @name "
                 + "      end "
@@ -331,10 +331,10 @@ namespace DotNetNuke.Data
             return this.ExecuteUpgradedConnectionQuery(sql);
         }
 
-        private string GrantUserDefinedFunctionsPermission(string ScalarPermission, string TablePermission, string LoginOrRole)
+        private string GrantUserDefinedFunctionsPermission(string scalarPermission, string tablePermission, string loginOrRole)
         {
             // grant EXECUTE rights to a login or role for all functions
-            var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
+            var sql = "if exists (select * from dbo.sysusers where name='" + loginOrRole + "')"
                 + "  begin"
                 + "    declare @exec nvarchar(2000) "
                 + "    declare @name varchar(150) "
@@ -352,13 +352,13 @@ namespace DotNetNuke.Data
                 + "      begin "
                 + "        if @IsScalarFunction = 1 "
                 + "          begin"
-                + "            select @exec = 'grant " + ScalarPermission + " on [' +  @name  + '] to [" + LoginOrRole + "]'"
+                + "            select @exec = 'grant " + scalarPermission + " on [' +  @name  + '] to [" + loginOrRole + "]'"
                 + "            execute (@exec)"
                 + "            fetch sp_cursor into @name, @isscalarfunction  "
                 + "          end "
                 + "        else "
                 + "          begin"
-                + "            select @exec = 'grant " + TablePermission + " on [' +  @name  + '] to [" + LoginOrRole + "]'"
+                + "            select @exec = 'grant " + tablePermission + " on [' +  @name  + '] to [" + loginOrRole + "]'"
                 + "            execute (@exec)"
                 + "            fetch sp_cursor into @name, @isscalarfunction  "
                 + "          end "
@@ -375,7 +375,7 @@ namespace DotNetNuke.Data
 
             try
             {
-                _dbConnectionProvider.ExecuteNonQuery(this.UpgradeConnectionString, CommandType.Text, 0, sql);
+                dbConnectionProvider.ExecuteNonQuery(this.UpgradeConnectionString, CommandType.Text, 0, sql);
             }
             catch (SqlException objException)
             {

@@ -25,9 +25,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         bool IsEnabled { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
-        /// </summary>
+        /// <summary>Gets a value indicating whether gets a flag which says whether the file has ever been published.</summary>
         bool HasBeenPublished { get; }
 
         int CreatedByUserID { get; }
@@ -72,36 +70,24 @@ namespace DotNetNuke.Services.FileSystem
 
         int FolderMappingID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a metadata field with an optional title associated to the file.
-        /// </summary>
+        /// <summary>Gets or sets a metadata field with an optional title associated to the file.</summary>
         string Title { get; set; }
 
         string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether publish period is enabled for the file.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether publish period is enabled for the file.</summary>
         bool EnablePublishPeriod { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date on which the file starts to be published.
-        /// </summary>
+        /// <summary>Gets or sets the date on which the file starts to be published.</summary>
         DateTime StartDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date on which the file ends to be published.
-        /// </summary>
+        /// <summary>Gets or sets the date on which the file ends to be published.</summary>
         DateTime EndDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets a reference to ContentItem, to use in Workflows.
-        /// </summary>
+        /// <summary>Gets or sets a reference to ContentItem, to use in Workflows.</summary>
         int ContentItemID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the published version number of the file.
-        /// </summary>
+        /// <summary>Gets or sets the published version number of the file.</summary>
         int PublishedVersion { get; set; }
 
         UserInfo CreatedByUser(int portalId);

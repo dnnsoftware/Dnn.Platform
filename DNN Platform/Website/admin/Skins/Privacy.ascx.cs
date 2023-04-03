@@ -12,25 +12,25 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Privacy : SkinObjectBase
     {
         private const string MyFileName = "Privacy.ascx";
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>Initializes a new instance of the <see cref="Privacy"/> class.</summary>
         public Privacy()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string Text { get; set; }
 
         public string CssClass { get; set; }
 
+        public string Rel { get; set; } = "nofollow";
+
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -38,6 +38,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -57,8 +58,11 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.hypPrivacy.Text = Localization.GetString("Privacy", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                this.hypPrivacy.NavigateUrl = this.PortalSettings.PrivacyTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Privacy") : this._navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
-                this.hypPrivacy.Attributes["rel"] = "nofollow";
+                this.hypPrivacy.NavigateUrl = this.PortalSettings.PrivacyTabId == Null.NullInteger ? this.navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Privacy") : this.navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
+                if (!string.IsNullOrWhiteSpace(this.Rel))
+                {
+                    this.hypPrivacy.Attributes["rel"] = this.Rel;
+                }
             }
             catch (Exception exc)
             {

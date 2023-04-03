@@ -38,16 +38,12 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
-        /// <summary>
-        /// The OnSettingsLoaded method is called when the Settings have been Loaded.
-        /// </summary>
+        /// <summary>The OnSettingsLoaded method is called when the Settings have been Loaded.</summary>
         protected virtual void OnSettingsLoaded()
         {
         }
 
-        /// <summary>
-        /// OnSavingSettings method is called just before the Settings are saved.
-        /// </summary>
+        /// <summary>OnSavingSettings method is called just before the Settings are saved.</summary>
         protected virtual void OnSavingSettings()
         {
         }

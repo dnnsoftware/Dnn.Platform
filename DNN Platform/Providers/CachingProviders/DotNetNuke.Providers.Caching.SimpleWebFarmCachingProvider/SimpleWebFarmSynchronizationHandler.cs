@@ -15,9 +15,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     /// </summary>
     public class SimpleWebFarmSynchronizationHandler : IHttpHandler
     {
-        /// <summary>
-        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests.
-        /// </summary>
+        /// <summary>    Gets a value indicating whether indicates that this handler can be reused for multiple requests.</summary>
         public bool IsReusable => true;
 
         /// <inheritdoc/>

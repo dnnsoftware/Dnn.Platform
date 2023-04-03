@@ -23,3 +23,4 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Security.Tests")]
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.ConfigConsole.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

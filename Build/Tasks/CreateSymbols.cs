@@ -12,8 +12,8 @@ namespace DotNetNuke.Build.Tasks
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to create the Symbols package.</summary>
-    [Dependency(typeof(PreparePackaging))]
-    [Dependency(typeof(OtherPackages))]
+    [IsDependentOn(typeof(PreparePackaging))]
+    [IsDependentOn(typeof(OtherPackages))]
     public sealed class CreateSymbols : FrostingTask<Context>
     {
         /// <inheritdoc/>

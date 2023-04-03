@@ -1,0 +1,90 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/*********************/
+/** Add Notes field **/
+/*********************/
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}IPFilter') AND name = 'Notes')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}IPFilter
+			ADD Notes nvarchar(255) NULL
+	END
+GO
+
+/**************************/
+/** UpdateIPFilter SPROC **/
+/**************************/
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateIPFilter]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateIPFilter];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateIPFilter]
+	@IPFilterID		int,
+	@IPAddress		nvarchar(50),
+	@SubnetMask		nvarchar(50),
+	@RuleType		tinyint,
+	@LastModifiedByUserID int,
+    @Notes          nvarchar(255)
+AS 
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}IPFilter 
+			SET 
+				IPAddress = @IPAddress,
+				SubnetMask = @SubnetMask,
+				RuleType = @RuleType,
+				LastModifiedByUserID = @LastModifiedByUserID,
+				LastModifiedOnDate = getdate(),
+                Notes = @Notes
+			WHERE IPFilterID = @IPFilterID
+	END
+GO
+
+/**************************/
+/** AddIPFilter SPROC **/
+/**************************/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddIPFilter]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddIPFilter];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddIPFilter]
+	@IPAddress nvarchar(50),
+	@SubnetMask nvarchar(50),
+	@RuleType tinyint,
+	@CreatedByUserID int,
+    @Notes nvarchar(255)
+AS 
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}IPFilter  
+		(
+		[IPAddress]
+           ,[SubnetMask]
+           ,[RuleType]
+           ,[CreatedByUserID]
+           ,[CreatedOnDate]
+           ,[LastModifiedByUserID]
+           ,[LastModifiedOnDate]
+           ,[Notes]
+		)  
+		VALUES  
+		( 
+			@IPAddress , 
+			@SubnetMask , 
+			@RuleType,
+			@CreatedByUserID , 
+			getdate() , 
+			@CreatedByUserID , 
+			getdate() ,
+            @Notes
+		) 
+		 
+		SELECT SCOPE_IDENTITY()
+	END
+GO

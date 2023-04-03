@@ -33,10 +33,13 @@ namespace DotNetNuke.Tests.Core.Common
         private const string LanguagePattern = "&language={0}";
         private INavigationManager navigationManager;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
+
         public void Setup()
         {
-            this.navigationManager = new NavigationManager(PortalControllerMock());
+            var portalControllerMock = PortalControllerMock();
+            this.navigationManager = new NavigationManager(portalControllerMock);
+            PortalController.SetTestableInstance(portalControllerMock);
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());
 
@@ -104,7 +107,7 @@ namespace DotNetNuke.Tests.Core.Common
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             Globals.DependencyProvider = null;
@@ -175,12 +178,10 @@ namespace DotNetNuke.Tests.Core.Common
         }
 
         [Test]
-        [Ignore]
+        [Ignore("TODO - We can't properly test this until we migrate Globals.AccessDeniedURL to an interface in the abstraction project")]
         public void NavigateUrl_ControlKey_AccessDenied()
         {
-            // TODO - We can't properly test this until we migrate
-            // Globals.AccessDeniedURL to an interface in the abstraction
-            // project. The dependencies go very deep and make it very
+            // The dependencies go very deep and make it very
             // difficult to properly test just the NavigationManager logic.
             var actual = this.navigationManager.NavigateURL("Access Denied");
         }

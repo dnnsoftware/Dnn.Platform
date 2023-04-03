@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Urls
 {
     using System;
@@ -9,19 +8,15 @@ namespace DotNetNuke.Entities.Urls
 
     using DotNetNuke.Entities.Tabs;
 
-    /// <summary>
-    /// The Xml Helpers class is used to read in parameter rewrite/replace/redirect rules from the friendlyUrlParms.config file.
-    /// </summary>
+    /// <summary>The Xml Helpers class is used to read in parameter rewrite/replace/redirect rules from the friendlyUrlParms.config file.</summary>
     internal static class XmlHelpers
     {
-        /// <summary>
-        /// Returns a tab id from either a raw tabId, or a list of tab names delimited by ';'.
-        /// </summary>
+        /// <summary>Returns a tab id from either a raw tabId, or a list of tab names delimited by ';'.</summary>
         /// <param name="tabIdsRaw"></param>
         /// <param name="tabNames"></param>
         /// <param name="portalId"></param>
         /// <param name="messages"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="List{T}"/> of tab IDs (<c>-1</c> indicates "all", <c>-2</c> indicates "default.aspx", and <c>-3</c> indicates site root).</returns>
         internal static List<int> TabIdsFromAttributes(string tabIdsRaw, string tabNames, int portalId, ref List<string> messages)
         {
             if (messages == null)

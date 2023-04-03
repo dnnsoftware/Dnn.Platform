@@ -22,6 +22,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoServersController));
 
         [HttpGet]
+
         public HttpResponseMessage GetServers()
         {
             try
@@ -52,6 +53,7 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
+
         public HttpResponseMessage EditServerUrl(EditServerUrlDTO data)
         {
             try
@@ -70,16 +72,14 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
+
         public HttpResponseMessage DeleteNonActiveServers()
         {
             try
             {
-                foreach (var s in DotNetNuke.Entities.Host.ServerController.GetServers())
+                foreach (var s in DotNetNuke.Entities.Host.ServerController.GetInActiveServers(1440))
                 {
-                    if (s.LastActivityDate.AddDays(1) < DateTime.Now && s.ServerName != Environment.MachineName)
-                    {
-                        DotNetNuke.Entities.Host.ServerController.DeleteServer(s.ServerID);
-                    }
+                    DotNetNuke.Entities.Host.ServerController.DeleteServer(s.ServerID);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, true);

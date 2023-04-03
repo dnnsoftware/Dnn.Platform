@@ -18,9 +18,7 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Localization.Internal;
 
-    /// <summary>
-    /// Sets up Dnn context information upon a request.
-    /// </summary>
+    /// <summary>Sets up Dnn context information upon a request.</summary>
     public class DnnContextMessageHandler : MessageProcessingHandler
     {
         /// <inheritdoc/>

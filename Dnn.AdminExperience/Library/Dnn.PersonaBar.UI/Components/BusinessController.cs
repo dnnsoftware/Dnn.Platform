@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.UI.Components
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
         private static readonly DotNetNuke.Services.Installer.Log.Logger InstallLogger = new DotNetNuke.Services.Installer.Log.Logger();
 
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             switch (version)

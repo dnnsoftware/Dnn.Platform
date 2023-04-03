@@ -13,7 +13,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class PermissionsDto : Permissions
     {
-        public PermissionsDto(bool needDefinitions) : base(needDefinitions)
+        public PermissionsDto(bool needDefinitions)
+            : base(needDefinitions)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForPages(PortalSettings.Current.PortalId))
             {
@@ -24,6 +25,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [JsonProperty("desktopModuleId")]
         public int DesktopModuleId { get; set; }
 
+        /// <inheritdoc/>
         protected override void LoadPermissionDefinitions()
         {
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByPortalDesktopModule())

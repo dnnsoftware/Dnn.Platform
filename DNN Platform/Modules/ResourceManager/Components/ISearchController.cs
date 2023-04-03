@@ -7,14 +7,10 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Provides search functionality for the resource manager.
-    /// </summary>
+    /// <summary>Provides search functionality for the resource manager.</summary>
     public interface ISearchController
     {
-        /// <summary>
-        /// Performs the Advanced File Search.
-        /// </summary>
+        /// <summary>Performs the Advanced File Search.</summary>
         /// <param name="moduleId">The id of the Module.</param>
         /// <param name="folder">Folder that defines the context of the search.</param>
         /// <param name="recursive">A value indicating whether to include subfolders in search.</param>

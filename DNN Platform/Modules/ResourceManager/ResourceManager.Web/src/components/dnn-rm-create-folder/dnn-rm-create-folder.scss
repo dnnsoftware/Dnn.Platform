@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.form{
+  label{
+    font-weight: bold;
+    margin-top: 0.5em;
+  }
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.controls{
+  margin-top: 2em;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+}

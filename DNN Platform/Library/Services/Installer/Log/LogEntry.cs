@@ -5,59 +5,41 @@ namespace DotNetNuke.Services.Installer.Log
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The LogEntry class provides a single entry for the Installer Log.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The LogEntry class provides a single entry for the Installer Log.</summary>
     [Serializable]
     public class LogEntry
     {
-        private readonly string _description;
+        private readonly string description;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="LogEntry"/> class.
         /// This Constructor builds a LogEntry from its type and description.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="description">The description (detail) of the entry.</param>
         /// <param name="type">The type of LogEntry.</param>
-        /// -----------------------------------------------------------------------------
         public LogEntry(LogType type, string description)
         {
             this.Type = type;
-            this._description = description;
+            this.description = description;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the description of LogEntry.
-        /// </summary>
+        /// <summary>Gets the description of LogEntry.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Description
         {
             get
             {
-                if (this._description == null)
+                if (this.description == null)
                 {
                     return "...";
                 }
 
-                return this._description;
+                return this.description;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the type of LogEntry.
-        /// </summary>
+        /// <summary>Gets the type of LogEntry.</summary>
         /// <value>A LogType.</value>
-        /// -----------------------------------------------------------------------------
         public LogType Type { get; private set; }
 
         /// <inheritdoc/>

@@ -11,24 +11,22 @@ namespace DotNetNuke.Services.Exceptions
 
     public class ModuleLoadException : BasePortalException
     {
-        private readonly ModuleInfo m_ModuleConfiguration;
-        private string m_FriendlyName;
-        private string m_ModuleControlSource;
-        private int m_ModuleDefId;
-        private int m_ModuleId;
+        private readonly ModuleInfo moduleConfiguration;
+        private string friendlyName;
+        private string moduleControlSource;
+        private int moduleDefId;
+        private int moduleId;
 
         // default constructor
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleLoadException"/> class.</summary>
         public ModuleLoadException()
         {
         }
 
         // constructor with exception message
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleLoadException"/> class.</summary>
         /// <param name="message"></param>
         public ModuleLoadException(string message)
             : base(message)
@@ -37,23 +35,21 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleLoadException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        /// <param name="ModuleConfiguration"></param>
-        public ModuleLoadException(string message, Exception inner, ModuleInfo ModuleConfiguration)
+        /// <param name="moduleConfiguration"></param>
+        public ModuleLoadException(string message, Exception inner, ModuleInfo moduleConfiguration)
             : base(message, inner)
         {
-            this.m_ModuleConfiguration = ModuleConfiguration;
+            this.moduleConfiguration = moduleConfiguration;
             this.InitilizePrivateVariables();
         }
 
         // constructor with message and inner exception
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
-        /// </summary>
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleLoadException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public ModuleLoadException(string message, Exception inner)
@@ -62,18 +58,16 @@ namespace DotNetNuke.Services.Exceptions
             this.InitilizePrivateVariables();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleLoadException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleLoadException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected ModuleLoadException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             this.InitilizePrivateVariables();
-            this.m_ModuleId = info.GetInt32("m_ModuleId");
-            this.m_ModuleDefId = info.GetInt32("m_ModuleDefId");
-            this.m_FriendlyName = info.GetString("m_FriendlyName");
+            this.moduleId = info.GetInt32("m_ModuleId");
+            this.moduleDefId = info.GetInt32("m_ModuleDefId");
+            this.friendlyName = info.GetString("m_FriendlyName");
         }
 
         [XmlElement("ModuleID")]
@@ -81,7 +75,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_ModuleId;
+                return this.moduleId;
             }
         }
 
@@ -90,7 +84,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_ModuleDefId;
+                return this.moduleDefId;
             }
         }
 
@@ -99,7 +93,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_FriendlyName;
+                return this.friendlyName;
             }
         }
 
@@ -108,7 +102,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_ModuleControlSource;
+                return this.moduleControlSource;
             }
         }
 
@@ -116,17 +110,17 @@ namespace DotNetNuke.Services.Exceptions
         {
             // Try and get the Portal settings from context
             // If an error occurs getting the context then set the variables to -1
-            if (this.m_ModuleConfiguration != null)
+            if (this.moduleConfiguration != null)
             {
-                this.m_ModuleId = this.m_ModuleConfiguration.ModuleID;
-                this.m_ModuleDefId = this.m_ModuleConfiguration.ModuleDefID;
-                this.m_FriendlyName = this.m_ModuleConfiguration.ModuleTitle;
-                this.m_ModuleControlSource = this.m_ModuleConfiguration.ModuleControl.ControlSrc;
+                this.moduleId = this.moduleConfiguration.ModuleID;
+                this.moduleDefId = this.moduleConfiguration.ModuleDefID;
+                this.friendlyName = this.moduleConfiguration.ModuleTitle;
+                this.moduleControlSource = this.moduleConfiguration.ModuleControl.ControlSrc;
             }
             else
             {
-                this.m_ModuleId = -1;
-                this.m_ModuleDefId = -1;
+                this.moduleId = -1;
+                this.moduleDefId = -1;
             }
         }
 

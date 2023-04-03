@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Call_PurgePage_WithValidCommand_ShouldReturnSuccessResponse()
         {
             // Arrange
@@ -58,6 +59,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Call_PurgePage_WithValidCommandAndPageContentNotAllowed_ShouldReturnErrorResponse()
         {
             // Arrange
@@ -85,6 +87,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Call_PurgePage_PageDoesNotExist_ShouldReturnErrorResponse()
         {
             // Arrange

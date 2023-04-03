@@ -23,9 +23,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for PreviewProfileControllerTests.
-    /// </summary>
+    /// <summary>  Summary description for PreviewProfileControllerTests.</summary>
     [TestFixture]
     public class PreviewProfileControllerTests
     {
@@ -34,6 +32,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         private DataTable dtProfiles;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -129,6 +128,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         [Test]
+
         public void PreviewProfileController_Save_Valid_Profile()
         {
             var profile = new PreviewProfile { Name = "Test R", PortalId = 0, Width = 800, Height = 480 };
@@ -145,6 +145,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         [Test]
+
         public void PreviewProfileController_GetProfilesByPortal_With_Valid_PortalID()
         {
             this.PrepareData();
@@ -155,6 +156,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         [Test]
+
         public void PreviewProfileController_Delete_With_ValidID()
         {
             this.PrepareData();

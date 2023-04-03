@@ -1,7 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 
+using System;
+using System.IO;
 #if NETSTANDARD1_3
 using System.Reflection;
 #endif
@@ -10,28 +28,7 @@ using log4net.Util;
 
 namespace log4net.ObjectRenderer
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.IO;
-
-    /// <summary>
-    /// Map class objects to an <see cref="IObjectRenderer"/>.
-    /// </summary>
+    /// <summary>Map class objects to an <see cref="IObjectRenderer"/>.</summary>
     /// <remarks>
     /// <para>
     /// Maintains a mapping between types that require special
@@ -43,35 +40,31 @@ namespace log4net.ObjectRenderer
     /// <c>object</c> using the appropriate renderers defined in this map.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class RendererMap
     {
         private static readonly Type declaringType = typeof(RendererMap);
+
         private System.Collections.Hashtable m_map;
         private System.Collections.Hashtable m_cache = new System.Collections.Hashtable();
 
         private static IObjectRenderer s_defaultRenderer = new DefaultRenderer();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RendererMap"/> class.
-        /// Default Constructor.
-        /// </summary>
+        /// <summary>Default Constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
         /// </para>
         /// </remarks>
-        public RendererMap()
+        public RendererMap() 
         {
             this.m_map = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
 
-        /// <summary>
-        /// Render <paramref name="obj"/> using the appropriate renderer.
-        /// </summary>
-        /// <param name="obj">the object to render to a string.</param>
-        /// <returns>the object rendered as a string.</returns>
+        /// <summary>Render <paramref name="obj"/> using the appropriate renderer.</summary>
+        /// <param name="obj">the object to render to a string</param>
+        /// <returns>the object rendered as a string</returns>
         /// <remarks>
         /// <para>
         /// This is a convenience method used to render an object to a string.
@@ -82,22 +75,23 @@ namespace log4net.ObjectRenderer
         public string FindAndRender(object obj)
         {
             // Optimisation for strings
-            string strData = obj as string;
+            string strData = obj as String;
             if (strData != null)
             {
                 return strData;
             }
 
-            StringWriter stringWriter = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-            this.FindAndRender(obj, stringWriter);
-            return stringWriter.ToString();
+            using (var stringWriter = new StringWriter(System.Globalization.CultureInfo.InvariantCulture))
+            {
+                this.FindAndRender(obj, stringWriter);
+                return stringWriter.ToString();
+            }
+                
         }
 
-        /// <summary>
-        /// Render <paramref name="obj"/> using the appropriate renderer.
-        /// </summary>
-        /// <param name="obj">the object to render to a string.</param>
-        /// <param name="writer">The writer to render to.</param>
+        /// <summary>Render <paramref name="obj"/> using the appropriate renderer.</summary>
+        /// <param name="obj">the object to render to a string</param>
+        /// <param name="writer">The writer to render to</param>
         /// <remarks>
         /// <para>
         /// Find the appropriate renderer for the type of the
@@ -107,13 +101,13 @@ namespace log4net.ObjectRenderer
         /// as a <see cref="string"/>.
         /// </para>
         /// </remarks>
-        public void FindAndRender(object obj, TextWriter writer)
+        public void FindAndRender(object obj, TextWriter writer) 
         {
             if (obj == null)
             {
                 writer.Write(SystemInfo.NullText);
             }
-            else
+            else 
             {
                 // Optimisation for strings
                 string str = obj as string;
@@ -128,10 +122,10 @@ namespace log4net.ObjectRenderer
                     {
                         this.Get(obj.GetType()).RenderObject(this, obj, writer);
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         // Exception rendering the object
-                        log4net.Util.LogLog.Error(declaringType, "Exception while rendering object of type [" + obj.GetType().FullName + "]", ex);
+                        LogLog.Error(declaringType, "Exception while rendering object of type ["+obj.GetType().FullName+"]", ex);
 
                         // return default message
                         string objectTypeName = string.Empty;
@@ -140,7 +134,7 @@ namespace log4net.ObjectRenderer
                             objectTypeName = obj.GetType().FullName;
                         }
 
-                        writer.Write("<log4net.Error>Exception rendering object type [" + objectTypeName + "]");
+                        writer.Write("<log4net.Error>Exception rendering object type ["+objectTypeName+"]");
                         if (ex != null)
                         {
                             string exceptionText = null;
@@ -156,30 +150,27 @@ namespace log4net.ObjectRenderer
 
                             writer.Write("<stackTrace>" + exceptionText + "</stackTrace>");
                         }
-
                         writer.Write("</log4net.Error>");
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Gets the renderer for the specified object type.
-        /// </summary>
-        /// <param name="obj">the object to lookup the renderer for.</param>
-        /// <returns>the renderer for <paramref name="obj"/>.</returns>
+        /// <summary>Gets the renderer for the specified object type</summary>
+        /// <param name="obj">the object to lookup the renderer for</param>
+        /// <returns>the renderer for <paramref name="obj"/></returns>
         /// <remarks>
         /// <param>
         /// Gets the renderer for the specified object type.
         /// </param>
         /// <param>
-        /// Syntactic sugar method that calls <see cref="M:Get(Type)"/>
+        /// Syntactic sugar method that calls <see cref="M:Get(Type)"/> 
         /// with the type of the object parameter.
         /// </param>
         /// </remarks>
-        public IObjectRenderer Get(object obj)
+        public IObjectRenderer Get(Object obj) 
         {
-            if (obj == null)
+            if (obj == null) 
             {
                 return null;
             }
@@ -188,12 +179,10 @@ namespace log4net.ObjectRenderer
                 return this.Get(obj.GetType());
             }
         }
-
-        /// <summary>
-        /// Gets the renderer for the specified type.
-        /// </summary>
-        /// <param name="type">the type to lookup the renderer for.</param>
-        /// <returns>the renderer for the specified type.</returns>
+  
+        /// <summary>Gets the renderer for the specified type</summary>
+        /// <param name="type">the type to lookup the renderer for</param>
+        /// <returns>the renderer for the specified type</returns>
         /// <remarks>
         /// <para>
         /// Returns the renderer for the specified type.
@@ -201,7 +190,7 @@ namespace log4net.ObjectRenderer
         /// <see cref="DefaultRenderer"/> will be returned.
         /// </para>
         /// </remarks>
-        public IObjectRenderer Get(Type type)
+        public IObjectRenderer Get(Type type) 
         {
             if (type == null)
             {
@@ -216,9 +205,9 @@ namespace log4net.ObjectRenderer
             if (result == null)
             {
 #if NETSTANDARD1_3
-				for (Type cur = type; cur != null; cur = cur.GetTypeInfo().BaseType)
+                for (Type cur = type; cur != null; cur = cur.GetTypeInfo().BaseType)
 #else
-                for (Type cur = type; cur != null; cur = cur.BaseType)
+                for(Type cur = type; cur != null; cur = cur.BaseType)
 #endif
                 {
                     // Search the type's interfaces
@@ -240,42 +229,37 @@ namespace log4net.ObjectRenderer
             }
 
             return result;
-        }
+        }  
 
-        /// <summary>
-        /// Internal function to recursively search interfaces.
-        /// </summary>
-        /// <param name="type">the type to lookup the renderer for.</param>
-        /// <returns>the renderer for the specified type.</returns>
-        private IObjectRenderer SearchTypeAndInterfaces(Type type)
+        /// <summary>Internal function to recursively search interfaces</summary>
+        /// <param name="type">the type to lookup the renderer for</param>
+        /// <returns>the renderer for the specified type</returns>
+        private IObjectRenderer SearchTypeAndInterfaces(Type type) 
         {
             IObjectRenderer r = (IObjectRenderer)this.m_map[type];
-            if (r != null)
+            if (r != null) 
             {
                 return r;
-            }
-            else
+            } 
+            else 
             {
-                foreach (Type t in type.GetInterfaces())
+                foreach(Type t in type.GetInterfaces())
                 {
                     r = this.SearchTypeAndInterfaces(t);
                     if (r != null)
                     {
-                        return r;
+                        return r; 
                     }
                 }
             }
-
             return null;
         }
 
-        /// <summary>
-        /// Gets get the default renderer instance.
-        /// </summary>
-        /// <value>the default renderer.</value>
+        /// <summary>Get the default renderer instance</summary>
+        /// <value>the default renderer</value>
         /// <remarks>
         /// <para>
-        /// Get the default renderer.
+        /// Get the default renderer
         /// </para>
         /// </remarks>
         public IObjectRenderer DefaultRenderer
@@ -283,9 +267,7 @@ namespace log4net.ObjectRenderer
             get { return s_defaultRenderer; }
         }
 
-        /// <summary>
-        /// Clear the map of renderers.
-        /// </summary>
+        /// <summary>Clear the map of renderers</summary>
         /// <remarks>
         /// <para>
         /// Clear the custom renderers defined by using
@@ -293,17 +275,15 @@ namespace log4net.ObjectRenderer
         /// cannot be removed.
         /// </para>
         /// </remarks>
-        public void Clear()
+        public void Clear() 
         {
             this.m_map.Clear();
             this.m_cache.Clear();
         }
 
-        /// <summary>
-        /// Register an <see cref="IObjectRenderer"/> for <paramref name="typeToRender"/>.
-        /// </summary>
-        /// <param name="typeToRender">the type that will be rendered by <paramref name="renderer"/>.</param>
-        /// <param name="renderer">the renderer for <paramref name="typeToRender"/>.</param>
+        /// <summary>Register an <see cref="IObjectRenderer"/> for <paramref name="typeToRender"/>. </summary>
+        /// <param name="typeToRender">the type that will be rendered by <paramref name="renderer"/></param>
+        /// <param name="renderer">the renderer for <paramref name="typeToRender"/></param>
         /// <remarks>
         /// <para>
         /// Register an object renderer for a specific source type.
@@ -311,7 +291,7 @@ namespace log4net.ObjectRenderer
         /// specifying the same <paramref name="typeToRender"/> as an argument.
         /// </para>
         /// </remarks>
-        public void Put(Type typeToRender, IObjectRenderer renderer)
+        public void Put(Type typeToRender, IObjectRenderer renderer) 
         {
             this.m_cache.Clear();
 
@@ -319,13 +299,12 @@ namespace log4net.ObjectRenderer
             {
                 throw new ArgumentNullException("typeToRender");
             }
-
             if (renderer == null)
             {
                 throw new ArgumentNullException("renderer");
             }
 
             this.m_map[typeToRender] = renderer;
-        }
+        }	
     }
 }

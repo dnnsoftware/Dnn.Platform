@@ -26,33 +26,34 @@ namespace Dnn.PersonaBar.SqlConsole.Services
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SqlConsoleController : PersonaBarApiController
     {
-        const string ScriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+        private const string ScriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
-        private static readonly Regex SqlObjRegex = new Regex(ScriptDelimiterRegex,
+        private static readonly Regex SqlObjRegex = new Regex(
+            ScriptDelimiterRegex,
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-        private ISqlQueryController _controller = SqlQueryController.Instance;
+        private ISqlQueryController controller = SqlQueryController.Instance;
 
         // private const int MaxOutputRecords = 500;
-
         [HttpGet]
         public HttpResponseMessage GetSavedQueries()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
-                queries = this._controller.GetQueries(),
-                connections = this._controller.GetConnections(),
+                queries = this.controller.GetQueries(),
+                connections = this.controller.GetConnections(),
             });
         }
 
         [HttpGet]
         public HttpResponseMessage GetSavedQuery(int id)
         {
-            return this.Request.CreateResponse(HttpStatusCode.OK, this._controller.GetQuery(id));
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.controller.GetQuery(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage SaveQuery(SqlQuery query)
         {
             query.CreatedOnDate = DateTime.Now;
@@ -62,7 +63,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
             if (query.QueryId <= 0)
             {
-                var saveQueries = this._controller.GetQueries();
+                var saveQueries = this.controller.GetQueries();
                 var saveQuery = saveQueries.FirstOrDefault(q => q.Name.Equals(query.Name, StringComparison.OrdinalIgnoreCase));
                 if (saveQuery != null)
                 {
@@ -72,11 +73,11 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
             if (query.QueryId > 0)
             {
-                this._controller.UpdateQuery(query);
+                this.controller.UpdateQuery(query);
             }
             else
             {
-                this._controller.AddQuery(query);
+                this.controller.AddQuery(query);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, query);
@@ -86,10 +87,10 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteQuery(SqlQuery query)
         {
-            var savedQuery = this._controller.GetQuery(query.QueryId);
+            var savedQuery = this.controller.GetQuery(query.QueryId);
             if (savedQuery != null)
             {
-                this._controller.DeleteQuery(savedQuery);
+                this.controller.DeleteQuery(savedQuery);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
@@ -99,6 +100,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage RunQuery(AdhocSqlQuery query)
         {
             var connectionstring = Config.GetConnectionString(query.ConnectionStringName);

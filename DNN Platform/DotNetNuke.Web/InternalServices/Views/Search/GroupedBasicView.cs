@@ -5,15 +5,16 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// BasicView grouped by DocumentTypeName.
-    /// </summary>
+    /// <summary>BasicView grouped by DocumentTypeName.</summary>
     public class GroupedBasicView
     {
+        /// <summary>Initializes a new instance of the <see cref="GroupedBasicView"/> class.</summary>
         public GroupedBasicView()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="GroupedBasicView"/> class.</summary>
+        /// <param name="basic">The basic view.</param>
         public GroupedBasicView(BasicView basic)
         {
             this.DocumentTypeName = basic.DocumentTypeName;
@@ -30,14 +31,10 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
             };
         }
 
-        /// <summary>
-        /// Gets or sets type of Search Document.
-        /// </summary>
+        /// <summary>Gets or sets type of Search Document.</summary>
         public string DocumentTypeName { get; set; }
 
-        /// <summary>
-        /// Gets or sets results of the Search.
-        /// </summary>
+        /// <summary>Gets or sets results of the Search.</summary>
         public List<BasicView> Results { get; set; }
     }
 }

@@ -9,96 +9,64 @@ namespace DotNetNuke.UI.WebControls
 
     public class NavDataPageHierarchyData : IHierarchyData, INavigateUIData
     {
-        private readonly DNNNode m_objNode;
+        private readonly DNNNode objNode;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavDataPageHierarchyData"/> class.
-        /// </summary>
-        /// <param name="obj"></param>
+        /// <summary>Initializes a new instance of the <see cref="NavDataPageHierarchyData"/> class.</summary>
+        /// <param name="obj">The node.</param>
         public NavDataPageHierarchyData(DNNNode obj)
         {
-            this.m_objNode = obj;
+            this.objNode = obj;
         }
 
-        /// <summary>
-        /// Gets nodes image.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Returns nodes image</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets nodes image.</summary>
+        /// <value>Returns nodes image.</value>
         public virtual string ImageUrl
         {
             get
             {
-                if (string.IsNullOrEmpty(this.m_objNode.Image) || this.m_objNode.Image.StartsWith("/"))
+                if (string.IsNullOrEmpty(this.objNode.Image) || this.objNode.Image.StartsWith("/"))
                 {
-                    return this.m_objNode.Image;
+                    return this.objNode.Image;
                 }
                 else
                 {
-                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.m_objNode.Image;
+                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.objNode.Image;
                 }
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</summary>
+        /// <value>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</value>
         public virtual bool HasChildren
         {
             get
             {
-                return this.m_objNode.HasNodes;
+                return this.objNode.HasNodes;
             }
         }
 
-        /// <summary>
-        /// Gets the hierarchical path of the node.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The hierarchical path of the node.</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets the hierarchical path of the node.</summary>
+        /// <value>The hierarchical path of the node.</value>
         public virtual string Path
         {
             get
             {
-                return this.GetValuePath(this.m_objNode);
+                return this.GetValuePath(this.objNode);
             }
         }
 
-        /// <summary>
-        /// Gets the hierarchical data node that the IHierarchyData object represents.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The hierarchical data node that the IHierarchyData object represents.</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets the hierarchical data node that the IHierarchyData object represents.</summary>
+        /// <value>The hierarchical data node that the IHierarchyData object represents.</value>
         public virtual object Item
         {
             get
             {
-                return this.m_objNode;
+                return this.objNode;
             }
         }
 
-        /// <summary>
-        /// Gets the name of the type of Object contained in the Item property.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The name of the type of Object contained in the Item property.</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets the name of the type of Object contained in the Item property.</summary>
+        /// <value>The name of the type of Object contained in the Item property.</value>
         public virtual string Type
         {
             get
@@ -107,81 +75,54 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets node name.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Returns node name</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets node name.</summary>
+        /// <value>Returns node name.</value>
         public virtual string Name
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.Text, string.Empty);
+                return this.GetSafeValue(this.objNode.Text, string.Empty);
             }
         }
 
-        /// <summary>
-        /// Gets value path of node.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Returns value path of node</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets value path of node.</summary>
+        /// <value>Returns value path of node.</value>
         public virtual string Value
         {
             get
             {
-                return this.GetValuePath(this.m_objNode);
+                return this.GetValuePath(this.objNode);
             }
         }
 
-        /// <summary>
-        /// Gets node navigation url.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Returns node navigation url</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets node navigation url.</summary>
+        /// <value>Returns node navigation url.</value>
         public virtual string NavigateUrl
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.NavigateURL, string.Empty);
+                return this.GetSafeValue(this.objNode.NavigateURL, string.Empty);
             }
         }
 
-        /// <summary>
-        /// Gets node description.
-        /// </summary>
-        /// <value>
-        /// <placeholder>Returns Node description</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets node description.</summary>
+        /// <value>Returns Node description.</value>
         public virtual string Description
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.ToolTip, string.Empty);
+                return this.GetSafeValue(this.objNode.ToolTip, string.Empty);
             }
         }
 
-        /// <summary>
-        /// Gets an enumeration object that represents all the child nodes of the current hierarchical node.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets an enumeration object that represents all the child nodes of the current hierarchical node.</summary>
+        /// <returns>A collection of nodes.</returns>
         public virtual IHierarchicalEnumerable GetChildren()
         {
             var objNodes = new NavDataPageHierarchicalEnumerable();
-            if (this.m_objNode != null)
+            if (this.objNode != null)
             {
-                foreach (DNNNode objNode in this.m_objNode.DNNNodes)
+                foreach (DNNNode objNode in this.objNode.DNNNodes)
                 {
                     objNodes.Add(new NavDataPageHierarchyData(objNode));
                 }
@@ -190,16 +131,13 @@ namespace DotNetNuke.UI.WebControls
             return objNodes;
         }
 
-        /// <summary>
-        /// Gets an enumeration object that represents the parent node of the current hierarchical node.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets an enumeration object that represents the parent node of the current hierarchical node.</summary>
+        /// <returns>The parent node or <see langword="null"/>.</returns>
         public virtual IHierarchyData GetParent()
         {
-            if (this.m_objNode != null)
+            if (this.objNode != null)
             {
-                return new NavDataPageHierarchyData(this.m_objNode.ParentNode);
+                return new NavDataPageHierarchyData(this.objNode.ParentNode);
             }
             else
             {
@@ -210,31 +148,26 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public override string ToString()
         {
-            return this.m_objNode.Text;
+            return this.objNode.Text;
         }
 
-        /// <summary>
-        /// Helper function to handle cases where property is null (Nothing).
-        /// </summary>
-        /// <param name="Value">Value to evaluate for null.</param>
-        /// <param name="Def">If null, return this default.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        private string GetSafeValue(string Value, string Def)
+        /// <summary>Helper function to handle cases where property is <see langword="null"/>.</summary>
+        /// <param name="value">Value to evaluate for <see langword="null"/>.</param>
+        /// <param name="def">If <see langword="null"/>, return this default.</param>
+        /// <returns><paramref name="value"/> or <paramref name="def"/> if <paramref name="value"/> is <see langword="null"/>.</returns>
+        private string GetSafeValue(string value, string def)
         {
-            if (Value != null)
+            if (value != null)
             {
-                return Value;
+                return value;
             }
             else
             {
-                return Def;
+                return def;
             }
         }
 
-        /// <summary>
-        /// Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.
-        /// </summary>
+        /// <summary>Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.</summary>
         /// <param name="objNode"></param>
         /// <returns>ValuePath.</returns>
         /// <remarks>Not sure if it is ok to hardcode the "\" separator, but also not sure where I would get it from.</remarks>

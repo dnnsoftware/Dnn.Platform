@@ -11,9 +11,7 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Abstract class to allow derived classes of different implementations of Url Rewriter.
-    /// </summary>
+    /// <summary>Abstract class to allow derived classes of different implementations of Url Rewriter.</summary>
     public abstract class UrlRewriterBase
     {
         internal abstract void RewriteUrl(object sender, EventArgs e);

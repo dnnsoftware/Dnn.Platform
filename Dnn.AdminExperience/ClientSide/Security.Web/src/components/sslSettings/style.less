@@ -1,34 +1,71 @@
 @import "~@dnnsoftware/dnn-react-common/styles/index";
 :local(.sslSettings) {
-    margin: 30px 30px;
-    * {
-        box-sizing: border-box;
+  margin: 30px 30px;
+  * {
+    box-sizing: border-box;
+  }
+  .dnn-ui-common-input-group {
+    label {
+      font-weight: bolder;
+      float: left;
     }
-    .dnn-ui-common-input-group {
-        label {
-            font-weight: bolder;
-            float: left;
-        }
-        .dnn-switch-container {
-            float: right;
-        }
-        .dnn-single-line-input-with-error {
-            width: 100%;
-        }
-        .sslSettings-row_switch {
-            border-bottom: 1px solid @alto;
-            margin: 0 0 20px 0;
-            display: table;
-            width: 100%;
-            padding: 0 0 10px 0;
-        }
+    .sectionLabel {
+      border-top: 1px solid @alto;
+      padding-top: 20px;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      label {
+        color: #000;
+        text-transform: uppercase;
+      }
     }
-    .buttons-box {
+    .dnn-dropdown {
+      width: 100%;
+      margin-bottom: 32px;
+    }
+    .dnn-switch-container {
+      float: right;
+    }
+    .dnn-single-line-input-with-error {
+      width: 100%;
+    }
+    .sslSettings-row_switch {
+      border-bottom: 1px solid @alto;
+      margin: 0 0 20px 0;
+      display: table;
+      width: 100%;
+      padding: 0 0 10px 0;
+    }
+    float: none;
+  }
+  .buttons-box {
+    width: 100%;
+    text-align: center;
+    margin: 0 0 10px 0;
+    .dnn-ui-common-button {
+      margin: 5px;
+    }
+  }
+  .warningBox {
+    border: 1px solid @alto;
+    background-color: @gallery;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    .warningText {
+      font-weight: bolder;
+      color: @thunder;
+    }
+    .warningButton {
+      width: 100%;
+      .dnn-ui-common-button {
         width: 100%;
-        text-align: center;
-        margin: 0 0 10px 0;
-        .dnn-ui-common-button {
-            margin: 5px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        &:first-child {
+          margin-top: 15px;
         }
+      }
     }
+  }
 }

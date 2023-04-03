@@ -8,15 +8,15 @@ namespace DotNetNuke.Entities.Modules
     public interface IPortable
     {
         /// <summary>Exports the content of this module.</summary>
-        /// <param name="ModuleID">The ID of the module to export.</param>
+        /// <param name="moduleID">The ID of the module to export.</param>
         /// <returns>The module's content serialized as a <see cref="string"/>.</returns>
-        string ExportModule(int ModuleID);
+        string ExportModule(int moduleID);
 
         /// <summary>Imports the content of a module.</summary>
-        /// <param name="ModuleID">The ID of the module into which the content is being imported.</param>
-        /// <param name="Content">The content to import.</param>
-        /// <param name="Version">The version of the module from which the content is coming.</param>
-        /// <param name="UserID">The ID of the user performing the import.</param>
-        void ImportModule(int ModuleID, string Content, string Version, int UserID);
+        /// <param name="moduleID">The ID of the module into which the content is being imported.</param>
+        /// <param name="content">The content to import.</param>
+        /// <param name="version">The version of the module from which the content is coming.</param>
+        /// <param name="userID">The ID of the user performing the import.</param>
+        void ImportModule(int moduleID, string content, string version, int userID);
     }
 }

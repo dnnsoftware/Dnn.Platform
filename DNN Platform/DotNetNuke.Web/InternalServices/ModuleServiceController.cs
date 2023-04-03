@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
@@ -84,9 +85,7 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        /// <summary>
-        /// Web method that deletes a tab module.
-        /// </summary>
+        /// <summary>Web method that deletes a tab module.</summary>
         /// <remarks>This has been introduced for integration testing purpuses.</remarks>
         /// <param name="deleteModuleDto">delete module dto.</param>
         /// <returns>Http response message.</returns>

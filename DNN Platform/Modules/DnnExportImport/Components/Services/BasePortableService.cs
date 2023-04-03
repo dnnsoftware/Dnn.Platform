@@ -11,16 +11,12 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Models;
     using Dnn.ExportImport.Interfaces;
 
-    /// <summary>
-    /// A abstract class specifying the ability to import and export site different areas.
-    /// </summary>
+    /// <summary>A abstract class specifying the ability to import and export site different areas.</summary>
     public abstract class BasePortableService
     {
         // The following properties and methods must be overriden in descendant classes
 
-        /// <summary>
-        /// Gets category name for the exportable module. For example: "ASSETS".
-        /// </summary>
+        /// <summary>Gets category name for the exportable module. For example: "ASSETS".</summary>
         public abstract string Category { get; }
 
         /// <summary>
@@ -42,9 +38,7 @@ namespace Dnn.ExportImport.Components.Services
         /// </summary>
         public ExportImportResult Result { get; set; }
 
-        /// <summary>
-        /// Gets or sets a repository to store exported items in and to retrieve from upon import.
-        /// </summary>
+        /// <summary>Gets or sets a repository to store exported items in and to retrieve from upon import.</summary>
         public IExportImportRepository Repository { get; set; }
 
         /// <summary>

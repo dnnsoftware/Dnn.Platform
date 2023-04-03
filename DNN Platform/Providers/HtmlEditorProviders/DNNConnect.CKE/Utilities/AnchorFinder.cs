@@ -9,14 +9,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
     using DNNConnect.CKEditorProvider.Objects;
 
-    /// <summary>
-    /// Finds, and extract all Anchors from a Page.
-    /// </summary>
+    /// <summary>Finds, and extract all Anchors from a Page.</summary>
     public static class AnchorFinder
     {
-        /// <summary>
-        /// Extract the Anchors.
-        /// </summary>
+        /// <summary>Extract the Anchors.</summary>
         /// <param name="file">
         /// The file.
         /// </param>

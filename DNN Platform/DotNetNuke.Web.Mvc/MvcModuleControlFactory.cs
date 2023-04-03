@@ -12,16 +12,19 @@ namespace DotNetNuke.Web.Mvc
 
     public class MvcModuleControlFactory : BaseModuleControlFactory
     {
+        /// <inheritdoc/>
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new MvcHostControl(controlKey);
         }
 
+        /// <inheritdoc/>
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return new MvcHostControl();
         }
 
+        /// <inheritdoc/>
         public override ModuleControlBase CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             ModuleControlBase moduleControl = base.CreateModuleControl(moduleConfiguration);
@@ -37,6 +40,7 @@ namespace DotNetNuke.Web.Mvc
             return moduleControl;
         }
 
+        /// <inheritdoc/>
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return new MvcSettingsControl();

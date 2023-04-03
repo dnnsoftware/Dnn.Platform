@@ -15,18 +15,14 @@ namespace DotNetNuke.Services.Exceptions
 
     public class ErrorContainer : Control
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorContainer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
         /// <param name="strError"></param>
         public ErrorContainer(string strError)
         {
             this.Container = this.FormatException(strError);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorContainer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
         /// <param name="strError"></param>
         /// <param name="exc"></param>
         public ErrorContainer(string strError, Exception exc)
@@ -34,13 +30,11 @@ namespace DotNetNuke.Services.Exceptions
             this.Container = this.FormatException(strError, exc);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorContainer"/> class.
-        /// </summary>
-        /// <param name="_PortalSettings"></param>
+        /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
+        /// <param name="portalSettings"></param>
         /// <param name="strError"></param>
         /// <param name="exc"></param>
-        public ErrorContainer(PortalSettings _PortalSettings, string strError, Exception exc)
+        public ErrorContainer(PortalSettings portalSettings, string strError, Exception exc)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)

@@ -29,9 +29,10 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class ServiceRoutingManagerTests
     {
-        // ReSharper disable UnusedMember.Local
-        private readonly List<string[]> emptyStringArrays = new List<string[]>
-                                                        { null, new string[0], new[] { string.Empty }, new string[] { null } };
+        private static readonly List<string[]> EmptyStringArrays = new List<string[]>
+        {
+            null, new string[0], new[] { string.Empty }, new string[] { null }
+        };
 
         // ReSharper restore UnusedMember.Local
         private Mock<IPortalController> mockPortalController;
@@ -107,7 +108,8 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void NameSpaceRequiredOnMapRouteCalls([ValueSource("emptyStringArrays")] string[] namespaces)
+
+        public void NameSpaceRequiredOnMapRouteCalls([ValueSource(nameof(EmptyStringArrays))] string[] namespaces)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
 
@@ -115,6 +117,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RegisterRoutesIsCalledOnAllServiceRouteMappersEvenWhenSomeThrowExceptions()
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
@@ -136,6 +139,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RegisterRoutesIsCalledOnServiceRouteMappers()
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
@@ -154,6 +158,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         [TestCase("")]
         [TestCase(null)]
+
         public void UniqueNameRequiredOnMapRouteCalls(string uniqueName)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
@@ -162,6 +167,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void UrlCanStartWithSlash()
         {
             // Arrange
@@ -175,6 +181,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void NameIsInsertedInRouteDataTokens()
         {
             // Arrange
@@ -196,6 +203,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void TwoRoutesOnTheSameFolderHaveSimilarNames()
         {
             // Arrange
@@ -220,6 +228,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RoutesShouldHaveBackwardCompability()
         {
             // Arrange

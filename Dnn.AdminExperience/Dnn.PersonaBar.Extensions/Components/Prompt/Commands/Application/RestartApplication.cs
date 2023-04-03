@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
     using DotNetNuke.Services.Log.EventLog;
 
     [ConsoleCommand("restart-application", Constants.HostCategory, "Prompt_RestartApplication_Description")]
+
     public class RestartApplication : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestartApplication));
@@ -37,6 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
                 Logger.Error(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserRestart_Error"));
             }
+
             return new ConsoleResultModel(this.LocalizeString("Prompt_UserRestart_Success")) { MustReload = true };
         }
     }

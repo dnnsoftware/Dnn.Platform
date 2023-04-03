@@ -15,13 +15,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-host", Constants.HostCategory, "Prompt_GetHost_Description")]
+
     public class GetHost : ConsoleCommandBase
     {
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             var sbErrors = new StringBuilder();
 
             // HOST-ONLY ACCESS
@@ -37,12 +39,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
                     sbErrors.Append(this.LocalizeString("Prompt_GetHost__NoArgs"));
                 }
             }
+
             this.AddMessage(sbErrors.ToString());
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var lst = new List<HostModel>();
+
             // double-check host access:
             if (this.User.IsSuperUser)
             {
@@ -53,4 +58,3 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
         }
     }
 }
-

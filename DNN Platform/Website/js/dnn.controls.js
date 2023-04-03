@@ -32,11 +32,8 @@ return this._childControlIDs[ctl.id];},add_handler:function(name,handler)
 args=Sys.EventArgs.Empty;if(h)
 h(this,args);},invoke_compatHandler:function(name)
 {var ret=true;var h;var evts=this.get_events()._getEvent(name);if(evts)
-{var argString='';for(var i=1;i<arguments.length;i++)
-{if(i>1)
-argString+=',';argString+='arguments['+i+']';}
-for(var i=0;i<evts.length;i++)
-{h=evts[i];ret=(eval('h('+argString+')')!=false);if(ret==false)
+{for(var i=0;i<evts.length;i++)
+{h=evts[i];ret=h.apply(undefined, arguments)!=false;if(ret==false)
 return ret;}}
 return true;},getDynamicEventObject:function(name,handler)
 {var eh={};eh[name]=handler;return eh;},callBackFail:function(result,ctx,req)

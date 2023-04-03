@@ -25,57 +25,53 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   This handler handles requests for LinkClick.aspx, but only those specifc
         ///   to file serving.
         /// </summary>
-        /// <param name = "context">System.Web.HttpContext).</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <param name="context">System.Web.HttpContext).</param>
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            int UserId = Null.NullInteger;
-            int PortalId = _portalSettings.PortalId;
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            int userId = Null.NullInteger;
+            int portalId = portalSettings.PortalId;
 
             try
             {
                 // try UserId
                 if (!string.IsNullOrEmpty(context.Request.QueryString["UserId"]))
                 {
-                    UserId = int.Parse(context.Request.QueryString["UserId"]);
-                    if (UserController.GetUserById(PortalId, UserId) == null)
+                    userId = int.Parse(context.Request.QueryString["UserId"]);
+                    if (UserController.GetUserById(portalId, userId) == null)
                     {
                         // The user cannot be found (potential DOS)
                         Exceptions.Exceptions.ProcessHttpException(context.Request);
                     }
                 }
 
-                if (UserId == Null.NullInteger)
+                if (userId == Null.NullInteger)
                 {
                     // try userName
                     if (!string.IsNullOrEmpty(context.Request.QueryString["UserName"]))
                     {
-                        UserId = GetUserId(context.Request.QueryString["UserName"], PortalId);
+                        userId = GetUserId(context.Request.QueryString["UserName"], portalId);
                     }
                 }
 
-                if (UserId == Null.NullInteger)
+                if (userId == Null.NullInteger)
                 {
                     // try user
                     string user = context.Request.QueryString["User"];
                     if (!string.IsNullOrEmpty(user))
                     {
-                        if (!int.TryParse(user, out UserId))
+                        if (!int.TryParse(user, out userId))
                         {
                             // User is not an integer, so try it as a name
-                            UserId = GetUserId(user, PortalId);
+                            userId = GetUserId(user, portalId);
                         }
                         else
                         {
-                            if (UserController.GetUserById(PortalId, UserId) == null)
+                            if (UserController.GetUserById(portalId, userId) == null)
                             {
                                 // The user cannot be found (potential DOS)
                                 Exceptions.Exceptions.ProcessHttpException(context.Request);
@@ -84,7 +80,7 @@ namespace DotNetNuke.Services.UserProfile
                     }
                 }
 
-                if (UserId == Null.NullInteger)
+                if (userId == Null.NullInteger)
                 {
                     // The user cannot be found (potential DOS)
                     Exceptions.Exceptions.ProcessHttpException(context.Request);
@@ -99,16 +95,16 @@ namespace DotNetNuke.Services.UserProfile
             }
 
             // Redirect to Userprofile Page
-            context.Response.Redirect(Globals.UserProfileURL(UserId), true);
+            context.Response.Redirect(Globals.UserProfileURL(userId), true);
         }
 
-        private static int GetUserId(string username, int PortalId)
+        private static int GetUserId(string username, int portalId)
         {
-            int _UserId = Null.NullInteger;
-            UserInfo userInfo = UserController.GetUserByName(PortalId, username);
+            int userId = Null.NullInteger;
+            UserInfo userInfo = UserController.GetUserByName(portalId, username);
             if (userInfo != null)
             {
-                _UserId = userInfo.UserID;
+                userId = userInfo.UserID;
             }
             else
             {
@@ -116,7 +112,7 @@ namespace DotNetNuke.Services.UserProfile
                 Exceptions.Exceptions.ProcessHttpException();
             }
 
-            return _UserId;
+            return userId;
         }
     }
 }

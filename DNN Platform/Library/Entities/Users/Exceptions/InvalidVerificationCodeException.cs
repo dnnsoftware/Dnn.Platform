@@ -10,25 +10,19 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class InvalidVerificationCodeException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.</summary>
         public InvalidVerificationCodeException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.</summary>
         /// <param name="message"></param>
         public InvalidVerificationCodeException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public InvalidVerificationCodeException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Entities.Users
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidVerificationCodeException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public InvalidVerificationCodeException(SerializationInfo info, StreamingContext context)

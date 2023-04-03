@@ -7,9 +7,13 @@
     &:not(:last-child) {
         border-bottom: 1px solid @alto;
     }
-    .synonyms-editor-wrapper > div {
+    .synonyms-editor-wrapper {
         float: left;
         width: 100%;
+        > div {
+            float: left;
+            width: 100%;
+        }
     }
     div.collapsible-header-synonyms {
         width: 100%;

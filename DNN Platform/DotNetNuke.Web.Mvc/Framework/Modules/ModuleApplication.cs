@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     using System;
@@ -28,9 +27,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         protected const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         private const string MvcVersionHeaderName = "X-AspNetMvc-Version";
-        private readonly object _lock = new object();
+        private readonly object @lock = new object();
 
-        private bool _initialized;
+        private bool initialized;
 
         public ModuleApplication()
             : this(null, false)
@@ -183,20 +182,20 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         {
             // Double-check lock to wait for initialization
             // TODO: Is there a better (preferably using events and waits) way to do this?
-            if (this._initialized)
+            if (this.initialized)
             {
                 return;
             }
 
-            lock (this._lock)
+            lock (this.@lock)
             {
-                if (this._initialized)
+                if (this.initialized)
                 {
                     return;
                 }
 
                 this.Init();
-                this._initialized = true;
+                this.initialized = true;
             }
         }
 

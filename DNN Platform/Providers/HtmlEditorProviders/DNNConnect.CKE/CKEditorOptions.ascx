@@ -133,16 +133,40 @@
                         <asp:CheckBoxList ID="chblBrowsGr" runat="server"></asp:CheckBoxList>
 				    </div>
 				    <div class="dnnFormItem">
+                        <asp:label id="HostBrowserRootFolder" runat="server" CssClass="dnnLabel">Browser Root Folder Name for all portals (overrides setting below)</asp:label>
+                        <asp:TextBox ID="HostBrowserRootDir" runat="server"></asp:TextBox>
+				    </div>
+				    <div class="dnnFormItem">
                         <asp:label id="BrowserRootFolder" runat="server" CssClass="dnnLabel">Browser Root Folder</asp:label>
                         <asp:DropDownList ID="BrowserRootDir" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
+				    </div>
+                    <div class="dnnFormItem">
+                        <asp:label id="HostBrowserRootFolderForImg" runat="server" CssClass="dnnLabel">Browser Images Root Folder Name for all portals (overrides setting below)</asp:label>
+                        <asp:TextBox ID="HostBrowserRootDirForImg" runat="server"></asp:TextBox>
+                    </div>
+				    <div class="dnnFormItem">
+                        <asp:label id="BrowserRootFolderForImg" runat="server" CssClass="dnnLabel">Browser Root Folder for images</asp:label>
+                        <asp:DropDownList ID="BrowserRootDirForImg" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
 				    <div class="dnnFormItem">
                         <asp:label id="lblBrowserDirs" runat="server" CssClass="dnnLabel">Use Subdirs for non Admins?</asp:label>
                         <asp:CheckBox ID="cbBrowserDirs" runat="server"></asp:CheckBox>
 				    </div>
 				    <div class="dnnFormItem">
+                        <asp:label id="HostUploadFolderLabel" runat="server" CssClass="dnnLabel">Default Upload Folder for all portals (overrides setting below)</asp:label>
+                        <asp:TextBox ID="HostUploadDir" runat="server"></asp:TextBox>
+				    </div>
+				    <div class="dnnFormItem">
                         <asp:label id="UploadFolderLabel" runat="server" CssClass="dnnLabel">Default Upload Folder</asp:label>
                         <asp:DropDownList ID="UploadDir" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
+				    </div>
+				    <div class="dnnFormItem">
+                        <asp:label id="HostUploadFolderLabelForImg" runat="server" CssClass="dnnLabel">Default Upload Folder for images for all portals (overrides setting below)</asp:label>
+                        <asp:TextBox ID="HostUploadDirForImg" runat="server"></asp:TextBox>
+				    </div>
+				    <div class="dnnFormItem" runat="server" id="UploadDirForImgOption">
+                        <asp:label id="UploadFolderLabelForImg" runat="server" CssClass="dnnLabel">Default Upload Folder for images</asp:label>
+                        <asp:DropDownList ID="UploadDirForImg" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
 				    <div class="dnnFormItem">
                         <asp:label id="OverrideFileOnUploadLabel" runat="server" CssClass="dnnLabel">Override File on Upload?</asp:label>
@@ -175,6 +199,14 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+                    <div class="dnnFormItem">
+                        <asp:label id="lblResizeWidthUpload" runat="server" CssClass="dnnLabel">Image Resize Width On Upload:</asp:label>
+                        <asp:TextBox ID="txtResizeWidthUpload" runat="server" CssClass="settingValueInputNumeric" />px
+                    </div>
+                    <div class="dnnFormItem">
+                        <asp:label id="lblResizeHeightUpload" runat="server" CssClass="dnnLabel">Image Resize Height On Upload:</asp:label>
+                        <asp:TextBox ID="txtResizeHeightUpload" runat="server" CssClass="settingValueInputNumeric" />px
+                    </div>
                 </fieldset>
 			    <h2 id="Panel-FileBrowserDefaults" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("FileBrowserDefaults.SeectionName")%>Default Settings</a></h2>
 			    <fieldset>

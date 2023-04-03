@@ -38,6 +38,7 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [Test]
+
         public void GetModuleProviders_ExcludeSingleProviderWithTypeThatDoesNotExist()
         {
             var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();
@@ -52,6 +53,7 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [Test]
+
         public void GetModuleProviders_OnlyExcludeProviderWithTypeThatDoesNotExistButIncludeOther()
         {
             var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();

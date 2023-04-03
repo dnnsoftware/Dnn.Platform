@@ -291,14 +291,11 @@
   <data name="ServerName.Text" xml:space="preserve">
     <value>Server Name</value>
   </data>
-  <data name="UpgradeLicense.Text" xml:space="preserve">
-    <value>[ Upgrade to Evoq ]</value>
-  </data>
   <data name="btn_CloseDialog.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="CriticalUpdate.Text" xml:space="preserve">
-    <value>[ Critical Update ]</value>
+  <data name="Critical.Text" xml:space="preserve">
+    <value>Critical</value>
   </data>
   <data name="NormalUpdate.Text" xml:space="preserve">
     <value>[ New Update ]</value>
@@ -320,5 +317,11 @@
   </data>
   <data name="UnlockEditMode.Text" xml:space="preserve">
     <value>Click to unlock Edit Mode.</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="LatestVersion.Text" xml:space="preserve">
+    <value>Latest Version</value>
   </data>
 </root>

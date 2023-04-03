@@ -10,14 +10,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Represents support for the HTML label element in an ASP.NET MVC view.
-    /// </summary>
+    /// <summary>Represents support for the HTML label element in an ASP.NET MVC view.</summary>
     public static class HtmlLabelExtensions
     {
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -28,9 +24,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Label(expression);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression using the label text.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression using the label text.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -41,9 +35,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Label(expression, labelText);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -54,9 +46,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Label(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -67,9 +57,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Label(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -80,9 +68,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Label(expression, labelText, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -93,9 +79,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Label(expression, labelText, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -107,9 +91,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelFor(expression);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression using the label text.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression using the label text.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -120,9 +102,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelFor(expression, labelText);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -133,9 +113,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -146,9 +124,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelFor(expression, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -159,9 +135,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelFor(expression, labelText, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -172,9 +146,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelFor(expression, labelText, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the model.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the model.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the model.
@@ -185,9 +157,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelForModel();
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression using the label text.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression using the label text.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -198,9 +168,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelForModel(labelText);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -211,9 +179,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelForModel(htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -224,9 +190,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelForModel(htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.
@@ -237,9 +201,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.LabelForModel(labelText, htmlAttributes);
         }
 
-        /// <summary>
-        /// Returns an HTML label element and the property name of the property that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns an HTML label element and the property name of the property that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// An HTML label element and the property name of the property that is represented by the expression.

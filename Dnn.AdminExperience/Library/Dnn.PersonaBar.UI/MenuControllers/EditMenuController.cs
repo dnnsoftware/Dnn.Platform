@@ -19,15 +19,18 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     [DnnPageEditor]
     public class EditMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             return this.IsPageAdmin() || this.IsModuleAdmin();
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

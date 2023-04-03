@@ -1,30 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using log4net.Repository;
 
 namespace log4net.Plugin
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using log4net.Repository;
-
-    /// <summary>
-    /// Interface implemented by logger repository plugins.
-    /// </summary>
+    /// <summary>Interface implemented by logger repository plugins.</summary>
     /// <remarks>
     /// <para>
     /// Plugins define additional behavior that can be associated
@@ -38,13 +36,11 @@ namespace log4net.Plugin
     /// attributes.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface IPlugin
     {
-        /// <summary>
-        /// Gets the name of the plugin.
-        /// </summary>
+        /// <summary>Gets the name of the plugin.</summary>
         /// <value>
         /// The name of the plugin.
         /// </value>
@@ -57,9 +53,7 @@ namespace log4net.Plugin
         /// </remarks>
         string Name { get; }
 
-        /// <summary>
-        /// Attaches the plugin to the specified <see cref="ILoggerRepository"/>.
-        /// </summary>
+        /// <summary>Attaches the plugin to the specified <see cref="ILoggerRepository"/>.</summary>
         /// <param name="repository">The <see cref="ILoggerRepository"/> that this plugin should be attached to.</param>
         /// <remarks>
         /// <para>
@@ -71,12 +65,10 @@ namespace log4net.Plugin
         /// </remarks>
         void Attach(ILoggerRepository repository);
 
-        /// <summary>
-        /// Is called when the plugin is to shutdown.
-        /// </summary>
+        /// <summary>Is called when the plugin is to shutdown.</summary>
         /// <remarks>
         /// <para>
-        /// This method is called to notify the plugin that
+        /// This method is called to notify the plugin that 
         /// it should stop operating and should detach from
         /// the repository.
         /// </para>

@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.FileSystem
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.</summary>
     public class FolderTypeSettingConfig
     {
         public string Name { get; set; }

@@ -10,22 +10,20 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class LanguagesListTypeAttribute : Attribute
     {
-        private readonly LanguagesListType _ListType;
+        private readonly LanguagesListType listType;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagesListTypeAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagesListTypeAttribute"/> class.</summary>
         /// <param name="type">The type of List.</param>
         public LanguagesListTypeAttribute(LanguagesListType type)
         {
-            this._ListType = type;
+            this.listType = type;
         }
 
         public LanguagesListType ListType
         {
             get
             {
-                return this._ListType;
+                return this.listType;
             }
         }
     }

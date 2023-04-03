@@ -53,7 +53,7 @@ Artifacts/
 *.gitmodules
 
 ## TODO: If you have NuGet Package Restore enabled, uncomment this
-[Pp]ackages/
+/[Pp]ackages/
 
 # Visual Studio profiler
 *.psess
@@ -134,6 +134,13 @@ DNN [Pp]latform/Modules/ResourceManager/**/scripts/*-bundle.*
 !DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
 
 yarn-error.log
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
 
 /Build/bin/
 /.dotnet/

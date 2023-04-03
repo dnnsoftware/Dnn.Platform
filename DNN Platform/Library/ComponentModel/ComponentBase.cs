@@ -5,9 +5,7 @@ namespace DotNetNuke.ComponentModel
 {
     using System;
 
-    /// <summary>
-    /// A base class for a Dnn component.
-    /// </summary>
+    /// <summary>A base class for a Dnn component.</summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TType">The component type.</typeparam>
     public abstract class ComponentBase<TContract, TType>
@@ -16,9 +14,7 @@ namespace DotNetNuke.ComponentModel
         private static TContract testableInstance;
         private static bool useTestable = false;
 
-        /// <summary>
-        /// Gets an instance of the Component.
-        /// </summary>
+        /// <summary>Gets an instance of the Component.</summary>
         public static TContract Instance
         {
             get
@@ -40,9 +36,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        /// <summary>
-        /// Registers an instance of a component.
-        /// </summary>
+        /// <summary>Registers an instance of a component.</summary>
         /// <param name="instance">The instance to register.</param>
         public static void RegisterInstance(TContract instance)
         {
@@ -52,9 +46,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        /// <summary>
-        /// Registers an instance to use for the Singleton.
-        /// </summary>
+        /// <summary>Registers an instance to use for the Singleton.</summary>
         /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         /// <param name="instance">The instance to set.</param>
         internal static void SetTestableInstance(TContract instance)
@@ -63,9 +55,7 @@ namespace DotNetNuke.ComponentModel
             useTestable = true;
         }
 
-        /// <summary>
-        /// Clears the current instance, a new instance will be initialized when next requested.
-        /// </summary>
+        /// <summary>Clears the current instance, a new instance will be initialized when next requested.</summary>
         /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         internal static void ClearInstance()
         {

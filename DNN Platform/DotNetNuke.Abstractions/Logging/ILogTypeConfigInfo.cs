@@ -5,74 +5,46 @@ namespace DotNetNuke.Abstractions.Logging
 {
     using System;
 
-    /// <summary>
-    /// Log type configuration info.
-    /// </summary>
+    /// <summary>Log type configuration info.</summary>
     public interface ILogTypeConfigInfo : ILogTypeInfo
     {
-        /// <summary>
-        /// Gets the start <see cref="DateTime"/>.
-        /// </summary>
+        /// <summary>Gets the start <see cref="DateTime"/>.</summary>
         DateTime StartDateTime { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether an email notifiaction is active.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether an email notifiaction is active.</summary>
         bool EmailNotificationIsActive { get; set; }
 
-        /// <summary>
-        /// Gets or sets the email from address.
-        /// </summary>
+        /// <summary>Gets or sets the email from address.</summary>
         string MailFromAddress { get; set; }
 
-        /// <summary>
-        /// Gets or sets the email to address.
-        /// </summary>
+        /// <summary>Gets or sets the email to address.</summary>
         string MailToAddress { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification threshold.
-        /// </summary>
+        /// <summary>Gets or sets the notification threshold.</summary>
         int NotificationThreshold { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification threshold time.
-        /// </summary>
+        /// <summary>Gets or sets the notification threshold time.</summary>
         int NotificationThresholdTime { get; set; }
 
-        /// <summary>
-        /// Gets or sets the notification threshold time.
-        /// </summary>
+        /// <summary>Gets or sets the notification threshold time.</summary>
         NotificationThresholdTimeType NotificationThresholdTimeType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Id.
-        /// </summary>
+        /// <summary>Gets or sets the Id.</summary>
         string Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether if logging is active.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether if logging is active.</summary>
         bool LoggingIsActive { get; set; }
 
-        /// <summary>
-        /// Gets or sets the log file name.
-        /// </summary>
+        /// <summary>Gets or sets the log file name.</summary>
         string LogFileName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the log file name with path.
-        /// </summary>
+        /// <summary>Gets or sets the log file name with path.</summary>
         string LogFileNameWithPath { get; set; }
 
-        /// <summary>
-        /// Gets or sets the log type portal Id.
-        /// </summary>
+        /// <summary>Gets or sets the log type portal Id.</summary>
         string LogTypePortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the keep most recent.
-        /// </summary>
+        /// <summary>Gets or sets the keep most recent.</summary>
         string KeepMostRecent { get; set; }
     }
 }

@@ -4304,7 +4304,7 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     if (xhr && xhr.responseText) {
-                        $.dnnAlert({ text: eval('(' + xhr.responseText + ')').Message });
+                        $.dnnAlert({ text: JSON.parse(xhr.responseText).Message });
                     }
                 },
                 type: 'POST',

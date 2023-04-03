@@ -8,15 +8,11 @@
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    /// Contains UTs for <see cref="TabChangeTracker"/>.
-    /// </summary>
+    /// <summary>Contains UTs for <see cref="TabChangeTracker"/>.</summary>
     [TestFixture]
     public class TabChangeTrackerTests
     {
-        /// <summary>
-        /// UT for <see cref="TabChangeTracker.TrackModuleModification(ModuleInfo, int, int)" />.
-        /// </summary>
+        /// <summary>UT for <see cref="TabChangeTracker.TrackModuleModification(ModuleInfo, int, int)" />.</summary>
         [Test]
         public void TrackModuleModification_WithSharedModule_ThrowsException()
         {

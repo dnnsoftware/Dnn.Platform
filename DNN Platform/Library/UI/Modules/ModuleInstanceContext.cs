@@ -23,43 +23,35 @@ namespace DotNetNuke.UI.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// Provides context data for a particular instance of a module.
-    /// </summary>
+    /// <summary>Provides context data for a particular instance of a module.</summary>
     public class ModuleInstanceContext
     {
-        private readonly IModuleControl _moduleControl;
-        private ModuleActionCollection _actions;
-        private ModuleAction _moduleSpecificActions;
-        private ModuleAction _moduleGenericActions;
-        private ModuleAction _moduleMoveActions;
-        private ModuleInfo _configuration;
-        private bool? _isEditable;
-        private int _nextActionId = -1;
-        private Hashtable _settings;
+        private readonly IModuleControl moduleControl;
+        private ModuleActionCollection actions;
+        private ModuleAction moduleSpecificActions;
+        private ModuleAction moduleGenericActions;
+        private ModuleAction moduleMoveActions;
+        private ModuleInfo configuration;
+        private bool? isEditable;
+        private int nextActionId = -1;
+        private Hashtable settings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.</summary>
         public ModuleInstanceContext()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.</summary>
         /// <param name="moduleControl"></param>
         public ModuleInstanceContext(IModuleControl moduleControl)
         {
-            this._moduleControl = moduleControl;
+            this.moduleControl = moduleControl;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
         /// Administrator role.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public bool EditMode
         {
             get
@@ -68,18 +60,14 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the module is Editable (in Admin mode).
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the module is Editable (in Admin mode).</summary>
         public bool IsEditable
         {
             get
             {
                 // Perform tri-state switch check to avoid having to perform a security
                 // role lookup on every property access (instead caching the result)
-                if (!this._isEditable.HasValue)
+                if (!this.isEditable.HasValue)
                 {
                     bool blnPreview = (Personalization.GetUserMode() == PortalSettings.Mode.View) || this.PortalSettings.IsLocked;
                     if (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
@@ -88,22 +76,22 @@ namespace DotNetNuke.UI.Modules
                     }
 
                     bool blnHasModuleEditPermissions = false;
-                    if (this._configuration != null)
+                    if (this.configuration != null)
                     {
                         blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "CONTENT", this.Configuration);
                     }
 
                     if (blnPreview == false && blnHasModuleEditPermissions)
                     {
-                        this._isEditable = true;
+                        this.isEditable = true;
                     }
                     else
                     {
-                        this._isEditable = false;
+                        this.isEditable = false;
                     }
                 }
 
-                return this._isEditable.Value;
+                return this.isEditable.Value;
             }
         }
 
@@ -139,109 +127,85 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the settings for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the settings for this context.</summary>
         public Hashtable Settings
         {
             get
             {
-                if (this._settings == null)
+                if (this.settings == null)
                 {
-                    this._settings = new ModuleController().GetModuleSettings(this.ModuleId, this.TabId);
+                    this.settings = new ModuleController().GetModuleSettings(this.ModuleId, this.TabId);
 
                     // add the TabModuleSettings to the ModuleSettings
                     Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(this.TabModuleId, this.TabId);
                     foreach (string strKey in tabModuleSettings.Keys)
                     {
-                        this._settings[strKey] = tabModuleSettings[strKey];
+                        this.settings[strKey] = tabModuleSettings[strKey];
                     }
                 }
 
-                return this._settings;
+                return this.settings;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the tab ID for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the tab ID for this context.</summary>
         public int TabId
         {
             get
             {
-                if (this._configuration != null)
+                if (this.configuration != null)
                 {
-                    return Convert.ToInt32(this._configuration.TabID);
+                    return Convert.ToInt32(this.configuration.TabID);
                 }
 
                 return Null.NullInteger;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Actions for this module context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Actions for this module context.</summary>
         public ModuleActionCollection Actions
         {
             get
             {
-                if (this._actions == null)
+                if (this.actions == null)
                 {
                     this.LoadActions(HttpContext.Current.Request);
                 }
 
-                return this._actions;
+                return this.actions;
             }
 
             set
             {
-                this._actions = value;
+                this.actions = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Module Configuration (ModuleInfo) for this context.</summary>
         public ModuleInfo Configuration
         {
             get
             {
-                return this._configuration;
+                return this.configuration;
             }
 
             set
             {
-                this._configuration = value;
+                this.configuration = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the HelpUrl for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the HelpUrl for this context.</summary>
         public string HelpURL { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the module ID for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the module ID for this context.</summary>
         public int ModuleId
         {
             get
             {
-                if (this._configuration != null)
+                if (this.configuration != null)
                 {
-                    return this._configuration.ModuleID;
+                    return this.configuration.ModuleID;
                 }
 
                 return Null.NullInteger;
@@ -249,25 +213,21 @@ namespace DotNetNuke.UI.Modules
 
             set
             {
-                if (this._configuration != null)
+                if (this.configuration != null)
                 {
-                    this._configuration.ModuleID = value;
+                    this.configuration.ModuleID = value;
                 }
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the tabnmodule ID for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the tabnmodule ID for this context.</summary>
         public int TabModuleId
         {
             get
             {
-                if (this._configuration != null)
+                if (this.configuration != null)
                 {
-                    return Convert.ToInt32(this._configuration.TabModuleID);
+                    return Convert.ToInt32(this.configuration.TabModuleID);
                 }
 
                 return Null.NullInteger;
@@ -275,9 +235,9 @@ namespace DotNetNuke.UI.Modules
 
             set
             {
-                if (this._configuration != null)
+                if (this.configuration != null)
                 {
-                    this._configuration.TabModuleID = value;
+                    this.configuration.TabModuleID = value;
                 }
             }
         }
@@ -361,8 +321,8 @@ namespace DotNetNuke.UI.Modules
 
         public int GetNextActionID()
         {
-            this._nextActionId += 1;
-            return this._nextActionId;
+            this.nextActionId += 1;
+            return this.nextActionId;
         }
 
         private static string FilterUrl(HttpRequest request)
@@ -370,13 +330,9 @@ namespace DotNetNuke.UI.Modules
             return request.RawUrl.Replace("\"", string.Empty);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetActionsCount gets the current number of actions.
-        /// </summary>
+        /// <summary>GetActionsCount gets the current number of actions.</summary>
         /// <param name="actions">The actions collection to count.</param>
         /// <param name="count">The current count.</param>
-        /// -----------------------------------------------------------------------------
         private static int GetActionsCount(int count, ModuleActionCollection actions)
         {
             foreach (ModuleAction action in actions)
@@ -393,13 +349,7 @@ namespace DotNetNuke.UI.Modules
             return count;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddHelpActions Adds the Help actions to the Action Menu.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>AddHelpActions Adds the Help actions to the Action Menu.</summary>
         private void AddHelpActions()
         {
             var url = string.Empty;
@@ -434,7 +384,7 @@ namespace DotNetNuke.UI.Modules
                 NewWindow = showInNewWindow,
                 UseActionEvent = true,
             };
-            this._moduleGenericActions.Actions.Add(helpAction);
+            this.moduleGenericActions.Actions.Add(helpAction);
         }
 
         private void AddPrintAction()
@@ -458,7 +408,7 @@ namespace DotNetNuke.UI.Modules
                 Visible = true,
                 NewWindow = true,
             };
-            this._moduleGenericActions.Actions.Add(action);
+            this.moduleGenericActions.Actions.Add(action);
         }
 
         private void AddSyndicateAction()
@@ -475,27 +425,21 @@ namespace DotNetNuke.UI.Modules
                 Visible = true,
                 NewWindow = true,
             };
-            this._moduleGenericActions.Actions.Add(action);
+            this.moduleGenericActions.Actions.Add(action);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddMenuMoveActions Adds the Move actions to the Action Menu.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>AddMenuMoveActions Adds the Move actions to the Action Menu.</summary>
         private void AddMenuMoveActions()
         {
             // module movement
-            this._moduleMoveActions = new ModuleAction(this.GetNextActionID(), Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false);
+            this.moduleMoveActions = new ModuleAction(this.GetNextActionID(), Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false);
 
             // move module up/down
             if (this.Configuration != null)
             {
                 if ((this.Configuration.ModuleOrder != 0) && (this.Configuration.PaneModuleIndex > 0))
                 {
-                    this._moduleMoveActions.Actions.Add(
+                    this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.MoveTop, Localization.GlobalResourceFile),
                         ModuleActionType.MoveTop,
@@ -506,7 +450,7 @@ namespace DotNetNuke.UI.Modules
                         SecurityAccessLevel.View,
                         true,
                         false);
-                    this._moduleMoveActions.Actions.Add(
+                    this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.MoveUp, Localization.GlobalResourceFile),
                         ModuleActionType.MoveUp,
@@ -521,7 +465,7 @@ namespace DotNetNuke.UI.Modules
 
                 if ((this.Configuration.ModuleOrder != 0) && (this.Configuration.PaneModuleIndex < (this.Configuration.PaneModuleCount - 1)))
                 {
-                    this._moduleMoveActions.Actions.Add(
+                    this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.MoveDown, Localization.GlobalResourceFile),
                         ModuleActionType.MoveDown,
@@ -532,7 +476,7 @@ namespace DotNetNuke.UI.Modules
                         SecurityAccessLevel.View,
                         true,
                         false);
-                    this._moduleMoveActions.Actions.Add(
+                    this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.MoveBottom, Localization.GlobalResourceFile),
                         ModuleActionType.MoveBottom,
@@ -552,7 +496,7 @@ namespace DotNetNuke.UI.Modules
                 var pane = obj as string;
                 if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._moduleMoveActions.Actions.Add(
+                    this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.MovePane, Localization.GlobalResourceFile) + " " + pane,
                         ModuleActionType.MovePane,
@@ -567,29 +511,23 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadActions loads the Actions collections.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <summary>LoadActions loads the Actions collections.</summary>
         private void LoadActions(HttpRequest request)
         {
-            this._actions = new ModuleActionCollection();
+            this.actions = new ModuleActionCollection();
             if (this.PortalSettings.IsLocked)
             {
                 return;
             }
 
-            this._moduleGenericActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
+            this.moduleGenericActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
             int maxActionId = Null.NullInteger;
 
             // check if module Implements Entities.Modules.IActionable interface
-            var actionable = this._moduleControl as IActionable;
+            var actionable = this.moduleControl as IActionable;
             if (actionable != null)
             {
-                this._moduleSpecificActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
+                this.moduleSpecificActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
 
                 ModuleActionCollection moduleActions = actionable.ModuleActions;
 
@@ -607,38 +545,38 @@ namespace DotNetNuke.UI.Modules
                             maxActionId = action.ID;
                         }
 
-                        this._moduleSpecificActions.Actions.Add(action);
+                        this.moduleSpecificActions.Actions.Add(action);
 
                         if (!UIUtilities.IsLegacyUI(this.ModuleId, action.ControlKey, this.PortalId) && action.Url.Contains("ctl"))
                         {
-                            action.ClientScript = UrlUtils.PopUpUrl(action.Url, this._moduleControl as Control, this.PortalSettings, true, false);
+                            action.ClientScript = UrlUtils.PopUpUrl(action.Url, this.moduleControl as Control, this.PortalSettings, true, false);
                         }
                     }
                 }
 
-                if (this._moduleSpecificActions.Actions.Count > 0)
+                if (this.moduleSpecificActions.Actions.Count > 0)
                 {
-                    this._actions.Add(this._moduleSpecificActions);
+                    this.actions.Add(this.moduleSpecificActions);
                 }
             }
 
             // Make sure the Next Action Id counter is correct
-            int actionCount = GetActionsCount(this._actions.Count, this._actions);
-            if (this._nextActionId < maxActionId)
+            int actionCount = GetActionsCount(this.actions.Count, this.actions);
+            if (this.nextActionId < maxActionId)
             {
-                this._nextActionId = maxActionId;
+                this.nextActionId = maxActionId;
             }
 
-            if (this._nextActionId < actionCount)
+            if (this.nextActionId < actionCount)
             {
-                this._nextActionId = actionCount;
+                this.nextActionId = actionCount;
             }
 
             // Custom injection of Module Settings when shared as ViewOnly
             if (this.Configuration != null && (this.Configuration.IsShared && this.Configuration.IsShareableViewOnly)
                     && TabPermissionController.CanAddContentToPage())
             {
-                this._moduleGenericActions.Actions.Add(
+                this.moduleGenericActions.Actions.Add(
                     this.GetNextActionID(),
                     Localization.GetString("ModulePermissions.Action", Localization.GlobalResourceFile),
                     "ModulePermissions",
@@ -656,7 +594,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
                     {
-                        this._moduleGenericActions.Actions.Add(
+                        this.moduleGenericActions.Actions.Add(
                             this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
                             ModuleActionType.ModuleSettings,
@@ -678,14 +616,13 @@ namespace DotNetNuke.UI.Modules
                 {
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "EXPORT", this.Configuration))
                     {
-                        this._moduleGenericActions.Actions.Add(
+                        this.moduleGenericActions.Actions.Add(
                             this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
                             ModuleActionType.ExportModule,
                             string.Empty,
                             "action_export.gif",
                             this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
-
                             string.Empty,
                             false,
                             SecurityAccessLevel.View,
@@ -695,7 +632,7 @@ namespace DotNetNuke.UI.Modules
 
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "IMPORT", this.Configuration))
                     {
-                        this._moduleGenericActions.Actions.Add(
+                        this.moduleGenericActions.Actions.Add(
                             this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
                             ModuleActionType.ImportModule,
@@ -734,7 +671,7 @@ namespace DotNetNuke.UI.Modules
 
             if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", this.Configuration) && !Globals.IsAdminControl())
             {
-                this._moduleGenericActions.Actions.Add(
+                this.moduleGenericActions.Actions.Add(
                     this.GetNextActionID(),
                     Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),
                     ModuleActionType.ViewSource,
@@ -762,7 +699,7 @@ namespace DotNetNuke.UI.Modules
                         }
                     }
 
-                    this._moduleGenericActions.Actions.Add(
+                    this.moduleGenericActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.DeleteModule, Localization.GlobalResourceFile),
                         ModuleActionType.DeleteModule,
@@ -778,7 +715,7 @@ namespace DotNetNuke.UI.Modules
 
                 if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
                 {
-                    this._moduleGenericActions.Actions.Add(
+                    this.moduleGenericActions.Actions.Add(
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
                         ModuleActionType.ClearCache,
@@ -798,21 +735,21 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            if (this._moduleGenericActions.Actions.Count > 0)
+            if (this.moduleGenericActions.Actions.Count > 0)
             {
-                this._actions.Add(this._moduleGenericActions);
+                this.actions.Add(this.moduleGenericActions);
             }
 
-            if (this._moduleMoveActions != null && this._moduleMoveActions.Actions.Count > 0)
+            if (this.moduleMoveActions != null && this.moduleMoveActions.Actions.Count > 0)
             {
-                this._actions.Add(this._moduleMoveActions);
+                this.actions.Add(this.moduleMoveActions);
             }
 
-            foreach (ModuleAction action in this._moduleGenericActions.Actions)
+            foreach (ModuleAction action in this.moduleGenericActions.Actions)
             {
                 if (!UIUtilities.IsLegacyUI(this.ModuleId, action.ControlKey, this.PortalId) && action.Url.Contains("ctl"))
                 {
-                    action.ClientScript = UrlUtils.PopUpUrl(action.Url, this._moduleControl as Control, this.PortalSettings, true, false);
+                    action.ClientScript = UrlUtils.PopUpUrl(action.Url, this.moduleControl as Control, this.PortalSettings, true, false);
                 }
             }
         }

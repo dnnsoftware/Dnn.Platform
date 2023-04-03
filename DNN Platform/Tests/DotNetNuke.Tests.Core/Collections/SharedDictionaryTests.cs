@@ -47,23 +47,20 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [ExpectedException(typeof(WriteLockRequiredException))]
-        [TestCaseSource("GetWriteMethods")]
+        [TestCaseSource(nameof(GetWriteMethods))]
         public void WriteRequiresLock(Action<SharedDictionary<string, string>> writeAction)
         {
-            writeAction.Invoke(this.InitSharedDictionary("key", "value"));
+            Assert.Throws<WriteLockRequiredException>(() => writeAction.Invoke(this.InitSharedDictionary("key", "value")));
         }
 
         [Test]
-        [ExpectedException(typeof(ReadLockRequiredException))]
-        [TestCaseSource("GetReadMethods")]
+        [TestCaseSource(nameof(GetReadMethods))]
         public void ReadRequiresLock(Action<SharedDictionary<string, string>> readAction)
         {
-            readAction.Invoke(this.InitSharedDictionary("key", "value"));
+            Assert.Throws<ReadLockRequiredException>(() => readAction.Invoke(this.InitSharedDictionary("key", "value")));
         }
 
         [Test]
-        [ExpectedException(typeof(ReadLockRequiredException))]
         public void DisposedReadLockDeniesRead()
         {
             var d = new SharedDictionary<string, string>(this.LockingStrategy);
@@ -71,11 +68,10 @@ namespace DotNetNuke.Tests.Core.Collections
             ISharedCollectionLock l = d.GetReadLock();
             l.Dispose();
 
-            d.ContainsKey("foo");
+            Assert.Throws<ReadLockRequiredException>(() => d.ContainsKey("foo"));
         }
 
         [Test]
-        [ExpectedException(typeof(ReadLockRequiredException))]
         public void DisposedWriteLockDeniesRead()
         {
             var d = new SharedDictionary<string, string>(this.LockingStrategy);
@@ -83,11 +79,10 @@ namespace DotNetNuke.Tests.Core.Collections
             ISharedCollectionLock l = d.GetWriteLock();
             l.Dispose();
 
-            d.ContainsKey("foo");
+            Assert.Throws<ReadLockRequiredException>(() => d.ContainsKey("foo"));
         }
 
         [Test]
-        [ExpectedException(typeof(WriteLockRequiredException))]
         public void DisposedWriteLockDeniesWrite()
         {
             var d = new SharedDictionary<string, string>(this.LockingStrategy);
@@ -95,7 +90,7 @@ namespace DotNetNuke.Tests.Core.Collections
             ISharedCollectionLock l = d.GetWriteLock();
             l.Dispose();
 
-            d["ke"] = "foo";
+            Assert.Throws<WriteLockRequiredException>(() => d["ke"] = "foo");
         }
 
         [Test]
@@ -133,14 +128,13 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [ExpectedException(typeof(ObjectDisposedException))]
-        [TestCaseSource("GetObjectDisposedExceptionMethods")]
+        [TestCaseSource(nameof(GetObjectDisposedExceptionMethods))]
         public void MethodsThrowAfterDisposed(Action<SharedDictionary<string, string>> methodCall)
         {
             var d = new SharedDictionary<string, string>(this.LockingStrategy);
 
             d.Dispose();
-            methodCall.Invoke(d);
+            Assert.Throws<ObjectDisposedException>(() => methodCall.Invoke(d));
         }
 
         [Test]
@@ -174,17 +168,17 @@ namespace DotNetNuke.Tests.Core.Collections
             Assert.Fail("Expected LockRecursionException, did not throw");
         }
 
-        protected IEnumerable<Action<SharedDictionary<string, string>>> GetObjectDisposedExceptionMethods()
+        protected static IEnumerable<Action<SharedDictionary<string, string>>> GetObjectDisposedExceptionMethods()
         {
             var l = new List<Action<SharedDictionary<string, string>>> { (SharedDictionary<string, string> d) => d.GetReadLock(), (SharedDictionary<string, string> d) => d.GetWriteLock() };
 
-            l.AddRange(this.GetReadMethods());
-            l.AddRange(this.GetWriteMethods());
+            l.AddRange(GetReadMethods());
+            l.AddRange(GetWriteMethods());
 
             return l;
         }
 
-        protected IEnumerable<Action<SharedDictionary<string, string>>> GetReadMethods()
+        protected static IEnumerable<Action<SharedDictionary<string, string>>> GetReadMethods()
         {
             var l = new List<Action<SharedDictionary<string, string>>>();
 
@@ -213,7 +207,7 @@ namespace DotNetNuke.Tests.Core.Collections
             return l;
         }
 
-        protected IEnumerable<Action<SharedDictionary<string, string>>> GetWriteMethods()
+        protected static IEnumerable<Action<SharedDictionary<string, string>>> GetWriteMethods()
         {
             var l = new List<Action<SharedDictionary<string, string>>>();
 

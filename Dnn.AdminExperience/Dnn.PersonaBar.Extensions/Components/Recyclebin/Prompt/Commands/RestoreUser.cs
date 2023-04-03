@@ -14,47 +14,60 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     using Constants = Dnn.PersonaBar.Recyclebin.Components.Constants;
 
     [ConsoleCommand("restore-user", Constants.RecylcleBinCategory, "Prompt_RestoreUser_Description")]
+
     public class RestoreUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
-        private IUserValidator _userValidator;
-        private IRecyclebinController _recyclebinController;
+        private IUserValidator userValidator;
+        private IRecyclebinController recyclebinController;
 
-        public RestoreUser() : this(new UserValidator(), RecyclebinController.Instance)
+        /// <summary>Initializes a new instance of the <see cref="RestoreUser"/> class.</summary>
+        public RestoreUser()
+            : this(new UserValidator(), RecyclebinController.Instance)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RestoreUser"/> class.</summary>
+        /// <param name="userValidator"></param>
+        /// <param name="instance"></param>
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {
-            this._userValidator = userValidator;
-            this._recyclebinController = instance;
+            this.userValidator = userValidator;
+            this.recyclebinController = instance;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             UserInfo userInfo;
-            this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
+            this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
 
             if (userInfo == null)
+            {
                 return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
+            }
 
             if (!userInfo.IsDeleted)
+            {
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestoreNotRequired"));
+            }
 
             string message;
-            var restoredUser = this._recyclebinController.RestoreUser(userInfo, out message);
+            var restoredUser = this.recyclebinController.RestoreUser(userInfo, out message);
             return restoredUser
                 ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1 }
                 : new ConsoleErrorResultModel(message);

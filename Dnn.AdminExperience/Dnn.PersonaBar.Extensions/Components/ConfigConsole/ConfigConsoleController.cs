@@ -20,22 +20,20 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
     public class ConfigConsoleController
     {
-        /// <summary>
-        /// Name of the Web configuration file.
-        /// </summary>
+        /// <summary>Name of the Web configuration file.</summary>
         internal const string WebConfig = "Web.config";
 
+        private const string CONFIGEXT = ".config";
+        private const string ROBOTSEXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
-        private const string CONFIG_EXT = ".config";
-        private const string ROBOTS_EXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
 
         public IEnumerable<string> GetConfigFilesList()
         {
             var files = Directory
                 .EnumerateFiles(Globals.ApplicationMapPath)
-                .Where(file => file.ToLower().EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTS_EXT, StringComparison.InvariantCultureIgnoreCase))
+                .Where(file => file.ToLower().EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTSEXT, StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
-            IEnumerable<string> fileList = (from file in files select Path.GetFileName(file));
+            IEnumerable<string> fileList = from file in files select Path.GetFileName(file);
             return fileList;
         }
 
@@ -43,7 +41,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(configFile);
 
-            if (configFile.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            if (configFile.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = Config.Load(configFile);
                 using (var txtWriter = new StringWriter())
@@ -68,7 +66,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(fileName);
 
-            if (fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            if (fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = new XmlDocument { XmlResolver = null };
                 configDoc.LoadXml(fileContent);
@@ -80,9 +78,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        /// <summary>
-        /// Validates a config file against a well known schema.
-        /// </summary>
+        /// <summary>Validates a config file against a well known schema.</summary>
         /// <param name="fileName">The config file name.</param>
         /// <param name="fileContent">The contents of the config file.</param>
         /// <returns>A list of validation errors.</returns>
@@ -90,7 +86,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(fileName);
 
-            if (!fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            if (!fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 return new string[0];
             }
@@ -150,26 +146,6 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        private bool IsValidXmlMergDocument(string mergeDocText)
-        {
-            if (string.IsNullOrEmpty(mergeDocText.Trim()))
-            {
-                return false;
-            }
-            // TODO: Add more checks here
-            return true;
-        }
-
-        private void ValidateFilePath(string filePath)
-        {
-            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath);
-            var fileInfo = new FileInfo(physicalPath);
-            if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new ArgumentException("Invalid File Path");
-            }
-        }
-
         private static string SaveNonConfig(string document, string filename)
         {
             var retMsg = string.Empty;
@@ -223,6 +199,27 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
 
             return retMsg;
+        }
+
+        private bool IsValidXmlMergDocument(string mergeDocText)
+        {
+            if (string.IsNullOrEmpty(mergeDocText.Trim()))
+            {
+                return false;
+            }
+
+            // TODO: Add more checks here
+            return true;
+        }
+
+        private void ValidateFilePath(string filePath)
+        {
+            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath);
+            var fileInfo = new FileInfo(physicalPath);
+            if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ArgumentException("Invalid File Path");
+            }
         }
     }
 }

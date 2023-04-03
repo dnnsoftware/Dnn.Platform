@@ -19,9 +19,7 @@ namespace DotNetNuke.Services.ClientCapability
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether support detect the device whether is a tablet.
-        /// </summary>
+        /// <summary>Gets a value indicating whether support detect the device whether is a tablet.</summary>
         public virtual bool SupportsTabletDetection
         {
             get
@@ -35,39 +33,19 @@ namespace DotNetNuke.Services.ClientCapability
             return ComponentFactory.GetComponent<ClientCapabilityProvider>();
         }
 
-        /// <summary>
-        ///   Returns ClientCapability based on userAgent.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public abstract IClientCapability GetClientCapability(string userAgent);
 
-        /// <summary>
-        ///   Returns ClientCapability based on ClientCapabilityId.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public abstract IClientCapability GetClientCapabilityById(string clientId);
 
-        /// <summary>
-        /// Returns available Capability Values for every  Capability Name.
-        /// </summary>
-        /// <returns>
-        /// Dictionary of Capability Name along with List of possible values of the Capability.
-        /// </returns>
-        /// <example>Capability Name = mobile_browser, value = Safari, Andriod Webkit. </example>
+        /// <inheritdoc />
         public abstract IDictionary<string, List<string>> GetAllClientCapabilityValues();
 
-        /// <summary>
-        /// Returns All available Client Capabilities present.
-        /// </summary>
-        /// <returns>
-        /// List of IClientCapability present.
-        /// </returns>
+        /// <inheritdoc />
         public abstract IQueryable<IClientCapability> GetAllClientCapabilities();
 
-        /// <summary>
-        ///   Returns ClientCapability based on HttpRequest.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual IClientCapability GetClientCapability(HttpRequest httpRequest)
         {
             IClientCapability clientCapability = this.GetClientCapability(httpRequest.UserAgent);

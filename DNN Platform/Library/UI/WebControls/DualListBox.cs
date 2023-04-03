@@ -17,17 +17,15 @@ namespace DotNetNuke.UI.WebControls
 
     public class DualListBox : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-        private readonly Style _AvailableListBoxStyle = new Style();
-        private readonly Style _ButtonStyle = new Style();
-        private readonly TableStyle _ContainerStyle = new TableStyle();
-        private readonly Style _HeaderStyle = new Style();
-        private readonly Style _SelectedListBoxStyle = new Style();
-        private List<string> _AddValues;
-        private List<string> _RemoveValues;
+        private readonly Style availableListBoxStyle = new Style();
+        private readonly Style buttonStyle = new Style();
+        private readonly TableStyle containerStyle = new TableStyle();
+        private readonly Style headerStyle = new Style();
+        private readonly Style selectedListBoxStyle = new Style();
+        private List<string> addValues;
+        private List<string> removeValues;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DualListBox"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DualListBox"/> class.</summary>
         public DualListBox()
         {
             this.ShowAddButton = true;
@@ -44,12 +42,8 @@ namespace DotNetNuke.UI.WebControls
 
         public event EventHandler RemoveAllButtonClick;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Available List Box Style.
-        /// </summary>
+        /// <summary>Gets the value of the Available List Box Style.</summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -60,16 +54,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._AvailableListBoxStyle;
+                return this.availableListBoxStyle;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Button Style.
-        /// </summary>
+        /// <summary>Gets the value of the Button Style.</summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -80,16 +70,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._ButtonStyle;
+                return this.buttonStyle;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Container Style.
-        /// </summary>
+        /// <summary>Gets the value of the Container Style.</summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -100,16 +86,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._ContainerStyle;
+                return this.containerStyle;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Header Style.
-        /// </summary>
+        /// <summary>Gets the value of the Header Style.</summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -120,16 +102,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._HeaderStyle;
+                return this.headerStyle;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Selected List Box Style.
-        /// </summary>
+        /// <summary>Gets the value of the Selected List Box Style.</summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -140,7 +118,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._SelectedListBoxStyle;
+                return this.selectedListBoxStyle;
             }
         }
 
@@ -206,10 +184,10 @@ namespace DotNetNuke.UI.WebControls
             string addItems = postCollection[postDataKey + "_Available"];
             if (!string.IsNullOrEmpty(addItems))
             {
-                this._AddValues = new List<string>();
+                this.addValues = new List<string>();
                 foreach (string addItem in addItems.Split(','))
                 {
-                    this._AddValues.Add(addItem);
+                    this.addValues.Add(addItem);
                 }
 
                 retValue = true;
@@ -218,10 +196,10 @@ namespace DotNetNuke.UI.WebControls
             string removeItems = postCollection[postDataKey + "_Selected"];
             if (!string.IsNullOrEmpty(removeItems))
             {
-                this._RemoveValues = new List<string>();
+                this.removeValues = new List<string>();
                 foreach (string removeItem in removeItems.Split(','))
                 {
-                    this._RemoveValues.Add(removeItem);
+                    this.removeValues.Add(removeItem);
                 }
 
                 retValue = true;
@@ -241,13 +219,13 @@ namespace DotNetNuke.UI.WebControls
             switch (eventArgument)
             {
                 case "Add":
-                    this.OnAddButtonClick(new DualListBoxEventArgs(this._AddValues));
+                    this.OnAddButtonClick(new DualListBoxEventArgs(this.addValues));
                     break;
                 case "AddAll":
                     this.OnAddAllButtonClick(new EventArgs());
                     break;
                 case "Remove":
-                    this.OnRemoveButtonClick(new DualListBoxEventArgs(this._RemoveValues));
+                    this.OnRemoveButtonClick(new DualListBoxEventArgs(this.removeValues));
                     break;
                 case "RemoveAll":
                     this.OnRemoveAllButtonClick(new EventArgs());

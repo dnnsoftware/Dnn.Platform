@@ -36,6 +36,12 @@ namespace DotNetNuke.Modules.Journal.Components
         private bool isAdmin;
         private bool isUnverifiedUser;
 
+        /// <summary>Initializes a new instance of the <see cref="JournalParser"/> class.</summary>
+        /// <param name="portalSettings"></param>
+        /// <param name="moduleId"></param>
+        /// <param name="profileId"></param>
+        /// <param name="socialGroupId"></param>
+        /// <param name="userInfo"></param>
         public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -107,8 +113,13 @@ namespace DotNetNuke.Modules.Journal.Components
             IList<JournalItem> journalList;
             if (this.JournalId > 0)
             {
-                var journal = JournalController.Instance.GetJournalItem(this.PortalSettings.PortalId, this.CurrentUser.UserID,
-                                                                        this.JournalId, false, false, true);
+                var journal = JournalController.Instance.GetJournalItem(
+                    this.PortalSettings.PortalId,
+                    this.CurrentUser.UserID,
+                    this.JournalId,
+                    false,
+                    false,
+                    true);
                 journalList = new List<JournalItem>();
                 if (journal != null)
                 {

@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Business Layer to manage Search.
-    /// </summary>
+    /// <summary>Business Layer to manage Search.</summary>
     public class SearchController : ServiceLocator<ISearchController, SearchController>
     {
         /// <inheritdoc/>

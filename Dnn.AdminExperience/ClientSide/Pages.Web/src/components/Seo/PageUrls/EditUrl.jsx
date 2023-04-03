@@ -83,8 +83,8 @@ class EditUrl extends Component {
             this.props.onChange("siteAlias", primaryAliasId); 
         }
         return (
-            <Collapsible accordion={true} isOpened={isOpened} keepCollapsedContent={true} className={"editUrl"}>
-                <div>
+            <Collapsible accordion={true} isOpened={isOpened} className={"editUrl"}>
+                <div className="editUrl-body">
                     <GridCell>
                         <GridCell columnSize={50} className="left-column">
                             <Label

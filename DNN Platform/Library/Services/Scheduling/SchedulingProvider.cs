@@ -6,7 +6,8 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -23,6 +24,8 @@ namespace DotNetNuke.Services.Scheduling
     public delegate void WorkProgressing(SchedulerClient objSchedulerClient);
 
     public delegate void WorkCompleted(SchedulerClient objSchedulerClient);
+
+    public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
 
     // ReSharper disable InconsistentNaming
     public enum EventName
@@ -60,15 +63,12 @@ namespace DotNetNuke.Services.Scheduling
         REQUEST_METHOD = 2,
     }
 
-    public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
-
     public abstract class SchedulingProvider
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public EventName EventName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulingProvider"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SchedulingProvider"/> class.</summary>
         protected SchedulingProvider()
         {
             var settings = this.Settings;

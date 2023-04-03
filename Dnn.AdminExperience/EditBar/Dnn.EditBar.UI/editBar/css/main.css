@@ -176,22 +176,13 @@ body {
     display: none;
 }
 
-.blueIcon {
-    background-image: url('/DesktopModules/DNNCorp/EvoqContentLibrary/SharedAssets/Images/notify.png');
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    padding: 7px 0 0 40px;
-    min-height: 31px;
-}
-
-.dnnDialogBlue.warningDialog .blueIcon {
-    background-image: url('/DesktopModules/DNNCorp/EvoqContentLibrary/SharedAssets/Images/warning.png');
-}
-
-.blueIcon p {
-    color: #fff;
-}
-
 #editBarOptionsExtensionPoint {
     margin-left: 7px;
+}
+
+/* IE10+ specific editbar styles go here */
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    .editbar {
+        background-color: #0b1c24;
+    }
 }
