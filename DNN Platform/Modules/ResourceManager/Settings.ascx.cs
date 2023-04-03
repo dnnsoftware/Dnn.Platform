@@ -28,7 +28,7 @@ namespace Dnn.Modules.ResourceManager
                 }
 
                 var displayTypesValues = Enum.GetValues(typeof(Constants.ModuleModes)).Cast<Constants.ModuleModes>();
-                var displayTypes = displayTypesValues.Select(t => new ListItem(Localization.GetString(string.Format("ModuleModes.{0}", Utils.GetEnumDescription(t)), LocalResourceFile), ((int)t).ToString())).ToArray();
+                var displayTypes = displayTypesValues.Select(t => new ListItem(Localization.GetString($"ModuleModes.{Utils.GetEnumDescription(t)}.Text", LocalResourceFile), ((int)t).ToString())).ToArray();
                 
                 this.ddlMode.Items.AddRange(displayTypes);
 
