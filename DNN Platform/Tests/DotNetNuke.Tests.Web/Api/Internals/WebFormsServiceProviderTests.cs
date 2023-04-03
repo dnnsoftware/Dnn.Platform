@@ -19,7 +19,10 @@ namespace DotNetNuke.Tests.Web.Api.Internals
 
     public class WebFormsServiceProviderTests
     {
-        [TestFixtureSetUp]
+        private interface IScopedService
+        { }
+
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -32,7 +35,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             Globals.DependencyProvider = null;
@@ -119,9 +122,6 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Assert.AreEqual(module.ConstructorService, serviceFromRequestScope);
             Assert.AreNotEqual(module.ConstructorService, serviceFromGlobalScope);
         }
-
-        private interface IScopedService
-        { }
 
         private class ScopedService : IScopedService
         { }
