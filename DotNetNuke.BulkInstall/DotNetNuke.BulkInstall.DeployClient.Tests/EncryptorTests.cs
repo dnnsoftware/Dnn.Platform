@@ -8,7 +8,6 @@ namespace DotNetNuke.Tests.BulkInstall.DeployClient
     using System.Threading.Tasks;
     using DotNetNuke.BulkInstall.DeployClient;
     using DotNetNuke.BulkInstall.Encryption;
-    using Encryption;
     using Shouldly;
     using Xunit;
 

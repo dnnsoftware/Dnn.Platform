@@ -6,11 +6,15 @@
 		<Nullable>enable</Nullable>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<LangVersion>latest</LangVersion>
-
-		<PackAsTool>true</PackAsTool>
+    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackAsTool>true</PackAsTool>
 		<ToolCommandName>polydeploy</ToolCommandName>
-		<VersionPrefix>1.0.0</VersionPrefix>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="System" />

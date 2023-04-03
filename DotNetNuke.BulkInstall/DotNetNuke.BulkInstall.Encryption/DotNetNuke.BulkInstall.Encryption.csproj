@@ -5,7 +5,13 @@
 		<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<LangVersion>latest</LangVersion>
-	</PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="System" />
