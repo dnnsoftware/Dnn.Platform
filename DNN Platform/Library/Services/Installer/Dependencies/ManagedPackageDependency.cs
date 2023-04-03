@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                bool _IsValid = true;
+                bool isValid = true;
 
                 // Get Package from DataStore
                 PackageInfo package = PackageController.Instance.GetExtensionPackage(
@@ -35,10 +35,10 @@ namespace DotNetNuke.Services.Installer.Dependencies
                                                                 && p.Version >= this.PackageDependency.Version);
                 if (package == null)
                 {
-                    _IsValid = false;
+                    isValid = false;
                 }
 
-                return _IsValid;
+                return isValid;
             }
         }
 

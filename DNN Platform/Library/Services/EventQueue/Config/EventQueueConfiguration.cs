@@ -16,9 +16,7 @@ namespace DotNetNuke.Services.EventQueue.Config
     [Serializable]
     internal class EventQueueConfiguration
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EventQueueConfiguration"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EventQueueConfiguration"/> class.</summary>
         internal EventQueueConfiguration()
         {
             this.PublishedEvents = new Dictionary<string, PublishedEvent>();

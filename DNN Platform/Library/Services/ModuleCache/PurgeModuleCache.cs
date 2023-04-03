@@ -14,9 +14,7 @@ namespace DotNetNuke.Services.ModuleCache
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PurgeModuleCache"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PurgeModuleCache"/> class.</summary>
         /// <param name="objScheduleHistoryItem"></param>
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -48,7 +46,7 @@ namespace DotNetNuke.Services.ModuleCache
 
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 

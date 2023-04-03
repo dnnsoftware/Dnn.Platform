@@ -18,39 +18,34 @@ namespace DotNetNuke.Modules.Html
     ///   The Settings ModuleSettingsBase is used to manage the
     ///   settings for the HTML Module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Settings : ModuleSettingsBase
     {
-        private HtmlModuleSettings _moduleSettings;
+        private readonly INavigationManager navigationManager;
 
-        private readonly INavigationManager _navigationManager;
+        private HtmlModuleSettings moduleSettings;
 
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
         public Settings()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private new HtmlModuleSettings ModuleSettings
         {
             get
             {
-                return this._moduleSettings ?? (this._moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
+                return this.moduleSettings ?? (this.moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
             }
         }
 
-        /// <summary>
-        ///   LoadSettings loads the settings from the Database and displays them.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>  LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
         {
             try
             {
                 if (!this.Page.IsPostBack)
                 {
-                    var htmlTextController = new HtmlTextController(this._navigationManager);
+                    var htmlTextController = new HtmlTextController(this.navigationManager);
                     var workflowStateController = new WorkflowStateController();
 
                     this.chkReplaceTokens.Checked = this.ModuleSettings.ReplaceTokens;
@@ -92,14 +87,12 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   UpdateSettings saves the modified settings to the Database.
-        /// </summary>
+        /// <summary>  UpdateSettings saves the modified settings to the Database.</summary>
         public override void UpdateSettings()
         {
             try
             {
-                var htmlTextController = new HtmlTextController(this._navigationManager);
+                var htmlTextController = new HtmlTextController(this.navigationManager);
 
                 // update replace token setting
                 this.ModuleSettings.ReplaceTokens = this.chkReplaceTokens.Checked;
@@ -141,6 +134,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  padding-right: 2em
+}
+.container{
+  display: flex;
+  gap: 1em;
+  margin-top: 1em;
+  flex-wrap: wrap;
+  .card{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25em;
+    border: none;
+    background-color: transparent;
+    transition: all 100ms ease-in-out;
+    width: calc(110px + 2em);
+    justify-content: flex-end;
+    position: relative;
+    &:hover, &:focus{
+      transform: scale3d(1.1, 1.1, 1.1);
+      .radio{
+        opacity: 1;
+      }
+    }
+    .radio{
+      position: absolute;
+      top:0;
+      left:-16px;
+      opacity: 0;
+      transition: all 100ms ease-in-out;
+      &.selected{
+        opacity: 1;
+      }
+    }
+    img{
+      width: 110px;
+      max-height: 110px;
+      margin: auto;
+    }
+    .item-name{
+      line-break: anywhere;
+    }
+  }
+}
+dnn-collapsible{
+  position: fixed;
+  display: none;
+  border: 1px solid lightgray;
+  box-shadow: 2px 2px 4px -2px;
+  background-color: white;
+  z-index: 1;
+}

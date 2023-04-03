@@ -8,6 +8,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnRibbonBarGroupCollection : ControlCollection
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarGroupCollection"/> class.</summary>
+        /// <param name="owner">The owner control.</param>
         public DnnRibbonBarGroupCollection(Control owner)
             : base(owner)
         {

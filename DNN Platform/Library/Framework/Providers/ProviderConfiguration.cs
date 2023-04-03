@@ -29,14 +29,14 @@ namespace DotNetNuke.Framework.Providers
             }
         }
 
-        public Provider GetDefaultProvider()
-        {
-            return (Provider)this.providers[this.defaultProvider];
-        }
-
         public static ProviderConfiguration GetProviderConfiguration(string strProvider)
         {
             return (ProviderConfiguration)Config.GetSection("dotnetnuke/" + strProvider);
+        }
+
+        public Provider GetDefaultProvider()
+        {
+            return (Provider)this.providers[this.defaultProvider];
         }
 
         internal void LoadValuesFromConfigurationXml(XmlNode node)
@@ -58,15 +58,15 @@ namespace DotNetNuke.Framework.Providers
 
         internal void GetProviders(XmlNode node)
         {
-            foreach (XmlNode Provider in node.ChildNodes)
+            foreach (XmlNode provider in node.ChildNodes)
             {
-                switch (Provider.Name)
+                switch (provider.Name)
                 {
                     case "add":
-                        this.Providers.Add(Provider.Attributes["name"].Value, new Provider(Provider.Attributes));
+                        this.Providers.Add(provider.Attributes["name"].Value, new Provider(provider.Attributes));
                         break;
                     case "remove":
-                        this.Providers.Remove(Provider.Attributes["name"].Value);
+                        this.Providers.Remove(provider.Attributes["name"].Value);
                         break;
                     case "clear":
                         this.Providers.Clear();

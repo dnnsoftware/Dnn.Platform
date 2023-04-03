@@ -9,47 +9,39 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Verifies the abililty to create and delete files and folders.
-    /// </summary>
+    /// <summary>  Verifies the abililty to create and delete files and folders.</summary>
     /// <remarks>
     ///   This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.
     /// </remarks>
     public class FileSystemPermissionVerifier
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
-        private readonly string _basePath;
+        private readonly string basePath;
 
-        private int _retryTimes = 30;
+        private int retryTimes = 30;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.</summary>
         /// <param name="basePath"></param>
         public FileSystemPermissionVerifier(string basePath)
         {
-            this._basePath = basePath;
+            this.basePath = basePath;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.</summary>
         /// <param name="basePath"></param>
         /// <param name="retryTimes"></param>
         public FileSystemPermissionVerifier(string basePath, int retryTimes)
             : this(basePath)
         {
-            this._retryTimes = retryTimes;
+            this.retryTimes = retryTimes;
         }
 
-        /// <summary>
-        /// Gets base path need to verify permission.
-        /// </summary>
+        /// <summary>Gets base path need to verify permission.</summary>
         public string BasePath
         {
             get
             {
-                return this._basePath;
+                return this.basePath;
             }
         }
 
@@ -88,14 +80,10 @@ namespace DotNetNuke.Common.Utilities
             Directory.CreateDirectory(verifyPath);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFileCreate checks whether a file can be created.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFileCreate checks whether a file can be created.</summary>
         private bool VerifyFileCreate()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
+            string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
             bool verified = true;
 
             // Attempt to create the File
@@ -112,14 +100,10 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFileDelete checks whether a file can be deleted.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFileDelete checks whether a file can be deleted.</summary>
         private bool VerifyFileDelete()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
+            string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
             bool verified = true;
 
             // Attempt to delete the File
@@ -136,14 +120,10 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFolderCreate checks whether a folder can be created.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFolderCreate checks whether a folder can be created.</summary>
         private bool VerifyFolderCreate()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify");
+            string verifyPath = Path.Combine(this.basePath, "Verify");
             bool verified = true;
 
             // Attempt to create the Directory
@@ -160,14 +140,10 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   VerifyFolderDelete checks whether a folder can be deleted.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  VerifyFolderDelete checks whether a folder can be deleted.</summary>
         private bool VerifyFolderDelete()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify");
+            string verifyPath = Path.Combine(this.basePath, "Verify");
             bool verified = true;
 
             // Attempt to delete the Directory
@@ -186,7 +162,7 @@ namespace DotNetNuke.Common.Utilities
 
         private void Try(Action action, string description)
         {
-            new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
+            new RetryableAction(action, description, this.retryTimes, TimeSpan.FromSeconds(1)).TryIt();
         }
     }
 }

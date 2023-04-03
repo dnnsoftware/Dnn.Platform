@@ -10,22 +10,15 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The FileComponentWriter class handles creating the manifest for File Component(s).
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The FileComponentWriter class handles creating the manifest for File Component(s).</summary>
     public class FileComponentWriter
     {
-        private readonly string _BasePath;
-        private readonly Dictionary<string, InstallFile> _Files;
-        private readonly PackageInfo _Package;
-        private int _InstallOrder = Null.NullInteger;
-        private int _UnInstallOrder = Null.NullInteger;
+        private readonly string basePath;
+        private readonly Dictionary<string, InstallFile> files;
+        private readonly PackageInfo package;
+        private int installOrder = Null.NullInteger;
+        private int unInstallOrder = Null.NullInteger;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="FileComponentWriter"/> class.
         /// Constructs the FileComponentWriter.
@@ -33,24 +26,23 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">The Base Path for the files.</param>
         /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
-        /// -----------------------------------------------------------------------------
         public FileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
         {
-            this._Files = files;
-            this._BasePath = basePath;
-            this._Package = package;
+            this.files = files;
+            this.basePath = basePath;
+            this.package = package;
         }
 
         public int InstallOrder
         {
             get
             {
-                return this._InstallOrder;
+                return this.installOrder;
             }
 
             set
             {
-                this._InstallOrder = value;
+                this.installOrder = value;
             }
         }
 
@@ -58,21 +50,17 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._UnInstallOrder;
+                return this.unInstallOrder;
             }
 
             set
             {
-                this._UnInstallOrder = value;
+                this.unInstallOrder = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("files").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("files").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual string CollectionNodeName
         {
             get
@@ -81,12 +69,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("File").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("File").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual string ComponentType
         {
             get
@@ -95,12 +79,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("file").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("file").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual string ItemNodeName
         {
             get
@@ -109,31 +89,23 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Logger.
-        /// </summary>
+        /// <summary>Gets the Logger.</summary>
         /// <value>A Logger.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual Logger Log
         {
             get
             {
-                return this._Package.Log;
+                return this.package.Log;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Package.
-        /// </summary>
+        /// <summary>Gets the Package.</summary>
         /// <value>A PackageInfo.</value>
-        /// -----------------------------------------------------------------------------
         protected virtual PackageInfo Package
         {
             get
             {
-                return this._Package;
+                return this.package;
             }
         }
 
@@ -159,12 +131,12 @@ namespace DotNetNuke.Services.Installer.Writers
             this.WriteCustomManifest(writer);
 
             // Write basePath Element
-            if (!string.IsNullOrEmpty(this._BasePath))
+            if (!string.IsNullOrEmpty(this.basePath))
             {
-                writer.WriteElementString("basePath", this._BasePath);
+                writer.WriteElementString("basePath", this.basePath);
             }
 
-            foreach (InstallFile file in this._Files.Values)
+            foreach (InstallFile file in this.files.Values)
             {
                 this.WriteFileElement(writer, file);
             }
@@ -176,13 +148,11 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteEndElement();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The WriteCustomManifest method writes the custom manifest items (that subclasses
         /// of FileComponentWriter may need).
         /// </summary>
         /// <param name="writer">The Xmlwriter to use.</param>
-        /// -----------------------------------------------------------------------------
         protected virtual void WriteCustomManifest(XmlWriter writer)
         {
         }
@@ -198,11 +168,11 @@ namespace DotNetNuke.Services.Installer.Writers
             if (!string.IsNullOrEmpty(file.Path))
             {
                 string path = file.Path;
-                if (!string.IsNullOrEmpty(this._BasePath))
+                if (!string.IsNullOrEmpty(this.basePath))
                 {
-                    if (file.Path.ToLowerInvariant().Contains(this._BasePath.ToLowerInvariant()))
+                    if (file.Path.ToLowerInvariant().Contains(this.basePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", string.Empty);
+                        path = file.Path.ToLowerInvariant().Replace(this.basePath.ToLowerInvariant() + "\\", string.Empty);
                     }
                 }
 

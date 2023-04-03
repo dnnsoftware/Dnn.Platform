@@ -4,71 +4,64 @@
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// BaseInstallationStep - Abstract class to perform common tasks for the various installation steps.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>BaseInstallationStep - Abstract class to perform common tasks for the various installation steps.</summary>
     public abstract class BaseInstallationStep : IInstallationStep
     {
-        protected string LocalInstallResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
-        protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
-        private string _details = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseInstallationStep"/> class.
-        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        protected string LocalInstallResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
+        protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+
+        private string details = string.Empty;
+
+        /// <summary>Initializes a new instance of the <see cref="BaseInstallationStep"/> class.</summary>
         protected BaseInstallationStep()
         {
             this.Percentage = 0;
             this.Errors = new List<string>();
         }
 
-        /// <summary>
-        /// This event gets fired when any activity gets recorded
-        /// </summary>
+        /// <summary>This event gets fired when any activity gets recorded</summary>
         public event ActivityEventHandler Activity;
 
-        /// <summary>
-        /// Gets or sets any details of the task while it's executing.
-        /// </summary>
+        /// <summary>Gets or sets any details of the task while it's executing.</summary>
         public string Details
         {
             get
             {
-                return this._details;
+                return this.details;
             }
 
             set
             {
-                this._details = value;
-                DnnInstallLogger.InstallLogInfo(this._details);
+                this.details = value;
+                DnnInstallLogger.InstallLogInfo(this.details);
                 if (this.Activity != null)
                 {
-                    this.Activity(this._details);
+                    this.Activity(this.details);
                 }
             }
         }
 
-        /// <summary>
-        /// Gets or sets percentage done.
-        /// </summary>
+        /// <summary>Gets or sets percentage done.</summary>
         public int Percentage { get; set; }
 
-        /// <summary>
-        /// Gets or sets step Status.
-        /// </summary>
+        /// <summary>Gets or sets step Status.</summary>
         public StepStatus Status { get; set; }
 
-        /// <summary>
-        /// Gets or sets list of Errors.
-        /// </summary>
+        /// <summary>Gets or sets list of Errors.</summary>
         public IList<string> Errors { get; set; }
 
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public abstract void Execute();
     }
 }

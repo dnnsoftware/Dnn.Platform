@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.Skins
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Common;
@@ -19,19 +20,11 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    using ICSharpCode.SharpZipLib.Zip;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinController
     ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///     Handles the Business Control Layer for Skins.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>    Handles the Business Control Layer for Skins.</summary>
     public class SkinController
     {
         private const string GlobalSkinPrefix = "[G]";
@@ -84,8 +77,9 @@ namespace DotNetNuke.UI.Skins
                 skinType = "S";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
-            else // to be compliant with all versions
+            else
             {
+                // to be compliant with all versions
                 skinType = "L";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
@@ -244,9 +238,7 @@ namespace DotNetNuke.UI.Skins
             return skins;
         }
 
-        /// <summary>
-        /// Determines if a given skin is defined as a global skin.
-        /// </summary>
+        /// <summary>Determines if a given skin is defined as a global skin.</summary>
         /// <param name="skinSrc">This is the app relative path and filename of the skin to be checked.</param>
         /// <returns>True if the skin is located in the HostPath child directories.</returns>
         /// <remarks>This function performs a quick check to detect the type of skin that is
@@ -339,135 +331,108 @@ namespace DotNetNuke.UI.Skins
 
         public static string UploadLegacySkin(string rootPath, string skinRoot, string skinName, Stream inputStream)
         {
-            var objZipInputStream = new ZipInputStream(inputStream);
+            var objZipInputStream = new ZipArchive(inputStream, ZipArchiveMode.Read);
 
-            ZipEntry objZipEntry;
             string strExtension;
             string strFileName;
             FileStream objFileStream;
-            int intSize = 2048;
             var arrData = new byte[2048];
             string strMessage = string.Empty;
             var arrSkinFiles = new ArrayList();
 
             // Localized Strings
-            PortalSettings ResourcePortalSettings = Globals.GetPortalSettings();
-            string BEGIN_MESSAGE = Localization.GetString("BeginZip", ResourcePortalSettings);
-            string CREATE_DIR = Localization.GetString("CreateDir", ResourcePortalSettings);
-            string WRITE_FILE = Localization.GetString("WriteFile", ResourcePortalSettings);
-            string FILE_ERROR = Localization.GetString("FileError", ResourcePortalSettings);
-            string END_MESSAGE = Localization.GetString("EndZip", ResourcePortalSettings);
-            string FILE_RESTICTED = Localization.GetString("FileRestricted", ResourcePortalSettings);
+            PortalSettings resourcePortalSettings = Globals.GetPortalSettings();
+            string bEGIN_MESSAGE = Localization.GetString("BeginZip", resourcePortalSettings);
+            string cREATE_DIR = Localization.GetString("CreateDir", resourcePortalSettings);
+            string wRITE_FILE = Localization.GetString("WriteFile", resourcePortalSettings);
+            string fILE_ERROR = Localization.GetString("FileError", resourcePortalSettings);
+            string eND_MESSAGE = Localization.GetString("EndZip", resourcePortalSettings);
+            string fILE_RESTICTED = Localization.GetString("FileRestricted", resourcePortalSettings);
 
-            strMessage += FormatMessage(BEGIN_MESSAGE, skinName, -1, false);
+            strMessage += FormatMessage(bEGIN_MESSAGE, skinName, -1, false);
 
-            objZipEntry = objZipInputStream.GetNextEntry();
-            while (objZipEntry != null)
+            foreach (var objZipEntry in objZipInputStream.FileEntries())
             {
-                objZipEntry.CheckZipEntry();
-                if (!objZipEntry.IsDirectory)
+                // validate file extension
+                strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".") + 1);
+                var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
+                if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                 {
-                    // validate file extension
-                    strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
-                    var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
-                    if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
+                    // process embedded zip files
+                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        // process embedded zip files
-                        if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                        using (var objMemoryStream = new MemoryStream())
                         {
-                            using (var objMemoryStream = new MemoryStream())
-                            {
-                                intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objMemoryStream.Write(arrData, 0, intSize);
-                                    intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                }
-
-                                objMemoryStream.Seek(0, SeekOrigin.Begin);
-                                strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
-                            }
+                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                            objMemoryStream.Seek(0, SeekOrigin.Begin);
+                            strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                         }
-                        else if (objZipEntry.Name.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    }
+                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        using (var objMemoryStream = new MemoryStream())
                         {
-                            using (var objMemoryStream = new MemoryStream())
-                            {
-                                intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objMemoryStream.Write(arrData, 0, intSize);
-                                    intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                }
-
-                                objMemoryStream.Seek(0, SeekOrigin.Begin);
-                                strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
-                            }
-                        }
-                        else
-                        {
-                            strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.Name;
-
-                            // create the directory if it does not exist
-                            if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
-                            {
-                                strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
-                                Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
-                            }
-
-                            // remove the old file
-                            if (File.Exists(strFileName))
-                            {
-                                File.SetAttributes(strFileName, FileAttributes.Normal);
-                                File.Delete(strFileName);
-                            }
-
-                            // create the new file
-                            objFileStream = File.Create(strFileName);
-
-                            // unzip the file
-                            strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
-                            intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                            while (intSize > 0)
-                            {
-                                objFileStream.Write(arrData, 0, intSize);
-                                intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                            }
-
-                            objFileStream.Close();
-
-                            // save the skin file
-                            switch (Path.GetExtension(strFileName))
-                            {
-                                case ".htm":
-                                case ".html":
-                                case ".ascx":
-                                case ".css":
-                                    if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
-                                    {
-                                        arrSkinFiles.Add(strFileName);
-                                    }
-
-                                    break;
-                            }
-
-                            break;
+                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                            objMemoryStream.Seek(0, SeekOrigin.Begin);
+                            strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                         }
                     }
                     else
                     {
-                        strMessage += string.Format(FILE_RESTICTED, objZipEntry.Name, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                        strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.FullName;
+
+                        // create the directory if it does not exist
+                        if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
+                        {
+                            strMessage += FormatMessage(cREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
+                            Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
+                        }
+
+                        // remove the old file
+                        if (File.Exists(strFileName))
+                        {
+                            File.SetAttributes(strFileName, FileAttributes.Normal);
+                            File.Delete(strFileName);
+                        }
+
+                        // create the new file
+                        objFileStream = File.Create(strFileName);
+
+                        // unzip the file
+                        strMessage += FormatMessage(wRITE_FILE, Path.GetFileName(strFileName), 2, false);
+                        objZipEntry.Open().CopyToStream(objFileStream, 25000);
+                        objFileStream.Close();
+
+                        // save the skin file
+                        switch (Path.GetExtension(strFileName))
+                        {
+                            case ".htm":
+                            case ".html":
+                            case ".ascx":
+                            case ".css":
+                                if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
+                                {
+                                    arrSkinFiles.Add(strFileName);
+                                }
+
+                                break;
+                        }
+
+                        break;
                     }
                 }
-
-                objZipEntry = objZipInputStream.GetNextEntry();
+                else
+                {
+                    strMessage += string.Format(fILE_RESTICTED, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                }
             }
 
-            strMessage += FormatMessage(END_MESSAGE, skinName + ".zip", 1, false);
-            objZipInputStream.Close();
+            strMessage += FormatMessage(eND_MESSAGE, skinName + ".zip", 1, false);
+            objZipInputStream.Dispose();
 
             // process the list of skin files
-            var NewSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
-            strMessage += NewSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
+            var newSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
+            strMessage += newSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
 
             // log installation event
             try
@@ -546,12 +511,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// format skin name.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>format skin name.</summary>
         /// <param name="skinFolder">The Folder Name.</param>
         /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)

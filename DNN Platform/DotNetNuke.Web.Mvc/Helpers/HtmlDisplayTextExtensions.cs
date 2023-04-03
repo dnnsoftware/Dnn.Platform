@@ -9,14 +9,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Provides a way to render object values as HTML.
-    /// </summary>
+    /// <summary>Provides a way to render object values as HTML.</summary>
     public static class HtmlDisplayTextExtensions
     {
-        /// <summary>
-        /// Returns HTML markup for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns HTML markup for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
@@ -27,9 +23,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.DisplayText(name);
         }
 
-        /// <summary>
-        /// Returns HTML markup for each property in the object that is represented by the specified expression.
-        /// </summary>
+        /// <summary>Returns HTML markup for each property in the object that is represented by the specified expression.</summary>
         ///
         /// <returns>
         /// The HTML markup for each property.

@@ -4,27 +4,19 @@
 
 namespace DotNetNuke.Entities.Content.Workflow.Dto
 {
-    /// <summary>
-    /// This class represents the message that will be notified on workflow state transaction.
-    /// </summary>
+    /// <summary>This class represents the message that will be notified on workflow state transaction.</summary>
     public class StateTransactionMessage
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StateTransactionMessage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StateTransactionMessage"/> class.</summary>
         public StateTransactionMessage()
         {
             this.Params = new string[] { };
         }
 
-        /// <summary>
-        /// Gets or sets params of the message.
-        /// </summary>
+        /// <summary>Gets or sets params of the message.</summary>
         public string[] Params { get; set; }
 
-        /// <summary>
-        /// Gets or sets user comment.
-        /// </summary>
+        /// <summary>Gets or sets user comment.</summary>
         public string UserComment { get; set; }
     }
 }

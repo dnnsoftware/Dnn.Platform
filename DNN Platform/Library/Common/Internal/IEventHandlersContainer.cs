@@ -7,15 +7,11 @@ namespace DotNetNuke.Common.Internal
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// An interface for containing event handlers.
-    /// </summary>
+    /// <summary>An interface for containing event handlers.</summary>
     /// <typeparam name="T">The type of the event handler container.</typeparam>
     internal interface IEventHandlersContainer<T>
     {
-        /// <summary>
-        /// Gets the event handlers.
-        /// </summary>
+        /// <summary>Gets the event handlers.</summary>
         IEnumerable<Lazy<T>> EventHandlers { get; }
     }
 }

@@ -979,9 +979,9 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-        public static NavigationProvider Instance(string FriendlyName)
+        public static NavigationProvider Instance(string friendlyName)
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", FriendlyName, string.Empty, string.Empty);
+            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();
@@ -1022,23 +1022,6 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
-        }
-    }
-
-    public class NavigationEventArgs
-    {
-        public string ID;
-        public DNNNode Node;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationEventArgs"/> class.
-        /// </summary>
-        /// <param name="strID"></param>
-        /// <param name="objNode"></param>
-        public NavigationEventArgs(string strID, DNNNode objNode)
-        {
-            this.ID = strID;
-            this.Node = objNode;
         }
     }
 }

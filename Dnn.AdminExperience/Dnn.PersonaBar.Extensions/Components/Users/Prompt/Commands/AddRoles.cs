@@ -20,35 +20,47 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using Constants = Dnn.PersonaBar.Users.Components.Constants;
 
     [ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
+
     public class AddRoles : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
+
         private const string FlagRoles = "roles";
 
         [FlagParameter("start", "Prompt_AddRoles_FlagStart", "DateTime")]
+
         private const string FlagStart = "start";
 
         [FlagParameter("end", "Prompt_AddRoles_FlagEnd", "DateTime")]
+
         private const string FlagEnd = "end";
 
-        private IUserValidator _userValidator;
-        private IUsersController _usersController;
-        private IRolesController _rolesController;
+        private IUserValidator userValidator;
+        private IUsersController usersController;
+        private IRolesController rolesController;
 
-        public AddRoles() : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
+        /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
+        public AddRoles()
+            : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
+        /// <param name="userValidator"></param>
+        /// <param name="userController"></param>
+        /// <param name="rolesController"></param>
         public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
         {
-            this._userValidator = userValidator;
-            this._usersController = userController;
-            this._rolesController = rolesController;
+            this.userValidator = userValidator;
+            this.usersController = userController;
+            this.rolesController = rolesController;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
@@ -59,12 +71,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private DateTime? EndDate { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
             this.Roles = this.GetFlagValue(FlagRoles, "Roles", string.Empty, true);
             this.StartDate = this.GetFlagValue<DateTime?>(FlagStart, "Start Date", null);
             this.EndDate = this.GetFlagValue<DateTime?>(FlagEnd, "End Date", null);
+
             // validate end date is beyond the start date
             if (this.StartDate.HasValue && this.EndDate.HasValue)
             {
@@ -75,23 +89,24 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
 
-            this.checkRoles();
+            this.CheckRoles();
 
-            if ((errorResultModel = this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
+            if ((errorResultModel = this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
             {
                 return errorResultModel;
             }
 
             try
             {
-                this._usersController.AddUserToRoles(this.User, userInfo.UserID, userInfo.PortalID, this.Roles, ",", this.StartDate, this.EndDate);
+                this.usersController.AddUserToRoles(this.User, userInfo.UserID, userInfo.PortalID, this.Roles, ",", this.StartDate, this.EndDate);
                 int totalRoles;
-                var userRoles = this._usersController.GetUserRoles(userInfo, "", out totalRoles).Select(UserRoleModel.FromDnnUserRoleInfo).ToList();
+                var userRoles = this.usersController.GetUserRoles(userInfo, string.Empty, out totalRoles).Select(UserRoleModel.FromDnnUserRoleInfo).ToList();
                 return new ConsoleResultModel(string.Empty) { Data = userRoles, Output = "Total Roles: " + totalRoles, Records = userRoles.Count };
             }
             catch (Exception ex)
@@ -100,16 +115,17 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
-        private void checkRoles()
+        private void CheckRoles()
         {
             IList<string> rolesFilter = new List<string>();
             if (!string.IsNullOrWhiteSpace(this.Roles))
             {
                 this.Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
             }
+
             if (rolesFilter.Count() > 0)
             {
-                IList<RoleInfo> foundRoles = this._rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
+                IList<RoleInfo> foundRoles = this.rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
                 HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
                 HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
                 roleFiltersSet.ExceptWith(foundRolesNames);
@@ -118,7 +134,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
                 if (notFoundCount > 0)
                 {
-                    throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : "", string.Join(",", roleFiltersSet)));
+                    throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : string.Empty, string.Join(",", roleFiltersSet)));
                 }
             }
         }

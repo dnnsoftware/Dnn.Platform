@@ -23,6 +23,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(PackageAspNetMvc))]
     [IsDependentOn(typeof(PackageMicrosoftGlobbing))]
     [IsDependentOn(typeof(PackageWebFormsMvp))]
+    [IsDependentOn(typeof(PackageSharpZipLib))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
         /// <inheritdoc/>

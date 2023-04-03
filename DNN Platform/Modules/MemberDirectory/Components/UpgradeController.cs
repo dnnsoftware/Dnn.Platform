@@ -20,11 +20,12 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
 
     public class UpgradeController : IUpgradeable
     {
-        public string UpgradeModule(string Version)
+        /// <inheritdoc/>
+        public string UpgradeModule(string version)
         {
             try
             {
-                switch (Version)
+                switch (version)
                 {
                     case "07.00.06":
                         this.UpdateDisplaySearchSettings();

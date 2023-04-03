@@ -16,24 +16,18 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using SchwabenCode.QuickIO;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageInstaller class is an Installer for Packages.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageInstaller class is an Installer for Packages.</summary>
     public class PackageInstaller : ComponentInstallerBase
     {
         private readonly SortedList<int, ComponentInstallerBase> componentInstallers = new SortedList<int, ComponentInstallerBase>();
         private PackageInfo installedPackage;
         private EventMessage eventMessage;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
         /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
         /// <param name="package">A PackageInfo instance.</param>
-        /// -----------------------------------------------------------------------------
         public PackageInstaller(PackageInfo package)
         {
             this.IsValid = true;
@@ -61,14 +55,12 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
         /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
         /// <param name="info">An InstallerInfo instance.</param>
         /// <param name="packageManifest">The manifest as a string.</param>
-        /// -----------------------------------------------------------------------------
         public PackageInstaller(string packageManifest, InstallerInfo info)
         {
             this.IsValid = true;
@@ -84,28 +76,15 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
-        /// package.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the package.</summary>
         /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
         public bool DeleteFiles { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Package is Valid.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Package is Valid.</summary>
         /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method commits the package installation.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Commit method commits the package installation.</summary>
         public override void Commit()
         {
             for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
@@ -136,11 +115,7 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Package.InstallerInfo.PackageID = this.Package.PackageID;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the components of the package.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Install method installs the components of the package.</summary>
         public override void Install()
         {
             bool isCompleted = true;
@@ -200,11 +175,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file and parses it into components.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadManifest method reads the manifest file and parses it into components.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Get Name Property
@@ -438,11 +409,7 @@ namespace DotNetNuke.Services.Installer.Installers
             this.ReadComponents(manifestNav);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method rolls back the package installation.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Rollback method rolls back the package installation.</summary>
         public override void Rollback()
         {
             for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
@@ -469,11 +436,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Uninstall method uninstalls the components of the package.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Uninstall method uninstalls the components of the package.</summary>
         public override void UnInstall()
         {
             // Iterate through all the Components
@@ -503,11 +466,7 @@ namespace DotNetNuke.Services.Installer.Installers
             PackageController.Instance.DeleteExtensionPackage(this.Package);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CheckSecurity method checks whether the user has the appropriate security.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The CheckSecurity method checks whether the user has the appropriate security.</summary>
         private void CheckSecurity()
         {
             PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
@@ -529,11 +488,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadComponents method reads the components node of the manifest file.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadComponents method reads the components node of the manifest file.</summary>
         private void ReadComponents(XPathNavigator manifestNav)
         {
             foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))

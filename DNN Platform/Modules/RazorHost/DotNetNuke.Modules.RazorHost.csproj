@@ -118,21 +118,21 @@
     </Compile>
     <Compile Include="AddScript.ascx.cs">
       <DependentUpon>AddScript.ascx</DependentUpon>
-      <SubType>aspxcodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CreateModule.ascx.designer.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
     </Compile>
     <Compile Include="CreateModule.ascx.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
-      <SubType>aspxcodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditScript.ascx.designer.cs">
       <DependentUpon>EditScript.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditScript.ascx.cs">
       <DependentUpon>EditScript.ascx</DependentUpon>
-      <SubType>aspxcodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RazorHost.ascx.designer.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
@@ -147,7 +147,7 @@
     </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>aspxcodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

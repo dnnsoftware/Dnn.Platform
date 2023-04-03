@@ -7,14 +7,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     using System.Drawing;
     using System.Drawing.Drawing2D;
 
-    /// <summary>
-    /// Brightness ImageTransform class.
-    /// </summary>
+    /// <summary>Brightness ImageTransform class.</summary>
     public class ImageBrightnessTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageBrightnessTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageBrightnessTransform"/> class.</summary>
         public ImageBrightnessTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -24,19 +20,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.Brightness = 0;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for this class.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for this class.</summary>
         public override string UniqueString => base.UniqueString + "-" + this.Brightness;
 
-        /// <summary>
-        /// Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255.
-        /// </summary>
+        /// <summary>Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255.</summary>
         public int Brightness { get; set; }
 
-        /// <summary>
-        /// Processes an input image applying a brightness image transformation.
-        /// </summary>
+        /// <summary>Processes an input image applying a brightness image transformation.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)

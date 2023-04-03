@@ -32,10 +32,8 @@ class DropdownWithError extends Component {
                 <div className={"dropdown-tooltip-container " + props.labelType}>
                     <Dropdown
                         label={props.defaultDropdownValue}
-                        fixedHeight={props.fixedHeight}
                         collapsibleWidth={props.collapsibleWidth}
                         collapsibleHeight={props.collapsibleHeight}
-                        keepCollapsedContent={props.keepCollapsedContent}
                         scrollAreaStyle={props.scrollAreaStyle}
                         options={props.options}
                         onSelect={props.onSelect}
@@ -76,10 +74,8 @@ DropdownWithError.propTypes = {
     tooltipPlace: PropTypes.string,
     placement: PropTypes.oneOf(["outside", "inside"]),
     defaultDropdownValue: PropTypes.string,
-    fixedHeight: PropTypes.number,
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
-    keepCollapsedContent: PropTypes.bool,
     scrollAreaStyle: PropTypes.object,
     options: PropTypes.array,
     onSelect: PropTypes.func,

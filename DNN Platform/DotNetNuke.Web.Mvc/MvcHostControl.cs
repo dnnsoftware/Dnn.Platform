@@ -38,6 +38,7 @@ namespace DotNetNuke.Web.Mvc
             this.controlKey = controlKey;
         }
 
+        /// <inheritdoc/>
         public ModuleActionCollection ModuleActions { get; private set; }
 
         protected bool ExecuteModuleImmediately { get; set; } = true;
@@ -62,6 +63,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -72,6 +74,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

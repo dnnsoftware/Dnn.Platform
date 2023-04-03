@@ -13,9 +13,7 @@ namespace DotNetNuke.Web.Mvc.Common
 
     internal static class DictionaryExtensions
     {
-        /// <summary>
-        /// Remove entries from dictionary that match the removeCondition.
-        /// </summary>
+        /// <summary>Remove entries from dictionary that match the removeCondition.</summary>
         public static void RemoveFromDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, bool> removeCondition)
         {
             // Pass the delegate as the state to avoid a delegate and closure
@@ -27,9 +25,7 @@ namespace DotNetNuke.Web.Mvc.Common
                 removeCondition);
         }
 
-        /// <summary>
-        /// Remove entries from dictionary that match the removeCondition.
-        /// </summary>
+        /// <summary>Remove entries from dictionary that match the removeCondition.</summary>
         public static void RemoveFromDictionary<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, TState, bool> removeCondition, TState state)
         {
             Contract.Assert(dictionary != null);

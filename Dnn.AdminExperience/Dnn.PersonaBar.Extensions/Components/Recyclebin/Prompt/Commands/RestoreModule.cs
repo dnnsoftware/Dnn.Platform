@@ -11,27 +11,32 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("restore-module", Constants.RecylcleBinCategory, "Prompt_RestoreModule_Description")]
+
     public class RestoreModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_RestoreModule_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_RestoreModule_FlagPageId", "Integer", true)]
+
         private const string FlagPageId = "pageid";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int ModuleId { get; set; }
 
         private int PageId { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
             this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             string message;

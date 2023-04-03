@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
+        /// <inheritdoc/>
         public SortedDictionary<string, Command> GetCommands()
         {
             return
@@ -31,13 +32,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                     c => GetCommandsInternal());
         }
 
+        /// <inheritdoc/>
         public CommandHelp GetCommandHelp(string[] args, IConsoleCommand consoleCommand)
         {
             var cacheKey = (string.Join("_", args) + "_" + PortalController.Instance.GetCurrentSettings()?.DefaultLanguage).Replace("-", "_");
-            return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
+            return DataCache.GetCachedData<CommandHelp>(
+                new CacheItemArgs(cacheKey, CacheItemPriority.Low),
                 c => this.GetCommandHelpInternal(consoleCommand));
         }
 
+        /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
             return () => new CommandRepository();
@@ -71,6 +75,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                     CommandType = cmd,
                 });
             }
+
             return commands;
         }
 
@@ -116,12 +121,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                     }).ToList();
                     commandHelp.Options = options;
                 }
+
                 commandHelp.ResultHtml = consoleCommand.ResultHtml;
             }
             else
             {
                 commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
             }
+
             return commandHelp;
         }
     }

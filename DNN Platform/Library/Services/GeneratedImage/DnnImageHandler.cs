@@ -38,11 +38,10 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/",
         };
 
-        private string _defaultImageFile = string.Empty;
+        private static readonly int DefaultDimension = 0;
+        private string defaultImageFile = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnImageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         public DnnImageHandler()
         {
             // Set default settings here
@@ -70,21 +69,21 @@ namespace DotNetNuke.Services.GeneratedImage
                 emptyBmp.MakeTransparent();
                 this.ContentType = ImageFormat.Png;
 
-                if (string.IsNullOrEmpty(this._defaultImageFile))
+                if (string.IsNullOrEmpty(this.defaultImageFile))
                 {
                     return emptyBmp;
                 }
 
                 try
                 {
-                    var fullFilePath = HttpContext.Current.Server.MapPath(this._defaultImageFile);
+                    var fullFilePath = HttpContext.Current.Server.MapPath(this.defaultImageFile);
 
-                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(this._defaultImageFile))
+                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(this.defaultImageFile))
                     {
                         return emptyBmp;
                     }
 
-                    var fi = new System.IO.FileInfo(this._defaultImageFile);
+                    var fi = new System.IO.FileInfo(this.defaultImageFile);
                     this.ContentType = GetImageFormat(fi.Extension);
 
                     using (var stream = new FileStream(fullFilePath, FileMode.Open))
@@ -101,6 +100,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         // Add image generation logic here and return an instance of ImageInfo
+
         /// <inheritdoc/>
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
@@ -123,14 +123,14 @@ namespace DotNetNuke.Services.GeneratedImage
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
 
             // Maximum sizes
-            int maxWidth = string.IsNullOrEmpty(parameters["MaxWidth"]) ? 0 : Convert.ToInt32(parameters["MaxWidth"]);
-            int maxHeight = string.IsNullOrEmpty(parameters["MaxHeight"]) ? 0 : Convert.ToInt32(parameters["MaxHeight"]);
+            int maxWidth = ParseDimension(parameters["MaxWidth"]);
+            int maxHeight = ParseDimension(parameters["MaxHeight"]);
 
             // Any text ?
             string text = string.IsNullOrEmpty(parameters["text"]) ? string.Empty : parameters["text"];
 
             // Default Image
-            this._defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
+            this.defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
 
             // Do we override caching for this image ?
             if (!string.IsNullOrEmpty(parameters["NoCache"]))
@@ -167,16 +167,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
                     case "placeholder":
                         var placeHolderTrans = new PlaceholderTransform();
-                        int width, height;
-                        if (TryParseDimension(parameters["w"], out width))
-                        {
-                            placeHolderTrans.Width = width;
-                        }
-
-                        if (TryParseDimension(parameters["h"], out height))
-                        {
-                            placeHolderTrans.Height = height;
-                        }
+                        placeHolderTrans.Width = ParseDimension(parameters["w"]);
+                        placeHolderTrans.Height = ParseDimension(parameters["h"]);
 
                         if (!string.IsNullOrEmpty(parameters["Color"]))
                         {
@@ -328,8 +320,8 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 int width, height;
 
-                TryParseDimension(parameters["w"], out width);
-                TryParseDimension(parameters["h"], out height);
+                width = ParseDimension(parameters["w"]);
+                height = ParseDimension(parameters["h"]);
 
                 var size = string.IsNullOrEmpty(parameters["size"]) ? string.Empty : parameters["size"];
 
@@ -364,9 +356,14 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (mode == "profilepic")
                 {
                     resizeMode = ImageResizeMode.FitSquare;
-                    if (width > 0 && height > 0 && width != height)
+                    if (width > 0 && height > 0)
                     {
-                        resizeMode = ImageResizeMode.Fill;
+                        maxHeight = height;
+                        maxWidth = width;
+                        if (width != height)
+                        {
+                            resizeMode = ImageResizeMode.Fill;
+                        }
                     }
                 }
 
@@ -479,29 +476,32 @@ namespace DotNetNuke.Services.GeneratedImage
             return normalizeFilePath;
         }
 
-        private static bool TryParseDimension(string value, out int dimension)
+        private static int ParseDimension(string value)
         {
-            dimension = 0;
             if (string.IsNullOrEmpty(value))
             {
-                return false;
+                return DefaultDimension;
             }
 
+            int dimension = DefaultDimension;
             if (!int.TryParse(value, out dimension))
             {
-                return false;
+                double doubleDimension;
+                if (double.TryParse(value, out doubleDimension))
+                {
+                    dimension = (int)Math.Round(doubleDimension, 0);
+                }
             }
 
             // The system won't allow a resize for an image bigger than 4K pixels
             const int maxDimension = 4000;
 
-            if (dimension > maxDimension)
+            if (dimension > maxDimension || dimension < 0)
             {
-                dimension = 0;
-                return false;
+                dimension = DefaultDimension;
             }
 
-            return true;
+            return dimension;
         }
 
         private static ImageFormat GetImageFormat(string extension)

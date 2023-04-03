@@ -8,18 +8,14 @@ namespace DotNetNuke.Common.Lists
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Represents a collection of <see cref="ListInfo"/>.
-    /// </summary>
+    /// <summary>Represents a collection of <see cref="ListInfo"/>.</summary>
     [Serializable]
     public class ListInfoCollection : CollectionBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListInfoCollection));
         private readonly Hashtable mKeyIndexLookup = new Hashtable();
 
-        /// <summary>
-        /// Gets the children from a parent name.
-        /// </summary>
+        /// <summary>Gets the children from a parent name.</summary>
         /// <param name="parentName">The name of the parent.</param>
         /// <returns>A <see cref="ListInfo"/>.</returns>
         public ListInfo GetChildren(string parentName)
@@ -27,9 +23,7 @@ namespace DotNetNuke.Common.Lists
             return (ListInfo)this.Item(parentName);
         }
 
-        /// <summary>
-        /// Adds a list to the collection.
-        /// </summary>
+        /// <summary>Adds a list to the collection.</summary>
         /// <param name="key">The key of the list.</param>
         /// <param name="value">The value of the object.</param>
         public void Add(string key, object value)
@@ -48,9 +42,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Gets the item at the specified index.
-        /// </summary>
+        /// <summary>Gets the item at the specified index.</summary>
         /// <param name="index">The index of the item to get.</param>
         /// <returns>The item.</returns>
         public object Item(int index)
@@ -68,9 +60,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Gets a list from a spedific key.
-        /// </summary>
+        /// <summary>Gets a list from a spedific key.</summary>
         /// <param name="key">The key to fetch the list.</param>
         /// <returns>A single list.</returns>
         public object Item(string key)
@@ -97,9 +87,7 @@ namespace DotNetNuke.Common.Lists
             return obj;
         }
 
-        /// <summary>
-        /// Gets a single list.
-        /// </summary>
+        /// <summary>Gets a single list.</summary>
         /// <param name="key">The key to fetch the list.</param>
         /// <param name="cache">A value indicating whether to cache this list.</param>
         /// <returns>A list object.</returns>
@@ -146,9 +134,7 @@ namespace DotNetNuke.Common.Lists
             return obj;
         }
 
-        /// <summary>
-        /// Gets the child for a parent key.
-        /// </summary>
+        /// <summary>Gets the child for a parent key.</summary>
         /// <param name="parentKey">The parent key.</param>
         /// <returns>An ArrayList of <see cref="ListInfo"/>.</returns>
         public ArrayList GetChild(string parentKey)
@@ -165,9 +151,7 @@ namespace DotNetNuke.Common.Lists
             return childList;
         }
 
-        /// <summary>
-        /// Clears the collection.
-        /// </summary>
+        /// <summary>Clears the collection.</summary>
         internal new void Clear()
         {
             this.mKeyIndexLookup.Clear();

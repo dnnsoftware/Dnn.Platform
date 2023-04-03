@@ -16,9 +16,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         private const string NamespaceKey = "namespaces";
         private const string NameKey = "name";
 
-        /// <summary>
-        /// Get the name of the route.
-        /// </summary>
+        /// <summary>Get the name of the route.</summary>
         /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
@@ -30,9 +28,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             route.DataTokens[NamespaceKey] = namespaces;
         }
 
-        /// <summary>
-        /// Get Namespaces that are searched for controllers for this route.
-        /// </summary>
+        /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {

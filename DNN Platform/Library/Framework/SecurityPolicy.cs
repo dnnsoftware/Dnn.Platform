@@ -15,11 +15,11 @@ namespace DotNetNuke.Framework
         public const string WebPermission = "WebPermission";
         public const string AspNetHostingPermission = "AspNetHostingPermission";
         public const string UnManagedCodePermission = "UnManagedCodePermission";
-        private static bool m_Initialized;
-        private static bool m_ReflectionPermission;
-        private static bool m_WebPermission;
-        private static bool m_AspNetHostingPermission;
-        private static bool m_UnManagedCodePermission;
+        private static bool initialized;
+        private static bool reflectionPermission;
+        private static bool webPermission;
+        private static bool aspNetHostingPermission;
+        private static bool unManagedCodePermission;
 
         public static string Permissions
         {
@@ -28,17 +28,17 @@ namespace DotNetNuke.Framework
                 string strPermissions = string.Empty;
                 if (HasReflectionPermission())
                 {
-                    strPermissions += ", " + ReflectionPermission;
+                    strPermissions += ", " + reflectionPermission;
                 }
 
                 if (HasWebPermission())
                 {
-                    strPermissions += ", " + WebPermission;
+                    strPermissions += ", " + webPermission;
                 }
 
                 if (HasAspNetHostingPermission())
                 {
-                    strPermissions += ", " + AspNetHostingPermission;
+                    strPermissions += ", " + aspNetHostingPermission;
                 }
 
                 if (!string.IsNullOrEmpty(strPermissions))
@@ -53,30 +53,30 @@ namespace DotNetNuke.Framework
         public static bool HasAspNetHostingPermission()
         {
             GetPermissions();
-            return m_AspNetHostingPermission;
+            return aspNetHostingPermission;
         }
 
         public static bool HasReflectionPermission()
         {
             GetPermissions();
-            return m_ReflectionPermission;
+            return reflectionPermission;
         }
 
         public static bool HasWebPermission()
         {
             GetPermissions();
-            return m_WebPermission;
+            return webPermission;
         }
 
         public static bool HasUnManagedCodePermission()
         {
             GetPermissions();
-            return m_UnManagedCodePermission;
+            return unManagedCodePermission;
         }
 
         public static bool HasPermissions(string permissions, ref string permission)
         {
-            bool _HasPermission = true;
+            bool hasPermission = true;
             if (!string.IsNullOrEmpty(permissions))
             {
                 foreach (string per in (permissions + ";").Split(Convert.ToChar(";")))
@@ -89,28 +89,28 @@ namespace DotNetNuke.Framework
                             case AspNetHostingPermission:
                                 if (HasAspNetHostingPermission() == false)
                                 {
-                                    _HasPermission = false;
+                                    hasPermission = false;
                                 }
 
                                 break;
                             case ReflectionPermission:
                                 if (HasReflectionPermission() == false)
                                 {
-                                    _HasPermission = false;
+                                    hasPermission = false;
                                 }
 
                                 break;
                             case UnManagedCodePermission:
                                 if (HasUnManagedCodePermission() == false)
                                 {
-                                    _HasPermission = false;
+                                    hasPermission = false;
                                 }
 
                                 break;
                             case WebPermission:
                                 if (HasWebPermission() == false)
                                 {
-                                    _HasPermission = false;
+                                    hasPermission = false;
                                 }
 
                                 break;
@@ -119,19 +119,19 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            return _HasPermission;
+            return hasPermission;
         }
 
         [Obsolete("Replaced by correctly spelt method. Scheduled removal in v10.0.0.")]
         public static bool HasRelectionPermission()
         {
             GetPermissions();
-            return m_ReflectionPermission;
+            return reflectionPermission;
         }
 
         private static void GetPermissions()
         {
-            if (!m_Initialized)
+            if (!initialized)
             {
                 // test RelectionPermission
                 CodeAccessPermission securityTest;
@@ -139,12 +139,12 @@ namespace DotNetNuke.Framework
                 {
                     securityTest = new ReflectionPermission(PermissionState.Unrestricted);
                     securityTest.Demand();
-                    m_ReflectionPermission = true;
+                    reflectionPermission = true;
                 }
                 catch
                 {
                     // code access security error
-                    m_ReflectionPermission = false;
+                    reflectionPermission = false;
                 }
 
                 // test WebPermission
@@ -152,12 +152,12 @@ namespace DotNetNuke.Framework
                 {
                     securityTest = new WebPermission(PermissionState.Unrestricted);
                     securityTest.Demand();
-                    m_WebPermission = true;
+                    webPermission = true;
                 }
                 catch
                 {
                     // code access security error
-                    m_WebPermission = false;
+                    webPermission = false;
                 }
 
                 // test WebHosting Permission (Full Trust)
@@ -165,26 +165,26 @@ namespace DotNetNuke.Framework
                 {
                     securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
                     securityTest.Demand();
-                    m_AspNetHostingPermission = true;
+                    aspNetHostingPermission = true;
                 }
                 catch
                 {
                     // code access security error
-                    m_AspNetHostingPermission = false;
+                    aspNetHostingPermission = false;
                 }
 
-                m_Initialized = true;
+                initialized = true;
 
                 // Test for Unmanaged Code permission
                 try
                 {
                     securityTest = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
                     securityTest.Demand();
-                    m_UnManagedCodePermission = true;
+                    unManagedCodePermission = true;
                 }
                 catch (Exception)
                 {
-                    m_UnManagedCodePermission = false;
+                    unManagedCodePermission = false;
                 }
             }
         }

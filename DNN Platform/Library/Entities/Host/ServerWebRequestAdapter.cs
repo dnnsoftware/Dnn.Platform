@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Host
 {
     using System.Net;
@@ -11,10 +10,7 @@ namespace DotNetNuke.Entities.Host
 
     public class ServerWebRequestAdapter : IServerWebRequestAdapter
     {
-        /// <summary>
-        /// Get the server's endpoint which can access the server directly.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual string GetServerUrl()
         {
             var domainName = string.Empty;
@@ -36,29 +32,18 @@ namespace DotNetNuke.Entities.Host
             return domainName;
         }
 
-        /// <summary>
-        /// Get the server's unique id when server is behind affinity tool.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual string GetServerUniqueId()
         {
             return string.Empty;
         }
 
-        /// <summary>
-        /// Process Request before the request send to server.
-        /// </summary>
-        /// <param name="request">The Http Request Object.</param>
-        /// <param name="server">The Server Info Object.</param>
+        /// <inheritdoc />
         public virtual void ProcessRequest(HttpWebRequest request, ServerInfo server)
         {
         }
 
-        /// <summary>
-        /// Check whether response is return from correct server.
-        /// </summary>
-        /// <param name="response">The Http Response Object.</param>
-        /// <param name="statusCode">Out status code if you think the status need change.</param>
+        /// <inheritdoc />
         public virtual void CheckResponse(HttpWebResponse response, ServerInfo server, ref HttpStatusCode statusCode)
         {
         }

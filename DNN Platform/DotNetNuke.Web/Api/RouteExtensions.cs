@@ -12,18 +12,14 @@ namespace DotNetNuke.Web.Api
         private const string NamespaceKey = "namespaces";
         private const string NameKey = "name";
 
-        /// <summary>
-        /// Get the name of the route.
-        /// </summary>
+        /// <summary>Get the name of the route.</summary>
         /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
             return (string)route.DataTokens[NameKey];
         }
 
-        /// <summary>
-        /// Get the name of the route.
-        /// </summary>
+        /// <summary>Get the name of the route.</summary>
         /// <returns>Route name.</returns>
         public static string GetName(this IHttpRoute route)
         {
@@ -40,18 +36,14 @@ namespace DotNetNuke.Web.Api
             route.DataTokens[NamespaceKey] = namespaces;
         }
 
-        /// <summary>
-        /// Get Namespaces that are searched for controllers for this route.
-        /// </summary>
+        /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
             return (string[])route.DataTokens[NamespaceKey];
         }
 
-        /// <summary>
-        /// Get Namespaces that are searched for controllers for this route.
-        /// </summary>
+        /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this IHttpRoute route)
         {

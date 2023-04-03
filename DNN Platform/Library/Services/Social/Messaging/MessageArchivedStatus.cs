@@ -3,24 +3,16 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Social.Messaging
 {
-    /// <summary>
-    /// Archived Status of a Message.
-    /// </summary>
+    /// <summary>Archived Status of a Message.</summary>
     public enum MessageArchivedStatus
     {
-        /// <summary>
-        /// Archived Message Status
-        /// </summary>
+        /// <summary>Archived Message Status</summary>
         Archived = 1,
 
-        /// <summary>
-        /// UnArchived Message Status
-        /// </summary>
+        /// <summary>UnArchived Message Status</summary>
         UnArchived = 0,
 
-        /// <summary>
-        /// Any Message Status - Both Archived and UnArchived
-        /// </summary>
+        /// <summary>Any Message Status - Both Archived and UnArchived</summary>
         Any = -1,
     }
 }

@@ -10,9 +10,7 @@ namespace Dnn.PersonaBar.TaskScheduler.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the task scheduler menu.
-    /// </summary>
+    /// <summary>Controls the task scheduler menu.</summary>
     public class TaskSchedulerMenuController : IMenuItemController
     {
         /// <inheritdoc/>

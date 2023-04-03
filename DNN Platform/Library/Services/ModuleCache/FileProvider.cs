@@ -79,11 +79,11 @@ namespace DotNetNuke.Services.ModuleCache
                 string cacheFolder = GetCacheFolder(portalId);
                 if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
                 {
-                    foreach (string File in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
+                    foreach (string file in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
                     {
-                        if (this.IsFileExpired(File))
+                        if (this.IsFileExpired(file))
                         {
-                            string fileToDelete = File.Replace(AttribFileExtension, DataFileExtension);
+                            string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
                             if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                             {
                                 filesNotDeleted.Append(string.Format("{0};", fileToDelete));
@@ -146,11 +146,11 @@ namespace DotNetNuke.Services.ModuleCache
                 string cacheFolder = GetCacheFolder(portalId);
                 var filesNotDeleted = new StringBuilder();
                 int i = 0;
-                foreach (string File in Directory.GetFiles(cacheFolder, tabModuleId + "_*.*"))
+                foreach (string file in Directory.GetFiles(cacheFolder, tabModuleId + "_*.*"))
                 {
-                    if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
+                    if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                     {
-                        filesNotDeleted.Append(File + ";");
+                        filesNotDeleted.Append(file + ";");
                     }
                     else
                     {
@@ -184,11 +184,6 @@ namespace DotNetNuke.Services.ModuleCache
             return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
         }
 
-        /// <summary>
-        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
         private static string GetCacheFolder(int portalId)
         {
             string cacheFolder;
@@ -280,11 +275,11 @@ namespace DotNetNuke.Services.ModuleCache
         {
             var filesNotDeleted = new StringBuilder();
             int i = 0;
-            foreach (string File in Directory.GetFiles(folder, "*.resources"))
+            foreach (string file in Directory.GetFiles(folder, "*.resources"))
             {
-                if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
+                if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                 {
-                    filesNotDeleted.Append(string.Format("{0};", File));
+                    filesNotDeleted.Append(string.Format("{0};", file));
                 }
                 else
                 {

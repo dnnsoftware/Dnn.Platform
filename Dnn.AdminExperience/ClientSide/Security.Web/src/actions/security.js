@@ -258,6 +258,17 @@ const securityActions = {
             });
         };
     },
+    setAllPagesSecure(callback, failureCallback) {
+        ApplicationService.setAllPagesSecure(data => {
+            if (callback) {
+                callback(data);
+            }
+        }, data => {
+            if (failureCallback) {
+                failureCallback(data);
+            }
+        });
+    },
     getOtherSettings(callback) {
         return (dispatch) => {
             ApplicationService.getOtherSettings(data => {

@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using DotNetNuke.Framework;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>
-    /// Implements generic localization support.
-    /// </summary>
+    /// <summary>Implements generic localization support.</summary>
     public class Generic : ILocalisation
     {
         private bool haveChecked;

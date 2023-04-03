@@ -10,6 +10,9 @@ namespace DotNetNuke.Web.Api
 
     public class AuthFilterContext
     {
+        /// <summary>Initializes a new instance of the <see cref="AuthFilterContext"/> class.</summary>
+        /// <param name="actionContext">The HTTP action context.</param>
+        /// <param name="authFailureMessage">The message to include in the response if there's an auth failure.</param>
         public AuthFilterContext(HttpActionContext actionContext, string authFailureMessage)
         {
             this.ActionContext = actionContext;

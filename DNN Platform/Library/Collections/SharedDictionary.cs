@@ -18,17 +18,13 @@ namespace DotNetNuke.Collections.Internal
         private bool isDisposed;
         private ILockStrategy lockController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.</summary>
         public SharedDictionary()
             : this(LockingStrategy.ReaderWriter)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.</summary>
         /// <param name="lockStrategy">The locking strategy to use.</param>
         public SharedDictionary(ILockStrategy lockStrategy)
         {
@@ -36,18 +32,14 @@ namespace DotNetNuke.Collections.Internal
             this.lockController = lockStrategy;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.</summary>
         /// <param name="strategy">The locking strategy to use.</param>
         public SharedDictionary(LockingStrategy strategy)
             : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
-        /// </summary>
+        /// <summary>Finalizes an instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.</summary>
         ~SharedDictionary()
         {
             this.Dispose(false);
@@ -97,9 +89,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <summary>
-        /// Gets the backing dictionnary to use.
-        /// </summary>
+        /// <summary>Gets the backing dictionnary to use.</summary>
         internal IDictionary<TKey, TValue> BackingDictionary
         {
             get
@@ -212,18 +202,14 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Gets a read lock.
-        /// </summary>
+        /// <summary>Gets a read lock.</summary>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <summary>
-        /// Gets a read lock for a specified amount of time.
-        /// </summary>
+        /// <summary>Gets a read lock for a specified amount of time.</summary>
         /// <param name="timeOut">The amount of time to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
@@ -232,9 +218,7 @@ namespace DotNetNuke.Collections.Internal
             return this.lockController.GetReadLock(timeOut);
         }
 
-        /// <summary>
-        /// Gets a read lock for a specified amount of time.
-        /// </summary>
+        /// <summary>Gets a read lock for a specified amount of time.</summary>
         /// <param name="millisecondTimeout">For how many milliseconds to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
@@ -242,18 +226,14 @@ namespace DotNetNuke.Collections.Internal
             return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-        /// <summary>
-        /// Gets a write lock.
-        /// </summary>
+        /// <summary>Gets a write lock.</summary>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock()
         {
             return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <summary>
-        /// Gets a write lock for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a write lock for the specified amount of time.</summary>
         /// <param name="timeOut">The amount of time to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
@@ -262,9 +242,7 @@ namespace DotNetNuke.Collections.Internal
             return this.lockController.GetWriteLock(timeOut);
         }
 
-        /// <summary>
-        /// Gets a write lock for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a write lock for the specified amount of time.</summary>
         /// <param name="millisecondTimeout">The amount of milliseconds to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
@@ -272,9 +250,7 @@ namespace DotNetNuke.Collections.Internal
             return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-        /// <summary>
-        /// Returns an enumerator to iterate through the collection.
-        /// </summary>
+        /// <summary>Returns an enumerator to iterate through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable_GetEnumerator()
         {
@@ -291,9 +267,7 @@ namespace DotNetNuke.Collections.Internal
             return this.IEnumerable_GetEnumerator();
         }
 
-        /// <summary>
-        /// Disposes this instance resources.
-        /// </summary>
+        /// <summary>Disposes this instance resources.</summary>
         /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {

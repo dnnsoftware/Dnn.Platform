@@ -26,32 +26,28 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public bool IsReusable => true;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This handler handles requests for LinkClick.aspx, but only those specifc
         /// to file serving.
         /// </summary>
         /// <param name="context">System.Web.HttpContext).</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var TabId = -1;
-            var ModuleId = -1;
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var tabId = -1;
+            var moduleId = -1;
             try
             {
                 // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
-                    int.TryParse(context.Request.QueryString["tabid"], out TabId);
+                    int.TryParse(context.Request.QueryString["tabid"], out tabId);
                 }
 
                 // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(context.Request.QueryString["mid"], out ModuleId);
+                    int.TryParse(context.Request.QueryString["mid"], out moduleId);
                 }
             }
             catch (Exception)
@@ -61,79 +57,79 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             // get Language
-            string Language = _portalSettings.DefaultLanguage;
+            string language = portalSettings.DefaultLanguage;
             if (context.Request.QueryString["language"] != null)
             {
-                Language = context.Request.QueryString["language"];
+                language = context.Request.QueryString["language"];
             }
             else
             {
                 if (context.Request.Cookies["language"] != null)
                 {
-                    Language = context.Request.Cookies["language"].Value;
+                    language = context.Request.Cookies["language"].Value;
                 }
             }
 
-            if (LocaleController.Instance.IsEnabled(ref Language, _portalSettings.PortalId))
+            if (LocaleController.Instance.IsEnabled(ref language, portalSettings.PortalId))
             {
-                Localization.SetThreadCultures(new CultureInfo(Language), _portalSettings);
-                Localization.SetLanguage(Language);
+                Localization.SetThreadCultures(new CultureInfo(language), portalSettings);
+                Localization.SetLanguage(language);
             }
 
             // get the URL
-            string URL = string.Empty;
+            string url = string.Empty;
             if (context.Request.QueryString["fileticket"] != null)
             {
-                URL = "FileID=" + FileLinkClickController.Instance.GetFileIdFromLinkClick(context.Request.QueryString);
+                url = "FileID=" + FileLinkClickController.Instance.GetFileIdFromLinkClick(context.Request.QueryString);
             }
 
             if (context.Request.QueryString["userticket"] != null)
             {
-                URL = "UserId=" + UrlUtils.DecryptParameter(context.Request.QueryString["userticket"]);
+                url = "UserId=" + UrlUtils.DecryptParameter(context.Request.QueryString["userticket"]);
             }
 
             if (context.Request.QueryString["link"] != null)
             {
-                URL = context.Request.QueryString["link"];
-                if (URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
+                url = context.Request.QueryString["link"];
+                if (url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    URL = string.Empty; // restrict direct access by FileID
+                    url = string.Empty; // restrict direct access by FileID
                 }
             }
 
-            if (!string.IsNullOrEmpty(URL))
+            if (!string.IsNullOrEmpty(url))
             {
-                URL = URL.Replace(@"\", @"/");
+                url = url.Replace(@"\", @"/");
 
                 // update clicks, this must be done first, because the url tracker works with unmodified urls, like tabid, fileid etc
                 var objUrls = new UrlController();
-                objUrls.UpdateUrlTracking(_portalSettings.PortalId, URL, ModuleId, -1);
-                TabType UrlType = Globals.GetURLType(URL);
-                if (UrlType == TabType.Tab)
+                objUrls.UpdateUrlTracking(portalSettings.PortalId, url, moduleId, -1);
+                TabType urlType = Globals.GetURLType(url);
+                if (urlType == TabType.Tab)
                 {
                     // verify whether the tab is exist, otherwise throw out 404.
-                    if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
+                    if (TabController.Instance.GetTab(int.Parse(url), portalSettings.PortalId, false) == null)
                     {
                         this.Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
 
-                if (UrlType != TabType.File)
+                if (urlType != TabType.File)
                 {
-                    URL = Globals.LinkClick(URL, TabId, ModuleId, false);
+                    url = Globals.LinkClick(url, tabId, moduleId, false);
                 }
 
-                if (UrlType == TabType.File && URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                if (urlType == TabType.File && url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                 {
                     // to handle legacy scenarios before the introduction of the FileServerHandler
-                    var fileName = Path.GetFileName(URL);
+                    var fileName = Path.GetFileName(url);
 
-                    var folderPath = URL.Substring(0, URL.LastIndexOf(fileName, StringComparison.InvariantCulture));
-                    var folder = FolderManager.Instance.GetFolder(_portalSettings.PortalId, folderPath);
+                    var folderPath = url.Substring(0, url.LastIndexOf(fileName, StringComparison.InvariantCulture));
+                    var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, folderPath);
 
                     var file = FileManager.Instance.GetFile(folder, fileName);
 
-                    URL = "FileID=" + file.FileId;
+                    url = "FileID=" + file.FileId;
                 }
 
                 // get optional parameters
@@ -150,11 +146,11 @@ namespace DotNetNuke.Services.FileSystem
                 var fileManager = FileManager.Instance;
                 try
                 {
-                    switch (UrlType)
+                    switch (urlType)
                     {
                         case TabType.File:
                             var download = false;
-                            var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(URL)));
+                            var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url)));
                             if (file != null)
                             {
                                 if (!file.IsEnabled || !this.HasAPublishedVersion(file))
@@ -201,8 +197,9 @@ namespace DotNetNuke.Services.FileSystem
                                         context.Response.Redirect(Globals.AccessDeniedURL(), true);
                                     }
                                 }
-                                catch (ThreadAbortException) // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
+                                catch (ThreadAbortException)
                                 {
+                                    // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
                                 }
                                 catch (Exception ex)
                                 {
@@ -212,21 +209,21 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                this.Handle404Exception(context, URL);
+                                this.Handle404Exception(context, url);
                             }
 
                             break;
                         case TabType.Url:
                             // prevent phishing by verifying that URL exists in URLs table for Portal
-                            if (objUrls.GetUrl(_portalSettings.PortalId, URL) != null)
+                            if (objUrls.GetUrl(portalSettings.PortalId, url) != null)
                             {
-                                context.Response.Redirect(URL, true);
+                                context.Response.Redirect(url, true);
                             }
 
                             break;
                         default:
                             // redirect to URL
-                            context.Response.Redirect(URL, true);
+                            context.Response.Redirect(url, true);
                             break;
                     }
                 }
@@ -235,12 +232,12 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    this.Handle404Exception(context, URL);
+                    this.Handle404Exception(context, url);
                 }
             }
             else
             {
-                this.Handle404Exception(context, URL);
+                this.Handle404Exception(context, url);
             }
         }
 

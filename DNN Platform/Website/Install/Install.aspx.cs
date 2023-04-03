@@ -7,7 +7,9 @@ namespace DotNetNuke.Services.Install
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Web;
     using System.Web.UI;
     using System.Xml;
@@ -16,8 +18,9 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
@@ -26,12 +29,20 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class Install : Page
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
-        private static readonly object installLocker = new object();
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
+        // ReSharper disable once InconsistentNaming
+        protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
+        private static readonly object InstallLocker = new object();
+
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -49,6 +60,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -124,6 +136,11 @@ namespace DotNetNuke.Services.Install
         private static void RegisterInstallEnd()
         {
             InstallBlocker.Instance.RegisterInstallEnd();
+        }
+
+        private static ITelerikUtils CreateTelerikUtils()
+        {
+            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
 
         private void ExecuteScripts()
@@ -202,7 +219,7 @@ namespace DotNetNuke.Services.Install
                         }
 
                         // Add the install blocker logic
-                        lock (installLocker)
+                        lock (InstallLocker)
                         {
                             if (InstallBlocker.Instance.IsInstallInProgress())
                             {
@@ -232,9 +249,9 @@ namespace DotNetNuke.Services.Install
                         }
 
                         var licenseConfig = installConfig.License;
-                        bool IsProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
+                        bool isProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
                                                   File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-                        if (IsProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
+                        if (isProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
                             !string.IsNullOrEmpty(licenseConfig.InvoiceNumber))
                         {
                             Upgrade.Upgrade.ActivateLicense();
@@ -335,7 +352,7 @@ namespace DotNetNuke.Services.Install
                 HtmlUtils.WriteHeader(this.Response, "upgrade");
 
                 // There could be an installation in progress
-                lock (installLocker)
+                lock (InstallLocker)
                 {
                     if (InstallBlocker.Instance.IsInstallInProgress())
                     {
@@ -387,6 +404,54 @@ namespace DotNetNuke.Services.Install
                         Logger.Error(strError);
                     }
 
+                    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Replacing Digital Assets Manager with the new Resource Manager: ");
+                    Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+                    HtmlUtils.WriteSuccessError(HttpContext.Current.Response, true);
+
+                    this.Response.Write("<br>");
+                    this.Response.Write("<h2>Checking Security Aspects</h2>");
+                    var telerikUtils = CreateTelerikUtils();
+                    if (telerikUtils.TelerikIsInstalled())
+                    {
+                        var version = telerikUtils.GetTelerikVersion().ToString();
+                        var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                                        .Select(a => Path.GetFileName(a));
+
+                        this.Response.Write("<strong>");
+                        this.Response.Write(this.LocalizeString("TelerikInstalledHeading"));
+                        this.Response.Write("</strong><br>");
+                        this.Response.Write(this.LocalizeString("TelerikInstalledDetected"));
+                        this.Response.Write(" ");
+                        this.Response.Write(version);
+                        this.Response.Write("<br>");
+                        this.Response.Write(this.LocalizeString("TelerikInstalledBulletin"));
+                        this.Response.Write("<br>");
+
+                        if (!assemblies.Any())
+                        {
+                            this.Response.Write(this.LocalizeString("TelerikInstalledButNotUsedInfoAutoInstall"));
+                            this.Response.Write("<br>");
+                        }
+                        else
+                        {
+                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedInfo"));
+                            this.Response.Write("<br>");
+                            foreach (var a in assemblies)
+                            {
+                                this.Response.Write($"{a}<br/>");
+                            }
+
+                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
+                            this.Response.Write("<br>");
+                        }
+                    }
+                    else
+                    {
+                        this.Response.Write(this.LocalizeString("TelerikNotInstalledInfo"));
+                        this.Response.Write("<br>");
+                    }
+
+                    this.Response.Write("<br>");
                     this.Response.Write("<h2>Upgrade Complete</h2>");
                     this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
 
@@ -560,6 +625,11 @@ namespace DotNetNuke.Services.Install
 
             // Write out Footer
             HtmlUtils.WriteFooter(this.Response);
+        }
+
+        private string LocalizeString(string key)
+        {
+            return Localization.GetString(key, UpgradeWizardLocalResourceFile);
         }
     }
 }

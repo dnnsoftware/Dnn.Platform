@@ -5,9 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Serialize or Deserialize Json.
-    /// </summary>
+    /// <summary>Serialize or Deserialize Json.</summary>
     public static class Json
     {
         public static T Deserialize<T>(string json)

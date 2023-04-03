@@ -20,13 +20,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The XmlUtils class provides Shared/Static methods for manipulating xml files.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The XmlUtils class provides Shared/Static methods for manipulating xml files.</summary>
     public class XmlUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(XmlUtils));
@@ -192,14 +186,10 @@ namespace DotNetNuke.Common.Utilities
             return hashTable;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of an attribute.
-        /// </summary>
+        /// <summary>Gets the value of an attribute.</summary>
         /// <param name="nav">Parent XPathNavigator.</param>
-        /// <param name="attributeName">Thename of the Attribute.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="attributeName">The name of the Attribute.</param>
+        /// <returns>The attribute value.</returns>
         public static string GetAttributeValue(XPathNavigator nav, string attributeName)
         {
             return nav.GetAttribute(attributeName, string.Empty);
@@ -273,33 +263,22 @@ namespace DotNetNuke.Common.Utilities
             return strValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="objNode">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value will be returned.
-        /// </remarks>
+        /// <returns>The node value or <see cref="string.Empty"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
         public static string GetNodeValue(XmlNode objNode, string nodeName)
         {
             return GetNodeValue(objNode, nodeName, string.Empty);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="objNode">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The node value or <paramref name="defaultValue"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
         public static string GetNodeValue(XmlNode objNode, string nodeName, string defaultValue)
         {
             string strValue = defaultValue;
@@ -315,34 +294,24 @@ namespace DotNetNuke.Common.Utilities
             return strValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="objNode">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value (False) will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The node value parsed as a <see cref="bool"/> or <see langword="false"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value (False) will be returned.</remarks>
+        /// <seealso cref="Convert.ToBoolean(string)"/>
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName)
         {
             return GetNodeValueBoolean(objNode, nodeName, false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="objNode">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The node value parsed as a <see cref="bool"/> or <paramref name="defaultValue"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <seealso cref="Convert.ToBoolean(string)"/>
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName, bool defaultValue)
         {
             bool bValue = defaultValue;
@@ -362,6 +331,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="navigator">A navigator pointing to the parent node.</param>
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <returns>The value of the node or <c>false</c> if the node doesn't exist or doesn't have a value.</returns>
+        /// <seealso cref="Convert.ToBoolean(string)"/>
         public static bool GetNodeValueBoolean(XPathNavigator navigator, string path)
         {
             return GetNodeValueBoolean(navigator, path, false);
@@ -372,6 +342,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value.</param>
         /// <returns>The value of the node or <paramref name="defaultValue"/>.</returns>
+        /// <seealso cref="Convert.ToBoolean(string)"/>
         public static bool GetNodeValueBoolean(XPathNavigator navigator, string path, bool defaultValue)
         {
             var childNodeNavigator = navigator.SelectSingleNode(path);
@@ -389,18 +360,13 @@ namespace DotNetNuke.Common.Utilities
             return Convert.ToBoolean(strValue);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="objNode">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The node value parsed as a <see cref="DateTime"/> or <paramref name="defaultValue"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <seealso cref="Convert.ToDateTime(string)"/>
         public static DateTime GetNodeValueDate(XmlNode objNode, string nodeName, DateTime defaultValue)
         {
             DateTime dateValue = defaultValue;
@@ -425,6 +391,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value.</param>
         /// <returns>The value of the node or <paramref name="defaultValue"/>.</returns>
+        /// <seealso cref="Convert.ToDateTime(string)"/>
         public static DateTime GetNodeValueDate(XPathNavigator navigator, string path, DateTime defaultValue)
         {
             var childNodeNavigator = navigator.SelectSingleNode(path);
@@ -448,34 +415,24 @@ namespace DotNetNuke.Common.Utilities
             return dateValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value (0) will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The node value parsed as an <see cref="int"/> or <c>0</c>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value (0) will be returned.</remarks>
+        /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XmlNode node, string nodeName)
         {
             return GetNodeValueInt(node, nodeName, 0);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The node value parsed as an <see cref="int"/> or <paramref name="defaultValue"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XmlNode node, string nodeName, int defaultValue)
         {
             int intValue = defaultValue;
@@ -495,6 +452,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="navigator">A navigator pointing to the parent node.</param>
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value.</returns>
+        /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XPathNavigator navigator, string path)
         {
             return GetNodeValueInt(navigator, path, 0);
@@ -505,6 +463,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value.</param>
         /// <returns>The value of the node or <paramref name="defaultValue"/>.</returns>
+        /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XPathNavigator navigator, string path, int defaultValue)
         {
             var childNodeNavigator = navigator.SelectSingleNode(path);
@@ -522,34 +481,24 @@ namespace DotNetNuke.Common.Utilities
             return Convert.ToInt32(strValue);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value (0) will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value (0) will be returned.</remarks>
+        /// <seealso cref="Convert.ToSingle(string)"/>
         public static float GetNodeValueSingle(XmlNode node, string nodeName)
         {
             return GetNodeValueSingle(node, nodeName, 0);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of node.
-        /// </summary>
+        /// <summary>Gets the value of node.</summary>
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If the node does not exist or it causes any error the default value will be returned.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The value of the node or <paramref name="defaultValue"/>.</returns>
+        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <seealso cref="Convert.ToSingle(string)"/>
         public static float GetNodeValueSingle(XmlNode node, string nodeName, float defaultValue)
         {
             float sValue = defaultValue;
@@ -569,6 +518,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="navigator">A navigator pointing to the parent node.</param>
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value.</returns>
+        /// <seealso cref="Convert.ToSingle(string)"/>
         public static float GetNodeValueSingle(XPathNavigator navigator, string path)
         {
             return GetNodeValueSingle(navigator, path, 0);
@@ -579,6 +529,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="path">An XPath expression to find the child node.</param>
         /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value.</param>
         /// <returns>The value of the node or <paramref name="defaultValue"/>.</returns>
+        /// <seealso cref="Convert.ToSingle(string)"/>
         public static float GetNodeValueSingle(XPathNavigator navigator, string path, float defaultValue)
         {
             var childNodeNavigator = navigator.SelectSingleNode(path);
@@ -596,13 +547,9 @@ namespace DotNetNuke.Common.Utilities
             return Convert.ToSingle(strValue, CultureInfo.InvariantCulture);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets an XmlWriterSettings object.
-        /// </summary>
+        /// <summary>Gets an XmlWriterSettings object.</summary>
         /// <param name="conformance">Conformance Level.</param>
         /// <returns>An XmlWriterSettings.</returns>
-        /// -----------------------------------------------------------------------------
         public static XmlWriterSettings GetXmlWriterSettings(ConformanceLevel conformance)
         {
             var settings = new XmlWriterSettings();
@@ -685,21 +632,15 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///  Xml Encodes HTML.
-        /// </summary>
-        /// <param name = "html">The HTML to encode.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>XML Encodes HTML.</summary>
+        /// <param name="html">The HTML to encode.</param>
+        /// <returns>The XML encoded HTML.</returns>
         public static string XMLEncode(string html)
         {
             return "<![CDATA[" + html + "]]>";
         }
 
-        /// <summary>
-        /// Removes control characters and other non-UTF-8 characters.
-        /// </summary>
+        /// <summary>Removes control characters and other non-UTF-8 characters.</summary>
         /// <param name="content">The string to process.</param>
         /// <returns>A string with no control characters or entities above 0x00FD.</returns>
         public static string RemoveInvalidXmlCharacters(string content)

@@ -42,12 +42,14 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public bool Enabled { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.ExtensionId; }
             set { this.ExtensionId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.ExtensionId = Convert.ToInt32(dr["ExtensionId"]);

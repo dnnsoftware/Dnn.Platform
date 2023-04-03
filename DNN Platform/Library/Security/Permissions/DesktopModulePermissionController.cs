@@ -12,30 +12,18 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : DesktopModulePermissionController
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// DesktopModulePermissionController provides the Business Layer for DesktopModule Permissions.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>DesktopModulePermissionController provides the Business Layer for DesktopModule Permissions.</summary>
     [Serializable]
     public class DesktopModulePermissionController
     {
-        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddDesktopModulePermission adds a DesktopModule Permission to the Database.
-        /// </summary>
+        /// <summary>AddDesktopModulePermission adds a DesktopModule Permission to the Database.</summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to add.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The new desktop module permission ID.</returns>
         public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
-            int Id = DataProvider.Instance().AddDesktopModulePermission(
+            int id = DataProvider.Instance().AddDesktopModulePermission(
                 objDesktopModulePermission.PortalDesktopModuleID,
                 objDesktopModulePermission.PermissionID,
                 objDesktopModulePermission.RoleID,
@@ -49,34 +37,25 @@ namespace DotNetNuke.Security.Permissions
                 string.Empty,
                 EventLogController.EventLogType.DESKTOPMODULEPERMISSION_CREATED);
             ClearPermissionCache();
-            return Id;
+            return id;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModulePermission deletes a DesktopModule Permission in the Database.
-        /// </summary>
-        /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission to delete.</param>
-        /// -----------------------------------------------------------------------------
-        public static void DeleteDesktopModulePermission(int DesktopModulePermissionID)
+        /// <summary>DeleteDesktopModulePermission deletes a DesktopModule Permission in the Database.</summary>
+        /// <param name="desktopModulePermissionID">The ID of the DesktopModule Permission to delete.</param>
+        public static void DeleteDesktopModulePermission(int desktopModulePermissionID)
         {
-            DataProvider.Instance().DeleteDesktopModulePermission(DesktopModulePermissionID);
+            DataProvider.Instance().DeleteDesktopModulePermission(desktopModulePermissionID);
             EventLogController.Instance.AddLog(
                 "DesktopModulePermissionID",
-                DesktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
+                desktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.DESKTOPMODULEPERMISSION_DELETED);
             ClearPermissionCache();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModulePermissionsByPortalDesktopModuleID deletes a DesktopModule's
-        /// DesktopModule Permission in the Database.
-        /// </summary>
+        /// <summary>DeleteDesktopModulePermissionsByPortalDesktopModuleID deletes a DesktopModule's DesktopModule Permission in the Database.</summary>
         /// <param name="portalDesktopModuleID">The ID of the DesktopModule to delete.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByPortalDesktopModuleID(int portalDesktopModuleID)
         {
             DataProvider.Instance().DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleID);
@@ -89,12 +68,8 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteDesktopModulePermissionsByUserID deletes a user's DesktopModule Permission in the Database.
-        /// </summary>
+        /// <summary>DeleteDesktopModulePermissionsByUserID deletes a user's DesktopModule Permission in the Database.</summary>
         /// <param name="objUser">The user.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
         {
             DataProvider.Instance().DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
@@ -107,49 +82,33 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermission gets a DesktopModule Permission from the Database.
-        /// </summary>
-        /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static DesktopModulePermissionInfo GetDesktopModulePermission(int DesktopModulePermissionID)
+        /// <summary>GetDesktopModulePermission gets a DesktopModule Permission from the Database.</summary>
+        /// <param name="desktopModulePermissionID">The ID of the DesktopModule Permission.</param>
+        /// <returns>A <see cref="DesktopModulePermissionInfo"/> instance or <see langword="null"/>.</returns>
+        public static DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionID)
         {
-            return _provider.GetDesktopModulePermission(DesktopModulePermissionID);
+            return Provider.GetDesktopModulePermission(desktopModulePermissionID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection.
-        /// </summary>
+        /// <summary>GetDesktopModulePermissions gets a DesktopModulePermissionCollection.</summary>
         /// <param name="portalDesktopModuleID">The ID of the DesktopModule.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A <see cref="DesktopModulePermissionCollection"/> with the desktop module permissions, or an empty <see cref="DesktopModulePermissionCollection"/> if the desktop module wasn't found.</returns>
         public static DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleID)
         {
-            return _provider.GetDesktopModulePermissions(portalDesktopModuleID);
+            return Provider.GetDesktopModulePermissions(portalDesktopModuleID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// HasDesktopModulePermission checks whether the current user has a specific DesktopModule Permission.
-        /// </summary>
+        /// <summary>HasDesktopModulePermission checks whether the current user has a specific DesktopModule Permission.</summary>
         /// <param name="objDesktopModulePermissions">The Permissions for the DesktopModule.</param>
         /// <param name="permissionKey">The Permission to check.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the current user has the requested permission, otherwise <see langword="false"/>.</returns>
         public static bool HasDesktopModulePermission(DesktopModulePermissionCollection objDesktopModulePermissions, string permissionKey)
         {
-            return _provider.HasDesktopModulePermission(objDesktopModulePermissions, permissionKey);
+            return Provider.HasDesktopModulePermission(objDesktopModulePermissions, permissionKey);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateDesktopModulePermission updates a DesktopModule Permission in the Database.
-        /// </summary>
+        /// <summary>UpdateDesktopModulePermission updates a DesktopModule Permission in the Database.</summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to update.</param>
-        /// -----------------------------------------------------------------------------
         public static void UpdateDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
             DataProvider.Instance().UpdateDesktopModulePermission(
@@ -169,11 +128,7 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ClearPermissionCache clears the DesktopModule Permission Cache.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>ClearPermissionCache clears the DesktopModule Permission Cache.</summary>
         private static void ClearPermissionCache()
         {
             DataCache.ClearDesktopModulePermissionsCache();

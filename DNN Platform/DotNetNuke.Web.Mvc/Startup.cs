@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Mvc
 
     public class Startup : IDnnStartup
     {
+        /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)
         {
             services.TryAddSingleton<IControllerFactory, DefaultControllerFactory>();

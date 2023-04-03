@@ -27,9 +27,7 @@ namespace Dnn.Modules.Console
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Implements the module view logic.
-    /// </summary>
+    /// <summary>Implements the module view logic.</summary>
     public partial class ViewConsole : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
@@ -39,41 +37,31 @@ namespace Dnn.Modules.Console
         private int groupTabID = -1;
         private IList<TabInfo> tabs;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ViewConsole"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
         public ViewConsole()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the module settings allow size change.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the module settings allow size change.</summary>
         public bool AllowSizeChange
         {
             get { return !this.Settings.ContainsKey("AllowSizeChange") || bool.Parse(this.Settings["AllowSizeChange"].ToString()); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the module settings allow to change view.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the module settings allow to change view.</summary>
         public bool AllowViewChange
         {
             get { return !this.Settings.ContainsKey("AllowViewChange") || bool.Parse(this.Settings["AllowViewChange"].ToString()); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the module settings indicate to include hidden pages.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the module settings indicate to include hidden pages.</summary>
         public bool IncludeHiddenPages
         {
             get { return this.Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(this.Settings["IncludeHiddenPages"].ToString()); }
         }
 
-        /// <summary>
-        /// Gets the id of the page (tab) for the root node of the console display.
-        /// </summary>
+        /// <summary>Gets the id of the page (tab) for the root node of the console display.</summary>
         public int ConsoleTabID
         {
             get
@@ -86,9 +74,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the configured console width or an empty string if not specified in the settings.
-        /// </summary>
+        /// <summary>Gets the configured console width or an empty string if not specified in the settings.</summary>
         public string ConsoleWidth
         {
             get
@@ -97,9 +83,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the default size for the console icons.
-        /// </summary>
+        /// <summary>Gets the default size for the console icons.</summary>
         public string DefaultSize
         {
             get
@@ -122,9 +106,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the default view module for the console.
-        /// </summary>
+        /// <summary>Gets the default view module for the console.</summary>
         public string DefaultView
         {
             get
@@ -147,9 +129,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the group id, if not displayed in a group, will return <see cref="Null.NullInteger"/>.
-        /// </summary>
+        /// <summary>Gets the group id, if not displayed in a group, will return <see cref="Null.NullInteger"/>.</summary>
         public int GroupId
         {
             get
@@ -164,9 +144,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the parent should be shown.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the parent should be shown.</summary>
         public bool IncludeParent
         {
             get
@@ -175,9 +153,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the module display mode.
-        /// </summary>
+        /// <summary>Gets the module display mode.</summary>
         public string Mode
         {
             get
@@ -186,9 +162,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the id of the user when used in a user profile page, if not used on a user profile returns <see cref="Null.NullInteger"/>.
-        /// </summary>
+        /// <summary>Gets the id of the user when used in a user profile page, if not used on a user profile returns <see cref="Null.NullInteger"/>.</summary>
         public int ProfileUserId
         {
             get
@@ -203,17 +177,13 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the tooltips should be shown.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the tooltips should be shown.</summary>
         public bool ShowTooltip
         {
             get { return !this.Settings.ContainsKey("ShowTooltip") || bool.Parse(this.Settings["ShowTooltip"].ToString()); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the pages (tabs) should by ordered by their hierarchy.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the pages (tabs) should by ordered by their hierarchy.</summary>
         public bool OrderTabsByHierarchy
         {
             get
@@ -336,9 +306,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>
-        /// Gets the html rendering of the console view according to the module settings.
-        /// </summary>
+        /// <summary>Gets the html rendering of the console view according to the module settings.</summary>
         /// <param name="tab">The root page to render the console from, <see cref="TabInfo"/>.</param>
         /// <returns>A string containing the rendered html.</returns>
         protected string GetHtml(TabInfo tab)
@@ -408,9 +376,7 @@ namespace Dnn.Modules.Console
             return returnValue;
         }
 
-        /// <summary>
-        /// Gets the client side settings for the module.
-        /// </summary>
+        /// <summary>Gets the client side settings for the module.</summary>
         /// <returns>
         /// A settings string ready to use by the .dnnConsole jQuery plugin.
         /// </returns>

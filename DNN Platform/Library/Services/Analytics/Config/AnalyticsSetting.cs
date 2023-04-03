@@ -8,19 +8,19 @@ namespace DotNetNuke.Services.Analytics.Config
     [Serializable]
     public class AnalyticsSetting
     {
-        private string _settingName;
-        private string _settingValue;
+        private string settingName;
+        private string settingValue;
 
         public string SettingName
         {
             get
             {
-                return this._settingName;
+                return this.settingName;
             }
 
             set
             {
-                this._settingName = value;
+                this.settingName = value;
             }
         }
 
@@ -28,12 +28,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return this._settingValue;
+                return this.settingValue;
             }
 
             set
             {
-                this._settingValue = value;
+                this.settingValue = value;
             }
         }
     }

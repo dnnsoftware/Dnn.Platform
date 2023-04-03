@@ -16,45 +16,35 @@ namespace Dnn.Modules.Console {
     
     public partial class ViewConsole {
         
-        /// <summary>
-        /// Console control.
-        /// </summary>
+        /// <summary>Console control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Console;
         
-        /// <summary>
-        /// IconSize control.
-        /// </summary>
+        /// <summary>IconSize control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList IconSize;
         
-        /// <summary>
-        /// View control.
-        /// </summary>
+        /// <summary>View control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList View;
         
-        /// <summary>
-        /// SettingsBreak control.
-        /// </summary>
+        /// <summary>SettingsBreak control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SettingsBreak;
         
-        /// <summary>
-        /// DetailView control.
-        /// </summary>
+        /// <summary>DetailView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

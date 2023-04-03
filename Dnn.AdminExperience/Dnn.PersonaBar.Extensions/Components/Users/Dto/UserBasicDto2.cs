@@ -12,7 +12,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         {
         }
 
-        public UserBasicDto2(UserInfo user) : base(user)
+        public UserBasicDto2(UserInfo user)
+            : base(user)
         {
         }
 

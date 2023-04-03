@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.UserProfile
 
     public class UserProfilePicHandler : IHttpHandler
     {
-        private static object _locker = new object();
+        private static object locker = new object();
 
         /// <inheritdoc/>
         public bool IsReusable
@@ -90,8 +90,9 @@ namespace DotNetNuke.Services.UserProfile
                     {
                         context.Response.End();
                     }
-                    catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
+                    catch (ThreadAbortException)
                     {
+                        // if ThreadAbortException will shown, should catch it and do nothing.
                     }
                 }
 
@@ -100,7 +101,7 @@ namespace DotNetNuke.Services.UserProfile
                 var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
-                    lock (_locker)
+                    lock (locker)
                     {
                         if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                         {

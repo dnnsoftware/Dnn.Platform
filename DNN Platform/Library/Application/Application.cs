@@ -18,9 +18,7 @@ namespace DotNetNuke.Application
     {
         private static NewReleaseMode status = NewReleaseMode.None;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Application"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Application"/> class.</summary>
         public Application()
         {
         }
@@ -88,15 +86,9 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Gets the status of the DotnetNuke application.
-        /// </summary>
-        /// <remarks>
-        /// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
-        /// </remarks>
-        /// <value>
-        /// The value can be: None, Alpha, Beta, RC, Stable.
-        /// </value>
+        /// <summary>Gets the status of the DotnetNuke application.</summary>
+        /// <remarks>If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.</remarks>
+        /// <value>The value can be: None, Alpha, Beta, RC, Stable.</value>
         [Obsolete("Deprecated in Platform 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationInfo' with Dependency Injection instead. Scheduled for removal in v11.0.0.")]
         public ReleaseMode Status { get => (ReleaseMode)(this as IApplicationInfo).Status; }
 

@@ -6,59 +6,38 @@ namespace DotNetNuke.Services.Syndication
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    ///   Internal representation of parsed RSS channel.
-    /// </summary>
+    /// <summary>Internal representation of parsed RSS channel.</summary>
     internal class RssChannelDom
     {
-        private readonly Dictionary<string, string> _channel;
-        private readonly Dictionary<string, string> _image;
-        private readonly List<Dictionary<string, string>> _items;
-        private DateTime _utcExpiry;
-
+        /// <summary>Initializes a new instance of the <see cref="RssChannelDom"/> class.</summary>
+        /// <param name="channel">The channel attributes.</param>
+        /// <param name="image">The image attributes.</param>
+        /// <param name="items">The items.</param>
         internal RssChannelDom(Dictionary<string, string> channel, Dictionary<string, string> image, List<Dictionary<string, string>> items)
         {
-            this._channel = channel;
-            this._image = image;
-            this._items = items;
-            this._utcExpiry = DateTime.MaxValue;
+            this.Channel = channel;
+            this.Image = image;
+            this.Items = items;
+            this.UtcExpiry = DateTime.MaxValue;
         }
 
-        internal Dictionary<string, string> Channel
-        {
-            get
-            {
-                return this._channel;
-            }
-        }
+        /// <summary>Gets the channel attributes.</summary>
+        internal Dictionary<string, string> Channel { get; }
 
-        internal Dictionary<string, string> Image
-        {
-            get
-            {
-                return this._image;
-            }
-        }
+        /// <summary>Gets the image attributes.</summary>
+        internal Dictionary<string, string> Image { get; }
 
-        internal List<Dictionary<string, string>> Items
-        {
-            get
-            {
-                return this._items;
-            }
-        }
+        /// <summary>Gets the items.</summary>
+        internal List<Dictionary<string, string>> Items { get; }
 
-        internal DateTime UtcExpiry
-        {
-            get
-            {
-                return this._utcExpiry;
-            }
-        }
+        /// <summary>Gets the expiration in UTC.</summary>
+        internal DateTime UtcExpiry { get; private set; }
 
+        /// <summary>Sets the expiration.</summary>
+        /// <param name="utcExpiry">The expiration on UTC.</param>
         internal void SetExpiry(DateTime utcExpiry)
         {
-            this._utcExpiry = utcExpiry;
+            this.UtcExpiry = utcExpiry;
         }
     }
 }

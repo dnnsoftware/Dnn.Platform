@@ -367,7 +367,7 @@
     <value>[bez ograniczeń]</value>
   </data>
   <data name="Wait.Text" xml:space="preserve">
-    <value>Proszę czekać...</value>
+    <value>Proszę czekać…</value>
   </data>
   <data name="WaitMessage.Text" xml:space="preserve">
     <value>Wczytywanie strony i przetwarzanie kotwic...</value>
@@ -379,7 +379,7 @@
     <value>Uploaded File is bigger then the allowed file size!</value>
   </data>
   <data name="AddFiles.Text" xml:space="preserve">
-    <value>Add file(s)...</value>
+    <value>Add file(s)…</value>
   </data>
   <data name="DropHere.Text" xml:space="preserve">
     <value>Drop file(s) here</value>
@@ -404,5 +404,8 @@
   </data>
   <data name="Size.Text" xml:space="preserve">
     <value>Size</value>
+  </data>
+  <data name="BrowserModus.Text" xml:space="preserve">
+    <value>Browser-Modus: {0}</value>
   </data>
 </root>

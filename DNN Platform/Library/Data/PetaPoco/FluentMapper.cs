@@ -14,11 +14,9 @@ namespace DotNetNuke.Data.PetaPoco
     [CLSCompliant(false)]
     public class FluentMapper<TModel> : IMapper
     {
-        private readonly string _tablePrefix;
+        private readonly string tablePrefix;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentMapper{TModel}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FluentMapper{TModel}"/> class.</summary>
         /// <param name="tablePrefix"></param>
         public FluentMapper(string tablePrefix)
         {
@@ -28,7 +26,7 @@ namespace DotNetNuke.Data.PetaPoco
             this.Mappings = new Dictionary<string, FluentColumnMap>();
             this.Scope = string.Empty;
             this.TableInfo = new TableInfo();
-            this._tablePrefix = tablePrefix;
+            this.tablePrefix = tablePrefix;
         }
 
         public string CacheKey { get; set; }
@@ -89,7 +87,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public string GetTablePrefix()
         {
-            return this._tablePrefix;
+            return this.tablePrefix;
         }
     }
 }

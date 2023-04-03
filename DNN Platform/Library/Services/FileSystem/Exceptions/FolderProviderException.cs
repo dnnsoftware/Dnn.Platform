@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FolderProviderException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderProviderException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderProviderException"/> class.</summary>
         public FolderProviderException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderProviderException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderProviderException"/> class.</summary>
         /// <param name="message"></param>
         public FolderProviderException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderProviderException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderProviderException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public FolderProviderException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderProviderException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderProviderException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public FolderProviderException(SerializationInfo info, StreamingContext context)

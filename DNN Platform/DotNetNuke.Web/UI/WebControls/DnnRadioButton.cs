@@ -11,8 +11,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnRadioButton : RadioButton, ILocalizable
     {
-        private bool _Localize = true;
+        private bool localize = true;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnRadioButton"/> class.</summary>
         public DnnRadioButton()
         {
             this.CssClass = "SubHead dnnLabel";
@@ -23,12 +24,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._Localize;
+                return this.localize;
             }
 
             set
             {
-                this._Localize = value;
+                this.localize = value;
             }
         }
 

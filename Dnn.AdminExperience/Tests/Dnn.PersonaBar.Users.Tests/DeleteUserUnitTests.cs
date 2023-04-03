@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Users.Tests
     using NUnit.Framework;
 
     [TestFixture]
+
     public class DeleteUserUnitTests : CommandTests<DeleteUser>
     {
         private Mock<IUserValidator> _userValidatorMock;
@@ -20,6 +21,7 @@ namespace Dnn.PersonaBar.Users.Tests
         protected override string CommandName => "Delete-User";
 
         [Test]
+
         public void Run_DeleteValidUserId_ReturnSuccessResponse()
         {
             // Arrange
@@ -49,6 +51,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_DeleteAlreadyDeletedUser_ReturnErrorResponse()
         {
             // Arrange
@@ -68,6 +71,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_DeleteUserFailed_ReturnErrorResponse()
         {
             // Arrange
@@ -94,6 +98,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_DeleteNullUserId_ReturnErrorResponse()
         {
             // Arrange

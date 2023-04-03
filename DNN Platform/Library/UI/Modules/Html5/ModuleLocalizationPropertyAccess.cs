@@ -9,31 +9,19 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Tokens;
-    using Newtonsoft.Json;
-
-    public class ModuleLocalizationDto
-    {
-        [JsonProperty("key")]
-        public string Key { get; set; }
-
-        [JsonProperty("localresourcefile")]
-        public string LocalResourceFile { get; set; }
-    }
 
     public class ModuleLocalizationPropertyAccess : JsonPropertyAccess<ModuleLocalizationDto>
     {
-        private readonly ModuleInstanceContext _moduleContext;
-        private readonly string _html5File;
+        private readonly ModuleInstanceContext moduleContext;
+        private readonly string html5File;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleLocalizationPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleLocalizationPropertyAccess"/> class.</summary>
         /// <param name="moduleContext"></param>
         /// <param name="html5File"></param>
         public ModuleLocalizationPropertyAccess(ModuleInstanceContext moduleContext, string html5File)
         {
-            this._html5File = html5File;
-            this._moduleContext = moduleContext;
+            this.html5File = html5File;
+            this.moduleContext = moduleContext;
         }
 
         /// <inheritdoc/>
@@ -44,8 +32,8 @@ namespace DotNetNuke.UI.Modules.Html5
             string resourceFile = model.LocalResourceFile;
             if (string.IsNullOrEmpty(resourceFile))
             {
-                var fileName = Path.GetFileName(this._html5File);
-                var path = this._html5File.Replace(fileName, string.Empty);
+                var fileName = Path.GetFileName(this.html5File);
+                var path = this.html5File.Replace(fileName, string.Empty);
                 resourceFile = Path.Combine(path, Localization.LocalResourceDirectory + "/", Path.ChangeExtension(fileName, "resx"));
             }
 

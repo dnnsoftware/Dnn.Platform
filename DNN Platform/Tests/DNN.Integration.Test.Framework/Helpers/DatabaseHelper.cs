@@ -89,9 +89,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return results;
         }
 
-        /// <summary>
-        /// Returns a dynamic object with rows and columns.
-        /// </summary>
+        /// <summary>Returns a dynamic object with rows and columns.</summary>
         /// <returns>Row can be accessed by return[0]. Column can be accessed by return[0].ColumnName. Column names are case sensitive.</returns>
         public static IList<dynamic> ExecuteDynamicQuery(string queryString)
         {
@@ -176,9 +174,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return CBO.FillCollection<TItem>(PetaPocoHelper.ExecuteReader(AppConfigHelper.ConnectionString, CommandType.StoredProcedure, procedureName, sqlParameters));
         }
 
-        /// <summary>
-        /// Retrieves the total count of records of a table or view in the database.
-        /// </summary>
+        /// <summary>Retrieves the total count of records of a table or view in the database.</summary>
         /// <remarks>DO NOT perfix the table/view name with a qualifier.</remarks>
         /// <returns></returns>
         public static int GetRecordsCount(string tableOrViewName, string whereCondition = null)
@@ -193,9 +189,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return PetaPocoHelper.ExecuteScalar<int>(AppConfigHelper.ConnectionString, CommandType.Text, queryString, null);
         }
 
-        /// <summary>
-        /// Retrieves the maximum ID of a column of a table or view in the database.
-        /// </summary>
+        /// <summary>Retrieves the maximum ID of a column of a table or view in the database.</summary>
         /// <remarks>DO NOT perfix the table/view name with a qualifier.</remarks>
         /// <remarks>If no record exists in the table, -1 is returned.</remarks>
         /// <returns></returns>

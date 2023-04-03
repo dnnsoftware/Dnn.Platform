@@ -1,41 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DNNConnect.CKEditorProvider
 {
     using System;
     using System.Globalization;
     using System.IO;
     using System.Web;
-    using System.Web.UI.HtmlControls;
+    using System.Web.UI;
 
     using DNNConnect.CKEditorProvider.Controls;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// <summary>
-    /// The options page.
-    /// </summary>
+    /// <summary>The options page.</summary>
     public partial class Options : PageBase
     {
-        /// <summary>
-        /// The request.
-        /// </summary>
+        /// <summary>The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
 
-        /// <summary>
-        /// The _portal settings.
-        /// </summary>
+        /// <summary>The _portal settings.</summary>
         private PortalSettings curPortalSettings;
 
-        /// <summary>
-        ///   Gets Current Language from Url.
-        /// </summary>
+        /// <summary>  Gets Current Language from Url.</summary>
         protected string LangCode
         {
             get
@@ -44,9 +37,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        ///   Gets the Name for the Current Resource file name.
-        /// </summary>
+        /// <summary>  Gets the Name for the Current Resource file name.</summary>
         protected string ResXFile
         {
             get
@@ -63,72 +54,24 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Register the java scripts and CSS.
-        /// </summary>
+        /// <summary>Register the java scripts and CSS.</summary>
         /// <param name="e">
         /// The Event Args.
         /// </param>
         protected override void OnPreRender(EventArgs e)
         {
-            var jqueryScriptLink = new HtmlGenericControl("script");
-
-            jqueryScriptLink.Attributes["type"] = "text/javascript";
-            jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
-
-            this.favicon.Controls.Add(jqueryScriptLink);
-
-            var jqueryUiScriptLink = new HtmlGenericControl("script");
-
-            jqueryUiScriptLink.Attributes["type"] = "text/javascript";
-            jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
-
-            this.favicon.Controls.Add(jqueryUiScriptLink);
-
-            var notificationScriptLink = new HtmlGenericControl("script");
-
-            notificationScriptLink.Attributes["type"] = "text/javascript";
-            notificationScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.notification.js");
-
-            this.favicon.Controls.Add(notificationScriptLink);
-
-            var optionsScriptLink = new HtmlGenericControl("script");
-
-            optionsScriptLink.Attributes["type"] = "text/javascript";
-            optionsScriptLink.Attributes["src"] = this.ResolveUrl("js/Options.js");
-
-            this.favicon.Controls.Add(optionsScriptLink);
-
-            var objCssLink = new HtmlGenericSelfClosing("link");
-
-            objCssLink.Attributes["rel"] = "stylesheet";
-            objCssLink.Attributes["type"] = "text/css";
-            objCssLink.Attributes["href"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css";
-
-            this.favicon.Controls.Add(objCssLink);
-
-            var notificationCssLink = new HtmlGenericSelfClosing("link");
-
-            notificationCssLink.Attributes["rel"] = "stylesheet";
-            notificationCssLink.Attributes["type"] = "text/css";
-            notificationCssLink.Attributes["href"] = this.ResolveUrl("css/jquery.notification.css");
-
-            this.favicon.Controls.Add(notificationCssLink);
-
-            var optionsCssLink = new HtmlGenericSelfClosing("link");
-
-            optionsCssLink.Attributes["rel"] = "stylesheet";
-            optionsCssLink.Attributes["type"] = "text/css";
-            optionsCssLink.Attributes["href"] = this.ResolveUrl("css/Options.css");
-
-            this.favicon.Controls.Add(optionsCssLink);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.notification.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Options.js"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, "https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("css/jquery.notification.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("css/Options.css"));
 
             base.OnPreRender(e);
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:Init" /> event.
-        /// </summary>
+        /// <summary>Raises the <see cref="E:Init" /> event.</summary>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
@@ -140,9 +83,7 @@ namespace DNNConnect.CKEditorProvider
             this.LoadFavIcon();
         }
 
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
+        /// <summary>Handles the Load event of the Page control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
@@ -200,18 +141,14 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Closes the page.
-        /// </summary>
+        /// <summary>Closes the page.</summary>
         private void ClosePage()
         {
             this.Page.ClientScript.RegisterStartupScript(
                 this.GetType(), "closeScript", "javascript:self.close();", true);
         }
 
-        /// <summary>
-        /// Gets the portal settings.
-        /// </summary>
+        /// <summary>Gets the portal settings.</summary>
         /// <returns>
         /// The Portal Settings.
         /// </returns>
@@ -256,26 +193,15 @@ namespace DNNConnect.CKEditorProvider
         private void InitializeComponent()
         {
             this.curPortalSettings = this.GetPortalSettings();
+
+            this.ClientResourceLoader.DataBind();
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
         }
 
-        /// <summary>
-        /// Load Favicon from Current Portal Home Directory.
-        /// </summary>
+        /// <summary>Load Favicon from Current Portal Home Directory.</summary>
         private void LoadFavIcon()
         {
-            if (!File.Exists(Path.Combine(this.curPortalSettings.HomeDirectoryMapPath, "favicon.ico")))
-            {
-                return;
-            }
-
-            var faviconUrl = Path.Combine(this.curPortalSettings.HomeDirectory, "favicon.ico");
-
-            var objLink = new HtmlGenericSelfClosing("link");
-
-            objLink.Attributes["rel"] = "shortcut icon";
-            objLink.Attributes["href"] = faviconUrl;
-
-            this.favicon.Controls.Add(objLink);
+            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.curPortalSettings.PortalId)));
         }
     }
 }

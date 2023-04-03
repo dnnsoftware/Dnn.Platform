@@ -1,11 +1,5 @@
 [
   {
-    "name": "Telerik",
-    "folder": "DNN Platform/Components/Telerik/",
-    "destination": "Install/Module",
-    "excludes": [ "**/*.xml" ]
-  },
-  {
     "name": "jQuery",
     "folder": "DNN Platform/JavaScript Libraries/jQuery/",
     "destination": "Install/JavaScriptLibrary"

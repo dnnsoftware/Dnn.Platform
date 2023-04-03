@@ -25,62 +25,42 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Utility Class for various helper Functions.
-    /// </summary>
+    /// <summary>Utility Class for various helper Functions.</summary>
     public static class Utility
     {
-        /// <summary>
-        /// Path Validator Expression.
-        /// </summary>
+        /// <summary>Path Validator Expression.</summary>
         private static readonly string PathValidatorExpression = string.Format(
             "^[^{0}]+$",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidPathChars(), x => Regex.Escape(x.ToString()))));
 
-        /// <summary>
-        /// Path Validator Regex.
-        /// </summary>
+        /// <summary>Path Validator Regex.</summary>
         private static readonly Regex PathValidator = new Regex(PathValidatorExpression, RegexOptions.Compiled);
 
-        /// <summary>
-        /// FileName Validator Expression.
-        /// </summary>
+        /// <summary>FileName Validator Expression.</summary>
         private static readonly string FileNameValidatorExpression = string.Format(
             "^[^{0}]+$",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidFileNameChars(), x => Regex.Escape(x.ToString()))));
 
-        /// <summary>
-        /// FileName Validator Regex.
-        /// </summary>
+        /// <summary>FileName Validator Regex.</summary>
         private static readonly Regex FileNameValidator = new Regex(FileNameValidatorExpression, RegexOptions.Compiled);
 
-        /// <summary>
-        /// Path Cleaner Expression.
-        /// </summary>
+        /// <summary>Path Cleaner Expression.</summary>
         private static readonly string PathCleanerExpression = string.Format(
             "[{0}]",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidPathChars(), x => Regex.Escape(x.ToString()))));
 
-        /// <summary>
-        /// Path Cleaner Regex.
-        /// </summary>
+        /// <summary>Path Cleaner Regex.</summary>
         private static readonly Regex PathCleaner = new Regex(PathCleanerExpression, RegexOptions.Compiled);
 
-        /// <summary>
-        /// FileName Cleaner Expression.
-        /// </summary>
+        /// <summary>FileName Cleaner Expression.</summary>
         private static readonly string FileNameCleanerExpression = string.Format(
             "[{0}]",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidFileNameChars(), x => Regex.Escape(x.ToString()))));
 
-        /// <summary>
-        /// FileName Cleaner Regex.
-        /// </summary>
+        /// <summary>FileName Cleaner Regex.</summary>
         private static readonly Regex FileNameCleaner = new Regex(FileNameCleanerExpression, RegexOptions.Compiled);
 
-        /// <summary>
-        /// Check if Object is a Unit.
-        /// </summary>
+        /// <summary>Check if Object is a Unit.</summary>
         /// <param name="valueToCheck">
         /// Object to Check.
         /// </param>
@@ -122,9 +102,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Check if Object is a Number.
-        /// </summary>
+        /// <summary>Check if Object is a Number.</summary>
         /// <param name="valueToCheck">
         /// Object to Check.
         /// </param>
@@ -141,9 +119,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return numeric;
         }
 
-        /// <summary>
-        /// Validates the <paramref name="path"/>.
-        /// </summary>
+        /// <summary>Validates the <paramref name="path"/>.</summary>
         /// <param name="path">
         /// The <paramref name="path"/>.
         /// </param>
@@ -155,9 +131,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return PathValidator.IsMatch(path);
         }
 
-        /// <summary>
-        /// Validates the name of the file.
-        /// </summary>
+        /// <summary>Validates the name of the file.</summary>
         /// <param name="fileName">
         /// Name of the file.
         /// </param>
@@ -169,9 +143,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return FileNameValidator.IsMatch(fileName);
         }
 
-        /// <summary>
-        /// Cleans the <paramref name="path"/>.
-        /// </summary>
+        /// <summary>Cleans the <paramref name="path"/>.</summary>
         /// <param name="path">
         /// The <paramref name="path"/>.
         /// </param>
@@ -183,9 +155,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return PathCleaner.Replace(path, string.Empty);
         }
 
-        /// <summary>
-        /// Cleans the name of the file.
-        /// </summary>
+        /// <summary>Cleans the name of the file.</summary>
         /// <param name="fileName">
         /// Name of the file.
         /// </param>
@@ -197,9 +167,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return FileNameCleaner.Replace(fileName, string.Empty);
         }
 
-        /// <summary>
-        /// Converts the Unicode chars to its to its ASCII equivalent.
-        /// </summary>
+        /// <summary>Converts the Unicode chars to its to its ASCII equivalent.</summary>
         /// <param name="input">The <paramref name="input"/>.</param>
         /// <returns>The ASCII equivalent output.</returns>
         public static string ConvertUnicodeChars(string input)
@@ -266,9 +234,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return input;
         }
 
-        /// <summary>
-        /// Checks if user has write access to the folder.
-        /// </summary>
+        /// <summary>Checks if user has write access to the folder.</summary>
         /// <param name="folderId">The folder id.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <returns>
@@ -290,9 +256,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Converts a File Path to a Folder Info.
-        /// </summary>
+        /// <summary>Converts a File Path to a Folder Info.</summary>
         /// <param name="folderPath">The folder path.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <returns>
@@ -300,11 +264,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettings portalSettings)
         {
-            try
+            if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
                 folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
             }
-            catch (Exception)
+            else
             {
                 folderPath = folderPath.Replace("\\", "/");
             }
@@ -312,9 +276,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return FolderManager.Instance.GetFolder(portalSettings.PortalId, folderPath);
         }
 
-        /// <summary>
-        /// Converts a File Path to a file Info.
-        /// </summary>
+        /// <summary>Converts a File Path to a file Info.</summary>
         /// <param name="filePath">The file path.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <returns>
@@ -337,9 +299,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return file.FileId;
         }
 
-        /// <summary>
-        /// Sort a List Ascending.
-        /// </summary>
+        /// <summary>Sort a List Ascending.</summary>
         /// <param name="source">
         /// The <paramref name="source"/> List.
         /// </param>
@@ -358,9 +318,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             source.Sort((x, y) => comparer.Compare(selector(x), selector(y)));
         }
 
-        /// <summary>
-        /// Sort a List Descending.
-        /// </summary>
+        /// <summary>Sort a List Descending.</summary>
         /// <param name="source">
         /// The <paramref name="source"/> List.
         /// </param>
@@ -379,9 +337,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             source.Sort((x, y) => comparer.Compare(selector(y), selector(x)));
         }
 
-        /// <summary>
-        /// Determines whether user is in the specified role.
-        /// </summary>
+        /// <summary>Determines whether user is in the specified role.</summary>
         /// <param name="roles">The roles.</param>
         /// <param name="settings">The settings.</param>
         /// <returns>
@@ -436,9 +392,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return isInRoles;
         }
 
-        /// <summary>
-        /// Finds the control.
-        /// </summary>
+        /// <summary>Finds the control.</summary>
         /// <typeparam name="T">The Control Type.</typeparam>
         /// <param name="startingControl">The starting control.</param>
         /// <param name="id">The <paramref name="id"/>.</param>
@@ -483,9 +437,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return found;
         }
 
-        /// <summary>
-        /// Gets the size of the max upload.
-        /// </summary>
+        /// <summary>Gets the size of the max upload.</summary>
         /// <param name="inkilobytes">if set to <c>true</c> Returns Value as kilo byte otherwise as byte.</param>
         /// <returns>
         /// Returns the Max. Upload Size.
@@ -509,9 +461,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return inkilobytes ? result : (result * 1024);
         }
 
-        /// <summary>
-        /// Converts the enum value for Link Protocol to the string value used for CKE config.
-        /// </summary>
+        /// <summary>Converts the enum value for Link Protocol to the string value used for CKE config.</summary>
         /// <param name="protocol">The protocol enum value.</param>
         /// <returns>The protocol string value.</returns>
         public static string ToSettingValue(this LinkProtocol protocol)
@@ -530,6 +480,29 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 default:
                     return "https://";
             }
+        }
+
+        public static IFolderInfo EnsureGetFolder(int portalId, string folderPath)
+        {
+            if (FolderManager.Instance.FolderExists(portalId, folderPath))
+            {
+                return FolderManager.Instance.GetFolder(portalId, folderPath);
+            }
+
+            if (!string.IsNullOrEmpty(folderPath))
+            {
+                var newFolderPath = string.Empty;
+                IFolderInfo retval = null;
+                foreach (var folderName in folderPath.Split('/'))
+                {
+                    newFolderPath = $"{newFolderPath}{folderName}/";
+                    retval = FolderManager.Instance.AddFolder(portalId, newFolderPath);
+                }
+
+                return retval;
+            }
+
+            return null;
         }
     }
 }

@@ -10,9 +10,7 @@ namespace DotNetNuke.Modules.Html.Components
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Settings;
 
-    /// <summary>
-    /// An example implementation of the <see cref="ModuleSettingAttribute"/>.
-    /// </summary>
+    /// <summary>An example implementation of the <see cref="ModuleSettingAttribute"/>.</summary>
     /// <remarks>
     /// HtmlModuleSettings provides a strongly typed list of properties used by
     /// the HTML module.  Settings will automatically be serialized and deserialized
@@ -32,12 +30,5 @@ namespace DotNetNuke.Modules.Html.Components
 
         [ModuleSetting]
         public int WorkFlowID { get; set; } = -1;
-    }
-
-    /// <summary>
-    /// The <see cref="SettingsRepository{T}"/> used for storing and retrieving <see cref="HtmlModuleSettings"/>.
-    /// </summary>
-    public class HtmlModuleSettingsRepository : SettingsRepository<HtmlModuleSettings>
-    {
     }
 }

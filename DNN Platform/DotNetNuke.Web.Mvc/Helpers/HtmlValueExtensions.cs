@@ -9,14 +9,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-    /// </summary>
+    /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
     public static class HtmlValueExtensions
     {
-        /// <summary>
-        /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-        /// </summary>
+        /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
         ///
         /// <returns>
         /// The HTML markup for the value.
@@ -27,9 +23,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Value(name);
         }
 
-        /// <summary>
-        /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-        /// </summary>
+        /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
         ///
         /// <returns>
         /// The HTML markup for the value.
@@ -40,9 +34,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Value(name, format);
         }
 
-        /// <summary>
-        /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-        /// </summary>
+        /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
         ///
         /// <returns>
         /// The HTML markup for the value.
@@ -53,9 +45,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValueFor(expression);
         }
 
-        /// <summary>
-        /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-        /// </summary>
+        /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
         ///
         /// <returns>
         /// The HTML markup for the value.
@@ -66,9 +56,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValueFor(expression, format);
         }
 
-        /// <summary>
-        /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-        /// </summary>
+        /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
         ///
         /// <returns>
         /// The HTML markup for the value.
@@ -79,9 +67,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValueForModel();
         }
 
-        /// <summary>
-        /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
-        /// </summary>
+        /// <summary>Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.</summary>
         ///
         /// <returns>
         /// The HTML markup for the value.

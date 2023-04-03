@@ -1,10 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Data
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common;
     using DotNetNuke.Framework;
@@ -13,18 +13,15 @@ namespace DotNetNuke.Data
         where TSelf : ServiceLocator<TContract, TSelf>, new()
         where TEntity : class
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected readonly IDataContext DataContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.</summary>
         protected ControllerBase()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.</summary>
         /// <param name="dataContext"></param>
         protected ControllerBase(IDataContext dataContext)
         {

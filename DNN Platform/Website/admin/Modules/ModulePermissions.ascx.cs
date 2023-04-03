@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable CheckNamespace
+
 namespace DotNetNuke.Modules.Admin.Modules
 
 // ReSharper restore CheckNamespace
@@ -24,33 +24,33 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class ModulePermissions : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private int _moduleId = -1;
-        private ModuleInfo _module;
+        private int moduleId = -1;
+        private ModuleInfo module;
 
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissions"/> class.</summary>
         public ModulePermissions()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private ModuleInfo Module
         {
-            get { return this._module ?? (this._module = ModuleController.Instance.GetModule(this._moduleId, this.TabId, false)); }
+            get { return this.module ?? (this.module = ModuleController.Instance.GetModule(this.moduleId, this.TabId, false)); }
         }
 
         private string ReturnURL
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             // get ModuleId
             if (this.Request.QueryString["ModuleId"] != null)
             {
-                this._moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
+                this.moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
             }
 
             // Verify that the current user has access to edit this module
@@ -68,6 +68,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -81,7 +82,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (this.Page.IsPostBack == false)
                 {
                     this.dgPermissions.TabId = this.PortalSettings.ActiveTab.TabID;
-                    this.dgPermissions.ModuleID = this._moduleId;
+                    this.dgPermissions.ModuleID = this.moduleId;
 
                     if (this.Module != null)
                     {

@@ -7,16 +7,13 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Specialized;
     using System.Web.UI;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      VersionEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The VersionEditControl control provides a standard UI component for editing
     /// System.Version properties.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
     {
@@ -28,12 +25,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
@@ -92,12 +85,10 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -108,12 +99,10 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnPreRender runs just before the control is rendered.  It forces a postback to the
         /// Control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -124,12 +113,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             // Render a containing span Tag
@@ -153,12 +138,8 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control.
-        /// </summary>
+        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             this.ControlStyle.AddAttributesToRender(writer);

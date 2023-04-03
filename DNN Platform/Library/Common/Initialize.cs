@@ -29,18 +29,14 @@ namespace DotNetNuke.Common
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Win32;
 
-    /// <summary>
-    /// The Object to initialize application.
-    /// </summary>
+    /// <summary>The Object to initialize application.</summary>
     public class Initialize
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
         private static readonly object InitializeLock = new object();
         private static bool alreadyInitialized;
 
-        /// <summary>
-        /// Inits the app.
-        /// </summary>
+        /// <summary>Inits the app.</summary>
         /// <param name="app">The app.</param>
         public static void Init(HttpApplication app)
         {
@@ -71,9 +67,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// LogStart logs the Application Start Event.
-        /// </summary>
+        /// <summary>LogStart logs the Application Start Event.</summary>
         public static void LogStart()
         {
             var log = new LogInfo
@@ -84,9 +78,7 @@ namespace DotNetNuke.Common
             LogController.Instance.AddLog(log);
         }
 
-        /// <summary>
-        /// LogEnd logs the Application Start Event.
-        /// </summary>
+        /// <summary>LogEnd logs the Application Start Event.</summary>
         public static void LogEnd()
         {
             try
@@ -196,9 +188,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// Tests whether this request should be processed in an HttpModule.
-        /// </summary>
+        /// <summary>Tests whether this request should be processed in an HttpModule.</summary>
         /// <param name="request">The Http request.</param>
         /// <param name="allowUnknownExtensions">When false only .aspx, .asmx, .ashx, .svg are checked for Http Module processing.</param>
         /// <param name="checkOmitFromRewriteProcessing">A value indicating whether to check for "omit from rewrite" processing.</param>
@@ -229,9 +219,7 @@ namespace DotNetNuke.Common
             return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
         }
 
-        /// <summary>
-        /// Attemps to run scheduled tasks when "Request Method" is used in the scheduler.
-        /// </summary>
+        /// <summary>Attemps to run scheduled tasks when "Request Method" is used in the scheduler.</summary>
         /// <param name="request">The http request.</param>
         public static void RunSchedule(HttpRequest request)
         {
@@ -255,9 +243,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// StartScheduler starts the Scheduler.
-        /// </summary>
+        /// <summary>StartScheduler starts the Scheduler.</summary>
         /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
         public static void StartScheduler(bool resetAppStartElapseTime = false)
         {
@@ -282,9 +268,7 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// <summary>
-        /// StopScheduler stops the Scheduler.
-        /// </summary>
+        /// <summary>StopScheduler stops the Scheduler.</summary>
         public static void StopScheduler()
         {
             // stop scheduled jobs

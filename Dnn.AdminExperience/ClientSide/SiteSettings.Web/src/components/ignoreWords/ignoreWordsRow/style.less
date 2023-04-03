@@ -7,9 +7,13 @@
     &:not(:last-child) {
         border-bottom: 1px solid @alto;
     }
-    .words-editor-wrapper > div {
+    .words-editor-wrapper {
         float: left;
         width: 100%;
+        > div {
+            float: left;
+            width: 100%;
+        }
     }
     div.collapsible-header-ignore-words {
         width: 100%;

@@ -6,14 +6,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Represents the functionality to render a partial view as an HTML-encoded string.
-    /// </summary>
+    /// <summary>Represents the functionality to render a partial view as an HTML-encoded string.</summary>
     public static class HtmlPartialExtensions
     {
-        /// <summary>
-        /// Renders the specified partial view as an HTML-encoded string.
-        /// </summary>
+        /// <summary>Renders the specified partial view as an HTML-encoded string.</summary>
         ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
@@ -24,9 +20,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Partial(partialViewName);
         }
 
-        /// <summary>
-        /// Renders the specified partial view as an HTML-encoded string.
-        /// </summary>
+        /// <summary>Renders the specified partial view as an HTML-encoded string.</summary>
         ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
@@ -37,9 +31,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Partial(partialViewName, (object)null, viewData);
         }
 
-        /// <summary>
-        /// Renders the specified partial view as an HTML-encoded string.
-        /// </summary>
+        /// <summary>Renders the specified partial view as an HTML-encoded string.</summary>
         ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
@@ -50,9 +42,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Partial(partialViewName, model, html.HtmlHelper.ViewData);
         }
 
-        /// <summary>
-        /// Renders the specified partial view as an HTML-encoded string.
-        /// </summary>
+        /// <summary>Renders the specified partial view as an HTML-encoded string.</summary>
         ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.

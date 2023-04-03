@@ -4,14 +4,10 @@
 
 namespace DotNetNuke.Entities.Urls
 {
-    /// <summary>
-    /// The DupKeyCheck class is a small helper class used to maintain state of what to do with a duplicate Url when building the Url Index.
-    /// </summary>
+    /// <summary>The DupKeyCheck class is a small helper class used to maintain state of what to do with a duplicate Url when building the Url Index.</summary>
     internal class DupKeyCheck
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DupKeyCheck"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DupKeyCheck"/> class.</summary>
         /// <param name="tabKey"></param>
         /// <param name="tabIdOriginal"></param>
         /// <param name="tabPath"></param>

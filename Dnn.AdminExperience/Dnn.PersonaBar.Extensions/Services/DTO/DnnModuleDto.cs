@@ -27,24 +27,31 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             get
             {
                 if (this.CultureCode == null)
-                    return "";
+                {
+                    return string.Empty;
+                }
+
                 if (this.DefaultLanguageGuid == Null.NullGuid)
                 {
-                    return "";
+                    return string.Empty;
                 }
-                var pageName = "";
+
+                var pageName = string.Empty;
                 if (this.DefaultTabName != null)
+                {
                     pageName = " / " + this.DefaultTabName;
+                }
 
                 if (this.ModuleId == this.DefaultModuleId)
                 {
                     return string.Format(this.LocalizeString("Reference.Text"), pageName);
                 }
+
                 if (this.IsTranslated)
                 {
                     return string.Format(this.LocalizeString("Translated.Text"), pageName);
-
                 }
+
                 return string.Format(this.LocalizeString("NotTranslated.Text"), pageName);
             }
         }
@@ -55,12 +62,14 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             {
                 if (this.CultureCode == null || this.DefaultLanguageGuid == Null.NullGuid)
                 {
-                    return "";
+                    return string.Empty;
                 }
 
-                var pageName = "";
+                var pageName = string.Empty;
                 if (this.DefaultTabName != null)
+                {
                     pageName = " / " + this.DefaultTabName;
+                }
 
                 if (this.ModuleId == this.DefaultModuleId)
                 {
@@ -92,7 +101,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                     return "Duplicate module";
                 }
 
-                return "";
+                return string.Empty;
             }
         }
 
@@ -141,7 +150,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         public void SetModuleInfoHelp()
         {
-            var returnValue = "";
+            var returnValue = string.Empty;
             var moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
             if (moduleInfo != null)
             {
@@ -152,8 +161,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 else
                 {
                     returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
-                        ? string.Format(this.LocalizeString("ModuleInfo.Text"),
-                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
+                        ? string.Format(
+                            this.LocalizeString("ModuleInfo.Text"),
+                            moduleInfo.ModuleDefinition.FriendlyName,
+                            moduleInfo.ModuleTitle,
+                            moduleInfo.PaneName)
                         : this.LocalizeString("ModuleInfoForNonAdmins.Text");
                 }
             }
@@ -163,7 +175,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         private string LocalizeString(string localizationKey)
         {
-            return Localization.GetString(localizationKey, this.LocalResourceFile) ?? "";
+            return Localization.GetString(localizationKey, this.LocalResourceFile) ?? string.Empty;
         }
     }
 }

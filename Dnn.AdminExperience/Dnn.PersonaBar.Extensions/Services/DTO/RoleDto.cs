@@ -74,7 +74,11 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
 
         public static RoleDto FromRoleInfo(RoleInfo role)
         {
-            if (role == null) return null;
+            if (role == null)
+            {
+                return null;
+            }
+
             return new RoleDto()
             {
                 Id = role.RoleID,

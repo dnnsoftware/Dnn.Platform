@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.SystemDateTime
 
     using DotNetNuke.Data;
 
-    /// <summary>
-    /// The SystemDateTime provides static method to obtain System's Time.
-    /// </summary>
+    /// <summary>The SystemDateTime provides static method to obtain System's Time.</summary>
     /// <remarks>
     /// DateTime information is collected from Database. The methods are created to find one unified timestamp from database
     /// as opposed to depending on web server's timestamp. This method becomes more relevant in a web farm configuration.
@@ -24,12 +22,8 @@ namespace DotNetNuke.Services.SystemDateTime
             return Provider.GetDatabaseTimeUtc();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetCurrentTime get current time from database.
-        /// </summary>
+        /// <summary>GetCurrentTime get current time from database.</summary>
         /// <returns>DateTime.</returns>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 9.1.0.  Replaced by DateUtils.GetDatabaseLocalTime, which includes caching. Scheduled removal in v11.0.0.")]
         public static DateTime GetCurrentTime()
         {

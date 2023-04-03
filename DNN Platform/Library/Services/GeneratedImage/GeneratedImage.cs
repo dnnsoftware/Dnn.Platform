@@ -14,29 +14,25 @@ namespace DotNetNuke.Services.GeneratedImage
     public class GeneratedImage : Image
     {
         private const string TimestampField = "__timestamp";
-        private readonly Control _bindingContainer;
-        private readonly HttpContextBase _context;
-        private string _timestamp;
-        private string _imageHandlerUrl;
+        private readonly Control bindingContainer;
+        private readonly HttpContextBase context;
+        private string timestamp;
+        private string imageHandlerUrl;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeneratedImage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GeneratedImage"/> class.</summary>
         public GeneratedImage()
         {
             this.Parameters = new List<ImageParameter>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeneratedImage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GeneratedImage"/> class.</summary>
         /// <param name="context"></param>
         /// <param name="bindingContainer"></param>
         internal GeneratedImage(HttpContextBase context, Control bindingContainer)
             : this()
         {
-            this._context = context;
-            this._bindingContainer = bindingContainer;
+            this.context = context;
+            this.bindingContainer = bindingContainer;
         }
 
         public List<ImageParameter> Parameters { get; }
@@ -45,12 +41,12 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return this._imageHandlerUrl ?? string.Empty;
+                return this.imageHandlerUrl ?? string.Empty;
             }
 
             set
             {
-                this._imageHandlerUrl = value;
+                this.imageHandlerUrl = value;
             }
         }
 
@@ -58,18 +54,18 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return this._timestamp ?? string.Empty;
+                return this.timestamp ?? string.Empty;
             }
 
             set
             {
-                this._timestamp = value;
+                this.timestamp = value;
             }
         }
 
-        private new HttpContextBase Context => this._context ?? new HttpContextWrapper(HttpContext.Current);
+        private new HttpContextBase Context => this.context ?? new HttpContextWrapper(HttpContext.Current);
 
-        private new Control BindingContainer => this._bindingContainer ?? base.BindingContainer;
+        private new Control BindingContainer => this.bindingContainer ?? base.BindingContainer;
 
         /// <inheritdoc/>
         protected override void OnDataBinding(EventArgs e)

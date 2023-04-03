@@ -11,14 +11,10 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Drawing.Imaging;
     using System.Web;
 
-    /// <summary>
-    /// Image Handler abstract class.
-    /// </summary>
+    /// <summary>Image Handler abstract class.</summary>
     public abstract class ImageHandler : IHttpHandler
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageHandler"/> class.</summary>
         /// <param name="imageStore"></param>
         /// <param name="now"></param>
         internal ImageHandler(IImageStore imageStore, DateTime now)
@@ -26,9 +22,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageHandler"/> class.</summary>
         protected ImageHandler()
             : this(new ImageHandlerInternal())
         {
@@ -42,36 +36,28 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <inheritdoc/>
         public virtual bool IsReusable => false;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether enables server-side caching of the result.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether enables server-side caching of the result.</summary>
         public bool EnableServerCache
         {
             get { return this.Implementation.EnableServerCache; }
             set { this.Implementation.EnableServerCache = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether enables client-side caching of the result.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether enables client-side caching of the result.</summary>
         public bool EnableClientCache
         {
             get { return this.Implementation.EnableClientCache; }
             set { this.Implementation.EnableClientCache = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the client-side cache expiration time.
-        /// </summary>
+        /// <summary>Gets or sets the client-side cache expiration time.</summary>
         public TimeSpan ClientCacheExpiration
         {
             get { return this.Implementation.ClientCacheExpiration; }
             set { this.Implementation.ClientCacheExpiration = value; }
         }
 
-        /// <summary>
-        /// Gets or sets list of Domains who are allowed to use the imagehandler when security is enabled.
-        /// </summary>
+        /// <summary>Gets or sets list of Domains who are allowed to use the imagehandler when security is enabled.</summary>
         public string[] AllowedDomains
         {
             get { return this.Implementation.AllowedDomains; }
@@ -90,27 +76,21 @@ namespace DotNetNuke.Services.GeneratedImage
             set { this.Implementation.LogSecurity = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the type of the result image. The handler will return ouput with MIME type matching this content.
-        /// </summary>
+        /// <summary>Gets or sets the type of the result image. The handler will return ouput with MIME type matching this content.</summary>
         public ImageFormat ContentType
         {
             get { return this.Implementation.ContentType; }
             set { this.Implementation.ContentType = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the image compression encoding for the result image. Default is 50L.
-        /// </summary>
+        /// <summary>Gets or sets the image compression encoding for the result image. Default is 50L.</summary>
         public long ImageCompression
         {
             get { return this.Implementation.ImageCompression; }
             set { this.Implementation.ImageCompression = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether enables block mechanism for DDOS by referring IP.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether enables block mechanism for DDOS by referring IP.</summary>
         public bool EnableIPCount
         {
             get { return this.Implementation.EnableIPCount; }
@@ -127,18 +107,14 @@ namespace DotNetNuke.Services.GeneratedImage
             set { this.Implementation.IPCountMax = value; }
         }
 
-        /// <summary>
-        /// Gets or sets timespan for resetting the blocking.
-        /// </summary>
+        /// <summary>Gets or sets timespan for resetting the blocking.</summary>
         public TimeSpan IPCountPurgeInterval
         {
             get { return this.Implementation.IpCountPurgeInterval; }
             set { this.Implementation.IpCountPurgeInterval = value; }
         }
 
-        /// <summary>
-        /// Gets a list of image transforms that will be applied successively to the image.
-        /// </summary>
+        /// <summary>Gets a list of image transforms that will be applied successively to the image.</summary>
         protected List<ImageTransform> ImageTransforms => this.Implementation.ImageTransforms;
 
         private ImageHandlerInternal Implementation { get; set; }
@@ -159,7 +135,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         internal void ProcessRequest(HttpContextBase context)
         {
-            Debug.Assert(context != null);
+            Debug.Assert(context != null, "HTTP Context was null");
             this.Implementation.HandleImageRequest(context, this.GenerateImage, this.ToString());
         }
     }

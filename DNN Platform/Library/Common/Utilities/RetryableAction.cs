@@ -17,9 +17,12 @@ namespace DotNetNuke.Common.Utilities.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RetryableAction"/> class.
-        /// </summary>
+        static RetryableAction()
+        {
+            SleepAction = GoToSleep;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RetryableAction"/> class.</summary>
         /// <param name="action"></param>
         /// <param name="description"></param>
         /// <param name="maxRetries"></param>
@@ -29,9 +32,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RetryableAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RetryableAction"/> class.</summary>
         /// <param name="action"></param>
         /// <param name="description"></param>
         /// <param name="maxRetries"></param>
@@ -51,29 +52,16 @@ namespace DotNetNuke.Common.Utilities.Internal
             this.DelayMultiplier = delayMultiplier;
         }
 
-        static RetryableAction()
-        {
-            SleepAction = GoToSleep;
-        }
-
-        /// <summary>
-        /// Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes.
-        /// </summary>
+        /// <summary>Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes.</summary>
         public static Action<int> SleepAction { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Action to execute.
-        /// </summary>
+        /// <summary>Gets or sets the Action to execute.</summary>
         public Action Action { get; set; }
 
-        /// <summary>
-        /// Gets or sets a message describing the action.  The primary purpose is to make the action identifiable in the log output.
-        /// </summary>
+        /// <summary>Gets or sets a message describing the action.  The primary purpose is to make the action identifiable in the log output.</summary>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets the maximum number of retries to attempt.
-        /// </summary>
+        /// <summary>Gets or sets the maximum number of retries to attempt.</summary>
         public int MaxRetries { get; set; }
 
         /// <summary>

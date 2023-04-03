@@ -14,13 +14,7 @@ namespace DotNetNuke.Framework.Reflections
 
     public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
-        private IAssemblyLocator _assemblyLocator;
-
-        internal IAssemblyLocator AssemblyLocator
-        {
-            get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
-            set { this._assemblyLocator = value; }
-        }
+        private IAssemblyLocator assemblyLocator;
 
         /// <inheritdoc/>
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
@@ -30,9 +24,15 @@ namespace DotNetNuke.Framework.Reflections
             get
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                       where this.CanScan(assembly)
-                       select new AssemblyWrapper(assembly);
+                    where this.CanScan(assembly)
+                    select new AssemblyWrapper(assembly);
             }
+        }
+
+        internal IAssemblyLocator AssemblyLocator
+        {
+            get { return this.assemblyLocator ?? (this.assemblyLocator = this); }
+            set { this.assemblyLocator = value; }
         }
 
         /// <inheritdoc/>

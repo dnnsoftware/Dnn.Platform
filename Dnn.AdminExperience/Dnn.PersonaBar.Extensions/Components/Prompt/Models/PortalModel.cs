@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Portals;
 
     public class PortalModel : PortalModelBase
@@ -12,7 +14,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         {
         }
 
-        public PortalModel(PortalInfo portal) : base(portal)
+        public PortalModel(PortalInfo portal)
+            : base(portal)
         {
             // get portal settings for specified portal
             var ps = new PortalSettings(portal);
@@ -23,8 +26,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
             this.AdminContainer = Utilities.FormatContainerName(ps.DefaultAdminContainer);
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __PageCount => "list-pages";
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __UserCount => "list-users";
 
         public int CdfVersion { get; set; }

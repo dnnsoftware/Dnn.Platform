@@ -17,12 +17,15 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Services.Scheduling;
 
     [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
+
     public class SetTask : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetTask_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
+
         private const string FlagEnabled = "enabled";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
@@ -35,7 +38,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.TaskId = this.GetFlagValue(FlagId, "Task Id", -1, true, true, true);
             this.Enabled = this.GetFlagValue(FlagEnabled, "Enabled", true, true);
         }
@@ -48,9 +50,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
                 var tasks = new List<TaskModel>();
 
                 if (taskToUpdate == null)
+                {
                     return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
+                }
+
                 if (taskToUpdate.Enabled == this.Enabled)
+                {
                     return new ConsoleErrorResultModel(this.LocalizeString(this.Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled"));
+                }
 
                 taskToUpdate.Enabled = this.Enabled;
                 SchedulingProvider.Instance().UpdateSchedule(taskToUpdate);

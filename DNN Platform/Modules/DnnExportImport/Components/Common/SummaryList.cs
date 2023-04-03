@@ -9,14 +9,10 @@ namespace Dnn.ExportImport.Components.Common
 
     using Dnn.ExportImport.Components.Dto;
 
-    /// <summary>
-    /// Represents a collection of <see cref="SummaryItem"/>.
-    /// </summary>
+    /// <summary>Represents a collection of <see cref="SummaryItem"/>.</summary>
     public class SummaryList : List<SummaryItem>
     {
-        /// <summary>
-        /// Adds an item to the list.
-        /// </summary>
+        /// <summary>Adds an item to the list.</summary>
         /// <param name="item"><see cref="SummaryItem"/>.</param>
         public new void Add(SummaryItem item)
         {
@@ -31,9 +27,7 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        /// <summary>
-        /// Adds multiple items to the collection.
-        /// </summary>
+        /// <summary>Adds multiple items to the collection.</summary>
         /// <param name="items">The items to add.</param>
         public new void AddRange(IEnumerable<SummaryItem> items)
         {

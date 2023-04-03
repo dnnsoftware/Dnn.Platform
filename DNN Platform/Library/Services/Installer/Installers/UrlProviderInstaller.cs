@@ -13,14 +13,11 @@ namespace DotNetNuke.Services.Installer.Installers
 
     internal class UrlProviderInstaller : ComponentInstallerBase
     {
-        private ExtensionUrlProviderInfo _extensionUrlProvider;
-        private ExtensionUrlProviderInfo _installedExtensionUrlProvider;
-        private string _desktopModuleName;
+        private ExtensionUrlProviderInfo extensionUrlProvider;
+        private ExtensionUrlProviderInfo installedExtensionUrlProvider;
+        private string desktopModuleName;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
         public override string AllowableFiles
         {
@@ -30,20 +27,12 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Commit method finalises the Install and commits any pending changes.</summary>
         public override void Commit()
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the UrlProvider component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Install method installs the UrlProvider component.</summary>
         public override void Install()
         {
             try
@@ -51,25 +40,25 @@ namespace DotNetNuke.Services.Installer.Installers
                 // Ensure DesktopModule Cache is cleared
                 DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, Null.NullInteger));
 
-                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this._desktopModuleName, Null.NullInteger);
+                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.desktopModuleName, Null.NullInteger);
                 if (desktopModule != null)
                 {
-                    this._extensionUrlProvider.DesktopModuleId = desktopModule.DesktopModuleID;
+                    this.extensionUrlProvider.DesktopModuleId = desktopModule.DesktopModuleID;
                 }
 
                 // Attempt to get the Desktop Module
-                this._installedExtensionUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger)
-                                            .SingleOrDefault(p => p.ProviderType == this._extensionUrlProvider.ProviderType);
+                this.installedExtensionUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger)
+                                            .SingleOrDefault(p => p.ProviderType == this.extensionUrlProvider.ProviderType);
 
-                if (this._installedExtensionUrlProvider != null)
+                if (this.installedExtensionUrlProvider != null)
                 {
-                    this._extensionUrlProvider.ExtensionUrlProviderId = this._installedExtensionUrlProvider.ExtensionUrlProviderId;
+                    this.extensionUrlProvider.ExtensionUrlProviderId = this.installedExtensionUrlProvider.ExtensionUrlProviderId;
                 }
 
-                ExtensionUrlProviderController.SaveProvider(this._extensionUrlProvider);
+                ExtensionUrlProviderController.SaveProvider(this.extensionUrlProvider);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.URLPROVIDER_Registered, this._extensionUrlProvider.ProviderName));
+                this.Log.AddInfo(string.Format(Util.URLPROVIDER_Registered, this.extensionUrlProvider.ProviderName));
             }
             catch (Exception ex)
             {
@@ -77,14 +66,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file for the compoent.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadManifest method reads the manifest file for the compoent.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            this._extensionUrlProvider = new ExtensionUrlProviderInfo
+            this.extensionUrlProvider = new ExtensionUrlProviderInfo
             {
                 ProviderName = Util.ReadElement(manifestNav, "urlProvider/name", this.Log, Util.URLPROVIDER_NameMissing),
                 ProviderType = Util.ReadElement(manifestNav, "urlProvider/type", this.Log, Util.URLPROVIDER_TypeMissing),
@@ -95,23 +80,21 @@ namespace DotNetNuke.Services.Installer.Installers
                 RewriteAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/rewriteAllUrls", "false")),
             };
 
-            this._desktopModuleName = Util.ReadElement(manifestNav, "urlProvider/desktopModule");
+            this.desktopModuleName = Util.ReadElement(manifestNav, "urlProvider/desktopModule");
             if (this.Log.Valid)
             {
                 this.Log.AddInfo(Util.URLPROVIDER_ReadSuccess);
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             // If Temp Provider exists then we need to update the DataStore with this
-            if (this._installedExtensionUrlProvider == null)
+            if (this.installedExtensionUrlProvider == null)
             {
                 // No Temp Provider - Delete newly added module
                 this.DeleteProvider();
@@ -119,15 +102,11 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Temp Provider - Rollback to Temp
-                ExtensionUrlProviderController.SaveProvider(this._installedExtensionUrlProvider);
+                ExtensionUrlProviderController.SaveProvider(this.installedExtensionUrlProvider);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The UnInstall method uninstalls the component.</summary>
         public override void UnInstall()
         {
             this.DeleteProvider();
@@ -137,7 +116,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
+                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this.extensionUrlProvider.ProviderName && p.ProviderType == this.extensionUrlProvider.ProviderType).FirstOrDefault();
                 if (tempUrlProvider != null)
                 {
                     ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);

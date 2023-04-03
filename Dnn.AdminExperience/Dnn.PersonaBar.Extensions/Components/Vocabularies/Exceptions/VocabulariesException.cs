@@ -8,19 +8,24 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
 
     public class VocabulariesException : ApplicationException
     {
+        /// <summary>Initializes a new instance of the <see cref="VocabulariesException"/> class.</summary>
         public VocabulariesException()
         {
-
         }
 
-        public VocabulariesException(string message) : base(message)
+        /// <summary>Initializes a new instance of the <see cref="VocabulariesException"/> class.</summary>
+        /// <param name="message"></param>
+        public VocabulariesException(string message)
+            : base(message)
         {
-
         }
 
-        public VocabulariesException(string message, Exception innerException) : base(message, innerException)
+        /// <summary>Initializes a new instance of the <see cref="VocabulariesException"/> class.</summary>
+        /// <param name="message"></param>
+        /// <param name="innerException"></param>
+        public VocabulariesException(string message, Exception innerException)
+            : base(message, innerException)
         {
-
         }
     }
 }

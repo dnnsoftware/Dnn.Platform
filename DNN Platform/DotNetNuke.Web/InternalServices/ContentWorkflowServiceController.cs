@@ -20,11 +20,12 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ContentWorkflowServiceController : DnnApiController
     {
-        private readonly IWorkflowEngine _workflowEngine;
+        private readonly IWorkflowEngine workflowEngine;
 
+        /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
         public ContentWorkflowServiceController()
         {
-            this._workflowEngine = WorkflowEngine.Instance;
+            this.workflowEngine = WorkflowEngine.Instance;
         }
 
         [HttpPost]
@@ -50,7 +51,7 @@ namespace DotNetNuke.Web.InternalServices
                         Message = new StateTransactionMessage(),
                         UserId = this.UserInfo.UserID,
                     };
-                    this._workflowEngine.DiscardState(stateTransiction);
+                    this.workflowEngine.DiscardState(stateTransiction);
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
@@ -86,7 +87,7 @@ namespace DotNetNuke.Web.InternalServices
                         Message = new StateTransactionMessage(),
                         UserId = this.UserInfo.UserID,
                     };
-                    this._workflowEngine.CompleteState(stateTransiction);
+                    this.workflowEngine.CompleteState(stateTransiction);
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }

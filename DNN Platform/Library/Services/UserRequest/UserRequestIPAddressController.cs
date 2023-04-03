@@ -31,6 +31,15 @@ namespace DotNetNuke.Services.UserRequest
             {
                 userIPAddress = request.Headers[userRequestIPHeader];
                 userIPAddress = userIPAddress.Split(',')[0];
+                if (ipFamily == IPAddressFamily.IPv4 && userIPAddress.Contains(':'))
+                {
+                    userIPAddress = userIPAddress.Split(':')[0];
+                }
+                else if (ipFamily == IPAddressFamily.IPv6
+                    && userIPAddress.StartsWith("[") && userIPAddress.Contains(']'))
+                {
+                    userIPAddress = userIPAddress.Split(']')[0].Substring(1);
+                }
             }
 
             if (string.IsNullOrEmpty(userIPAddress))

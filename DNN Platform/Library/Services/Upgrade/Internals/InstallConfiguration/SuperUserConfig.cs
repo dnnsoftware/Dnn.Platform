@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// SuperUserConfig - A class that represents Install/DotNetNuke.Install.Config/SuperUser.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>SuperUserConfig - A class that represents Install/DotNetNuke.Install.Config/SuperUser.</summary>
     public class SuperUserConfig
     {
         public string FirstName { get; set; }

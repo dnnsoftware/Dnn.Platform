@@ -16,13 +16,13 @@ namespace Dnn.PersonaBar.Library.Prompt
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public abstract class ConsoleCommandBase : IConsoleCommand
     {
+        /// <inheritdoc/>
         public abstract string LocalResourceFile { get; }
 
-        /// <summary>
-        /// Gets resource key for the result html.
-        /// </summary>
+        /// <summary>Gets resource key for the result html.</summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
+        /// <inheritdoc/>
         public string ValidationMessage { get; private set; }
 
         protected PortalSettings PortalSettings { get; private set; }
@@ -37,9 +37,7 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         protected Hashtable Flags { get; private set; }
 
-        /// <summary>
-        /// Get the flag value.
-        /// </summary>
+        /// <summary>Get the flag value.</summary>
         /// <typeparam name="T">Type of the output expected.</typeparam>
         /// <param name="flag">Flag name to look.</param>
         /// <param name="fieldName">Filed name to show in message.</param>
@@ -47,9 +45,8 @@ namespace Dnn.PersonaBar.Library.Prompt
         /// <param name="required">Is this a required flag or not.</param>
         /// <param name="checkmain">Try to find the flag value in first args or not.</param>
         /// <param name="checkpositive">This would be applicable only if the output is of type int or double and value should be positive.</param>
-        /// <returns></returns>
-        public virtual T GetFlagValue<T>(string flag, string fieldName, T defaultVal, bool required = false,
-            bool checkmain = false, bool checkpositive = false)
+        /// <returns>The flag value or <paramref name="defaultVal"/>.</returns>
+        public virtual T GetFlagValue<T>(string flag, string fieldName, T defaultVal, bool required = false, bool checkmain = false, bool checkpositive = false)
         {
             const string resourceFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx";
             dynamic value = null;
@@ -107,6 +104,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
         }
 
+        /// <inheritdoc/>
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Args = args;
@@ -119,8 +117,10 @@ namespace Dnn.PersonaBar.Library.Prompt
             this.Init(args, portalSettings, userInfo, activeTabId);
         }
 
+        /// <inheritdoc/>
         public abstract ConsoleResultModel Run();
 
+        /// <inheritdoc/>
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(this.ValidationMessage);

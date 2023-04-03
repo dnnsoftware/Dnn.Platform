@@ -12,15 +12,11 @@ namespace Dnn.AuthServices.Jwt.Services
     using DotNetNuke.Web.Api;
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// API controller for JWT services (usually mobile).
-    /// </summary>
+    /// <summary>API controller for JWT services (usually mobile).</summary>
     [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {
-        /// <summary>
-        /// Clients that used JWT login should use this API call to logout and invalidate the tokens.
-        /// </summary>
+        /// <summary>Clients that used JWT login should use this API call to logout and invalidate the tokens.</summary>
         /// <returns>An asynchronous HTTP response.</returns>
         [HttpGet]
         public IHttpActionResult Logout()
@@ -64,9 +60,7 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.ReplyWith(result);
         }
 
-        /// <summary>
-        /// Tests a get HTTP request.
-        /// </summary>
+        /// <summary>Tests a get HTTP request.</summary>
         /// <returns>Basic information about the identity.</returns>
         [HttpGet]
         public IHttpActionResult TestGet()
@@ -76,9 +70,7 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.Ok(new { reply });
         }
 
-        /// <summary>
-        /// Tests a POST api method.
-        /// </summary>
+        /// <summary>Tests a POST api method.</summary>
         /// <param name="something"><see cref="TestPostData"/>.</param>
         /// <returns>Basic information about the identity and the text provided in the POST.</returns>
         [HttpPost]
@@ -107,16 +99,12 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.Ok(result);
         }
 
-        /// <summary>
-        /// Represents the request data for a test POST.
-        /// </summary>
+        /// <summary>Represents the request data for a test POST.</summary>
         [JsonObject]
         public class TestPostData
         {
 #pragma warning disable SA1401 // Field should be private
-            /// <summary>
-            /// The text used in the test.
-            /// </summary>
+            /// <summary>The text used in the test.</summary>
             [JsonProperty("text")]
             public string Text;
 #pragma warning restore SA1401 // Field should be private

@@ -11,95 +11,71 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The SearchConfig class provides a configuration class for Search.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The SearchConfig class provides a configuration class for Search.</summary>
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     [Serializable]
     public class SearchConfig
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
-        private readonly bool _SearchIncludeCommon;
-        private readonly bool _SearchIncludeNumeric;
-        private readonly int _SearchMaxWordlLength;
-        private readonly int _SearchMinWordlLength;
+        private readonly bool searchIncludeCommon;
+        private readonly bool searchIncludeNumeric;
+        private readonly int searchMaxWordlLength;
+        private readonly int searchMinWordlLength;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchConfig"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchConfig"/> class.</summary>
         /// <param name="portalID"></param>
         public SearchConfig(int portalID)
             : this(PortalController.Instance.GetPortalSettings(portalID))
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchConfig"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchConfig"/> class.</summary>
         /// <param name="settings"></param>
         public SearchConfig(Dictionary<string, string> settings)
         {
-            this._SearchIncludeCommon = this.GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);
-            this._SearchIncludeNumeric = this.GetSettingAsBoolean("SearchIncludeNumeric", settings, Host.SearchIncludeNumeric);
-            this._SearchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
-            this._SearchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
+            this.searchIncludeCommon = this.GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);
+            this.searchIncludeNumeric = this.GetSettingAsBoolean("SearchIncludeNumeric", settings, Host.SearchIncludeNumeric);
+            this.searchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
+            this.searchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to include Common Words in the Search Index.</summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon
         {
             get
             {
-                return this._SearchIncludeCommon;
+                return this.searchIncludeCommon;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to include Numbers in the Search Index.</summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric
         {
             get
             {
-                return this._SearchIncludeNumeric;
+                return this.searchIncludeNumeric;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the maximum Search Word length to index.
-        /// </summary>
+        /// <summary>Gets the maximum Search Word length to index.</summary>
         /// <remarks>Defaults to 25.</remarks>
-        /// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength
         {
             get
             {
-                return this._SearchMaxWordlLength;
+                return this.searchMaxWordlLength;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the maximum Search Word length to index.
-        /// </summary>
+        /// <summary>Gets the maximum Search Word length to index.</summary>
         /// <remarks>Defaults to 3.</remarks>
-        /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength
         {
             get
             {
-                return this._SearchMinWordlLength;
+                return this.searchMinWordlLength;
             }
         }
 

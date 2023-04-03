@@ -13,25 +13,22 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
-        private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
-        private readonly INavigationManager _navigationManager;
-        private string _separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
-        private string _cssClass = "SkinObject";
-        private int _rootLevel = 0;
-        private bool _showRoot = false;
-        private string _homeUrl = string.Empty;
-        private string _homeTabName = "Root";
+        private readonly StringBuilder breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
+        private readonly INavigationManager navigationManager;
+        private string separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
+        private string cssClass = "SkinObject";
+        private int rootLevel = 0;
+        private bool showRoot = false;
+        private string homeUrl = string.Empty;
+        private string homeTabName = "Root";
 
         public BreadCrumb()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.CleanerMarkup = false;
         }
 
@@ -58,30 +55,32 @@ namespace DotNetNuke.UI.Skins.Controls
         // Separator between breadcrumb elements
         public string Separator
         {
-            get { return this._separator; }
-            set { this._separator = value; }
+            get { return this.separator; }
+            set { this.separator = value; }
         }
 
         public string CssClass
         {
-            get { return this._cssClass; }
-            set { this._cssClass = value; }
+            get { return this.cssClass; }
+            set { this.cssClass = value; }
         }
 
         // Level to begin processing breadcrumb at.
         // -1 means show root breadcrumb
         public string RootLevel
         {
-            get { return this._rootLevel.ToString(); }
+            get
+            {
+                return this.rootLevel.ToString();
+            }
 
             set
             {
-                this._rootLevel = int.Parse(value);
-
-                if (this._rootLevel < 0)
+                this.rootLevel = int.Parse(value);
+                if (this.rootLevel < 0)
                 {
-                    this._showRoot = true;
-                    this._rootLevel = 0;
+                    this.showRoot = true;
+                    this.rootLevel = 0;
                 }
             }
         }
@@ -92,11 +91,10 @@ namespace DotNetNuke.UI.Skins.Controls
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).</summary>
         public bool CleanerMarkup { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -108,50 +106,50 @@ namespace DotNetNuke.UI.Skins.Controls
             this.ResolveSeparatorPaths();
 
             // If we have enabled hiding when there are no breadcrumbs, simply return
-            if (this.HideWithNoBreadCrumb && this.PortalSettings.ActiveTab.BreadCrumbs.Count == (this._rootLevel + 1))
+            if (this.HideWithNoBreadCrumb && this.PortalSettings.ActiveTab.BreadCrumbs.Count == (this.rootLevel + 1))
             {
                 return;
             }
 
             // Without checking if the current tab is the home tab, we would duplicate the root tab
-            if (this._showRoot && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.HomeTabId)
+            if (this.showRoot && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.HomeTabId)
             {
                 // Add the current protocal to the current URL
-                this._homeUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
+                this.homeUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
 
                 // Make sure we have a home tab ID set
                 if (this.PortalSettings.HomeTabId != -1)
                 {
-                    this._homeUrl = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
+                    this.homeUrl = this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
 
                     var tc = new TabController();
                     var homeTab = tc.GetTab(this.PortalSettings.HomeTabId, this.PortalSettings.PortalId, false);
-                    this._homeTabName = homeTab.LocalizedTabName;
+                    this.homeTabName = homeTab.LocalizedTabName;
 
                     // Check if we should use the tab's title instead
                     if (this.UseTitle && !string.IsNullOrEmpty(homeTab.Title))
                     {
-                        this._homeTabName = homeTab.Title;
+                        this.homeTabName = homeTab.Title;
                     }
                 }
 
                 // Append all of the HTML for the root breadcrumb
-                this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
-                this._breadcrumb.Append("<a href=\"" + this._homeUrl + "\" class=\"" + this._cssClass + "\" itemprop=\"item\" ><span itemprop=\"name\">" + this._homeTabName + "</span></a>");
-                this._breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
-                this._breadcrumb.Append("</span>");
+                this.breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
+                this.breadcrumb.Append("<a href=\"" + this.homeUrl + "\" class=\"" + this.cssClass + "\" itemprop=\"item\" ><span itemprop=\"name\">" + this.homeTabName + "</span></a>");
+                this.breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
+                this.breadcrumb.Append("</span>");
 
                 // Add a separator
-                this._breadcrumb.Append(this._separator);
+                this.breadcrumb.Append(this.separator);
             }
 
             // process bread crumbs
-            for (var i = this._rootLevel; i < this.PortalSettings.ActiveTab.BreadCrumbs.Count; ++i)
+            for (var i = this.rootLevel; i < this.PortalSettings.ActiveTab.BreadCrumbs.Count; ++i)
             {
                 // Only add separators if we're past the root level
-                if (i > this._rootLevel)
+                if (i > this.rootLevel)
                 {
-                    this._breadcrumb.Append(this._separator);
+                    this.breadcrumb.Append(this.separator);
                 }
 
                 // Grab the current tab
@@ -170,12 +168,12 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 if (this.ProfileUserId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId);
+                    tabUrl = this.navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId);
                 }
 
                 if (this.GroupId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId);
+                    tabUrl = this.navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId);
                 }
 
                 // Is this tab disabled? If so, only render a span
@@ -183,36 +181,36 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     if (this.CleanerMarkup)
                     {
-                        this._breadcrumb.Append("<span class=\"" + this._cssClass + "\">" + tabName + "</span>");
+                        this.breadcrumb.Append("<span class=\"" + this.cssClass + "\">" + tabName + "</span>");
                     }
                     else
                     {
-                        this._breadcrumb.Append("<span><span class=\"" + this._cssClass + "\">" + tabName + "</span></span>");
+                        this.breadcrumb.Append("<span><span class=\"" + this.cssClass + "\">" + tabName + "</span></span>");
                     }
                 }
                 else
                 {
                     // An enabled page, render the breadcrumb
-                    this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
-                    this._breadcrumb.Append("<a href=\"" + tabUrl + "\" class=\"" + this._cssClass + "\" itemprop=\"item\"><span itemprop=\"name\">" + tabName + "</span></a>");
-                    this._breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
-                    this._breadcrumb.Append("</span>");
+                    this.breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
+                    this.breadcrumb.Append("<a href=\"" + tabUrl + "\" class=\"" + this.cssClass + "\" itemprop=\"item\"><span itemprop=\"name\">" + tabName + "</span></a>");
+                    this.breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
+                    this.breadcrumb.Append("</span>");
                 }
             }
 
-            this._breadcrumb.Append("</span>"); // End of BreadcrumbList
+            this.breadcrumb.Append("</span>"); // End of BreadcrumbList
 
-            this.lblBreadCrumb.Text = this._breadcrumb.ToString();
+            this.lblBreadCrumb.Text = this.breadcrumb.ToString();
         }
 
         private void ResolveSeparatorPaths()
         {
-            if (string.IsNullOrEmpty(this._separator))
+            if (string.IsNullOrEmpty(this.separator))
             {
                 return;
             }
 
-            var urlMatches = Regex.Matches(this._separator, UrlRegex, RegexOptions.IgnoreCase);
+            var urlMatches = Regex.Matches(this.separator, UrlRegex, RegexOptions.IgnoreCase);
             if (urlMatches.Count > 0)
             {
                 foreach (Match match in urlMatches)
@@ -248,7 +246,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             url,
                             match.Groups[4].Value);
 
-                        this._separator = this._separator.Replace(match.Value, newMatch);
+                        this.separator = this.separator.Replace(match.Value, newMatch);
                     }
                 }
             }

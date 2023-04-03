@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
     /// <remarks>
@@ -68,29 +69,5 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         [DataMember(Name = "onChange")]
         public string OnChangeEvent { get; set; }
-    }
-
-    [DataContract]
-    public class RenderOption
-    {
-        [DataMember(Name = "option")]
-        public string Option { get; set; }
-    }
-
-    [DataContract]
-    public class OptionItem
-    {
-        public OptionItem()
-        {
-        }
-
-        [DataMember(Name = "text")]
-        public string Text { get; set; }
-
-        [DataMember(Name = "value")]
-        public string Value { get; set; }
-
-        [DataMember(Name = "selected")]
-        public bool Selected { get; set; }
     }
 }

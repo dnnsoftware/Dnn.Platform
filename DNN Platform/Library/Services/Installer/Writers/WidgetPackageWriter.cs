@@ -8,18 +8,10 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The WidgetPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The WidgetPackageWriter class.</summary>
     public class WidgetPackageWriter : PackageWriterBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WidgetPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WidgetPackageWriter"/> class.</summary>
         /// <param name="package"></param>
         public WidgetPackageWriter(PackageInfo package)
             : base(package)

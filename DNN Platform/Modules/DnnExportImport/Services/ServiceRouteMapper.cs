@@ -8,6 +8,7 @@ namespace Dnn.ExportImport.Services
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
+        /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute routeManager)
         {
             routeManager.MapHttpRoute(

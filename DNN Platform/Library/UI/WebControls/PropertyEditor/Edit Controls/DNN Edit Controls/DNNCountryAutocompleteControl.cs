@@ -16,21 +16,17 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
     public class DnnCountryAutocompleteControl : EditControl
     {
-        private TextBox _CountryName;
+        private TextBox countryName;
 
-        private HiddenField _CountryId;
+        private HiddenField countryId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         public DnnCountryAutocompleteControl()
         {
             this.Init += this.DnnCountryRegionControl_Init;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         /// <param name="type"></param>
         public DnnCountryAutocompleteControl(string type)
         {
@@ -67,19 +63,22 @@ namespace DotNetNuke.UI.WebControls
                 return strValue;
             }
 
-            set { this.Value = value; }
+            set
+            {
+                this.Value = value;
+            }
         }
 
         private TextBox CountryName
         {
             get
             {
-                if (this._CountryName == null)
+                if (this.countryName == null)
                 {
-                    this._CountryName = new TextBox();
+                    this.countryName = new TextBox();
                 }
 
-                return this._CountryName;
+                return this.countryName;
             }
         }
 
@@ -87,12 +86,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._CountryId == null)
+                if (this.countryId == null)
                 {
-                    this._CountryId = new HiddenField();
+                    this.countryId = new HiddenField();
                 }
 
-                return this._CountryId;
+                return this.countryId;
             }
         }
 
@@ -172,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.CountryName.Text = this.StringValue;
             int countryId = -1;
-            string countryCode = this.StringValue;
+            string countryCode = CountryLookup.CodeByName(this.StringValue);
             if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out countryId))
             {
                 var listController = new ListController();

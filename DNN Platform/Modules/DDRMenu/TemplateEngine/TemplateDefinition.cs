@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -21,20 +22,34 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     public class TemplateDefinition
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public List<ClientOption> ClientOptions = new List<ClientOption>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly Dictionary<string, Tuple<Version, SpecificVersion?>> ScriptLibraries = new Dictionary<string, Tuple<Version, SpecificVersion?>>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly List<string> ScriptUrls = new List<string>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly List<string> ScriptKeys = new List<string>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly Dictionary<string, string> Scripts = new Dictionary<string, string>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly List<string> StyleSheets = new List<string>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly List<ClientOption> DefaultClientOptions = new List<ClientOption>();
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly List<TemplateArgument> DefaultTemplateArguments = new List<TemplateArgument>();
 
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal string Folder;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal string TemplatePath;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal string TemplateVirtualPath;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal string TemplateHeadPath;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal ITemplateProcessor Processor;
 
         private static readonly Regex RegexLinks =
@@ -121,10 +136,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
                 var resolver = new PathResolver(baseDef.Folder);
 
-                // ReSharper disable PossibleNullReferenceException
+                // ReSharper disable once PossibleNullReferenceException
                 foreach (XmlNode node in xml.DocumentElement.ChildNodes)
-
-                // ReSharper restore PossibleNullReferenceException
                 {
                     if (node.NodeType == XmlNodeType.Element)
                     {

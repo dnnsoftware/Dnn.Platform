@@ -8,9 +8,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
 
     public class WorkflowStateNameAlreadyExistsException : WorkflowException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStateNameAlreadyExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStateNameAlreadyExistsException"/> class.</summary>
         public WorkflowStateNameAlreadyExistsException()
             : base(Localization.GetString("WorkflowStateNameAlreadyExistsException", Localization.ExceptionsResourceFile))
         {

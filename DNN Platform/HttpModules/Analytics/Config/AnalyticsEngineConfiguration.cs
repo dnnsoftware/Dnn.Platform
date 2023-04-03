@@ -13,35 +13,30 @@ namespace DotNetNuke.HttpModules.Config
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.HttpModules.Analytics
     /// Project:    HttpModules
     /// Module:     AnalyticsEngineConfiguration
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Class definition for AnalyticsEngineConfiguration which is used to create
     /// an AnalyticsEngineCollection.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("AnalyticsEngineConfig")]
     public class AnalyticsEngineConfiguration
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsEngineConfiguration));
-        private AnalyticsEngineCollection _analyticsEngines;
+        private AnalyticsEngineCollection analyticsEngines;
 
         public AnalyticsEngineCollection AnalyticsEngines
         {
             get
             {
-                return this._analyticsEngines;
+                return this.analyticsEngines;
             }
 
             set
             {
-                this._analyticsEngines = value;
+                this.analyticsEngines = value;
             }
         }
 

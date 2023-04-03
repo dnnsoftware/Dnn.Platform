@@ -8,21 +8,19 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class RequiredAttribute : Attribute
     {
-        private readonly bool _Required;
+        private readonly bool required;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequiredAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequiredAttribute"/> class.</summary>
         public RequiredAttribute(bool required)
         {
-            this._Required = required;
+            this.required = required;
         }
 
         public bool Required
         {
             get
             {
-                return this._Required;
+                return this.required;
             }
         }
     }

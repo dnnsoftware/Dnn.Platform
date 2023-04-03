@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private const string DefaultPageTemplate = "Default.page.template";
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
 
+        /// <inheritdoc/>
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -111,6 +112,7 @@ namespace Dnn.PersonaBar.Pages.Components
                             oTab.TabID = this.CreateTabFromParent(portalSettings, rootTab, oTab, parentTabId, validateOnly, out errorMessage);
                         }
                     }
+
                     bulkPageItems.Add(ToBulkPageResponseItem(oTab, errorMessage));
                 }
                 catch (Exception ex)
@@ -118,19 +120,19 @@ namespace Dnn.PersonaBar.Pages.Components
                     throw new DotNetNukeException("Unable to process page.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
                 }
             }
+
             response.Pages = bulkPageItems;
 
             return response;
         }
 
+        /// <inheritdoc/>
         protected override Func<IBulkPagesController> GetFactory()
         {
             return () => new BulkPagesController();
         }
 
-        /// <summary>
-        /// Checks whether there is a duplicate tab exists.
-        /// </summary>
+        /// <summary>Checks whether there is a duplicate tab exists.</summary>
         /// <param name="pageIndex">Page index to check the duplicate for.</param>
         /// <param name="pages">Page list to check the duplicates from.</param>
         /// <returns>True in case there is a tab with the same name and path and with the index of greater than the first occurence; false otherwise.</returns>
@@ -203,6 +205,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     return oParent.TabID;
                 }
+
                 if (lstTabs[i].Level == parentLevel)
                 {
                     oParent = lstTabs[i];
@@ -219,17 +222,17 @@ namespace Dnn.PersonaBar.Pages.Components
                 PortalID = portalSettings.PortalId,
                 TabName = oTab.TabName,
                 ParentId = parentId,
-                Title = "",
-                Description = "",
+                Title = string.Empty,
+                Description = string.Empty,
                 KeyWords = oTab.KeyWords,
                 IsVisible = oTab.IsVisible,
                 DisableLink = false,
-                IconFile = "",
-                IconFileLarge = "",
+                IconFile = string.Empty,
+                IconFileLarge = string.Empty,
                 IsDeleted = false,
-                Url = "",
-                SkinSrc = "",
-                ContainerSrc = "",
+                Url = string.Empty,
+                SkinSrc = string.Empty,
+                ContainerSrc = string.Empty,
                 CultureCode = Null.NullString,
                 StartDate = oTab.StartDate,
                 EndDate = oTab.EndDate,
@@ -321,7 +324,9 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             if (validateOnly)
+            {
                 return -1;
+            }
 
             tab.TabID = TabController.Instance.AddTab(tab);
             this.ApplyDefaultTabTemplate(tab);
@@ -376,9 +381,13 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
                 if (existingTab != null && existingTab.IsDeleted)
+                {
                     errorMessage = Localization.GetString("TabRecycled");
+                }
                 else
+                {
                     errorMessage = Localization.GetString("TabExists");
+                }
 
                 valid = false;
             }

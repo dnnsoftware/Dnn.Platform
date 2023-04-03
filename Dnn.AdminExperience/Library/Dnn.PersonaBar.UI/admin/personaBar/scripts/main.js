@@ -60,9 +60,9 @@ if (window.parent['personaBarSettings'].debugMode === true) {
     window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 }
 
-require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../extension',
+require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../extension',
         '../persistent', '../eventEmitter', '../menuIconLoader', '../gateway', 'domReady!', '../exports/export-bundle'],
-    function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, iconLoader, Gateway) {
+    function ($, ko, dayjs, ut, sf, cf, extension, persistent, eventEmitter, iconLoader, Gateway) {
         var iframe = window.parent.document.getElementById("personaBar-iframe");
         if (!iframe) return;
         
@@ -106,7 +106,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         var util = {
             sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken),
             onTouch: onTouch,
-            moment: moment,
+            dayjs: dayjs,
             persistent: persistent.init(config, sf),
             inAnimation: inAnimation,
 
@@ -399,7 +399,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         if (menuItem.id === identifier) {
                             if (menuItem.settings) {
                                 var defaultSettings = { isAdmin: config.isAdmin, isHost: config.isHost };
-                                settings = $.extend({}, defaultSettings, eval("(" + menuItem.settings + ")"));
+                                settings = $.extend({}, defaultSettings, JSON.parse(menuItem.settings));
                             } else {
                                 settings = {};
                             }

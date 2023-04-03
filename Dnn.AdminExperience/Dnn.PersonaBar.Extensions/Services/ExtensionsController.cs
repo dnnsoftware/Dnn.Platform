@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Extensions.Services
 {
     using System;
@@ -53,19 +52,17 @@ namespace Dnn.PersonaBar.Extensions.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));
         private static readonly Regex ManifestExensionsRegex = new Regex(@"dnn\d*$");
         private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
-        private readonly Components.ExtensionsController _controller = new Components.ExtensionsController();
+        private readonly Components.ExtensionsController controller = new Components.ExtensionsController();
 
         /// GET: api/Extensions/GetPackageTypes
-        /// <summary>
-        /// Get installed package types.
-        /// </summary>
+        /// <summary>Get installed package types.</summary>
         /// <returns>List of package types.</returns>
         [HttpGet]
         public HttpResponseMessage GetPackageTypes()
         {
             try
             {
-                var packageTypes = this._controller.GetPackageTypes()
+                var packageTypes = this.controller.GetPackageTypes()
                     .OrderBy(t => t.Value.PackageType != "Module")
                     .Select(t =>
                     {
@@ -74,7 +71,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         return new
                         {
                             Type = packageType,
-                            HasAvailablePackages = this._controller.HasAvailablePackage(packageType, out rootPath),
+                            HasAvailablePackages = this.controller.HasAvailablePackage(packageType, out rootPath),
                             DisplayName = Localization.GetString(packageType + ".Type", Constants.SharedResources),
                         };
                     });
@@ -94,9 +91,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// GET: api/Extensions/GetAllPackagesListExceptLangPacks
-        /// <summary>
-        /// Get installed packages list except language packs.
-        /// </summary>
+        /// <summary>Get installed packages list except language packs.</summary>
         /// <returns>List of [Id,Name] pairs of all system packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetAllPackagesListExceptLangPacks()
@@ -114,17 +109,15 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// GET: api/Extensions/GetInstalledPackages
-        /// <summary>
-        /// Gets installed packages.
-        /// </summary>
-        /// <param name="packageType"></param>
+        /// <summary>Gets installed packages.</summary>
+        /// <param name="packageType">The package type.</param>
         /// <returns>List of installed packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetInstalledPackages(string packageType)
         {
             try
             {
-                var packages = this._controller.GetInstalledPackages(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, packageType);
+                var packages = this.controller.GetInstalledPackages(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, packageType);
                 var response = new
                 {
                     Success = true,
@@ -141,10 +134,8 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// GET: api/Extensions/GetAvailablePackages
-        /// <summary>
-        /// Gets available packages.
-        /// </summary>
-        /// <param name="packageType"></param>
+        /// <summary>Gets available packages.</summary>
+        /// <param name="packageType">The package type.</param>
         /// <returns>List of available packages.</returns>
         [HttpGet]
         [RequireHost]
@@ -152,7 +143,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var packages = this._controller.GetAvailablePackages(packageType);
+                var packages = this.controller.GetAvailablePackages(packageType);
                 var response = new
                 {
                     Success = true,
@@ -168,37 +159,37 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        // /// GET: api/Extensions/GetPackageUsage
-        //        /// <summary>
-        //        /// Gets package usage
-        //        /// </summary>
-        //        /// <param name="portalId"></param>
-        //        /// <param name="packageId"></param>
-        //        /// <returns>List of tabs using a specific package</returns>
-        //        [HttpGet]
-        //        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
-        //        {
-        //            try
-        //            {
-        //                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
-        //                {
-        //                    TabLink = _controller.GetFormattedTabLink(portalId, t)
-        //                }).ToList();
-        //
-        //                var response = new
-        //                {
-        //                    Success = true,
-        //                    Results = packages,
-        //                    TotalResults = packages.Count
-        //                };
-        //                return Request.CreateResponse(HttpStatusCode.OK, response);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Logger.Error(ex);
-        //                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-        //            }
-        //        }
+        //// /// GET: api/Extensions/GetPackageUsage
+        ////        /// <summary>
+        ////        /// Gets package usage
+        ////        /// </summary>
+        ////        /// <param name="portalId"></param>
+        ////        /// <param name="packageId"></param>
+        ////        /// <returns>List of tabs using a specific package</returns>
+        ////        [HttpGet]
+        ////        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
+        ////        {
+        ////            try
+        ////            {
+        ////                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
+        ////                {
+        ////                    TabLink = _controller.GetFormattedTabLink(portalId, t)
+        ////                }).ToList();
+        ////
+        ////                var response = new
+        ////                {
+        ////                    Success = true,
+        ////                    Results = packages,
+        ////                    TotalResults = packages.Count
+        ////                };
+        ////                return Request.CreateResponse(HttpStatusCode.OK, response);
+        ////            }
+        ////            catch (Exception ex)
+        ////            {
+        ////                Logger.Error(ex);
+        ////                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+        ////            }
+        ////        }
 
         [HttpGet]
         [RequireHost]
@@ -214,7 +205,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             // var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
             // var currentControlFolder = moduleControl == null ? "" :
             //    (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
-
             var response = new List<KeyValuePair<string, string>>();
             var appPathLen = Globals.ApplicationMapPath.Length + 1;
             foreach (var folder in controlfolders)
@@ -239,7 +229,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             var response = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">"),
+                new KeyValuePair<string, string>(string.Empty, "<" + Localization.GetString("None_Specified") + ">"),
             };
 
             if (!string.IsNullOrEmpty(root))
@@ -264,7 +254,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             var response = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">"),
+                new KeyValuePair<string, string>(string.Empty, "<" + Localization.GetString("None_Specified") + ">"),
             };
 
             if (!string.IsNullOrEmpty(controlPath))
@@ -280,8 +270,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                         var extensions = Globals.glbImageFileTypes.ToLowerInvariant().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         foreach (var file in files)
                         {
-                            var ext = Path.GetExtension(file) ?? "";
-                            var extension = ext.Length <= 1 ? "" : ext.Substring(1).ToLowerInvariant();
+                            var ext = Path.GetExtension(file) ?? string.Empty;
+                            var extension = ext.Length <= 1 ? string.Empty : ext.Substring(1).ToLowerInvariant();
                             if (extensions.Contains(extension))
                             {
                                 path = Path.GetFileName(file);
@@ -292,7 +282,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -353,7 +342,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageSettings.PackageId);
                 if (package == null)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.InternalServerError,
                         Localization.GetString("SavePackageSettings.PackageNotFound", Constants.SharedResources));
                 }
 
@@ -363,7 +353,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                     var isReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
                     if (isReadOnly)
                     {
-                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        return this.Request.CreateErrorResponse(
+                            HttpStatusCode.BadRequest,
                             Localization.GetString("ReadOnlyPackage.SaveErrorMessage", Constants.SharedResources));
                     }
 
@@ -551,10 +542,8 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// <summary>
-        /// Inatall a package that is already included under one of the installation folders.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Install a package that is already included under one of the installation folders.</summary>
+        /// <returns>An <see cref="InstallResultDto"/> response.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
@@ -584,10 +573,8 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// <summary>
-        /// Download install package.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Download install package.</summary>
+        /// <returns>A response that streams the package zip file.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage DownloadPackage(string packageType, string fileName)
@@ -712,6 +699,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
                 }
+
                 var response = new
                 {
                     Success = true,
@@ -829,6 +817,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         {
                             DesktopModuleController.AddDesktopModuleToPortals(desktopModuleId);
                         }
+
                         break;
                     case PackageTypes.SkinObject:
                         var skinControl = new SkinControlInfo { PackageID = package.PackageID, ControlKey = package.Name };
@@ -867,6 +856,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 foreach (var folder in this.GetRootModuleDefinitionFolders())
                 {
                     var files = Directory.GetFiles(folder.Path, "*.ascx");
+
                     // exclude module folders
                     if (files.Length == 0 || folder.Path.ToLowerInvariant() == "admin")
                     {
@@ -911,7 +901,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 Logger.Error(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
         }
 
         [HttpGet]
@@ -994,7 +983,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 Logger.Error(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
         }
 
         [HttpPost]
@@ -1071,6 +1059,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                     packageManifestDto.Manifests.Add("Database version", sb.ToString());
                 }
+
                 var filePath = Path.Combine(Globals.ApplicationMapPath, writer.BasePath);
                 if (!string.IsNullOrEmpty(filePath))
                 {
@@ -1078,12 +1067,13 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         foreach (var file in Directory.GetFiles(filePath, "*.dnn"))
                         {
-                            var fileName = file.Replace(filePath + "\\", "");
+                            var fileName = file.Replace(filePath + "\\", string.Empty);
                             packageManifestDto.Manifests.Add(fileName, this.GetFileContent(writer.BasePath, fileName));
                         }
+
                         foreach (var file in Directory.GetFiles(filePath, "*.dnn.resources"))
                         {
-                            var fileName = file.Replace(filePath + "\\", "");
+                            var fileName = file.Replace(filePath + "\\", string.Empty);
                             packageManifestDto.Manifests.Add(fileName, this.GetFileContent(writer.BasePath, fileName));
                         }
                     }
@@ -1114,7 +1104,10 @@ namespace Dnn.PersonaBar.Extensions.Services
                 foreach (var file in writer.Files.Values)
                 {
                     if (file.Path.StartsWith(".git"))
+                    {
                         continue;
+                    }
+
                     if (!file.Name.StartsWith(".git"))
                     {
                         packageManifestDto.Files.Add(file.FullName);
@@ -1203,12 +1196,14 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     manifestName = packageManifestDto.ArchiveName.ToLowerInvariant().Replace("zip", "dnn");
                 }
+
                 // Use the installer to parse the manifest and load the files that need to be packaged
                 var installer = new Installer(package, Globals.ApplicationMapPath);
                 foreach (var file in installer.InstallerInfo.Files.Values)
                 {
                     writer.AddFile(file);
                 }
+
                 string basePath;
                 switch (package.PackageType.ToLowerInvariant())
                 {
@@ -1235,14 +1230,17 @@ namespace Dnn.PersonaBar.Extensions.Services
                         basePath = Globals.HostMapPath;
                         break;
                 }
+
                 if (!manifestName.EndsWith(".dnn"))
                 {
                     manifestName += ".dnn";
                 }
+
                 if (!packageManifestDto.ArchiveName.EndsWith(".zip"))
                 {
                     packageManifestDto.ArchiveName += ".zip";
                 }
+
                 writer.CreatePackage(Path.Combine(basePath, packageManifestDto.ArchiveName), manifestName, package.Manifest, true);
 
                 var logs = writer.Log.Logs.Select(l => l.ToString()).ToList();
@@ -1300,7 +1298,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         protected string GetFormattedLink(object dataItem)
         {
             var returnValue = new StringBuilder();
-            if ((dataItem is TabInfo))
+            if (dataItem is TabInfo)
             {
                 var tab = (TabInfo)dataItem;
                 {
@@ -1312,7 +1310,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                         {
                             returnValue.Append(" > ");
                         }
-                        if ((tab.BreadCrumbs.Count - 1 == index))
+
+                        if (tab.BreadCrumbs.Count - 1 == index)
                         {
                             var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? this.PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList().OrderByDescending(a => a.IsPrimary).FirstOrDefault().HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
                             returnValue.AppendFormat("<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
@@ -1321,10 +1320,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                         {
                             returnValue.AppendFormat("{0}", t.LocalizedTabName);
                         }
+
                         index = index + 1;
                     }
                 }
             }
+
             return returnValue.ToString();
         }
 
@@ -1341,7 +1342,11 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
         {
-            if (!tabsWithModule.ContainsKey(currentTab.TabID) || tabsInOrder.ContainsKey(currentTab.TabID)) return;
+            if (!tabsWithModule.ContainsKey(currentTab.TabID) || tabsInOrder.ContainsKey(currentTab.TabID))
+            {
+                return;
+            }
+
             tabsInOrder.Add(currentTab.TabID, currentTab);
             foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
             {
@@ -1414,15 +1419,17 @@ namespace Dnn.PersonaBar.Extensions.Services
                         switch (name.ToUpper())
                         {
                             case "\"POSTFILE\"":
-                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
                                 if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
+
                                 if (Globals.FileEscapingRegex.Match(fileName).Success == false)
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }
+
                                 break;
                         }
                     }
@@ -1431,7 +1438,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         // The SynchronizationContext keeps the main thread context. Send method is synchronous
                         currentSynchronizationContext.Send(
-                            delegate
+                            state =>
                             {
                                 result = action(portalSettings, userInfo, fileName, stream);
                             },
@@ -1456,7 +1463,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private string GetFolderPath(ModuleFolderDto folder)
         {
-            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + "\\", "");
+            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + "\\", string.Empty);
             if (folder.IsSpecial)
             {
                 path = folder.SpecialType + "\\" + path;
@@ -1472,7 +1479,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             foreach (var folderPath in rootFolders)
             {
-                var folderName = folderPath.Replace(Path.GetDirectoryName(folderPath) + "\\", "");
+                var folderName = folderPath.Replace(Path.GetDirectoryName(folderPath) + "\\", string.Empty);
                 if (this.IsSpecialFolder(folderName))
                 {
                     Directory.GetDirectories(folderPath).ToList()
@@ -1547,7 +1554,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private string GetPackageInstallFolder(string packageType)
         {
-            switch ((packageType ?? "").ToLowerInvariant())
+            switch ((packageType ?? string.Empty).ToLowerInvariant())
             {
                 case "authsystem":
                 case "auth_system":

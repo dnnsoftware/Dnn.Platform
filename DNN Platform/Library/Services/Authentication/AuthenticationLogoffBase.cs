@@ -15,27 +15,19 @@ namespace DotNetNuke.Services.Authentication
     /// </summary>
     public abstract class AuthenticationLogoffBase : UserModuleBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationLogoffBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationLogoffBase"/> class.</summary>
         public AuthenticationLogoffBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
         }
 
-        /// <summary>
-        /// Fires when a LogOff occurs.
-        /// </summary>
+        /// <summary>Fires when a LogOff occurs.</summary>
         public event EventHandler LogOff;
 
-        /// <summary>
-        /// Fires when a redirect occurs.
-        /// </summary>
+        /// <summary>Fires when a redirect occurs.</summary>
         public event EventHandler Redirect;
 
-        /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the Type of Authentication associated with this control.</summary>
         public string AuthenticationType { get; set; } = Null.NullString;
 
         /// <summary>
@@ -47,9 +39,7 @@ namespace DotNetNuke.Services.Authentication
         /// </value>
         protected new IServiceProvider DependencyProvider { get; }
 
-        /// <summary>
-        /// Handles the <see cref="LogOff"/> event.
-        /// </summary>
+        /// <summary>Handles the <see cref="LogOff"/> event.</summary>
         /// <param name="a">The event arguments.</param>
         protected virtual void OnLogOff(EventArgs a)
         {
@@ -59,9 +49,7 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// <summary>
-        /// Handles the <see cref="Redirect"/> event.
-        /// </summary>
+        /// <summary>Handles the <see cref="Redirect"/> event.</summary>
         /// <param name="a">The event arguments.</param>
         protected virtual void OnRedirect(EventArgs a)
         {

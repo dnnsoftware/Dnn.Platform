@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthSystemPackageEditor));
         private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
+        /// <inheritdoc/>
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
@@ -45,6 +46,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
+        /// <inheritdoc/>
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -63,16 +65,19 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     {
                         authSystem.LoginControlSrc = value;
                     }
+
                     if (packageSettings.EditorActions.TryGetValue("logoffControlSource", out value)
                         && !string.IsNullOrEmpty(value))
                     {
                         authSystem.LogoffControlSrc = value;
                     }
+
                     if (packageSettings.EditorActions.TryGetValue("settingsControlSource", out value)
                         && !string.IsNullOrEmpty(value))
                     {
                         authSystem.SettingsControlSrc = value;
                     }
+
                     if (packageSettings.EditorActions.TryGetValue("enabled", out value)
                         && !string.IsNullOrEmpty(value))
                     {
@@ -97,7 +102,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private static string GetSettingUrl(int portalId, int authSystemPackageId)
         {
-            return NavigationManager.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "EditExtension",
+            return NavigationManager.NavigateURL(
+                PortalSettings.Current.ActiveTab.TabID,
+                PortalSettings.Current,
+                "EditExtension",
                 "packageid=" + authSystemPackageId,
                 "popUp=true",
                 "mode=settings");
@@ -125,6 +133,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         detail.AppSecret = config.APISecret;
                         detail.AppEnabled = config.Enabled;
                     }
+
                     break;
             }
         }
@@ -166,7 +175,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             dirty = true;
                         }
 
-                        if (dirty) OAuthConfigBase.UpdateConfig(config);
+                        if (dirty)
+                        {
+                            OAuthConfigBase.UpdateConfig(config);
+                        }
+
                         break;
                 }
             }

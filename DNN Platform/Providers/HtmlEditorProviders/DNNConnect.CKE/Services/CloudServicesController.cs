@@ -7,17 +7,13 @@ namespace DNNConnect.CKEditorProvider.Services
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-    
+
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// WebAPI controller to enable the CKE cloudservices plugin.
-    /// </summary>
+    /// <summary>WebAPI controller to enable the CKE cloudservices plugin.</summary>
     public class CloudServicesController : DnnApiController
     {
-        /// <summary>
-        /// Provides a fake token the cloudservices plugin needs.
-        /// </summary>
+        /// <summary>Provides a fake token the cloudservices plugin needs.</summary>
         /// <returns>A fake token.</returns>
         [AllowAnonymous]
         [HttpGet]

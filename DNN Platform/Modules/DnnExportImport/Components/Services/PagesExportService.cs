@@ -40,9 +40,7 @@ namespace Dnn.ExportImport.Components.Services
     using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
     using Util = Dnn.ExportImport.Components.Common.Util;
 
-    /// <summary>
-    /// Service to export/import pages/tabs.
-    /// </summary>
+    /// <summary>Service to export/import pages/tabs.</summary>
     public class PagesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
@@ -60,10 +58,13 @@ namespace Dnn.ExportImport.Components.Services
         private Dictionary<int, bool> searchedParentTabs = new Dictionary<int, bool>();
         private IList<ImportModuleMapping> importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Pages;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 20;
 
         public virtual bool IncludeSystem { get; set; } = false;
@@ -93,6 +94,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -122,6 +124,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -149,6 +152,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
@@ -520,9 +524,7 @@ namespace Dnn.ExportImport.Components.Services
             this.ReportImportTotals();
         }
 
-        /// <summary>
-        /// Updates the default language unique identifier for the local page.
-        /// </summary>
+        /// <summary>Updates the default language unique identifier for the local page.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="localTab">The local tab.</param>
         /// <param name="exportedTab">The exported tab.</param>
@@ -1897,12 +1899,10 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         // Note: until now there is no use of time range for content
-        // ReSharper disable UnusedParameter.Local
+        // ReSharper disable once UnusedParameter.Local
         private int ExportPortableContent(ExportTab exportPage, ExportModule exportModule, DateTime toDate, DateTime? fromDat)
-
-        // ReSharper enable UnusedParameter.Local
         {
-            // check if module's contnt was exported before
+            // check if module's content was exported before
             var existingItems = this.Repository.FindItems<ExportModuleContent>(m => m.ModuleID == exportModule.ModuleID);
             if (!existingItems.Any())
             {

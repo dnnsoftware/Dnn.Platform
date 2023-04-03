@@ -13,40 +13,36 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Tokenattributes;
 
-    /// <summary>
-    /// SynonymFilter.
-    /// </summary>
+    /// <summary>SynonymFilter.</summary>
     /// <remarks>Implementation is inspired by sample code in Manning Lucene In Action 2nd Edition, pg. 133.</remarks>
     internal sealed class SynonymFilter : TokenFilter
     {
-        private readonly Stack<string> _synonymStack = new Stack<string>();
-        private readonly TermAttribute _termAtt;
-        private readonly PositionIncrementAttribute _posIncrAtt;
-        private State _current;
+        private readonly Stack<string> synonymStack = new Stack<string>();
+        private readonly TermAttribute termAtt;
+        private readonly PositionIncrementAttribute posIncrAtt;
+        private State current;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SynonymFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SynonymFilter"/> class.</summary>
         /// <param name="input"></param>
         public SynonymFilter(TokenStream input)
             : base(input)
         {
-            this._termAtt = (TermAttribute)this.AddAttribute<ITermAttribute>();
-            this._posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
+            this.termAtt = (TermAttribute)this.AddAttribute<ITermAttribute>();
+            this.posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
         }
 
         /// <inheritdoc/>
         public override bool IncrementToken()
         {
             // Pop buffered synonyms
-            if (this._synonymStack.Count > 0)
+            if (this.synonymStack.Count > 0)
             {
-                var syn = this._synonymStack.Pop();
-                this.RestoreState(this._current);
-                this._termAtt.SetTermBuffer(syn);
+                var syn = this.synonymStack.Pop();
+                this.RestoreState(this.current);
+                this.termAtt.SetTermBuffer(syn);
 
                 // set position increment to 0
-                this._posIncrAtt.PositionIncrement = 0;
+                this.posIncrAtt.PositionIncrement = 0;
                 return true;
             }
 
@@ -59,7 +55,7 @@ namespace DotNetNuke.Services.Search.Internals
             // push synonyms onto stack
             if (this.AddAliasesToStack())
             {
-                this._current = this.CaptureState(); // save current token
+                this.current = this.CaptureState(); // save current token
             }
 
             return true;
@@ -88,7 +84,7 @@ namespace DotNetNuke.Services.Search.Internals
                 cultureCode = Thread.CurrentThread.CurrentCulture.Name;
             }
 
-            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this._termAtt.Term).ToArray();
+            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this.termAtt.Term).ToArray();
             if (!synonyms.Any())
             {
                 return false;
@@ -97,7 +93,7 @@ namespace DotNetNuke.Services.Search.Internals
             var cultureInfo = new CultureInfo(cultureCode);
             foreach (var synonym in synonyms)
             {
-                this._synonymStack.Push(synonym.ToLower(cultureInfo));
+                this.synonymStack.Push(synonym.ToLower(cultureInfo));
             }
 
             return true;

@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         public new DnnUrlHelper Url { get; set; }
 
+        /// <inheritdoc/>
         public override void InitHelpers()
         {
             this.Ajax = new AjaxHelper<TModel>(this.ViewContext, this);

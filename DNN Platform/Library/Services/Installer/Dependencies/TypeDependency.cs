@@ -7,24 +7,18 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     using DotNetNuke.Framework;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The TypeDependency determines whether the dependent type is installed.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The TypeDependency determines whether the dependent type is installed.</summary>
     public class TypeDependency : DependencyBase
     {
-        private string _missingDependentType = string.Empty;
-        private string _dependentTypes;
+        private string missingDependentType = string.Empty;
+        private string dependentTypes;
 
         /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
             {
-                return Util.INSTALL_Namespace + " - " + this._missingDependentType;
+                return Util.INSTALL_Namespace + " - " + this.missingDependentType;
             }
         }
 
@@ -34,15 +28,15 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool isValid = true;
-                if (!string.IsNullOrEmpty(this._dependentTypes))
+                if (!string.IsNullOrEmpty(this.dependentTypes))
                 {
-                    foreach (string dependentType in (this._dependentTypes + ";").Split(';'))
+                    foreach (string dependentType in (this.dependentTypes + ";").Split(';'))
                     {
                         if (!string.IsNullOrEmpty(dependentType.Trim()))
                         {
                             if (Reflection.CreateType(dependentType, true) == null)
                             {
-                                this._missingDependentType = dependentType;
+                                this.missingDependentType = dependentType;
                                 isValid = false;
                                 break;
                             }
@@ -57,7 +51,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            this._dependentTypes = dependencyNav.Value;
+            this.dependentTypes = dependencyNav.Value;
         }
     }
 }

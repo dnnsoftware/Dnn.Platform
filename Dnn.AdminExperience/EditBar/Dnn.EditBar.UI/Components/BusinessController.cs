@@ -13,6 +13,7 @@ namespace Dnn.EditBar.UI.Components
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
 
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             switch (version)

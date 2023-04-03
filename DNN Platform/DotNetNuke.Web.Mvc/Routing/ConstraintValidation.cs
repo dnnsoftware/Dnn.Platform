@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.Mvc.Routing
     using System.Threading.Tasks;
     using System.Web.Routing;
 
-    /// <summary>
-    /// Validates that the constraints on a Route are of a type that can be processed by <see cref="System.Web.Routing.Route" />.
-    /// </summary>
+    /// <summary>Validates that the constraints on a Route are of a type that can be processed by <see cref="System.Web.Routing.Route" />.</summary>
     /// <remarks>
     /// This validation is only applicable when the <see cref="System.Web.Routing.Route" /> is one that we created. A user-defined
     /// type that is derived from <see cref="System.Web.Routing.RouteBase" /> may have different semantics.

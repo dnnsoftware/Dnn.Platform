@@ -23,6 +23,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         }
 
         [Test]
+
         public void Processor_Password_In_DB_Must_Be_Encrypted()
         {
             var firstPortal = PortalController.Instance.GetPortals().OfType<PortalInfo>().FirstOrDefault();

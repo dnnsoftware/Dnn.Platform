@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.UI;
 
@@ -20,12 +21,19 @@ namespace DotNetNuke.Framework
     // -----------------------------------------------------------------------------
     public class CDefault : PageBase
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Author = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Comment = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Copyright = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Description = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Generator = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string KeyWords = string.Empty;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public new string Title = string.Empty;
 
         private static readonly object InstallerFilesRemovedLock = new object();
@@ -52,12 +60,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Allows the scroll position on the page to be moved to the top of the passed in control.
-        /// </summary>
+        /// <summary>Allows the scroll position on the page to be moved to the top of the passed in control.</summary>
         /// <param name="objControl">Control to scroll to.</param>
-        /// -----------------------------------------------------------------------------
         public void ScrollToControl(Control objControl)
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))

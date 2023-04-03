@@ -14,18 +14,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The Logoff UserModuleBase is used to log off a registered user.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Logoff UserModuleBase is used to log off a registered user.</summary>
     public partial class Logoff : UserModuleBase
     {
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -63,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 // Do nothing Response.redirect
             }
-            catch (Exception exc) // Page failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessPageLoadException(exc);
             }
@@ -98,7 +90,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 var objPortalSecurity = PortalSecurity.Instance;
                 objPortalSecurity.SignOut();
             }
-            catch (Exception exc) // Page failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessPageLoadException(exc);
             }

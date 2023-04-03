@@ -17,35 +17,33 @@ namespace DotNetNuke.Entities.Content.Workflow
 
     public class WorkflowStateManager : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
     {
-        private readonly DataProvider _dataProvider;
-        private readonly IWorkflowRepository _workflowRepository = WorkflowRepository.Instance;
-        private readonly IWorkflowStateRepository _workflowStateRepository = WorkflowStateRepository.Instance;
-        private readonly IWorkflowStatePermissionsRepository _workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
+        private readonly DataProvider dataProvider;
+        private readonly IWorkflowRepository workflowRepository = WorkflowRepository.Instance;
+        private readonly IWorkflowStateRepository workflowStateRepository = WorkflowStateRepository.Instance;
+        private readonly IWorkflowStatePermissionsRepository workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStateManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStateManager"/> class.</summary>
         public WorkflowStateManager()
         {
-            this._dataProvider = DataProvider.Instance();
+            this.dataProvider = DataProvider.Instance();
         }
 
         /// <inheritdoc/>
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
-            return this._workflowStateRepository.GetWorkflowStates(workflowId);
+            return this.workflowStateRepository.GetWorkflowStates(workflowId);
         }
 
         /// <inheritdoc/>
         public WorkflowState GetWorkflowState(int stateId)
         {
-            return this._workflowStateRepository.GetWorkflowStateByID(stateId);
+            return this.workflowStateRepository.GetWorkflowStateByID(stateId);
         }
 
         /// <inheritdoc/>
         public void AddWorkflowState(WorkflowState state)
         {
-            var workflow = this._workflowRepository.GetWorkflow(state.WorkflowID);
+            var workflow = this.workflowRepository.GetWorkflow(state.WorkflowID);
             if (workflow == null)
             {
                 throw new WorkflowDoesNotExistException();
@@ -62,14 +60,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.Order = lastState.Order;
 
             lastState.Order++;
-            this._workflowStateRepository.AddWorkflowState(state);
-            this._workflowStateRepository.UpdateWorkflowState(lastState); // Update last state order
+            this.workflowStateRepository.AddWorkflowState(state);
+            this.workflowStateRepository.UpdateWorkflowState(lastState); // Update last state order
         }
 
         /// <inheritdoc/>
         public void DeleteWorkflowState(WorkflowState state)
         {
-            var stateToDelete = this._workflowStateRepository.GetWorkflowStateByID(state.StateID);
+            var stateToDelete = this.workflowStateRepository.GetWorkflowStateByID(state.StateID);
             if (stateToDelete == null)
             {
                 return;
@@ -80,12 +78,12 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowSystemWorkflowStateCannotBeDeleted", Localization.ExceptionsResourceFile));
             }
 
-            if (this._dataProvider.GetContentWorkflowStateUsageCount(state.StateID) > 0)
+            if (this.dataProvider.GetContentWorkflowStateUsageCount(state.StateID) > 0)
             {
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateInUsageException", Localization.ExceptionsResourceFile));
             }
 
-            this._workflowStateRepository.DeleteWorkflowState(stateToDelete);
+            this.workflowStateRepository.DeleteWorkflowState(stateToDelete);
 
             // Reorder states order
             using (var context = DataContext.Instance())
@@ -98,25 +96,25 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public void UpdateWorkflowState(WorkflowState state)
         {
-            var workflowState = this._workflowStateRepository.GetWorkflowStateByID(state.StateID);
+            var workflowState = this.workflowStateRepository.GetWorkflowStateByID(state.StateID);
             if (workflowState == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            this._workflowStateRepository.UpdateWorkflowState(state);
+            this.workflowStateRepository.UpdateWorkflowState(state);
         }
 
         /// <inheritdoc/>
         public void MoveWorkflowStateDown(int stateId)
         {
-            var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
+            var state = this.workflowStateRepository.GetWorkflowStateByID(stateId);
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            var states = this._workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            var states = this.workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
 
             if (states.Length == 3)
             {
@@ -153,20 +151,20 @@ namespace DotNetNuke.Entities.Content.Workflow
             stateToMoveDown.Order = stateToMoveUp.Order;
             stateToMoveUp.Order = orderTmp;
 
-            this._workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
-            this._workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
+            this.workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
+            this.workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
         /// <inheritdoc/>
         public void MoveWorkflowStateUp(int stateId)
         {
-            var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
+            var state = this.workflowStateRepository.GetWorkflowStateByID(stateId);
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            var states = this._workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            var states = this.workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
 
             if (states.Length == 3)
             {
@@ -203,20 +201,20 @@ namespace DotNetNuke.Entities.Content.Workflow
             stateToMoveDown.Order = stateToMoveUp.Order;
             stateToMoveUp.Order = orderTmp;
 
-            this._workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
-            this._workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
+            this.workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
+            this.workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
         /// <inheritdoc/>
         public void MoveState(int stateId, int index)
         {
-            var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
+            var state = this.workflowStateRepository.GetWorkflowStateByID(stateId);
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            var states = this._workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            var states = this.workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
             if (index < 1 || index > states.Length - 2)
             {
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
@@ -236,25 +234,25 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
         {
-            return this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
+            return this.workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
         }
 
         /// <inheritdoc/>
         public void AddWorkflowStatePermission(WorkflowStatePermission permission, int userId)
         {
-            permission.WorkflowStatePermissionID = this._workflowStatePermissionsRepository.AddWorkflowStatePermission(permission, userId);
+            permission.WorkflowStatePermissionID = this.workflowStatePermissionsRepository.AddWorkflowStatePermission(permission, userId);
         }
 
         /// <inheritdoc/>
         public void DeleteWorkflowStatePermission(int workflowStatePermissionId)
         {
-            this._workflowStatePermissionsRepository.DeleteWorkflowStatePermission(workflowStatePermissionId);
+            this.workflowStatePermissionsRepository.DeleteWorkflowStatePermission(workflowStatePermissionId);
         }
 
         /// <inheritdoc/>
         public int GetContentWorkflowStateUsageCount(int stateId)
         {
-            return this._dataProvider.GetContentWorkflowStateUsageCount(stateId);
+            return this.dataProvider.GetContentWorkflowStateUsageCount(stateId);
         }
 
         /// <inheritdoc/>

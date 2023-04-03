@@ -26,6 +26,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
     {
+        /// <summary>Initializes a new instance of the <see cref="CreateModuleController"/> class.</summary>
         public CreateModuleController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -33,9 +34,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         protected INavigationManager NavigationManager { get; }
 
-        /// <summary>
-        /// create new module.
-        /// </summary>
+        /// <summary>create new module.</summary>
         /// <param name="createModuleDto"></param>
         /// <param name="newPageUrl"></param>
         /// <param name="errorMessage"></param>
@@ -61,6 +60,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return packageId;
         }
 
+        /// <inheritdoc/>
         protected override Func<ICreateModuleController> GetFactory()
         {
             return () => new CreateModuleController();
@@ -89,23 +89,25 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             // remove spaces so file is created correctly
-            var controlSrc = createModuleDto.FileName.Replace(" ", "");
+            var controlSrc = createModuleDto.FileName.Replace(" ", string.Empty);
             if (InvalidFilename(controlSrc))
             {
                 errorMessage = "InvalidFilename";
                 return Null.NullInteger;
             }
 
-            if (String.IsNullOrEmpty(controlSrc))
+            if (string.IsNullOrEmpty(controlSrc))
             {
                 errorMessage = "MissingControl";
                 return Null.NullInteger;
             }
-            if (String.IsNullOrEmpty(createModuleDto.ModuleName))
+
+            if (string.IsNullOrEmpty(createModuleDto.ModuleName))
             {
                 errorMessage = "MissingFriendlyname";
                 return Null.NullInteger;
             }
+
             if (!controlSrc.EndsWith(".ascx"))
             {
                 controlSrc += ".ascx";
@@ -127,6 +129,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 errorMessage = "NonuniqueName";
                 return Null.NullInteger;
             }
+
             // First create the control
             createModuleDto.FileName = controlSrc;
             var message = this.CreateControl(createModuleDto);
@@ -188,10 +191,10 @@ namespace Dnn.PersonaBar.Extensions.Components
                     IsPremium = false,
                     IsAdmin = false,
                     Version = "01.00.00",
-                    BusinessControllerClass = "",
-                    CompatibleVersions = "",
-                    Dependencies = "",
-                    Permissions = "",
+                    BusinessControllerClass = string.Empty,
+                    CompatibleVersions = string.Empty,
+                    Dependencies = string.Empty,
+                    Permissions = string.Empty,
                     PackageID = package.PackageID,
                 };
 
@@ -215,12 +218,12 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 objModuleControl.ModuleControlID = Null.NullInteger;
                 objModuleControl.ModuleDefID = moduleDefinition.ModuleDefID;
-                objModuleControl.ControlKey = "";
+                objModuleControl.ControlKey = string.Empty;
                 objModuleControl.ControlSrc = moduleControl;
-                objModuleControl.ControlTitle = "";
+                objModuleControl.ControlTitle = string.Empty;
                 objModuleControl.ControlType = SecurityAccessLevel.View;
-                objModuleControl.HelpURL = "";
-                objModuleControl.IconFile = "";
+                objModuleControl.HelpURL = string.Empty;
+                objModuleControl.IconFile = string.Empty;
                 objModuleControl.ViewOrder = 0;
                 objModuleControl.SupportsPartialRendering = false;
 
@@ -361,12 +364,13 @@ namespace Dnn.PersonaBar.Extensions.Components
                     stream.WriteLine(source);
                 }
             }
+
             return message;
         }
 
         private string LoadControlTemplate()
         {
-            var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", "");
+            var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
             var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "Modules/Dnn.Extensions/data/ModuleControlTemplate.resources");
             return File.ReadAllText(filePath, Encoding.UTF8);
         }
@@ -378,26 +382,30 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 folder += createModuleDto.OwnerFolder + "/";
             }
+
             if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
             {
                 folder += createModuleDto.ModuleFolder + "/";
             }
+
             return folder;
         }
 
         private string GetClassName(CreateModuleDto createModuleDto)
         {
             var className = Null.NullString;
-            if (!String.IsNullOrEmpty(createModuleDto.OwnerFolder))
+            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
             {
                 className += createModuleDto.OwnerFolder + ".";
             }
-            if (!String.IsNullOrEmpty(createModuleDto.ModuleFolder))
+
+            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
             {
                 className += createModuleDto.ModuleFolder;
             }
+
             // return class and remove any spaces that might appear in folder structure
-            return className.Replace(" ", "");
+            return className.Replace(" ", string.Empty);
         }
     }
 }

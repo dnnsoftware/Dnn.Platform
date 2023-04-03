@@ -10,9 +10,7 @@ namespace DotNetNuke.Web.Api
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    /// <summary>
-    /// Represents a non successful response while executing a WebApi call.
-    /// </summary>
+    /// <summary>Represents a non successful response while executing a WebApi call.</summary>
     public class WebApiException : Exception
     {
         /// <summary>
@@ -27,20 +25,20 @@ namespace DotNetNuke.Web.Api
             this.Result = result;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="WebApiException"/> class.</summary>
+        /// <param name="innerException">The original exception.</param>
+        /// <param name="result">The result of the request.</param>
+        /// <param name="body">The body from the GET response.</param>
         public WebApiException(Exception innerException, HttpResponseMessage result, string body)
             : this(innerException, result)
         {
             this.Body = body;
         }
 
-        /// <summary>
-        /// Gets body from the Get Response. Available when exception is thrown as well.
-        /// </summary>
+        /// <summary>Gets body from the Get Response. Available when exception is thrown as well.</summary>
         public string Body { get; }
 
-        /// <summary>
-        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code.
-        /// </summary>
+        /// <summary>Gets the result of the request. Can be used to retrieve additional info like HTTP status code.</summary>
         public HttpResponseMessage Result { get; private set; }
 
         public dynamic BodyAsJson()

@@ -5,19 +5,13 @@ namespace DotNetNuke.Services.Mobile
 {
     public interface IMatchRule
     {
-        /// <summary>
-        /// Gets primary Id.
-        /// </summary>
+        /// <summary>Gets primary Id.</summary>
         int Id { get; }
 
-        /// <summary>
-        /// Gets or sets capbility name.
-        /// </summary>
+        /// <summary>Gets or sets capbility name.</summary>
         string Capability { get; set; }
 
-        /// <summary>
-        /// Gets or sets reg expression to match the request.
-        /// </summary>
+        /// <summary>Gets or sets reg expression to match the request.</summary>
         string Expression { get; set; }
     }
 }

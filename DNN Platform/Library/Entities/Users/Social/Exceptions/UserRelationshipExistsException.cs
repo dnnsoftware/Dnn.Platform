@@ -10,25 +10,19 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserRelationshipExistsException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.</summary>
         public UserRelationshipExistsException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.</summary>
         /// <param name="message"></param>
         public UserRelationshipExistsException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public UserRelationshipExistsException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Entities.Users
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipExistsException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public UserRelationshipExistsException(SerializationInfo info, StreamingContext context)

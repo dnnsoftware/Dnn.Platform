@@ -4,19 +4,13 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    /// <summary>
-    /// Represents the different options when downloading a file.
-    /// </summary>
+    /// <summary>Represents the different options when downloading a file.</summary>
     public enum ContentDisposition
     {
-        /// <summary>
-        /// The browser will display a dialog to allow the user to save or view the document.
-        /// </summary>
+        /// <summary>The browser will display a dialog to allow the user to save or view the document.</summary>
         Attachment = 0,
 
-        /// <summary>
-        /// The document will be displayed automatically.
-        /// </summary>
+        /// <summary>The document will be displayed automatically.</summary>
         Inline = 1,
     }
 }

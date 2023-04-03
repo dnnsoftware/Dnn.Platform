@@ -47,6 +47,12 @@ namespace DotNetNuke.Web.InternalServices
 
         private static readonly List<string> ImageExtensions = Globals.glbImageFileTypes.Split(',').ToList();
 
+        public static string GetUrl(int fileId)
+        {
+            var file = FileManager.Instance.GetFile(fileId, true);
+            return FileManager.Instance.GetUrl(file);
+        }
+
         [HttpPost]
         public HttpResponseMessage LoadFiles(FolderItemDTO folderItem)
         {
@@ -82,12 +88,6 @@ namespace DotNetNuke.Web.InternalServices
             var fileItems = list.OfType<FileItem>().ToList();
 
             return this.Request.CreateResponse(HttpStatusCode.OK, fileItems);
-        }
-
-        public static string GetUrl(int fileId)
-        {
-            var file = FileManager.Instance.GetFile(fileId, true);
-            return FileManager.Instance.GetUrl(file);
         }
 
         [HttpGet]
@@ -200,95 +200,19 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage),
-                                }, mediaTypeFormatter, "text/plain");
+                                    Message = string.Format(
+                                        GetLocalizedString("ErrorMessage"),
+                                        fileName,
+                                        errorMessage),
+                                },
+                                mediaTypeFormatter,
+                                "text/plain");
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
                     });
 
             return task;
-        }
-
-        private static SavedFileDTO SaveFile(
-            Stream stream,
-            PortalSettings portalSettings,
-            UserInfo userInfo,
-            string folder,
-            string filter,
-            string fileName,
-            bool overwrite,
-            bool isHostMenu,
-            bool extract,
-            out bool alreadyExists,
-            out string errorMessage)
-        {
-            alreadyExists = false;
-            var savedFileDto = new SavedFileDTO();
-            try
-            {
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
-                if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
-                {
-                    errorMessage = GetLocalizedString("ExtensionNotAllowed");
-                    return savedFileDto;
-                }
-
-                var folderManager = FolderManager.Instance;
-
-                // Check if this is a User Folder
-                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
-                int userId;
-                var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
-                if (IsUserFolder(folder, out userId))
-                {
-                    var user = UserController.GetUserById(effectivePortalId, userId);
-                    if (user != null)
-                    {
-                        folderInfo = folderManager.GetUserFolder(user);
-                    }
-                }
-
-                if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
-                    && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
-                {
-                    errorMessage = GetLocalizedString("NoPermission");
-                    return savedFileDto;
-                }
-
-                if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
-                {
-                    errorMessage = GetLocalizedString("AlreadyExists");
-                    alreadyExists = true;
-                    savedFileDto.FilePath = Path.Combine(folderInfo.PhysicalPath, fileName);
-                    return savedFileDto;
-                }
-
-                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
-
-                if (extract && extension.ToLowerInvariant() == "zip")
-                {
-                    FileManager.Instance.UnzipFile(file);
-                    FileManager.Instance.DeleteFile(file);
-                }
-
-                errorMessage = string.Empty;
-                savedFileDto.FileId = file.FileId.ToString(CultureInfo.InvariantCulture);
-                savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
-                return savedFileDto;
-            }
-            catch (InvalidFileExtensionException)
-            {
-                errorMessage = GetLocalizedString("ExtensionNotAllowed");
-                return savedFileDto;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                errorMessage = ex.Message;
-                return savedFileDto;
-            }
         }
 
         [HttpPost]
@@ -419,88 +343,84 @@ namespace DotNetNuke.Web.InternalServices
             return task;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
-        public HttpResponseMessage UploadFromUrl(UploadByUrlDto dto)
+        private static SavedFileDTO SaveFile(
+            Stream stream,
+            PortalSettings portalSettings,
+            UserInfo userInfo,
+            string folder,
+            string filter,
+            string fileName,
+            bool overwrite,
+            bool isHostMenu,
+            bool extract,
+            out bool alreadyExists,
+            out string errorMessage)
         {
-            FileUploadDto result;
-            WebResponse response = null;
-            Stream responseStream = null;
-            var mediaTypeFormatter = new JsonMediaTypeFormatter();
-            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-
-            if (this.VerifySafeUrl(dto.Url) == false)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
+            alreadyExists = false;
+            var savedFileDto = new SavedFileDTO();
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(dto.Url);
-                request.Credentials = CredentialCache.DefaultCredentials;
-                response = request.GetResponse();
-                responseStream = response.GetResponseStream();
-                if (responseStream == null)
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
+                if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
                 {
-                    throw new Exception("No server response");
+                    errorMessage = GetLocalizedString("ExtensionNotAllowed");
+                    return savedFileDto;
                 }
 
-                var fileName = this.GetFileName(response);
-                if (string.IsNullOrEmpty(fileName))
-                {
-                    fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
-                }
+                var folderManager = FolderManager.Instance;
 
-                var portalId = dto.PortalId;
-                if (portalId > -1)
+                // Check if this is a User Folder
+                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                int userId;
+                var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
+                if (IsUserFolder(folder, out userId))
                 {
-                    if (!this.IsPortalIdValid(portalId))
+                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    if (user != null)
                     {
-                        throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                        folderInfo = folderManager.GetUserFolder(user);
                     }
                 }
-                else
+
+                if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
+                    && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
                 {
-                    portalId = this.PortalSettings.PortalId;
+                    errorMessage = GetLocalizedString("NoPermission");
+                    return savedFileDto;
                 }
 
-                result = UploadFile(responseStream, portalId, this.UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
-                    fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, dto.ValidationCode);
+                if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
+                {
+                    errorMessage = GetLocalizedString("AlreadyExists");
+                    alreadyExists = true;
+                    savedFileDto.FilePath = Path.Combine(folderInfo.PhysicalPath, fileName);
+                    return savedFileDto;
+                }
 
-                /* Response Content Type cannot be application/json
-                    * because IE9 with iframe-transport manages the response
-                    * as a file download
-                    */
-                return this.Request.CreateResponse(
-                    HttpStatusCode.OK,
-                    result,
-                    mediaTypeFormatter,
-                    "text/plain");
+                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
+
+                if (extract && extension.ToLowerInvariant() == "zip")
+                {
+                    FileManager.Instance.UnzipFile(file);
+                    FileManager.Instance.DeleteFile(file);
+                }
+
+                errorMessage = string.Empty;
+                savedFileDto.FileId = file.FileId.ToString(CultureInfo.InvariantCulture);
+                savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
+                return savedFileDto;
+            }
+            catch (InvalidFileExtensionException)
+            {
+                errorMessage = GetLocalizedString("ExtensionNotAllowed");
+                return savedFileDto;
             }
             catch (Exception ex)
             {
-                result = new FileUploadDto
-                {
-                    Message = ex.Message,
-                };
-                return this.Request.CreateResponse(
-                    HttpStatusCode.OK,
-                    result,
-                    mediaTypeFormatter,
-                    "text/plain");
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Close();
-                }
-
-                if (responseStream != null)
-                {
-                    responseStream.Close();
-                }
+                Logger.Error(ex);
+                errorMessage = ex.Message;
+                return savedFileDto;
             }
         }
 
@@ -617,9 +537,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
-                                                        FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)),
-                                                        userInfo.UserID);
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
                     if (extract && extension.ToLowerInvariant() == "zip")
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -720,15 +638,6 @@ namespace DotNetNuke.Web.InternalServices
             return new ContentDisposition(contentDisposition).FileName;
         }
 
-        public class FolderItemDTO
-        {
-            public int FolderId { get; set; }
-
-            public string FileFilter { get; set; }
-
-            public bool Required { get; set; }
-        }
-
         private bool VerifySafeUrl(string url)
         {
             Uri uri = new Uri(url);
@@ -766,6 +675,37 @@ namespace DotNetNuke.Web.InternalServices
             return false;
         }
 
+        private bool IsPortalIdValid(int portalId)
+        {
+            if (this.UserInfo.IsSuperUser)
+            {
+                return true;
+            }
+
+            if (this.PortalSettings.PortalId == portalId)
+            {
+                return true;
+            }
+
+            var isAdminUser = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
+            if (!isAdminUser)
+            {
+                return false;
+            }
+
+            var mygroup = GetMyPortalGroup();
+            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
+        }
+
+        public class FolderItemDTO
+        {
+            public int FolderId { get; set; }
+
+            public string FileFilter { get; set; }
+
+            public bool Required { get; set; }
+        }
+
         public class SavedFileDTO
         {
             public string FileId { get; set; }
@@ -790,28 +730,6 @@ namespace DotNetNuke.Web.InternalServices
             public int PortalId { get; set; } = -1;
 
             public string ValidationCode { get; set; }
-        }
-
-        private bool IsPortalIdValid(int portalId)
-        {
-            if (this.UserInfo.IsSuperUser)
-            {
-                return true;
-            }
-
-            if (this.PortalSettings.PortalId == portalId)
-            {
-                return true;
-            }
-
-            var isAdminUser = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-            if (!isAdminUser)
-            {
-                return false;
-            }
-
-            var mygroup = GetMyPortalGroup();
-            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
         }
 
         [DataContract]

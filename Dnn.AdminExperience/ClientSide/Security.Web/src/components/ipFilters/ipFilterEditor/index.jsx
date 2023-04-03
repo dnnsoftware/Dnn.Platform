@@ -2,7 +2,7 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import { SingleLineInputWithError, GridSystem, Label, InputGroup, Button, RadioButtons, Dropdown } from "@dnnsoftware/dnn-react-common";
+import { SingleLineInputWithError, GridSystem, Label, InputGroup, Button, RadioButtons, Dropdown, MultiLineInput } from "@dnnsoftware/dnn-react-common";
 import { security as SecurityActions } from "../../../actions";
 import resx from "../../../resources";
 
@@ -169,6 +169,16 @@ class IpFilterEditor extends Component {
                         onChange={this.onSettingChange.bind(this, "SubnetMask") } />
                 </InputGroup>
             }
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("plNotes.Help") }
+                    label={resx.get("plNotes") } />
+                <MultiLineInput
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    value={this.state.ipFilter.Notes}
+                    onChange={this.onSettingChange.bind(this, "Notes") } />
+            </InputGroup>
         </div>;
 
         let children = [];

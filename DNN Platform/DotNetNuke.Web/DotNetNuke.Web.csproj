@@ -112,9 +112,8 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -122,8 +121,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -131,32 +130,27 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.9\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="WebFormsMvp, Version=1.4.5.0, Culture=neutral, PublicKeyToken=537f18701145dff0">
@@ -218,6 +212,16 @@
     <Compile Include="ConfigSection\MessageHandlerEntry.cs" />
     <Compile Include="ConfigSection\MessageHandlersCollection.cs" />
     <Compile Include="DependencyInjection\BuildUpExtensions.cs" />
+    <Compile Include="InternalServices\PublishPageDto.cs" />
+    <Compile Include="Mvp\IModuleView{TModel}.cs" />
+    <Compile Include="Mvp\ISettingsView{TModel}.cs" />
+    <Compile Include="Mvp\IWebServiceView{TModel}.cs" />
+    <Compile Include="Mvp\ModulePresenter{TView,TModel}.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenterBase{TView}.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenter{TView,TModel}.cs" />
+    <Compile Include="Mvp\ModuleView{TModel}.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Prompt\ListServices.cs" />
     <Compile Include="Models\ModuleDetail.cs" />
     <Compile Include="Models\ModuleInstance.cs" />
@@ -246,8 +250,6 @@
     <Compile Include="InternalServices\Views\Search\BasicView.cs" />
     <Compile Include="InternalServices\Views\Search\DetailedView.cs" />
     <Compile Include="Models\TabModule.cs" />
-    <Compile Include="Mvp\ModuleSettingsPresenterOfT.cs" />
-    <Compile Include="Mvp\ISettingsViewOfT.cs" />
     <Compile Include="Mvp\ProfileModuleViewBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -268,6 +270,7 @@
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="DependencyInjectionInitialize.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UI\DotNetNukeException.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
@@ -290,7 +293,6 @@
     <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
     <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
-    <Compile Include="Mvp\IWebServiceViewOfT.cs" />
     <Compile Include="Mvp\IWebServiceView.cs" />
     <Compile Include="Mvp\WebServicePresenter.cs" />
     <Compile Include="Mvp\WebServiceView.cs">
@@ -304,9 +306,7 @@
     <Compile Include="Mvp\HttpHandlerView.cs" />
     <Compile Include="Mvp\IHttpHandlerView.cs" />
     <Compile Include="Mvp\IModuleViewBase.cs" />
-    <Compile Include="Mvp\IModuleViewOfT.cs" />
     <Compile Include="Mvp\ISettingsView.cs" />
-    <Compile Include="Mvp\ModuleSettingsPresenter.cs" />
     <Compile Include="Mvp\SettingsViewBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -364,8 +364,10 @@
     <Compile Include="UI\WebControls\Internal\DnnModuleComboBox.cs" />
     <Compile Include="UI\WebControls\Internal\DnnScriptBlock.cs" />
     <Compile Include="UI\WebControls\Internal\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\OptionItem.cs" />
     <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\RenderOption.cs" />
     <Compile Include="UI\WebControls\Internal\TermsSelector.cs" />
     <Compile Include="UI\WebControls\ItemListOptions.cs" />
     <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
@@ -404,11 +406,7 @@
   <ItemGroup>
     <Compile Include="Mvp\IModuleView.cs" />
     <Compile Include="Mvp\ModulePresenterBase.cs" />
-    <Compile Include="Mvp\ModulePresenterOfT.cs" />
     <Compile Include="Mvp\ModuleViewBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Mvp\ModuleViewOfT.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\WebControls\DnnCheckBox.cs" />
@@ -425,6 +423,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>

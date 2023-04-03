@@ -344,7 +344,7 @@ class AdminLogPanelBody extends Component {
                             </div>
                             <div className="collapsible-content">
                                 <EmailPanel
-                                    fixedHeight={450}
+                                    className="adminlogs-email-panel"
                                     isOpened={state.emailPanelOpen}
                                     logIds={props.selectedRowIds}
                                     onCloseEmailPanel={this.toggleEmailPanel.bind(this) }>

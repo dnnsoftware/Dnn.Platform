@@ -4,12 +4,15 @@
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Entities.Users;
 
     public class UserModel : UserModelBase
     {
         // provide a default field order for use of callers
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static new string[] FieldOrder =
         {
             "UserId",
@@ -32,7 +35,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         {
         }
 
-        public UserModel(UserInfo user) : base(user)
+        public UserModel(UserInfo user)
+            : base(user)
         {
             this.LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
             this.DisplayName = user.DisplayName;

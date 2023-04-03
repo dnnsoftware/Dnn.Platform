@@ -42,12 +42,12 @@ namespace DotNetNuke.Modules.Admin.Users
         protected const string PasswordStrengthTextBoxCssClass = "password-strength";
         protected const string ConfirmPasswordTextBoxCssClass = "password-confirm";
 
-        private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
-        private readonly INavigationManager _navigationManager;
+        private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
+        private readonly INavigationManager navigationManager;
 
         public Register()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected string ExcludeTerms
@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override bool AddUser { get; } = true;
 
         protected string AuthenticationType
@@ -102,6 +103,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -131,9 +133,16 @@ namespace DotNetNuke.Modules.Admin.Users
                 // UserName
                 if (!this.PortalSettings.Registration.UseEmailAsUserName)
                 {
-                    this.AddField("Username", string.Empty, true,
-                            string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator) ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
-                            TextBoxMode.SingleLine);
+                    var userNameValidator =
+                        string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                            ? this.ExcludeTerms
+                            : this.PortalSettings.Registration.UserNameValidator;
+                    this.AddField(
+                        "Username",
+                        string.Empty,
+                        true,
+                        userNameValidator,
+                        TextBoxMode.SingleLine);
                 }
 
                 // Password
@@ -189,9 +198,16 @@ namespace DotNetNuke.Modules.Admin.Users
                     switch (trimmedField)
                     {
                         case "Username":
-                            this.AddField("Username", string.Empty, true, string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
-                                                                ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
-                                                                        TextBoxMode.SingleLine);
+                            var userNameValidator =
+                                string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                                    ? this.ExcludeTerms
+                                    : this.PortalSettings.Registration.UserNameValidator;
+                            this.AddField(
+                                "Username",
+                                string.Empty,
+                                true,
+                                userNameValidator,
+                                TextBoxMode.SingleLine);
                             break;
                         case "DisplayName":
                             this.AddField(trimmedField, string.Empty, true, this.ExcludeTerms, TextBoxMode.SingleLine);
@@ -226,7 +242,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 try
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+                    this.Response.Redirect(this.navigationManager.NavigateURL("Access Denied"), true);
                 }
                 catch (ThreadAbortException)
                 {
@@ -235,7 +251,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             this.cancelLink.NavigateUrl = this.closeLink.NavigateUrl = this.GetRedirectUrl(false);
-            this.registerButton.Click += this.registerButton_Click;
+            this.registerButton.Click += this.RegisterButton_Click;
 
             if (this.PortalSettings.Registration.UseAuthProviders)
             {
@@ -255,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Users
                                 authLoginControl.Mode = AuthMode.Register;
 
                                 // Add Login Control to List
-                                this._loginControls.Add(authLoginControl);
+                                this.loginControls.Add(authLoginControl);
                             }
                         }
                     }
@@ -267,6 +283,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -277,10 +294,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (Globals.IsAdminControl())
                 {
                     // redirect to current page
-                    this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                    this.Response.Redirect(this.navigationManager.NavigateURL(), true);
                 }
-                else // make module container invisible if user is not a page admin
+                else
                 {
+                    // make module container invisible if user is not a page admin
                     if (!TabPermissionController.CanAdminPage())
                     {
                         this.ContainerControl.Visible = false;
@@ -297,7 +315,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.PortalSettings.Registration.UseAuthProviders && string.IsNullOrEmpty(this.AuthenticationType))
             {
-                foreach (AuthenticationLoginBase authLoginControl in this._loginControls)
+                foreach (AuthenticationLoginBase authLoginControl in this.loginControls)
                 {
                     this.socialLoginControls.Controls.Add(authLoginControl);
                 }
@@ -328,6 +346,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -521,7 +540,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -547,9 +566,9 @@ namespace DotNetNuke.Modules.Admin.Users
             var portalSecurity = PortalSecurity.Instance;
 
             // Check User Editor
-            bool _IsValid = this.userForm.IsValid;
+            bool isValid = this.userForm.IsValid;
 
-            if (_IsValid)
+            if (isValid)
             {
                 var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
                 var name = this.User.Username ?? this.User.Email;
@@ -757,19 +776,20 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.CreateStatus != UserCreateStatus.AddUser)
             {
-                _IsValid = false;
+                isValid = false;
             }
 
-            return _IsValid;
+            return isValid;
         }
 
         private string GetRedirectUrl(bool checkSetting = true)
         {
             var redirectUrl = string.Empty;
             var redirectAfterRegistration = this.PortalSettings.Registration.RedirectAfterRegistration;
-            if (checkSetting && redirectAfterRegistration > 0) // redirect to after registration page
+            if (checkSetting && redirectAfterRegistration > 0)
             {
-                redirectUrl = this._navigationManager.NavigateURL(redirectAfterRegistration);
+                // redirect to after registration page
+                redirectUrl = this.navigationManager.NavigateURL(redirectAfterRegistration);
             }
             else
             {
@@ -796,14 +816,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page
-                    redirectUrl = this._navigationManager.NavigateURL();
+                    redirectUrl = this.navigationManager.NavigateURL();
                 }
             }
 
             return redirectUrl;
         }
 
-        private void registerButton_Click(object sender, EventArgs e)
+        private void RegisterButton_Click(object sender, EventArgs e)
         {
             if ((this.PortalSettings.Registration.UseCaptcha && this.ctlCaptcha.IsValid) || !this.PortalSettings.Registration.UseCaptcha)
             {

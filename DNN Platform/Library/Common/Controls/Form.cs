@@ -8,9 +8,7 @@ namespace DotNetNuke.Common.Controls
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
 
-    /// <summary>
-    /// The Form will reset action to raw url instead of rewrite url.
-    /// </summary>
+    /// <summary>The Form will reset action to raw url instead of rewrite url.</summary>
     public class Form : HtmlForm
     {
         /// <inheritdoc/>

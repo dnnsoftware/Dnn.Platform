@@ -1,18 +1,20 @@
 ﻿<%@ Page language="c#" Codebehind="Browser.aspx.cs" AutoEventWireup="True" Inherits="DNNConnect.CKEditorProvider.Browser.Browser" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnncrm" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register TagPrefix="wnet" Namespace="DNNConnect.CKEditorProvider.Controls" Assembly="DNNConnect.CKEditorProvider" %>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <head runat="server">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="language" content="en" />
     <title id="title" runat="server">DNNConnect.CKEditorProvider.FileBrowser</title>
-    <link rel="stylesheet" type="text/css" href="Browser.comb.min.css" />
     <asp:Placeholder id="favicon" runat="server"></asp:Placeholder>
-    <script src="js/Browser.js" type="text/javascript"></script>
+    <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss" />
+    <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs" />
   </head>
   <body>
     <form id="fBrowser" method="post" runat="server">
+      <asp:PlaceHolder ID="BodySCRIPTS" runat="server" />
       <asp:ScriptManager ID="scriptManager1" runat="server"></asp:ScriptManager>
       <div id="BrowserContainer">
       <h1><asp:Label id="lblModus" runat="server"></asp:Label></h1>
@@ -374,6 +376,7 @@
       </div>
       </asp:Panel>
       <!-- / Loading screen -->
+      <asp:PlaceHolder runat="server" ID="ClientResourcesFormBottom" />
     </form>
     <script type="text/javascript">
         $(function() {
@@ -384,7 +387,7 @@
             function setupFileUpload(overrideFile) {
                 var overrideFile = overrideFile;
                 var maxFileSize = <%= this.MaxUploadSize %>;
-                var fileUploaderURL = "FileUploader.ashx?portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>";
+                var fileUploaderURL = "FileUploader.ashx?mode=<%= HttpContext.Current.Request.QueryString["mode"] %>&portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>&tabid=<%= HttpContext.Current.Request.QueryString["tabid"] %>&mid=<%= HttpContext.Current.Request.QueryString["mid"] %>&ckId=<%= HttpContext.Current.Request.QueryString["CKEditor"] %>";
 
                 $('#fileupload').fileupload({
                     url: fileUploaderURL,
@@ -433,6 +436,14 @@
             });
         });
     </script>
+  
+    <asp:PlaceHolder runat="server" id="ClientResourceIncludes" />
+
+    <dnncrm:ClientResourceLoader runat="server" id="ClientResourceLoader">
+      <Paths>
+        <dnncrm:ClientResourcePath Name="SharedScripts" Path="~/Resources/Shared/Scripts/" />
+      </Paths>
+    </dnncrm:ClientResourceLoader>
   </body>
 </html>
 

@@ -1,6 +1,7 @@
 ﻿namespace DotNetNuke.Tests.Data
 {
     using System.Reflection;
+
     using DotNetNuke.Data.PetaPoco;
     using NUnit.Framework;
 

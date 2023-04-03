@@ -18,8 +18,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckSqlRisk : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckSqlRisk";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
         private string LocalResourceFile
@@ -42,6 +44,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
         }
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -63,6 +66,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                     result.Notes.Add(Localization.GetString(name + ".Error", this.LocalResourceFile));
                 }
             }
+
             return result;
         }
 
@@ -116,6 +120,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 // ignore; return no failure
             }
+
             return true;
         }
     }

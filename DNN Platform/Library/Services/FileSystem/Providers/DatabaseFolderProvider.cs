@@ -19,9 +19,7 @@ namespace DotNetNuke.Services.FileSystem
 
     public class DatabaseFolderProvider : SecureFolderProvider
     {
-        /// <summary>
-        /// Clears the content of the file in the database.
-        /// </summary>
+        /// <summary>Clears the content of the file in the database.</summary>
         /// <param name="fileId">The file identifier.</param>
         public static void ClearFileContent(int fileId)
         {
@@ -29,9 +27,7 @@ namespace DotNetNuke.Services.FileSystem
             DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
         }
 
-        /// <summary>
-        /// Updates the content of the file in the database.
-        /// </summary>
+        /// <summary>Updates the content of the file in the database.</summary>
         /// <param name="fileId">The file identifier.</param>
         /// <param name="content">The new content.</param>
         public static void UpdateFileContent(int fileId, Stream content)
@@ -61,9 +57,7 @@ namespace DotNetNuke.Services.FileSystem
             DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
         }
 
-        /// <summary>
-        /// Updates the content of the file in the database.
-        /// </summary>
+        /// <summary>Updates the content of the file in the database.</summary>
         /// <param name="fileId">The file identifier.</param>
         /// <param name="content">The new content.</param>
         public static void UpdateFileContent(int fileId, byte[] content)

@@ -7,6 +7,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Data;
     using System.Drawing;
     using System.IO;
+    using System.IO.Compression;
     using System.Text;
 
     using DotNetNuke.Abstractions;
@@ -127,6 +128,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void AddFile_Throws_On_Null_Folder()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.AddFile(null, It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
@@ -135,18 +137,21 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void AddFile_Throws_On_Null_Or_Empty_FileName(string fileName)
         {
             Assert.Throws<ArgumentException>(() => this.fileManager.AddFile(this.folderInfo.Object, fileName, It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
         }
 
         [Test]
+
         public void AddFile_Throws_On_Null_FileContent()
         {
             Assert.Throws<ArgumentException>(() => this.fileManager.AddFile(this.folderInfo.Object, It.IsAny<string>(), null, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
         }
 
         [Test]
+
         public void AddFile_Throws_When_Permissions_Are_Not_Met()
         {
             this.folderPermissionController.Setup(fpc => fpc.CanAddFolder(this.folderInfo.Object)).Returns(false);
@@ -155,6 +160,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void AddFile_Throws_When_Portal_Has_No_Space_Available()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -181,6 +187,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void AddFile_Checks_Space_For_Stream_Length()
         {
             // Arrange
@@ -218,6 +225,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void AddFile_Throws_When_Extension_Is_Invalid()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -234,6 +242,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("invalid_script.svg")]
         [TestCase("invalid_onload.svg")]
         [TestCase("invalid_onerror.svg")]
+
         public void AddFile_Throws_When_File_Content_Is_Invalid(string fileName)
         {
             this.PrepareFileSecurityCheck();
@@ -248,6 +257,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void AddFile_No_Error_When_File_Content_Is_Valid()
         {
             this.PrepareFileSecurityCheck();
@@ -263,6 +273,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void AddFile_Does_Not_Call_FolderProvider_AddFile_When_Not_Overwritting_And_File_Exists()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -324,42 +335,47 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void CopyFile_Throws_On_Null_File()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.CopyFile(null, this.folderInfo.Object));
         }
 
         [Test]
+
         public void CopyFile_Throws_On_Null_DestinationFolder()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.CopyFile(this.fileInfo.Object, null));
         }
 
         [Test]
+
         public void CopyFile_Calls_FileManager_AddFile_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Not_Equal()
         {
+            // Arrange
             const int sourceFolderMappingID = Constants.FOLDER_ValidFolderMappingID;
             const int destinationFolderMappingID = Constants.FOLDER_ValidFolderMappingID + 1;
-
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
             this.fileInfo.Setup(fi => fi.ContentType).Returns(Constants.CONTENTTYPE_ValidContentType);
             this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(sourceFolderMappingID);
-
             this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(destinationFolderMappingID);
-
             var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var fileContent = new MemoryStream(bytes);
-
             this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(fileContent);
             this.mockFileManager.Setup(mfm => mfm.CopyContentItem(It.IsAny<int>())).Returns(Constants.CONTENT_ValidContentItemId);
-            this.mockFileManager.Setup(mfm => mfm.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<Stream>(), true, true, Constants.CONTENTTYPE_ValidContentType));
+            this.mockFileManager.Setup(mfm => mfm.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<Stream>(), true, true, Constants.CONTENTTYPE_ValidContentType))
+                .Returns(this.fileInfo.Object);
+            this.folderPermissionController.Setup(fpc => fpc.CanAddFolder(this.folderInfo.Object)).Returns(true);
 
+            // Act
             this.mockFileManager.Object.CopyFile(this.fileInfo.Object, this.folderInfo.Object);
 
+            // Assert
             this.mockFileManager.Verify(fm => fm.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, true, Constants.CONTENTTYPE_ValidContentType), Times.Once());
         }
 
         [Test]
+
         public void CopyFile_Throws_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Equal_And_Cannot_Add_Folder()
         {
             this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
@@ -371,6 +387,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void CopyFile_Throws_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Equal_And_Portal_Has_No_Space_Available()
         {
             this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
@@ -417,12 +434,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DownloadFile_Throws_On_Null_File()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.WriteFileToResponse(null, ContentDisposition.Inline));
         }
 
         [Test]
+
         public void DownloadFile_Throws_When_Permissions_Are_Not_Met()
         {
             this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
@@ -436,6 +455,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DownloadFile_Calls_FileManager_AutoSyncFile_When_File_AutoSync_Is_Enabled()
         {
             this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
@@ -455,6 +475,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DownloadFile_Does_Not_Call_FileManager_AutoSyncFile_When_File_AutoSync_Is_Not_Enabled()
         {
             this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
@@ -473,6 +494,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DownloadFile_Calls_FileManager_WriteBytesToHttpContext()
         {
             this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
@@ -646,6 +668,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void GetFileByID_Does_Not_Call_DataCache_GetCache_If_FileId_Is_Not_Valid()
         {
             this.mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(this.fileInfo.Object).Verifiable();
@@ -656,6 +679,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void GetFileByID_Calls_DataCache_GetCache_First()
         {
             this.mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(this.fileInfo.Object).Verifiable();
@@ -666,6 +690,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void GetFileByID_Calls_DataProvider_GetFileById_When_File_Is_Not_In_Cache()
         {
             this.mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(null);
@@ -676,52 +701,53 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void MoveFile_Throws_On_Null_File()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.MoveFile(null, this.folderInfo.Object));
         }
 
         [Test]
+
         public void MoveFile_Throws_On_Null_DestinationFolder()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.MoveFile(this.fileInfo.Object, null));
         }
 
         [Test]
+
         public void MoveFile_Calls_FolderProvider_AddFile_And_DeleteFile_And_FileManager_UpdateFile()
         {
+            // Arrange
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
             this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
             this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
             this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
             this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
             this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
             this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
             var fileContent = new MemoryStream();
-
             this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(fileContent);
             string someString;
             this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(this.fileInfo.Object, out someString)).Returns(false);
             this.mockFileManager.Setup(mfm => mfm.MoveVersions(this.fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
-
             this.mockFolder.Setup(mf => mf.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
             this.mockFolder.Setup(mf => mf.DeleteFile(this.fileInfo.Object)).Verifiable();
-
             this.mockFileManager.Setup(mfm => mfm.UpdateFile(this.fileInfo.Object)).Verifiable();
 
+            // Act
             this.mockFileManager.Object.MoveFile(this.fileInfo.Object, this.folderInfo.Object);
 
+            // Assert
             this.mockFolder.Verify();
             this.mockFileManager.Verify();
         }
 
         [Test]
+
         public void MoveFile_Updates_FolderId_And_Folder()
         {
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
@@ -755,6 +781,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void MoveFile_Calls_DeleteFile_When_A_File_With_The_Same_Name_Exists_On_The_Destination_Folder()
         {
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
@@ -789,6 +816,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void RenameFile_Throws_On_Null_File()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.RenameFile(null, It.IsAny<string>()));
@@ -797,36 +825,39 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void RenameFile_Throws_On_Null_Or_Empty_NewFileName(string newFileName)
         {
             Assert.Throws<ArgumentException>(() => this.fileManager.RenameFile(this.fileInfo.Object, newFileName));
         }
 
         [Test]
+
         public void RenameFile_Calls_FolderProvider_RenameFile_When_FileNames_Are_Distinct_And_NewFileName_Does_Not_Exist()
         {
+            // Arrange
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
             this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
             this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
             this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
             this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
-
             this.mockFileManager.Setup(mfm => mfm.FileExists(this.folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
             this.mockFileManager.Setup(mfm => mfm.UpdateFile(this.fileInfo.Object));
             this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
-
             var folderMapping = new FolderMappingInfo();
             folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
-
             this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
+            // Act
             this.mockFileManager.Object.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName);
 
+            // Assert
             this.mockFolder.Verify(mf => mf.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName), Times.Once());
         }
 
         [Test]
+
         public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_FileNames_Are_Equal()
         {
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
@@ -837,6 +868,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_NewFileName_Exists()
         {
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
@@ -852,6 +884,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_InvalidExtensionType()
         {
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
@@ -865,6 +898,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void RenameFile_Throws_When_FolderProvider_Throws()
         {
             this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
@@ -889,18 +923,21 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void UnzipFile_Throws_On_Null_File()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.UnzipFile(null, It.IsAny<IFolderInfo>()));
         }
 
         [Test]
+
         public void UnzipFile_Throws_On_Null_DestinationFolder()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.UnzipFile(It.IsAny<IFileInfo>(), null));
         }
 
         [Test]
+
         public void UnzipFile_Throws_When_File_Extension_Is_Not_Zip()
         {
             this.fileInfo.Setup(fi => fi.Extension).Returns("txt");
@@ -909,24 +946,31 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void UnzipFile_Calls_FileManager_ExtractFiles()
         {
+            // Arrange
             this.fileInfo.Setup(fi => fi.Extension).Returns("zip");
-
             this.mockFileManager.Setup(mfm => mfm.ExtractFiles(this.fileInfo.Object, this.folderInfo.Object, null)).Verifiable();
+            var stream = Constants.ValidZipFileContent;
+            this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(stream);
 
+            // Act
             this.mockFileManager.Object.UnzipFile(this.fileInfo.Object, this.folderInfo.Object);
 
+            // Assert
             this.mockFileManager.Verify();
         }
 
         [Test]
+
         public void UpdateFile_Throws_On_Null_File()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.UpdateFile(null));
         }
 
         [Test]
+
         public void UpdateFile_Calls_DataProvider_UpdateFile()
         {
             this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
@@ -956,12 +1000,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void UpdateFile_Throws_On_Null_File_Overload()
         {
             Assert.Throws<ArgumentNullException>(() => this.fileManager.UpdateFile(null, It.IsAny<Stream>()));
         }
 
         [Test]
+
         public void UpdateFile_Sets_With_And_Height_When_File_Is_Image()
         {
             var image = new Bitmap(10, 20);
@@ -985,6 +1031,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void UpdateFile_Sets_SHA1Hash()
         {
             var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -1004,6 +1051,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void UpdateFile_Calls_FileManager_UpdateFile_Overload()
         {
             var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };

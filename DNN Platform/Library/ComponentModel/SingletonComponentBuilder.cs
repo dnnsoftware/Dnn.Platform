@@ -9,19 +9,17 @@ namespace DotNetNuke.ComponentModel
 
     internal class SingletonComponentBuilder : IComponentBuilder
     {
-        private readonly string _Name;
-        private readonly Type _Type;
-        private object _Instance;
+        private readonly string name;
+        private readonly Type type;
+        private object instance;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.</summary>
         /// <param name="name">The name of the component.</param>
         /// <param name="type">The type of the component.</param>
         public SingletonComponentBuilder(string name, Type type)
         {
-            this._Name = name;
-            this._Type = type;
+            this.name = name;
+            this.type = type;
         }
 
         /// <inheritdoc/>
@@ -29,24 +27,24 @@ namespace DotNetNuke.ComponentModel
         {
             get
             {
-                return this._Name;
+                return this.name;
             }
         }
 
         /// <inheritdoc/>
         public object BuildComponent()
         {
-            if (this._Instance == null)
+            if (this.instance == null)
             {
                 this.CreateInstance();
             }
 
-            return this._Instance;
+            return this.instance;
         }
 
         private void CreateInstance()
         {
-            this._Instance = Reflection.CreateObject(this._Type);
+            this.instance = Reflection.CreateObject(this.type);
         }
     }
 }

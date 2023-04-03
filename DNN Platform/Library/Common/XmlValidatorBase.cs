@@ -8,60 +8,46 @@ namespace DotNetNuke.Common
     using System.Xml;
     using System.Xml.Schema;
 
-    /// <summary>
-    /// Base class od XmlValidator.
-    /// </summary>
+    /// <summary>Base class of XmlValidator.</summary>
     public class XmlValidatorBase
     {
-        private readonly XmlSchemaSet _schemaSet;
-        private ArrayList _errs;
-        private XmlTextReader _reader;
+        private readonly XmlSchemaSet schemaSet;
+        private ArrayList errs;
+        private XmlTextReader reader;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlValidatorBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlValidatorBase"/> class.</summary>
         public XmlValidatorBase()
         {
-            this._errs = new ArrayList();
-            this._schemaSet = new XmlSchemaSet();
+            this.errs = new ArrayList();
+            this.schemaSet = new XmlSchemaSet();
         }
 
-        /// <summary>
-        /// Gets the schema set.
-        /// </summary>
+        /// <summary>Gets the schema set.</summary>
         public XmlSchemaSet SchemaSet
         {
             get
             {
-                return this._schemaSet;
+                return this.schemaSet;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the errors.
-        /// </summary>
-        /// <value>
-        /// The errors.
-        /// </value>
+        /// <summary>Gets or sets the errors.</summary>
+        /// <value>The errors.</value>
         public ArrayList Errors
         {
             get
             {
-                return this._errs;
+                return this.errs;
             }
 
             set
             {
-                this._errs = value;
+                this.errs = value;
             }
         }
 
-        /// <summary>
-        /// Determines whether this instance is valid.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
-        /// </returns>
+        /// <summary>Determines whether this instance is valid.</summary>
+        /// <returns><c>true</c> if this instance is valid; otherwise, <c>false</c>.</returns>
         public bool IsValid()
         {
             // There is a bug here which I haven't been able to fix.
@@ -71,12 +57,12 @@ namespace DotNetNuke.Common
 
             // Create a validating reader
             var settings = new XmlReaderSettings();
-            settings.Schemas = this._schemaSet;
+            settings.Schemas = this.schemaSet;
             settings.ValidationType = ValidationType.Schema;
 
             // Set the validation event handler.
             settings.ValidationEventHandler += this.ValidationCallBack;
-            XmlReader vreader = XmlReader.Create(this._reader, settings);
+            XmlReader vreader = XmlReader.Create(this.reader, settings);
 
             // Read and validate the XML data.
             while (vreader.Read())
@@ -84,18 +70,16 @@ namespace DotNetNuke.Common
             }
 
             vreader.Close();
-            return this._errs.Count == 0;
+            return this.errs.Count == 0;
         }
 
-        /// <summary>
-        /// Validates the specified XML stream.
-        /// </summary>
+        /// <summary>Validates the specified XML stream.</summary>
         /// <param name="xmlStream">The XML stream.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the XML is valid, otherwise <see langword="false"/>.</returns>
         public virtual bool Validate(Stream xmlStream)
         {
             xmlStream.Seek(0, SeekOrigin.Begin);
-            this._reader = new XmlTextReader(xmlStream)
+            this.reader = new XmlTextReader(xmlStream)
             {
                 XmlResolver = null,
                 DtdProcessing = DtdProcessing.Prohibit,
@@ -103,14 +87,12 @@ namespace DotNetNuke.Common
             return this.IsValid();
         }
 
-        /// <summary>
-        /// Validates the specified filename.
-        /// </summary>
+        /// <summary>Validates the specified filename.</summary>
         /// <param name="filename">The filename.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the XML is valid, otherwise <see langword="false"/>.</returns>
         public virtual bool Validate(string filename)
         {
-            this._reader = new XmlTextReader(filename)
+            this.reader = new XmlTextReader(filename)
             {
                 XmlResolver = null,
                 DtdProcessing = DtdProcessing.Prohibit,
@@ -118,14 +100,12 @@ namespace DotNetNuke.Common
             return this.IsValid();
         }
 
-        /// <summary>
-        /// Validations the call back.
-        /// </summary>
+        /// <summary>Validations the call back.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
         protected void ValidationCallBack(object sender, ValidationEventArgs args)
         {
-            this._errs.Add(args.Message);
+            this.errs.Add(args.Message);
         }
     }
 }

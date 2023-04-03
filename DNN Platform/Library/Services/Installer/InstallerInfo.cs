@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -13,32 +14,24 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
-    using ICSharpCode.SharpZipLib.Zip;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerInfo class holds all the information associated with a
     /// Installation.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class InstallerInfo
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public InstallerInfo()
         {
             this.PhysicalSitePath = Null.NullString;
             this.Initialize();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a
@@ -46,7 +39,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="sitePath">The physical path to the root of the site.</param>
         /// <param name="mode">Install Mode.</param>
-        /// -----------------------------------------------------------------------------
         public InstallerInfo(string sitePath, InstallMode mode)
         {
             this.Initialize();
@@ -55,7 +47,6 @@ namespace DotNetNuke.Services.Installer
             this.InstallMode = mode;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a Stream and a
@@ -63,7 +54,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
         /// <param name="sitePath">The physical path to the root of the site.</param>
-        /// -----------------------------------------------------------------------------
         public InstallerInfo(Stream inputStream, string sitePath)
         {
             this.Initialize();
@@ -74,7 +64,6 @@ namespace DotNetNuke.Services.Installer
             this.ReadZipStream(inputStream, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a string representing
@@ -84,7 +73,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
         /// <param name="manifest">The manifest filename.</param>
         /// <param name="sitePath">The physical path to the root of the site.</param>
-        /// -----------------------------------------------------------------------------
         public InstallerInfo(string tempFolder, string manifest, string sitePath)
         {
             this.Initialize();
@@ -96,14 +84,12 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a PackageInfo object.
         /// </summary>
         /// <param name="package">The PackageInfo instance.</param>
         /// <param name="sitePath">The physical path to the root of the site.</param>
-        /// -----------------------------------------------------------------------------
         public InstallerInfo(PackageInfo package, string sitePath)
         {
             this.Initialize();
@@ -114,53 +100,38 @@ namespace DotNetNuke.Services.Installer
             package.AttachInstallerInfo(this);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the package contains Valid Files.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the package contains Valid Files.</summary>
         public bool HasValidFiles
         {
             get
             {
-                bool _HasValidFiles = true;
+                bool hasValidFiles = true;
                 if (this.Files.Values.Any(file => !Util.IsFileValid(file, this.AllowableFiles)))
                 {
-                    _HasValidFiles = Null.NullBoolean;
+                    hasValidFiles = Null.NullBoolean;
                 }
 
-                return _HasValidFiles;
+                return hasValidFiles;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Invalid File Extensions.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Invalid File Extensions.</summary>
         public string InvalidFileExtensions
         {
             get
             {
-                string _InvalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
+                string invalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
                                                             .Aggregate(Null.NullString, (current, file) => current + (", " + file.Extension));
-                if (!string.IsNullOrEmpty(_InvalidFileExtensions))
+                if (!string.IsNullOrEmpty(invalidFileExtensions))
                 {
-                    _InvalidFileExtensions = _InvalidFileExtensions.Substring(2);
+                    invalidFileExtensions = invalidFileExtensions.Substring(2);
                 }
 
-                return _InvalidFileExtensions;
+                return invalidFileExtensions;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid.
-        /// </summary>
-        /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the InstallerInfo instance is Valid.</summary>
         public bool IsValid
         {
             get
@@ -169,124 +140,53 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a list of allowable file extensions (in addition to the Host's List).</summary>
         public string AllowableFiles { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of Files that are included in the Package.</summary>
         public Dictionary<string, InstallFile> Files { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the File Extension WhiteList is ignored.
-        /// </summary>
-        /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the File Extension WhiteList is ignored.</summary>
         public bool IgnoreWhiteList { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets whether the Package is already installed with the same version.
-        /// </summary>
-        /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether gets whether the Package is already installed with the same version.</summary>
         public bool Installed { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the InstallMode.
-        /// </summary>
-        /// <value>A InstallMode value.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the InstallMode.</summary>
         public InstallMode InstallMode { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets whether the Installer is in legacy mode.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether gets whether the Installer is in legacy mode.</summary>
         public bool IsLegacyMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Logger.
-        /// </summary>
-        /// <value>A Logger.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the associated Logger.</summary>
         public string LegacyError { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the associated Logger.
-        /// </summary>
-        /// <value>A Logger.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the associated Logger.</summary>
         public Logger Log { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and Sets the Manifest File for the Package.
-        /// </summary>
-        /// <value>An InstallFile.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets and Sets the Manifest File for the Package.</summary>
         public InstallFile ManifestFile { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Id of the package after installation (-1 if fail).
-        /// </summary>
-        /// <value>An Integer.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Id of the package after installation (-1 if fail).</summary>
         public int PackageID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").</summary>
         public string PhysicalSitePath { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Id of the current portal (-1 if Host).
-        /// </summary>
-        /// <value>An Integer.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Id of the current portal (-1 if Host).</summary>
         public int PortalID { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Package Install is being repaird.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the Package Install is being repaired.</summary>
         /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
         public bool RepairInstall { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the security Access Level of the user that is calling the INstaller.
-        /// </summary>
-        /// <value>A SecurityAccessLevel enumeration.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the security Access Level of the user that is calling the Installer.</summary>
         public SecurityAccessLevel SecurityAccessLevel { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Temporary Install Folder used to unzip the archive (and to place the
         /// backups of existing files) during InstallMode.
         /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string TempInstallFolder { get; private set; }
 
         private void Initialize()
@@ -312,72 +212,65 @@ namespace DotNetNuke.Services.Installer
                 inputStream.Seek(0, SeekOrigin.Begin);
             }
 
-            var unzip = new ZipInputStream(inputStream);
-            ZipEntry entry = unzip.GetNextEntry();
-            while (entry != null)
+            var unzip = new ZipArchive(inputStream);
+            foreach (var entry in unzip.FileEntries())
             {
-                entry.CheckZipEntry();
-                if (!entry.IsDirectory)
+                // Add file to list
+                var file = new InstallFile(entry, this);
+                if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    // Add file to list
-                    var file = new InstallFile(unzip, entry, this);
-                    if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
+                    // Temporarily save the TempInstallFolder
+                    string tmpInstallFolder = this.TempInstallFolder;
+
+                    // Create Zip Stream from File
+                    using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
                     {
-                        // Temporarily save the TempInstallFolder
-                        string tmpInstallFolder = this.TempInstallFolder;
+                        // Set TempInstallFolder
+                        this.TempInstallFolder = Path.Combine(this.TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
 
-                        // Create Zip Stream from File
-                        using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
-                        {
-                            // Set TempInstallFolder
-                            this.TempInstallFolder = Path.Combine(this.TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
-
-                            // Extract files from zip
-                            this.ReadZipStream(zipStream, true);
-                        }
-
-                        // Restore TempInstallFolder
-                        this.TempInstallFolder = tmpInstallFolder;
-
-                        // Delete zip file
-                        var zipFile = new FileInfo(file.TempFileName);
-                        zipFile.Delete();
+                        // Extract files from zip
+                        this.ReadZipStream(zipStream, true);
                     }
-                    else
+
+                    // Restore TempInstallFolder
+                    this.TempInstallFolder = tmpInstallFolder;
+
+                    // Delete zip file
+                    var zipFile = new FileInfo(file.TempFileName);
+                    zipFile.Delete();
+                }
+                else
+                {
+                    this.Files[file.FullName.ToLowerInvariant()] = file;
+                    if (file.Type == InstallFileType.Manifest && !isEmbeddedZip)
                     {
-                        this.Files[file.FullName.ToLowerInvariant()] = file;
-                        if (file.Type == InstallFileType.Manifest && !isEmbeddedZip)
+                        if (this.ManifestFile == null)
                         {
-                            if (this.ManifestFile == null)
+                            this.ManifestFile = file;
+                        }
+                        else
+                        {
+                            if (file.Extension == "dnn7" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5" || this.ManifestFile.Extension == "dnn6"))
                             {
                                 this.ManifestFile = file;
                             }
-                            else
+                            else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
                             {
-                                if (file.Extension == "dnn7" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5" || this.ManifestFile.Extension == "dnn6"))
-                                {
-                                    this.ManifestFile = file;
-                                }
-                                else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
-                                {
-                                    this.ManifestFile = file;
-                                }
-                                else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
-                                {
-                                    this.ManifestFile = file;
-                                }
-                                else if (file.Extension == this.ManifestFile.Extension)
-                                {
-                                    this.Log.AddFailure(Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name);
-                                }
+                                this.ManifestFile = file;
+                            }
+                            else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
+                            {
+                                this.ManifestFile = file;
+                            }
+                            else if (file.Extension == this.ManifestFile.Extension)
+                            {
+                                this.Log.AddFailure(Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name);
                             }
                         }
                     }
-
-                    this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
                 }
 
-                entry = unzip.GetNextEntry();
+                this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
             }
 
             if (this.ManifestFile == null)

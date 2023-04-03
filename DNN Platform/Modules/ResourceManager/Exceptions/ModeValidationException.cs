@@ -5,14 +5,10 @@ namespace Dnn.Modules.ResourceManager.Exceptions
 {
     using System;
 
-    /// <summary>
-    /// Thrown when the resource manager is not in the expected mode for the requested operation.
-    /// </summary>
+    /// <summary>Thrown when the resource manager is not in the expected mode for the requested operation.</summary>
     public class ModeValidationException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModeValidationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModeValidationException"/> class.</summary>
         /// <param name="message">The exception message.</param>
         public ModeValidationException(string message)
             : base(message)

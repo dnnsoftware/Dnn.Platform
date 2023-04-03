@@ -21,14 +21,10 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Services.Log.EventLog;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Provides access to Dnn Lists.
-    /// </summary>
+    /// <summary>Provides access to Dnn Lists.</summary>
     public class ListController
     {
-        /// <summary>
-        /// The list of list types that are not localized.
-        /// </summary>
+        /// <summary>The list of list types that are not localized.</summary>
         [Obsolete("Deprecated in v9.8.1, use UnLocalizedLists instead, schedule removal in v11.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.MaintainabilityRules",
@@ -52,9 +48,7 @@ namespace DotNetNuke.Common.Lists
             this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
-        /// <summary>
-        /// Gets the lists that do not support localization.
-        /// </summary>
+        /// <summary>Gets the lists that do not support localization.</summary>
         public IReadOnlyCollection<string> UnLocalizedLists => UnLocalizableLists;
 
         /// <summary>
@@ -122,9 +116,7 @@ namespace DotNetNuke.Common.Lists
             return entryId;
         }
 
-        /// <summary>
-        /// Deletes a list.
-        /// </summary>
+        /// <summary>Deletes a list.</summary>
         /// <param name="listName">The name of the list to delete.</param>
         /// <param name="parentKey">The parent key for the list to delete.</param>
         public void DeleteList(string listName, string parentKey)
@@ -132,9 +124,7 @@ namespace DotNetNuke.Common.Lists
             this.DeleteList(listName, parentKey, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Deletes a list.
-        /// </summary>
+        /// <summary>Deletes a list.</summary>
         /// <param name="listName">The name of the list to delete.</param>
         /// <param name="parentKey">The parent key of the list to delete.</param>
         /// <param name="portalId">The id of the site (portal) on which to delete the list.</param>
@@ -157,9 +147,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Deletes a list.
-        /// </summary>
+        /// <summary>Deletes a list.</summary>
         /// <param name="list">The <see cref="ListInfo"/> reference for the list to delete.</param>
         /// <param name="includeChildren">A value indicating wheter to also delete the children items for this list.</param>
         public void DeleteList(ListInfo list, bool includeChildren)
@@ -191,9 +179,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Deletes a list entry.
-        /// </summary>
+        /// <summary>Deletes a list entry.</summary>
         /// <param name="entryId">the id of the entry to delete.</param>
         /// <param name="deleteChild">A value indicating whether to also delete the children of that item.</param>
         public void DeleteListEntryByID(int entryId, bool deleteChild)
@@ -216,9 +202,7 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(listName, entry.PortalID);
         }
 
-        /// <summary>
-        /// Gets a list entry information.
-        /// </summary>
+        /// <summary>Gets a list entry information.</summary>
         /// <param name="entryId">The id of the list entry.</param>
         /// <returns><see cref="ListEntryInfo"/>.</returns>
         public ListEntryInfo GetListEntryInfo(int entryId)
@@ -226,9 +210,7 @@ namespace DotNetNuke.Common.Lists
             return CBO.FillObject<ListEntryInfo>(DataProvider.Instance().GetListEntry(entryId));
         }
 
-        /// <summary>
-        /// Gets a list entry information.
-        /// </summary>
+        /// <summary>Gets a list entry information.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <param name="entryId">The id of the list entry.</param>
         /// <returns><see cref="ListEntryInfo"/>.</returns>
@@ -237,9 +219,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
         }
 
-        /// <summary>
-        /// Gets a list entry information.
-        /// </summary>
+        /// <summary>Gets a list entry information.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <param name="listValue">The value of the list entry.</param>
         /// <returns><see cref="ListEntryInfo"/>.</returns>
@@ -275,9 +255,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntries(listName, portalId).Where(l => l.ParentKey == parentKey);
         }
 
-        /// <summary>
-        /// Gets all list entries for a given list name.
-        /// </summary>
+        /// <summary>Gets all list entries for a given list name.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <returns>A dictionary where the index is <see cref="ListEntryInfo.Key"/> and the value is the actual <see cref="ListEntryInfo"/>.</returns>
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName)
@@ -285,9 +263,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntryInfoDictionary(listName, string.Empty, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Gets all list entries for a given list name.
-        /// </summary>
+        /// <summary>Gets all list entries for a given list name.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns>A dictionary where the index is <see cref="ListEntryInfo.Key"/> and the value is the actual <see cref="ListEntryInfo"/>.</returns>
@@ -296,9 +272,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntryInfoDictionary(listName, parentKey, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Gets all list entries for a given list name.
-        /// </summary>
+        /// <summary>Gets all list entries for a given list name.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) from which to get the list entries from.</param>
@@ -308,9 +282,7 @@ namespace DotNetNuke.Common.Lists
             return ListEntryInfoItemsToDictionary(this.GetListEntryInfoItems(listName, parentKey, portalId));
         }
 
-        /// <summary>
-        /// Gets a single list.
-        /// </summary>
+        /// <summary>Gets a single list.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <returns><see cref="ListInfo"/>.</returns>
         public ListInfo GetListInfo(string listName)
@@ -318,9 +290,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListInfo(listName, string.Empty);
         }
 
-        /// <summary>
-        /// Gets a single list.
-        /// </summary>
+        /// <summary>Gets a single list.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns><see cref="ListInfo"/>.</returns>
@@ -329,9 +299,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListInfo(listName, parentKey, -1);
         }
 
-        /// <summary>
-        /// Gets a single list.
-        /// </summary>
+        /// <summary>Gets a single list.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) to get the list from.</param>
@@ -363,18 +331,14 @@ namespace DotNetNuke.Common.Lists
             return list;
         }
 
-        /// <summary>
-        /// Gets a collection of lists.
-        /// </summary>
+        /// <summary>Gets a collection of lists.</summary>
         /// <returns><see cref="ListInfoCollection"/>.</returns>
         public ListInfoCollection GetListInfoCollection()
         {
             return this.GetListInfoCollection(string.Empty);
         }
 
-        /// <summary>
-        /// Gets a collection of lists.
-        /// </summary>
+        /// <summary>Gets a collection of lists.</summary>
         /// <param name="listName">The list name.</param>
         /// <returns><see cref="ListInfoCollection"/>.</returns>
         public ListInfoCollection GetListInfoCollection(string listName)
@@ -382,9 +346,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListInfoCollection(listName, string.Empty);
         }
 
-        /// <summary>
-        /// Gets a collection of lists.
-        /// </summary>
+        /// <summary>Gets a collection of lists.</summary>
         /// <param name="listName">The list name.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns><see cref="ListInfoCollection"/>.</returns>
@@ -393,9 +355,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListInfoCollection(listName, parentKey, -1);
         }
 
-        /// <summary>
-        /// Gets a collection of lists.
-        /// </summary>
+        /// <summary>Gets a collection of lists.</summary>
         /// <param name="listName">The list name.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) to get the list from.</param>
@@ -459,9 +419,7 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }
 
-        /// <summary>
-        /// Updates a list sort order.
-        /// </summary>
+        /// <summary>Updates a list sort order.</summary>
         /// <param name="entryID">The id of the entry to move.</param>
         /// <param name="moveUp">The entry is moved up if <c>true</c> or moved down if <c>false</c>.</param>
         public void UpdateListSortOrder(int entryID, bool moveUp)
@@ -472,9 +430,7 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
-        /// <summary>
-        /// Gets a collection of list entries.
-        /// </summary>
+        /// <summary>Gets a collection of list entries.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <returns>A collection of list entries.</returns>
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0.")]
@@ -484,9 +440,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Gets a collection of list entries.
-        /// </summary>
+        /// <summary>Gets a collection of list entries.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns>A collection of list entries.</returns>
@@ -497,9 +451,7 @@ namespace DotNetNuke.Common.Lists
             return this.GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Gets a collection of list entries.
-        /// </summary>
+        /// <summary>Gets a collection of list entries.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) to get the list from.</param>

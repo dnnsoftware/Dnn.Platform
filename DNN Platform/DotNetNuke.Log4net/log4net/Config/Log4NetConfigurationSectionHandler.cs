@@ -1,24 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
+#if NET_2_0 || NETSTANDARD2_0
 // .NET Compact Framework 1.0 has no support for application .config files
 #if !NETCF
 
@@ -27,9 +27,7 @@ using System.Xml;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Class to register for the log4net section of the configuration file.
-    /// </summary>
+    /// <summary>Class to register for the log4net section of the configuration file</summary>
     /// <remarks>
     /// The log4net section of the configuration file needs to have a section
     /// handler registered. This is the section handler used. It simply returns
@@ -48,13 +46,11 @@ namespace log4net.Config
     /// </configuration>
     /// </code>
     /// </example>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class Log4NetConfigurationSectionHandler : IConfigurationSectionHandler
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetConfigurationSectionHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Log4NetConfigurationSectionHandler"/> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -64,16 +60,14 @@ namespace log4net.Config
         {
         }
 
-        /// <summary>
-        /// Parses the configuration section.
-        /// </summary>
+        /// <summary>Parses the configuration section.</summary>
         /// <param name="parent">The configuration settings in a corresponding parent configuration section.</param>
         /// <param name="configContext">The configuration context when called from the ASP.NET configuration system. Otherwise, this parameter is reserved and is a null reference.</param>
         /// <param name="section">The <see cref="XmlNode" /> for the log4net section.</param>
         /// <returns>The <see cref="XmlNode" /> for the log4net section.</returns>
         /// <remarks>
         /// <para>
-        /// Returns the <see cref="XmlNode"/> containing the configuration data.
+        /// Returns the <see cref="XmlNode"/> containing the configuration data,
         /// </para>
         /// </remarks>
         public object Create(object parent, object configContext, XmlNode section)
@@ -84,3 +78,4 @@ namespace log4net.Config
 }
 
 #endif // !NETCF
+#endif // NET_2_0 || NETSTANDARD2_0

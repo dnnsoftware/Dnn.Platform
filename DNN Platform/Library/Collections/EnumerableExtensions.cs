@@ -8,14 +8,10 @@ namespace DotNetNuke.Collections
     using System.Data;
     using System.Linq;
 
-    /// <summary>
-    /// Provides extensions to IEnumerable.
-    /// </summary>
+    /// <summary>Provides extensions to IEnumerable.</summary>
     public static class EnumerableExtensions
     {
-        /// <summary>
-        /// Converts dynamic data to a DataTable. Useful for databinding.
-        /// </summary>
+        /// <summary>Converts dynamic data to a DataTable. Useful for databinding.</summary>
         /// <param name="items">The items in the IEnumerable.</param>
         /// <returns>A DataTable with the copied dynamic data.</returns>
         public static DataTable ToDataTable(this IEnumerable<dynamic> items)

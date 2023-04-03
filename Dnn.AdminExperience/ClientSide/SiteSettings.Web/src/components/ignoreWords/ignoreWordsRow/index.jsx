@@ -38,7 +38,7 @@ class IgnoreWordsRow extends Component {
                         </div>
                     </div>
                 }
-                <Collapsible className="words-editor-wrapper" isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapsible>
+                <Collapsible className="words-editor-wrapper" isOpened={opened}>{opened && props.children}</Collapsible>
             </div>
         );
     }

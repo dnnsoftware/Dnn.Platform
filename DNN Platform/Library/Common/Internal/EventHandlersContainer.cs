@@ -15,9 +15,7 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Instrumentation;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// A container to hold event handlers.
-    /// </summary>
+    /// <summary>A container to hold event handlers.</summary>
     /// <typeparam name="T">The type of event handlers.</typeparam>
     internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>
     {
@@ -26,9 +24,7 @@ namespace DotNetNuke.Common.Internal
         [ImportMany]
         private IEnumerable<Lazy<T>> eventHandlers = new List<Lazy<T>>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EventHandlersContainer{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EventHandlersContainer{T}"/> class.</summary>
         public EventHandlersContainer()
         {
             try

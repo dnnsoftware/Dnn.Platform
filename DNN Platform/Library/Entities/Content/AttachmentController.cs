@@ -24,23 +24,19 @@ namespace DotNetNuke.Entities.Content
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
 
-        private readonly IContentController _contentController;
+        private readonly IContentController contentController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AttachmentController"/> class.</summary>
         public AttachmentController()
             : this(Util.GetContentController())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AttachmentController"/> class.</summary>
         /// <param name="contentController"></param>
         public AttachmentController(IContentController contentController)
         {
-            this._contentController = contentController;
+            this.contentController = contentController;
         }
 
         /// <inheritdoc/>
@@ -177,16 +173,16 @@ namespace DotNetNuke.Entities.Content
 
         private void AddToContent(int contentItemId, Action<ContentItem> action)
         {
-            var contentItem = this._contentController.GetContentItem(contentItemId);
+            var contentItem = this.contentController.GetContentItem(contentItemId);
 
             action(contentItem);
 
-            this._contentController.UpdateContentItem(contentItem);
+            this.contentController.UpdateContentItem(contentItem);
         }
 
         private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
         {
-            var contentItem = this._contentController.GetContentItem(contentItemId);
+            var contentItem = this.contentController.GetContentItem(contentItemId);
             if (contentItem == null)
             {
                 throw new ApplicationException(string.Format("Cannot find ContentItem ID {0}", contentItemId));

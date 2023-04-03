@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Internal class to check file security.
-    /// </summary>
+    /// <summary>Internal class to check file security.</summary>
     public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
     {
         private const int BufferSize = 4096;

@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Content
     using System.Collections.Specialized;
     using System.Linq;
     using System.Web;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -31,9 +32,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ContentItemTests.
-    /// </summary>
+    /// <summary>  Summary description for ContentItemTests.</summary>
     [TestFixture]
     public class ContentControllerTests
     {
@@ -44,6 +43,7 @@ namespace DotNetNuke.Tests.Content
         private Mock<Services.Search.Internals.ISearchHelper> mockSearchHelper;
 
         [SetUp]
+
         public void SetUp()
         {
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
@@ -245,6 +245,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItem_Throws_On_Negative_ContentItemId()
         {
             // Arrange
@@ -256,6 +257,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItem_Returns_Null_On_InValid_ContentItemId()
         {
             // Arrange
@@ -271,6 +273,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItem_Calls_DataService_On_Valid_ContentItemId()
         {
             // Arrange
@@ -286,6 +289,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItem_Returns_ContentItem_On_Valid_ContentItemId()
         {
             // Arrange
@@ -303,6 +307,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItemsByTerm_Throws_On_Null_Term()
         {
             // Arrange
@@ -314,6 +319,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItemsByTerm_Calls_DataService()
         {
             // Arrange
@@ -329,6 +335,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItemsByTerm_Returns_Empty_List_If_Term_Not_Used()
         {
             // Arrange
@@ -344,6 +351,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItemsByTerm_Returns_List_Of_ContentItems()
         {
             // Arrange
@@ -363,6 +371,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItemsByContentType_Returns_Results()
         {
             var mock = new Mock<IDataService>();
@@ -377,6 +386,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetContentItemsByContentType_Invalid_Id_Returns_No_Elements()
         {
             var mock = new Mock<IDataService>();
@@ -390,6 +400,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void GetContentItemsByModuleId_With_Negative_ModuleId_Returns_ContentItems()
         {
             var mock = new Mock<IDataService>();
@@ -406,6 +417,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetUnIndexedContentItems_Calls_DataService()
         {
             // Arrange
@@ -421,6 +433,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetUnIndexedContentItems_Returns_EmptyList_If_No_UnIndexed_Items()
         {
             // Arrange
@@ -437,6 +450,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ContentController_GetUnIndexedContentItems_Returns_List_Of_UnIndexedContentItems()
         {
             // Arrange

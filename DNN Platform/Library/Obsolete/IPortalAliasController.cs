@@ -16,42 +16,30 @@ namespace DotNetNuke.Entities.Portals.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Portals instead. Scheduled removal in v10.0.0.")]
     public interface IPortalAliasController
     {
-        /// <summary>
-        /// Add a new Portal Alias.
-        /// </summary>
+        /// <summary>Add a new Portal Alias.</summary>
         /// <param name="portalAlias">The portal alias to add.</param>
         /// <returns>The Id of the newly added portal alias.</returns>
         int AddPortalAlias(PortalAliasInfo portalAlias);
 
-        /// <summary>
-        /// Delete a Portal Alias.
-        /// </summary>
+        /// <summary>Delete a Portal Alias.</summary>
         /// <param name="portalAlias">The portal alias to remove.</param>
         void DeletePortalAlias(PortalAliasInfo portalAlias);
 
-        /// <summary>
-        /// Gets the portal alias info.
-        /// </summary>
+        /// <summary>Gets the portal alias info.</summary>
         /// <param name="alias">The portal alias.</param>
         /// <returns>Portal alias info.</returns>
         PortalAliasInfo GetPortalAlias(string alias);
 
-        /// <summary>
-        /// Gets the portal alias by portal ID.
-        /// </summary>
+        /// <summary>Gets the portal alias by portal ID.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>Portal alias collection.</returns>
         IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId);
 
-        /// <summary>
-        /// Gets all the portal aliases defined.
-        /// </summary>
+        /// <summary>Gets all the portal aliases defined.</summary>
         /// <returns>A dictionary keyed by the HTTP Alias.</returns>
         IDictionary<string, PortalAliasInfo> GetPortalAliases();
 
-        /// <summary>
-        /// Updates the portal alias info.
-        /// </summary>
+        /// <summary>Updates the portal alias info.</summary>
         /// <param name="portalAlias">The obj portal alias info.</param>
         void UpdatePortalAlias(PortalAliasInfo portalAlias);
     }

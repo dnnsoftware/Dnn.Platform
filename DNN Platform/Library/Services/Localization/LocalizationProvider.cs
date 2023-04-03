@@ -83,9 +83,7 @@ namespace DotNetNuke.Services.Localization
             return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
         }
 
-        /// <summary>
-        /// Saves a string to a resource file.
-        /// </summary>
+        /// <summary>Saves a string to a resource file.</summary>
         /// <param name="key">The key to save (e.g. "MyWidget.Text").</param>
         /// <param name="value">The text value for the key.</param>
         /// <param name="resourceFileRoot">Relative path for the resource file root (e.g. "DesktopModules/Admin/Lists/App_LocalResources/ListEditor.ascx.resx").</param>
@@ -179,9 +177,14 @@ namespace DotNetNuke.Services.Localization
             return
                 CBO.GetCachedObject<Dictionary<string, string>>(
                     new CacheItemArgs(
-                    "Compiled-" + resourceFile + "-" + locale + "-" + portalSettings.PortalId,
-                    DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority, resourceFile, locale,
-                    portalSettings), GetCompiledResourceFileCallBack, true);
+                        "Compiled-" + resourceFile + "-" + locale + "-" + portalSettings.PortalId,
+                        DataCache.ResourceFilesCacheTimeOut,
+                        DataCache.ResourceFilesCachePriority,
+                        resourceFile,
+                        locale,
+                        portalSettings),
+                    GetCompiledResourceFileCallBack,
+                    true);
         }
 
         private static object GetCompiledResourceFileCallBack(CacheItemArgs cacheItemArgs)

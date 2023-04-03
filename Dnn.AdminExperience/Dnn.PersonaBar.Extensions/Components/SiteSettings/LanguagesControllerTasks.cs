@@ -40,9 +40,15 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     if (translatePages)
                     {
                         // populate default language
-                        ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLanguage),
-                            defaultLanguage, languageCounter, languageCount, progress);
+                        ProcessLanguage(
+                            pageList,
+                            LocaleController.Instance.GetLocale(defaultLanguage),
+                            defaultLanguage,
+                            languageCounter,
+                            languageCount,
+                            progress);
                     }
+
                     PublishLanguage(defaultLanguage, portalId, true);
 
                     PortalController.UpdatePortalSetting(portalId, "ContentLocalizationEnabled", "True");
@@ -130,10 +136,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         internal static LocalizationProgress ReadProgressFile()
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-#if true
-            var text = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
-#else
             using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
             {
                 var bytes = new byte[file.Length];
@@ -141,7 +143,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 var text = Encoding.UTF8.GetString(bytes);
                 return JsonConvert.DeserializeObject<LocalizationProgress>(text);
             }
-#endif
         }
 
         private static IList<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
@@ -170,8 +171,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             return results;
         }
 
-        private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale,
-            string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
+        private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale, string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
         {
             progress.PrimaryTotal = totalLanguages;
             progress.PrimaryValue = languageCount;
@@ -193,10 +193,16 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 progress.SecondaryValue = stepNo;
                 progress.SecondaryPercent = Convert.ToInt32((float)stepNo / total * 100);
                 progress.PrimaryPercent =
-                    Convert.ToInt32((languageCount + (float)stepNo / total) / totalLanguages * 100);
+                    Convert.ToInt32((languageCount + ((float)stepNo / total)) / totalLanguages * 100);
 
-                progress.CurrentOperationText = string.Format(Localization.GetString(
-                    "ProcessingPage", LocalResourcesFile), locale.Code, stepNo, total, currentTab.TabName);
+                progress.CurrentOperationText = string.Format(
+                    Localization.GetString(
+                        "ProcessingPage",
+                        LocalResourcesFile),
+                    locale.Code,
+                    stepNo,
+                    total,
+                    currentTab.TabName);
 
                 progress.TimeEstimated = (total - stepNo) * 100;
 
@@ -212,6 +218,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     {
                         TabController.Instance.LocalizeTab(currentTab, LocaleController.Instance.GetLocale(defaultLocale), true);
                     }
+
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
             }
@@ -221,17 +228,12 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
             var text = JsonConvert.SerializeObject(progress);
-#if false
-            // this could have file locking issues from multiple threads
-            File.WriteAllText(path, text);
-#else
-            using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 256))
+            using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, 256))
             {
                 var bytes = Encoding.UTF8.GetBytes(text);
                 file.Write(bytes, 0, bytes.Length);
                 file.Flush();
             }
-#endif
         }
 
         private static IList<TabInfo> GetPages(int portalId)
