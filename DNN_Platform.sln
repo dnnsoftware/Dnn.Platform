@@ -577,7 +577,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.BulkInstall.Encr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.BulkInstall.DeployClient", "DotNetNuke.BulkInstall\DotNetNuke.BulkInstall.DeployClient\DotNetNuke.BulkInstall.DeployClient.csproj", "{2D819CDA-AD20-4400-95A5-1DFE3E00614C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.BulkInstall.DeployClient.Tests", "DotNetNuke.BulkInstall\DotNetNuke.BulkInstall.DeployClient.Tests\DotNetNuke.BulkInstall.DeployClient.Tests.csproj", "{5C053F55-B730-4EBA-8DAE-499BD41C40EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Tests.BulkInstall.DeployClient", "DotNetNuke.BulkInstall\DotNetNuke.BulkInstall.DeployClient.Tests\DotNetNuke.Tests.BulkInstall.DeployClient.csproj", "{5C053F55-B730-4EBA-8DAE-499BD41C40EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

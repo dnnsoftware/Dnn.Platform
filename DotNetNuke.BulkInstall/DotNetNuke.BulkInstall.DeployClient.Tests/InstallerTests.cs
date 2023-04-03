@@ -4,11 +4,12 @@
 using System.Net.Sockets;
 using Shouldly.Configuration;
 
-namespace DotNetNuke.BulkInstall.DeployClient.Tests
+namespace DotNetNuke.Tests.BulkInstall.DeployClient
 {
     using System.Net;
     using System.Reflection;
     using System.Text.Json;
+    using DotNetNuke.BulkInstall.DeployClient;
 
     public class InstallerTests
     {
