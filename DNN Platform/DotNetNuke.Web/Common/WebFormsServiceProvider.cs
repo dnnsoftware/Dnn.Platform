@@ -28,9 +28,21 @@ namespace DotNetNuke.Web.Common
         {
             var provider = HttpContextSource.Current?.GetScope()?.ServiceProvider;
 
-            return provider != null && (serviceType.IsInterface || serviceType.GetConstructors().Length > 0)
-                ? ActivatorUtilities.GetServiceOrCreateInstance(provider, serviceType)
-                : Activator.CreateInstance(serviceType, ActivatorFlags, null, null, null);
+            var service = provider?.GetService(serviceType);
+
+            if (service != null)
+            {
+                return service;
+            }
+
+            // "ActivatorUtilities.CreateInstance" will throw an exception if there are only constructors that are not public,
+            // which is the case for some of the types in ASP.NET WebForms. So we need to check if there are any public constructors.
+            if (provider != null && serviceType.GetConstructors().Length > 0)
+            {
+                return ActivatorUtilities.CreateInstance(provider, serviceType);
+            }
+
+            return Activator.CreateInstance(serviceType, ActivatorFlags, null, null, null);
         }
     }
 }
