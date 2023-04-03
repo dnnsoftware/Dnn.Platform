@@ -1,53 +1,58 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.BulkInstall.DeployClient
+namespace DotNetNuke.BulkInstall.DeployClient;
+
+using System.IO.Abstractions;
+
+using Spectre.Console;
+using Spectre.Console.Cli;
+
+/// <summary>The primary command.</summary>
+public class DeployCommand : AsyncCommand<DeployInput>
 {
-    using System.IO.Abstractions;
+    private readonly IFileSystem fileSystem;
+    private readonly IDeployer deployer;
 
-    using Spectre.Console.Cli;
-    using Spectre.Console;
-
-    public class DeployCommand : AsyncCommand<DeployInput>
+    /// <summary>Initializes a new instance of the <see cref="DeployCommand"/> class.</summary>
+    /// <param name="deployer">The deployer.</param>
+    /// <param name="fileSystem">The file system.</param>
+    public DeployCommand(IDeployer deployer, IFileSystem fileSystem)
     {
-        private readonly IFileSystem fileSystem;
-        private readonly IDeployer deployer;
+        this.deployer = deployer;
+        this.fileSystem = fileSystem;
+    }
 
-        public DeployCommand(IDeployer deployer, IFileSystem fileSystem)
+    /// <inheritdoc/>
+    public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
+    {
+        var exitCode = await this.deployer.StartAsync(input);
+        return (int)exitCode;
+    }
+
+    /// <inheritdoc/>
+    public override ValidationResult Validate(CommandContext context, DeployInput settings)
+    {
+        if (!string.IsNullOrWhiteSpace(settings.PackagesDirectoryPath) && !this.fileSystem.Directory.Exists(settings.PackagesDirectoryPath))
         {
-            this.deployer = deployer;
-            this.fileSystem = fileSystem;
+            return ValidationResult.Error("--packages-directory must be a valid path");
         }
 
-        public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
+        if (!Uri.TryCreate(settings.TargetUri, UriKind.Absolute, out _))
         {
-            var exitCode = await this.deployer.StartAsync(input);
-            return (int)exitCode;
+            return ValidationResult.Error("--target-uri must be a valid URI");
         }
 
-        public override ValidationResult Validate(CommandContext context, DeployInput settings)
+        if (settings.InstallationStatusTimeout < 0)
         {
-            if (!string.IsNullOrWhiteSpace(settings.PackagesDirectoryPath) && !this.fileSystem.Directory.Exists(settings.PackagesDirectoryPath))
-            {
-                return ValidationResult.Error("--packages-directory must be a valid path");
-            }
-
-            if (!Uri.TryCreate(settings.TargetUri, UriKind.Absolute, out _))
-            {
-                return ValidationResult.Error("--target-uri must be a valid URI");
-            }
-
-            if (settings.InstallationStatusTimeout < 0)
-            {
-                return ValidationResult.Error("--installation-status-timeout must be non-negative");
-            }
-
-            if (!Enum.GetValues<LogLevel>().Contains(settings.LogLevel))
-            {
-                return ValidationResult.Error("--log-level must be a valid log level");
-            }
-
-            return ValidationResult.Success();
+            return ValidationResult.Error("--installation-status-timeout must be non-negative");
         }
+
+        if (!Enum.GetValues<LogLevel>().Contains(settings.LogLevel))
+        {
+            return ValidationResult.Error("--log-level must be a valid log level");
+        }
+
+        return ValidationResult.Success();
     }
 }

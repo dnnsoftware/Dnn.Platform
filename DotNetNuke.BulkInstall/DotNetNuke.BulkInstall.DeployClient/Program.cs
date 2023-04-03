@@ -2,8 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 using System.IO.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+
 using DotNetNuke.BulkInstall.DeployClient;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -19,7 +22,7 @@ try
     services.AddTransient<IEncryptor, Encryptor>();
     services.AddTransient<IDelayer, Delayer>();
     services.AddTransient<IDeployer, Deployer>();
-    
+
     var registrar = new ServiceCollectionRegistrar(services);
     var app = new CommandApp<DeployCommand>(registrar);
     return app.Run(args);

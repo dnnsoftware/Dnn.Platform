@@ -16,7 +16,7 @@ public static class TestHelpers
             EncryptionKey = encryptionKey ?? A.Dummy<string>(),
             InstallationStatusTimeout = installationStatusTimeout ?? 0,
             PackagesDirectoryPath = packagesDirectoryPath ?? A.Dummy<string>(),
-            LogLevel = logLevel ?? A.Dummy<LogLevel>()
+            LogLevel = logLevel ?? A.Dummy<LogLevel>(),
         };
     }
 }

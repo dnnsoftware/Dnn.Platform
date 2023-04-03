@@ -10,11 +10,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <PackAsTool>true</PackAsTool>
 		<ToolCommandName>polydeploy</ToolCommandName>
+    <DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
+    <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="System" />
@@ -41,8 +39,17 @@
 		</PackageReference>
 		<PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
 		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.2.0" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="System.IO.Abstractions" Version="19.2.1" />
 	</ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\DotNetNuke.BulkInstall.Encryption\DotNetNuke.BulkInstall.Encryption.csproj" />

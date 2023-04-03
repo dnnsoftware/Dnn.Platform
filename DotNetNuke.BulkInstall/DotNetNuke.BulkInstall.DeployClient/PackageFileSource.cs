@@ -1,29 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.BulkInstall.DeployClient
+namespace DotNetNuke.BulkInstall.DeployClient;
+
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
+
+/// <summary>The <see cref="IPackageFileSource"/> implementation, using <see cref="IFileSystem"/>.</summary>
+public class PackageFileSource : IPackageFileSource
 {
-    using System.Collections.Generic;
-    using System.IO.Abstractions;
-    using System.IO;
+    private readonly IFileSystem fileSystem;
 
-    public class PackageFileSource : IPackageFileSource
+    /// <summary>Initializes a new instance of the <see cref="PackageFileSource"/> class.</summary>
+    /// <param name="fileSystem">The file system.</param>
+    public PackageFileSource(IFileSystem fileSystem)
     {
-        private readonly IFileSystem fileSystem;
+        this.fileSystem = fileSystem;
+    }
 
-        public PackageFileSource(IFileSystem fileSystem)
-        {
-            this.fileSystem = fileSystem;
-        }
+    /// <inheritdoc/>
+    public IReadOnlyCollection<string> GetPackageFiles(string path)
+    {
+        return this.fileSystem.Directory.GetFiles(path, "*.zip");
+    }
 
-        public IReadOnlyCollection<string> GetPackageFiles(string path)
-        {
-            return this.fileSystem.Directory.GetFiles(path, "*.zip");
-        }
-
-        public Stream GetFileStream(string fileName)
-        {
-            return this.fileSystem.File.Open(fileName, FileMode.Open, FileAccess.Read);
-        }
+    /// <inheritdoc/>
+    public Stream GetFileStream(string fileName)
+    {
+        return this.fileSystem.File.Open(fileName, FileMode.Open, FileAccess.Read);
     }
 }

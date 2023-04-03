@@ -2,21 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.BulkInstall.DeployClient;
+
 using System;
 using System.Collections.Generic;
+
 using DotNetNuke.BulkInstall.DeployClient;
+
 using Shouldly;
 
 public class TestStopwatch : IStopwatch
 {
     private readonly IReadOnlyList<TimeSpan> timeSpans;
-    
+
+    private int elapsedCalled;
+
     public TestStopwatch(params TimeSpan[] timeSpans)
     {
         this.timeSpans = timeSpans;
     }
-
-    private int elapsedCalled;
 
     public TimeSpan Elapsed
     {
@@ -29,9 +32,9 @@ public class TestStopwatch : IStopwatch
                 return TimeSpan.Zero;
             }
 
-            return elapsedCalled >= this.timeSpans.Count 
-                ? this.timeSpans[^1] 
-                : timeSpans[elapsedCalled++];
+            return this.elapsedCalled >= this.timeSpans.Count
+                ? this.timeSpans[^1]
+                : this.timeSpans[this.elapsedCalled++];
         }
     }
 

@@ -1,242 +1,256 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.BulkInstall.DeployClient
+namespace DotNetNuke.BulkInstall.DeployClient;
+
+using Spectre.Console;
+
+/// <summary>The <see cref="IRenderer"/> implementation, using <see cref="IAnsiConsole"/> (i.e. Spectre.Console).</summary>
+public class Renderer : IRenderer
 {
-    using Spectre.Console;
+    private readonly IAnsiConsole console;
+    private readonly HashSet<string> succeededPackageFiles = new();
+    private readonly HashSet<string> failedPackageFiles = new();
 
-    public class Renderer : IRenderer
+    /// <summary>Initializes a new instance of the <see cref="Renderer"/> class.</summary>
+    /// <param name="console">The console.</param>
+    public Renderer(IAnsiConsole console)
     {
-        private readonly IAnsiConsole console;
+        this.console = console;
+    }
 
-        public Renderer(IAnsiConsole console)
+    /// <inheritdoc/>
+    public void Welcome(LogLevel level)
+    {
+        var shouldLog = level <= LogLevel.Information;
+        if (!shouldLog)
         {
-            this.console = console;
+            return;
         }
 
-        public void Welcome(LogLevel level)
-        {
-            var shouldLog = level <= LogLevel.Information;
-            if (!shouldLog) return;
-            this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
-        }
+        this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
+    }
 
-        public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string file, Task uploadTask)> uploads)
+    /// <inheritdoc/>
+    public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string File, Task UploadTask)> uploads)
+    {
+        var shouldLog = level <= LogLevel.Information;
+        if (this.console.Profile.Capabilities.Interactive && shouldLog)
         {
-            var shouldLog = level <= LogLevel.Information;
-            if (this.console.Profile.Capabilities.Interactive && shouldLog)
-            {
-                // TODO: actually show upload progress
-                await this.console.Progress()
-                    .StartAsync(async context =>
-                    {
-                        await Task.WhenAll(uploads.Select(async upload =>
-                        {
-                            var progressTask = context.AddTask(upload.file);
-                            await upload.uploadTask;
-                            progressTask.Increment(100);
-                            progressTask.StopTask();
-                        }));
-                    });
-            }
-            else
-            {
-                await Task.WhenAll(uploads.Select(async upload =>
+            // TODO: actually show upload progress
+            await this.console.Progress()
+                .StartAsync(async context =>
                 {
-                    await upload.uploadTask;
-                    if (shouldLog)
+                    await Task.WhenAll(uploads.Select(async upload =>
                     {
-                        this.console.MarkupLineInterpolated($"{upload.file} upload complete");
-                    }
-                }));
-            }
+                        var progressTask = context.AddTask(upload.File);
+                        await upload.UploadTask;
+                        progressTask.Increment(100);
+                        progressTask.StopTask();
+                    }));
+                });
+        }
+        else
+        {
+            await Task.WhenAll(uploads.Select(async upload =>
+            {
+                await upload.UploadTask;
+                if (shouldLog)
+                {
+                    this.console.MarkupLineInterpolated($"{upload.File} upload complete");
+                }
+            }));
+        }
+    }
+
+    /// <inheritdoc/>
+    public void RenderInstallationOverview(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
+    {
+        if (level > LogLevel.Information)
+        {
+            return;
         }
 
-        public void RenderInstallationOverview(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
+        var tree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
+        foreach (var packageFile in packageFiles.Values)
         {
-            if (level > LogLevel.Information)
+            if (packageFile == null)
             {
-                return;
+                continue;
             }
 
-            var tree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
-            foreach (var packageFile in packageFiles.Values)
+            var fileNode = tree.AddNode(Markup.FromInterpolated($":page_facing_up: [aqua]{packageFile.Name}[/]"));
+            if (packageFile.Packages == null)
             {
-                if (packageFile == null)
+                continue;
+            }
+
+            foreach (var package in packageFile.Packages)
+            {
+                if (package == null)
                 {
                     continue;
                 }
 
-                var fileNode = tree.AddNode(Markup.FromInterpolated($":page_facing_up: [aqua]{packageFile.Name}[/]"));
-                if (packageFile.Packages == null)
+                var packageNode = fileNode.AddNode(Markup.FromInterpolated($":wrapped_gift: [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
+                if (package.Dependencies == null)
                 {
                     continue;
                 }
 
-                foreach (var package in packageFile.Packages)
+                foreach (var dependency in package.Dependencies)
                 {
-                    if (package == null)
+                    if (dependency == null)
                     {
                         continue;
                     }
 
-                    var packageNode = fileNode.AddNode(Markup.FromInterpolated($":wrapped_gift: [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
-                    if (package.Dependencies == null)
+                    if (string.IsNullOrEmpty(dependency.DependencyVersion) && !dependency.IsPackageDependency)
                     {
-                        continue;
+                        packageNode.AddNode(Markup.FromInterpolated($"Depends on :radioactive: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
                     }
-
-                    foreach (var dependency in package.Dependencies)
+                    else
                     {
-                        if (dependency == null)
-                        {
-                            continue;
-                        }
-
-                        if (string.IsNullOrEmpty(dependency.DependencyVersion) && !dependency.IsPackageDependency)
-                        {
-                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :radioactive: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
-                        }
-                        else
-                        {
-                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
-                        }
+                        packageNode.AddNode(Markup.FromInterpolated($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
                     }
                 }
             }
-
-            this.console.Write(tree);
         }
 
-        public void RenderListOfFiles(LogLevel level, IEnumerable<string> files)
+        this.console.Write(tree);
+    }
+
+    /// <inheritdoc/>
+    public void RenderListOfFiles(LogLevel level, IEnumerable<string> files)
+    {
+        var shouldLog = level <= LogLevel.Information;
+        if (!shouldLog)
         {
-            var shouldLog = level <= LogLevel.Information;
-            if (!shouldLog)
+            return;
+        }
+
+        var separatedFiles = files.Select(GetFileParts).Select(fileParts => fileParts.ToArray());
+
+        var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
+        fileTree.AddNodes(MakeNode(separatedFiles));
+
+        this.console.Write(fileTree);
+
+        static TreeNode MakeNode(IEnumerable<string[]> files)
+        {
+            var filesList = files.ToList();
+            if (filesList is [[var fileName,],])
             {
-                return;
+                return new TreeNode(Markup.FromInterpolated($":page_facing_up: [aqua]{fileName}[/]"));
             }
 
-            var separatedFiles = files.Select(GetFileParts).Select(fileParts => fileParts.ToArray());
+            var (joinedPath, groupedFiles) = GetGroupedFiles(filesList);
 
-            var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
-            fileTree.AddNodes(MakeNode(separatedFiles));
+            var folderNode =
+                new TreeNode(Markup.FromInterpolated($":file_folder: [yellow]{joinedPath}[/]"));
 
-            console.Write(fileTree);
+            folderNode.AddNodes(groupedFiles.Select(MakeNode));
 
-            static TreeNode MakeNode(IEnumerable<string[]> files)
+            return folderNode;
+        }
+
+        static (string JoinedPath, IEnumerable<IEnumerable<string[]>> GroupedParts) GetGroupedFiles(IReadOnlyList<string[]> files)
+        {
+            string joinedPath;
+            IEnumerable<IEnumerable<string[]>> groupedParts;
+
+            var firstFile = files[0];
+            var minParts = files.Min(parts => parts.Length);
+            for (var i = 0; i < minParts; i++)
             {
-                var filesList = files.ToList();
-                if (filesList is [ [var fileName,],])
+                if (!files.Any(parts => parts[i] != firstFile[i]))
                 {
-                    return new TreeNode(Markup.FromInterpolated($":page_facing_up: [aqua]{fileName}[/]"));
+                    continue;
                 }
 
-                var (joinedPath, groupedFiles) = GetGroupedFiles(filesList);
-
-                var folderNode =
-                    new TreeNode(Markup.FromInterpolated($":file_folder: [yellow]{joinedPath}[/]"));
-
-                folderNode.AddNodes(groupedFiles.Select(MakeNode));
-
-                return folderNode;
-            }
-
-            static (string JoinedPath, IEnumerable<IEnumerable<string[]>> GroupedParts) GetGroupedFiles(IReadOnlyList<string[]> files)
-            {
-                string joinedPath;
-                IEnumerable<IEnumerable<string[]>> groupedParts;
-
-                var firstFile = files[0];
-                var minParts = files.Min(parts => parts.Length);
-                for (var i = 0; i < minParts; i++)
-                {
-                    if (!files.Any(parts => parts[i] != firstFile[i]))
-                    {
-                        continue;
-                    }
-
-                    joinedPath = string.Concat(firstFile.Take(i));
-                    groupedParts = files.GroupBy(
-                        parts => string.Concat(parts.Take(i + 1)), 
-                        parts => parts[i..]);
-                    return (joinedPath, groupedParts);
-                }
-
-                joinedPath = string.Concat(firstFile.Take(minParts));
-                groupedParts = Enumerable.Empty<IEnumerable<string[]>>();
+                joinedPath = string.Concat(firstFile.Take(i));
+                groupedParts = files.GroupBy(
+                    parts => string.Concat(parts.Take(i + 1)),
+                    parts => parts[i..]);
                 return (joinedPath, groupedParts);
             }
 
-            static IEnumerable<string> GetFileParts(string filePath)
-            {
-                var directory = Path.GetDirectoryName(filePath);
-                if (directory == null)
-                {
-                    yield return EnsureEndsWithSlash(filePath);
-                    yield break;
-                }
-
-                foreach (var part in GetFileParts(directory))
-                {
-                    yield return EnsureEndsWithSlash(part);
-                }
-
-                yield return Path.GetFileName(filePath);
-            }
-
-
-            static string EnsureEndsWithSlash(string str)
-            {
-                if (str.EndsWith(Path.DirectorySeparatorChar))
-                {
-                    return str;
-                }
-
-                return str + Path.DirectorySeparatorChar;
-            }
+            joinedPath = string.Concat(firstFile.Take(minParts));
+            groupedParts = Enumerable.Empty<IEnumerable<string[]>>();
+            return (joinedPath, groupedParts);
         }
 
-        public void RenderInstallationStatus(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
+        static IEnumerable<string> GetFileParts(string filePath)
         {
-            foreach (var file in packageFiles.Values)
+            var directory = Path.GetDirectoryName(filePath);
+            if (directory == null)
             {
-                if (file?.Name is null) continue;
-                if (file.Success && !succeededPackageFiles.Contains(file.Name))
-                {
-                    if (level <= LogLevel.Information)
-                    {
-                        this.console.MarkupLineInterpolated($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]");
-                    }
-
-                    succeededPackageFiles.Add(file.Name);
-                }
-
-                if (file.Failures?.Any() == true && !failedPackageFiles.Contains(file.Name))
-                {
-                    if (level <= LogLevel.Error)
-                    {
-                        var failureTree = new Tree(Markup.FromInterpolated($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
-                        failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => new Text(f!)));
-                        this.console.Write(failureTree);
-                    }
-
-                    failedPackageFiles.Add(file.Name);
-                }
+                yield return EnsureEndsWithSlash(filePath);
+                yield break;
             }
+
+            foreach (var part in GetFileParts(directory))
+            {
+                yield return EnsureEndsWithSlash(part);
+            }
+
+            yield return Path.GetFileName(filePath);
         }
 
-        public void RenderCriticalError(LogLevel level, string message, Exception exception)
+        static string EnsureEndsWithSlash(string str)
         {
-            if (level > LogLevel.Critical)
+            if (str.EndsWith(Path.DirectorySeparatorChar))
             {
-                return;
+                return str;
             }
 
-            this.console.WriteLine(message);
-            this.console.WriteException(exception);
+            return str + Path.DirectorySeparatorChar;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void RenderInstallationStatus(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
+    {
+        foreach (var file in packageFiles.Values)
+        {
+            if (file?.Name is null)
+            {
+                continue;
+            }
+
+            if (file.Success && !this.succeededPackageFiles.Contains(file.Name))
+            {
+                if (level <= LogLevel.Information)
+                {
+                    this.console.MarkupLineInterpolated($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]");
+                }
+
+                this.succeededPackageFiles.Add(file.Name);
+            }
+
+            if (file.Failures?.Any() == true && !this.failedPackageFiles.Contains(file.Name))
+            {
+                if (level <= LogLevel.Error)
+                {
+                    var failureTree = new Tree(Markup.FromInterpolated($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
+                    failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => new Text(f!)));
+                    this.console.Write(failureTree);
+                }
+
+                this.failedPackageFiles.Add(file.Name);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public void RenderCriticalError(LogLevel level, string message, Exception exception)
+    {
+        if (level > LogLevel.Critical)
+        {
+            return;
         }
 
-        private readonly HashSet<string> succeededPackageFiles = new();
-        private readonly HashSet<string> failedPackageFiles = new();
+        this.console.WriteLine(message);
+        this.console.WriteException(exception);
     }
 }

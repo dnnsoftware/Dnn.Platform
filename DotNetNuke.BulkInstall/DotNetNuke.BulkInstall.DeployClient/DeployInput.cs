@@ -1,59 +1,59 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.BulkInstall.DeployClient
+namespace DotNetNuke.BulkInstall.DeployClient;
+
+using System.ComponentModel;
+
+using Spectre.Console.Cli;
+
+/// <summary>The input to the <see cref="DeployCommand"/> (i.e. CLI flags).</summary>
+public class DeployInput : CommandSettings
 {
-    using System.ComponentModel;
+    private string packagesDirectoryPath = string.Empty;
 
-    using Spectre.Console.Cli;
+    /// <summary>Gets or sets the URL of the site to which to deploy packages.</summary>
+    [CommandOption("-u|--target-uri")]
+    [Description("The URL of the site to which the packages will be deployed.")]
+    public string TargetUri { get; set; } = string.Empty;
 
-    public enum ExitCode
+    /// <summary>Gets or sets the API key with which to authenticate to the site.</summary>
+    [CommandOption("-a|--api-key")]
+    [Description("The key used to authenticate with the web server.")]
+    public string ApiKey { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the key to use to encrypt the packages.</summary>
+    [CommandOption("-e|--encryption-key")]
+    [Description("The key used to encrypt the packages before uploading.")]
+    public string EncryptionKey { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the number of seconds to try to contact the site's installer before considering it an error.</summary>
+    [CommandOption("-t|--installation-status-timeout")]
+    [Description("The number of seconds to ignore 404 errors when checking installation status.")]
+    [DefaultValue(60)]
+    public int InstallationStatusTimeout { get; set; }
+
+    /// <summary>Gets or sets the path to the directory with packages to deploy.</summary>
+    [CommandOption("-d|--packages-directory")]
+    [Description("Defines the directory that contains the install packages.")]
+    public string PackagesDirectoryPath
     {
-        Success = 0,
-        InstallerError = 1,
-        PackageError = 2,
-        UnexpectedError = int.MaxValue
+        get => ValidOrCurrentDirectory(this.packagesDirectoryPath);
+        set => this.packagesDirectoryPath = ValidOrCurrentDirectory(value);
     }
 
-    public class DeployInput : CommandSettings
+    /// <summary>Gets or sets the level of logging.</summary>
+    [CommandOption("-l|--log-level")]
+    [Description("Defines the amount of logging.")]
+    [DefaultValue(LogLevel.Information)]
+    public LogLevel LogLevel { get; set; }
+
+    /// <summary>Gets the URI of the site to which to deploy the packages.</summary>
+    /// <returns>An absolute <see cref="Uri"/>.</returns>
+    public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
+
+    private static string ValidOrCurrentDirectory(string path)
     {
-        private string packagesDirectoryPath = string.Empty;
-
-        [CommandOption("-u|--target-uri")]
-        [Description("The URL of the site to which the packages will be deployed.")]
-        public string TargetUri { get; set; } = string.Empty;
-
-        [CommandOption("-a|--api-key")]
-        [Description("The key used to authenticate with the web server.")]
-        public string ApiKey { get; set; } = string.Empty;
-
-        [CommandOption("-e|--encryption-key")]
-        [Description("The key used to encrypt the packages before uploading.")]
-        public string EncryptionKey { get; set; } = string.Empty;
-
-        [CommandOption("-t|--installation-status-timeout")]
-        [Description("The number of seconds to ignore 404 errors when checking installation status.")]
-        [DefaultValue(60)]
-        public int InstallationStatusTimeout { get; set; }
-
-        [CommandOption("-d|--packages-directory")]
-        [Description("Defines the directory that contains the to install packages.")]
-        public string PackagesDirectoryPath
-        {
-            get => ValidOrCurrentDirectory(this.packagesDirectoryPath);
-            set => this.packagesDirectoryPath = ValidOrCurrentDirectory(value);
-        }
-
-        [CommandOption("-l|--log-level")]
-        [Description("Defines the amount of logging.")]
-        [DefaultValue(LogLevel.Information)]
-        public LogLevel LogLevel { get; set; }
-
-        public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
-
-        private static string ValidOrCurrentDirectory(string path)
-        {
-            return string.IsNullOrEmpty(path) ? Directory.GetCurrentDirectory() : path;
-        }
+        return string.IsNullOrEmpty(path) ? Directory.GetCurrentDirectory() : path;
     }
 }
