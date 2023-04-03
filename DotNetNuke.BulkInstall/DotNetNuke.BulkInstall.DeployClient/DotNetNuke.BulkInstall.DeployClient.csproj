@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<LangVersion>latest</LangVersion>
+
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>polydeploy</ToolCommandName>
+		<VersionPrefix>1.0.0</VersionPrefix>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Using Include="System" />
+		<Using Include="System.Collections.Generic" />
+		<Using Include="System.IO" />
+		<Using Include="System.Linq" />
+		<Using Include="System.Net.Http" />
+		<Using Include="System.Threading" />
+		<Using Include="System.Threading.Tasks" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IsCI" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Spectre.Console" Version="0.46.0" />
+		<PackageReference Include="Spectre.Console.Analyzer" Version="0.46.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
+		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.2.0" />
+		<PackageReference Include="System.IO.Abstractions" Version="19.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DotNetNuke.BulkInstall.Encryption\DotNetNuke.BulkInstall.Encryption.csproj" />
+	</ItemGroup>
+
+</Project>

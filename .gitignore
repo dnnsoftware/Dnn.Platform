@@ -113,7 +113,7 @@ DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
 DNN [Pp]latform/[Cc]onnectors/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
-/DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.Encryption/bin/
+/DotNetNuke.BulkInstall/*/bin/
 
 DNN [Pp]latform/Modules/ResourceManager/**/scripts/*-bundle.*
 
