@@ -52,6 +52,8 @@ namespace Dnn.PersonaBar.Users.Components
         // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
         // This method can easily be modified to pass passowrd, display name, etc.
         // It is recommended to write unit tests.
+
+        /// <inheritdoc/>
         public UserBasicDto Register(RegisterationDetails registerationDetails)
         {
             var portalSettings = registerationDetails.PortalSettings;
@@ -76,10 +78,9 @@ namespace Dnn.PersonaBar.Users.Components
                 Email = email,
             };
 
-            var cleanUsername = PortalSecurity.Instance.InputFilter(username,
-                                                      PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+            var cleanUsername = PortalSecurity.Instance.InputFilter(
+                username,
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             if (!cleanUsername.Equals(username))
             {
@@ -96,7 +97,8 @@ namespace Dnn.PersonaBar.Users.Components
             // ensure this user doesn't exist
             if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
             {
-                throw new Exception(Localization.GetString("RegistrationUsernameAlreadyPresent",
+                throw new Exception(Localization.GetString(
+                    "RegistrationUsernameAlreadyPresent",
                     Library.Constants.SharedResources));
             }
 
@@ -129,7 +131,9 @@ namespace Dnn.PersonaBar.Users.Components
                 newUser.LastName = registerationDetails.LastName;
             }
             else
+            {
                 newUser.DisplayName = newUser.Email.Substring(0, newUser.Email.IndexOf("@", StringComparison.Ordinal));
+            }
 
             // read all the user account settings
             var settings = UserController.GetUserSettings(portalSettings.PortalId);
@@ -140,7 +144,8 @@ namespace Dnn.PersonaBar.Users.Components
                 var portalSecurity = PortalSecurity.Instance;
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                 {
-                    throw new Exception(Localization.GetString("RegistrationProfanityNotAllowed",
+                    throw new Exception(Localization.GetString(
+                        "RegistrationProfanityNotAllowed",
                         Library.Constants.SharedResources));
                 }
             }
@@ -153,7 +158,8 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Email);
                 if (matches.Count == 0)
                 {
-                    throw new Exception(Localization.GetString("RegistrationInvalidEmailUsed",
+                    throw new Exception(Localization.GetString(
+                        "RegistrationInvalidEmailUsed",
                         Library.Constants.SharedResources));
                 }
             }
@@ -166,7 +172,8 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count > 0)
                 {
-                    throw new Exception(Localization.GetString("RegistrationExcludedTermsUsed",
+                    throw new Exception(Localization.GetString(
+                        "RegistrationExcludedTermsUsed",
                         Library.Constants.SharedResources));
                 }
             }
@@ -179,7 +186,8 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count == 0)
                 {
-                    throw new Exception(Localization.GetString("RegistrationInvalidUserNameUsed",
+                    throw new Exception(Localization.GetString(
+                        "RegistrationInvalidUserNameUsed",
                         Library.Constants.SharedResources));
                 }
             }
@@ -201,6 +209,7 @@ namespace Dnn.PersonaBar.Users.Components
                     user = UserController.GetUserByName(portalSettings.PortalId, userName);
                     i++;
                 }
+
                 newUser.Username = userName;
             }
 
@@ -218,13 +227,17 @@ namespace Dnn.PersonaBar.Users.Components
                         user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, displayName);
                         i++;
                     }
+
                     newUser.DisplayName = displayName;
                 }
             }
 
             // Update display name format
             var displaynameFormat = this.GetStringSetting(settings, "Security_DisplayNameFormat");
-            if (!string.IsNullOrEmpty(displaynameFormat)) newUser.UpdateDisplayName(displaynameFormat);
+            if (!string.IsNullOrEmpty(displaynameFormat))
+            {
+                newUser.UpdateDisplayName(displaynameFormat);
+            }
 
             // membership is approved only for public registration
             newUser.Membership.Approved =
@@ -232,6 +245,7 @@ namespace Dnn.PersonaBar.Users.Components
                 portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
             newUser.Membership.PasswordQuestion = registerationDetails.Question;
             newUser.Membership.PasswordAnswer = registerationDetails.Answer;
+
             // final creation of user
             var createStatus = UserController.CreateUser(ref newUser, registerationDetails.Notify);
 
@@ -265,6 +279,7 @@ namespace Dnn.PersonaBar.Users.Components
             return UserBasicDto.FromUserInfo(newUser);
         }
 
+        /// <inheritdoc/>
         protected override Func<IRegisterController> GetFactory()
         {
             return () => new RegisterController();
@@ -287,7 +302,7 @@ namespace Dnn.PersonaBar.Users.Components
         private static string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
             // This method could need a custom ArrayList in future notification types. Currently it is null
-            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);
+            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
         }
 
         private static string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
@@ -309,11 +324,12 @@ namespace Dnn.PersonaBar.Users.Components
         private string GetExcludeTermsRegex(Hashtable settings)
         {
             var excludeTerms = this.GetStringSetting(settings, "Registration_ExcludeTerms");
-            var regex = String.Empty;
-            if (!String.IsNullOrEmpty(excludeTerms))
+            var regex = string.Empty;
+            if (!string.IsNullOrEmpty(excludeTerms))
             {
-                regex = excludeTerms.Replace(" ", "").Replace(",", "|");
+                regex = excludeTerms.Replace(" ", string.Empty).Replace(",", "|");
             }
+
             return regex;
         }
     }

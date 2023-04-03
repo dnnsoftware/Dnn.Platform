@@ -178,9 +178,9 @@ namespace DotNetNuke.Modules.Journal.Components
             return url;
         }
 
-        internal static LinkInfo GetLinkData(string URL)
+        internal static LinkInfo GetLinkData(string url)
         {
-            string sPage = GetPageFromURL(ref URL, string.Empty, string.Empty);
+            string sPage = GetPageFromURL(ref url, string.Empty, string.Empty);
             LinkInfo link = new LinkInfo();
             if (string.IsNullOrEmpty(sPage))
             {
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.Journal.Components
             string sDescription = string.Empty;
             string sImage = string.Empty;
 
-            link.URL = URL;
+            link.URL = url;
             link.Images = new List<ImageInfo>();
             Match m = PageRegex.Match(sPage);
             if (m.Success)
@@ -248,14 +248,14 @@ namespace DotNetNuke.Modules.Journal.Components
 
             string imgList = string.Empty;
             string hostUrl = string.Empty;
-            if (!URL.Contains("http"))
+            if (!url.Contains("http"))
             {
-                URL = "http://" + URL;
+                url = "http://" + url;
             }
 
-            Uri uri = new Uri(URL);
+            Uri uri = new Uri(url);
             hostUrl = uri.Host;
-            if (URL.Contains("https:"))
+            if (url.Contains("https:"))
             {
                 hostUrl = "https://" + hostUrl;
             }

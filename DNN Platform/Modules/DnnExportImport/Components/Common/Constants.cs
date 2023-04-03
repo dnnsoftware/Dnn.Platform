@@ -7,9 +7,7 @@ namespace Dnn.ExportImport.Components.Common
 {
     using System;
 
-    /// <summary>
-    /// Lists constants used across the library.
-    /// </summary>
+    /// <summary>Lists constants used across the library.</summary>
     public class Constants
     {
         /// <summary>

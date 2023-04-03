@@ -9,25 +9,14 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Entities.Host;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Membership
     /// Class:      PasswordConfig
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PasswordConfig class provides a wrapper any Portal wide Password Settings.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PasswordConfig class provides a wrapper any Portal wide Password Settings.</summary>
     public class PasswordConfig
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Password Expiry time in days.
-        /// </summary>
+        /// <summary>Gets or sets the Password Expiry time in days.</summary>
         /// <returns>An integer.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(0)]
         [Category("Password")]
         public static int PasswordExpiry
@@ -43,13 +32,11 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the a Reminder time in days (to remind the user that theire password
         /// is about to expire.
         /// </summary>
         /// <returns>An integer.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(1)]
         [Category("Password")]
         public static int PasswordExpiryReminder

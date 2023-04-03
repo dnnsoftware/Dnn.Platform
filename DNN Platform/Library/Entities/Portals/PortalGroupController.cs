@@ -21,20 +21,16 @@ namespace DotNetNuke.Entities.Portals
     public class PortalGroupController : ComponentBase<IPortalGroupController, PortalGroupController>, IPortalGroupController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalGroupController));
-        private readonly IDataService _dataService;
-        private readonly IPortalController _portalController;
+        private readonly IDataService dataService;
+        private readonly IPortalController portalController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalGroupController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalGroupController"/> class.</summary>
         public PortalGroupController()
             : this(DataService.Instance, PortalController.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalGroupController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalGroupController"/> class.</summary>
         /// <param name="dataService"></param>
         /// <param name="portalController"></param>
         public PortalGroupController(IDataService dataService, IPortalController portalController)
@@ -43,8 +39,8 @@ namespace DotNetNuke.Entities.Portals
             Requires.NotNull("dataService", dataService);
             Requires.NotNull("portalController", portalController);
 
-            this._dataService = dataService;
-            this._portalController = portalController;
+            this.dataService = dataService;
+            this.portalController = portalController;
         }
 
         /// <inheritdoc/>
@@ -65,7 +61,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (users.Count > 0)
             {
-                var masterPortal = this._portalController.GetPortal(portalGroup.MasterPortalId);
+                var masterPortal = this.portalController.GetPortal(portalGroup.MasterPortalId);
 
                 foreach (UserInfo user in users)
                 {
@@ -114,14 +110,14 @@ namespace DotNetNuke.Entities.Portals
             // Argument Contract
             Requires.NotNull("portalGroup", portalGroup);
 
-            portalGroup.PortalGroupId = this._dataService.AddPortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
+            portalGroup.PortalGroupId = this.dataService.AddPortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             // Update portal
-            var portal = this._portalController.GetPortal(portalGroup.MasterPortalId);
+            var portal = this.portalController.GetPortal(portalGroup.MasterPortalId);
             if (portal != null)
             {
                 portal.PortalGroupID = portalGroup.PortalGroupId;
-                this._portalController.UpdatePortalInfo(portal);
+                this.portalController.UpdatePortalInfo(portal);
             }
 
             this.LogEvent(EventLogController.EventLogType.PORTALGROUP_CREATED, portalGroup, null);
@@ -139,7 +135,7 @@ namespace DotNetNuke.Entities.Portals
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
 
             // Update portal
-            var portal = this._portalController.GetPortal(portalGroup.MasterPortalId);
+            var portal = this.portalController.GetPortal(portalGroup.MasterPortalId);
             if (portal != null)
             {
                 this.DeleteSharedModules(portal);
@@ -147,7 +143,7 @@ namespace DotNetNuke.Entities.Portals
                 PortalController.Instance.UpdatePortalInfo(portal);
             }
 
-            this._dataService.DeletePortalGroup(portalGroup);
+            this.dataService.DeletePortalGroup(portalGroup);
             this.LogEvent(EventLogController.EventLogType.PORTALGROUP_DELETED, portalGroup, null);
 
             ClearCache();
@@ -268,7 +264,7 @@ namespace DotNetNuke.Entities.Portals
             Requires.NotNull("portalGroup", portalGroup);
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
 
-            this._dataService.UpdatePortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
+            this.dataService.UpdatePortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearCache();
         }
@@ -291,7 +287,7 @@ namespace DotNetNuke.Entities.Portals
 
         private object GetPortalGroupsCallback(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillCollection<PortalGroupInfo>(this._dataService.GetPortalGroups());
+            return CBO.FillCollection<PortalGroupInfo>(this.dataService.GetPortalGroups());
         }
 
         private void OnAddPortalToGroupStart(UserCopiedCallback callback, PortalInfo portal)
@@ -433,7 +429,7 @@ namespace DotNetNuke.Entities.Portals
                 DataCache.SharedModulesWithPortalCacheTimeOut,
                 DataCache.SharedModulesWithPortalCachePriority,
                 portal),
-                (p) => CBO.FillCollection<ModuleInfo>(this._dataService.GetSharedModulesWithPortal(portal)));
+                (p) => CBO.FillCollection<ModuleInfo>(this.dataService.GetSharedModulesWithPortal(portal)));
         }
 
         private IEnumerable<ModuleInfo> GetSharedModulesByPortal(PortalInfo portal)
@@ -444,7 +440,7 @@ namespace DotNetNuke.Entities.Portals
                 DataCache.SharedModulesByPortalCacheTimeOut,
                 DataCache.SharedModulesByPortalCachePriority,
                 portal),
-                (p) => CBO.FillCollection<ModuleInfo>(this._dataService.GetSharedModulesByPortal(portal)));
+                (p) => CBO.FillCollection<ModuleInfo>(this.dataService.GetSharedModulesByPortal(portal)));
         }
     }
 }

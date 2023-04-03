@@ -53,9 +53,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        /// <summary>
-        /// Suppress X-Frame-Options Header if there is configuration specified in web.config for it.
-        /// </summary>
+        /// <summary>Suppress X-Frame-Options Header if there is configuration specified in web.config for it.</summary>
         private static void SuppressXFrameOptionsHeaderIfPresentInConfig()
         {
             var xmlConfig = Config.Load();

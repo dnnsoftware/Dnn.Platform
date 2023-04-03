@@ -1,0 +1,28 @@
+:host {
+  display: block;
+
+  /** 
+    * @prop --progress-height: Sets the height of the progress bar.
+    * @prop --progress-background: Sets the background color of the progress bar.
+    * @prop --progress-color: Sets the color of the progress bar.
+    */
+
+  --progress-height: 20px;
+  --progress-background: var(--dnn-color-primary-contrast, lightgray);
+  --progress-color: var(--dnn-color-primary, #3792ED);
+}
+.progress-container {
+  display: flex;
+  height: var(--progress-height);
+  background: var(--progress-background);
+  overflow: hidden;
+
+  .progress-bar {
+    transition: all 300ms ease-in-out;
+    background: var(--progress-color);
+    width: calc(var(--current-value, 0) * 100% / var(--max-value, 100));
+  }
+  .progress-bar-remainder {
+    flex: 1;
+  }
+}

@@ -22,7 +22,7 @@ namespace Dnn.ExportImport.Repository
         /// <param name="dbFileName">The LiteDB connection string.</param>
         public ExportImportRepository(string dbFileName)
         {
-            this.liteDb = new LiteDatabase(dbFileName);
+            this.liteDb = new LiteDatabase(new ConnectionString(dbFileName) { Upgrade = true });
             this.liteDb.Mapper.EmptyStringToNull = false;
             this.liteDb.Mapper.TrimWhitespace = false;
         }
@@ -245,7 +245,7 @@ namespace Dnn.ExportImport.Repository
             var collection = this.DbCollection<T>();
             if (deleteExpression != null)
             {
-                collection.Delete(deleteExpression);
+                collection.DeleteMany(deleteExpression);
             }
         }
 
@@ -298,7 +298,7 @@ namespace Dnn.ExportImport.Repository
             return result.AsEnumerable();
         }
 
-        private LiteCollection<T> DbCollection<T>()
+        private ILiteCollection<T> DbCollection<T>()
         {
             return this.liteDb.GetCollection<T>(typeof(T).Name);
         }

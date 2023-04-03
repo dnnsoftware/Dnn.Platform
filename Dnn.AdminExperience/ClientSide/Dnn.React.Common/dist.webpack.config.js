@@ -17,15 +17,25 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["babel-loader"] },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
-            { test: /\.css$/, loader: "style-loader!css-loader" },
-            { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
-            { test: /\.(svg)$/, loader: "raw-loader" },
-            { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },
-            { test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" }
+            {
+                test: /\.(js|jsx)$/,
+                enforce: "pre",
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "eslint-loader",
+                        options: { fix: true },
+                    }
+                ],
+            },
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ["babel-loader"] },
+            { test: /\.less$/, use: ["style-loader", "css-loader", "less-loader"] },
+            { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
+            { test: /\.css$/, use: ["style-loader!css-loader"] },
+            { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },
+            { test: /\.(svg)$/, use: ["raw-loader"] },
+            { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, use: ["url-loader?mimetype=application/font-woff"] },
+            { test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, use: ["file-loader?name=[name].[ext]"] }
         ]
     },
     externals: ["react", "prop-types", nodeExternals()], // in order to ignore all modules in node_modules folder

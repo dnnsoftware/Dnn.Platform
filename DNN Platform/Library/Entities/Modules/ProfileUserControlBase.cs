@@ -5,28 +5,17 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project  :  DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Modules
     /// Class    :  ProfileUserControlBase
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ProfileUserControlBase class defines a custom base class for the profile Control.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ProfileUserControlBase class defines a custom base class for the profile Control.</summary>
     public class ProfileUserControlBase : UserModuleBase
     {
         public event EventHandler ProfileUpdated;
 
         public event EventHandler ProfileUpdateCompleted;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Raises the OnProfileUpdateCompleted Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Raises the OnProfileUpdateCompleted Event.</summary>
         public void OnProfileUpdateCompleted(EventArgs e)
         {
             if (this.ProfileUpdateCompleted != null)
@@ -35,11 +24,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Raises the ProfileUpdated Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Raises the ProfileUpdated Event.</summary>
         public void OnProfileUpdated(EventArgs e)
         {
             if (this.ProfileUpdated != null)

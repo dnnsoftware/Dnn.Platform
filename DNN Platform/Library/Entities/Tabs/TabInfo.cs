@@ -30,6 +30,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Tokens;
+    using Newtonsoft.Json;
 
     /// <summary>Information about a page within a DNN site.</summary>
     /// <seealso cref="ContentItem" />
@@ -107,6 +108,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a value indicating whether this page has a version that is visible to the current user.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool HasAVisibleVersion
         {
             get
@@ -117,6 +119,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a value indicating whether DNN's search index should include this page.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool AllowIndex
         {
             get
@@ -129,6 +132,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the modules on this page.</summary>
         /// <value>A <see cref="Dictionary{TKey,TValue}"/> mapping between Module ID and <see cref="ModuleInfo"/>.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<int, ModuleInfo> ChildModules
         {
             get
@@ -140,6 +144,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets info for the default language version of this page, if it exists.</summary>
         /// <value>A <see cref="TabInfo"/> instance, or <c>null</c>.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public TabInfo DefaultLanguageTab
         {
             get
@@ -155,6 +160,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a value indicating whether this page is configured not to redirect.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool DoNotRedirect
         {
             get
@@ -175,6 +181,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the indented name of this page (i.e. with <c>"..."</c> at the beginning based on the page's <see cref="Level"/>).</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string IndentedTabName
         {
             get
@@ -192,6 +199,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a value indicating whether this page is the default language version.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsDefaultLanguage
         {
             get
@@ -202,6 +210,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a value indicating whether this page is not for any specific culture/language.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsNeutralCulture
         {
             get
@@ -212,6 +221,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a value indicating whether this page is translated.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsTranslated
         {
             get
@@ -229,6 +239,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the name of the page for the current culture.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string LocalizedTabName
         {
             get
@@ -269,6 +280,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets a collection of pages that are localized children of this page.</summary>
         /// <value>A <see cref="Dictionary{TKey,TValue}"/> mapping from <see cref="CultureCode"/> to <see cref="TabInfo"/>.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<string, TabInfo> LocalizedTabs
         {
             get
@@ -298,6 +310,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the settings collection for the page.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public Hashtable TabSettings
         {
             get
@@ -309,6 +322,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the <see cref="Tabs.TabType"/> for the page.</summary>
         /// <seealso cref="Tabs.TabType"/>
         [XmlIgnore]
+        [JsonIgnore]
         public TabType TabType
         {
             get
@@ -319,6 +333,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a collection of <seealso cref="TabAliasSkinInfo"/> for this page.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public List<TabAliasSkinInfo> AliasSkins
         {
             get
@@ -330,6 +345,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets a collection of custom aliases for this page.</summary>
         /// <value>A <see cref="Dictionary{TKey,TValue}"/> mapping from <see cref="CultureCode"/> to HTTP Alias.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<string, string> CustomAliases
         {
             get
@@ -340,6 +356,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the full URL for this page.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string FullUrl
         {
             get
@@ -394,6 +411,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets a value indicating whether the tab permissions are specified.</summary>
         [Obsolete("Deprecated in DNN 9.7.0, as this provides no use and always returns false.  Scheduled removal in v11.0.0.")]
         [XmlIgnore]
+        [JsonIgnore]
         public bool TabPermissionsSpecified
         {
             get { return false; }
@@ -401,6 +419,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets a collection of page-specific URLs.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public List<TabUrlInfo> TabUrls
         {
             get
@@ -421,10 +440,12 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets or sets the collection of bread crumb pages (i.e. the parent, grandparent, etc. of this page).</summary>
         /// <value>An <see cref="ArrayList"/> with <see cref="TabInfo"/> instances.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public ArrayList BreadCrumbs { get; set; }
 
         /// <summary>Gets or sets the path to the directory with <see cref="ContainerSrc"/>.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string ContainerPath { get; set; }
 
         /// <summary>Gets or sets the path to the default container for this page, if there is one.</summary>
@@ -457,10 +478,12 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the icon file URL, as it is stored in the database.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string IconFileRaw { get; private set; }
 
         /// <summary>Gets the large icon file URL, as it is stored in the database.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string IconFileLargeRaw { get; private set; }
 
         /// <summary>Gets or sets a value indicating whether this page is deleted.</summary>
@@ -481,6 +504,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets or sets a value indicating whether this page has been published.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool HasBeenPublished { get; set; }
 
         /// <summary>Gets or sets the meta keywords for the page.</summary>
@@ -489,6 +513,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets or sets the level of the page, i.e. how may ancestors (parent, grandparent, etc.) it has.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int Level { get; set; }
 
         /// <summary>Gets or sets the <see cref="Guid"/> for the localized version.</summary>
@@ -498,6 +523,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets or sets a collection of the modules on this page.</summary>
         /// <value>An <see cref="ArrayList"/> of <see cref="ModuleInfo"/>.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public ArrayList Modules
         {
             get
@@ -518,6 +544,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets a list of the names of the panes available to the page.</summary>
         /// <value>An <see cref="ArrayList"/> of <see cref="string"/> values with the IDs of the panes on the page.</value>
         [XmlIgnore]
+        [JsonIgnore]
         public ArrayList Panes { get; private set; }
 
         /// <summary>Gets or sets the ID of this page's parent page (or <see cref="Null.NullInteger"/> if it has no parent).</summary>
@@ -543,6 +570,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets or sets the path to the directory with <see cref="SkinSrc"/>.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public string SkinPath { get; set; }
 
         /// <summary>Gets or sets the path to the skin control for this page.</summary>
@@ -613,6 +641,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets or sets a value indicating whether this page is a host level page that doesn't belong to any portal.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsSuperTab
         {
             get
@@ -634,6 +663,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public override int KeyID
         {
             get
@@ -677,6 +707,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets or sets a value indicating whether this page uses friendly URLs.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
 
         /// <inheritdoc />

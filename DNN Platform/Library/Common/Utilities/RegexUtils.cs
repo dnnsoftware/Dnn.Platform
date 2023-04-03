@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utilities
 {
     using System;
@@ -12,10 +11,8 @@ namespace DotNetNuke.Common.Utilities
 
     public class RegexUtils
     {
-        /// <summary>
-        /// Creates and caches a Regex object for later use and retrieves it in a later call if it is cacehd.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Creates and caches a Regex object for later use and retrieves it in a later call if it is cached.</summary>
+        /// <returns>The <see cref="Regex"/> instance.</returns>
         public static Regex GetCachedRegex(string pattern, RegexOptions options = RegexOptions.None, int timeoutSeconds = 2)
         {
             Requires.NotNull("pattern", pattern);

@@ -25,9 +25,7 @@ using System.Collections;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Implementation of Properties collection for the <see cref="log4net.ThreadContext"/>
-    /// </summary>
+    /// <summary>Implementation of Properties collection for the <see cref="log4net.ThreadContext"/></summary>
     /// <remarks>
     /// <para>
     /// Class implements a collection of properties that is specific to each thread.
@@ -38,21 +36,15 @@ namespace log4net.Util
     public sealed class ThreadContextProperties : ContextPropertiesBase
     {
 #if NETCF
-        /// <summary>
-        /// The thread local data slot to use to store a PropertiesDictionary.
-        /// </summary>
+        /// <summary>The thread local data slot to use to store a PropertiesDictionary.</summary>
         private readonly static LocalDataStoreSlot s_threadLocalSlot = System.Threading.Thread.AllocateDataSlot();
 #else
-        /// <summary>
-        /// Each thread will automatically have its instance.
-        /// </summary>
+        /// <summary>Each thread will automatically have its instance.</summary>
         [ThreadStatic]
         private static PropertiesDictionary _dictionary;
 #endif
 
-        /// <summary>
-        /// Internal constructor
-        /// </summary>
+        /// <summary>Internal constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="ThreadContextProperties" /> class.
@@ -62,9 +54,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Gets or sets the value of a property
-        /// </summary>
+        /// <summary>Gets or sets the value of a property</summary>
         /// <value>
         /// The value for the property with the specified key
         /// </value>
@@ -92,9 +82,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Remove a property
-        /// </summary>
+        /// <summary>Remove a property</summary>
         /// <param name="key">the key for the entry to remove</param>
         /// <remarks>
         /// <para>
@@ -112,9 +100,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Get the keys stored in the properties.
-        /// </summary>
+        /// <summary>Get the keys stored in the properties.</summary>
         /// <para>
         /// Gets the keys stored in the properties.
         /// </para>
@@ -131,9 +117,7 @@ namespace log4net.Util
             return null;
         }
 
-        /// <summary>
-        /// Clear all properties
-        /// </summary>
+        /// <summary>Clear all properties</summary>
         /// <remarks>
         /// <para>
         /// Clear all properties
@@ -150,9 +134,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Get the <c>PropertiesDictionary</c> for this thread.
-        /// </summary>
+        /// <summary>Get the <c>PropertiesDictionary</c> for this thread.</summary>
         /// <param name="create">create the dictionary if it does not exist, otherwise return null if does not exist</param>
         /// <returns>the properties for this thread</returns>
         /// <remarks>

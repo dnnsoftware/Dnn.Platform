@@ -20,7 +20,6 @@
       <dependency id="DotNetNuke.Providers.FolderProviders" version="$version$" />
       <dependency id="DotNetNuke.SiteExportImport" version="$version$" />
       <dependency id="DotNetNuke.Web.Client" version="$version$" />
-      <dependency id="DotNetNuke.Web.Deprecated" version="$version$" />
       <dependency id="DotNetNuke.Web.Mvc" version="$version$" />
       <dependency id="DotNetNuke.Web" version="$version$" />
       <dependency id="DotNetNuke.WebApi" version="$version$" />
@@ -29,9 +28,6 @@
   <files>
     <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\net45\"/>
     <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\net45\"/>
-
-    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\net45\"/>
 
     <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.dll" target="lib\net45\"/>
     <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.pdb" target="lib\net45\"/>

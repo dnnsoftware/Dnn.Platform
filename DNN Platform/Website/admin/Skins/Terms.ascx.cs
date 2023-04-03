@@ -12,19 +12,16 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Terms : SkinObjectBase
     {
         private const string MyFileName = "Terms.ascx";
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>Initializes a new instance of the <see cref="Terms"/> class.</summary>
         public Terms()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string Text { get; set; }
@@ -33,6 +30,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string Rel { get; set; } = "nofollow";
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -40,6 +38,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -59,12 +58,11 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                this.hypTerms.NavigateUrl = this.PortalSettings.TermsTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Terms") : this._navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
+                this.hypTerms.NavigateUrl = this.PortalSettings.TermsTabId == Null.NullInteger ? this.navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Terms") : this.navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
                 if (!string.IsNullOrWhiteSpace(this.Rel))
                 {
                     this.hypTerms.Attributes["rel"] = this.Rel;
                 }
-
             }
             catch (Exception exc)
             {

@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
-                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, "", "Locale={0}"),
+                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, string.Empty, "Locale={0}"),
             };
 
             if (languagePack.PackageType == LanguagePackType.Extension)
@@ -49,6 +50,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
+        /// <inheritdoc/>
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -65,7 +67,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     changed = true;
                 }
 
-                if (changed) LanguagePackController.SaveLanguagePack(languagePack);
+                if (changed)
+                {
+                    LanguagePackController.SaveLanguagePack(languagePack);
+                }
+
                 return true;
             }
             catch (Exception ex)

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import LinkInput from "./LinkInput";
 import Browse from "./Browse";
 import UploadBar from "./UploadBar";
 
@@ -8,8 +7,7 @@ import "./style.less";
 
 const Buttons = [
     { name: "browse" },
-    { name: "upload" },
-    { name: "link" }
+    { name: "upload" }
 ];
 
 export default class FileUpload extends Component {
@@ -24,13 +22,11 @@ export default class FileUpload extends Component {
 
         this.state = {
             text: props.defaultText,
-            showLinkInput: false,
             showFolderPicker: false,
 
             selectedFile,
             selectedFolder,
 
-            linkPath: "",
             fileUrl: "",
 
             fileExist,
@@ -100,13 +96,6 @@ export default class FileUpload extends Component {
         }
     }
 
-    onLink() {
-        if (window.dnn !== undefined) {
-            window.dnn.stopEscapeFromClosingPB = true;
-        }
-        this.setState({ showLinkInput: true });
-    }
-
     onBrowse() {
         if (window.dnn !== undefined) {
             window.dnn.stopEscapeFromClosingPB = true;
@@ -116,8 +105,6 @@ export default class FileUpload extends Component {
 
     onButtonClick(action) {
         switch (action) {
-            case "link":
-                return this.onLink();
             case "browse":
                 return this.onBrowse();
         }
@@ -127,7 +114,7 @@ export default class FileUpload extends Component {
         if (window.dnn !== undefined) {
             window.dnn.stopEscapeFromClosingPB = false;
         }
-        this.setState({ showLinkInput: false, showFolderPicker: false });
+        this.setState({ showFolderPicker: false });
     }
 
     onMouseEnter(text) {
@@ -188,12 +175,6 @@ export default class FileUpload extends Component {
         return sf;
     }
 
-    uploadFromLink(fileUrl) {
-        this.setState({ fileUrl: "" });
-        this.uploadFromUrl(fileUrl);
-        this.hideFields();
-    }
-
     showPreview(fileUrl) {
         if (this._unmounted) {
             return;
@@ -218,13 +199,6 @@ export default class FileUpload extends Component {
             fileId,
             fileName
         });
-    }
-
-    uploadFromUrl(url) {
-        const folder = this.props.folderName && typeof this.props.folderName === "string" ? this.props.folderName : "";
-        const sf = this.getServiceFramework();
-        sf.post("UploadFromUrl", { url, folder }, this.uploadComplete.bind(this), this.handleError.bind(this));
-        this.setState({ uploading: true, uploadComplete: false });
     }
 
     getPreviewUrl() {
@@ -363,7 +337,7 @@ export default class FileUpload extends Component {
 
         const buttonsStyle = { width: buttons.length * 67 };
         const src = state.fileUrl || "";
-        const showImage = src && state.fileExist && !state.showLinkInput && !state.showFolderPicker;
+        const showImage = src && state.fileExist && !state.showFolderPicker;
         const className = "overlay" + (src && state.fileExist ? " has-image" : "") + (state.draggedOver ? " hover" : "");
 
         return <div className="dnn-file-upload" ref={node => this.node = node}>
@@ -381,15 +355,6 @@ export default class FileUpload extends Component {
                     <span>{state.text}</span>
                 </div>
 
-                {state.showLinkInput && <LinkInput
-                    linkInputTitleText={props.linkInputTitleText}
-                    linkInputPlaceholderText={props.linkInputPlaceholderText}
-                    linkInputActionText={props.linkInputActionText}
-                    linkPath={state.linkPath}
-                    onSave={this.uploadFromLink.bind(this)}
-                    onCancel={this.hideFields.bind(this)}
-                    onChange={this.onChangeUrl.bind(this)}
-                />}
                 {state.showFolderPicker && <Browse
                     portalId={props.portalId}
                     browseActionText={props.browseActionText}
@@ -443,15 +408,11 @@ FileUpload.propTypes = {
     //-- Localization Props---
     browseButtonText: PropTypes.string,
     uploadButtonText: PropTypes.string,
-    linkButtonText: PropTypes.string,
     defaultText: PropTypes.string,
     onDragOverText: PropTypes.string,
     uploadFailedText: PropTypes.string,
     wrongFormatText: PropTypes.string,
     imageText: PropTypes.string,
-    linkInputTitleText: PropTypes.string,
-    linkInputPlaceholderText: PropTypes.string,
-    linkInputActionText: PropTypes.string,
     uploadCompleteText: PropTypes.string,
     uploadingText: PropTypes.string,
     uploadDefaultText: PropTypes.string,
@@ -469,15 +430,11 @@ FileUpload.defaultProps = {
     fileFormats: [],
     browseButtonText: "Browse Filesystem",
     uploadButtonText: "Upload a File",
-    linkButtonText: "Enter URL Link",
     defaultText: "Drag and Drop a File or Select an Option",
     onDragOverText: "Drag and Drop a File",
     uploadFailedText: "Upload Failed",
     wrongFormatText: "wrong format",
     imageText: "Image",
-    linkInputTitleText: "URL Link",
-    linkInputPlaceholderText: "http://example.com/imagename.jpg",
-    linkInputActionText: "Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel",
     uploadCompleteText: "Upload Complete",
     uploadingText: "Uploading...",
     uploadDefaultText: "",

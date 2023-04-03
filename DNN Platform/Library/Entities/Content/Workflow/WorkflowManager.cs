@@ -16,26 +16,24 @@ namespace DotNetNuke.Entities.Content.Workflow
 
     public class WorkflowManager : ServiceLocator<IWorkflowManager, WorkflowManager>, IWorkflowManager
     {
-        private readonly DataProvider _dataProvider;
-        private readonly IWorkflowRepository _workflowRepository;
-        private readonly IWorkflowStateRepository _workflowStateRepository;
-        private readonly ISystemWorkflowManager _systemWorkflowManager;
+        private readonly DataProvider dataProvider;
+        private readonly IWorkflowRepository workflowRepository;
+        private readonly IWorkflowStateRepository workflowStateRepository;
+        private readonly ISystemWorkflowManager systemWorkflowManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowManager"/> class.</summary>
         public WorkflowManager()
         {
-            this._dataProvider = DataProvider.Instance();
-            this._workflowRepository = WorkflowRepository.Instance;
-            this._workflowStateRepository = WorkflowStateRepository.Instance;
-            this._systemWorkflowManager = SystemWorkflowManager.Instance;
+            this.dataProvider = DataProvider.Instance();
+            this.workflowRepository = WorkflowRepository.Instance;
+            this.workflowStateRepository = WorkflowStateRepository.Instance;
+            this.systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
         /// <inheritdoc/>
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
-            var workflowToDelete = this._workflowRepository.GetWorkflow(workflow.WorkflowID);
+            var workflowToDelete = this.workflowRepository.GetWorkflow(workflow.WorkflowID);
             if (workflowToDelete == null)
             {
                 return;
@@ -52,13 +50,13 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowInUsageException", Localization.ExceptionsResourceFile));
             }
 
-            this._workflowRepository.DeleteWorkflow(workflowToDelete);
+            this.workflowRepository.DeleteWorkflow(workflowToDelete);
         }
 
         /// <inheritdoc/>
         public Entities.Workflow GetWorkflow(int workflowId)
         {
-            return this._workflowRepository.GetWorkflow(workflowId);
+            return this.workflowRepository.GetWorkflow(workflowId);
         }
 
         /// <inheritdoc/>
@@ -76,22 +74,22 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
-            return this._workflowRepository.GetWorkflows(portalId);
+            return this.workflowRepository.GetWorkflows(portalId);
         }
 
         /// <inheritdoc/>
         public void AddWorkflow(Entities.Workflow workflow)
         {
-            this._workflowRepository.AddWorkflow(workflow);
+            this.workflowRepository.AddWorkflow(workflow);
 
-            var firstDefaultState = this._systemWorkflowManager.GetDraftStateDefinition(1);
-            var lastDefaultState = this._systemWorkflowManager.GetPublishedStateDefinition(2);
+            var firstDefaultState = this.systemWorkflowManager.GetDraftStateDefinition(1);
+            var lastDefaultState = this.systemWorkflowManager.GetPublishedStateDefinition(2);
 
             firstDefaultState.WorkflowID = workflow.WorkflowID;
             lastDefaultState.WorkflowID = workflow.WorkflowID;
 
-            this._workflowStateRepository.AddWorkflowState(firstDefaultState);
-            this._workflowStateRepository.AddWorkflowState(lastDefaultState);
+            this.workflowStateRepository.AddWorkflowState(firstDefaultState);
+            this.workflowStateRepository.AddWorkflowState(lastDefaultState);
 
             workflow.States = new List<WorkflowState>
                               {
@@ -103,19 +101,19 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
-            this._workflowRepository.UpdateWorkflow(workflow);
+            this.workflowRepository.UpdateWorkflow(workflow);
         }
 
         /// <inheritdoc/>
         public IEnumerable<WorkflowUsageItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize)
         {
-            return CBO.FillCollection<WorkflowUsageItem>(this._dataProvider.GetContentWorkflowUsage(workflowId, pageIndex, pageSize));
+            return CBO.FillCollection<WorkflowUsageItem>(this.dataProvider.GetContentWorkflowUsage(workflowId, pageIndex, pageSize));
         }
 
         /// <inheritdoc/>
         public int GetWorkflowUsageCount(int workflowId)
         {
-            return this._dataProvider.GetContentWorkflowUsageCount(workflowId);
+            return this.dataProvider.GetContentWorkflowUsageCount(workflowId);
         }
 
         /// <inheritdoc/>

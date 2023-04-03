@@ -14,13 +14,12 @@ namespace DotNetNuke.Entities.Portals
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// PoralController provides business layer of poatal.
-    /// </summary>
+    /// <summary>PoralController provides business layer of poatal.</summary>
     /// <remarks>
     /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
     /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
@@ -43,9 +42,7 @@ namespace DotNetNuke.Entities.Portals
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
-        public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email,
-                        string description, string keyWords, string templatePath, string templateFile, string homeDirectory,
-                        string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email, string description, string keyWords, string templatePath, string templateFile, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             var adminUser = new UserInfo
             {
@@ -65,14 +62,11 @@ namespace DotNetNuke.Entities.Portals
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
-        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath,
-                        string templateFile, string homeDirectory, string portalAlias,
-                        string serverPath, string childPath, bool isChildPortal)
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath, string templateFile, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
-            var template = this.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
+            var template = PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
 
-            return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
-                                serverPath, childPath, isChildPortal);
+            return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -92,14 +86,16 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
+            var importer = new PortalTemplateImporter(templatePath, templateFile);
+            importer.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
-            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            var importer = new PortalTemplateImporter(templatePath, templateFile);
+            importer.ParseTemplateInternal(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal, out localeCollection);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

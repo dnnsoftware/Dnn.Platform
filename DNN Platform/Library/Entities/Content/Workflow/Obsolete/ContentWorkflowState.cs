@@ -9,30 +9,20 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     using System;
 
-    /// <summary>
-    /// This entity represents a Workflow State.
-    /// </summary>
+    /// <summary>This entity represents a Workflow State.</summary>
     [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
     public class ContentWorkflowState
     {
-        /// <summary>
-        /// Gets or sets state Id.
-        /// </summary>
+        /// <summary>Gets or sets state Id.</summary>
         public int StateID { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow associated to the state.
-        /// </summary>
+        /// <summary>Gets or sets workflow associated to the state.</summary>
         public int WorkflowID { get; set; }
 
-        /// <summary>
-        /// Gets or sets state name.
-        /// </summary>
+        /// <summary>Gets or sets state name.</summary>
         public string StateName { get; set; }
 
-        /// <summary>
-        /// Gets or sets state Order.
-        /// </summary>
+        /// <summary>Gets or sets state Order.</summary>
         public int Order { get; set; }
 
         public bool IsActive { get; set; }

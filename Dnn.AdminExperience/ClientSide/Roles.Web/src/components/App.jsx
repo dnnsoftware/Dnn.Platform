@@ -10,10 +10,11 @@ class Root extends Component {
     constructor() {
         super();
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
+        this.rolesPanelref = React.createRef();
     }
 
     onCreate() {
-        this.rolesPanelref.getWrappedInstance().onAddRole();
+        this.rolesPanelref.current.onAddRole();
     }
 
     render() {
@@ -25,7 +26,7 @@ class Root extends Component {
                             <Button type="primary" size="large" onClick={this.onCreate.bind(this) }>{resx.get("Create") }</Button>
                         }
                     </PersonaBarPageHeader>
-                    <RolesPanel ref={node => this.rolesPanelref = node} />
+                    <RolesPanel ref={this.rolesPanelref} />
                 </PersonaBarPage>
             </div>
         );

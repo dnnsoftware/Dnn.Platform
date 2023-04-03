@@ -10,15 +10,11 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
 
-    /// <summary>
-    /// Extension methods for the razor host settings.
-    /// </summary>
+    /// <summary>Extension methods for the razor host settings.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public static class RazorHostSettingsExtensions
     {
-        /// <summary>
-        /// Loads the razor host settings control.
-        /// </summary>
+        /// <summary>Loads the razor host settings control.</summary>
         /// <param name="parent">The parent user control.</param>
         /// <param name="configuration">The module configuration, <see cref="ModuleInfo"/>.</param>
         /// <param name="localResourceFile">The local resource file for localization strings.</param>

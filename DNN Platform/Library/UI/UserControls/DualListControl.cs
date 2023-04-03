@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -13,22 +15,38 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class DualListControl : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Label Label1;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Label Label2;
+
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAdd;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAddAll;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdRemove;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdRemoveAll;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ListBox lstAssigned;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ListBox lstAvailable;
-        private string MyFileName = "DualListControl.ascx";
-        private ArrayList _Assigned;
-        private ArrayList _Available;
-        private string _DataTextField = string.Empty;
-        private string _DataValueField = string.Empty;
-        private bool _Enabled = true;
-        private string _ListBoxHeight = string.Empty;
-        private string _ListBoxWidth = string.Empty;
+        private string myFileName = "DualListControl.ascx";
+        private ArrayList assigned;
+        private ArrayList available;
+        private string dataTextField = string.Empty;
+        private string dataValueField = string.Empty;
+        private bool enabled = true;
+        private string listBoxHeight = string.Empty;
+        private string listBoxWidth = string.Empty;
 
         public string ListBoxWidth
         {
@@ -39,7 +57,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._ListBoxWidth = value;
+                this.listBoxWidth = value;
             }
         }
 
@@ -52,7 +70,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._ListBoxHeight = value;
+                this.listBoxHeight = value;
             }
         }
 
@@ -71,7 +89,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._Available = value;
+                this.available = value;
             }
         }
 
@@ -90,7 +108,7 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                this._Assigned = value;
+                this.assigned = value;
             }
         }
 
@@ -98,7 +116,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._DataTextField = value;
+                this.dataTextField = value;
             }
         }
 
@@ -106,7 +124,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._DataValueField = value;
+                this.dataValueField = value;
             }
         }
 
@@ -114,7 +132,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                this._Enabled = value;
+                this.enabled = value;
             }
         }
 
@@ -123,66 +141,66 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.cmdAddAll.Click += this.cmdAddAll_Click;
-            this.cmdRemove.Click += this.cmdRemove_Click;
-            this.cmdRemoveAll.Click += this.cmdRemoveAll_Click;
+            this.cmdAdd.Click += this.CmdAdd_Click;
+            this.cmdAddAll.Click += this.CmdAddAll_Click;
+            this.cmdRemove.Click += this.CmdRemove_Click;
+            this.cmdRemoveAll.Click += this.CmdRemoveAll_Click;
 
             try
             {
                 // Localization
-                this.Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.MyFileName));
-                this.Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.MyFileName));
-                this.cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, this.MyFileName));
-                this.cmdAddAll.ToolTip = Localization.GetString("AddAll", Localization.GetResourceFile(this, this.MyFileName));
-                this.cmdRemove.ToolTip = Localization.GetString("Remove", Localization.GetResourceFile(this, this.MyFileName));
-                this.cmdRemoveAll.ToolTip = Localization.GetString("RemoveAll", Localization.GetResourceFile(this, this.MyFileName));
+                this.Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.myFileName));
+                this.Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.myFileName));
+                this.cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, this.myFileName));
+                this.cmdAddAll.ToolTip = Localization.GetString("AddAll", Localization.GetResourceFile(this, this.myFileName));
+                this.cmdRemove.ToolTip = Localization.GetString("Remove", Localization.GetResourceFile(this, this.myFileName));
+                this.cmdRemoveAll.ToolTip = Localization.GetString("RemoveAll", Localization.GetResourceFile(this, this.myFileName));
 
                 if (!this.Page.IsPostBack)
                 {
                     // set dimensions of control
-                    if (!string.IsNullOrEmpty(this._ListBoxWidth))
+                    if (!string.IsNullOrEmpty(this.ListBoxWidth))
                     {
-                        this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
-                        this.lstAssigned.Width = Unit.Parse(this._ListBoxWidth);
+                        this.lstAvailable.Width = Unit.Parse(this.ListBoxWidth);
+                        this.lstAssigned.Width = Unit.Parse(this.ListBoxWidth);
                     }
 
-                    if (!string.IsNullOrEmpty(this._ListBoxHeight))
+                    if (!string.IsNullOrEmpty(this.ListBoxHeight))
                     {
-                        this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
-                        this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);
+                        this.lstAvailable.Height = Unit.Parse(this.ListBoxHeight);
+                        this.lstAssigned.Height = Unit.Parse(this.ListBoxHeight);
                     }
 
                     // load available
-                    this.lstAvailable.DataTextField = this._DataTextField;
-                    this.lstAvailable.DataValueField = this._DataValueField;
-                    this.lstAvailable.DataSource = this._Available;
+                    this.lstAvailable.DataTextField = this.dataTextField;
+                    this.lstAvailable.DataValueField = this.dataValueField;
+                    this.lstAvailable.DataSource = this.Available;
                     this.lstAvailable.DataBind();
                     this.Sort(this.lstAvailable);
 
                     // load selected
-                    this.lstAssigned.DataTextField = this._DataTextField;
-                    this.lstAssigned.DataValueField = this._DataValueField;
-                    this.lstAssigned.DataSource = this._Assigned;
+                    this.lstAssigned.DataTextField = this.dataTextField;
+                    this.lstAssigned.DataValueField = this.dataValueField;
+                    this.lstAssigned.DataSource = this.Assigned;
                     this.lstAssigned.DataBind();
                     this.Sort(this.lstAssigned);
 
                     // set enabled
-                    this.lstAvailable.Enabled = this._Enabled;
-                    this.lstAssigned.Enabled = this._Enabled;
+                    this.lstAvailable.Enabled = this.enabled;
+                    this.lstAssigned.Enabled = this.enabled;
 
                     // save persistent values
-                    this.ViewState[this.ClientID + "_ListBoxWidth"] = this._ListBoxWidth;
-                    this.ViewState[this.ClientID + "_ListBoxHeight"] = this._ListBoxHeight;
+                    this.ViewState[this.ClientID + "_ListBoxWidth"] = this.ListBoxWidth;
+                    this.ViewState[this.ClientID + "_ListBoxHeight"] = this.ListBoxHeight;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void cmdAdd_Click(object sender, EventArgs e)
+        private void CmdAdd_Click(object sender, EventArgs e)
         {
             var objList = new ArrayList();
             foreach (ListItem objListItem in this.lstAvailable.Items)
@@ -204,7 +222,7 @@ namespace DotNetNuke.UI.UserControls
             this.Sort(this.lstAssigned);
         }
 
-        private void cmdRemove_Click(object sender, EventArgs e)
+        private void CmdRemove_Click(object sender, EventArgs e)
         {
             var objList = new ArrayList();
             foreach (ListItem objListItem in this.lstAssigned.Items)
@@ -226,7 +244,7 @@ namespace DotNetNuke.UI.UserControls
             this.Sort(this.lstAvailable);
         }
 
-        private void cmdAddAll_Click(object sender, EventArgs e)
+        private void CmdAddAll_Click(object sender, EventArgs e)
         {
             foreach (ListItem objListItem in this.lstAvailable.Items)
             {
@@ -239,7 +257,7 @@ namespace DotNetNuke.UI.UserControls
             this.Sort(this.lstAssigned);
         }
 
-        private void cmdRemoveAll_Click(object sender, EventArgs e)
+        private void CmdRemoveAll_Click(object sender, EventArgs e)
         {
             foreach (ListItem objListItem in this.lstAssigned.Items)
             {
@@ -266,18 +284,6 @@ namespace DotNetNuke.UI.UserControls
             {
                 ctlListBox.Items.Add(objListItem);
             }
-        }
-    }
-
-    public class ListItemComparer : IComparer
-    {
-        /// <inheritdoc/>
-        public int Compare(object x, object y)
-        {
-            var a = (ListItem)x;
-            var b = (ListItem)y;
-            var c = new CaseInsensitiveComparer();
-            return c.Compare(a.Text, b.Text);
         }
     }
 }

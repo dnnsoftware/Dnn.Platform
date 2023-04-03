@@ -22,16 +22,22 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class PageSettingsMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "PageSettings";
 
+        /// <inheritdoc/>
         public override string Text { get; } = "PageSettings";
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "PageSettings";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 15;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit

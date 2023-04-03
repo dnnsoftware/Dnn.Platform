@@ -5,30 +5,23 @@ namespace DotNetNuke.UI.Skins.EventListeners
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// SkinEventArgs provides a custom EventARgs class for Skin Events.
-    /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>SkinEventArgs provides a custom EventARgs class for Skin Events.</summary>
     public class SkinEventArgs : EventArgs
     {
-        private readonly Skin _Skin;
+        private readonly Skin skin;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinEventArgs"/> class.</summary>
         /// <param name="skin"></param>
         public SkinEventArgs(Skin skin)
         {
-            this._Skin = skin;
+            this.skin = skin;
         }
 
         public Skin Skin
         {
             get
             {
-                return this._Skin;
+                return this.skin;
             }
         }
     }

@@ -20,48 +20,23 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionManager
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ActionManager is a helper class that provides common Action Behaviours that can
-    /// be used by any IActionControl implementation.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any IActionControl implementation.</summary>
     public class ActionManager
     {
-        private readonly PortalSettings PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-        private readonly HttpRequest Request = HttpContext.Current.Request;
-        private readonly HttpResponse Response = HttpContext.Current.Response;
+        private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+        private readonly HttpRequest request = HttpContext.Current.Request;
+        private readonly HttpResponse response = HttpContext.Current.Response;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionManager"/> class.
-        /// Constructs a new ActionManager.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
         public ActionManager(IActionControl actionControl)
         {
             this.ActionControl = actionControl;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Action Control that is connected to this ActionManager instance.
-        /// </summary>
-        /// <returns>An IActionControl object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Action Control that is connected to this ActionManager instance.</summary>
         public IActionControl ActionControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleInstanceContext instance that is connected to this ActionManager
-        /// instance.
-        /// </summary>
-        /// <returns>A ModuleInstanceContext object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the ModuleInstanceContext instance that is connected to this ActionManager instance.</summary>
         protected ModuleInstanceContext ModuleContext
         {
             get
@@ -70,13 +45,8 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DisplayControl determines whether the associated Action control should be
-        /// displayed.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
+        /// <returns><see langword="true"/> if the nodes should be displayed, otherwise <see langword="false"/>.</returns>
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
             if (objNodes != null && objNodes.Count > 0 && Personalization.GetUserMode() != PortalSettings.Mode.View)
@@ -104,90 +74,69 @@ namespace DotNetNuke.UI.Containers
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAction gets the action associated with the commandName.
-        /// </summary>
+        /// <summary>GetAction gets the action associated with the commandName.</summary>
         /// <param name="commandName">The command name.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="ModuleAction"/> instance or <see langword="null"/>.</returns>
         public ModuleAction GetAction(string commandName)
         {
             return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAction gets the action associated with the id.
-        /// </summary>
+        /// <summary>GetAction gets the action associated with the id.</summary>
         /// <param name="id">The Id.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="ModuleAction"/> instance or <see langword="null"/>.</returns>
         public ModuleAction GetAction(int id)
         {
             return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(id);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetClientScriptURL gets the client script to attach to the control's client
-        /// side onclick event.
-        /// </summary>
+        /// <summary>GetClientScriptURL gets the client script to attach to the control's client side onclick event.</summary>
         /// <param name="action">The Action.</param>
         /// <param name="control">The Control.</param>
-        /// -----------------------------------------------------------------------------
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
             if (!string.IsNullOrEmpty(action.ClientScript))
             {
-                string Script = action.ClientScript;
-                int JSPos = Script.IndexOf("javascript:", StringComparison.InvariantCultureIgnoreCase);
-                if (JSPos > -1)
+                string script = action.ClientScript;
+                int jSPos = script.IndexOf("javascript:", StringComparison.InvariantCultureIgnoreCase);
+                if (jSPos > -1)
                 {
-                    Script = Script.Substring(JSPos + 11);
+                    script = script.Substring(jSPos + 11);
                 }
 
-                string FormatScript = "javascript: return {0};";
-                control.Attributes.Add("onClick", string.Format(FormatScript, Script));
+                string formatScript = "javascript: return {0};";
+                control.Attributes.Add("onClick", string.Format(formatScript, script));
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// IsVisible determines whether the action control is Visible.
-        /// </summary>
+        /// <summary>IsVisible determines whether the action control is Visible.</summary>
         /// <param name="action">The Action.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the action is visible, otherwise <see langword="false"/>.</returns>
         public bool IsVisible(ModuleAction action)
         {
-            bool _IsVisible = false;
+            bool isVisible = false;
             if (action.Visible && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, this.ModuleContext.Configuration))
             {
                 if ((Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
                 {
-                    _IsVisible = true;
+                    isVisible = true;
                 }
                 else
                 {
-                    _IsVisible = false;
+                    isVisible = false;
                 }
             }
             else
             {
-                _IsVisible = false;
+                isVisible = false;
             }
 
-            return _IsVisible;
+            return isVisible;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProcessAction processes the action.
-        /// </summary>
+        /// <summary>ProcessAction processes the action.</summary>
         /// <param name="id">The Id of the Action.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the action was processed, otherwise <see langword="false"/> (if it's a custom action that can't be found).</returns>
         public bool ProcessAction(string id)
         {
             bool bProcessed = true;
@@ -200,13 +149,9 @@ namespace DotNetNuke.UI.Containers
             return bProcessed;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProcessAction processes the action.
-        /// </summary>
+        /// <summary>ProcessAction processes the action.</summary>
         /// <param name="action">The Action.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns><see langword="true"/> if the action was processed, otherwise <see langword="false"/> (if it's a custom action that can't be found).</returns>
         public bool ProcessAction(ModuleAction action)
         {
             bool bProcessed = true;
@@ -268,18 +213,18 @@ namespace DotNetNuke.UI.Containers
             return bProcessed;
         }
 
-        private void ClearCache(ModuleAction Command)
+        private void ClearCache(ModuleAction command)
         {
             // synchronize cache
             ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
 
             // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
+            this.response.Redirect(this.request.RawUrl, true);
         }
 
-        private void Delete(ModuleAction Command)
+        private void Delete(ModuleAction command)
         {
-            var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), this.ModuleContext.TabId, true);
+            var module = ModuleController.Instance.GetModule(int.Parse(command.CommandArgument), this.ModuleContext.TabId, true);
 
             // Check if this is the owner instance of a shared module.
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -291,35 +236,35 @@ namespace DotNetNuke.UI.Containers
                     {
                         // HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
+                        EventLogController.Instance.AddLog(instance, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
-            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
-            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(command.CommandArgument), true);
+            EventLogController.Instance.AddLog(module, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
+            this.response.Redirect(this.request.RawUrl, true);
         }
 
-        private void DoAction(ModuleAction Command)
+        private void DoAction(ModuleAction command)
         {
-            if (Command.NewWindow)
+            if (command.NewWindow)
             {
-                UrlUtils.OpenNewWindow(this.ActionControl.ModuleControl.Control.Page, this.GetType(), Command.Url);
+                UrlUtils.OpenNewWindow(this.ActionControl.ModuleControl.Control.Page, this.GetType(), command.Url);
             }
             else
             {
-                this.Response.Redirect(Command.Url, true);
+                this.response.Redirect(command.Url, true);
             }
         }
 
-        private void Localize(ModuleAction Command)
+        private void Localize(ModuleAction command)
         {
             ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
 
-            switch (Command.CommandName)
+            switch (command.CommandName)
             {
                 case ModuleActionType.LocalizeModule:
                     ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(this.ModuleContext.PortalId));
@@ -330,13 +275,13 @@ namespace DotNetNuke.UI.Containers
             }
 
             // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
+            this.response.Redirect(this.request.RawUrl, true);
         }
 
-        private void Translate(ModuleAction Command)
+        private void Translate(ModuleAction command)
         {
             ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
-            switch (Command.CommandName)
+            switch (command.CommandName)
             {
                 case ModuleActionType.TranslateModule:
                     ModuleController.Instance.UpdateTranslationStatus(sourceModule, true);
@@ -347,40 +292,40 @@ namespace DotNetNuke.UI.Containers
             }
 
             // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
+            this.response.Redirect(this.request.RawUrl, true);
         }
 
-        private void MoveToPane(ModuleAction Command)
+        private void MoveToPane(ModuleAction command)
         {
-            ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, Command.CommandArgument);
+            ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, command.CommandArgument);
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
             // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
+            this.response.Redirect(this.request.RawUrl, true);
         }
 
-        private void MoveUpDown(ModuleAction Command)
+        private void MoveUpDown(ModuleAction command)
         {
-            switch (Command.CommandName)
+            switch (command.CommandName)
             {
                 case ModuleActionType.MoveTop:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, 0, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, 0, command.CommandArgument);
                     break;
                 case ModuleActionType.MoveUp:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder - 3, command.CommandArgument);
                     break;
                 case ModuleActionType.MoveDown:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder + 3, command.CommandArgument);
                     break;
                 case ModuleActionType.MoveBottom:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, command.CommandArgument);
                     break;
             }
 
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
             // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
+            this.response.Redirect(this.request.RawUrl, true);
         }
     }
 }

@@ -10,57 +10,43 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The SkinPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The SkinPackageWriter class.</summary>
     public class SkinPackageWriter : PackageWriterBase
     {
-        private readonly SkinPackageInfo _SkinPackage;
-        private readonly string _SubFolder;
+        private readonly SkinPackageInfo skinPackage;
+        private readonly string subFolder;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="package"></param>
         public SkinPackageWriter(PackageInfo package)
             : base(package)
         {
-            this._SkinPackage = SkinController.GetSkinByPackageID(package.PackageID);
+            this.skinPackage = SkinController.GetSkinByPackageID(package.PackageID);
             this.SetBasePath();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="skinPackage"></param>
         /// <param name="package"></param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
             : base(package)
         {
-            this._SkinPackage = skinPackage;
+            this.skinPackage = skinPackage;
             this.SetBasePath();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="skinPackage"></param>
         /// <param name="package"></param>
         /// <param name="basePath"></param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath)
             : base(package)
         {
-            this._SkinPackage = skinPackage;
+            this.skinPackage = skinPackage;
             this.BasePath = basePath;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="skinPackage"></param>
         /// <param name="package"></param>
         /// <param name="basePath"></param>
@@ -68,8 +54,8 @@ namespace DotNetNuke.Services.Installer.Writers
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath, string subFolder)
             : base(package)
         {
-            this._SkinPackage = skinPackage;
-            this._SubFolder = subFolder;
+            this.skinPackage = skinPackage;
+            this.subFolder = subFolder;
             this.BasePath = Path.Combine(basePath, subFolder);
         }
 
@@ -86,13 +72,13 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._SkinPackage;
+                return this.skinPackage;
             }
         }
 
         public void SetBasePath()
         {
-            if (this._SkinPackage.SkinType == "Skin")
+            if (this.skinPackage.SkinType == "Skin")
             {
                 this.BasePath = Path.Combine("Portals\\_default\\Skins", this.SkinPackage.SkinName);
             }
@@ -124,14 +110,14 @@ namespace DotNetNuke.Services.Installer.Writers
 
                 if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (string.IsNullOrEmpty(this._SubFolder))
+                    if (string.IsNullOrEmpty(this.subFolder))
                     {
                         this.AddFile(Path.Combine(filePath, file.Name));
                     }
                     else
                     {
                         filePath = Path.Combine(filePath, file.Name);
-                        this.AddFile(filePath, Path.Combine(this._SubFolder, filePath));
+                        this.AddFile(filePath, Path.Combine(this.subFolder, filePath));
                     }
                 }
             }

@@ -1,0 +1,28 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.SharpZipLib" type="Library" version="1.3.3">
+      <friendlyName>SharpZipLib</friendlyName>
+      <description>Library for managing zip archives.</description>
+      <dependencies/>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>https://github.com/icsharpcode/SharpZipLib/wiki/Release-History</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>ICSharpCode.SharpZipLib.dll</name>
+              <version>1.3.3</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

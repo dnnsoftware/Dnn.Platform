@@ -7,187 +7,150 @@ namespace DotNetNuke.UI.Containers
 
     using DotNetNuke.Entities.Modules.Actions;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
     /// Class    : ActionButton
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   ActionButton provides a button (or group of buttons) for action(s).
-    /// </summary>
+    /// <summary>  ActionButton provides a button (or group of buttons) for action(s).</summary>
     /// <remarks>
     ///   ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Obsolete("This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList.. Scheduled removal in v11.0.0.")]
     public class ActionButton : ActionBase
     {
-        private ActionButtonList _ButtonList;
+        private ActionButtonList buttonList;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets the Command Name.
-        /// </summary>
+        /// <summary>  Gets or sets the Command Name.</summary>
         /// <remarks>
         ///   Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions.
         /// </remarks>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string CommandName
         {
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.CommandName;
+                return this.buttonList.CommandName;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.CommandName = value;
+                this.buttonList.CommandName = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets the CSS Class.
-        /// </summary>
+        /// <summary>  Gets or sets the CSS Class.</summary>
         /// <remarks>
         ///   Defaults to 'CommandButton'.
         /// </remarks>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string CssClass
         {
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.CssClass;
+                return this.buttonList.CssClass;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.CssClass = value;
+                this.buttonList.CssClass = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether the link is displayed.
-        /// </summary>
+        /// <summary>  Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.DisplayLink;
+                return this.buttonList.DisplayLink;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.DisplayLink = value;
+                this.buttonList.DisplayLink = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether the icon is displayed.
-        /// </summary>
+        /// <summary>  Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.DisplayIcon;
+                return this.buttonList.DisplayIcon;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.DisplayIcon = value;
+                this.buttonList.DisplayIcon = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets the Icon used.
-        /// </summary>
+        /// <summary>  Gets or sets the Icon used.</summary>
         /// <remarks>
         ///   Defaults to the icon defined in Action.
         /// </remarks>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string IconFile
         {
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.ImageURL;
+                return this.buttonList.ImageURL;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.ImageURL = value;
+                this.buttonList.ImageURL = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets the Separator between Buttons.
-        /// </summary>
+        /// <summary>  Gets or sets the Separator between Buttons.</summary>
         /// <remarks>
         ///   Defaults to 2 non-breaking spaces.
         /// </remarks>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.ButtonSeparator;
+                return this.buttonList.ButtonSeparator;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.ButtonSeparator = value;
+                this.buttonList.ButtonSeparator = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   CreateChildControls builds the control tree.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  CreateChildControls builds the control tree.</summary>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
 
-            this._ButtonList = new ActionButtonList();
-            this._ButtonList.Action += this.Action_Click;
+            this.buttonList = new ActionButtonList();
+            this.buttonList.Action += this.Action_Click;
 
-            this.Controls.Add(this._ButtonList);
+            this.Controls.Add(this.buttonList);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Action_Click responds to an Action Event in the contained actionButtonList.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  Action_Click responds to an Action Event in the contained actionButtonList.</summary>
         private void Action_Click(object sender, ActionEventArgs e)
         {
             this.ProcessAction(e.Action.ID.ToString());

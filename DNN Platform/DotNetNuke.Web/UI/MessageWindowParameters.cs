@@ -7,43 +7,53 @@ namespace DotNetNuke.Web.UI
 
     public class MessageWindowParameters
     {
-        private string _Message = string.Empty;
-        private string _Title = string.Empty;
-        private Unit _WindowHeight = Unit.Pixel(175);
-        private Unit _WindowWidth = Unit.Pixel(350);
+        private string message = string.Empty;
+        private string title = string.Empty;
+        private Unit windowHeight = Unit.Pixel(175);
+        private Unit windowWidth = Unit.Pixel(350);
 
+        /// <summary>Initializes a new instance of the <see cref="MessageWindowParameters"/> class.</summary>
+        /// <param name="message">The message.</param>
         public MessageWindowParameters(string message)
         {
-            this._Message = message;
+            this.message = message;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MessageWindowParameters"/> class.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="title">The title.</param>
         public MessageWindowParameters(string message, string title)
         {
-            this._Message = message;
-            this._Title = title;
+            this.message = message;
+            this.title = title;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MessageWindowParameters"/> class.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="windowWidth">The window width (in a format that can be parsed by <see cref="Unit.Parse(string)" />).</param>
+        /// <param name="windowHeight">The window height (in a format that can be parsed by <see cref="Unit.Parse(string)" />).</param>
         public MessageWindowParameters(string message, string title, string windowWidth, string windowHeight)
         {
-            this._Message = message;
-            this._Title = title;
-            this._WindowWidth = Unit.Parse(windowWidth);
-            this._WindowHeight = Unit.Parse(windowHeight);
+            this.message = message;
+            this.title = title;
+            this.windowWidth = Unit.Parse(windowWidth);
+            this.windowHeight = Unit.Parse(windowHeight);
         }
 
         public string Message
         {
             get
             {
-                return this._Message;
+                return this.message;
             }
 
             set
             {
                 // todo: javascript encode for onclick events
-                this._Message = value;
-                this._Message = this._Message.Replace("'", "\\'");
-                this._Message = this._Message.Replace("\"", "\\\"");
+                this.message = value;
+                this.message = this.message.Replace("'", "\\'");
+                this.message = this.message.Replace("\"", "\\\"");
             }
         }
 
@@ -51,15 +61,15 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return this._Title;
+                return this.title;
             }
 
             set
             {
                 // todo: javascript encode for onclick events
-                this._Title = value;
-                this._Title = this._Title.Replace("'", "\\'");
-                this._Title = this._Title.Replace("\"", "\\\"");
+                this.title = value;
+                this.title = this.title.Replace("'", "\\'");
+                this.title = this.title.Replace("\"", "\\\"");
             }
         }
 
@@ -67,12 +77,12 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return this._WindowWidth;
+                return this.windowWidth;
             }
 
             set
             {
-                this._WindowWidth = value;
+                this.windowWidth = value;
             }
         }
 
@@ -80,12 +90,12 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return this._WindowHeight;
+                return this.windowHeight;
             }
 
             set
             {
-                this._WindowHeight = value;
+                this.windowHeight = value;
             }
         }
     }

@@ -17,12 +17,37 @@ namespace DotNetNuke.ExtensionPoints
     public class ExtensionPointManager
     {
         private static readonly object SyncRoot = new object();
-
         private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtensionPointManager"/> class.
-        /// </summary>
+#pragma warning disable 649
+
+        [ImportMany]
+        private IEnumerable<Lazy<IScriptItemExtensionPoint, IExtensionPointData>> scripts;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IEditPageTabExtensionPoint, IExtensionPointData>> editPageTabExtensionPoint;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IToolBarButtonExtensionPoint, IExtensionPointData>> toolbarButtonExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IEditPagePanelExtensionPoint, IExtensionPointData>> editPagePanelExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IContextMenuItemExtensionPoint, IExtensionPointData>> ctxMenuItemExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IUserControlExtensionPoint, IExtensionPointData>> userControlExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IMenuItemExtensionPoint, IExtensionPointData>> menuItems;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IGridColumnExtensionPoint, IExtensionPointData>> gridColumns;
+
+#pragma warning restore 649
+
+        /// <summary>Initializes a new instance of the <see cref="ExtensionPointManager"/> class.</summary>
         public ExtensionPointManager()
         {
             ComposeParts(this);
@@ -43,7 +68,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module, string group)
         {
-            return from e in this._editPageTabExtensionPoint
+            return from e in this.editPageTabExtensionPoint
                    where e.Metadata.Module == module
                         && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order
@@ -62,7 +87,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
-            return from e in this._toolbarButtonExtensionPoints
+            return from e in this.toolbarButtonExtensionPoints
                    where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
@@ -70,7 +95,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IToolBarButtonExtensionPoint GetToolBarButtonExtensionPointFirstByPriority(string module, string name)
         {
-            return (from e in this._toolbarButtonExtensionPoints
+            return (from e in this.toolbarButtonExtensionPoints
                     where e.Metadata.Module == module && e.Metadata.Name == name
                     orderby e.Metadata.Priority
                     select e.Value).FirstOrDefault();
@@ -83,7 +108,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module, string group)
         {
-            return from e in this._scripts
+            return from e in this.scripts
                    where e.Metadata.Module == module
                        && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order
@@ -97,7 +122,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IEditPagePanelExtensionPoint> GetEditPagePanelExtensionPoints(string module, string group)
         {
-            return from e in this._editPagePanelExtensionPoints
+            return from e in this.editPagePanelExtensionPoints
                    where e.Metadata.Module == module
                         && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order
@@ -106,7 +131,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEditPagePanelExtensionPoint GetEditPagePanelExtensionPointFirstByPriority(string module, string name)
         {
-            return (from e in this._editPagePanelExtensionPoints
+            return (from e in this.editPagePanelExtensionPoints
                     where e.Metadata.Module == module && e.Metadata.Name == name
                     orderby e.Metadata.Priority
                     select e.Value).FirstOrDefault();
@@ -119,7 +144,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IContextMenuItemExtensionPoint> GetContextMenuItemExtensionPoints(string module, string group)
         {
-            return from e in this._ctxMenuItemExtensionPoints
+            return from e in this.ctxMenuItemExtensionPoints
                    where e.Metadata.Module == module
                         && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order
@@ -128,7 +153,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IUserControlExtensionPoint GetUserControlExtensionPointFirstByPriority(string module, string name)
         {
-            return (from e in this._userControlExtensionPoints
+            return (from e in this.userControlExtensionPoints
                     where e.Metadata.Module == module && e.Metadata.Name == name
                     orderby e.Metadata.Priority
                     select e.Value).FirstOrDefault();
@@ -136,7 +161,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IUserControlExtensionPoint> GetUserControlExtensionPoints(string module, string group)
         {
-            return from e in this._userControlExtensionPoints
+            return from e in this.userControlExtensionPoints
                    where e.Metadata.Module == module && e.Metadata.Group == @group
                    orderby e.Value.Order
                    select e.Value;
@@ -154,7 +179,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
-            return from e in this._menuItems
+            return from e in this.menuItems
                    where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
@@ -172,7 +197,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
-            return from e in this._gridColumns
+            return from e in this.gridColumns
                    where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
@@ -190,33 +215,5 @@ namespace DotNetNuke.ExtensionPoints
         {
             return data.Module == module && (string.IsNullOrEmpty(@group) || data.Group == @group);
         }
-
-#pragma warning disable 649
-
-        [ImportMany]
-        private IEnumerable<Lazy<IScriptItemExtensionPoint, IExtensionPointData>> _scripts;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IEditPageTabExtensionPoint, IExtensionPointData>> _editPageTabExtensionPoint;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IToolBarButtonExtensionPoint, IExtensionPointData>> _toolbarButtonExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IEditPagePanelExtensionPoint, IExtensionPointData>> _editPagePanelExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IContextMenuItemExtensionPoint, IExtensionPointData>> _ctxMenuItemExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IUserControlExtensionPoint, IExtensionPointData>> _userControlExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IMenuItemExtensionPoint, IExtensionPointData>> _menuItems;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IGridColumnExtensionPoint, IExtensionPointData>> _gridColumns;
-
-#pragma warning restore 649
     }
 }

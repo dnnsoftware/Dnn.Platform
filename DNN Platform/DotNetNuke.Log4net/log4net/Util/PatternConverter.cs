@@ -42,9 +42,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public abstract class PatternConverter
     {
-        /// <summary>
-        /// Protected constructor
-        /// </summary>
+        /// <summary>Protected constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="PatternConverter" /> class.
@@ -54,9 +52,7 @@ namespace log4net.Util
         {  
         }
 
-        /// <summary>
-        /// Get the next pattern converter in the chain
-        /// </summary>
+        /// <summary>Get the next pattern converter in the chain</summary>
         /// <value>
         /// the next pattern converter in the chain
         /// </value>
@@ -70,9 +66,7 @@ namespace log4net.Util
             get { return this.m_next; }
         }
 
-        /// <summary>
-        /// Gets or sets the formatting info for this converter
-        /// </summary>
+        /// <summary>Gets or sets the formatting info for this converter</summary>
         /// <value>
         /// The formatting info for this converter
         /// </value>
@@ -92,12 +86,8 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Gets or sets the option value for this converter
-        /// </summary>
-        /// <summary>
-        /// The option for this converter
-        /// </summary>
+        /// <summary>Gets or sets the option value for this converter</summary>
+        /// <summary>The option for this converter</summary>
         /// <remarks>
         /// <para>
         /// Gets or sets the option value for this converter
@@ -109,9 +99,7 @@ namespace log4net.Util
             set { this.m_option = value; }
         }
 
-        /// <summary>
-        /// Evaluate this pattern converter and write the output to a writer.
-        /// </summary>
+        /// <summary>Evaluate this pattern converter and write the output to a writer.</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="state">The state object on which the pattern converter should be executed.</param>
         /// <remarks>
@@ -122,9 +110,7 @@ namespace log4net.Util
         /// </remarks>
         protected abstract void Convert(TextWriter writer, object state);
 
-        /// <summary>
-        /// Set the next pattern converter in the chains
-        /// </summary>
+        /// <summary>Set the next pattern converter in the chains</summary>
         /// <param name="patternConverter">the pattern converter that should follow this converter in the chain</param>
         /// <returns>the next converter</returns>
         /// <remarks>
@@ -139,9 +125,7 @@ namespace log4net.Util
             return this.m_next;
         }
 
-        /// <summary>
-        /// Write the pattern converter to the writer with appropriate formatting
-        /// </summary>
+        /// <summary>Write the pattern converter to the writer with appropriate formatting</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="state">The state object on which the pattern converter should be executed.</param>
         /// <remarks>
@@ -206,9 +190,7 @@ namespace log4net.Util
                                                     "                ",						// 16 spaces
                                                     "                                " };	// 32 spaces
 
-        /// <summary>
-        /// Fast space padding method.
-        /// </summary>
+        /// <summary>Fast space padding method.</summary>
         /// <param name="writer"><see cref="TextWriter" /> to which the spaces will be appended.</param>
         /// <param name="length">The number of spaces to be padded.</param>
         /// <remarks>
@@ -238,26 +220,18 @@ namespace log4net.Util
         private int m_max = int.MaxValue;
         private bool m_leftAlign = false;
 
-        /// <summary>
-        /// The option string to the converter
-        /// </summary>
+        /// <summary>The option string to the converter</summary>
         private string m_option = null;
 
         private ReusableStringWriter m_formatWriter = new ReusableStringWriter(System.Globalization.CultureInfo.InvariantCulture);
 
-        /// <summary>
-        /// Initial buffer size
-        /// </summary>
+        /// <summary>Initial buffer size</summary>
         private const int c_renderBufferSize = 256;
 
-        /// <summary>
-        /// Maximum buffer size before it is recycled
-        /// </summary>
+        /// <summary>Maximum buffer size before it is recycled</summary>
         private const int c_renderBufferMaxCapacity = 1024;
 
-        /// <summary>
-        /// Write an dictionary to a <see cref="TextWriter"/>
-        /// </summary>
+        /// <summary>Write an dictionary to a <see cref="TextWriter"/></summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="repository">a <see cref="ILoggerRepository"/> to use for object conversion</param>
         /// <param name="value">the value to write to the writer</param>
@@ -279,9 +253,7 @@ namespace log4net.Util
             WriteDictionary(writer, repository, value.GetEnumerator());
         }
 
-        /// <summary>
-        /// Write an dictionary to a <see cref="TextWriter"/>
-        /// </summary>
+        /// <summary>Write an dictionary to a <see cref="TextWriter"/></summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="repository">a <see cref="ILoggerRepository"/> to use for object conversion</param>
         /// <param name="value">the value to write to the writer</param>
@@ -323,9 +295,7 @@ namespace log4net.Util
             writer.Write("}");
         }
 
-        /// <summary>
-        /// Write an object to a <see cref="TextWriter"/>
-        /// </summary>
+        /// <summary>Write an object to a <see cref="TextWriter"/></summary>
         /// <param name="writer">the writer to write to</param>
         /// <param name="repository">a <see cref="ILoggerRepository"/> to use for object conversion</param>
         /// <param name="value">the value to write to the writer</param>

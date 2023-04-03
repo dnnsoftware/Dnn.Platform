@@ -17,16 +17,14 @@ namespace DotNetNuke.Entities.Tabs
     {
         private const string DefaultTabWorkflowKey = "DefaultTabWorkflowKey";
         private const string TabWorkflowEnableKey = "TabWorkflowEnabledKey";
-        private readonly ITabController _tabController;
-        private readonly ISystemWorkflowManager _systemWorkflowManager;
+        private readonly ITabController tabController;
+        private readonly ISystemWorkflowManager systemWorkflowManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabWorkflowSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabWorkflowSettings"/> class.</summary>
         public TabWorkflowSettings()
         {
-            this._tabController = TabController.Instance;
-            this._systemWorkflowManager = SystemWorkflowManager.Instance;
+            this.tabController = TabController.Instance;
+            this.systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
         /// <inheritdoc/>
@@ -35,7 +33,7 @@ namespace DotNetNuke.Entities.Tabs
             var workflowId = PortalController.GetPortalSettingAsInteger(DefaultTabWorkflowKey, portalId, Null.NullInteger);
             if (workflowId == Null.NullInteger)
             {
-                var workflow = this._systemWorkflowManager.GetDirectPublishWorkflow(portalId);
+                var workflow = this.systemWorkflowManager.GetDirectPublishWorkflow(portalId);
                 workflowId = (workflow != null) ? workflow.WorkflowID : Null.NullInteger;
                 if (workflowId != Null.NullInteger)
                 {
@@ -65,7 +63,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             Requires.NotNegative("tabId", tabId);
 
-            this._tabController.UpdateTabSetting(tabId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture));
+            this.tabController.UpdateTabSetting(tabId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <inheritdoc/>
@@ -76,10 +74,10 @@ namespace DotNetNuke.Entities.Tabs
                 return false;
             }
 
-            var tabInfo = this._tabController.GetTab(tabId, portalId);
-            var settings = this._tabController.GetTabSettings(tabId);
+            var tabInfo = this.tabController.GetTab(tabId, portalId);
+            var settings = this.tabController.GetTabSettings(tabId);
 
-            return !this._tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
+            return !this.tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
         }
 
         /// <inheritdoc/>

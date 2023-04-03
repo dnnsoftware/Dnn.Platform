@@ -36,8 +36,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         bool IsWorkflowOnDraft(int itemID);
 
         [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-        void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment,
-                              int userID);
+        void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int userID);
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId);

@@ -5,6 +5,7 @@
 namespace DotNetNuke.Modules.Journal
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -14,6 +15,7 @@ namespace DotNetNuke.Modules.Journal
 
     public partial class MyFiles : PortalModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -24,6 +26,9 @@ namespace DotNetNuke.Modules.Journal
         {
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void btnUp_Upload(object sender, EventArgs e)
         {
             var folderManager = FolderManager.Instance;

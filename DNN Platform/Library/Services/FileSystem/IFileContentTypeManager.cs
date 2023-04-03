@@ -8,14 +8,10 @@ namespace DotNetNuke.Services.FileSystem
 
     public interface IFileContentTypeManager
     {
-        /// <summary>
-        /// Gets get all content types dictionary.
-        /// </summary>
+        /// <summary>Gets get all content types dictionary.</summary>
         IDictionary<string, string> ContentTypes { get; }
 
-        /// <summary>
-        /// Gets the Content Type for the specified file extension.
-        /// </summary>
+        /// <summary>Gets the Content Type for the specified file extension.</summary>
         /// <param name="extension">The file extension.</param>
         /// <returns>The Content Type for the specified extension.</returns>
         string GetContentType(string extension);

@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.Journal
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
+
         public HttpResponseMessage UploadFile()
         {
             var statuses = new List<FilesStatus>();

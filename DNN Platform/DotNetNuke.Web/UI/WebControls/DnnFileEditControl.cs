@@ -11,44 +11,29 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnFileEditControl : IntegerEditControl
     {
-        private DnnFilePickerUploader _fileControl;
+        private DnnFilePickerUploader fileControl;
 
         // private DnnFilePicker _fileControl;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets the current file extension filter.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the current file extension filter.</summary>
         public string FileFilter { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets the current file path.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the current file path.</summary>
         public string FilePath { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Loads the Post Back Data and determines whether the value has change.
-        /// </summary>
         /// <remarks>
-        ///   In this case because the <see cref = "_fileControl" /> is a contained control, we do not need
+        ///   In this case because the <see cref = "fileControl" /> is a contained control, we do not need
         ///   to process the PostBackData (it has been handled by the File Control).  We just use
         ///   this method as the Framework calls it for us.
         /// </remarks>
-        /// <param name = "postDataKey">A key to the PostBack Data to load.</param>
-        /// <param name = "postCollection">A name value collection of postback data.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
             string presentValue = this.StringValue;
 
             // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
-            string postedValue = this._fileControl.FileID.ToString();
+            string postedValue = this.fileControl.FileID.ToString();
             if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue;
@@ -58,31 +43,27 @@ namespace DotNetNuke.Web.UI.WebControls
             return dataChanged;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Creates the control contained within this control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             // First clear the controls collection
             this.Controls.Clear();
 
             var userControl = this.Page.LoadControl("~/controls/filepickeruploader.ascx");
-            this._fileControl = userControl as DnnFilePickerUploader;
+            this.fileControl = userControl as DnnFilePickerUploader;
 
-            if (this._fileControl != null)
+            if (this.fileControl != null)
             {
-                this._fileControl.ID = string.Format("{0}FileControl", this.ID);
-                this._fileControl.FileFilter = this.FileFilter;
-                this._fileControl.FilePath = this.FilePath;
-                this._fileControl.FileID = this.IntegerValue;
-                this._fileControl.UsePersonalFolder = true;
-                this._fileControl.User = this.User;
-                this._fileControl.Required = true;
+                this.fileControl.ID = string.Format("{0}FileControl", this.ID);
+                this.fileControl.FileFilter = this.FileFilter;
+                this.fileControl.FilePath = this.FilePath;
+                this.fileControl.FileID = this.IntegerValue;
+                this.fileControl.UsePersonalFolder = true;
+                this.fileControl.User = this.User;
+                this.fileControl.Required = true;
 
                 // Add table to Control
-                this.Controls.Add(this._fileControl);
+                this.Controls.Add(this.fileControl);
             }
 
             base.CreateChildControls();
@@ -95,16 +76,12 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Runs before the control is rendered.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            this._fileControl.FileID = this.IntegerValue;
+            this.fileControl.FileID = this.IntegerValue;
 
             if (this.Page != null)
             {
@@ -112,12 +89,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Renders the control in edit mode.
-        /// </summary>
-        /// <param name = "writer">An HtmlTextWriter to render the control to.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);

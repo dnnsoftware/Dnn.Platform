@@ -24,10 +24,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Search Result Controller for Module Crawler.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Search Result Controller for Module Crawler.</summary>
     [Serializable]
     public class ModuleResultController : BaseResultController
     {
@@ -37,8 +34,8 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
-        private static Hashtable _moduleSearchControllers = new Hashtable();
-        private static object _threadLock = new object();
+        private static Hashtable moduleSearchControllers = new Hashtable();
+        private static object threadLock = new object();
 
         /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
@@ -70,8 +67,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                     searchResult.Url = this.GetModuleSearchUrl(module, searchResult);
                                     if (string.IsNullOrEmpty(searchResult.Url))
                                     {
-                                        searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty,
-                                                                               searchResult.QueryString);
+                                        searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty, searchResult.QueryString);
                                     }
                                 }
 
@@ -90,6 +86,7 @@ namespace DotNetNuke.Services.Search.Controllers
         }
 
         // Returns the URL to the first instance of the module the user has access to view
+
         /// <inheritdoc/>
         public override string GetDocUrl(SearchResult searchResult)
         {
@@ -117,8 +114,7 @@ namespace DotNetNuke.Services.Search.Controllers
                             var portalSettings = new PortalSettings(searchResult.PortalId);
                             portalSettings.PortalAlias =
                                 PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-                            url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty,
-                                                      searchResult.QueryString);
+                            url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
                         }
                     }
                     catch (Exception ex)
@@ -174,19 +170,19 @@ namespace DotNetNuke.Services.Search.Controllers
                 return null;
             }
 
-            if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+            if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
             {
-                lock (_threadLock)
+                lock (threadLock)
                 {
-                    if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+                    if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
                     {
                         var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
-                        _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
+                        moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
                     }
                 }
             }
 
-            return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
+            return moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
         }
 
         private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)

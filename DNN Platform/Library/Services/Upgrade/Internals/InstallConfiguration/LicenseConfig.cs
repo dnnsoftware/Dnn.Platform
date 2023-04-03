@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// LicenseConfig - A class that represents Install/DotNetNuke.Install.Config/LicenseActivation.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>LicenseConfig - A class that represents Install/DotNetNuke.Install.Config/LicenseActivation.</summary>
     public class LicenseConfig
     {
         public string AccountEmail { get; set; }

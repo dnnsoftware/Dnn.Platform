@@ -275,4 +275,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(RolesPanel);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(RolesPanel);

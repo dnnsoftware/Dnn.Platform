@@ -9,15 +9,12 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Exceptions;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class HostName : SkinObjectBase
     {
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -25,6 +22,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

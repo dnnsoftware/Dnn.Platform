@@ -7,11 +7,9 @@ namespace DotNetNuke.Common.Utilities
     using System.Collections.Generic;
     using System.Reflection;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Common.Utilities
     /// Class:      ObjectMappingInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ObjectMappingInfo class is a helper class that holds the mapping information
     /// for a particular type.  This information is in two parts:
@@ -20,172 +18,147 @@ namespace DotNetNuke.Common.Utilities
     /// For each object, when it is first accessed, reflection is used on the class and
     /// an instance of ObjectMappingInfo is created, which is cached for performance.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class ObjectMappingInfo
     {
         private const string RootCacheKey = "ObjectCache_";
-        private readonly Dictionary<string, string> _ColumnNames;
-        private readonly Dictionary<string, PropertyInfo> _Properties;
-        private string _CacheByProperty;
-        private int _CacheTimeOutMultiplier;
-        private string _ObjectType;
-        private string _PrimaryKey;
-        private string _TableName;
+        private readonly Dictionary<string, string> columnNames;
+        private readonly Dictionary<string, PropertyInfo> properties;
+        private string cacheByProperty;
+        private int cacheTimeOutMultiplier;
+        private string objectType;
+        private string primaryKey;
+        private string tableName;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectMappingInfo"/> class.
         /// Constructs a new ObjectMappingInfo Object.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public ObjectMappingInfo()
         {
-            this._Properties = new Dictionary<string, PropertyInfo>();
-            this._ColumnNames = new Dictionary<string, string>();
+            this.properties = new Dictionary<string, PropertyInfo>();
+            this.columnNames = new Dictionary<string, string>();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets cacheKey gets the root value of the key used to identify the cached collection
         /// in the ASP.NET Cache.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string CacheKey
         {
             get
             {
-                string _CacheKey = RootCacheKey + this.TableName + "_";
+                string cacheKey = RootCacheKey + this.TableName + "_";
                 if (!string.IsNullOrEmpty(this.CacheByProperty))
                 {
-                    _CacheKey += this.CacheByProperty + "_";
+                    cacheKey += this.CacheByProperty + "_";
                 }
 
-                return _CacheKey;
+                return cacheKey;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets columnNames gets a dictionary of Database Column Names for the Object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets columnNames gets a dictionary of Database Column Names for the Object.</summary>
         public Dictionary<string, string> ColumnNames
         {
             get
             {
-                return this._ColumnNames;
+                return this.columnNames;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets properties gets a dictionary of Properties for the Object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets properties gets a dictionary of Properties for the Object.</summary>
         public Dictionary<string, PropertyInfo> Properties
         {
             get
             {
-                return this._Properties;
+                return this.properties;
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets cacheByProperty gets and sets the property that is used to cache collections
         /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs
         /// are cached by the PortalId property.
         /// </summary>
         /// <remarks>If empty, a collection of all the instances of the object is cached.</remarks>
-        /// -----------------------------------------------------------------------------
         public string CacheByProperty
         {
             get
             {
-                return this._CacheByProperty;
+                return this.cacheByProperty;
             }
 
             set
             {
-                this._CacheByProperty = value;
+                this.cacheByProperty = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets cacheTimeOutMultiplier gets and sets the multiplier used to determine how long
         /// the cached collection should be cached.  It is multiplied by the Performance
         /// Setting - which in turn can be modified by the Host Account.
         /// </summary>
         /// <remarks>Defaults to 20.</remarks>
-        /// -----------------------------------------------------------------------------
         public int CacheTimeOutMultiplier
         {
             get
             {
-                return this._CacheTimeOutMultiplier;
+                return this.cacheTimeOutMultiplier;
             }
 
             set
             {
-                this._CacheTimeOutMultiplier = value;
+                this.cacheTimeOutMultiplier = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets objectType gets and sets the type of the object.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets objectType gets and sets the type of the object.</summary>
         public string ObjectType
         {
             get
             {
-                return this._ObjectType;
+                return this.objectType;
             }
 
             set
             {
-                this._ObjectType = value;
+                this.objectType = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets primaryKey gets and sets the property of the object that corresponds to the
         /// primary key in the database.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string PrimaryKey
         {
             get
             {
-                return this._PrimaryKey;
+                return this.primaryKey;
             }
 
             set
             {
-                this._PrimaryKey = value;
+                this.primaryKey = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets tableName gets and sets the name of the database table that is used to
         /// persist the object.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string TableName
         {
             get
             {
-                return this._TableName;
+                return this.tableName;
             }
 
             set
             {
-                this._TableName = value;
+                this.tableName = value;
             }
         }
     }

@@ -24,9 +24,7 @@ using log4net.Appender;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Interface for attaching appenders to objects.
-    /// </summary>
+    /// <summary>Interface for attaching appenders to objects.</summary>
     /// <remarks>
     /// <para>
     /// Interface for attaching, removing and retrieving appenders.
@@ -36,9 +34,7 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public interface IAppenderAttachable
     {
-        /// <summary>
-        /// Attaches an appender.
-        /// </summary>
+        /// <summary>Attaches an appender.</summary>
         /// <param name="appender">The appender to add.</param>
         /// <remarks>
         /// <para>
@@ -48,9 +44,7 @@ namespace log4net.Core
         /// </remarks>
         void AddAppender(IAppender appender);
 
-        /// <summary>
-        /// Gets all attached appenders.
-        /// </summary>
+        /// <summary>Gets all attached appenders.</summary>
         /// <value>
         /// A collection of attached appenders.
         /// </value>
@@ -64,9 +58,7 @@ namespace log4net.Core
         /// </remarks>
         AppenderCollection Appenders {get;}
 
-        /// <summary>
-        /// Gets an attached appender with the specified name.
-        /// </summary>
+        /// <summary>Gets an attached appender with the specified name.</summary>
         /// <param name="name">The name of the appender to get.</param>
         /// <returns>
         /// The appender with the name specified, or <c>null</c> if no appender with the
@@ -81,9 +73,7 @@ namespace log4net.Core
         /// </remarks>
         IAppender GetAppender(string name);
 
-        /// <summary>
-        /// Removes all attached appenders.
-        /// </summary>
+        /// <summary>Removes all attached appenders.</summary>
         /// <remarks>
         /// <para>
         /// Removes and closes all attached appenders
@@ -91,9 +81,7 @@ namespace log4net.Core
         /// </remarks>
         void RemoveAllAppenders();
 
-        /// <summary>
-        /// Removes the specified appender from the list of attached appenders.
-        /// </summary>
+        /// <summary>Removes the specified appender from the list of attached appenders.</summary>
         /// <param name="appender">The appender to remove.</param>
         /// <returns>The appender removed from the list</returns>
         /// <remarks>
@@ -105,9 +93,7 @@ namespace log4net.Core
         /// </remarks>
         IAppender RemoveAppender(IAppender appender);
 
-        /// <summary>
-        /// Removes the appender with the specified name from the list of appenders.
-        /// </summary>
+        /// <summary>Removes the appender with the specified name from the list of appenders.</summary>
         /// <param name="name">The name of the appender to remove.</param>
         /// <returns>The appender removed from the list</returns>
         /// <remarks>

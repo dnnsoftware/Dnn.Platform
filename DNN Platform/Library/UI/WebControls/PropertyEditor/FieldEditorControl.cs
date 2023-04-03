@@ -13,43 +13,56 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
 
+    /// <summary>
+    /// The possible editor display modes.
+    /// </summary>
     public enum EditorDisplayMode
     {
+        /// <summary>
+        /// Displays the control in a div.
+        /// </summary>
         Div = 0,
+
+        /// <summary>
+        /// Displays the control in a table.
+        /// </summary>
         Table = 1,
     }
 
+    /// <summary>
+    /// Defines how help is displayed.
+    /// </summary>
     public enum HelpDisplayMode
     {
+        /// <summary>
+        /// Never display the help.
+        /// </summary>
         Never = 0,
+
+        /// <summary>
+        /// Display help only in edit mode.
+        /// </summary>
         EditOnly = 1,
+
+        /// <summary>
+        /// Always display help.
+        /// </summary>
         Always = 2,
     }
 
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      FieldEditorControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The FieldEditorControl control provides a Control to display Profile
-    /// Properties.
+    /// The FieldEditorControl control provides a Control to display Profile Properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:FieldEditorControl runat=server></{0}:FieldEditorControl>")]
     public class FieldEditorControl : WebControl, INamingContainer
     {
-        private readonly List<IValidator> Validators = new List<IValidator>();
-        private IEditorInfoAdapter _EditorInfoAdapter;
-        private bool _IsValid = true;
-        private StandardEditorInfoAdapter _StdAdapter;
-        private bool _Validated;
+        private readonly List<IValidator> validators = new List<IValidator>();
+        private IEditorInfoAdapter editorInfoAdapter;
+        private bool isValid = true;
+        private StandardEditorInfoAdapter stdAdapter;
+        private bool validated;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FieldEditorControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FieldEditorControl"/> class.</summary>
         public FieldEditorControl()
         {
             this.ValidationExpression = Null.NullString;
@@ -66,185 +79,135 @@ namespace DotNetNuke.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
+        /// <summary>
+        /// Occurs when an item is added.
+        /// </summary>
         public event PropertyChangedEventHandler ItemAdded;
 
+        /// <summary>
+        /// Occurs when an item was changed.
+        /// </summary>
         public event PropertyChangedEventHandler ItemChanged;
 
+        /// <summary>
+        /// Occurs when an item was created.
+        /// </summary>
         public event EditorCreatedEventHandler ItemCreated;
 
+        /// <summary>
+        /// Occurs when an item was deleted.
+        /// </summary>
         public event PropertyChangedEventHandler ItemDeleted;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether all of the properties are Valid.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether all of the properties are Valid.</summary>
         public bool IsValid
         {
             get
             {
-                if (!this._Validated)
+                if (!this.validated)
                 {
                     this.Validate();
                 }
 
-                return this._IsValid;
+                return this.isValid;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the DataSource that is bound to this control.
-        /// </summary>
-        /// <value>The DataSource object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the DataSource that is bound to this control.</summary>
         [Browsable(false)]
         public object DataSource { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the value of the Field/property that this control displays.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field/property that this control displays.</summary>
         /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Data")]
         [DefaultValue("")]
         [Description("Enter the name of the field that is data bound to the Control.")]
         public string DataField { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets whether the control uses Divs or Tables.
-        /// </summary>
-        /// <value>An EditorDisplayMode enum.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets whether the control uses Divs or Tables.</summary>
         public EditorDisplayMode EditorDisplayMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Edit Mode of the Editor.
-        /// </summary>
+        /// <summary>Gets or sets the Edit Mode of the Editor.</summary>
         /// <value>The mode of the editor.</value>
-        /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Edit Control associated with the Editor.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Edit Control associated with the Editor.</summary>
         public EditControl Editor { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Factory used to create the Control.
-        /// </summary>
+        /// <summary>Gets or sets the Factory used to create the Control.</summary>
         /// <value>The mode of the editor.</value>
-        /// -----------------------------------------------------------------------------
         public IEditorInfoAdapter EditorInfoAdapter
         {
             get
             {
-                if (this._EditorInfoAdapter == null)
+                if (this.editorInfoAdapter == null)
                 {
-                    if (this._StdAdapter == null)
+                    if (this.stdAdapter == null)
                     {
-                        this._StdAdapter = new StandardEditorInfoAdapter(this.DataSource, this.DataField);
+                        this.stdAdapter = new StandardEditorInfoAdapter(this.DataSource, this.DataField);
                     }
 
-                    return this._StdAdapter;
+                    return this.stdAdapter;
                 }
                 else
                 {
-                    return this._EditorInfoAdapter;
+                    return this.editorInfoAdapter;
                 }
             }
 
             set
             {
-                this._EditorInfoAdapter = value;
+                this.editorInfoAdapter = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Editor Type to use.
-        /// </summary>
+        /// <summary>Gets or sets the Editor Type to use.</summary>
         /// <value>The typename of the editor.</value>
-        /// -----------------------------------------------------------------------------
         public string EditorTypeName { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side
-        /// validation.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side validation.</summary>
         public bool EnableClientValidation { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets whether the control displays Help.
-        /// </summary>
-        /// <value>A HelpDisplayMode enum.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets whether the control displays Help.</summary>
         public HelpDisplayMode HelpDisplayMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether any of the properties have been changed.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether any of the properties have been changed.</summary>
         public bool IsDirty { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the label mode.
+        /// </summary>
         public LabelMode LabelMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Local Resource File for the Control.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Local Resource File for the Control.</summary>
         public string LocalResourceFile { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the field is required.
+        /// </summary>
         public bool Required { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Url of the Required Image.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Url of the Required Image.</summary>
         public string RequiredUrl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Required icon is used.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the Required icon is used.</summary>
         public bool ShowRequired { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Visibility control is used.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets a value indicating whether the Visibility control is used.</summary>
         public bool ShowVisibility { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user.
+        /// </summary>
         public UserInfo User { get; set; }
 
+        /// <summary>
+        /// Gets or sets the validation expression.
+        /// </summary>
         public string ValidationExpression { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Field Style.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the value of the Field Style.</summary>
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -253,23 +216,13 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Edit Control.")]
         public Style EditControlStyle { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the width of the Edit Control Column.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the width of the Edit Control Column.</summary>
         [Browsable(true)]
         [Category("Appearance")]
         [Description("Set the Width for the Edit Control.")]
         public Unit EditControlWidth { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Error Style.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the value of the Error Style.</summary>
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -278,12 +231,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Error Text.")]
         public Style ErrorStyle { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Label Style.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the value of the Label Style.</summary>
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -292,12 +240,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Help Text.")]
         public Style HelpStyle { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Label Style.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the value of the Label Style.</summary>
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -306,23 +249,13 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Label Text")]
         public Style LabelStyle { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the width of the Label Column.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the width of the Label Column.</summary>
         [Browsable(true)]
         [Category("Appearance")]
         [Description("Set the Width for the Label Control.")]
         public Unit LabelWidth { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of the Visibility Style.
-        /// </summary>
-        /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the value of the Visibility Style.</summary>
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -340,11 +273,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Binds the controls to the DataSource.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Binds the controls to the DataSource.</summary>
         public override void DataBind()
         {
             // Invoke OnDataBinding so DataBinding Event is raised
@@ -366,38 +295,30 @@ namespace DotNetNuke.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Validates the data, and sets the IsValid Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Validates the data, and sets the IsValid Property.</summary>
         public virtual void Validate()
         {
-            this._IsValid = this.Editor.IsValid;
+            this.isValid = this.Editor.IsValid;
 
-            if (this._IsValid)
+            if (this.isValid)
             {
-                IEnumerator valEnumerator = this.Validators.GetEnumerator();
+                IEnumerator valEnumerator = this.validators.GetEnumerator();
                 while (valEnumerator.MoveNext())
                 {
                     var validator = (IValidator)valEnumerator.Current;
                     validator.Validate();
                     if (!validator.IsValid)
                     {
-                        this._IsValid = false;
+                        this.isValid = false;
                         break;
                     }
                 }
 
-                this._Validated = true;
+                this.validated = true;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateEditor creates the control collection for this control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>CreateEditor creates the control collection for this control.</summary>
         protected virtual void CreateEditor()
         {
             EditorInfo editInfo = this.EditorInfoAdapter.CreateEditControl();
@@ -453,31 +374,30 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when an item is added to a collection type property.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemAdded(e);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when an item is removed from a collection type property.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemDeleted(e);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when an item is added to a collection type property.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
             if (this.ItemAdded != null)
@@ -486,11 +406,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when the Editor is Created.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="e">The event arguments <see cref="PropertyEditorItemEventArgs"/>.</param>
         protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
         {
             if (this.ItemCreated != null)
@@ -499,11 +418,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when an item is removed from a collection type property.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
             if (this.ItemDeleted != null)
@@ -523,32 +441,32 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when the Value of a Property changes.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void ValueChanged(object sender, PropertyEditorEventArgs e)
         {
             this.IsDirty = this.EditorInfoAdapter.UpdateValue(e);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when the Visibility of a Property changes.
         /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
         {
             this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Runs when an Item in the List Is Changed.
         /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments <see cref="PropertyEditorEventArgs"/>.</param>
         /// <remarks>Raises an ItemChanged event.</remarks>
-        /// -----------------------------------------------------------------------------
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
             if (this.ItemChanged != null)
@@ -557,9 +475,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// BuildDiv creates the Control as a Div.
-        /// </summary>
+        /// <summary>BuildDiv creates the Control as a Div.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         private void BuildDiv(EditorInfo editInfo)
         {
@@ -606,10 +522,10 @@ namespace DotNetNuke.UI.WebControls
 
             // Build the Validators
             this.BuildValidators(editInfo, propEditor.ID);
-            if (this.Validators.Count > 0)
+            if (this.validators.Count > 0)
             {
                 // Add the Validators to the editor cell
-                foreach (BaseValidator validator in this.Validators)
+                foreach (BaseValidator validator in this.validators)
                 {
                     validator.Width = this.Width;
                     this.Controls.Add(validator);
@@ -617,9 +533,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// BuildEditor creates the editor part of the Control.
-        /// </summary>
+        /// <summary>BuildEditor creates the editor part of the Control.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         private EditControl BuildEditor(EditorInfo editInfo)
         {
@@ -647,9 +561,7 @@ namespace DotNetNuke.UI.WebControls
             return propEditor;
         }
 
-        /// <summary>
-        /// BuildLabel creates the label part of the Control.
-        /// </summary>
+        /// <summary>BuildLabel creates the label part of the Control.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         private PropertyLabelControl BuildLabel(EditorInfo editInfo)
         {
@@ -689,9 +601,7 @@ namespace DotNetNuke.UI.WebControls
             return propLabel;
         }
 
-        /// <summary>
-        /// BuildValidators creates the validators part of the Control.
-        /// </summary>
+        /// <summary>BuildValidators creates the validators part of the Control.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         private Image BuildRequiredIcon(EditorInfo editInfo)
         {
@@ -715,12 +625,8 @@ namespace DotNetNuke.UI.WebControls
             return img;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// BuildTable creates the Control as a Table.
-        /// </summary>
+        /// <summary>BuildTable creates the Control as a Table.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
-        /// -----------------------------------------------------------------------------
         private void BuildTable(EditorInfo editInfo)
         {
             var tbl = new Table();
@@ -802,7 +708,7 @@ namespace DotNetNuke.UI.WebControls
             validatorsCell.ColumnSpan = 2;
 
             // Add the Validators to the editor cell
-            foreach (BaseValidator validator in this.Validators)
+            foreach (BaseValidator validator in this.validators)
             {
                 validatorsCell.Controls.Add(validator);
             }
@@ -814,16 +720,12 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(tbl);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// BuildValidators creates the validators part of the Control.
-        /// </summary>
+        /// <summary>BuildValidators creates the validators part of the Control.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         /// <param name="targetId">Target Control Id.</param>
-        /// -----------------------------------------------------------------------------
         private void BuildValidators(EditorInfo editInfo, string targetId)
         {
-            this.Validators.Clear();
+            this.validators.Clear();
 
             // Add Required Validators
             if (editInfo.Required)
@@ -841,7 +743,7 @@ namespace DotNetNuke.UI.WebControls
                 reqValidator.EnableClientScript = this.EnableClientValidation;
                 reqValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Required");
                 reqValidator.ErrorMessage = editInfo.Name + " is Required";
-                this.Validators.Add(reqValidator);
+                this.validators.Add(reqValidator);
             }
 
             // Add Regular Expression Validators
@@ -861,13 +763,11 @@ namespace DotNetNuke.UI.WebControls
                 regExValidator.EnableClientScript = this.EnableClientValidation;
                 regExValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Validation");
                 regExValidator.ErrorMessage = editInfo.Name + " is Invalid";
-                this.Validators.Add(regExValidator);
+                this.validators.Add(regExValidator);
             }
         }
 
-        /// <summary>
-        /// BuildVisibility creates the visibility part of the Control.
-        /// </summary>
+        /// <summary>BuildVisibility creates the visibility part of the Control.</summary>
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         private VisibilityControl BuildVisibility(EditorInfo editInfo)
         {

@@ -21,37 +21,35 @@ namespace DotNetNuke.Services.EventQueue
     [Serializable]
     public class EventMessage
     {
-        private NameValueCollection _attributes;
-        private string _authorizedRoles = Null.NullString;
-        private string _body = Null.NullString;
-        private int _eventMessageID = Null.NullInteger;
-        private string _exceptionMessage = Null.NullString;
-        private DateTime _expirationDate;
-        private MessagePriority _priority = MessagePriority.Low;
-        private string _processorCommand = Null.NullString;
-        private string _processorType = Null.NullString;
-        private string _sender = Null.NullString;
-        private DateTime _sentDate;
-        private string _subscribers = Null.NullString;
+        private NameValueCollection attributes;
+        private string authorizedRoles = Null.NullString;
+        private string body = Null.NullString;
+        private int eventMessageID = Null.NullInteger;
+        private string exceptionMessage = Null.NullString;
+        private DateTime expirationDate;
+        private MessagePriority priority = MessagePriority.Low;
+        private string processorCommand = Null.NullString;
+        private string processorType = Null.NullString;
+        private string sender = Null.NullString;
+        private DateTime sentDate;
+        private string subscribers = Null.NullString;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EventMessage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EventMessage"/> class.</summary>
         public EventMessage()
         {
-            this._attributes = new NameValueCollection();
+            this.attributes = new NameValueCollection();
         }
 
         public int EventMessageID
         {
             get
             {
-                return this._eventMessageID;
+                return this.eventMessageID;
             }
 
             set
             {
-                this._eventMessageID = value;
+                this.eventMessageID = value;
             }
         }
 
@@ -59,19 +57,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._processorType == null)
+                if (this.processorType == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._processorType;
+                    return this.processorType;
                 }
             }
 
             set
             {
-                this._processorType = value;
+                this.processorType = value;
             }
         }
 
@@ -79,19 +77,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._processorCommand == null)
+                if (this.processorCommand == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._processorCommand;
+                    return this.processorCommand;
                 }
             }
 
             set
             {
-                this._processorCommand = value;
+                this.processorCommand = value;
             }
         }
 
@@ -99,19 +97,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._body == null)
+                if (this.body == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._body;
+                    return this.body;
                 }
             }
 
             set
             {
-                this._body = value;
+                this.body = value;
             }
         }
 
@@ -119,19 +117,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._sender == null)
+                if (this.sender == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._sender;
+                    return this.sender;
                 }
             }
 
             set
             {
-                this._sender = value;
+                this.sender = value;
             }
         }
 
@@ -139,19 +137,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._subscribers == null)
+                if (this.subscribers == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._subscribers;
+                    return this.subscribers;
                 }
             }
 
             set
             {
-                this._subscribers = value;
+                this.subscribers = value;
             }
         }
 
@@ -159,19 +157,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._authorizedRoles == null)
+                if (this.authorizedRoles == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._authorizedRoles;
+                    return this.authorizedRoles;
                 }
             }
 
             set
             {
-                this._authorizedRoles = value;
+                this.authorizedRoles = value;
             }
         }
 
@@ -179,12 +177,12 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return this._priority;
+                return this.priority;
             }
 
             set
             {
-                this._priority = value;
+                this.priority = value;
             }
         }
 
@@ -192,19 +190,19 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (this._exceptionMessage == null)
+                if (this.exceptionMessage == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this._exceptionMessage;
+                    return this.exceptionMessage;
                 }
             }
 
             set
             {
-                this._exceptionMessage = value;
+                this.exceptionMessage = value;
             }
         }
 
@@ -212,12 +210,12 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return this._sentDate.ToLocalTime();
+                return this.sentDate.ToLocalTime();
             }
 
             set
             {
-                this._sentDate = value.ToUniversalTime();
+                this.sentDate = value.ToUniversalTime();
             }
         }
 
@@ -225,12 +223,12 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return this._expirationDate.ToLocalTime();
+                return this.expirationDate.ToLocalTime();
             }
 
             set
             {
-                this._expirationDate = value.ToUniversalTime();
+                this.expirationDate = value.ToUniversalTime();
             }
         }
 
@@ -238,12 +236,12 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return this._attributes;
+                return this.attributes;
             }
 
             set
             {
-                this._attributes = value;
+                this.attributes = value;
             }
         }
 
@@ -278,7 +276,7 @@ namespace DotNetNuke.Services.EventQueue
                     }
 
                     // Add attribute to the collection
-                    this._attributes.Add(attName, attValue);
+                    this.attributes.Add(attName, attValue);
                 }
                 while (reader.ReadToNextSibling("Attribute"));
             }

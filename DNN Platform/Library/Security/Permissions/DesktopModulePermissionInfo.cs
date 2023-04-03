@@ -9,42 +9,35 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : DesktopModulePermissionInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
     /// Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModulePermissionInfo : PermissionInfoBase, IHydratable
     {
         // local property declarations
-        private int _desktopModulePermissionID;
-        private int _portalDesktopModuleID;
+        private int desktopModulePermissionID;
+        private int portalDesktopModuleID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.
         /// Constructs a new DesktopModulePermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo()
         {
-            this._desktopModulePermissionID = Null.NullInteger;
-            this._portalDesktopModuleID = Null.NullInteger;
+            this.desktopModulePermissionID = Null.NullInteger;
+            this.portalDesktopModuleID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.
         /// Constructs a new DesktopModulePermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -55,50 +48,38 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the DesktopModule Permission ID.
-        /// </summary>
+        /// <summary>Gets or sets the DesktopModule Permission ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int DesktopModulePermissionID
         {
             get
             {
-                return this._desktopModulePermissionID;
+                return this.desktopModulePermissionID;
             }
 
             set
             {
-                this._desktopModulePermissionID = value;
+                this.desktopModulePermissionID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the PortalDesktopModule ID.
-        /// </summary>
+        /// <summary>Gets or sets the PortalDesktopModule ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID
         {
             get
             {
-                return this._portalDesktopModuleID;
+                return this.portalDesktopModuleID;
             }
 
             set
             {
-                this._portalDesktopModuleID = value;
+                this.portalDesktopModuleID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int KeyID
         {
             get
@@ -112,12 +93,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a DesktopModulePermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a DesktopModulePermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -125,10 +102,7 @@ namespace DotNetNuke.Security.Permissions
             this.PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two DesktopModulePermissionInfo objects are equivalent/equal.</summary>
         /// <param name="other">a DesktopModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
@@ -138,7 +112,6 @@ namespace DotNetNuke.Security.Permissions
         /// DesktopModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public bool Equals(DesktopModulePermissionInfo other)
         {
             if (ReferenceEquals(null, other))
@@ -154,10 +127,7 @@ namespace DotNetNuke.Security.Permissions
             return (this.AllowAccess == other.AllowAccess) && (this.PortalDesktopModuleID == other.PortalDesktopModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two DesktopModulePermissionInfo objects are equivalent/equal.</summary>
         /// <param name="obj">a DesktopModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
@@ -167,7 +137,6 @@ namespace DotNetNuke.Security.Permissions
         /// DesktopModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -193,7 +162,7 @@ namespace DotNetNuke.Security.Permissions
         {
             unchecked
             {
-                return (this._desktopModulePermissionID * 397) ^ this._portalDesktopModuleID;
+                return (this.desktopModulePermissionID * 397) ^ this.portalDesktopModuleID;
             }
         }
     }

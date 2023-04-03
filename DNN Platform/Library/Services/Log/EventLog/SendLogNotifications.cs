@@ -9,9 +9,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public class SendLogNotifications : SchedulerClient
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SendLogNotifications"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SendLogNotifications"/> class.</summary>
         /// <param name="objScheduleHistoryItem"></param>
         public SendLogNotifications(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -29,7 +27,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Sent log notifications successfully"); // OPTIONAL
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("EXCEPTION: " + exc); // OPTIONAL

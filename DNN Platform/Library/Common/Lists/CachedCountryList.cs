@@ -9,15 +9,11 @@ namespace DotNetNuke.Common.Lists
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// Provides access to country list with caching.
-    /// </summary>
+    /// <summary>Provides access to country list with caching.</summary>
     [Serializable]
     public class CachedCountryList : Dictionary<string, CachedCountryList.Country>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CachedCountryList"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CachedCountryList"/> class.</summary>
         /// <param name="locale">This value is not currently used.</param>
         public CachedCountryList(string locale)
             : base()
@@ -38,9 +34,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Gets the country list.
-        /// </summary>
+        /// <summary>Gets the country list.</summary>
         /// <param name="locale">Which locale to use for the country names.</param>
         /// <returns>A cached list of countries.</returns>
         public static CachedCountryList GetCountryList(string locale)
@@ -64,9 +58,7 @@ namespace DotNetNuke.Common.Lists
             return res;
         }
 
-        /// <summary>
-        /// Gets the cache key for a country list in the specified culture.
-        /// </summary>
+        /// <summary>Gets the cache key for a country list in the specified culture.</summary>
         /// <param name="locale">The locale to use for the country names.</param>
         /// <returns>The cache key string.</returns>
         public static string CacheKey(string locale)
@@ -78,32 +70,22 @@ namespace DotNetNuke.Common.Lists
         [Serializable]
         public struct Country
         {
-            /// <summary>
-            /// The country id.
-            /// </summary>
+            /// <summary>The country id.</summary>
             public int Id;
 
-            /// <summary>
-            /// The country name.
-            /// </summary>
+            /// <summary>The country name.</summary>
             /// <example>United States.</example>
             public string Name;
 
-            /// <summary>
-            /// The country code.
-            /// </summary>
+            /// <summary>The country code.</summary>
             /// <example>US.</example>
             public string Code;
 
-            /// <summary>
-            /// The country name and code.
-            /// </summary>
+            /// <summary>The country name and code.</summary>
             /// <example>United States (US).</example>
             public string FullName;
 
-            /// <summary>
-            /// The country name and code with diacritics (accents) removed.
-            /// </summary>
+            /// <summary>The country name and code with diacritics (accents) removed.</summary>
             public string NormalizedFullName;
         }
     }

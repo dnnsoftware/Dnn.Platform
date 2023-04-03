@@ -1,6 +1,7 @@
 ﻿namespace DotNetNuke.Tests.Core.Services.Search.Internals
 {
     using System.Data;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -15,6 +16,7 @@
     public class LuceneControllerImplTests
     {
         [Test]
+
         public void GetCustomAnalyzer_WithTheProvidedAnalyzer_ReturnsTheAnalyzerCorrectly()
         {
             // Arrange

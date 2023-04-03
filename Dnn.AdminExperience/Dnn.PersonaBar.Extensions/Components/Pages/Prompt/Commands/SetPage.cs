@@ -17,30 +17,39 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("set-page", Constants.PagesCategory, "Prompt_SetPage_Description")]
+
     public class SetPage : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetPage_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("title", "Prompt_SetPage_FlagTitle", "String")]
+
         private const string FlagTitle = "title";
 
         [FlagParameter("name", "Prompt_SetPage_FlagName", "String")]
+
         private const string FlagName = "name";
 
         [FlagParameter("description", "Prompt_SetPage_FlagDescription", "String")]
+
         private const string FlagDescription = "description";
 
         [FlagParameter("keywords", "Prompt_SetPage_FlagKeywords", "String")]
+
         private const string FlagKeywords = "keywords";
 
         [FlagParameter("visible", "Prompt_SetPage_FlagVisible", "Boolean")]
+
         private const string FlagVisible = "visible";
 
         [FlagParameter("url", "Prompt_SetPage_FlagUrl", "String")]
+
         private const string FlagUrl = "url";
 
         [FlagParameter("parentid", "Prompt_SetPage_FlagParentId", "Integer")]
+
         private const string FlagParentId = "parentid";
 
         public override string LocalResourceFile => Constants.LocalResourceFile;
@@ -63,7 +72,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, true, true, true);
             this.ParentId = this.GetFlagValue<int?>(FlagParentId, "Parent Id", null);
             this.Title = this.GetFlagValue(FlagTitle, "Title", string.Empty);
@@ -87,6 +95,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     return new ConsoleErrorResultModel(this.LocalizeString("PageNotFound"));
                 }
+
                 pageSettings.Name = !string.IsNullOrEmpty(this.Name) ? this.Name : pageSettings.Name;
                 pageSettings.Title = !string.IsNullOrEmpty(this.Title) ? this.Title : pageSettings.Title;
                 pageSettings.Url = !string.IsNullOrEmpty(this.Url) ? this.Url : pageSettings.Url;
@@ -98,6 +107,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
                 }
+
                 var updatedTab = PagesController.Instance.SavePageDetails(this.PortalSettings, pageSettings);
 
                 var lstResults = new List<PageModel> { new PageModel(updatedTab) };

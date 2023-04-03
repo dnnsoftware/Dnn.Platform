@@ -12,9 +12,7 @@ namespace DotNetNuke.Framework.Providers
         private readonly string providerName;
         private readonly string providerType;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Provider"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Provider"/> class.</summary>
         /// <param name="attributes"></param>
         public Provider(XmlAttributeCollection attributes)
         {

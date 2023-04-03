@@ -29,9 +29,7 @@ using log4net.Util;
 
 namespace log4net.Repository
 {
-    /// <summary>
-    /// Delegate used to handle logger repository shutdown event notifications
-    /// </summary>
+    /// <summary>Delegate used to handle logger repository shutdown event notifications</summary>
     /// <param name="sender">The <see cref="ILoggerRepository"/> that is shutting down.</param>
     /// <param name="e">Empty event args</param>
     /// <remarks>
@@ -41,9 +39,7 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryShutdownEventHandler(object sender, EventArgs e);
 
-    /// <summary>
-    /// Delegate used to handle logger repository configuration reset event notifications
-    /// </summary>
+    /// <summary>Delegate used to handle logger repository configuration reset event notifications</summary>
     /// <param name="sender">The <see cref="ILoggerRepository"/> that has had its configuration reset.</param>
     /// <param name="e">Empty event args</param>
     /// <remarks>
@@ -53,9 +49,7 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryConfigurationResetEventHandler(object sender, EventArgs e);
 
-    /// <summary>
-    /// Delegate used to handle event notifications for logger repository configuration changes.
-    /// </summary>
+    /// <summary>Delegate used to handle event notifications for logger repository configuration changes.</summary>
     /// <param name="sender">The <see cref="ILoggerRepository"/> that has had its configuration changed.</param>
     /// <param name="e">Empty event arguments.</param>
     /// <remarks>
@@ -65,9 +59,7 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryConfigurationChangedEventHandler(object sender, EventArgs e);
 
-    /// <summary>
-    /// Interface implemented by logger repositories.
-    /// </summary>
+    /// <summary>Interface implemented by logger repositories.</summary>
     /// <remarks>
     /// <para>
     /// This interface is implemented by logger repositories. e.g. 
@@ -82,9 +74,7 @@ namespace log4net.Repository
     /// <author>Gert Driesen</author>
     public interface ILoggerRepository
     {
-        /// <summary>
-        /// The name of the repository
-        /// </summary>
+        /// <summary>The name of the repository</summary>
         /// <value>
         /// The name of the repository
         /// </value>
@@ -95,9 +85,7 @@ namespace log4net.Repository
         /// </remarks>
         string Name { get; set; }
 
-        /// <summary>
-        /// RendererMap accesses the object renderer map for this repository.
-        /// </summary>
+        /// <summary>RendererMap accesses the object renderer map for this repository.</summary>
         /// <value>
         /// RendererMap accesses the object renderer map for this repository.
         /// </value>
@@ -112,9 +100,7 @@ namespace log4net.Repository
         /// </remarks>
         RendererMap RendererMap { get; }
 
-        /// <summary>
-        /// The plugin map for this repository.
-        /// </summary>
+        /// <summary>The plugin map for this repository.</summary>
         /// <value>
         /// The plugin map for this repository.
         /// </value>
@@ -126,9 +112,7 @@ namespace log4net.Repository
         /// </remarks>
         PluginMap PluginMap { get; }
 
-        /// <summary>
-        /// Get the level map for the Repository.
-        /// </summary>
+        /// <summary>Get the level map for the Repository.</summary>
         /// <remarks>
         /// <para>
         /// Get the level map for the Repository.
@@ -141,9 +125,7 @@ namespace log4net.Repository
         /// </remarks>
         LevelMap LevelMap { get; }
 
-        /// <summary>
-        /// The threshold for all events in this repository
-        /// </summary>
+        /// <summary>The threshold for all events in this repository</summary>
         /// <value>
         /// The threshold for all events in this repository
         /// </value>
@@ -168,9 +150,7 @@ namespace log4net.Repository
         /// </remarks>
         ILogger Exists(string name);
 
-        /// <summary>
-        /// Returns all the currently defined loggers as an Array.
-        /// </summary>
+        /// <summary>Returns all the currently defined loggers as an Array.</summary>
         /// <returns>All the defined loggers</returns>
         /// <remarks>
         /// <para>
@@ -179,9 +159,7 @@ namespace log4net.Repository
         /// </remarks>
         ILogger[] GetCurrentLoggers();
 
-        /// <summary>
-        /// Returns a named logger instance
-        /// </summary>
+        /// <summary>Returns a named logger instance</summary>
         /// <param name="name">The name of the logger to retrieve</param>
         /// <returns>The logger object with the name specified</returns>
         /// <remarks>
@@ -216,9 +194,7 @@ namespace log4net.Repository
         /// </remarks>
         void Shutdown();
 
-        /// <summary>
-        /// Reset the repositories configuration to a default state
-        /// </summary>
+        /// <summary>Reset the repositories configuration to a default state</summary>
         /// <remarks>
         /// <para>
         /// Reset all values contained in this instance to their
@@ -234,9 +210,7 @@ namespace log4net.Repository
         /// </remarks>
         void ResetConfiguration();
 
-        /// <summary>
-        /// Log the <see cref="LoggingEvent"/> through this repository.
-        /// </summary>
+        /// <summary>Log the <see cref="LoggingEvent"/> through this repository.</summary>
         /// <param name="logEvent">the event to log</param>
         /// <remarks>
         /// <para>
@@ -252,9 +226,7 @@ namespace log4net.Repository
         /// </remarks>
         void Log(LoggingEvent logEvent);
 
-        /// <summary>
-        /// Flag indicates if this repository has been configured.
-        /// </summary>
+        /// <summary>Flag indicates if this repository has been configured.</summary>
         /// <value>
         /// Flag indicates if this repository has been configured.
         /// </value>
@@ -271,9 +243,7 @@ namespace log4net.Repository
         /// </summary>
         ICollection ConfigurationMessages { get; set; }
 
-        /// <summary>
-        /// Event to notify that the repository has been shutdown.
-        /// </summary>
+        /// <summary>Event to notify that the repository has been shutdown.</summary>
         /// <value>
         /// Event to notify that the repository has been shutdown.
         /// </value>
@@ -284,9 +254,7 @@ namespace log4net.Repository
         /// </remarks>
         event LoggerRepositoryShutdownEventHandler ShutdownEvent;
 
-        /// <summary>
-        /// Event to notify that the repository has had its configuration reset.
-        /// </summary>
+        /// <summary>Event to notify that the repository has had its configuration reset.</summary>
         /// <value>
         /// Event to notify that the repository has had its configuration reset.
         /// </value>
@@ -298,9 +266,7 @@ namespace log4net.Repository
         /// </remarks>
         event LoggerRepositoryConfigurationResetEventHandler ConfigurationReset;
 
-        /// <summary>
-        /// Event to notify that the repository has had its configuration changed.
-        /// </summary>
+        /// <summary>Event to notify that the repository has had its configuration changed.</summary>
         /// <value>
         /// Event to notify that the repository has had its configuration changed.
         /// </value>
@@ -311,9 +277,7 @@ namespace log4net.Repository
         /// </remarks>
         event LoggerRepositoryConfigurationChangedEventHandler ConfigurationChanged;
 
-        /// <summary>
-        /// Repository specific properties
-        /// </summary>
+        /// <summary>Repository specific properties</summary>
         /// <value>
         /// Repository specific properties
         /// </value>
@@ -324,9 +288,7 @@ namespace log4net.Repository
         /// </remarks>
         PropertiesDictionary Properties { get; }
 
-        /// <summary>
-        /// Returns all the Appenders that are configured as an Array.
-        /// </summary>
+        /// <summary>Returns all the Appenders that are configured as an Array.</summary>
         /// <returns>All the Appenders</returns>
         /// <remarks>
         /// <para>

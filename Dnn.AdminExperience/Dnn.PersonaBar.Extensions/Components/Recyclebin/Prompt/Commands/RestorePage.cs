@@ -13,32 +13,43 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("restore-page", Constants.RecylcleBinCategory, "Prompt_RestorePage_Description")]
+
     public class RestorePage : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_RestorePage_FlagName", "String")]
+
         private const string FlagName = "name";
 
         [FlagParameter("parentid", "Prompt_RestorePage_FlagParentId", "Integer")]
+
         private const string FlagParentId = "parentid";
 
         [FlagParameter("id", "Prompt_RestorePage_FlagId", "Integer")]
+
         private const string FlagId = "id";
 
-        private readonly ITabController _tabController;
-        private readonly IContentVerifier _contentVerifier;
-        private readonly IRecyclebinController _recyclebinController;
+        private readonly ITabController tabController;
+        private readonly IContentVerifier contentVerifier;
+        private readonly IRecyclebinController recyclebinController;
 
-        public RestorePage() : this(TabController.Instance, RecyclebinController.Instance, new ContentVerifier())
+        /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
+        public RestorePage()
+            : this(TabController.Instance, RecyclebinController.Instance, new ContentVerifier())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
+        /// <param name="tabController"></param>
+        /// <param name="recyclebinController"></param>
+        /// <param name="contentVerifier"></param>
         public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
-            this._tabController = tabController;
-            this._recyclebinController = recyclebinController;
-            this._contentVerifier = contentVerifier;
+            this.tabController = tabController;
+            this.recyclebinController = recyclebinController;
+            this.contentVerifier = contentVerifier;
         }
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int PageId { get; set; }
@@ -47,6 +58,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         private int ParentId { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
@@ -58,6 +70,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             TabInfo tab;
@@ -65,7 +78,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
             if (this.PageId > 0)
             {
-                tab = this._tabController.GetTab(this.PageId, this.PortalId);
+                tab = this.tabController.GetTab(this.PageId, this.PortalId);
                 if (tab == null)
                 {
                     return new ConsoleErrorResultModel(message);
@@ -74,8 +87,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             else if (!string.IsNullOrEmpty(this.PageName))
             {
                 tab = this.ParentId > 0
-                    ? this._tabController.GetTabByName(this.PageName, this.PortalId, this.ParentId)
-                    : this._tabController.GetTabByName(this.PageName, this.PortalId);
+                    ? this.tabController.GetTabByName(this.PageName, this.PortalId, this.ParentId)
+                    : this.tabController.GetTabByName(this.PageName, this.PortalId);
 
                 if (tab == null)
                 {
@@ -88,12 +101,12 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestorePageNoParams"));
             }
 
-            if (!this._contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, this.PortalSettings))
+            if (!this.contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, this.PortalSettings))
             {
                 return new ConsoleErrorResultModel(message);
             }
 
-            this._recyclebinController.RestoreTab(tab, out message);
+            this.recyclebinController.RestoreTab(tab, out message);
 
             if (string.IsNullOrEmpty(message))
             {

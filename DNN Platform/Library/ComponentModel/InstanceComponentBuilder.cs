@@ -6,18 +6,16 @@ namespace DotNetNuke.ComponentModel
 {
     internal class InstanceComponentBuilder : IComponentBuilder
     {
-        private readonly object _Instance;
-        private readonly string _Name;
+        private readonly object instance;
+        private readonly string name;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InstanceComponentBuilder"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InstanceComponentBuilder"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="instance"></param>
         public InstanceComponentBuilder(string name, object instance)
         {
-            this._Name = name;
-            this._Instance = instance;
+            this.name = name;
+            this.instance = instance;
         }
 
         /// <inheritdoc/>
@@ -25,14 +23,14 @@ namespace DotNetNuke.ComponentModel
         {
             get
             {
-                return this._Name;
+                return this.name;
             }
         }
 
         /// <inheritdoc/>
         public object BuildComponent()
         {
-            return this._Instance;
+            return this.instance;
         }
     }
 }

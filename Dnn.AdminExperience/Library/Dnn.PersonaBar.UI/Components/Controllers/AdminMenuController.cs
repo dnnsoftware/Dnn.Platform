@@ -23,8 +23,9 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
     public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
-        private IDictionary<string, IList<string>> _knownPages;
+        private IDictionary<string, IList<string>> knownPages;
 
+        /// <inheritdoc/>
         public void CreateLinkMenu(TabInfo tab)
         {
             if (!this.ValidateTab(tab))
@@ -63,6 +64,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteLinkMenu(TabInfo tab)
         {
             var portalId = tab.PortalID;
@@ -73,6 +75,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             PersonaBarRepository.Instance.DeleteMenuItem(identifier);
         }
 
+        /// <inheritdoc/>
         protected override Func<IAdminMenuController> GetFactory()
         {
             return () => new AdminMenuController();
@@ -111,14 +114,14 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
         private IList<string> GetKnownPages(string type)
         {
-            if (this._knownPages == null)
+            if (this.knownPages == null)
             {
-                this._knownPages = new Dictionary<string, IList<string>>();
+                this.knownPages = new Dictionary<string, IList<string>>();
             }
 
-            if (this._knownPages.ContainsKey(type))
+            if (this.knownPages.ContainsKey(type))
             {
-                return this._knownPages[type];
+                return this.knownPages[type];
             }
 
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
@@ -126,7 +129,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var xmlDocument = new XmlDocument { XmlResolver = null };
             xmlDocument.Load(dataPath);
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
-            this._knownPages.Add(type, pages);
+            this.knownPages.Add(type, pages);
 
             return pages;
         }

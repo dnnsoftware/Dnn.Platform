@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.Api
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.
-    /// </summary>
+    /// <summary>A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.</summary>
     public class StringPassThroughMediaTypeFormatter : MediaTypeFormatter
     {
         /// <summary>

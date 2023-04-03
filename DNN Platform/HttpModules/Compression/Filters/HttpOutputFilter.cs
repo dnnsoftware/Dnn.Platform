@@ -8,11 +8,13 @@ namespace DotNetNuke.HttpModules.Compression
 
     public abstract class HttpOutputFilter : Stream
     {
-        private readonly Stream _sink;
+        private readonly Stream sink;
 
+        /// <summary>Initializes a new instance of the <see cref="HttpOutputFilter"/> class.</summary>
+        /// <param name="baseStream">The base stream.</param>
         protected HttpOutputFilter(Stream baseStream)
         {
-            this._sink = baseStream;
+            this.sink = baseStream;
         }
 
         /// <inheritdoc/>
@@ -38,7 +40,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return this._sink.CanWrite;
+                return this.sink.CanWrite;
             }
         }
 
@@ -69,7 +71,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return this._sink;
+                return this.sink;
             }
         }
 
@@ -88,13 +90,13 @@ namespace DotNetNuke.HttpModules.Compression
         /// <inheritdoc/>
         public override void Close()
         {
-            this._sink.Close();
+            this.sink.Close();
         }
 
         /// <inheritdoc/>
         public override void Flush()
         {
-            this._sink.Flush();
+            this.sink.Flush();
         }
 
         /// <inheritdoc/>

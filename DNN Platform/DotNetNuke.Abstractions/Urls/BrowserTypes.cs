@@ -3,19 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Urls
 {
-    /// <summary>
-    /// Enumeration values for Browser Types. (Normal or desktop, mobile, etc.)
-    /// </summary>
+    /// <summary>Enumeration values for Browser Types. (Normal or desktop, mobile, etc.)</summary>
     public enum BrowserTypes
     {
-        /// <summary>
-        /// Standard web browser.
-        /// </summary>
+        /// <summary>Standard web browser.</summary>
         Normal = 0,
 
-        /// <summary>
-        /// Mobile web browser
-        /// </summary>
+        /// <summary>Mobile web browser</summary>
         Mobile = 1,
     }
 }

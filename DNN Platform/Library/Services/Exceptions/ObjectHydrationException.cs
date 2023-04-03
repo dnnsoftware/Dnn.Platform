@@ -10,12 +10,10 @@ namespace DotNetNuke.Services.Exceptions
 
     public class ObjectHydrationException : BasePortalException
     {
-        private List<string> _Columns;
-        private Type _Type;
+        private List<string> columns;
+        private Type type;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
         public ObjectHydrationException(string message, Exception innerException)
@@ -23,9 +21,7 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
         /// <param name="type"></param>
@@ -33,17 +29,15 @@ namespace DotNetNuke.Services.Exceptions
         public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr)
             : base(message, innerException)
         {
-            this._Type = type;
-            this._Columns = new List<string>();
+            this.type = type;
+            this.columns = new List<string>();
             foreach (DataRow row in dr.GetSchemaTable().Rows)
             {
-                this._Columns.Add(row["ColumnName"].ToString());
+                this.columns.Add(row["ColumnName"].ToString());
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectHydrationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected ObjectHydrationException(SerializationInfo info, StreamingContext context)
@@ -56,15 +50,15 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                string _Message = base.Message;
-                _Message += " Expecting - " + this.Type + ".";
-                _Message += " Returned - ";
+                string message = base.Message;
+                message += " Expecting - " + this.Type + ".";
+                message += " Returned - ";
                 foreach (string columnName in this.Columns)
                 {
-                    _Message += columnName + ", ";
+                    message += columnName + ", ";
                 }
 
-                return _Message;
+                return message;
             }
         }
 
@@ -72,12 +66,12 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this._Columns;
+                return this.columns;
             }
 
             set
             {
-                this._Columns = value;
+                this.columns = value;
             }
         }
 
@@ -85,12 +79,12 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this._Type;
+                return this.type;
             }
 
             set
             {
-                this._Type = value;
+                this.type = value;
             }
         }
     }

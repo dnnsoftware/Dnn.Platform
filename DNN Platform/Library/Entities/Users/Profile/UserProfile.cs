@@ -18,10 +18,9 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json;
 
-    /// <summary>
-    /// The UserProfile class provides a Business Layer entity for the Users Profile.
-    /// </summary>
+    /// <summary>The UserProfile class provides a Business Layer entity for the Users Profile.</summary>
     [Serializable]
     public class UserProfile : IIndexable
     {
@@ -78,16 +77,8 @@ namespace DotNetNuke.Entities.Users
 #pragma warning restore SA1600 // Elements should be documented
 
         private const string UserProfileFirstName = "FirstName";
-        private bool isDirty;
         private const string UserProfileLastName = "LastName";
-
-        private UserInfo user;
         private const string UserProfileTitle = "Title";
-
-        // collection to store all profile properties.
-        private ProfilePropertyDefinitionCollection profileProperties;
-
-        // Address Properties
         private const string UserProfileUnit = "Unit";
         private const string UserProfileStreet = "Street";
         private const string UserProfileCity = "City";
@@ -110,26 +101,28 @@ namespace DotNetNuke.Entities.Users
         private const string UserProfilePreferredLocale = "PreferredLocale";
         private const string UserProfilePreferredTimeZone = "PreferredTimeZone";
         private const string UserProfileBiography = "Biography";
+        private bool isDirty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserProfile"/> class.
-        /// </summary>
+        private UserInfo user;
+
+        // collection to store all profile properties.
+        private ProfilePropertyDefinitionCollection profileProperties;
+
+        // Address Properties
+
+        /// <summary>Initializes a new instance of the <see cref="UserProfile"/> class.</summary>
         public UserProfile()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserProfile"/> class with a proficed existing user.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserProfile"/> class with a proficed existing user.</summary>
         /// <param name="user">The user this profile belongs to.</param>
         public UserProfile(UserInfo user)
         {
             this.user = user;
         }
 
-        /// <summary>
-        /// Gets the full name by concatenating the first and last name with a space.
-        /// </summary>
+        /// <summary>Gets the full name by concatenating the first and last name with a space.</summary>
         public string FullName
         {
             get
@@ -138,9 +131,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether a property has been changed.
-        /// </summary>
+        /// <summary>Gets a value indicating whether a property has been changed.</summary>
         public bool IsDirty
         {
             get
@@ -149,9 +140,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets a URL for the profile picture - if the path contains invalid url characters it will return a fileticket.
-        /// </summary>
+        /// <summary>Gets a URL for the profile picture - if the path contains invalid url characters it will return a fileticket.</summary>
         public string PhotoURL
         {
             get
@@ -178,9 +167,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching).
-        /// </summary>
+        /// <summary>Gets the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching).</summary>
         [Obsolete("Obsolete in 7.2.2, Use PhotoUrl instead of it.. Scheduled removal in v10.0.0.")]
         public string PhotoURLFile
         {
@@ -237,17 +224,13 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets the Collection of Profile Properties.
-        /// </summary>
+        /// <summary>Gets the Collection of Profile Properties.</summary>
         public ProfilePropertyDefinitionCollection ProfileProperties
         {
             get { return this.profileProperties ?? (this.profileProperties = new ProfilePropertyDefinitionCollection()); }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Cell/Mobile Phone.
-        /// </summary>
+        /// <summary>Gets or sets the Cell/Mobile Phone.</summary>
         public string Cell
         {
             get
@@ -261,9 +244,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the City part of the Address.
-        /// </summary>
+        /// <summary>Gets or sets the City part of the Address.</summary>
         public string City
         {
             get
@@ -277,9 +258,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Country part of the Address.
-        /// </summary>
+        /// <summary>Gets or sets the Country part of the Address.</summary>
         public string Country
         {
             get
@@ -293,9 +272,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Fax Phone.
-        /// </summary>
+        /// <summary>Gets or sets the Fax Phone.</summary>
         public string Fax
         {
             get
@@ -309,9 +286,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the First Name.
-        /// </summary>
+        /// <summary>Gets or sets the First Name.</summary>
         public string FirstName
         {
             get
@@ -325,9 +300,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Instant Messenger Handle.
-        /// </summary>
+        /// <summary>Gets or sets the Instant Messenger Handle.</summary>
         public string IM
         {
             get
@@ -341,9 +314,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Last Name.
-        /// </summary>
+        /// <summary>Gets or sets the Last Name.</summary>
         public string LastName
         {
             get
@@ -357,9 +328,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the path to the profile picture.
-        /// </summary>
+        /// <summary>Gets or sets the path to the profile picture.</summary>
         public string Photo
         {
             get
@@ -373,9 +342,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the PostalCode part of the Address.
-        /// </summary>
+        /// <summary>Gets or sets the PostalCode part of the Address.</summary>
         public string PostalCode
         {
             get
@@ -389,9 +356,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Preferred Locale.
-        /// </summary>
+        /// <summary>Gets or sets the Preferred Locale.</summary>
         public string PreferredLocale
         {
             get
@@ -405,10 +370,9 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the preferred time zone.
-        /// </summary>
+        /// <summary>Gets or sets the preferred time zone.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public TimeZoneInfo PreferredTimeZone
         {
             get
@@ -446,9 +410,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Region part of the Address.
-        /// </summary>
+        /// <summary>Gets or sets the Region part of the Address.</summary>
         public string Region
         {
             get
@@ -462,9 +424,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Street part of the Address.
-        /// </summary>
+        /// <summary>Gets or sets the Street part of the Address.</summary>
         public string Street
         {
             get
@@ -478,9 +438,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the telephone number.
-        /// </summary>
+        /// <summary>Gets or sets the telephone number.</summary>
         public string Telephone
         {
             get
@@ -494,9 +452,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Title.
-        /// </summary>
+        /// <summary>Gets or sets the Title.</summary>
         public string Title
         {
             get
@@ -510,9 +466,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Unit part of the Address.
-        /// </summary>
+        /// <summary>Gets or sets the Unit part of the Address.</summary>
         public string Unit
         {
             get
@@ -526,9 +480,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Website.
-        /// </summary>
+        /// <summary>Gets or sets the Website.</summary>
         public string Website
         {
             get
@@ -542,9 +494,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets or sets the biography.
-        /// </summary>
+        /// <summary>Gets or sets the biography.</summary>
         public string Biography
         {
             get
@@ -588,9 +538,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Clears the IsDirty Flag.
-        /// </summary>
+        /// <summary>Clears the IsDirty Flag.</summary>
         public void ClearIsDirty()
         {
             this.isDirty = false;
@@ -600,9 +548,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets a Profile Property from the Profile.
-        /// </summary>
+        /// <summary>Gets a Profile Property from the Profile.</summary>
         /// <remarks>
         /// Used mainly for custom profile properties, many default properties are already exposed in this class.
         /// </remarks>
@@ -613,9 +559,7 @@ namespace DotNetNuke.Entities.Users
             return this.ProfileProperties[propName];
         }
 
-        /// <summary>
-        /// Gets a Profile Property Value from the Profile.
-        /// </summary>
+        /// <summary>Gets a Profile Property Value from the Profile.</summary>
         /// <remarks>
         /// Used mainly for custom profile properties, many default properties are already exposed in this class.
         /// </remarks>
@@ -649,18 +593,14 @@ namespace DotNetNuke.Entities.Users
             return propValue;
         }
 
-        /// <summary>
-        /// Initialises the Profile with a collection of profile properties and their default values.
-        /// </summary>
+        /// <summary>Initialises the Profile with a collection of profile properties and their default values.</summary>
         /// <param name="portalId">The id of the portal this profile belongs to.</param>
         public void InitialiseProfile(int portalId)
         {
             this.InitialiseProfile(portalId, true);
         }
 
-        /// <summary>
-        /// Initialises the Profile with an empty collection of profile properties or default values.
-        /// </summary>
+        /// <summary>Initialises the Profile with an empty collection of profile properties or default values.</summary>
         /// <param name="portalId">the id of the portal this profile belongs to.</param>
         /// <param name="useDefaults">A flag that indicates whether the profile default values should be
         /// copied to the Profile.</param>
@@ -676,13 +616,9 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets a Profile Property Value in the Profile.
-        /// </summary>
+        /// <summary>Sets a Profile Property Value in the Profile.</summary>
         /// <param name="propName">The name of the propoerty to set.</param>
         /// <param name="propValue">The value of the propoerty to set.</param>
-        /// -----------------------------------------------------------------------------
         public void SetProfileProperty(string propName, string propValue)
         {
             ProfilePropertyDefinition profileProp = this.GetProperty(propName);

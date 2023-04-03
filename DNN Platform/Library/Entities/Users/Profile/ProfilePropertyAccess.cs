@@ -25,16 +25,12 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
-    /// <summary>
-    /// Provides access to profile properties.
-    /// </summary>
+    /// <summary>Provides access to profile properties.</summary>
     public class ProfilePropertyAccess : IPropertyAccess
     {
         private readonly UserInfo user;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfilePropertyAccess"/> class for a user.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfilePropertyAccess"/> class for a user.</summary>
         /// <param name="user">The user to use for these properties, <see cref="UserInfo"/>.</param>
         public ProfilePropertyAccess(UserInfo user)
         {
@@ -50,9 +46,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Checks whether profile property is accessible.
-        /// </summary>
+        /// <summary>Checks whether profile property is accessible.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="property">The property.</param>
         /// <param name="accessingUser">The accessing user.</param>
@@ -65,9 +59,7 @@ namespace DotNetNuke.Entities.Users
             return CheckAccessLevel(portalSettingsAsInterface, property, accessingUser, targetUser);
         }
 
-        /// <summary>
-        /// Checks whether profile property is accessible.
-        /// </summary>
+        /// <summary>Checks whether profile property is accessible.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="property">The property.</param>
         /// <param name="accessingUser">The accessing user.</param>
@@ -127,9 +119,7 @@ namespace DotNetNuke.Entities.Users
             return isVisible;
         }
 
-        /// <summary>
-        /// Gets a human readable string representing some complex profile properties.
-        /// </summary>
+        /// <summary>Gets a human readable string representing some complex profile properties.</summary>
         /// <param name="property">The <see cref="ProfilePropertyDefinition"/> to get the string from.</param>
         /// <param name="formatString">An optional format string.</param>
         /// <param name="formatProvider">An optional <see cref="CultureInfo"/> format provider to use.</param>
@@ -203,9 +193,7 @@ namespace DotNetNuke.Entities.Users
             return result;
         }
 
-        /// <summary>
-        /// Gets the date type for a profile property definition.
-        /// </summary>
+        /// <summary>Gets the date type for a profile property definition.</summary>
         /// <param name="definition">The <see cref="ProfilePropertyDefinition"/> to check.</param>
         /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
         public static string DisplayDataType(ProfilePropertyDefinition definition)

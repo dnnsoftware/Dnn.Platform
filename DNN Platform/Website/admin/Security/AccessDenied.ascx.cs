@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
     public partial class AccessDeniedPage : PortalModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

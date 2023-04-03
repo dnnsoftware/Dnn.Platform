@@ -27,9 +27,7 @@ using log4net.Util;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Layout that formats the log events as XML elements.
-    /// </summary>
+    /// <summary>Layout that formats the log events as XML elements.</summary>
     /// <remarks>
     /// <para>
     /// The output of the <see cref="XmlLayout" /> consists of a series of 
@@ -72,16 +70,12 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class XmlLayout : XmlLayoutBase
     {
-        /// <summary>
-        /// Constructs an XmlLayout
-        /// </summary>
+        /// <summary>Constructs an XmlLayout</summary>
         public XmlLayout() : base()
         {
         }
 
-        /// <summary>
-        /// Constructs an XmlLayout.
-        /// </summary>
+        /// <summary>Constructs an XmlLayout.</summary>
         /// <remarks>
         /// <para>
         /// The <b>LocationInfo</b> option takes a boolean value. By
@@ -100,9 +94,7 @@ namespace log4net.Layout
         {
         }
 
-        /// <summary>
-        /// The prefix to use for all element names
-        /// </summary>
+        /// <summary>The prefix to use for all element names</summary>
         /// <remarks>
         /// <para>
         /// The default prefix is <b>log4net</b>. Set this property
@@ -117,9 +109,7 @@ namespace log4net.Layout
         }
 
         
-        /// <summary>
-        /// Set whether or not to base64 encode the message.
-        /// </summary>
+        /// <summary>Set whether or not to base64 encode the message.</summary>
         /// <remarks>
         /// <para>
         /// By default the log message will be written as text to the xml
@@ -136,9 +126,7 @@ namespace log4net.Layout
             set { this.m_base64Message = value; }
         }
 
-        /// <summary>
-        /// Set whether or not to base64 encode the property values.
-        /// </summary>
+        /// <summary>Set whether or not to base64 encode the property values.</summary>
         /// <remarks>
         /// <para>
         /// By default the properties will be written as text to the xml
@@ -156,9 +144,7 @@ namespace log4net.Layout
         }
 
 
-        /// <summary>
-        /// Initialize layout options
-        /// </summary>
+        /// <summary>Initialize layout options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -191,9 +177,7 @@ namespace log4net.Layout
             }
         }
 
-        /// <summary>
-        /// Does the actual writing of the XML.
-        /// </summary>
+        /// <summary>Does the actual writing of the XML.</summary>
         /// <param name="writer">The writer to use to output the event to.</param>
         /// <param name="loggingEvent">The event to write.</param>
         /// <remarks>
@@ -296,9 +280,7 @@ namespace log4net.Layout
             writer.WriteEndElement();
         }
 
-        /// <summary>
-        /// The prefix to use for all generated element names
-        /// </summary>
+        /// <summary>The prefix to use for all generated element names</summary>
         private string m_prefix = PREFIX;
 
         private string m_elmEvent = ELM_EVENT;

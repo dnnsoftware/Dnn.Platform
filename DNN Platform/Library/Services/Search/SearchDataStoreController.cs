@@ -11,17 +11,7 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke.Search.DataStore
-    /// Class:      SearchDataStoreController
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The SearchDataStoreController is the Business Controller class for SearchDataStore.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The SearchDataStoreController is the Business Controller class for SearchDataStore.</summary>
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchDataStoreController
     {
@@ -32,76 +22,68 @@ namespace DotNetNuke.Services.Search
         }
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
-        public static void DeleteSearchItem(int SearchItemId)
+        public static void DeleteSearchItem(int searchItemId)
         {
         }
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
-        public static void DeleteSearchItemWords(int SearchItemId)
+        public static void DeleteSearchItemWords(int searchItemId)
         {
         }
 
+        /// <returns>An empty <see cref="SearchItemInfo"/>.</returns>
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static SearchItemInfo GetSearchItem(int ModuleId, string SearchKey)
+        public static SearchItemInfo GetSearchItem(int moduleId, string searchKey)
         {
             var empty = new SearchItemInfo();
             return empty;
         }
 
+        /// <returns>An empty <see cref="Dictionary{TKey,TValue}"/>.</returns>
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static Dictionary<string, SearchItemInfo> GetSearchItems(int ModuleId)
+        public static Dictionary<string, SearchItemInfo> GetSearchItems(int moduleId)
         {
             var empty = new Dictionary<string, SearchItemInfo>();
             return empty;
         }
 
+        /// <returns>An empty <see cref="ArrayList"/>.</returns>
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static ArrayList GetSearchItems(int PortalId, int TabId, int ModuleId)
+        public static ArrayList GetSearchItems(int portalId, int tabId, int moduleId)
         {
             var empty = new ArrayList();
             return empty;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSearchResults gets the search results for a single word.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="PortalID">A Id of the Portal.</param>
-        /// <param name="Word">The word.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetSearchResults gets the search results for a single word.</summary>
+        /// <param name="portalID">A Id of the Portal.</param>
+        /// <param name="word">The word.</param>
+        /// <returns>An empty <see cref="SearchResultsInfoCollection"/>.</returns>
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static SearchResultsInfoCollection GetSearchResults(int PortalID, string Word)
+        public static SearchResultsInfoCollection GetSearchResults(int portalID, string word)
         {
             var empty = new SearchResultsInfoCollection();
             return empty;
         }
 
+        /// <returns>An empty <see cref="SearchResultsInfoCollection"/>.</returns>
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static SearchResultsInfoCollection GetSearchResults(int PortalId, int TabId, int ModuleId)
+        public static SearchResultsInfoCollection GetSearchResults(int portalId, int tabId, int moduleId)
         {
             var empty = new SearchResultsInfoCollection();
             return empty;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSearchSettings gets the search settings for a single module.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="ModuleId">The Id of the Module.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static Dictionary<string, string> GetSearchSettings(int ModuleId)
+        /// <summary>GetSearchSettings gets the search settings for a single module.</summary>
+        /// <param name="moduleId">The Id of the Module.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> of settings (<c>NULL</c> values are coerced to <see cref="string.Empty"/>).</returns>
+        public static Dictionary<string, string> GetSearchSettings(int moduleId)
         {
             var dicSearchSettings = new Dictionary<string, string>();
             IDataReader dr = null;
             try
             {
-                dr = DataProvider.Instance().GetSearchSettings(ModuleId);
+                dr = DataProvider.Instance().GetSearchSettings(moduleId);
                 while (dr.Read())
                 {
                     if (!dr.IsDBNull(1))

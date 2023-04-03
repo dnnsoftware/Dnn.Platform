@@ -4,40 +4,32 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
-    using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>Skin object of portal links between desktop and mobile portals.</summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class LinkToMobileSite : SkinObjectBase
     {
         private const string MyFileName = "LinkToMobileSite.ascx";
 
-        private string _localResourcesFile;
+        private string localResourcesFile;
 
         private string LocalResourcesFile
         {
             get
             {
-                if (string.IsNullOrEmpty(this._localResourcesFile))
+                if (string.IsNullOrEmpty(this.localResourcesFile))
                 {
-                    this._localResourcesFile = Localization.GetResourceFile(this, MyFileName);
+                    this.localResourcesFile = Localization.GetResourceFile(this, MyFileName);
                 }
 
-                return this._localResourcesFile;
+                return this.localResourcesFile;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

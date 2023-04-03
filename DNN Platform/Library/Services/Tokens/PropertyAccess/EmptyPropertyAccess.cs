@@ -7,10 +7,7 @@ namespace DotNetNuke.Services.Tokens
 
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Returns an Empty String for all Properties.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Returns an Empty String for all Properties.</summary>
     public class EmptyPropertyAccess : IPropertyAccess
     {
         /// <inheritdoc/>
@@ -23,7 +20,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             return string.Empty;
         }

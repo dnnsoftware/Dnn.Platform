@@ -19,11 +19,9 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnPortalPageDropDownList runat='server'></{0}:DnnPortalPageDropDownList>")]
     public class DnnPortalPageDropDownList : DnnDropDownList
     {
-        private readonly Lazy<int> _portalId = new Lazy<int>(() => PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId);
+        private readonly Lazy<int> portalId = new Lazy<int>(() => PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId);
 
-        /// <summary>
-        /// Gets or sets the selected Page in the control, or selects the Page in the control.
-        /// </summary>
+        /// <summary>Gets or sets the selected Page in the control, or selects the Page in the control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TabInfo SelectedPage
@@ -31,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var pageId = this.SelectedItemValueAsInt;
-                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this._portalId.Value, false);
+                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this.portalId.Value, false);
             }
 
             set

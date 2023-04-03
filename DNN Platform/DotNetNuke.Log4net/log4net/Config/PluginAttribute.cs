@@ -83,9 +83,7 @@ namespace log4net.Config
             this.m_type = type;
         }
 
-        /// <summary>
-        /// Gets or sets the type for the plugin.
-        /// </summary>
+        /// <summary>Gets or sets the type for the plugin.</summary>
         /// <value>
         /// The type for the plugin.
         /// </value>
@@ -100,9 +98,7 @@ namespace log4net.Config
             set { this.m_type = value ; }
         }
 
-        /// <summary>
-        /// Gets or sets the type name for the plugin.
-        /// </summary>
+        /// <summary>Gets or sets the type name for the plugin.</summary>
         /// <value>
         /// The type name for the plugin.
         /// </value>
@@ -120,9 +116,7 @@ namespace log4net.Config
             set { this.m_typeName = value ; }
         }
 
-        /// <summary>
-        /// Creates the plugin object defined by this attribute.
-        /// </summary>
+        /// <summary>Creates the plugin object defined by this attribute.</summary>
         /// <remarks>
         /// <para>
         /// Creates the instance of the <see cref="IPlugin"/> object as 
@@ -152,9 +146,7 @@ namespace log4net.Config
             return plugin;
         }
 
-        /// <summary>
-        /// Returns a representation of the properties of this object.
-        /// </summary>
+        /// <summary>Returns a representation of the properties of this object.</summary>
         /// <remarks>
         /// <para>
         /// Overrides base class <see cref="M:Object.ToString()" /> method to 

@@ -8,16 +8,16 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using ClientDependency.Core.Controls;
 
-    /// <summary>
-    /// Registers a CSS resource.
-    /// </summary>
+    /// <summary>Registers a CSS resource.</summary>
     public class DnnCssInclude : CssInclude
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnCssInclude"/> class.</summary>
         public DnnCssInclude()
         {
             this.ForceProvider = ClientResourceManager.DefaultCssProvider;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
             base.OnLoad(e);
@@ -25,6 +25,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)

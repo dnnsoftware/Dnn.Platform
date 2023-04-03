@@ -5,19 +5,25 @@ import Localization from "../../../localization";
 import UrlRow from "./UrlRow";
 import EditUrl from "./EditUrl";
 import styles from "./style.less";
+import uniqBy from "lodash/uniqBy";
 
 class Table extends Component {
+    generateUrlKey(url) {
+        return `url_${url.id}_${url.path}_${url.statusCode.Key}`;
+    }
 
     getUrlRows(pageUrls) {
         if (!pageUrls || pageUrls.length === 0) {
             return null;
         }
 
+        const deduplicatedUrls = uniqBy(pageUrls, url => this.generateUrlKey(url));
+
         const { siteAliases, primaryAliasId, onSave, onCancel, onDelete, onChange, editedUrl,
             pageHasParent, editingUrl, onOpenEditForm } = this.props;
-        return pageUrls.map((url, index) => {
+        return deduplicatedUrls.map((url) => {
             return <UrlRow 
-                key={url.id === -1 ? -1 - index : url.id}
+                key={this.generateUrlKey(url)}
                 url={url}
                 editedUrl={editedUrl}
                 onOpenEditForm={onOpenEditForm}

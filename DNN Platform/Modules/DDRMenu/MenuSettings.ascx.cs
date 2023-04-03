@@ -8,9 +8,7 @@ namespace DotNetNuke.Web.DDRMenu
 
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Implements the settings view of the module.
-    /// </summary>
+    /// <summary>Implements the settings view of the module.</summary>
     public partial class MenuSettings : ModuleSettingsBase
     {
         /// <inheritdoc/>

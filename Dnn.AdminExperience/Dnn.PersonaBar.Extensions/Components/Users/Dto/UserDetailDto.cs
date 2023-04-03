@@ -21,13 +21,14 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {
-        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
         public UserDetailDto()
         {
         }
 
-        public UserDetailDto(UserInfo user) : base(user)
+        public UserDetailDto(UserInfo user)
+            : base(user)
         {
             this.LastLogin = user.Membership.LastLoginDate;
             this.LastActivity = user.Membership.LastActivityDate;
@@ -111,11 +112,14 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             }
 
             // ctl/Edit/mid/345/packageid/52
-            return _navigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
-                                            "mid=" + module.ModuleID,
-                                            "popUp=true",
-                                            "UserId=" + userId,
-                                            "editprofile=true");
+            return NavigationManager.NavigateURL(
+                tabId,
+                PortalSettings.Current,
+                "Edit",
+                "mid=" + module.ModuleID,
+                "popUp=true",
+                "UserId=" + userId,
+                "editprofile=true");
         }
     }
 }

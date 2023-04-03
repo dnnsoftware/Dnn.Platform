@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// Business Layer to manage Messaging. Also contains CRUD methods.
-    /// </summary>
+    /// <summary>Business Layer to manage Messaging. Also contains CRUD methods.</summary>
     public class InstallController : ServiceLocator<IInstallController, InstallController>
     {
         /// <inheritdoc/>

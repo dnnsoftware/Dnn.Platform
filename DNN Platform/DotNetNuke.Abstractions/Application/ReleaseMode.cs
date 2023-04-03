@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Application
 {
-    /// <summary>
-    /// The enumeration of release mode.
-    /// </summary>
+    /// <summary>The enumeration of release mode.</summary>
     /// <value>
     /// <list type="bullet">
     ///         <item>None: Not specified for the current release.</item>
@@ -21,29 +19,19 @@ namespace DotNetNuke.Abstractions.Application
     /// </value>
     public enum ReleaseMode
     {
-        /// <summary>
-        /// Not assigned
-        /// </summary>
+        /// <summary>Not assigned</summary>
         None = 0,
 
-        /// <summary>
-        /// Alpha release
-        /// </summary>
+        /// <summary>Alpha release</summary>
         Alpha = 1,
 
-        /// <summary>
-        /// Beta release
-        /// </summary>
+        /// <summary>Beta release</summary>
         Beta = 2,
 
-        /// <summary>
-        /// Release candidate
-        /// </summary>
+        /// <summary>Release candidate</summary>
         RC = 3,
 
-        /// <summary>
-        /// Stable release version
-        /// </summary>
+        /// <summary>Stable release version</summary>
         Stable = 4,
     }
 }

@@ -35,9 +35,7 @@ using UtcDatePatternConverter = log4net.Layout.Pattern.UtcDatePatternConverter;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// A flexible layout configurable with pattern string.
-    /// </summary>
+    /// <summary>A flexible layout configurable with pattern string.</summary>
     /// <remarks>
     /// <para>
     /// The goal of this class is to <see cref="M:PatternLayout.Format(TextWriter,LoggingEvent)"/> a 
@@ -782,9 +780,7 @@ namespace log4net.Layout
     /// <author>Daniel Cazzulino</author>
     public class PatternLayout : LayoutSkeleton
     {
-        /// <summary>
-        /// Default pattern string for log output. 
-        /// </summary>
+        /// <summary>Default pattern string for log output. </summary>
         /// <remarks>
         /// <para>
         /// Default pattern string for log output. 
@@ -794,9 +790,7 @@ namespace log4net.Layout
         /// </remarks>
         public const string DefaultConversionPattern ="%message%newline";
 
-        /// <summary>
-        /// A detailed conversion pattern
-        /// </summary>
+        /// <summary>A detailed conversion pattern</summary>
         /// <remarks>
         /// <para>
         /// A conversion pattern which includes Time, Thread, Logger, and Nested Context.
@@ -805,9 +799,7 @@ namespace log4net.Layout
         /// </remarks>
         public const string DetailConversionPattern = "%timestamp [%thread] %level %logger %ndc - %message%newline";
 
-        /// <summary>
-        /// Internal map of converter identifiers to converter types.
-        /// </summary>
+        /// <summary>Internal map of converter identifiers to converter types.</summary>
         /// <remarks>
         /// <para>
         /// This static map is overridden by the m_converterRegistry instance map
@@ -815,24 +807,16 @@ namespace log4net.Layout
         /// </remarks>
         private static Hashtable s_globalRulesRegistry;
 
-        /// <summary>
-        /// the pattern
-        /// </summary>
+        /// <summary>the pattern</summary>
         private string m_pattern;
   
-        /// <summary>
-        /// the head of the pattern converter chain
-        /// </summary>
+        /// <summary>the head of the pattern converter chain</summary>
         private PatternConverter m_head;
 
-        /// <summary>
-        /// patterns defined on this PatternLayout only
-        /// </summary>
+        /// <summary>patterns defined on this PatternLayout only</summary>
         private Hashtable m_instanceRulesRegistry = new Hashtable();
 
-        /// <summary>
-        /// Initialize the global registry
-        /// </summary>
+        /// <summary>Initialize the global registry</summary>
         /// <remarks>
         /// <para>
         /// Defines the builtin global rules.
@@ -922,9 +906,7 @@ namespace log4net.Layout
             s_globalRulesRegistry.Add("username", typeof(UserNamePatternConverter));
         }
 
-        /// <summary>
-        /// Constructs a PatternLayout using the DefaultConversionPattern
-        /// </summary>
+        /// <summary>Constructs a PatternLayout using the DefaultConversionPattern</summary>
         /// <remarks>
         /// <para>
         /// The default pattern just produces the application supplied message.
@@ -944,9 +926,7 @@ namespace log4net.Layout
         {
         }
 
-        /// <summary>
-        /// Constructs a PatternLayout using the supplied conversion pattern
-        /// </summary>
+        /// <summary>Constructs a PatternLayout using the supplied conversion pattern</summary>
         /// <param name="pattern">the pattern to use</param>
         /// <remarks>
         /// <para>
@@ -973,9 +953,7 @@ namespace log4net.Layout
             this.ActivateOptions();
         }
 
-        /// <summary>
-        /// The pattern formatting string
-        /// </summary>
+        /// <summary>The pattern formatting string</summary>
         /// <remarks>
         /// <para>
         /// The <b>ConversionPattern</b> option. This is the string which
@@ -989,9 +967,7 @@ namespace log4net.Layout
             set { this.m_pattern = value; }
         }
 
-        /// <summary>
-        /// Create the pattern parser instance
-        /// </summary>
+        /// <summary>Create the pattern parser instance</summary>
         /// <param name="pattern">the pattern to parse</param>
         /// <returns>The <see cref="PatternParser"/> that will format the event</returns>
         /// <remarks>
@@ -1021,9 +997,7 @@ namespace log4net.Layout
             return patternParser;
         }
 
-        /// <summary>
-        /// Initialize layout options
-        /// </summary>
+        /// <summary>Initialize layout options</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -1059,9 +1033,7 @@ namespace log4net.Layout
             }
         }
 
-        /// <summary>
-        /// Produces a formatted string as specified by the conversion pattern.
-        /// </summary>
+        /// <summary>Produces a formatted string as specified by the conversion pattern.</summary>
         /// <param name="loggingEvent">the event being logged</param>
         /// <param name="writer">The TextWriter to write the formatted event to</param>
         /// <remarks>
@@ -1091,9 +1063,7 @@ namespace log4net.Layout
             }
         }
 
-        /// <summary>
-        /// Add a converter to this PatternLayout
-        /// </summary>
+        /// <summary>Add a converter to this PatternLayout</summary>
         /// <param name="converterInfo">the converter info</param>
         /// <remarks>
         /// <para>
@@ -1116,9 +1086,7 @@ namespace log4net.Layout
             this.m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
         }
 
-        /// <summary>
-        /// Add a converter to this PatternLayout
-        /// </summary>
+        /// <summary>Add a converter to this PatternLayout</summary>
         /// <param name="name">the name of the conversion pattern for this converter</param>
         /// <param name="type">the type of the converter</param>
         /// <remarks>

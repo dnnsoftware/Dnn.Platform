@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Log.EventLog
     [Serializable]
     public partial class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
     {
-        private string _mailFromAddress;
+        private string mailFromAddress;
 
         public enum NotificationThresholdTimeTypes
         {
@@ -55,12 +55,15 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 var portalSettings = Globals.GetPortalSettings();
                 return
-                    string.IsNullOrWhiteSpace(this._mailFromAddress)
+                    string.IsNullOrWhiteSpace(this.mailFromAddress)
                     ? (portalSettings == null ? string.Empty : portalSettings.Email)
-                    : this._mailFromAddress;
+                    : this.mailFromAddress;
             }
 
-            set { this._mailFromAddress = value; }
+            set
+            {
+                this.mailFromAddress = value;
+            }
         }
 
         /// <inheritdoc />

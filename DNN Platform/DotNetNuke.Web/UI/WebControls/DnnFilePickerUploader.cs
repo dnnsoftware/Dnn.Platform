@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web.UI;
@@ -22,15 +24,26 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnFilePickerUploader : UserControl, IFilePickerUploader
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFileDropDownList FilesComboBox;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFolderDropDownList FoldersComboBox;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label FoldersLabel;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFileUpload FileUploadControl;
+
+        // ReSharper restore InconsistentNaming
         private const string MyFileName = "filepickeruploader.ascx";
-        private int? _portalId = null;
-        private string _fileFilter;
-        private string _folderPath = string.Empty;
-        private bool _folderPathSet = false;
+        private int? portalId = null;
+        private string fileFilter;
+        private string folderPath = string.Empty;
+        private bool folderPathSet = false;
 
         public bool UsePersonalFolder { get; set; }
 
@@ -98,8 +111,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._folderPathSet
-                            ? this._folderPath
+                return this.folderPathSet
+                            ? this.folderPath
                             : this.FoldersComboBox.SelectedFolder != null
                                 ? this.FoldersComboBox.SelectedFolder.FolderPath
                                 : string.Empty;
@@ -107,8 +120,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
             set
             {
-                this._folderPath = value;
-                this._folderPathSet = true;
+                this.folderPath = value;
+                this.folderPathSet = true;
             }
         }
 
@@ -117,12 +130,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._fileFilter;
+                return this.fileFilter;
             }
 
             set
             {
-                this._fileFilter = value;
+                this.fileFilter = value;
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.FileUploadControl.Options.Extensions = value.Split(',').ToList();
@@ -142,12 +155,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return !this._portalId.HasValue ? PortalSettings.Current.PortalId : this._portalId.Value;
+                return !this.portalId.HasValue ? PortalSettings.Current.PortalId : this.portalId.Value;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
@@ -229,8 +242,9 @@ namespace DotNetNuke.Web.UI.WebControls
                         Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
                     };
                 }
-                else if (this.UsePersonalFolder) // if UserPersonalFolder is true, make sure the file is under the user folder.
+                else if (this.UsePersonalFolder)
                 {
+                    // if UserPersonalFolder is true, make sure the file is under the user folder.
                     this.FoldersComboBox.SelectedItem = new ListItem
                     {
                         Text = FolderManager.Instance.MyFolderName,

@@ -32,14 +32,12 @@ namespace DotNetNuke.Services.Journal
 
         private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
         private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
-        private readonly IJournalDataService _dataService;
+        private readonly IJournalDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JournalControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JournalControllerImpl"/> class.</summary>
         public JournalControllerImpl()
         {
-            this._dataService = JournalDataService.Instance;
+            this.dataService = JournalDataService.Instance;
         }
 
         // Journal Items
@@ -122,7 +120,7 @@ namespace DotNetNuke.Services.Journal
 
             this.PrepareSecuritySet(journalItem, currentUser);
 
-            journalItem.JournalId = this._dataService.Journal_Save(
+            journalItem.JournalId = this.dataService.Journal_Save(
                 journalItem.PortalId,
                 journalItem.UserId,
                 journalItem.ProfileId,
@@ -148,12 +146,12 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.ContentItemId > 0)
             {
                 cnt.UpdateContentItem(journalItem, tabId, moduleId);
-                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
+                this.dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
                 ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
-                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
+                this.dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
 
@@ -250,7 +248,7 @@ namespace DotNetNuke.Services.Journal
 
             this.PrepareSecuritySet(journalItem, currentUser);
 
-            journalItem.JournalId = this._dataService.Journal_Update(
+            journalItem.JournalId = this.dataService.Journal_Update(
                 journalItem.PortalId,
                 journalItem.UserId,
                 journalItem.ProfileId,
@@ -276,12 +274,12 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.ContentItemId > 0)
             {
                 cnt.UpdateContentItem(journalItem, tabId, moduleId);
-                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
+                this.dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
                 ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
-                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
+                this.dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
 
@@ -319,7 +317,7 @@ namespace DotNetNuke.Services.Journal
         /// <inheritdoc/>
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
         {
-            return CBO.FillObject<JournalItem>(this._dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
+            return CBO.FillObject<JournalItem>(this.dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
         }
 
         /// <inheritdoc/>
@@ -342,7 +340,7 @@ namespace DotNetNuke.Services.Journal
                 return null;
             }
 
-            return CBO.FillObject<JournalItem>(this._dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
+            return CBO.FillObject<JournalItem>(this.dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
         /// <inheritdoc/>
@@ -383,32 +381,30 @@ namespace DotNetNuke.Services.Journal
         /// <inheritdoc/>
         public void DisableComments(int portalId, int journalId)
         {
-            this._dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
+            this.dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
         }
 
         /// <inheritdoc/>
         public void EnableComments(int portalId, int journalId)
         {
-            this._dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
+            this.dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
         }
 
         /// <inheritdoc/>
         public void HideComments(int portalId, int journalId)
         {
-            this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
+            this.dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
         }
 
         /// <inheritdoc/>
         public void ShowComments(int portalId, int journalId)
         {
-            this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
+            this.dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
         }
 
         // Delete Journal Items
 
-        /// <summary>
-        /// HARD deletes journal items.
-        /// </summary>
+        /// <summary>HARD deletes journal items.</summary>
         /// <param name="portalId"></param>
         /// <param name="currentUserId"></param>
         /// <param name="journalId"></param>
@@ -417,29 +413,23 @@ namespace DotNetNuke.Services.Journal
             this.DeleteJournalItem(portalId, currentUserId, journalId, false);
         }
 
-        /// <summary>
-        /// HARD deletes journal items based on item key.
-        /// </summary>
+        /// <summary>HARD deletes journal items based on item key.</summary>
         /// <param name="portalId"></param>
         /// <param name="objectKey"></param>
         public void DeleteJournalItemByKey(int portalId, string objectKey)
         {
-            this._dataService.Journal_DeleteByKey(portalId, objectKey);
+            this.dataService.Journal_DeleteByKey(portalId, objectKey);
         }
 
-        /// <summary>
-        /// HARD deletes journal items based on group Id.
-        /// </summary>
+        /// <summary>HARD deletes journal items based on group Id.</summary>
         /// <param name="portalId"></param>
         /// <param name="groupId"></param>
         public void DeleteJournalItemByGroupId(int portalId, int groupId)
         {
-            this._dataService.Journal_DeleteByGroupId(portalId, groupId);
+            this.dataService.Journal_DeleteByGroupId(portalId, groupId);
         }
 
-        /// <summary>
-        /// SOFT deletes journal items.
-        /// </summary>
+        /// <summary>SOFT deletes journal items.</summary>
         /// <param name="portalId"></param>
         /// <param name="currentUserId"></param>
         /// <param name="journalId"></param>
@@ -448,37 +438,33 @@ namespace DotNetNuke.Services.Journal
             this.DeleteJournalItem(portalId, currentUserId, journalId, true);
         }
 
-        /// <summary>
-        /// SOFT deletes journal items based on item key.
-        /// </summary>
+        /// <summary>SOFT deletes journal items based on item key.</summary>
         /// <param name="portalId"></param>
         /// <param name="objectKey"></param>
         public void SoftDeleteJournalItemByKey(int portalId, string objectKey)
         {
-            this._dataService.Journal_SoftDeleteByKey(portalId, objectKey);
+            this.dataService.Journal_SoftDeleteByKey(portalId, objectKey);
         }
 
-        /// <summary>
-        /// SOFT deletes journal items based on group Id.
-        /// </summary>
+        /// <summary>SOFT deletes journal items based on group Id.</summary>
         /// <param name="portalId"></param>
         /// <param name="groupId"></param>
         public void SoftDeleteJournalItemByGroupId(int portalId, int groupId)
         {
-            this._dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
+            this.dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
         }
 
         /// <inheritdoc/>
         public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
         {
             var journalIds = journalIdList.Aggregate(string.Empty, (current, journalId) => current + journalId + ";");
-            return CBO.FillCollection<CommentInfo>(this._dataService.Journal_Comment_ListByJournalIds(journalIds));
+            return CBO.FillCollection<CommentInfo>(this.dataService.Journal_Comment_ListByJournalIds(journalIds));
         }
 
         /// <inheritdoc/>
         public void LikeJournalItem(int journalId, int userId, string displayName)
         {
-            this._dataService.Journal_Like(journalId, userId, displayName);
+            this.dataService.Journal_Like(journalId, userId, displayName);
         }
 
         /// <inheritdoc/>
@@ -499,7 +485,7 @@ namespace DotNetNuke.Services.Journal
                 xml = comment.CommentXML.OuterXml;
             }
 
-            comment.CommentId = this._dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
+            comment.CommentId = this.dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
 
             var newComment = this.GetComment(comment.CommentId);
             comment.DateCreated = newComment.DateCreated;
@@ -509,13 +495,13 @@ namespace DotNetNuke.Services.Journal
         /// <inheritdoc/>
         public CommentInfo GetComment(int commentId)
         {
-            return CBO.FillObject<CommentInfo>(this._dataService.Journal_Comment_Get(commentId));
+            return CBO.FillObject<CommentInfo>(this.dataService.Journal_Comment_Get(commentId));
         }
 
         /// <inheritdoc/>
         public void DeleteComment(int journalId, int commentId)
         {
-            this._dataService.Journal_Comment_Delete(journalId, commentId);
+            this.dataService.Journal_Comment_Delete(journalId, commentId);
 
             // UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
@@ -523,19 +509,19 @@ namespace DotNetNuke.Services.Journal
         /// <inheritdoc/>
         public void LikeComment(int journalId, int commentId, int userId, string displayName)
         {
-            this._dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
+            this.dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
         }
 
         /// <inheritdoc/>
         public JournalTypeInfo GetJournalType(string journalType)
         {
-            return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_Get(journalType));
+            return CBO.FillObject<JournalTypeInfo>(this.dataService.Journal_Types_Get(journalType));
         }
 
         /// <inheritdoc/>
         public JournalTypeInfo GetJournalTypeById(int journalTypeId)
         {
-            return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_GetById(journalTypeId));
+            return CBO.FillObject<JournalTypeInfo>(this.dataService.Journal_Types_GetById(journalTypeId));
         }
 
         /// <inheritdoc/>
@@ -547,7 +533,7 @@ namespace DotNetNuke.Services.Journal
                                                 DataCache.JournalTypesTimeOut,
                                                 DataCache.JournalTypesCachePriority,
                                                 portalId),
-                                            c => CBO.FillCollection<JournalTypeInfo>(this._dataService.Journal_Types_List(portalId)));
+                                            c => CBO.FillCollection<JournalTypeInfo>(this.dataService.Journal_Types_List(portalId)));
         }
 
         /// <inheritdoc/>
@@ -597,7 +583,7 @@ namespace DotNetNuke.Services.Journal
                 }
             }
 
-            using (IDataReader dr = this._dataService.Journal_GetStatsForGroup(portalId, groupId))
+            using (IDataReader dr = this.dataService.Journal_GetStatsForGroup(portalId, groupId))
             {
                 while (dr.Read())
                 {
@@ -630,11 +616,11 @@ namespace DotNetNuke.Services.Journal
 
             if (softDelete)
             {
-                this._dataService.Journal_SoftDelete(journalId);
+                this.dataService.Journal_SoftDelete(journalId);
             }
             else
             {
-                this._dataService.Journal_Delete(journalId);
+                this.dataService.Journal_Delete(journalId);
             }
 
             if (groupId > 0)

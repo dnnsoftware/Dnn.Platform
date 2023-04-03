@@ -8,21 +8,19 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class FormatAttribute : Attribute
     {
-        private readonly string _Format;
+        private readonly string format;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormatAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FormatAttribute"/> class.</summary>
         public FormatAttribute(string format)
         {
-            this._Format = format;
+            this.format = format;
         }
 
         public string Format
         {
             get
             {
-                return this._Format;
+                return this.format;
             }
         }
     }

@@ -16,32 +16,33 @@ namespace Dnn.PersonaBar.Vocabularies.Components
 
     public class VocabulariesController
     {
-        private TermController _termController;
-        private VocabularyController _vocabularyController;
-        private Validator _validator;
+        private TermController termController;
+        private VocabularyController vocabularyController;
+        private Validator validator;
 
         public VocabulariesController()
         {
-            this._termController = new TermController();
-            this._vocabularyController = new VocabularyController();
-            this._validator = new Validator(new DataAnnotationsObjectValidator());
-            this._validator.Validators.Add(new VocabularyNameValidator(this._vocabularyController, this._termController));
+            this.termController = new TermController();
+            this.vocabularyController = new VocabularyController();
+            this.validator = new Validator(new DataAnnotationsObjectValidator());
+            this.validator.Validators.Add(new VocabularyNameValidator(this.vocabularyController, this.termController));
         }
 
         public List<Vocabulary> GetVocabularies(int portalId, int pageIndex, int pageSize, int scopeTypeId, out int total)
         {
-            var vocabularies = this._vocabularyController.GetVocabularies().Where(v => v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId));
+            var vocabularies = this.vocabularyController.GetVocabularies().Where(v => v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId));
             if (scopeTypeId != Null.NullInteger)
             {
                 vocabularies = vocabularies.Where(v => v.ScopeTypeId == scopeTypeId);
             }
+
             total = vocabularies.Count();
             return vocabularies.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
         public bool IsSystemVocabulary(int vocabularyId)
         {
-            return this._vocabularyController.GetVocabularies().Any(v => v.VocabularyId == vocabularyId && v.IsSystem);
+            return this.vocabularyController.GetVocabularies().Any(v => v.VocabularyId == vocabularyId && v.IsSystem);
         }
 
         public int AddVocabulary(Vocabulary vocabulary)
@@ -50,10 +51,11 @@ namespace Dnn.PersonaBar.Vocabularies.Components
             {
                 vocabulary.ScopeId = PortalSettings.Current.PortalId;
             }
-            var result = this._validator.ValidateObject(vocabulary);
+
+            var result = this.validator.ValidateObject(vocabulary);
             if (result.IsValid)
             {
-                return this._vocabularyController.AddVocabulary(vocabulary);
+                return this.vocabularyController.AddVocabulary(vocabulary);
             }
             else
             {
@@ -67,10 +69,11 @@ namespace Dnn.PersonaBar.Vocabularies.Components
             {
                 vocabulary.ScopeId = PortalSettings.Current.PortalId;
             }
-            var result = this._validator.ValidateObject(vocabulary);
+
+            var result = this.validator.ValidateObject(vocabulary);
             if (result.IsValid)
             {
-                this._vocabularyController.UpdateVocabulary(vocabulary);
+                this.vocabularyController.UpdateVocabulary(vocabulary);
             }
             else
             {
@@ -80,21 +83,21 @@ namespace Dnn.PersonaBar.Vocabularies.Components
 
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
-            this._vocabularyController.DeleteVocabulary(vocabulary);
+            this.vocabularyController.DeleteVocabulary(vocabulary);
         }
 
         public List<Term> GetTermsByVocabulary(int vocabularyId)
         {
-            var vocabulary = this._vocabularyController.GetVocabularies().SingleOrDefault(v => v.VocabularyId == vocabularyId);
-            return this._termController.GetTermsByVocabulary(vocabularyId).ToList();
+            var vocabulary = this.vocabularyController.GetVocabularies().SingleOrDefault(v => v.VocabularyId == vocabularyId);
+            return this.termController.GetTermsByVocabulary(vocabularyId).ToList();
         }
 
         public int AddTerm(Term term)
         {
-            var result = this._validator.ValidateObject(term);
+            var result = this.validator.ValidateObject(term);
             if (result.IsValid)
             {
-                return this._termController.AddTerm(term);
+                return this.termController.AddTerm(term);
             }
             else
             {
@@ -104,10 +107,10 @@ namespace Dnn.PersonaBar.Vocabularies.Components
 
         public void UpdateTerm(Term term)
         {
-            var result = this._validator.ValidateObject(term);
+            var result = this.validator.ValidateObject(term);
             if (result.IsValid)
             {
-                this._termController.UpdateTerm(term);
+                this.termController.UpdateTerm(term);
             }
             else
             {
@@ -117,12 +120,12 @@ namespace Dnn.PersonaBar.Vocabularies.Components
 
         public void DeleteTerm(Term term)
         {
-            this._termController.DeleteTerm(term);
+            this.termController.DeleteTerm(term);
         }
 
         public Term GetTerm(int termId)
         {
-            return this._termController.GetTerm(termId);
+            return this.termController.GetTerm(termId);
         }
 
         private void AddChildNodes(List<Term> termList, TermDto parentNode)

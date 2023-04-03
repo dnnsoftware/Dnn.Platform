@@ -16,18 +16,21 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-role", Constants.RolesCategory, "Prompt_GetRole_Description")]
+
     public class GetRole : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true);
 
             if (this.RoleId < 0)
@@ -36,12 +39,16 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var lst = new List<RoleModel>();
             var role = RolesController.Instance.GetRole(this.PortalSettings, this.RoleId);
             if (role == null)
+            {
                 return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_NoRoleWithId"), this.RoleId));
+            }
+
             lst.Add(new RoleModel(role));
             return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_RoleFound"), this.RoleId) };
         }

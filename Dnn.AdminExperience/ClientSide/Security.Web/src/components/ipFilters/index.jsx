@@ -30,6 +30,7 @@ class IpFiltersPanelBody extends Component {
         tableFields = [];
         tableFields.push({ "name": resx.get("FilterType.Header"), "id": "RuleType" });
         tableFields.push({ "name": resx.get("IpAddress.Header"), "id": "IPAddress" });
+        tableFields.push({ "name": resx.get("Notes.Header"), "id": "Notes" });
     }
 
     renderHeader() {
@@ -95,6 +96,7 @@ class IpFiltersPanelBody extends Component {
                     ipFilterId={item.IPFilterID}
                     ruleType={item.RuleType}
                     ipFilter={item.IPFilter}
+                    notes={item.Notes}
                     index={index}
                     key={"ipFilter-" + index}
                     closeOnClick={true}

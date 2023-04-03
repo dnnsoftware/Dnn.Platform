@@ -21,7 +21,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
     {
         private const string RequestFilterConfig = "RequestFilter.Config";
 
-        private List<RequestFilterRule> _rules = new List<RequestFilterRule>();
+        private List<RequestFilterRule> rules = new List<RequestFilterRule>();
 
         public bool Enabled
         {
@@ -35,19 +35,17 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return this._rules;
+                return this.rules;
             }
 
             set
             {
-                this._rules = value;
+                this.rules = value;
             }
         }
 
-        /// <summary>
-        /// Get the current settings from the xml config file.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Get the current settings from the xml config file.</summary>
+        /// <returns>A <see cref="RequestFilterSettings"/> instance.</returns>
         public static RequestFilterSettings GetSettings()
         {
             var settings = (RequestFilterSettings)DataCache.GetCache(RequestFilterConfig);

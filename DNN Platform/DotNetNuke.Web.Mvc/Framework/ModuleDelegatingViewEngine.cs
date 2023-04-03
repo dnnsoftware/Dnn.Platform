@@ -11,16 +11,12 @@ namespace DotNetNuke.Web.Mvc.Framework
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
 
-    /// <summary>
-    /// A View Engine that will delegate to whatever ViewEngine(s) the module application defines.
-    /// </summary>
+    /// <summary>A View Engine that will delegate to whatever ViewEngine(s) the module application defines.</summary>
     public class ModuleDelegatingViewEngine : IViewEngine
     {
         private readonly Dictionary<IView, IViewEngine> viewEngineMappings = new Dictionary<IView, IViewEngine>();
 
-        /// <summary>
-        /// Finds the specified partial view by using the specified controller context.
-        /// </summary>
+        /// <summary>Finds the specified partial view by using the specified controller context.</summary>
         /// <returns>
         /// The partial view.
         /// </returns>
@@ -30,9 +26,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
         }
 
-        /// <summary>
-        /// Finds the specified view by using the specified controller context.
-        /// </summary>
+        /// <summary>Finds the specified view by using the specified controller context.</summary>
         /// <returns>
         /// The page view.
         /// </returns>
@@ -42,9 +36,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
         }
 
-        /// <summary>
-        /// Releases the specified view by using the specified controller context.
-        /// </summary>
+        /// <summary>Releases the specified view by using the specified controller context.</summary>
         /// <param name="controllerContext">The controller context.</param><param name="view">The view.</param>
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {

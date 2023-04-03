@@ -20,9 +20,7 @@
 
 namespace log4net.Repository.Hierarchy
 {
-    /// <summary>
-    /// Interface abstracts creation of <see cref="Logger"/> instances
-    /// </summary>
+    /// <summary>Interface abstracts creation of <see cref="Logger"/> instances</summary>
     /// <remarks>
     /// <para>
     /// This interface is used by the <see cref="Hierarchy"/> to 
@@ -40,9 +38,7 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     public interface ILoggerFactory
     {
-        /// <summary>
-        /// Create a new <see cref="Logger" /> instance
-        /// </summary>
+        /// <summary>Create a new <see cref="Logger" /> instance</summary>
         /// <param name="repository">The <see cref="ILoggerRepository" /> that will own the <see cref="Logger" />.</param>
         /// <param name="name">The name of the <see cref="Logger" />.</param>
         /// <returns>The <see cref="Logger" /> instance for the specified name.</returns>

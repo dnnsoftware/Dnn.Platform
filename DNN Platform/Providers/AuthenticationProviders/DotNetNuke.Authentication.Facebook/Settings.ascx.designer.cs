@@ -15,7 +15,6 @@ namespace DotNetNuke.Authentication.Facebook {
     
     
     public partial class Settings {
-        
 
     }
 }

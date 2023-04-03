@@ -4,6 +4,7 @@
 namespace DotNetNuke.Framework
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -20,38 +21,34 @@ namespace DotNetNuke.Framework
     using Globals = DotNetNuke.Common.Globals;
 
 #pragma warning disable 618
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
     public class jQuery
     {
-        /// <summary>
-        /// Returns the default URL for a hosted version of the jQuery script.
-        /// </summary>
+        /// <summary>Returns the default URL for a hosted version of the jQuery script.</summary>
         /// <remarks>
         /// Google hosts versions of many popular javascript libraries on their CDN.
         /// Using the hosted version increases the likelihood that the file is already
-        /// cached in the users browser.
+        /// cached in the user's browser.
         /// </remarks>
         public const string DefaultHostedUrl = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
 
         public const string DefaultUIHostedUrl = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js";
-        private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
-        private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
-        private const string jQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
-        private const string jQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
-        private const string jQueryVersionKey = "jQueryVersionKey";
-        private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
+        private const string JQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
+        private const string JQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
+        private const string JQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
+        private const string JQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
+        private const string JQueryVersionKey = "jQueryVersionKey";
+        private const string JQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
 
-        private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
-        private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
-        private const string jQueryUIVersionKey = "jQueryUIVersionKey";
-        private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
+        private const string JQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
+        private const string JQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
+        private const string JQueryUIVersionKey = "jQueryUIVersionKey";
+        private const string JQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
 
-        /// <summary>
-        /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery script.</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery script.</summary>
+        /// <value>The HostSetting for the URL of the hosted version of the jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUrl
@@ -67,13 +64,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery migrated script.</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.</summary>
+        /// <value>The HostSetting for the URL of the hosted version of the jQuery migrated script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedMigrateUrl
@@ -89,13 +81,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the HostSetting for the URL of the hosted version of the jQuery UI script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery UI script.</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery UI script.</summary>
+        /// <value>The HostSetting for the URL of the hosted version of the jQuery UI script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUIUrl
@@ -111,9 +98,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether checks whether the jQuery core script file exists locally.
-        /// </summary>
+        /// <summary>Gets a value indicating whether checks whether the jQuery core script file exists locally.</summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
@@ -129,9 +114,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether checks whether the jQuery UI core script file exists locally.
-        /// </summary>
+        /// <summary>Gets a value indicating whether checks whether the jQuery UI core script file exists locally.</summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery UI.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
@@ -179,13 +162,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</summary>
+        /// <value>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryDebug property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseDebugScript
@@ -201,13 +179,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The HostSetting to determine if we should use a hosted version of the jQuery script.</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.</summary>
+        /// <value>The HostSetting to determine if we should use a hosted version of the jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryHosted property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseHostedScript
@@ -223,13 +196,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the version string for the local jQuery script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The version string for the local jQuery script</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the version string for the local jQuery script.</summary>
+        /// <value>The version string for the local jQuery script.</value>
         /// <remarks>
         /// This only evaluates the version in the full jQuery file and assumes that the minified script
         /// is the same version as the full script.
@@ -238,16 +206,16 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string ver = Convert.ToString(DataCache.GetCache(jQueryVersionKey));
+                string ver = Convert.ToString(DataCache.GetCache(JQueryVersionKey));
                 if (string.IsNullOrEmpty(ver))
                 {
                     if (IsInstalled)
                     {
                         string jqueryFileName = JQueryFileMapPath(false);
                         string jfiletext = File.ReadAllText(jqueryFileName);
-                        Match verMatch = Regex.Match(jfiletext, jQueryVersionMatch);
+                        Match verMatch = Regex.Match(jfiletext, JQueryVersionMatch);
                         ver = verMatch.Value;
-                        DataCache.SetCache(jQueryVersionKey, ver, new CacheDependency(jqueryFileName));
+                        DataCache.SetCache(JQueryVersionKey, ver, new CacheDependency(jqueryFileName));
                     }
                     else
                     {
@@ -259,13 +227,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the version string for the local jQuery UI script.
-        /// </summary>
-        /// <value>
-        /// <placeholder>The version string for the local jQuery UI script</placeholder>
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the version string for the local jQuery UI script.</summary>
+        /// <value>The version string for the local jQuery UI script.</value>
         /// <remarks>
         /// This only evaluates the version in the full jQuery UI file and assumes that the minified script
         /// is the same version as the full script.
@@ -274,16 +237,16 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string ver = Convert.ToString(DataCache.GetCache(jQueryUIVersionKey));
+                string ver = Convert.ToString(DataCache.GetCache(JQueryUIVersionKey));
                 if (string.IsNullOrEmpty(ver))
                 {
                     if (IsUIInstalled)
                     {
                         string jqueryUIFileName = JQueryUIFileMapPath(false);
                         string jfiletext = File.ReadAllText(jqueryUIFileName);
-                        Match verMatch = Regex.Match(jfiletext, jQueryUIVersionMatch);
+                        Match verMatch = Regex.Match(jfiletext, JQueryUIVersionMatch);
                         ver = verMatch.Value;
-                        DataCache.SetCache(jQueryUIVersionKey, ver, new CacheDependency(jqueryUIFileName));
+                        DataCache.SetCache(JQueryUIVersionKey, ver, new CacheDependency(jqueryUIFileName));
                     }
                     else
                     {
@@ -310,10 +273,10 @@ namespace DotNetNuke.Framework
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryFile(bool getMinFile)
         {
-            string jfile = jQueryDebugFile;
+            string jfile = JQueryDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryMinFile;
+                jfile = JQueryMinFile;
             }
 
             return jfile;
@@ -322,10 +285,10 @@ namespace DotNetNuke.Framework
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryMigrateFile(bool getMinFile)
         {
-            string jfile = jQueryMigrateDebugFile;
+            string jfile = JQueryMigrateDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryMigrateMinFile;
+                jfile = JQueryMigrateMinFile;
             }
 
             return jfile;
@@ -334,10 +297,10 @@ namespace DotNetNuke.Framework
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryUIFile(bool getMinFile)
         {
-            string jfile = jQueryUIDebugFile;
+            string jfile = JQueryUIDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryUIMinFile;
+                jfile = JQueryUIMinFile;
             }
 
             return jfile;
@@ -379,9 +342,7 @@ namespace DotNetNuke.Framework
             return scriptsrc;
         }
 
-        /// <summary>
-        /// Active the page with keep alive, so that authentication will not expire.
-        /// </summary>
+        /// <summary>Active the page with keep alive, so that authentication will not expire.</summary>
         /// <param name="page">The page instance.</param>
         public static void KeepAlive(Page page)
         {

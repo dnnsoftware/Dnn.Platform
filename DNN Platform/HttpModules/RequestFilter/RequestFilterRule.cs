@@ -11,15 +11,13 @@ namespace DotNetNuke.HttpModules.RequestFilter
     [Serializable]
     public class RequestFilterRule
     {
-        private RequestFilterRuleType _Action;
-        private string _Location;
-        private RequestFilterOperatorType _Operator;
-        private string _ServerVariable;
-        private List<string> _Values = new List<string>();
+        private RequestFilterRuleType action;
+        private string location;
+        private RequestFilterOperatorType @operator;
+        private string serverVariable;
+        private List<string> values = new List<string>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
         /// <param name="serverVariable"></param>
         /// <param name="values"></param>
         /// <param name="op"></param>
@@ -27,16 +25,14 @@ namespace DotNetNuke.HttpModules.RequestFilter
         /// <param name="location"></param>
         public RequestFilterRule(string serverVariable, string values, RequestFilterOperatorType op, RequestFilterRuleType action, string location)
         {
-            this._ServerVariable = serverVariable;
+            this.serverVariable = serverVariable;
             this.SetValues(values, op);
-            this._Operator = op;
-            this._Action = action;
-            this._Location = location;
+            this.@operator = op;
+            this.action = action;
+            this.location = location;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
         public RequestFilterRule()
         {
         }
@@ -45,7 +41,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return string.Join(" ", this._Values.ToArray());
+                return string.Join(" ", this.values.ToArray());
             }
         }
 
@@ -53,12 +49,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return this._ServerVariable;
+                return this.serverVariable;
             }
 
             set
             {
-                this._ServerVariable = value;
+                this.serverVariable = value;
             }
         }
 
@@ -66,12 +62,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return this._Values;
+                return this.values;
             }
 
             set
             {
-                this._Values = value;
+                this.values = value;
             }
         }
 
@@ -79,12 +75,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return this._Action;
+                return this.action;
             }
 
             set
             {
-                this._Action = value;
+                this.action = value;
             }
         }
 
@@ -92,12 +88,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return this._Operator;
+                return this.@operator;
             }
 
             set
             {
-                this._Operator = value;
+                this.@operator = value;
             }
         }
 
@@ -105,42 +101,42 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return this._Location;
+                return this.location;
             }
 
             set
             {
-                this._Location = value;
+                this.location = value;
             }
         }
 
         public void SetValues(string values, RequestFilterOperatorType op)
         {
-            this._Values.Clear();
+            this.values.Clear();
             if (op != RequestFilterOperatorType.Regex)
             {
                 string[] vals = values.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string value in vals)
                 {
-                    this._Values.Add(value.ToUpperInvariant());
+                    this.values.Add(value.ToUpperInvariant());
                 }
             }
             else
             {
-                this._Values.Add(values);
+                this.values.Add(values);
             }
         }
 
-        public bool Matches(string ServerVariableValue)
+        public bool Matches(string serverVariableValue)
         {
             switch (this.Operator)
             {
                 case RequestFilterOperatorType.Equal:
-                    return this.Values.Contains(ServerVariableValue.ToUpperInvariant());
+                    return this.Values.Contains(serverVariableValue.ToUpperInvariant());
                 case RequestFilterOperatorType.NotEqual:
-                    return !this.Values.Contains(ServerVariableValue.ToUpperInvariant());
+                    return !this.Values.Contains(serverVariableValue.ToUpperInvariant());
                 case RequestFilterOperatorType.Regex:
-                    return Regex.IsMatch(ServerVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    return Regex.IsMatch(serverVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
 
             return false;

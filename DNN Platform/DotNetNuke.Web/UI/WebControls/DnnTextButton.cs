@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTextButton : LinkButton, ILocalizable
     {
-        private bool _localize = true;
+        private bool localize = true;
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -88,12 +88,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._localize;
+                return this.localize;
             }
 
             set
             {
-                this._localize = value;
+                this.localize = value;
             }
         }
 

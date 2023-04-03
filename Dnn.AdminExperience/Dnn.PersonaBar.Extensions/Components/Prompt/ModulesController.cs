@@ -25,15 +25,17 @@ namespace Dnn.PersonaBar.Prompt.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 
+        /// <inheritdoc/>
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
-            message = new KeyValuePair<HttpStatusCode, string>();
+            message = default(KeyValuePair<HttpStatusCode, string>);
             var page = TabController.Instance.GetTab(tabId, portalSettings.PortalId);
             if (page == null)
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
                 return null;
             }
+
             if (!TabPermissionController.CanManagePage(page))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, Localization.GetString("Prompt_InsufficientPermissions", Constants.LocalResourcesFile));
@@ -59,8 +61,10 @@ namespace Dnn.PersonaBar.Prompt.Components
                     if (portalSettings.DefaultModuleId > Null.NullInteger &&
                         portalSettings.DefaultTabId > Null.NullInteger)
                     {
-                        var defaultModule = ModuleController.Instance.GetModule(portalSettings.DefaultModuleId,
-                            portalSettings.DefaultTabId, true);
+                        var defaultModule = ModuleController.Instance.GetModule(
+                            portalSettings.DefaultModuleId,
+                            portalSettings.DefaultTabId,
+                            true);
                         if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
@@ -73,6 +77,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 if (portalSettings.ContentLocalizationEnabled)
                 {
                     var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId);
+
                     // check whether original tab is exists, if true then set culture code to default language,
                     // otherwise set culture code to current.
                     objModule.CultureCode =
@@ -85,6 +90,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 {
                     objModule.CultureCode = Null.NullString;
                 }
+
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
@@ -94,9 +100,11 @@ namespace Dnn.PersonaBar.Prompt.Components
                 // Set position so future additions to page can operate correctly
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
+
             return moduleList;
         }
 
+        /// <inheritdoc/>
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
             var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
@@ -105,6 +113,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             {
                 return null;
             }
+
             var targetPage = TabController.Instance.GetTab(targetPageId, portalSettings.PortalId);
 
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
@@ -124,9 +133,14 @@ namespace Dnn.PersonaBar.Prompt.Components
                 try
                 {
                     if (moveBahaviour)
+                    {
                         ModuleController.Instance.MoveModule(sourceModule.ModuleID, sourceModule.TabID, targetPage.TabID, pane);
+                    }
                     else
+                    {
                         ModuleController.Instance.CopyModule(sourceModule, targetPage, pane, includeSettings);
+                    }
+
                     ModuleController.Instance.ClearCache(targetPageId);
                 }
                 catch (Exception ex)
@@ -134,9 +148,9 @@ namespace Dnn.PersonaBar.Prompt.Components
                     Logger.Error(ex);
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, Localization.GetString(moveBahaviour ? "Prompt_ErrorWhileMoving" : "Prompt_ErrorWhileCopying"));
                 }
+
                 // get the new module
                 return ModuleController.Instance.GetModule(sourceModule.ModuleID, targetPageId, true);
-
             }
             else
             {
@@ -144,6 +158,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
@@ -163,9 +178,10 @@ namespace Dnn.PersonaBar.Prompt.Components
             }
         }
 
+        /// <inheritdoc/>
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
-            message = new KeyValuePair<HttpStatusCode, string>();
+            message = default(KeyValuePair<HttpStatusCode, string>);
             if (pageId.HasValue)
             {
                 var module = ModuleController.Instance.GetModule(moduleId, pageId.Value, true);
@@ -201,25 +217,31 @@ namespace Dnn.PersonaBar.Prompt.Components
             return null;
         }
 
-        public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
-            int? pageId = null, int pageIndex = 0, int pageSize = 10)
+        /// <inheritdoc/>
+        public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
-            moduleName = moduleName?.Replace("*", "");
-            moduleTitle = moduleTitle?.Replace("*", "");
+            moduleName = moduleName?.Replace("*", string.Empty);
+            moduleTitle = moduleTitle?.Replace("*", string.Empty);
             var modules = ModuleController.Instance.GetModules(portalSettings.PortalId)
                     .Cast<ModuleInfo>().Where(ModulePermissionController.CanViewModule);
             if (!string.IsNullOrEmpty(moduleName))
+            {
                 modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(moduleName, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
             if (!string.IsNullOrEmpty(moduleTitle))
+            {
                 modules = modules.Where(module => module.ModuleTitle.IndexOf(moduleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
 
             // Return only deleted modules with matching criteria.
             if (pageId.HasValue && pageId.Value > 0)
             {
                 modules = modules.Where(x => x.TabID == pageId.Value);
             }
+
             if (deleted.HasValue)
             {
                 modules = modules.Where(module => module.IsDeleted == deleted);
@@ -232,6 +254,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
+        /// <inheritdoc/>
         protected override Func<IModulesController> GetFactory()
         {
             return () => new ModulesController();

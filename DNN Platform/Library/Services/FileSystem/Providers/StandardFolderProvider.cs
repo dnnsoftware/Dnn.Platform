@@ -25,9 +25,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
-        /// <summary>
-        /// Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.
-        /// </summary>
+        /// <summary>Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.</summary>
         public override bool RequiresNetworkConnectivity
         {
             get
@@ -381,9 +379,7 @@ namespace DotNetNuke.Services.FileSystem
             return new PortalSettings(portalId);
         }
 
-        /// <summary>
-        /// Get actual path to a file.
-        /// </summary>
+        /// <summary>Get actual path to a file.</summary>
         /// <param name="folderMapping">Folder Mapping of the folder.</param>
         /// <param name="folderPath">Folder Path where the file is contained.</param>
         /// <param name="fileName">Name of the file.</param>
@@ -394,9 +390,7 @@ namespace DotNetNuke.Services.FileSystem
             return Path.Combine(actualFolderPath, fileName);
         }
 
-        /// <summary>
-        /// Get actual path to an IFileInfo.
-        /// </summary>
+        /// <summary>Get actual path to an IFileInfo.</summary>
         /// <param name="file">The file.</param>
         /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(IFileInfo file)
@@ -404,9 +398,7 @@ namespace DotNetNuke.Services.FileSystem
             return file.PhysicalPath;
         }
 
-        /// <summary>
-        /// Get actual path to a file in specified folder.
-        /// </summary>
+        /// <summary>Get actual path to a file in specified folder.</summary>
         /// <param name="folder">The folder that contains the file.</param>
         /// <param name="fileName">The file name.</param>
         /// <returns>A windows supported path to the file.</returns>
@@ -415,9 +407,7 @@ namespace DotNetNuke.Services.FileSystem
             return Path.Combine(folder.PhysicalPath, fileName);
         }
 
-        /// <summary>
-        /// Get actual path to a folder in the specified folder mapping.
-        /// </summary>
+        /// <summary>Get actual path to a folder in the specified folder mapping.</summary>
         /// <param name="folderMapping">The folder mapping.</param>
         /// <param name="folderPath">The folder path.</param>
         /// <returns>A windows supported path to the folder.</returns>
@@ -426,9 +416,7 @@ namespace DotNetNuke.Services.FileSystem
             return PathUtils.Instance.GetPhysicalPath(folderMapping.PortalID, folderPath);
         }
 
-        /// <summary>
-        /// Get actual path to a folder.
-        /// </summary>
+        /// <summary>Get actual path to a folder.</summary>
         /// <param name="folder">The folder.</param>
         /// <returns>A windows supported path to the folder.</returns>
         protected virtual string GetActualPath(IFolderInfo folder)
@@ -456,9 +444,7 @@ namespace DotNetNuke.Services.FileSystem
             return stream;
         }
 
-        /// <summary>
-        /// Get the path relative to the root of the FolderMapping.
-        /// </summary>
+        /// <summary>Get the path relative to the root of the FolderMapping.</summary>
         /// <param name="folderMapping">Path is relative to this.</param>
         /// <param name="path">The path.</param>
         /// <returns>A relative path.</returns>

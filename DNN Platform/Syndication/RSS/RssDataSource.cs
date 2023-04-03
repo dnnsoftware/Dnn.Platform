@@ -3,85 +3,65 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
-    using System.Collections;
     using System.ComponentModel;
     using System.Web.UI;
 
-    /// <summary>
-    ///   RSS data source control implementation, including the designer.
-    /// </summary>
+    /// <summary>RSS data source control implementation, including the designer.</summary>
     [DefaultProperty("Url")]
     public class RssDataSource : DataSourceControl
     {
-        private GenericRssChannel _channel;
-        private RssDataSourceView _itemsView;
-        private string _url;
+        private GenericRssChannel channel;
+        private RssDataSourceView itemsView;
+        private string url;
 
+        /// <summary>Gets the channel.</summary>
         public GenericRssChannel Channel
         {
             get
             {
-                if (this._channel == null)
+                if (this.channel == null)
                 {
-                    if (string.IsNullOrEmpty(this._url))
+                    if (string.IsNullOrEmpty(this.url))
                     {
-                        this._channel = new GenericRssChannel();
+                        this.channel = new GenericRssChannel();
                     }
                     else
                     {
-                        this._channel = GenericRssChannel.LoadChannel(this._url);
+                        this.channel = GenericRssChannel.LoadChannel(this.url);
                     }
                 }
 
-                return this._channel;
+                return this.channel;
             }
         }
 
+        /// <summary>Gets or sets the maximum number of items.</summary>
         public int MaxItems { get; set; }
 
+        /// <summary>Gets or sets the URL.</summary>
         public string Url
         {
             get
             {
-                return this._url;
+                return this.url;
             }
 
             set
             {
-                this._channel = null;
-                this._url = value;
+                this.channel = null;
+                this.url = value;
             }
         }
 
+        /// <inheritdoc/>
         protected override DataSourceView GetView(string viewName)
         {
-            if (this._itemsView == null)
+            if (this.itemsView == null)
             {
-                this._itemsView = new RssDataSourceView(this, viewName);
+                this.itemsView = new RssDataSourceView(this, viewName);
             }
 
-            return this._itemsView;
-        }
-    }
-
-    public class RssDataSourceView : DataSourceView
-    {
-        private readonly RssDataSource _owner;
-
-        internal RssDataSourceView(RssDataSource owner, string viewName)
-            : base(owner, viewName)
-        {
-            this._owner = owner;
-        }
-
-        public override void Select(DataSourceSelectArguments arguments, DataSourceViewSelectCallback callback)
-        {
-            callback(this.ExecuteSelect(arguments));
-        }
-
-        protected override IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
-        {
-            return this._owner.Channel.SelectItems(this._owner.MaxItems);
+            return this.itemsView;
         }
     }
 }

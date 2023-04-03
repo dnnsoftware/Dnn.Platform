@@ -1,20 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// Wrapper class for any object that maps string key onto the object value (like Dictionary).
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <remarks></remarks>
+    /// <summary>Wrapper class for any object that maps string key onto the object value (like <see cref="Dictionary{TKey,TValue}"/>).</summary>
+    /// <typeparam name="T">The type of the variable's value.</typeparam>
     public abstract class StateVariable<T>
     {
-        private readonly string _key;
-        private readonly Func<T> _initializer;
+        private readonly string key;
+        private readonly Func<T> initializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateVariable{T}"/> class.
@@ -30,7 +27,7 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentNullException("key");
             }
 
-            this._key = key + this.GetType().FullName;
+            this.key = key + this.GetType().FullName;
         }
 
         /// <summary>
@@ -39,7 +36,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="key">The key to use for storing the value in the dictionary.</param>
         /// <param name="initializer">A function that is called in order to create a default value per dictionary.</param>
-        /// <remarks></remarks>
         protected StateVariable(string key, Func<T> initializer)
             : this(key)
         {
@@ -48,23 +44,19 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentNullException("initializer");
             }
 
-            this._initializer = initializer;
+            this.initializer = initializer;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether indicates wether there is a value present or not.
-        /// </summary>
+        /// <summary>Gets a value indicating whether indicates wether there is a value present or not.</summary>
         public bool HasValue
         {
             get
             {
-                return this[this._key] != null;
+                return this[this.key] != null;
             }
         }
 
-        /// <summary>
-        /// Gets the value in the current items or if none is available <c>default(T)</c>.
-        /// </summary>
+        /// <summary>Gets the value in the current items or if none is available <c>default(T)</c>.</summary>
         public T ValueOrDefault
         {
             get
@@ -79,9 +71,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets or sets or gets the value in the current items.
-        /// </summary>
+        /// <summary>Gets or sets or gets the value in the current items.</summary>
         /// <exception cref="InvalidOperationException">
         /// If you try to get a value while none is set use <see cref="ValueOrDefault"/> for safe access.
         /// </exception>
@@ -92,7 +82,7 @@ namespace DotNetNuke.Common.Utilities
                 var returnedValue = this.GetInitializedInternalValue();
                 if (returnedValue == null)
                 {
-                    throw new InvalidOperationException("There is no value for the '" + this._key + "' key.");
+                    throw new InvalidOperationException("There is no value for the '" + this.key + "' key.");
                 }
 
                 return (T)returnedValue;
@@ -100,41 +90,32 @@ namespace DotNetNuke.Common.Utilities
 
             set
             {
-                this[this._key] = value;
+                this[this.key] = value;
             }
         }
 
-        /// <summary>
-        /// Get/sets the value in associated dictionary/map.
-        /// </summary>
+        /// <summary>Get/sets the value in associated dictionary/map.</summary>
         /// <param name="key">Value key.</param>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <value>The value.</value>
         protected abstract object this[string key] { get; set; }
 
-        /// <summary>
-        /// Clears the value in the current items.
-        /// </summary>
+        /// <summary>Clears the value in the current items.</summary>
         public void Clear()
         {
-            this.Remove(this._key);
+            this.Remove(this.key);
         }
 
-        /// <summary>
-        /// Removes the value in associated dictionary according.
-        /// </summary>
+        /// <summary>Removes the value in associated dictionary according.</summary>
         /// <param name="key">Value key.</param>
-        /// <remarks></remarks>
         protected abstract void Remove(string key);
 
         private object GetInitializedInternalValue()
         {
-            var value = this[this._key];
-            if (value == null && this._initializer != null)
+            var value = this[this.key];
+            if (value == null && this.initializer != null)
             {
-                value = this._initializer();
-                this[this._key] = value;
+                value = this.initializer();
+                this[this.key] = value;
             }
 
             return value;

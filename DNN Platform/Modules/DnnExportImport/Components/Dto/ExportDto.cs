@@ -23,39 +23,25 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>Gets or sets the ID.</summary>
         public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets specifies the version of the exportes schema.
-        /// </summary>
+        /// <summary>Gets or sets specifies the version of the exportes schema.</summary>
         public string SchemaVersion { get; set; } = Constants.CurrentSchemaVersion;
 
-        /// <summary>
-        /// Gets or sets iD of portal to export items from.
-        /// </summary>
+        /// <summary>Gets or sets iD of portal to export items from.</summary>
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets sKU of the product from which the export is done.
-        /// </summary>
+        /// <summary>Gets or sets sKU of the product from which the export is done.</summary>
         public string ProductSku { get; set; }
 
-        /// <summary>
-        /// Gets or sets version of the product from which the export is done.
-        /// </summary>
+        /// <summary>Gets or sets version of the product from which the export is done.</summary>
         public string ProductVersion { get; set; }
 
-        /// <summary>
-        /// Gets or sets name of export job.
-        /// </summary>
+        /// <summary>Gets or sets name of export job.</summary>
         public string ExportName { get; set; }
 
-        /// <summary>
-        /// Gets or sets description of export job.
-        /// </summary>
+        /// <summary>Gets or sets description of export job.</summary>
         public string ExportDescription { get; set; }
 
-        /// <summary>
-        /// Gets or sets names of items to export.
-        /// </summary>
+        /// <summary>Gets or sets names of items to export.</summary>
         /// <example>["Content", "Assets", "Users"].</example>
         public string[] ItemsToExport { get; set; }
 
@@ -79,19 +65,13 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeFiles { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include users in the export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include users in the export file or not.</summary>
         public bool IncludeUsers { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include vocabularies in the export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include vocabularies in the export file or not.</summary>
         public bool IncludeVocabularies { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include page templates in export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include page templates in export file or not.</summary>
         public bool IncludeTemplates { get; set; }
 
         /// <summary>
@@ -100,9 +80,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeProperfileProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include modules packages in exported file.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include modules packages in exported file.</summary>
         public bool IncludeExtensions { get; set; }
 
         /// <summary>
@@ -112,14 +90,10 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeRoles { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to incldue permissions with each entity in export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to incldue permissions with each entity in export file or not.</summary>
         public bool IncludePermissions { get; set; }
 
-        /// <summary>
-        /// Gets or sets export mode. Differential or Complete.
-        /// </summary>
+        /// <summary>Gets or sets export mode. Differential or Complete.</summary>
         public ExportMode ExportMode { get; set; }
 
         /// <summary>
@@ -144,14 +118,10 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public PageToExport[] Pages { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to run the job immediately or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to run the job immediately or not.</summary>
         public bool RunNow { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether used to determine if the DB file needs cleanup before starting import or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether used to determine if the DB file needs cleanup before starting import or not.</summary>
         public bool IsDirty { get; set; }
     }
 }

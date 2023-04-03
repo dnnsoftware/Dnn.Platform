@@ -141,8 +141,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             // redirect to the url defined in the alias
                             response.Redirect(Globals.GetPortalDomainName(childAlias, request, true), true);
                         }
-                        else // the alias is the same as the current domain
+                        else
                         {
+                            // the alias is the same as the current domain
                             portalAlias = childAlias;
                         }
                     }
@@ -248,9 +249,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
                 app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
 
+                // don't redirect if no primary alias is defined
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
                     && portalAliasInfo != null && !portalAliasInfo.IsPrimary
-                    && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias)) // don't redirect if no primary alias is defined
+                    && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias))
                 {
                     // Permanently Redirect
                     response.StatusCode = 301;
@@ -292,32 +294,42 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     // request is for a standard page
                     strURL = string.Empty;
 
-                    // if SSL is enabled
-                    if (portalSettings.SSLEnabled)
+                    switch (portalSettings.SSLSetup)
                     {
-                        // if page is secure and connection is not secure orelse ssloffload is enabled and server value exists
-                        if ((portalSettings.ActiveTab.IsSecure && !request.IsSecureConnection) &&
-                            (UrlUtils.IsSslOffloadEnabled(request) == false))
-                        {
-                            // switch to secure connection
-                            strURL = requestedPath.Replace("http://", "https://");
-                            strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
-                        }
-                    }
-
-                    // if SSL is enforced
-                    if (portalSettings.SSLEnforced)
-                    {
-                        // if page is not secure and connection is secure
-                        if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
-                        {
-                            // check if connection has already been forced to secure orelse ssloffload is disabled
-                            if (request.QueryString["ssl"] == null)
+                        case Abstractions.Security.SiteSslSetup.On:
+                            if (!request.IsSecureConnection)
                             {
-                                strURL = requestedPath.Replace("https://", "http://");
-                                strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                // switch to secure connection
+                                strURL = requestedPath.Replace("http://", "https://");
                             }
-                        }
+
+                            break;
+                        case Abstractions.Security.SiteSslSetup.Advanced:
+                            // if site is secure or else page is secure and connection is not secure orelse ssloffload is enabled and server value exists
+                            if (portalSettings.ActiveTab.IsSecure &&
+                                !request.IsSecureConnection &&
+                                (UrlUtils.IsSslOffloadEnabled(request) == false))
+                            {
+                                // switch to secure connection
+                                strURL = requestedPath.Replace("http://", "https://");
+                                strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
+                            }
+
+                            if (portalSettings.SSLEnforced)
+                            {
+                                // if page is not secure and connection is secure
+                                if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
+                                {
+                                    // check if connection has already been forced to secure orelse ssloffload is disabled
+                                    if (request.QueryString["ssl"] == null)
+                                    {
+                                        strURL = requestedPath.Replace("https://", "http://");
+                                        strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                    }
+                                }
+                            }
+
+                            break;
                     }
 
                     // if a protocol switch is necessary
@@ -329,9 +341,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             response.RedirectPermanent(strURL);
                         }
                         else
-
-                        // when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
                         {
+                            // when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
                             response.Clear();
 
                             // add a refresh header to the response
@@ -446,8 +457,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     // create a new URL using the SendTo regex value
                     sendTo = RewriterUtils.ResolveUrl(
                         app.Context.Request.ApplicationPath,
-                        Regex.Replace(requestedPath, pattern, rules[ruleIndex].SendTo,
-                                                                    RegexOptions.IgnoreCase));
+                        Regex.Replace(
+                            requestedPath,
+                            pattern,
+                            rules[ruleIndex].SendTo,
+                            RegexOptions.IgnoreCase));
 
                     string parameters = objMatch.Groups[2].Value;
 
@@ -623,7 +637,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             tabID = TabController.GetTabByTabPath(
                                 portalID,
-                                tabPath.Replace("/", "//").Replace(".aspx", string.Empty), string.Empty);
+                                tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
+                                string.Empty);
                         }
 
                         // End of patch
@@ -668,15 +683,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.LoginTabId + "&" + requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.LoginTabId}&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.LoginTabId);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.LoginTabId}");
                                 }
                             }
                             else
@@ -685,16 +698,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID + "&ctl=login&" +
-                                                             requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=login&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID + "&ctl=login");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=login");
                                 }
                             }
 
@@ -709,16 +719,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.RegisterTabId + "&portalid=" + portalID + "&" +
-                                                             requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalID}&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.RegisterTabId + "&portalid=" + portalID);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalID}");
                                 }
                             }
                             else
@@ -727,17 +734,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID +
-                                                             "&ctl=Register&" + requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Register&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID +
-                                                             "&ctl=Register");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Register");
                                 }
                             }
 
@@ -750,15 +753,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Terms&" + requestQuery);
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Terms&{requestQuery}");
                             }
                             else
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Terms");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Terms");
                             }
 
                             return;
@@ -770,15 +771,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Privacy&" + requestQuery);
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Privacy&{requestQuery}");
                             }
                             else
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Privacy");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Privacy");
                             }
 
                             return;
@@ -795,14 +794,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID +
-                                                             "&" + app.Request.Url.Query.TrimStart('?'));
+                                        $"~/{Globals.glbDefaultPage}?TabID={kvp.Value.TabID}&{app.Request.Url.Query.TrimStart('?')}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID);
+                                        $"~/{Globals.glbDefaultPage}?TabID={kvp.Value.TabID}");
                                 }
 
                                 return;

@@ -81,6 +81,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void GetPageSettings_CallGetCurrentPortalSettings_WhenSettingParameterIsNull()
         {
             var tabId = 0;

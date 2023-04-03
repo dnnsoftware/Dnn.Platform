@@ -14,54 +14,48 @@ namespace DotNetNuke.ComponentModel
     public class ProviderInstaller : IComponentInstaller
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProviderInstaller));
-        private readonly ComponentLifeStyleType _ComponentLifeStyle;
-        private readonly Type _ProviderInterface;
-        private readonly string _ProviderType;
-        private Type _defaultProvider;
+        private readonly ComponentLifeStyleType componentLifeStyle;
+        private readonly Type providerInterface;
+        private readonly string providerType;
+        private Type defaultProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
         /// <param name="providerType"></param>
         /// <param name="providerInterface"></param>
         public ProviderInstaller(string providerType, Type providerInterface)
         {
-            this._ComponentLifeStyle = ComponentLifeStyleType.Singleton;
-            this._ProviderType = providerType;
-            this._ProviderInterface = providerInterface;
+            this.componentLifeStyle = ComponentLifeStyleType.Singleton;
+            this.providerType = providerType;
+            this.providerInterface = providerInterface;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
         /// <param name="providerType"></param>
         /// <param name="providerInterface"></param>
         /// <param name="defaultProvider"></param>
         public ProviderInstaller(string providerType, Type providerInterface, Type defaultProvider)
         {
-            this._ComponentLifeStyle = ComponentLifeStyleType.Singleton;
-            this._ProviderType = providerType;
-            this._ProviderInterface = providerInterface;
-            this._defaultProvider = defaultProvider;
+            this.componentLifeStyle = ComponentLifeStyleType.Singleton;
+            this.providerType = providerType;
+            this.providerInterface = providerInterface;
+            this.defaultProvider = defaultProvider;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
         /// <param name="providerType"></param>
         /// <param name="providerInterface"></param>
         /// <param name="lifeStyle"></param>
         public ProviderInstaller(string providerType, Type providerInterface, ComponentLifeStyleType lifeStyle)
         {
-            this._ComponentLifeStyle = lifeStyle;
-            this._ProviderType = providerType;
-            this._ProviderInterface = providerInterface;
+            this.componentLifeStyle = lifeStyle;
+            this.providerType = providerType;
+            this.providerInterface = providerInterface;
         }
 
         /// <inheritdoc/>
         public void InstallComponents(IContainer container)
         {
-            ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this._ProviderType);
+            ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this.providerType);
 
             // Register the default provider first (so it is the first component registered for its service interface
             if (config != null)
@@ -93,9 +87,9 @@ namespace DotNetNuke.ComponentModel
                 }
                 catch (TypeLoadException)
                 {
-                    if (this._defaultProvider != null)
+                    if (this.defaultProvider != null)
                     {
-                        type = this._defaultProvider;
+                        type = this.defaultProvider;
                     }
                 }
 
@@ -106,7 +100,7 @@ namespace DotNetNuke.ComponentModel
                 else
                 {
                     // Register the component
-                    container.RegisterComponent(provider.Name, this._ProviderInterface, type, this._ComponentLifeStyle);
+                    container.RegisterComponent(provider.Name, this.providerInterface, type, this.componentLifeStyle);
 
                     // Load the settings into a dictionary
                     var settingsDict = new Dictionary<string, string> { { "providerName", provider.Name } };

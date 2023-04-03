@@ -32,9 +32,7 @@ using log4net.Repository.Hierarchy;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Assembly level attribute to configure the <see cref="XmlConfigurator"/>.
-    /// </summary>
+    /// <summary>Assembly level attribute to configure the <see cref="XmlConfigurator"/>.</summary>
     /// <remarks>
     /// <para>
     /// This attribute may only be used at the assembly scope and can only
@@ -87,9 +85,7 @@ namespace log4net.Config
         // Class is not sealed because DOMConfiguratorAttribute extends it while it is obsoleted
         // 
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor
@@ -99,9 +95,7 @@ namespace log4net.Config
         {
         }
 
-        /// <summary>
-        /// Gets or sets the filename of the configuration file.
-        /// </summary>
+        /// <summary>Gets or sets the filename of the configuration file.</summary>
         /// <value>
         /// The filename of the configuration file.
         /// </value>
@@ -121,9 +115,7 @@ namespace log4net.Config
             set { this.m_configFile = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the extension of the configuration file.
-        /// </summary>
+        /// <summary>Gets or sets the extension of the configuration file.</summary>
         /// <value>
         /// The extension of the configuration file.
         /// </value>
@@ -149,9 +141,7 @@ namespace log4net.Config
             set { this.m_configFileExtension = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to watch the configuration file.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to watch the configuration file.</summary>
         /// <value>
         /// <c>true</c> if the configuration should be watched, <c>false</c> otherwise.
         /// </value>
@@ -177,9 +167,7 @@ namespace log4net.Config
             set { this.m_configureAndWatch = value; }
         }
 
-        /// <summary>
-        /// Configures the <see cref="ILoggerRepository"/> for the specified assembly.
-        /// </summary>
+        /// <summary>Configures the <see cref="ILoggerRepository"/> for the specified assembly.</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         /// <remarks>
@@ -221,9 +209,7 @@ namespace log4net.Config
             targetRepository.ConfigurationMessages = configurationMessages;
         }
 
-        /// <summary>
-        /// Attempt to load configuration from the local file system
-        /// </summary>
+        /// <summary>Attempt to load configuration from the local file system</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         private void ConfigureFromFile(Assembly sourceAssembly, ILoggerRepository targetRepository)
@@ -299,9 +285,7 @@ namespace log4net.Config
             }
         }
 
-        /// <summary>
-        /// Configure the specified repository using a <see cref="FileInfo"/>
-        /// </summary>
+        /// <summary>Configure the specified repository using a <see cref="FileInfo"/></summary>
         /// <param name="targetRepository">The repository to configure.</param>
         /// <param name="configFile">the FileInfo pointing to the config file</param>
         private void ConfigureFromFile(ILoggerRepository targetRepository, FileInfo configFile)
@@ -325,9 +309,7 @@ namespace log4net.Config
 #endif
         }
 
-        /// <summary>
-        /// Attempt to load configuration from a URI
-        /// </summary>
+        /// <summary>Attempt to load configuration from a URI</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         private void ConfigureFromUri(Assembly sourceAssembly, ILoggerRepository targetRepository)
@@ -440,9 +422,7 @@ namespace log4net.Config
         private string m_configFileExtension = null;
         private bool m_configureAndWatch = false;
 
-        /// <summary>
-        /// The fully qualified type of the XmlConfiguratorAttribute class.
-        /// </summary>
+        /// <summary>The fully qualified type of the XmlConfiguratorAttribute class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

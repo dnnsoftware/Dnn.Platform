@@ -10,24 +10,25 @@ namespace DotNetNuke.Web.Mvp
     public abstract class SettingsView<TModel> : SettingsViewBase, ISettingsView<TModel>
         where TModel : SettingsModel, new()
     {
-        private TModel _model;
+        private TModel model;
 
         /// <inheritdoc/>
         public TModel Model
         {
             get
             {
-                if (this._model == null)
+                if (this.model == null)
                 {
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
                 }
-                return this._model;
+
+                return this.model;
             }
 
             set
             {
-                this._model = value;
+                this.model = value;
             }
         }
 

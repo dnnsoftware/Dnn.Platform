@@ -8,7 +8,8 @@ namespace Dnn.PersonaBar.Pages.Components.Exceptions
 
     public class PageValidationException : Exception
     {
-        public PageValidationException(string field, string message) : base(message)
+        public PageValidationException(string field, string message)
+            : base(message)
         {
             this.Field = field;
         }

@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Groups.Controls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -25,6 +26,10 @@ namespace DotNetNuke.Modules.Groups.Controls
 
     public class GroupListControl : WebControl
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         public UserInfo currentUser;
 
         [Browsable(false)]
@@ -86,12 +91,14 @@ namespace DotNetNuke.Modules.Groups.Controls
 
         public int GroupViewTabId { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             this.currentUser = UserController.Instance.GetCurrentUserInfo();
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter output)
         {
             var whereCls = new List<Func<RoleInfo, bool>>
@@ -197,11 +204,11 @@ namespace DotNetNuke.Modules.Groups.Controls
 
             output.Write(this.FooterTemplate);
 
-            int TotalPages = Convert.ToInt32(System.Math.Ceiling(pages));
+            int totalPages = Convert.ToInt32(System.Math.Ceiling(pages));
 
-            if (TotalPages == 0)
+            if (totalPages == 0)
             {
-                TotalPages = 1;
+                totalPages = 1;
             }
 
             string sUrlFormat = "<a href=\"{0}\" class=\"{1}\">{2}</a>";
@@ -209,9 +216,9 @@ namespace DotNetNuke.Modules.Groups.Controls
 
             StringBuilder sb = new StringBuilder();
 
-            if (TotalPages > 1)
+            if (totalPages > 1)
             {
-                for (int x = 1; x <= TotalPages; x++)
+                for (int x = 1; x <= totalPages; x++)
                 {
                     string[] @params = new string[] { };
 

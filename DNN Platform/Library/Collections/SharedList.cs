@@ -16,35 +16,27 @@ namespace DotNetNuke.Collections.Internal
 
         private bool isDisposed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedList{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SharedList{T}"/> class.</summary>
         public SharedList()
             : this(LockingStrategy.ReaderWriter)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedList{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SharedList{T}"/> class.</summary>
         /// <param name="lockStrategy">The locking strategy to use.</param>
         public SharedList(ILockStrategy lockStrategy)
         {
             this.lockStrategy = lockStrategy;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SharedList{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SharedList{T}"/> class.</summary>
         /// <param name="strategy">The locking strategy to use.</param>
         public SharedList(LockingStrategy strategy)
             : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="SharedList{T}"/> class.
-        /// </summary>
+        /// <summary>Finalizes an instance of the <see cref="SharedList{T}"/> class.</summary>
         ~SharedList()
         {
             this.Dispose(false);
@@ -72,9 +64,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <summary>
-        /// Gets the backing list to use.
-        /// </summary>
+        /// <summary>Gets the backing list to use.</summary>
         internal IList<T> BackingList
         {
             get
@@ -180,9 +170,7 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Ensures the instance is not disposed.
-        /// </summary>
+        /// <summary>Ensures the instance is not disposed.</summary>
         public void EnsureNotDisposed()
         {
             if (this.isDisposed)
@@ -191,18 +179,14 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <summary>
-        /// Gets a read lock on the resource.
-        /// </summary>
+        /// <summary>Gets a read lock on the resource.</summary>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <summary>
-        /// Gets a read lock on the resource for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a read lock on the resource for the specified amount of time.</summary>
         /// <param name="timeOut">The amount of time to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
@@ -211,9 +195,7 @@ namespace DotNetNuke.Collections.Internal
             return this.lockStrategy.GetReadLock(timeOut);
         }
 
-        /// <summary>
-        /// Gets a read lock on the resource for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a read lock on the resource for the specified amount of time.</summary>
         /// <param name="millisecondTimeout">The number of milliseconds to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
@@ -221,18 +203,14 @@ namespace DotNetNuke.Collections.Internal
             return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-        /// <summary>
-        /// Gets a write lock on the resource for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a write lock on the resource for the specified amount of time.</summary>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock()
         {
             return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <summary>
-        /// Gets a write lock on the resource for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a write lock on the resource for the specified amount of time.</summary>
         /// <param name="timeOut">The amount of time to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
@@ -241,9 +219,7 @@ namespace DotNetNuke.Collections.Internal
             return this.lockStrategy.GetWriteLock(timeOut);
         }
 
-        /// <summary>
-        /// Gets a write lock on the resource for the specified amount of time.
-        /// </summary>
+        /// <summary>Gets a write lock on the resource for the specified amount of time.</summary>
         /// <param name="millisecondTimeout">The number of milliseconds to lock for.</param>
         /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
@@ -251,9 +227,7 @@ namespace DotNetNuke.Collections.Internal
             return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-        /// <summary>
-        /// Gets an enumerator to iterate through the collection.
-        /// </summary>
+        /// <summary>Gets an enumerator to iterate through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator GetEnumerator1()
         {
@@ -266,9 +240,7 @@ namespace DotNetNuke.Collections.Internal
             return this.GetEnumerator1();
         }
 
-        /// <summary>
-        /// Disposes this instance resources.
-        /// </summary>
+        /// <summary>Disposes this instance resources.</summary>
         /// <param name="disposing">Indicates if this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {

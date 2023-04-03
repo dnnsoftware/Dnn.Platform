@@ -13,6 +13,7 @@ namespace DotNetNuke.UI.Skins.Controls
     [Obsolete("Support was removed for SolPart & Similar Modules in DNN 8.x, this control is no-longer functional to that point.  Usage of DDRMenu is suggested.  Scheduled removal in v10.0.0.")]
     public partial class Nav : NavObjectBase
     {
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -151,6 +152,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeNavControl(this, "SolpartMenuNavigationProvider");

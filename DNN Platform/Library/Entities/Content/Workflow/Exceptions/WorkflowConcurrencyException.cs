@@ -8,9 +8,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
 
     public class WorkflowConcurrencyException : WorkflowException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowConcurrencyException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowConcurrencyException"/> class.</summary>
         public WorkflowConcurrencyException()
             : base(Localization.GetString("WorkflowConcurrencyException", Localization.ExceptionsResourceFile))
         {

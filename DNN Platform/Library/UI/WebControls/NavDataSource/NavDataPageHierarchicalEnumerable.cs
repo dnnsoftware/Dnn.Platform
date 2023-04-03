@@ -9,12 +9,9 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>A collection of PageHierarchyData objects.</summary>
     public class NavDataPageHierarchicalEnumerable : ArrayList, IHierarchicalEnumerable
     {
-        /// <summary>
-        /// Handles enumeration.
-        /// </summary>
-        /// <param name="enumeratedItem"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Handles enumeration.</summary>
+        /// <param name="enumeratedItem">THe <see cref="IHierarchyData"/> item.</param>
+        /// <returns><paramref name="enumeratedItem"/>.</returns>
         public virtual IHierarchyData GetHierarchyData(object enumeratedItem)
         {
             return (IHierarchyData)enumeratedItem;

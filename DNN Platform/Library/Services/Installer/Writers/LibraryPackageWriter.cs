@@ -5,18 +5,10 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The LibraryPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The LibraryPackageWriter class.</summary>
     public class LibraryPackageWriter : PackageWriterBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LibraryPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LibraryPackageWriter"/> class.</summary>
         /// <param name="package"></param>
         public LibraryPackageWriter(PackageInfo package)
             : base(package)

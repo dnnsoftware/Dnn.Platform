@@ -17,29 +17,38 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("new-page", Constants.PagesCategory, "Prompt_NewPage_Description")]
+
     public class NewPage : ConsoleCommandBase
     {
         [FlagParameter("parentid", "Prompt_NewPage_FlagParentId", "Integer")]
+
         private const string FlagParentId = "parentid";
 
         [FlagParameter("title", "Prompt_NewPage_FlagTitle", "String")]
+
         private const string FlagTitle = "title";
 
         [FlagParameter("name", "Prompt_NewPage_FlagName", "String", true)]
+
         private const string FlagName = "name";
 
         [FlagParameter("url", "Prompt_NewPage_FlagUrl", "String")]
+
         private const string FlagUrl = "url";
 
         [FlagParameter("description", "Prompt_NewPage_FlagDescription", "String")]
+
         private const string FlagDescription = "description";
 
         [FlagParameter("keywords", "Prompt_NewPage_FlagKeywords", "String")]
+
         private const string FlagKeywords = "keywords";
 
         [FlagParameter("visible", "Prompt_NewPage_FlagVisible", "Boolean", "true")]
+
         private const string FlagVisible = "visible";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private string Title { get; set; }
@@ -56,9 +65,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private bool? Visible { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.ParentId = this.GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, false, true);
             this.Title = this.GetFlagValue(FlagTitle, "Title", string.Empty);
             this.Name = this.GetFlagValue(FlagName, "Page Name", string.Empty, true, true);
@@ -68,7 +77,11 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.Visible = this.GetFlagValue(FlagVisible, "Visible", true);
 
             // validate that parent ID is a valid ID, if it has been passed
-            if (!this.ParentId.HasValue) return;
+            if (!this.ParentId.HasValue)
+            {
+                return;
+            }
+
             var testTab = TabController.Instance.GetTab((int)this.ParentId, this.PortalId);
             if (testTab == null)
             {
@@ -76,9 +89,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
-
             try
             {
                 var pageSettings = PagesController.Instance.GetDefaultSettings();
@@ -104,6 +117,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
                 }
+
                 var newTab = PagesController.Instance.SavePageDetails(this.PortalSettings, pageSettings);
 
                 // create the tab

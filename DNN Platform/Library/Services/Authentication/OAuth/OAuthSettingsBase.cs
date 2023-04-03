@@ -5,11 +5,16 @@
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.UI.WebControls;
 
     public class OAuthSettingsBase : AuthenticationSettingsBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected PropertyEditorControl SettingsEditor;
 
         protected virtual string AuthSystemApplicationName

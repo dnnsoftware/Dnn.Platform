@@ -7,9 +7,7 @@ namespace DotNetNuke.DependencyInjection
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// An interface for adding extension points to the DNN Startup Logic.
-    /// </summary>
+    /// <summary>An interface for adding extension points to the DNN Startup Logic.</summary>
     [CLSCompliant(false)]
     public interface IDnnStartup
     {

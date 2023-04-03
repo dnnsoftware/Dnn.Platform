@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Services.OutputCache;
     using DotNetNuke.Services.Scheduling;
@@ -36,12 +37,9 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Tokens;
-    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
-    /// <summary>
-    /// DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
-    /// </summary>
+    /// <summary>DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.</summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
@@ -73,6 +71,18 @@ namespace DotNetNuke.Web.Common.Internal
                     ComponentFactory.RegisterComponentInstance<TAbstract>(name, new TConcrete());
                 }
             }
+        }
+
+        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLowerInvariant();
+
+            return url.EndsWith("webresource.axd")
+                   || url.EndsWith("scriptresource.axd")
+                   || url.EndsWith("captcha.aspx")
+                   || url.Contains("upgradewizard.aspx")
+                   || url.Contains("installwizard.aspx")
+                   || url.EndsWith("install.aspx");
         }
 
         private void Application_End(object sender, EventArgs eventArgs)
@@ -175,18 +185,6 @@ namespace DotNetNuke.Web.Common.Internal
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
 
             // DotNetNukeSecurity.Initialize();
-        }
-
-        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
-        {
-            var url = request.Url.LocalPath.ToLowerInvariant();
-
-            return url.EndsWith("webresource.axd")
-                   || url.EndsWith("scriptresource.axd")
-                   || url.EndsWith("captcha.aspx")
-                   || url.Contains("upgradewizard.aspx")
-                   || url.Contains("installwizard.aspx")
-                   || url.EndsWith("install.aspx");
         }
 
         private void Application_Error(object sender, EventArgs eventArgs)

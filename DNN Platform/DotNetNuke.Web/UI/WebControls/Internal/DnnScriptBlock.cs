@@ -25,8 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 {
                     StringBuilder scriBuilder = new StringBuilder();
                     base.Render(new HtmlTextWriter(new StringWriter(scriBuilder)));
-                    ScriptManager.RegisterClientScriptBlock(this.Page, typeof(Page), this.UniqueID, scriBuilder.ToString(),
-                        false);
+                    ScriptManager.RegisterClientScriptBlock(this.Page, typeof(Page), this.UniqueID, scriBuilder.ToString(), false);
                 }
                 else
                 {

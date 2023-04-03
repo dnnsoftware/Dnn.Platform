@@ -8,20 +8,20 @@ namespace DotNetNuke.Services.Analytics.Config
     [Serializable]
     public class AnalyticsRule
     {
-        private string _label;
-        private int _roleId;
-        private int _tabId;
+        private string label;
+        private int roleId;
+        private int tabId;
 
         public int RoleId
         {
             get
             {
-                return this._roleId;
+                return this.roleId;
             }
 
             set
             {
-                this._roleId = value;
+                this.roleId = value;
             }
         }
 
@@ -29,12 +29,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
@@ -42,12 +42,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return this._label;
+                return this.label;
             }
 
             set
             {
-                this._label = value;
+                this.label = value;
             }
         }
 

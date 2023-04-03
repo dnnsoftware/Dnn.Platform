@@ -20,13 +20,10 @@ namespace DotNetNuke.Modules.Journal
 
     using DotNetNuke.Services.Exceptions;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The EditJournal class is used to manage content.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The EditJournal class is used to manage content.</summary>
     public partial class Edit : JournalModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -38,18 +35,14 @@ namespace DotNetNuke.Modules.Journal
             this.Load += new System.EventHandler(this.Page_Load);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         private void Page_Load(object sender, System.EventArgs e)
         {
             try
             {
                 // Implement your edit logic for your module
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

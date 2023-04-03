@@ -45,57 +45,49 @@ namespace DotNetNuke.Entities.Modules
     /// The UserModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal that manage Users.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class UserModuleBase : PortalModuleBase
     {
-        private UserInfo _User;
+        private UserInfo user;
 
-        /// <summary>
-        /// Gets or sets and sets the User associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the User associated with this control.</summary>
         public UserInfo User
         {
             get
             {
-                return this._User ?? (this._User = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
+                return this.user ?? (this.user = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
             }
 
             set
             {
-                this._User = value;
-                if (this._User != null)
+                this.user = value;
+                if (this.user != null)
                 {
-                    this.UserId = this._User.UserID;
+                    this.UserId = this.user.UserID;
                 }
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the UserId associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the UserId associated with this control.</summary>
         public new int UserId
         {
             get
             {
-                int _UserId = Null.NullInteger;
+                int userId = Null.NullInteger;
                 if (this.ViewState["UserId"] == null)
                 {
                     if (this.Request.QueryString["userid"] != null)
                     {
-                        int userId;
-
                         // Use Int32.MaxValue as invalid UserId
-                        _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
-                        this.ViewState["UserId"] = _UserId;
+                        userId = int.TryParse(this.Request.QueryString["userid"], out var id) ? id : int.MaxValue;
+                        this.ViewState["UserId"] = userId;
                     }
                 }
                 else
                 {
-                    _UserId = Convert.ToInt32(this.ViewState["UserId"]);
+                    userId = Convert.ToInt32(this.ViewState["UserId"]);
                 }
 
-                return _UserId;
+                return userId;
             }
 
             set
@@ -104,9 +96,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether we are in Add User mode.
-        /// </summary>
+        /// <summary>Gets a value indicating whether we are in Add User mode.</summary>
         protected virtual bool AddUser
         {
             get
@@ -115,9 +105,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the current user is an Administrator (or SuperUser).
-        /// </summary>
+        /// <summary>Gets a value indicating whether the current user is an Administrator (or SuperUser).</summary>
         protected bool IsAdmin
         {
             get
@@ -126,14 +114,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether this is the current user or admin.
-        /// </summary>
-        /// <value>
-        /// <placeholder>gets whether this is the current user or admin</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets a value indicating whether this is the current user or admin.</summary>
+        /// <value>gets whether this is the current user or admin.</value>
         protected bool IsUserOrAdmin
         {
             get
@@ -142,9 +124,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether this control is in the Host menu.
-        /// </summary>
+        /// <summary>Gets a value indicating whether this control is in the Host menu.</summary>
         protected bool IsHostTab
         {
             get
@@ -153,35 +133,31 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the control is being called form the User Accounts module.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the control is being called form the User Accounts module.</summary>
         protected bool IsEdit
         {
             get
             {
-                bool _IsEdit = false;
+                bool isEdit = false;
                 if (this.Request.QueryString["ctl"] != null)
                 {
                     string ctl = this.Request.QueryString["ctl"];
                     if (ctl.Equals("edit", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        _IsEdit = true;
+                        isEdit = true;
                     }
                 }
 
-                return _IsEdit;
+                return isEdit;
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the current user is modifying their profile.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the current user is modifying their profile.</summary>
         protected bool IsProfile
         {
             get
             {
-                bool _IsProfile = false;
+                bool isProfile = false;
                 if (this.IsUser)
                 {
                     if (this.PortalSettings.UserTabId != -1)
@@ -189,7 +165,7 @@ namespace DotNetNuke.Entities.Modules
                         // user defined tab
                         if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId)
                         {
-                            _IsProfile = true;
+                            isProfile = true;
                         }
                     }
                     else
@@ -200,19 +176,17 @@ namespace DotNetNuke.Entities.Modules
                             string ctl = this.Request.QueryString["ctl"];
                             if (ctl.Equals("profile", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                _IsProfile = true;
+                                isProfile = true;
                             }
                         }
                     }
                 }
 
-                return _IsProfile;
+                return isProfile;
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether an anonymous user is trying to register.
-        /// </summary>
+        /// <summary>Gets a value indicating whether an anonymous user is trying to register.</summary>
         protected bool IsRegister
         {
             get
@@ -221,9 +195,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the User is editing their own information.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the User is editing their own information.</summary>
         protected bool IsUser
         {
             get
@@ -232,9 +204,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the PortalId to use for this control.
-        /// </summary>
+        /// <summary>Gets the PortalId to use for this control.</summary>
         protected int UserPortalID
         {
             get
@@ -243,12 +213,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a Setting for the Module.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <returns></returns>
+        /// <summary>Gets a Setting for the Module.</summary>
+        /// <returns>The setting value or <see langword="null"/>.</returns>
         public static object GetSetting(int portalId, string settingKey)
         {
             Hashtable settings = UserController.GetUserSettings(portalId);
@@ -272,9 +238,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Updates the Settings for the Module.
-        /// </summary>
+        /// <summary>Updates the Settings for the Module.</summary>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
             string key;
@@ -288,9 +252,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// AddLocalizedModuleMessage adds a localized module message.
-        /// </summary>
+        /// <summary>AddLocalizedModuleMessage adds a localized module message.</summary>
         /// <param name="message">The localized message.</param>
         /// <param name="type">The type of message.</param>
         /// <param name="display">A flag that determines whether the message should be displayed.</param>
@@ -302,9 +264,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// AddModuleMessage adds a module message.
-        /// </summary>
+        /// <summary>AddModuleMessage adds a module message.</summary>
         /// <param name="message">The message.</param>
         /// <param name="type">The type of message.</param>
         /// <param name="display">A flag that determines whether the message should be displayed.</param>
@@ -384,9 +344,7 @@ namespace DotNetNuke.Entities.Modules
             return strMessage;
         }
 
-        /// <summary>
-        /// InitialiseUser initialises a "new" user.
-        /// </summary>
+        /// <summary>InitialiseUser initialises a "new" user.</summary>
         private UserInfo InitialiseUser()
         {
             var newUser = new UserInfo();
@@ -423,75 +381,75 @@ namespace DotNetNuke.Entities.Modules
             }
 
             // Set AffiliateId
-            int AffiliateId = Null.NullInteger;
+            int affiliateId = Null.NullInteger;
             if (this.Request.Cookies["AffiliateId"] != null)
             {
-                AffiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
+                affiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
             }
 
-            newUser.AffiliateID = AffiliateId;
+            newUser.AffiliateID = affiliateId;
             return newUser;
         }
 
         private string LookupCountry()
         {
-            string IP;
-            bool IsLocal = false;
-            bool _CacheGeoIPData = true;
-            string _GeoIPFile;
-            _GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
+            string ip;
+            bool isLocal = false;
+            bool cacheGeoIPData = true;
+            string geoIPFile;
+            geoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
             var userRequestIpAddressController = UserRequestIPAddressController.Instance;
             var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
             if (ipAddress == "127.0.0.1")
             {
                 // 'The country cannot be detected because the user is local.
-                IsLocal = true;
+                isLocal = true;
 
                 // Set the IP address in case they didn't specify LocalhostCountryCode
-                IP = this.Page.Request.UserHostAddress;
+                ip = this.Page.Request.UserHostAddress;
             }
             else
             {
                 // Set the IP address so we can find the country
-                IP = this.Page.Request.UserHostAddress;
+                ip = this.Page.Request.UserHostAddress;
             }
 
             // Check to see if we need to generate the Cache for the GeoIPData file
-            if (this.Context.Cache.Get("GeoIPData") == null && _CacheGeoIPData)
+            if (this.Context.Cache.Get("GeoIPData") == null && cacheGeoIPData)
             {
                 // Store it as  well as setting a dependency on the file
-                this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(_GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(_GeoIPFile)));
+                this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(geoIPFile)), new CacheDependency(this.Context.Server.MapPath(geoIPFile)));
             }
 
             // Check to see if the request is a localhost request
             // and see if the LocalhostCountryCode is specified
-            if (IsLocal)
+            if (isLocal)
             {
                 return Null.NullString;
             }
 
             // Either this is a remote request or it is a local
             // request with no LocalhostCountryCode specified
-            CountryLookup _CountryLookup;
+            CountryLookup countryLookup;
 
             // Check to see if we are using the Cached
             // version of the GeoIPData file
-            if (_CacheGeoIPData)
+            if (cacheGeoIPData)
             {
                 // Yes, get it from cache
-                _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
+                countryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
             }
             else
             {
                 // No, get it from file
-                _CountryLookup = new CountryLookup(this.Context.Server.MapPath(_GeoIPFile));
+                countryLookup = new CountryLookup(this.Context.Server.MapPath(geoIPFile));
             }
 
             // Get the country code based on the IP address
             string country = Null.NullString;
             try
             {
-                country = _CountryLookup.LookupCountryName(IP);
+                country = countryLookup.LookupCountryName(ip);
             }
             catch (Exception ex)
             {

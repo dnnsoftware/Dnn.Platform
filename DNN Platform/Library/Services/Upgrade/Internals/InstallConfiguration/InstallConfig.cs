@@ -5,17 +5,13 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// InstallConfig - A class that represents DotNetNuke.Install.Config XML configuration file
     /// TODO This class may not capture all the details from the config file.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class InstallConfig
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InstallConfig"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InstallConfig"/> class.</summary>
         public InstallConfig()
         {
             this.Portals = new List<PortalConfig>();

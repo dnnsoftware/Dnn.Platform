@@ -18,6 +18,8 @@ namespace DotNetNuke.Web.Api.Internal
     {
         private IServiceProvider container;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnActionFilterProvider"/> class.</summary>
+        /// <param name="container">The dependency injection container.</param>
         public DnnActionFilterProvider(IServiceProvider container)
         {
             this.container = container;

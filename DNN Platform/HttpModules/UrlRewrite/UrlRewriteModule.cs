@@ -11,8 +11,8 @@ namespace DotNetNuke.HttpModules
 
     public class UrlRewriteModule : IHttpModule
     {
-        private string _providerToUse;
-        private UrlRewriterBase _urlRewriter;
+        private string providerToUse;
+        private UrlRewriterBase urlRewriter;
 
         public string ModuleName
         {
@@ -22,24 +22,24 @@ namespace DotNetNuke.HttpModules
         /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
-            this._providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
+            this.providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
 
             // bind events depending on currently configured friendly url provider
             // note that the current configured friendly url provider determines what type
             // of url rewriting is required.
-            switch (this._providerToUse)
+            switch (this.providerToUse)
             {
                 case "advanced":
                     var advancedRewriter = new AdvancedUrlRewriter();
-                    this._urlRewriter = advancedRewriter;
+                    this.urlRewriter = advancedRewriter;
 
                     // bind the rewrite event to the begin request event
-                    application.BeginRequest += this._urlRewriter.RewriteUrl;
+                    application.BeginRequest += this.urlRewriter.RewriteUrl;
                     break;
                 default:
                     var basicRewriter = new BasicUrlRewriter();
-                    this._urlRewriter = basicRewriter;
-                    application.BeginRequest += this._urlRewriter.RewriteUrl;
+                    this.urlRewriter = basicRewriter;
+                    application.BeginRequest += this.urlRewriter.RewriteUrl;
                     break;
             }
         }

@@ -15,21 +15,28 @@ namespace Dnn.PersonaBar.Users.Components
 
     public class UserValidator : IUserValidator
     {
-        private IPortalController _portalController;
-        private IUserControllerWrapper _userControllerWrapper;
-        private IContentVerifier _contentVerifier;
+        private IPortalController portalController;
+        private IUserControllerWrapper userControllerWrapper;
+        private IContentVerifier contentVerifier;
 
-        public UserValidator() : this(PortalController.Instance, new UserControllerWrapper(), new ContentVerifier())
+        /// <summary>Initializes a new instance of the <see cref="UserValidator"/> class.</summary>
+        public UserValidator()
+            : this(PortalController.Instance, new UserControllerWrapper(), new ContentVerifier())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="UserValidator"/> class.</summary>
+        /// <param name="portalController"></param>
+        /// <param name="userControllerWrapper"></param>
+        /// <param name="contentVerifier"></param>
         public UserValidator(IPortalController portalController, IUserControllerWrapper userControllerWrapper, IContentVerifier contentVerifier)
         {
-            this._portalController = portalController;
-            this._userControllerWrapper = userControllerWrapper;
-            this._contentVerifier = contentVerifier;
+            this.portalController = portalController;
+            this.userControllerWrapper = userControllerWrapper;
+            this.contentVerifier = contentVerifier;
         }
 
+        /// <inheritdoc/>
         public ConsoleErrorResultModel ValidateUser(int? userId, PortalSettings portalSettings, UserInfo currentUserInfo, out UserInfo userInfo)
         {
             userInfo = null;
@@ -39,16 +46,16 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             KeyValuePair<HttpStatusCode, string> response;
-            userInfo = this._userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
+            userInfo = this.userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
 
             if (userInfo == null)
             {
-                var portals = this._portalController.GetPortals();
+                var portals = this.portalController.GetPortals();
 
                 foreach (var portal in portals)
                 {
                     var portalInfo = portal as PortalInfo;
-                    userInfo = this._userControllerWrapper.GetUserById(portalInfo.PortalID, userId.Value);
+                    userInfo = this.userControllerWrapper.GetUserById(portalInfo.PortalID, userId.Value);
 
                     if (userInfo != null)
                     {
@@ -57,7 +64,7 @@ namespace Dnn.PersonaBar.Users.Components
                 }
 
                 if (userInfo != null &&
-                    !this._contentVerifier.IsContentExistsForRequestedPortal(
+                    !this.contentVerifier.IsContentExistsForRequestedPortal(
                         userInfo.PortalID,
                         portalSettings,
                         true))

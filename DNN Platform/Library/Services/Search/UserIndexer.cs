@@ -24,38 +24,26 @@ namespace DotNetNuke.Services.Search
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.Index
     /// Class:      TabIndexer
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TabIndexer is an implementation of the abstract IndexingProvider
     /// class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class UserIndexer : IndexingProviderBase
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
         internal const string ValueSplitFlag = "$$$";
+        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
         private const int BatchSize = 250;
         private const int ClauseMaxCount = 1024;
 
-        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
-
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Searches for and indexes modified users for the given portal.
-        /// </summary>
+        /// <summary>Searches for and indexes modified users for the given portal.</summary>
         /// <returns>Count of indexed records.</returns>
-        /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = BatchSize;
@@ -93,8 +81,7 @@ namespace DotNetNuke.Services.Search
                 IList<int> indexedUsers;
                 do
                 {
-                    rowsAffected = FindModifiedUsers(portalId, startDateLocal,
-                        searchDocuments, profileDefinitions, out indexedUsers, ref startUserId);
+                    rowsAffected = FindModifiedUsers(portalId, startDateLocal, searchDocuments, profileDefinitions, out indexedUsers, ref startUserId);
 
                     if (rowsAffected > 0 && searchDocuments.Count >= saveThreshold)
                     {
@@ -140,9 +127,7 @@ namespace DotNetNuke.Services.Search
             return totalIndexed;
         }
 
-        private static int FindModifiedUsers(int portalId, DateTime startDateLocal,
-            IDictionary<string, SearchDocument> searchDocuments, IList<ProfilePropertyDefinition> profileDefinitions, out IList<int> indexedUsers,
-            ref int startUserId)
+        private static int FindModifiedUsers(int portalId, DateTime startDateLocal, IDictionary<string, SearchDocument> searchDocuments, IList<ProfilePropertyDefinition> profileDefinitions, out IList<int> indexedUsers, ref int startUserId)
         {
             var rowsAffected = 0;
             indexedUsers = new List<int>();
@@ -259,9 +244,7 @@ namespace DotNetNuke.Services.Search
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
-                    UniqueKey =
-                        string.Format("{0}_{1}", userSearch.UserId,
-                            UserVisibilityMode.AllUsers).ToLowerInvariant(),
+                    UniqueKey = $"{userSearch.UserId}_{UserVisibilityMode.AllUsers}".ToLowerInvariant(),
                     PortalId = portalId,
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
@@ -286,9 +269,7 @@ namespace DotNetNuke.Services.Search
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
-                    UniqueKey =
-                        string.Format("{0}_{1}", userSearch.UserId,
-                            UserVisibilityMode.AdminOnly).ToLowerInvariant(),
+                    UniqueKey = $"{userSearch.UserId}_{UserVisibilityMode.AdminOnly}".ToLowerInvariant(),
                     PortalId = portalId,
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
@@ -351,13 +332,15 @@ namespace DotNetNuke.Services.Search
                 foreach (var userId in usersList)
                 {
                     var mode = Enum.GetName(typeof(UserVisibilityMode), item);
-                    keyword.AppendFormat("{2} {0}_{1} OR {0}_{1}* ", userId, mode,
+                    keyword.AppendFormat(
+                        "{2} {0}_{1} OR {0}_{1}* ",
+                        userId,
+                        mode,
                         keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
-
-                    // max cluaseCount is 1024, if reach the max value, perform a delete action.
                     {
+                        // max cluaseCount is 1024, if reach the max value, perform a delete action.
                         keyword.Append(")");
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());
                         keyword.Clear().Append("(");
@@ -384,7 +367,9 @@ namespace DotNetNuke.Services.Search
                 },
             };
 
-            var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag,
+            var parserContent = new QueryParser(
+                Constants.LuceneVersion,
+                Constants.UniqueKeyTag,
                 new SearchQueryAnalyzer(true));
             var parsedQueryContent = parserContent.Parse(keyword.ToLowerInvariant());
             query.Add(parsedQueryContent, Occur.MUST);
@@ -404,24 +389,5 @@ namespace DotNetNuke.Services.Search
             var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
             return total;
         }
-    }
-
-    internal class UserSearch
-    {
-        public int UserId { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string Email { get; set; }
-
-        public string UserName { get; set; }
-
-        public bool SuperUser { get; set; }
-
-        public DateTime LastModifiedOnDate { get; set; }
-
-        public DateTime CreatedOnDate { get; set; }
     }
 }

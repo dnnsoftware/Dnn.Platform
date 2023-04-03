@@ -7,37 +7,33 @@ namespace DotNetNuke.UI.WebControls
 
     public class LiteralTemplate : ITemplate
     {
-        private readonly Control m_objControl;
-        private readonly string m_strHTML = string.Empty;
+        private readonly Control objControl;
+        private readonly string strHTML = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LiteralTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LiteralTemplate"/> class.</summary>
         /// <param name="html"></param>
         public LiteralTemplate(string html)
         {
-            this.m_strHTML = html;
+            this.strHTML = html;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LiteralTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LiteralTemplate"/> class.</summary>
         /// <param name="ctl"></param>
         public LiteralTemplate(Control ctl)
         {
-            this.m_objControl = ctl;
+            this.objControl = ctl;
         }
 
         /// <inheritdoc/>
         public void InstantiateIn(Control container)
         {
-            if (this.m_objControl == null)
+            if (this.objControl == null)
             {
-                container.Controls.Add(new LiteralControl(this.m_strHTML));
+                container.Controls.Add(new LiteralControl(this.strHTML));
             }
             else
             {
-                container.Controls.Add(this.m_objControl);
+                container.Controls.Add(this.objControl);
             }
         }
     }

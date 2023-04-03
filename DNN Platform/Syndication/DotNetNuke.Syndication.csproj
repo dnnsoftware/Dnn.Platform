@@ -42,6 +42,7 @@
     <DocumentationFile>bin\DotNetNuke.Services.Syndication.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,6 +56,7 @@
     <DocumentationFile>bin\DotNetNuke.Services.Syndication.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.Instrumentation">
@@ -74,6 +76,7 @@
     <Compile Include="OPML\OpmlOutline.cs" />
     <Compile Include="OPML\Opml.cs" />
     <Compile Include="OPML\OpmlDownloadManager.cs" />
+    <Compile Include="OPML\OpmlOutlines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSS\GenericRssChannel.cs" />
     <Compile Include="RSS\GenericRssElement.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="RSS\RssChannelBase.cs" />
     <Compile Include="RSS\RssChannelDom.cs" />
     <Compile Include="RSS\RssDataSource.cs" />
+    <Compile Include="RSS\RssDataSourceView.cs" />
     <Compile Include="RSS\RssDownloadManager.cs" />
     <Compile Include="RSS\RssElementBase.cs" />
     <Compile Include="RSS\RssElementCustomTypeDescriptor.cs" />

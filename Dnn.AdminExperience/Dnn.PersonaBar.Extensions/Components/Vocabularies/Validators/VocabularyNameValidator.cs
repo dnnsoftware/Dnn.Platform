@@ -12,13 +12,16 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
 
     public class VocabularyNameValidator : ObjectValidator
     {
-        private IVocabularyController _vocabularyController;
-        private ITermController _termController;
+        private IVocabularyController vocabularyController;
+        private ITermController termController;
 
+        /// <summary>Initializes a new instance of the <see cref="VocabularyNameValidator"/> class.</summary>
+        /// <param name="vocabularyController"></param>
+        /// <param name="termController"></param>
         public VocabularyNameValidator(IVocabularyController vocabularyController, ITermController termController)
         {
-            this._vocabularyController = vocabularyController;
-            this._termController = termController;
+            this.vocabularyController = vocabularyController;
+            this.termController = termController;
         }
 
         public override ValidationResult ValidateObject(object target)
@@ -27,7 +30,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
             {
                 var vocabulary = target as Vocabulary;
                 var existVocabulary =
-                    this._vocabularyController.GetVocabularies().FirstOrDefault(v => v.Name == vocabulary.Name && v.ScopeId == vocabulary.ScopeId);
+                    this.vocabularyController.GetVocabularies().FirstOrDefault(v => v.Name == vocabulary.Name && v.ScopeId == vocabulary.ScopeId);
 
                 if (existVocabulary != null && (vocabulary.VocabularyId == Null.NullInteger || existVocabulary.VocabularyId != vocabulary.VocabularyId))
                 {
@@ -37,8 +40,8 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
             else if (target is Term)
             {
                 var term = target as Term;
-                var vocabulary = this._vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == term.VocabularyId);
-                var terms = this._termController.GetTermsByVocabulary(term.VocabularyId);
+                var vocabulary = this.vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == term.VocabularyId);
+                var terms = this.termController.GetTermsByVocabulary(term.VocabularyId);
 
                 if (vocabulary != null)
                 {
@@ -56,7 +59,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
                                         {
                                             ErrorMessage = Constants.TermValidationError,
                                             PropertyName = Constants.TermValidationPropertyName,
-                                            Validator = this
+                                            Validator = this,
                                         },
                                     });
                             }
@@ -73,7 +76,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
                 }
                 else
                 {
-                    return new ValidationResult(new[] { new ValidationError { ErrorMessage = Constants.VocabularyValidationError, PropertyName = "", Validator = this } });
+                    return new ValidationResult(new[] { new ValidationError { ErrorMessage = Constants.VocabularyValidationError, PropertyName = string.Empty, Validator = this } });
                 }
             }
 

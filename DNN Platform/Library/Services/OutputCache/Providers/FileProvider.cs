@@ -16,9 +16,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// FileProvider implements the OutputCachingProvider for file storage.
-    /// </summary>
+    /// <summary>FileProvider implements the OutputCachingProvider for file storage.</summary>
     public class FileProvider : OutputCachingProvider
     {
         public const string DataFileExtension = ".data.resources";
@@ -132,10 +130,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                             var logDetail = new LogDetailInfo
                             {
                                 PropertyName = "FileOutputCacheProvider",
-                                PropertyValue =
-                                    string.Format(
-                                        "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}",
-                                        i, filesNotDeleted),
+                                PropertyValue = $"Deleted {i} files, however, some files are locked.  Could not delete the following files: {filesNotDeleted}",
                             };
                             var properties = new LogProperties { logDetail };
                             log.LogProperties = properties;

@@ -1,7 +1,6 @@
 <%@ Page Language="C#" %>
 
 <script runat="server">
-
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);

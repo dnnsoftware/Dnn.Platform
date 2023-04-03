@@ -20,14 +20,14 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNLocaleEditControl runat=server></{0}:DNNLocaleEditControl>")]
     public class DNNLocaleEditControl : TextEditControl, IPostBackEventHandler
     {
-        private string _DisplayMode = "Native";
-        private LanguagesListType _ListType = LanguagesListType.Enabled;
+        private string displayMode = "Native";
+        private LanguagesListType listType = LanguagesListType.Enabled;
 
         protected LanguagesListType ListType
         {
             get
             {
-                return this._ListType;
+                return this.listType;
             }
         }
 
@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._DisplayMode;
+                return this.displayMode;
             }
         }
 
@@ -50,12 +50,10 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
-            this._DisplayMode = eventArgument;
+            this.displayMode = eventArgument;
         }
 
-        /// <summary>
-        /// OnAttributesChanged runs when the CustomAttributes property has changed.
-        /// </summary>
+        /// <summary>OnAttributesChanged runs when the CustomAttributes property has changed.</summary>
         protected override void OnAttributesChanged()
         {
             // Get the List settings out of the "Attributes"
@@ -66,16 +64,14 @@ namespace DotNetNuke.UI.WebControls
                     var listAtt = attribute as LanguagesListTypeAttribute;
                     if (listAtt != null)
                     {
-                        this._ListType = listAtt.ListType;
+                        this.listType = listAtt.ListType;
                         break;
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control.
-        /// </summary>
+        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
@@ -91,9 +87,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {

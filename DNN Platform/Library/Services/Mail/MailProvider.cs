@@ -29,9 +29,9 @@ namespace DotNetNuke.Services.Mail
         /// <param name="smtpInfo">Information about the SMTP server via which to send the message.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see cref="string.Empty"/> if the message send successfully, otherwise an error message.</returns>
-        public virtual async Task<string> SendMailAsync(MailInfo mailInfo, SmtpInfo smtpInfo = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<string> SendMailAsync(MailInfo mailInfo, SmtpInfo smtpInfo = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.SendMail(mailInfo, smtpInfo);
+            return Task.FromResult(this.SendMail(mailInfo, smtpInfo));
         }
     }
 }

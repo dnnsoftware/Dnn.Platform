@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Common
     {
         protected HttpResponseMessage OkResponse(string msg, object data = null)
         {
-            return this.Request.CreateResponse(HttpStatusCode.OK, new ResponseModel(false, msg, data?.ToString() ?? ""));
+            return this.Request.CreateResponse(HttpStatusCode.OK, new ResponseModel(false, msg, data?.ToString() ?? string.Empty));
         }
 
         protected HttpResponseMessage UnauthorizedResponse(string msg = "", object data = null)
@@ -28,7 +28,8 @@ namespace Dnn.PersonaBar.Prompt.Common
             {
                 msg += " " + Localization.GetString("Prompt_SessionTimedOut", Components.Constants.LocalResourcesFile, true);
             }
-            return this.Request.CreateResponse(HttpStatusCode.Unauthorized, new ResponseModel(true, msg, data?.ToString() ?? ""));
+
+            return this.Request.CreateResponse(HttpStatusCode.Unauthorized, new ResponseModel(true, msg, data?.ToString() ?? string.Empty));
         }
 
         protected HttpResponseMessage BadRequestResponse(string msg = "", object data = null)
@@ -37,7 +38,8 @@ namespace Dnn.PersonaBar.Prompt.Common
             {
                 msg = Localization.GetString("Prompt_InvalidData", Components.Constants.LocalResourcesFile, true);
             }
-            return this.Request.CreateResponse(HttpStatusCode.BadRequest, new ResponseModel(true, msg, data?.ToString() ?? ""));
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest, new ResponseModel(true, msg, data?.ToString() ?? string.Empty));
         }
 
         protected HttpResponseMessage ServerErrorResponse(string msg = "", object data = null)
@@ -46,7 +48,8 @@ namespace Dnn.PersonaBar.Prompt.Common
             {
                 msg = Localization.GetString("Prompt_ServerError", Components.Constants.LocalResourcesFile, true);
             }
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new ResponseModel(true, msg, data?.ToString() ?? ""));
+
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new ResponseModel(true, msg, data?.ToString() ?? string.Empty));
         }
 
         protected HttpResponseMessage NotImplementedResponse(string msg = "", object data = null)
@@ -55,7 +58,8 @@ namespace Dnn.PersonaBar.Prompt.Common
             {
                 msg = Localization.GetString("Prompt_NotImplemented", Components.Constants.LocalResourcesFile, true);
             }
-            return this.Request.CreateResponse(HttpStatusCode.NotImplemented, new ResponseModel(true, msg, data?.ToString() ?? ""));
+
+            return this.Request.CreateResponse(HttpStatusCode.NotImplemented, new ResponseModel(true, msg, data?.ToString() ?? string.Empty));
         }
     }
 }

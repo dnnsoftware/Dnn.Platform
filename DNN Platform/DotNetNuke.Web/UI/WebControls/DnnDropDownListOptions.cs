@@ -5,34 +5,43 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     [DataContract]
     public class DnnDropDownListOptions
     {
         [DataMember(Name = "selectedItemCss")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string SelectedItemCss;
 
         [DataMember(Name = "internalStateFieldId")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string InternalStateFieldId;
 
         [DataMember(Name = "disabled")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public bool Disabled = false;
 
         [DataMember(Name = "selectItemDefaultText")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string SelectItemDefaultText;
 
         [DataMember(Name = "initialState")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public DnnDropDownListState InitialState;
 
         [DataMember(Name = "services")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public ItemListServicesOptions Services;
 
         [DataMember(Name = "itemList")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public ItemListOptions ItemList;
 
-        private List<string> _onClientSelectionChanged;
+        private List<string> onClientSelectionChanged;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnDropDownListOptions"/> class.</summary>
         public DnnDropDownListOptions()
         {
             this.SelectedItemCss = "selected-item";
@@ -46,7 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._onClientSelectionChanged ?? (this._onClientSelectionChanged = new List<string>());
+                return this.onClientSelectionChanged ?? (this.onClientSelectionChanged = new List<string>());
             }
         }
     }

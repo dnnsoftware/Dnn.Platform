@@ -29,9 +29,7 @@ using System;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Defines a lock that supports single writers and multiple readers
-    /// </summary>
+    /// <summary>Defines a lock that supports single writers and multiple readers</summary>
     /// <remarks>
     /// <para>
     /// <c>ReaderWriterLock</c> is used to synchronize access to a resource. 
@@ -50,9 +48,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ReaderWriterLock
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="ReaderWriterLock" /> class.
@@ -70,9 +66,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Acquires a reader lock
-        /// </summary>
+        /// <summary>Acquires a reader lock</summary>
         /// <remarks>
         /// <para>
         /// <see cref="AcquireReaderLock"/> blocks if a different thread has the writer 
@@ -99,9 +93,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Decrements the lock count
-        /// </summary>
+        /// <summary>Decrements the lock count</summary>
         /// <remarks>
         /// <para>
         /// <see cref="ReleaseReaderLock"/> decrements the lock count. When the count 
@@ -122,9 +114,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Acquires the writer lock
-        /// </summary>
+        /// <summary>Acquires the writer lock</summary>
         /// <remarks>
         /// <para>
         /// This method blocks if another thread has a reader lock or writer lock.
@@ -150,9 +140,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Decrements the lock count on the writer lock
-        /// </summary>
+        /// <summary>Decrements the lock count on the writer lock</summary>
         /// <remarks>
         /// <para>
         /// ReleaseWriterLock decrements the writer lock count. 

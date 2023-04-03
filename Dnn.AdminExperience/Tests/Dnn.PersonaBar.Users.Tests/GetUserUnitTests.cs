@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Users.Tests
     using NUnit.Framework;
 
     [TestFixture]
+
     public class GetUserUnitTests : CommandTests<GetUser>
     {
         private int _userId;
@@ -26,6 +27,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_GetUserByEmailWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange
@@ -54,6 +56,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [TestCase]
+
         public void Run_GetUserByUserNameWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange
@@ -82,6 +85,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_GetUserWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange
@@ -97,6 +101,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_GetUserWithValidCommand_ShouldErrorResponse()
         {
             // Arrange
