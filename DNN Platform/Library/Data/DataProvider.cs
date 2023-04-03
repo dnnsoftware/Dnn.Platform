@@ -957,7 +957,7 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-        public virtual void AddTabModule(int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, bool isWebSlice, string webSliceTitle, DateTime webSliceExpiryDate, int webSliceTTL, Guid uniqueId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int createdByUserID)
+        public virtual void AddTabModule(int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, Guid uniqueId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int createdByUserID)
         {
             this.ExecuteNonQuery(
                 "AddTabModule",
@@ -979,10 +979,6 @@ namespace DotNetNuke.Data
                 displayTitle,
                 displayPrint,
                 displaySyndicate,
-                isWebSlice,
-                webSliceTitle,
-                this.GetNull(webSliceExpiryDate),
-                webSliceTTL,
                 uniqueId,
                 versionGuid,
                 this.GetNull(defaultLanguageGuid),
@@ -1158,7 +1154,7 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateModuleSetting", moduleId, settingName, settingValue, lastModifiedByUserID);
         }
 
-        public virtual void UpdateTabModule(int tabModuleId, int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, bool isWebSlice, string webSliceTitle, DateTime webSliceExpiryDate, int webSliceTTL, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int lastModifiedByUserID)
+        public virtual void UpdateTabModule(int tabModuleId, int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int lastModifiedByUserID)
         {
             this.ExecuteNonQuery(
                 "UpdateTabModule",
@@ -1181,10 +1177,6 @@ namespace DotNetNuke.Data
                 displayTitle,
                 displayPrint,
                 displaySyndicate,
-                isWebSlice,
-                webSliceTitle,
-                this.GetNull(webSliceExpiryDate),
-                webSliceTTL,
                 versionGuid,
                 this.GetNull(defaultLanguageGuid),
                 localizedVersionGuid,

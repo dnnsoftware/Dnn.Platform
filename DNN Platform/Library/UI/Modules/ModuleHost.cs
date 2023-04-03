@@ -226,53 +226,8 @@ namespace DotNetNuke.UI.Modules
 
         private void InjectModuleContent(Control content)
         {
-            if (this.moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
-            {
-                // Assign the class - hslice to the Drag-N-Drop Panel
-                this.CssClass = "hslice";
-                var titleLabel = new Label
-                {
-                    CssClass = "entry-title Hidden",
-                    Text = !string.IsNullOrEmpty(this.moduleConfiguration.WebSliceTitle) ? this.moduleConfiguration.WebSliceTitle : this.moduleConfiguration.ModuleTitle,
-                };
-                this.Controls.Add(titleLabel);
-
-                var websliceContainer = new Panel { CssClass = "entry-content" };
-                websliceContainer.Controls.Add(content);
-
-                var expiry = new HtmlGenericControl { TagName = "abbr" };
-                expiry.Attributes["class"] = "endtime";
-                if (!Null.IsNull(this.moduleConfiguration.WebSliceExpiryDate))
-                {
-                    expiry.Attributes["title"] = this.moduleConfiguration.WebSliceExpiryDate.ToString("o");
-                    websliceContainer.Controls.Add(expiry);
-                }
-                else if (this.moduleConfiguration.EndDate < DateTime.MaxValue)
-                {
-                    expiry.Attributes["title"] = this.moduleConfiguration.EndDate.ToString("o");
-                    websliceContainer.Controls.Add(expiry);
-                }
-
-                var ttl = new HtmlGenericControl { TagName = "abbr" };
-                ttl.Attributes["class"] = "ttl";
-                if (this.moduleConfiguration.WebSliceTTL > 0)
-                {
-                    ttl.Attributes["title"] = this.moduleConfiguration.WebSliceTTL.ToString();
-                    websliceContainer.Controls.Add(ttl);
-                }
-                else if (this.moduleConfiguration.CacheTime > 0)
-                {
-                    ttl.Attributes["title"] = (this.moduleConfiguration.CacheTime / 60).ToString();
-                    websliceContainer.Controls.Add(ttl);
-                }
-
-                this.Controls.Add(websliceContainer);
-            }
-            else
-            {
                 this.Controls.Add(content);
             }
-        }
 
         /// <summary>Gets a flag that indicates whether the Module Content should be displayed.</summary>
         /// <returns>A Boolean.</returns>
