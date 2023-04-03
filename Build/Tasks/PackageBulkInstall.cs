@@ -28,7 +28,7 @@ namespace DotNetNuke.Build.Tasks
                     OutputDirectory = buildDir,
                 });
 
-            context.Zip(buildDir, context.ArtifactsDir.Path.CombineWithFilePath($"DotNetNuke.BulkInstall_{context.GetBuildNumber()}.zip"));
+            context.Zip(buildDir, context.ArtifactsDir.Path.CombineWithFilePath($"DotNetNuke.BulkInstall.DeployClient_{context.GetBuildNumber()}.zip"));
 
             context.DotNetPack(
                 BulkInstallProject,
