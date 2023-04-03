@@ -12,25 +12,27 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// VocabularyController provides the business layer of Vocabulary and VocabularyType.
-    /// </summary>
+    /// <summary>VocabularyController provides the business layer of Vocabulary and VocabularyType.</summary>
     /// <seealso cref="TermController"/>
     public class VocabularyController : IVocabularyController
     {
-        private const int _CacheTimeOut = 20;
-        private readonly IDataService _DataService;
+        private const int CacheTimeOut = 20;
+        private readonly IDataService dataService;
 
+        /// <summary>Initializes a new instance of the <see cref="VocabularyController"/> class.</summary>
         public VocabularyController()
             : this(Util.GetDataService())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="VocabularyController"/> class.</summary>
+        /// <param name="dataService"></param>
         public VocabularyController(IDataService dataService)
         {
-            this._DataService = dataService;
+            this.dataService = dataService;
         }
 
+        /// <inheritdoc/>
         public int AddVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -38,7 +40,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNullOrEmpty("vocabulary", "Name", vocabulary.Name);
             Requires.PropertyNotNegative("vocabulary", "ScopeTypeId", vocabulary.ScopeTypeId);
 
-            vocabulary.VocabularyId = this._DataService.AddVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
+            vocabulary.VocabularyId = this.dataService.AddVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
 
             // Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
@@ -46,28 +48,32 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             return vocabulary.VocabularyId;
         }
 
+        /// <inheritdoc/>
         public void ClearVocabularyCache()
         {
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
+        /// <inheritdoc/>
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
             Requires.NotNull("vocabulary", vocabulary);
             Requires.PropertyNotNegative("vocabulary", "VocabularyId", vocabulary.VocabularyId);
 
-            this._DataService.DeleteVocabulary(vocabulary);
+            this.dataService.DeleteVocabulary(vocabulary);
 
             // Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
+        /// <inheritdoc/>
         public IQueryable<Vocabulary> GetVocabularies()
         {
-            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, _CacheTimeOut), this.GetVocabulariesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, CacheTimeOut), this.GetVocabulariesCallBack).AsQueryable();
         }
 
+        /// <inheritdoc/>
         public void UpdateVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -78,12 +84,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
-            this._DataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
+            this.dataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         private object GetVocabulariesCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillQueryable<Vocabulary>(this._DataService.GetVocabularies()).ToList();
+            return CBO.FillQueryable<Vocabulary>(this.dataService.GetVocabularies()).ToList();
         }
     }
 }

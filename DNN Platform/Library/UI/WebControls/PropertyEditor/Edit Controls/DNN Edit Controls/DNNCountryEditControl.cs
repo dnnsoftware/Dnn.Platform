@@ -3,31 +3,24 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
-    using System;
-    using System.Linq;
     using System.Web.UI;
 
     using DotNetNuke.Common.Lists;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNCountryEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNCountryEditControl control provides a standard UI component for editing
     /// Countries.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNCountryEditControl runat=server></{0}:DNNCountryEditControl>")]
     public class DNNCountryEditControl : DNNListEditControl
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="DNNCountryEditControl"/> class.
         /// Constructs a DNNCountryEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public DNNCountryEditControl()
         {
             this.AutoPostBack = true;

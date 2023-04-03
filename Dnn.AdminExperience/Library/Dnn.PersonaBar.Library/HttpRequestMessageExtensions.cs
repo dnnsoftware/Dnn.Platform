@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Library
 {
     using System;
@@ -10,9 +9,7 @@ namespace Dnn.PersonaBar.Library
     using System.Net.Http;
     using System.Net.Http.Headers;
 
-    /// <summary>
-    /// Extends the HttpRequestMessage collection.
-    /// </summary>
+    /// <summary>Extends the HttpRequestMessage collection.</summary>
     public static class HttpRequestMessageExtensions
     {
         /// <summary>
@@ -22,19 +19,17 @@ namespace Dnn.PersonaBar.Library
         /// If you need to pull a few single values use GetQueryString instead.
         /// </summary>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> of query string keys to values.</returns>
         public static Dictionary<string, string> GetQueryStrings(this HttpRequestMessage request)
         {
             return request.GetQueryNameValuePairs()
                           .ToDictionary(kv => kv.Key, kv => kv.Value, StringComparer.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        /// Returns an individual querystring value.
-        /// </summary>
+        /// <summary>Returns an individual querystring value.</summary>
         /// <param name="request"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
+        /// <returns>The query string value or <see langword="null"/>.</returns>
         public static string GetQueryString(this HttpRequestMessage request, string key)
         {
             // IEnumerable<KeyValuePair<string,string>> - right!
@@ -53,12 +48,10 @@ namespace Dnn.PersonaBar.Library
             return match.Value;
         }
 
-        /// <summary>
-        /// Returns an individual querystring value as integer.
-        /// </summary>
+        /// <summary>Returns an individual querystring value as integer.</summary>
         /// <param name="request"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
+        /// <returns>The query string value or <c>-1</c>.</returns>
         public static int GetQueryStringAsInteger(this HttpRequestMessage request, string key)
         {
             // IEnumerable<KeyValuePair<string,string>> - right!
@@ -72,12 +65,10 @@ namespace Dnn.PersonaBar.Library
             return -1;
         }
 
-        /// <summary>
-        /// Returns an individual HTTP Header value.
-        /// </summary>
+        /// <summary>Returns an individual HTTP Header value.</summary>
         /// <param name="request"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
+        /// <returns>The header value or <see langword="null"/>.</returns>
         public static string GetHeader(this HttpRequestMessage request, string key)
         {
             IEnumerable<string> keys = null;
@@ -89,12 +80,10 @@ namespace Dnn.PersonaBar.Library
             return keys.First();
         }
 
-        /// <summary>
-        /// Retrieves an individual cookie from the cookies collection.
-        /// </summary>
+        /// <summary>Retrieves an individual cookie from the cookies collection.</summary>
         /// <param name="request"></param>
         /// <param name="cookieName"></param>
-        /// <returns></returns>
+        /// <returns>The cookie value or <see langword="null"/>.</returns>
         public static string GetCookie(this HttpRequestMessage request, string cookieName)
         {
             CookieHeaderValue cookie = request.Headers.GetCookies(cookieName).FirstOrDefault();

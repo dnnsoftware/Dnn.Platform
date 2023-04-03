@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Sitemap
 
     public class SitemapHandler : IHttpHandler
     {
+        /// <inheritdoc/>
         public bool IsReusable
         {
             get
@@ -19,26 +20,27 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             try
             {
-                HttpResponse Response = context.Response;
+                HttpResponse response = context.Response;
                 PortalSettings ps = PortalController.Instance.GetCurrentPortalSettings();
 
-                Response.ContentType = "text/xml";
-                Response.ContentEncoding = Encoding.UTF8;
+                response.ContentType = "text/xml";
+                response.ContentEncoding = Encoding.UTF8;
 
                 var builder = new SitemapBuilder(ps);
 
                 if (context.Request.QueryString["i"] != null)
                 {
                     // This is a request for one of the files that build the sitemapindex
-                    builder.GetSitemapIndexFile(context.Request.QueryString["i"], Response.Output);
+                    builder.GetSitemapIndexFile(context.Request.QueryString["i"], response.Output);
                 }
                 else
                 {
-                    builder.BuildSiteMap(Response.Output);
+                    builder.BuildSiteMap(response.Output);
                 }
             }
             catch (Exception exc)

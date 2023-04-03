@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Cache
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
@@ -15,12 +16,14 @@ namespace DotNetNuke.Services.Cache
 
     public class FBCachingProvider : CachingProvider
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal const string CacheFileExtension = ".resources";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal static string CachingDirectory = "Cache\\";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
 
-        public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                    CacheItemRemovedCallback onRemoveCallback)
+        /// <inheritdoc/>
+        public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,                                    CacheItemRemovedCallback onRemoveCallback)
         {
             // initialize cache dependency
             DNNCacheDependency d = dependency;
@@ -43,32 +46,35 @@ namespace DotNetNuke.Services.Cache
             base.Insert(cacheKey, itemToCache, d, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
 
+        /// <inheritdoc/>
         public override bool IsWebFarm()
         {
-            bool _IsWebFarm = Null.NullBoolean;
+            bool isWebFarm = Null.NullBoolean;
             if (!string.IsNullOrEmpty(Config.GetSetting("IsWebFarm")))
             {
-                _IsWebFarm = bool.Parse(Config.GetSetting("IsWebFarm"));
+                isWebFarm = bool.Parse(Config.GetSetting("IsWebFarm"));
             }
 
-            return _IsWebFarm;
+            return isWebFarm;
         }
 
+        /// <inheritdoc/>
         public override string PurgeCache()
         {
             // called by scheduled job to remove cache files which are no longer active
             return this.PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
-        public override void Remove(string Key)
+        /// <inheritdoc/>
+        public override void Remove(string key)
         {
-            base.Remove(Key);
+            base.Remove(key);
 
             // if web farm is enabled in config file
             if (this.IsWebFarm())
             {
                 // get hashed filename
-                string f = GetFileName(Key);
+                string f = GetFileName(key);
 
                 // delete cache file - this synchronizes the cache across servers in the farm
                 DeleteCacheFile(f);
@@ -87,20 +93,20 @@ namespace DotNetNuke.Services.Cache
             return sOutput.ToString();
         }
 
-        private static void CreateCacheFile(string FileName, string CacheKey)
+        private static void CreateCacheFile(string fileName, string cacheKey)
         {
             // declare stream
             StreamWriter s = null;
             try
             {
                 // if the cache file does not already exist
-                if (!File.Exists(FileName))
+                if (!File.Exists(fileName))
                 {
                     // create the cache file
-                    s = File.CreateText(FileName);
+                    s = File.CreateText(fileName);
 
                     // write the CacheKey to the file to provide a documented link between cache item and cache file
-                    s.Write(CacheKey);
+                    s.Write(cacheKey);
 
                     // close the stream
                 }
@@ -119,13 +125,13 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        private static void DeleteCacheFile(string FileName)
+        private static void DeleteCacheFile(string fileName)
         {
             try
             {
-                if (File.Exists(FileName))
+                if (File.Exists(fileName))
                 {
-                    File.Delete(FileName);
+                    File.Delete(fileName);
                 }
             }
             catch (Exception ex)
@@ -135,28 +141,28 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        private static string GetFileName(string CacheKey)
+        private static string GetFileName(string cacheKey)
         {
             // cache key may contain characters invalid for a filename - this method creates a valid filename
-            byte[] FileNameBytes = Encoding.ASCII.GetBytes(CacheKey);
+            byte[] fileNameBytes = Encoding.ASCII.GetBytes(cacheKey);
             using (var sha256 = new SHA256CryptoServiceProvider())
             {
-                FileNameBytes = sha256.ComputeHash(FileNameBytes);
-                string FinalFileName = ByteArrayToString(FileNameBytes);
-                return Path.GetFullPath(Globals.HostMapPath + CachingDirectory + FinalFileName + CacheFileExtension);
+                fileNameBytes = sha256.ComputeHash(fileNameBytes);
+                string finalFileName = ByteArrayToString(fileNameBytes);
+                return Path.GetFullPath(Globals.HostMapPath + CachingDirectory + finalFileName + CacheFileExtension);
             }
         }
 
-        private string PurgeCacheFiles(string Folder)
+        private string PurgeCacheFiles(string folder)
         {
             // declare counters
-            int PurgedFiles = 0;
-            int PurgeErrors = 0;
+            int purgedFiles = 0;
+            int purgeErrors = 0;
             int i;
 
             // get list of cache files
             string[] f;
-            f = Directory.GetFiles(Folder);
+            f = Directory.GetFiles(folder);
 
             // loop through cache files
             for (i = 0; i <= f.Length - 1; i++)
@@ -178,21 +184,21 @@ namespace DotNetNuke.Services.Cache
                         {
                             // delete the file
                             File.Delete(f[i]);
-                            PurgedFiles += 1;
+                            purgedFiles += 1;
                         }
                         catch (Exception exc)
                         {
                             // an error occurred
                             Logger.Error(exc);
 
-                            PurgeErrors += 1;
+                            purgeErrors += 1;
                         }
                     }
                 }
             }
 
             // return a summary message for the job
-            return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + PurgedFiles + ", Errors: " + PurgeErrors);
+            return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + purgedFiles + ", Errors: " + purgeErrors);
         }
     }
 }

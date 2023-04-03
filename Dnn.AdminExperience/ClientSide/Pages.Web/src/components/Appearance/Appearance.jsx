@@ -17,16 +17,16 @@ class Appearance extends Component {
         const { page, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
 
         onRetrieveThemes().then(data => {
-			if(!data || data.success === false) {
-				return;
-			}
-			const { defaultPortalThemeName, defaultPortalThemeLevel } = this.props;
-			const selectedThemeName = page.themeName || defaultPortalThemeName;
-			const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
-			if (selectedThemeName) {
-				onRetrieveThemeFiles(selectedThemeName, selectedThemeLevel);
-			}
-		});
+            if (!data || data.success === false) {
+                return;
+            }
+            const { defaultPortalThemeName, defaultPortalThemeLevel } = this.props;
+            const selectedThemeName = page.themeName || defaultPortalThemeName;
+            const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
+            if (selectedThemeName) {
+                onRetrieveThemeFiles(selectedThemeName, selectedThemeLevel);
+            }
+        });
     }
 
     componentDidUpdate(prevProps) {

@@ -14,7 +14,7 @@ function ProfileAutoCompleteService($) {
 				success(data);
 			}
 		}).fail(function (xhr, status) {
-			alert(eval("(" + xhr.responseText + ")").ExceptionMessage);
+			alert(JSON.parse(xhr.responseText).ExceptionMessage);
 		});
 	};
 

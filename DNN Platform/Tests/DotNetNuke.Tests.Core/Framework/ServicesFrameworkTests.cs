@@ -5,6 +5,7 @@
 namespace DotNetNuke.Tests.Core.Framework
 {
     using System;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;

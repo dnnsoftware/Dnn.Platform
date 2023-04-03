@@ -14,24 +14,17 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     using DotNetNuke.Common;
     using DotNetNuke.Services.ClientCapability;
 
-    /// <summary>
-    /// AspNet.BrowserDetector implementation of ClientCapabilityProvider.
-    /// </summary>
+    /// <summary>AspNet.BrowserDetector implementation of <see cref="DotNetNuke.Services.ClientCapability.IClientCapabilityProvider"/>.</summary>
     public class AspNetClientCapabilityProvider : ClientCapabilityProvider
     {
-        private static readonly object _allCapabilitiesLock = new object();
+        private static readonly object AllCapabilitiesLock = new object();
+        private static readonly object AllClientCapabilityValuesLock = new object();
+        private static IQueryable<IClientCapability> allCapabilities;
+        private static Dictionary<string, List<string>> allClientCapabilityValues;
+        private static IDictionary<string, int> highPiorityCapabilityValues;
+        private static IDictionary<string, string> sampleProperies;
 
-        private static readonly object _allClientCapabilityValuesLock = new object();
-        private static IQueryable<IClientCapability> _allCapabilities;
-        private static Dictionary<string, List<string>> _allClientCapabilityValues;
-
-        private static IDictionary<string, int> _highPiorityCapabilityValues;
-
-        private static IDictionary<string, string> _dummyProperies;
-
-        /// <summary>
-        /// Gets a value indicating whether indicates whether tablet detection is supported in the available data set.
-        /// </summary>
+        /// <inheritdoc/>
         public override bool SupportsTabletDetection
         {
             get { return false; }
@@ -41,19 +34,19 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             get
             {
-                if (_allCapabilities == null)
+                if (allCapabilities == null)
                 {
-                    lock (_allCapabilitiesLock)
+                    lock (AllCapabilitiesLock)
                     {
-                        if (_allCapabilities == null)
+                        if (allCapabilities == null)
                         {
                             var capabilities = new List<IClientCapability> { new AspNetClientCapability(HttpContext.Current.Request) };
-                            _allCapabilities = capabilities.AsQueryable();
+                            allCapabilities = capabilities.AsQueryable();
                         }
                     }
                 }
 
-                return _allCapabilities;
+                return allCapabilities;
             }
         }
 
@@ -61,13 +54,13 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             get
             {
-                if (_allClientCapabilityValues == null)
+                if (allClientCapabilityValues == null)
                 {
-                    lock (_allClientCapabilityValuesLock)
+                    lock (AllClientCapabilityValuesLock)
                     {
-                        if (_allClientCapabilityValues == null)
+                        if (allClientCapabilityValues == null)
                         {
-                            _allClientCapabilityValues = new Dictionary<string, List<string>>();
+                            allClientCapabilityValues = new Dictionary<string, List<string>>();
 
                             // TODO :Implement
                             // foreach (var property in DataProvider.Properties)
@@ -79,7 +72,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     }
 
                     var props = HighPiorityCapabilityValues;
-                    _allClientCapabilityValues = _allClientCapabilityValues.OrderByDescending(
+                    allClientCapabilityValues = allClientCapabilityValues.OrderByDescending(
                         kvp =>
                         {
                             if (props.ContainsKey(kvp.Key))
@@ -91,7 +84,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                         }).ThenBy(kvp => kvp.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
                 }
 
-                return _allClientCapabilityValues;
+                return allClientCapabilityValues;
             }
         }
 
@@ -99,7 +92,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             get
             {
-                return _highPiorityCapabilityValues ?? (_highPiorityCapabilityValues = new Dictionary<string, int>
+                return highPiorityCapabilityValues ?? (highPiorityCapabilityValues = new Dictionary<string, int>
                 {
                     { "IsMobile", 100 },
                     { "IsTablet", 95 },
@@ -115,12 +108,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        private static IDictionary<string, string> DummyProperties
+        private static IDictionary<string, string> SampleProperties
         {
             get
             {
-                return _dummyProperies ??
-                       (_dummyProperies = new Dictionary<string, string>
+                return sampleProperies ??
+                       (sampleProperies = new Dictionary<string, string>
                        {
                            { "Id", "UNKNOWN" },
                            { "IsMobile", "false" },
@@ -134,6 +127,10 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
+        /// <summary>Gets the browser capabilities.</summary>
+        /// <param name="headers">The headers collection.</param>
+        /// <param name="userAgent">The request's user agent.</param>
+        /// <returns>An <see cref="HttpBrowserCapabilities"/> instance.</returns>
         public static HttpBrowserCapabilities GetHttpBrowserCapabilities(NameValueCollection headers, string userAgent)
         {
             var factory = new BrowserCapabilitiesFactory();
@@ -146,24 +143,18 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             return browserCaps;
         }
 
-        /// <summary>
-        /// Returns ClientCapability based on the user agent provided.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public override IClientCapability GetClientCapability(string userAgent)
         {
             if (string.IsNullOrEmpty(userAgent))
             {
-                return new AspNetClientCapability(DummyProperties);
+                return new AspNetClientCapability(SampleProperties);
             }
 
             return new AspNetClientCapability(userAgent, GetHttpBrowserCapabilities(new NameValueCollection(), userAgent));
         }
 
-        /// <summary>
-        /// Returns ClientCapability based on device Id provided.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public override IClientCapability GetClientCapabilityById(string deviceId)
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);
@@ -171,24 +162,13 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             throw new NotImplementedException($"Can't get device capability for the id '{deviceId}'");
         }
 
-        /// <summary>
-        /// Returns available Capability Values for every Capability Name.
-        /// </summary>
-        /// <returns>
-        /// Dictionary of Capability Name along with List of possible values of the Capability.
-        /// </returns>
-        /// <example>Capability Name = mobile_browser, value = Safari, Andriod Webkit. </example>
+        /// <inheritdoc/>
         public override IDictionary<string, List<string>> GetAllClientCapabilityValues()
         {
             return ClientCapabilityValues;
         }
 
-        /// <summary>
-        /// Returns All available Client Capabilities present.
-        /// </summary>
-        /// <returns>
-        /// List of IClientCapability present.
-        /// </returns>
+        /// <inheritdoc/>
         public override IQueryable<IClientCapability> GetAllClientCapabilities()
         {
             return AllCapabilities;

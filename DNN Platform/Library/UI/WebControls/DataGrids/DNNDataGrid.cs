@@ -6,27 +6,18 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Web.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNDataGrid
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNDataGrid control provides an Enhanced Data Grid, that supports other
     /// column types.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class DNNDataGrid : DataGrid
     {
         public event DNNDataGridCheckedColumnEventHandler ItemCheckedChanged;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Called when the grid is Data Bound.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Called when the grid is Data Bound.</summary>
         protected override void OnDataBinding(EventArgs e)
         {
             foreach (DataGridColumn column in this.Columns)
@@ -40,21 +31,19 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void CreateControlHierarchy(bool useDataSource)
         {
             base.CreateControlHierarchy(useDataSource);
         }
 
+        /// <inheritdoc/>
         protected override void PrepareControlHierarchy()
         {
             base.PrepareControlHierarchy();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Centralised Event that is raised whenever a check box is changed.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Centralised Event that is raised whenever a check box is changed.</summary>
         private void OnItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             if (this.ItemCheckedChanged != null)

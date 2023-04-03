@@ -53,7 +53,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        [ExpectedException(typeof(HttpResponseException))]
         public void SelectControllerIgnoresControllersInUnexpectedNamespaces()
         {
             const string expectedNamespace = "ExpectedNamespace";
@@ -78,11 +77,10 @@ namespace DotNetNuke.Tests.Web.Api
             var selector = new DnnHttpControllerSelector(configuration);
 
             // Act
-            selector.SelectController(request);
+            Assert.Throws<HttpResponseException>(() => selector.SelectController(request));
         }
 
         [Test]
-        [ExpectedException(typeof(HttpResponseException))]
         public void SelectControllerThrowsOnAmgiuousControllers()
         {
             const string expectedNamespace = "ExpectedNamespace";
@@ -108,7 +106,7 @@ namespace DotNetNuke.Tests.Web.Api
             var selector = new DnnHttpControllerSelector(configuration);
 
             // Act
-            selector.SelectController(request);
+            Assert.Throws<HttpResponseException>(() => selector.SelectController(request));
         }
 
         private static IHttpRouteData GetRouteData()

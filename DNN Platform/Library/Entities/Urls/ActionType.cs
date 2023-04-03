@@ -6,13 +6,13 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum ActionType
     {
-        IgnoreRequest,
-        Continue,
-        Redirect302Now,
-        Redirect301,
-        CheckFor301,
-        Redirect302,
-        Output404,
-        Output500,
+        IgnoreRequest = 0,
+        Continue = 1,
+        Redirect302Now = 2,
+        Redirect301 = 3,
+        CheckFor301 = 4,
+        Redirect302 = 5,
+        Output404 = 6,
+        Output500 = 7,
     }
 }

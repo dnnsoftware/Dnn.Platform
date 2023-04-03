@@ -13,27 +13,32 @@ namespace DNN.Connectors.GoogleAnalytics
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>Connector to provide configuration for Google Analytics support.</summary>
     public class GoogleAnalyticsConnector : IConnector
     {
         private const string DefaultDisplayName = "Google Analytics";
 
-        private string _displayName;
+        private string displayName;
 
+        /// <inheritdoc/>
         public string Name
         {
             get { return "Core Google Analytics Connector"; }
         }
 
+        /// <inheritdoc/>
         public string IconUrl
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics/Images/GoogleAnalytics_32X32_Standard.png"; }
         }
 
+        /// <inheritdoc/>
         public string PluginFolder
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics/"; }
         }
 
+        /// <inheritdoc/>
         public bool IsEngageConnector
         {
             get
@@ -42,33 +47,35 @@ namespace DNN.Connectors.GoogleAnalytics
             }
         }
 
+        /// <inheritdoc/>
         public ConnectorCategories Type => ConnectorCategories.Analytics;
 
+        /// <inheritdoc/>
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
 
+        /// <inheritdoc/>
         public string DisplayName
         {
-            get
-            {
-                return
-                    string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
-            }
-
-            set { this._displayName = value; }
+            get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
+            set => this.displayName = value;
         }
 
+        /// <inheritdoc/>
         public string Id { get; set; }
 
+        /// <inheritdoc/>
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             return new List<IConnector> { this };
         }
 
+        /// <inheritdoc/>
         public void DeleteConnector(int portalId)
         {
         }
 
+        /// <inheritdoc/>
         public bool HasConfig(int portalId)
         {
             IDictionary<string, string> config = this.GetConfig(portalId);
@@ -76,6 +83,7 @@ namespace DNN.Connectors.GoogleAnalytics
             return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
@@ -134,6 +142,7 @@ namespace DNN.Connectors.GoogleAnalytics
             return configItems;
         }
 
+        /// <inheritdoc/>
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             // Delete / Deactivation functionality added into SaveConfig because
@@ -231,11 +240,11 @@ namespace DNN.Connectors.GoogleAnalytics
         /// Handles custom conversion from "true" => "true"
         /// Anything else to "" to support the strange knockout handling of string as booleans.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">The string representing a boolean.</param>
+        /// <returns>The string representing a boolean after the correction.</returns>
         private string HandleCustomBoolean(string value)
         {
-            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {
                 return "true";
             }

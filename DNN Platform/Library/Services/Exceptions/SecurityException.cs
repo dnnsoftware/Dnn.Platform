@@ -5,43 +5,55 @@ namespace DotNetNuke.Services.Exceptions
 {
     using System;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
     using System.Web;
     using System.Xml.Serialization;
 
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.UserRequest;
 
     public class SecurityException : BasePortalException
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityException));
-        private string m_IP;
-        private string m_Querystring;
+        private string ip;
+        private string querystring;
 
         // default constructor
+
+        /// <summary>Initializes a new instance of the <see cref="SecurityException"/> class.</summary>
         public SecurityException()
         {
         }
 
         // constructor with exception message
+
+        /// <summary>Initializes a new instance of the <see cref="SecurityException"/> class.</summary>
+        /// <param name="message"></param>
         public SecurityException(string message)
             : base(message)
         {
-            this.InitilizePrivateVariables();
+            this.InitializePrivateVariables();
         }
 
         // constructor with message and inner exception
+
+        /// <summary>Initializes a new instance of the <see cref="SecurityException"/> class.</summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public SecurityException(string message, Exception inner)
             : base(message, inner)
         {
-            this.InitilizePrivateVariables();
+            this.InitializePrivateVariables();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="SecurityException"/> class.</summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected SecurityException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.InitilizePrivateVariables();
-            this.m_IP = info.GetString("m_IP");
-            this.m_Querystring = info.GetString("m_Querystring");
+            this.InitializePrivateVariables();
+            this.ip = info.GetString("m_IP");
+            this.querystring = info.GetString("m_Querystring");
         }
 
         [XmlElement("IP")]
@@ -49,7 +61,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_IP;
+                return this.ip;
             }
         }
 
@@ -58,26 +70,29 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_Querystring;
+                return this.querystring;
             }
         }
 
-        private void InitilizePrivateVariables()
+        private void InitializePrivateVariables()
         {
             // Try and get the Portal settings from httpcontext
             try
             {
-                if (HttpContext.Current.Request.UserHostAddress != null)
+                var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
+
+                if (ipAddress != null)
                 {
-                    this.m_IP = HttpContext.Current.Request.UserHostAddress;
+                    this.ip = ipAddress;
                 }
 
-                this.m_Querystring = HttpContext.Current.Request.MapPath(this.Querystring, HttpContext.Current.Request.ApplicationPath, false);
+                this.querystring = HttpContext.Current.Request.MapPath(this.Querystring, HttpContext.Current.Request.ApplicationPath, false);
             }
             catch (Exception exc)
             {
-                this.m_IP = string.Empty;
-                this.m_Querystring = string.Empty;
+                this.ip = string.Empty;
+                this.querystring = string.Empty;
                 Logger.Error(exc);
             }
         }

@@ -21,26 +21,19 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using Globals = DotNetNuke.Common.Globals;
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// <summary>
-    /// The Login AuthenticationLoginBase is used to provide a login for a registered user
-    /// portal.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Login AuthenticationLoginBase is used to provide a login for a registered user portal.</summary>
     public partial class Login : AuthenticationLoginBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets a value indicating whether check if the Auth System is Enabled (for the Portal).
-        /// </summary>
-        /// <remarks></remarks>
+        /// <summary>Gets a value indicating whether check if the Auth System is Enabled (for the Portal).</summary>
         public override bool Enabled
         {
             get
@@ -49,9 +42,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Captcha control is used to validate the login.</summary>
         protected bool UseCaptcha
         {
             get
@@ -60,6 +51,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -84,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
-            var returnUrl = this._navigationManager.NavigateURL();
+            var returnUrl = this.navigationManager.NavigateURL();
             string url;
             if (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
             {
@@ -114,7 +106,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                url = this._navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                url = this.navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
                 this.passwordLink.NavigateUrl = url;
                 if (this.PortalSettings.EnablePopUps)
                 {
@@ -145,13 +137,13 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                         if (this.Request.IsAuthenticated)
                         {
-                            this.Response.Redirect(this._navigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : this.PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
+                            this.Response.Redirect(this.navigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : this.PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
                         }
                         else
                         {
                             if (redirectTabId > 0)
                             {
-                                var redirectUrl = this._navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
+                                var redirectUrl = this.navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias), string.Empty);
                                 this.Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
@@ -229,9 +221,10 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         {
             var redirectUrl = string.Empty;
             var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
-            if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
+            if (checkSettings && redirectAfterLogin > 0)
             {
-                redirectUrl = this._navigationManager.NavigateURL(redirectAfterLogin);
+                // redirect to after registration page
+                redirectUrl = this.navigationManager.NavigateURL(redirectAfterLogin);
             }
             else
             {
@@ -258,7 +251,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page
-                    redirectUrl = this._navigationManager.NavigateURL();
+                    redirectUrl = this.navigationManager.NavigateURL();
                 }
             }
 
@@ -272,9 +265,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 string userName = PortalSecurity.Instance.InputFilter(
                     this.txtUsername.Text,
-                    PortalSecurity.FilterFlag.NoScripting |
-                                        PortalSecurity.FilterFlag.NoAngleBrackets |
-                                        PortalSecurity.FilterFlag.NoMarkup);
+                    PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
                 // DNN-6093
                 // check if we use email address here rather than username

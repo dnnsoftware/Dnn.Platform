@@ -2,7 +2,7 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import { SingleLineInputWithError, GridSystem, Label, InputGroup, Button, RadioButtons, Dropdown } from "@dnnsoftware/dnn-react-common";
+import { SingleLineInputWithError, GridSystem, Label, InputGroup, Button, RadioButtons, Dropdown, MultiLineInput } from "@dnnsoftware/dnn-react-common";
 import { security as SecurityActions } from "../../../actions";
 import resx from "../../../resources";
 
@@ -39,18 +39,18 @@ class IpFilterEditor extends Component {
         const {props} = this;
         if (props.ipFilterId) {
             props.dispatch(SecurityActions.getIpFilter({
-                    filterId: props.ipFilterId
-                }, (data) => {
-                    let ipFilter = Object.assign({}, data.Results);
-                    this.setState({
-                        error: {
-                            ip: false,
-                            mask: false
-                        },
-                        ruleSpecificity: ipFilter.SubnetMask === "" ? SINGLE_IP : IP_RANGE,
-                        ipFilter
-                    });
-                }));
+                filterId: props.ipFilterId
+            }, (data) => {
+                let ipFilter = Object.assign({}, data.Results);
+                this.setState({
+                    error: {
+                        ip: false,
+                        mask: false
+                    },
+                    ruleSpecificity: ipFilter.SubnetMask === "" ? SINGLE_IP : IP_RANGE,
+                    ipFilter
+                });
+            }));
         }
     }
 
@@ -87,7 +87,7 @@ class IpFilterEditor extends Component {
             triedToSubmit: true
         });
         
-        if(this.validateIPAddressContainsError()) {
+        if (this.validateIPAddressContainsError()) {
             return;
         }
         
@@ -128,11 +128,11 @@ class IpFilterEditor extends Component {
                     labelType="inline"
                     tooltipMessage={resx.get("plRuleSpecifity.Help") }
                     label={resx.get("plRuleSpecifity") } />
-                    <RadioButtons
-                        onChange={this.onRuleSpecificityChange.bind(this) }
-                        options={specificityOptions}
-                        buttonGroup="specificity"
-                        value={this.state.ruleSpecificity}/>
+                <RadioButtons
+                    onChange={this.onRuleSpecificityChange.bind(this) }
+                    options={specificityOptions}
+                    buttonGroup="specificity"
+                    value={this.state.ruleSpecificity}/>
             </InputGroup>
             <InputGroup>
                 <Label
@@ -169,6 +169,16 @@ class IpFilterEditor extends Component {
                         onChange={this.onSettingChange.bind(this, "SubnetMask") } />
                 </InputGroup>
             }
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("plNotes.Help") }
+                    label={resx.get("plNotes") } />
+                <MultiLineInput
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    value={this.state.ipFilter.Notes}
+                    onChange={this.onSettingChange.bind(this, "Notes") } />
+            </InputGroup>
         </div>;
 
         let children = [];

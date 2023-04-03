@@ -43,12 +43,14 @@ namespace Dnn.ExportImport.Components.Entities
 
         public string JobObject { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.JobId; }
             set { this.JobId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.JobId = Null.SetNullInteger(dr[nameof(this.JobId)]);
@@ -68,17 +70,27 @@ namespace Dnn.ExportImport.Components.Entities
             if (this.CreatedOnDate.Kind != DateTimeKind.Utc)
             {
                 this.CreatedOnDate = new DateTime(
-                    this.CreatedOnDate.Year, this.CreatedOnDate.Month, this.CreatedOnDate.Day,
-                    this.CreatedOnDate.Hour, this.CreatedOnDate.Minute, this.CreatedOnDate.Second,
-                    this.CreatedOnDate.Millisecond, DateTimeKind.Utc);
+                    this.CreatedOnDate.Year,
+                    this.CreatedOnDate.Month,
+                    this.CreatedOnDate.Day,
+                    this.CreatedOnDate.Hour,
+                    this.CreatedOnDate.Minute,
+                    this.CreatedOnDate.Second,
+                    this.CreatedOnDate.Millisecond,
+                    DateTimeKind.Utc);
             }
 
             if (this.LastModifiedOnDate.Kind != DateTimeKind.Utc)
             {
                 this.LastModifiedOnDate = new DateTime(
-                    this.LastModifiedOnDate.Year, this.LastModifiedOnDate.Month, this.LastModifiedOnDate.Day,
-                    this.LastModifiedOnDate.Hour, this.LastModifiedOnDate.Minute, this.LastModifiedOnDate.Second,
-                    this.LastModifiedOnDate.Millisecond, DateTimeKind.Utc);
+                    this.LastModifiedOnDate.Year,
+                    this.LastModifiedOnDate.Month,
+                    this.LastModifiedOnDate.Day,
+                    this.LastModifiedOnDate.Hour,
+                    this.LastModifiedOnDate.Minute,
+                    this.LastModifiedOnDate.Second,
+                    this.LastModifiedOnDate.Millisecond,
+                    DateTimeKind.Utc);
             }
         }
     }

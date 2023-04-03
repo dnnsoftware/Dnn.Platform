@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Common.Internal
     using System.Net;
     using System.Web;
     using System.Web.Security;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -28,6 +29,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Services.OutputCache;
     using DotNetNuke.Services.Scheduling;
@@ -37,12 +39,10 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
-    /// <summary>
-    /// DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
-    /// </summary>
+    /// <summary>DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.</summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DotNetNukeHttpApplication));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
         private static readonly string[] Endings =
             {
@@ -71,6 +71,18 @@ namespace DotNetNuke.Web.Common.Internal
                     ComponentFactory.RegisterComponentInstance<TAbstract>(name, new TConcrete());
                 }
             }
+        }
+
+        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLowerInvariant();
+
+            return url.EndsWith("webresource.axd")
+                   || url.EndsWith("scriptresource.axd")
+                   || url.EndsWith("captcha.aspx")
+                   || url.Contains("upgradewizard.aspx")
+                   || url.Contains("installwizard.aspx")
+                   || url.EndsWith("install.aspx");
         }
 
         private void Application_End(object sender, EventArgs eventArgs)
@@ -164,7 +176,8 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
-			ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("mail", typeof(MailProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
@@ -173,18 +186,6 @@ namespace DotNetNuke.Web.Common.Internal
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
 
             // DotNetNukeSecurity.Initialize();
-        }
-
-        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
-        {
-            var url = request.Url.LocalPath.ToLowerInvariant();
-
-            return url.EndsWith("webresource.axd")
-                   || url.EndsWith("scriptresource.axd")
-                   || url.EndsWith("captcha.aspx")
-                   || url.Contains("upgradewizard.aspx")
-                   || url.Contains("installwizard.aspx")
-                   || url.EndsWith("install.aspx");
         }
 
         private void Application_Error(object sender, EventArgs eventArgs)
@@ -232,14 +233,14 @@ namespace DotNetNuke.Web.Common.Internal
             Initialize.RunSchedule(app.Request);
         }
 
-		private void Application_PreSendRequestHeaders(object sender, EventArgs e)
-		{
-			if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
-			{
-				var page = HttpContext.Current.Handler as PageBase;
-				page.HeaderIsWritten = true;
-			}
-		}
+        private void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
+            {
+                var page = HttpContext.Current.Handler as PageBase;
+                page.HeaderIsWritten = true;
+            }
+        }
 
         private bool IsInstallInProgress(HttpApplication app)
         {

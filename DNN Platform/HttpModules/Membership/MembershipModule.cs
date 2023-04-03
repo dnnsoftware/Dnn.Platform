@@ -8,6 +8,7 @@ namespace DotNetNuke.HttpModules.Membership
     using System.Linq;
     using System.Security.Principal;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Web;
     using System.Web.Security;
 
@@ -29,20 +30,14 @@ namespace DotNetNuke.HttpModules.Membership
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Skins.EventListeners;
 
-    /// <summary>
-    /// Information about membership.
-    /// </summary>
+    /// <summary>Information about membership.</summary>
     public class MembershipModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
 
         private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
 
-        private static string _cultureCode;
-
-        /// <summary>
-        /// Gets the name of the module.
-        /// </summary>
+        /// <summary>Gets the name of the module.</summary>
         /// <value>
         /// The name of the module: "DNNMembershipModule".
         /// </value>
@@ -54,33 +49,16 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        private static string CurrentCulture
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_cultureCode))
-                {
-                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name;
-                }
-
-                return _cultureCode;
-            }
-        }
-
-        /// <summary>
-        /// Called when unverified user skin initialize.
-        /// </summary>
+        /// <summary>Called when unverified user skin initialize.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="SkinEventArgs"/> instance containing the event data.</param>
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
-            var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
+            var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name);
             UI.Skins.Skin.AddPageMessage(e.Skin, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
-        /// <summary>
-        /// Authenticates the request.
-        /// </summary>
+        /// <summary>Authenticates the request.</summary>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensinons.</param>
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
@@ -97,17 +75,7 @@ namespace DotNetNuke.HttpModules.Membership
             // Obtain PortalSettings from Current Context
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            bool isActiveDirectoryAuthHeaderPresent = false;
-            var auth = request.Headers.Get("Authorization");
-            if (!string.IsNullOrEmpty(auth))
-            {
-                if (auth.StartsWith("Negotiate"))
-                {
-                    isActiveDirectoryAuthHeaderPresent = true;
-                }
-            }
-
-            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
+            if (request.IsAuthenticated && !IsActiveDirectoryAuthHeaderPresent() && portalSettings != null)
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
 
@@ -132,17 +100,6 @@ namespace DotNetNuke.HttpModules.Membership
                     // Redirect browser back to home page
                     response.Redirect(request.RawUrl, true);
                     return;
-                }
-
-                if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
-                {
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture));
-                }
-
-                if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
-                {
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, CurrentCulture));
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
 
                 // if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
@@ -189,21 +146,32 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        /// <summary>
-        /// Initializes the specified application.
-        /// </summary>
+        /// <summary>Initializes the specified application.</summary>
         /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += this.OnAuthenticateRequest;
+            application.PreRequestHandlerExecute += this.Context_PreRequestHandlerExecute;
             application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
-        /// <summary>
-        /// Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.
-        /// </summary>
+        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.</summary>
         public void Dispose()
         {
+        }
+
+        private static bool IsActiveDirectoryAuthHeaderPresent()
+        {
+            var auth = HttpContext.Current.Request.Headers.Get("Authorization");
+            if (!string.IsNullOrEmpty(auth))
+            {
+                if (auth.StartsWith("Negotiate"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool RequireLogout(HttpContextBase context, UserInfo user)
@@ -265,6 +233,26 @@ namespace DotNetNuke.HttpModules.Membership
                         application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
                         PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
                     }
+                }
+            }
+        }
+
+        private void Context_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var request = HttpContext.Current.Request;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            if (request.IsAuthenticated && !IsActiveDirectoryAuthHeaderPresent() && portalSettings != null)
+            {
+                if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
+                {
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
+                }
+
+                if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
+                {
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
             }
         }

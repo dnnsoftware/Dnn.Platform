@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.UI.Services
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
+        /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute routeManager)
         {
             // get all persona bar services from persona bar modules.

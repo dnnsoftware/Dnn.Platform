@@ -43,6 +43,7 @@ namespace DotNetNuke.Entities.Portals
         [Required]
         public string PortalGroupName { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -56,6 +57,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);

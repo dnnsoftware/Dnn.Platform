@@ -8,24 +8,26 @@ namespace DotNetNuke.Framework.Providers
 
     public class Provider
     {
-        private readonly NameValueCollection _ProviderAttributes = new NameValueCollection();
-        private readonly string _ProviderName;
-        private readonly string _ProviderType;
+        private readonly NameValueCollection providerAttributes = new NameValueCollection();
+        private readonly string providerName;
+        private readonly string providerType;
 
-        public Provider(XmlAttributeCollection Attributes)
+        /// <summary>Initializes a new instance of the <see cref="Provider"/> class.</summary>
+        /// <param name="attributes"></param>
+        public Provider(XmlAttributeCollection attributes)
         {
             // Set the name of the provider
-            this._ProviderName = Attributes["name"].Value;
+            this.providerName = attributes["name"].Value;
 
             // Set the type of the provider
-            this._ProviderType = Attributes["type"].Value;
+            this.providerType = attributes["type"].Value;
 
             // Store all the attributes in the attributes bucket
-            foreach (XmlAttribute Attribute in Attributes)
+            foreach (XmlAttribute attribute in attributes)
             {
-                if (Attribute.Name != "name" && Attribute.Name != "type")
+                if (attribute.Name != "name" && attribute.Name != "type")
                 {
-                    this._ProviderAttributes.Add(Attribute.Name, Attribute.Value);
+                    this.providerAttributes.Add(attribute.Name, attribute.Value);
                 }
             }
         }
@@ -34,7 +36,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return this._ProviderName;
+                return this.providerName;
             }
         }
 
@@ -42,7 +44,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return this._ProviderType;
+                return this.providerType;
             }
         }
 
@@ -50,7 +52,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return this._ProviderAttributes;
+                return this.providerAttributes;
             }
         }
     }

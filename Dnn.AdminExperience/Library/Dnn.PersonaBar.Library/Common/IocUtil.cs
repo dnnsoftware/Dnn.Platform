@@ -14,9 +14,7 @@ namespace Dnn.PersonaBar.Library.Common
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
 
-        /// <summary>
-        /// Register a component into the IOC container for later instantiation.
-        /// </summary>
+        /// <summary>Register a component into the IOC container for later instantiation.</summary>
         /// <typeparam name="TContract">Contract interface for the component to registr with the IOC container.</typeparam>
         /// <typeparam name="TConcrete">Concrete implementation class (must have apublic default constructor).</typeparam>
         /// <param name="name">Optional name for the contract. Useful when more than once class implements the same contract.</param>
@@ -58,9 +56,7 @@ namespace Dnn.PersonaBar.Library.Common
             }
         }
 
-        /// <summary>
-        /// Register a specific instance into the IOC container for later use.
-        /// </summary>
+        /// <summary>Register a specific instance into the IOC container for later use.</summary>
         /// <typeparam name="TContract">Contract interface for the component to registr with the IOC container.</typeparam>
         /// <param name="name">Name for the contract. Useful when more than once class implements the same contract. Pass as null when unused.</param>
         /// <param name="instance">Concrete implementation class (must have apublic default constructor).</param>
@@ -112,15 +108,14 @@ namespace Dnn.PersonaBar.Library.Common
             {
                 Logger.WarnFormat(
                     "No instance of type '{0}' and name '{1}' is registered in the IOC container.",
-                    typeof(TContract).FullName, name ?? "<empty>");
+                    typeof(TContract).FullName,
+                    name ?? "<empty>");
             }
 
             return instance;
         }
 
-        /// <summary>
-        /// Retrieves a concrete implementation of the given interface/contract.
-        /// </summary>
+        /// <summary>Retrieves a concrete implementation of the given interface/contract.</summary>
         /// <typeparam name="TContract">Contract interface for the component to get a concrete implementation of.</typeparam>
         /// <returns>A concrete implementation of the given interface (or null if none is registered).</returns>
         public static IEnumerable<TContract> GetInstanceContracts<TContract>()

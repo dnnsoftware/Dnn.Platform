@@ -19,9 +19,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public abstract class DnnFormItemBase : WebControl, INamingContainer
     {
-        private object _value;
-        private string _requiredMessageSuffix = ".Required";
-        private string _validationMessageSuffix = ".RegExError";
+        private object value;
+        private string requiredMessageSuffix = ".Required";
+        private string validationMessageSuffix = ".RegExError";
 
         protected DnnFormItemBase()
         {
@@ -33,8 +33,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public object Value
         {
-            get { return this._value; }
-            set { this._value = value; }
+            get { return this.value; }
+            set { this.value = value; }
         }
 
         public string DataField { get; set; }
@@ -57,12 +57,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._requiredMessageSuffix;
+                return this.requiredMessageSuffix;
             }
 
             set
             {
-                this._requiredMessageSuffix = value;
+                this.requiredMessageSuffix = value;
             }
         }
 
@@ -70,12 +70,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._validationMessageSuffix;
+                return this.validationMessageSuffix;
             }
 
             set
             {
-                this._validationMessageSuffix = value;
+                this.validationMessageSuffix = value;
             }
         }
 
@@ -115,6 +115,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -155,7 +156,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if (!string.IsNullOrEmpty(this.DataField))
                 {
-                    this.UpdateDataSourceInternal(null, this._value, this.DataField);
+                    this.UpdateDataSourceInternal(null, this.value, this.DataField);
                 }
             }
         }
@@ -192,9 +193,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.AddValidators(inputControl.ID);
         }
 
-        /// <summary>
-        /// Use container to add custom control hierarchy to.
-        /// </summary>
+        /// <summary>Use container to add custom control hierarchy to.</summary>
         /// <param name="container"></param>
         /// <returns>An "input" control that can be used for attaching validators.</returns>
         protected virtual WebControl CreateControlInternal(Control container)
@@ -202,6 +201,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return null;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -256,21 +256,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void DataBindInternal()
         {
-            this.DataBindInternal(this.DataField, ref this._value);
+            this.DataBindInternal(this.DataField, ref this.value);
         }
 
         protected void UpdateDataSource(object oldValue, object newValue, string dataField)
         {
             this.CheckIsValid();
 
-            this._value = newValue;
+            this.value = newValue;
 
             this.UpdateDataSourceInternal(oldValue, newValue, dataField);
         }
 
+        /// <inheritdoc/>
         protected override void LoadControlState(object state)
         {
-            this._value = state;
+            this.value = state;
         }
 
         protected string LocalizeString(string key)
@@ -278,15 +279,17 @@ namespace DotNetNuke.Web.UI.WebControls
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override object SaveControlState()
         {
-            return this._value;
+            return this.value;
         }
 
         private void AddValidators(string controlId)

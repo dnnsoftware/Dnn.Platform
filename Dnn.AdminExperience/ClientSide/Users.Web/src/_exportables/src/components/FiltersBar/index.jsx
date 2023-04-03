@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import "./style.less";
 import Localization from "localization";
@@ -73,7 +73,7 @@ class FiltersBar extends Component {
                             label={this.state.selectedUserFilter.label}
                             onSelect={this.onSelect.bind(this)}
                             prependWith={Localization.get("ShowLabel")}
-                            />
+                        />
                         <div className="clear">
                         </div>
                     </div>}

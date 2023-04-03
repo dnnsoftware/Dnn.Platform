@@ -3,27 +3,19 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
-    using System;
     using System.IO;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// InstallExtensionsStep - Step that installs all the Extensions.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>InstallExtensionsStep - Step that installs all the Extensions.</summary>
     public class InstallExtensionsStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
 
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
             var packages = Upgrade.GetInstallPackages();

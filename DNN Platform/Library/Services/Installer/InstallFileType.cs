@@ -8,14 +8,14 @@ namespace DotNetNuke.Services.Installer
     [TypeConverter(typeof(EnumConverter))]
     public enum InstallFileType
     {
-        AppCode,
-        Ascx,
-        Assembly,
-        CleanUp,
-        Language,
-        Manifest,
-        Other,
-        Resources,
-        Script,
+        AppCode = 0,
+        Ascx = 1,
+        Assembly = 2,
+        CleanUp = 3,
+        Language = 4,
+        Manifest = 5,
+        Other = 6,
+        Resources = 7,
+        Script = 8,
     }
 }

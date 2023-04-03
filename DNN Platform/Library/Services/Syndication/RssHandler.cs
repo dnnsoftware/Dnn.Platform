@@ -16,14 +16,10 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    /// <summary>An HTTP handler for serving an RSS feed.</summary>
     public class RssHandler : SyndicationHandlerBase
     {
-        /// <summary>
-        /// This method.
-        /// </summary>
-        /// <param name="channelName"></param>
-        /// <param name="userName"></param>
-        /// <remarks></remarks>
+        /// <inheritdoc />
         protected override void PopulateChannel(string channelName, string userName)
         {
             ModuleInfo objModule;
@@ -94,7 +90,6 @@ namespace DotNetNuke.Services.Syndication
         /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid".
         /// </summary>
         /// <param name="ea">Event Args.</param>
-        /// <remarks></remarks>
         protected override void OnPreRender(EventArgs ea)
         {
             base.OnPreRender(ea);
@@ -104,12 +99,9 @@ namespace DotNetNuke.Services.Syndication
             this.Context.Response.Cache.VaryByParams["moduleid"] = true;
         }
 
-        /// <summary>
-        /// Creates an RSS Item.
-        /// </summary>
-        /// <param name="searchResult"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Creates an RSS Item.</summary>
+        /// <param name="searchResult">The search result to convert to an RSS item.</param>
+        /// <returns>A new <see cref="GenericRssElement"/> instance.</returns>
         private GenericRssElement GetRssItem(SearchResult searchResult)
         {
             var item = new GenericRssElement();

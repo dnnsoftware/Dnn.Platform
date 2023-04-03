@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
-
     public struct DefaultMetadataNames
     {
         public const string Created = "Created";

@@ -10,9 +10,7 @@ namespace DotNetNuke.Entities.Modules
     /// </summary>
     public interface IVersionableControl
     {
-        /// <summary>
-        /// Indicate to the module control what content version need to be shown on rendering.
-        /// </summary>
+        /// <summary>Indicate to the module control what content version need to be shown on rendering.</summary>
         /// <param name="version">Version number.</param>
         void SetModuleVersion(int version);
     }

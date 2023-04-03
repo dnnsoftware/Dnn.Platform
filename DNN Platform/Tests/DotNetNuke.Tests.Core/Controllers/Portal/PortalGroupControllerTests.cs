@@ -37,6 +37,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 #pragma warning restore 649
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -65,29 +66,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_Constructor_Throws_On_Null_DataService()
         {
             // Arrange
             var mockPortalController = new Mock<IPortalController>();
 
             // Act, Assert
-            new PortalGroupController(null, mockPortalController.Object);
+            Assert.Throws<ArgumentNullException>(() => new PortalGroupController(null, mockPortalController.Object));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_Constructor_Throws_On_Null_PortalController()
         {
             // Arrange
             var mockDataService = new Mock<IDataService>();
 
             // Act, Assert
-            new PortalGroupController(mockDataService.Object, null);
+            Assert.Throws<ArgumentNullException>(() => new PortalGroupController(mockDataService.Object, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void PortalGroupController_AddPortalToGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -97,11 +96,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var portal = new PortalInfo { PortalID = Constants.PORTAL_ValidPortalId };
 
             // Act, Assert
-            controller.AddPortalToGroup(portal, null, this.userCopied);
+            Assert.Throws<ArgumentNullException>(() => controller.AddPortalToGroup(portal, null, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void PortalGroupController_AddPortalToGroup_Throws_On_Null_Portal()
         {
             // Arrange
@@ -111,11 +110,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
 
             // Act, Assert
-            controller.AddPortalToGroup(null, portalGroup, this.userCopied);
+            Assert.Throws<ArgumentNullException>(() => controller.AddPortalToGroup(null, portalGroup, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+
         public void PortalGroupController_AddPortalToGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -128,11 +127,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = -1 };
 
             // Act, Assert
-            controller.AddPortalToGroup(portal, portalGroup, this.userCopied);
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.AddPortalToGroup(portal, portalGroup, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+
         public void PortalGroupController_AddPortalToGroup_Throws_On_Negative_PortalId()
         {
             // Arrange
@@ -145,11 +144,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
 
             // Act, Assert
-            controller.AddPortalToGroup(portal, portalGroup, this.userCopied);
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.AddPortalToGroup(portal, portalGroup, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void PortalGroupController_AddPortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -158,10 +157,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
 
             // Act, Assert
-            controller.AddPortalGroup(null);
+            Assert.Throws<ArgumentNullException>(() => controller.AddPortalGroup(null));
         }
 
         [Test]
+
         public void PortalGroupController_AddPortalGroup_Calls_DataService_On_Valid_Arguments()
         {
             // Arrange
@@ -181,6 +181,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
+
         public void PortalGroupController_AddPortalGroup_Calls_PortalController_On_Valid_Arguments()
         {
             // Arrange
@@ -204,6 +205,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
+
         public void PortalGroupController_AddPortalGroup_Returns_ValidId_On_Valid_PortalGroup()
         {
             // Arrange
@@ -224,6 +226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
+
         public void PortalGroupController_AddPortalGroup_Sets_PortalGroupId_Property_On_Valid_PortalGroup()
         {
             // Arrange
@@ -244,7 +247,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void PortalGroupController_DeletePortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -253,11 +256,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
 
             // Act, Assert
-            controller.DeletePortalGroup(null);
+            Assert.Throws<ArgumentNullException>(() => controller.DeletePortalGroup(null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+
         public void PortalGroupController_DeletePortalGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -269,10 +272,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             portalGroup.PortalGroupId = Null.NullInteger;
 
             // Act, Assert
-            controller.DeletePortalGroup(portalGroup);
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.DeletePortalGroup(portalGroup));
         }
 
         [Test]
+
         public void PortalGroupController_DeletePortalGroup_Calls_DataService_On_Valid_PortalGroupId()
         {
             // Arrange
@@ -313,6 +317,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
+
         public void PortalGroupController_GetPortalGroups_Returns_EmptyList_If_No_Items()
         {
             // Arrange
@@ -333,6 +338,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
+
         public void PortalGroupController_GetPortalGroups_Returns_List_Of_PortalGroups()
         {
             // Arrange
@@ -355,7 +361,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -365,11 +371,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var portal = new PortalInfo { PortalID = Constants.PORTAL_ValidPortalId };
 
             // Act, Assert
-            controller.RemovePortalFromGroup(portal, null, false, this.userCopied);
+            Assert.Throws<ArgumentNullException>(() => controller.RemovePortalFromGroup(portal, null, false, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_Portal()
         {
             // Arrange
@@ -379,11 +385,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
 
             // Act, Assert
-            controller.RemovePortalFromGroup(null, portalGroup, false, this.userCopied);
+            Assert.Throws<ArgumentNullException>(() => controller.RemovePortalFromGroup(null, portalGroup, false, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -396,11 +402,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = -1 };
 
             // Act, Assert
-            controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied);
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Negative_PortalId()
         {
             // Arrange
@@ -413,11 +419,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
 
             // Act, Assert
-            controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied);
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_UpdatePortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -426,7 +431,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
 
             // Act, Assert
-            controller.UpdatePortalGroup(null);
+            Assert.Throws<ArgumentNullException>(() => controller.UpdatePortalGroup(null));
         }
 
         [Test]

@@ -6,8 +6,8 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum UrlProcessType
     {
-        Rewriting,
-        Redirecting,
-        Replacing,
+        Rewriting = 0,
+        Redirecting = 1,
+        Replacing = 2,
     }
 }

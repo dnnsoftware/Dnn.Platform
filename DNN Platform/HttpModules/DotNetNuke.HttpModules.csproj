@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.props" Condition="Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.props')" />
+  <Import Project="..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props" Condition="Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props')" />
+  <Import Project="..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props" Condition="Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props')" />
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
   <PropertyGroup>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -72,6 +80,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="DependencyInjection\ServiceRequestScopeModule.cs" />
+    <Compile Include="Localization\LocalizationModule.cs" />
     <Compile Include="MobileRedirect\MobileRedirectModule.cs" />
     <Compile Include="OutputCaching\OutputCacheModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -82,6 +91,7 @@
     <Compile Include="Personalization\PersonalizationModule.cs" />
     <Compile Include="Services\ServicesModule.cs" />
     <Compile Include="UrlRewrite\BasicUrlRewriter.cs" />
+    <Compile Include="UrlRewrite\DNNFriendlyUrlProvider.cs" />
     <Compile Include="Users Online\UsersOnlineModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +120,6 @@
     <Compile Include="RequestFilter\RequestFilterRule.cs" />
     <Compile Include="RequestFilter\Config\Enums.cs" />
     <Compile Include="RequestFilter\Config\RequestFilterSettings.cs" />
-    <Compile Include="UrlRewrite\FriendlyUrlProvider.cs" />
     <Compile Include="UrlRewrite\UrlRewriteModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +132,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -147,4 +157,18 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.pdb" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets" Condition="Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets')" />
+  <Import Project="..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets')" />
+  <Import Project="..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets')" />
 </Project>

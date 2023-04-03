@@ -59,9 +59,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             DatabaseHelper.ExecuteStoredProcedure("DeleteModulePermission", modulePermissionId);
         }
 
-        /// <summary>
-        /// Deletes a module from the specified tab and clears host cache.
-        /// </summary>
+        /// <summary>Deletes a module from the specified tab and clears host cache.</summary>
         /// <param name="tabId">tabId on which module is deleted.</param>
         /// <param name="moduleId">moduleId that is deleted.</param>
         /// <param name="softDelete">if True, then softdeleted, otherwise harddeleted.</param>

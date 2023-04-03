@@ -8,35 +8,14 @@ namespace DotNetNuke.Entities.Modules
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.IO;
     using System.Linq;
-    using System.Threading;
-    using System.Web;
-    using System.Xml;
-    using System.Xml.Serialization;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content;
-    using DotNetNuke.Entities.Content.Common;
-    using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Entities.Modules.Internal;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Framework.Providers;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.ModuleCache;
-    using DotNetNuke.Services.OutputCache;
 
     public partial class ModuleController
     {
@@ -58,7 +37,7 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("Deprecated in DNN 7.3. Scheduled removal in v10.0.0.")]
         public void DeleteModuleSettings(int moduleId)
         {
-            dataProvider.DeleteModuleSettings(moduleId);
+            DataProvider.DeleteModuleSettings(moduleId);
             var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString() };
             log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
             LogController.Instance.AddLog(log);
@@ -70,7 +49,7 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("Deprecated in DNN 7.3. Scheduled removal in v10.0.0.")]
         public void DeleteTabModuleSettings(int tabModuleId)
         {
-            dataProvider.DeleteTabModuleSettings(tabModuleId);
+            DataProvider.DeleteTabModuleSettings(tabModuleId);
             UpdateTabModuleVersion(tabModuleId);
             EventLogController.Instance.AddLog(
                 "TabModuleID",
@@ -83,13 +62,13 @@ namespace DotNetNuke.Entities.Modules
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Please use the ModuleSettings property of the ModuleInfo object. Scheduled removal in v10.0.0.")]
-        public Hashtable GetModuleSettings(int ModuleId)
+        public Hashtable GetModuleSettings(int moduleId)
         {
             var settings = new Hashtable();
             IDataReader dr = null;
             try
             {
-                dr = dataProvider.GetModuleSettings(ModuleId);
+                dr = DataProvider.GetModuleSettings(moduleId);
                 while (dr.Read())
                 {
                     if (!dr.IsDBNull(1))
@@ -131,13 +110,13 @@ namespace DotNetNuke.Entities.Modules
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Please use the TabModuleSettings property of the ModuleInfo object. Scheduled removal in v10.0.0.")]
-        public Hashtable GetTabModuleSettings(int TabModuleId)
+        public Hashtable GetTabModuleSettings(int tabModuleId)
         {
             var settings = new Hashtable();
             IDataReader dr = null;
             try
             {
-                dr = dataProvider.GetTabModuleSettings(TabModuleId);
+                dr = DataProvider.GetTabModuleSettings(tabModuleId);
                 while (dr.Read())
                 {
                     if (!dr.IsDBNull(1))

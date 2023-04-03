@@ -14,22 +14,27 @@ namespace DotNetNuke.Web.Api.Auth
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Web.Api.Internal.Auth;
-    using DotNetNuke.Web.ConfigSection;
 
+    /// <summary>Digest authentication message handler.</summary>
     public class DigestAuthMessageHandler : AuthMessageHandlerBase
     {
+        /// <summary>Initializes a new instance of the <see cref="DigestAuthMessageHandler"/> class.</summary>
+        /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
+        /// <param name="forceSsl">Should this handler enforce SSL usage.</param>
         public DigestAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
         }
 
+        /// <inheritdoc/>
         public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 if (portalSettings != null)
                 {
                     var isStale = TryToAuthenticate(request, portalSettings.PortalId);
@@ -47,6 +52,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsDigestAuth(response.RequestMessage))

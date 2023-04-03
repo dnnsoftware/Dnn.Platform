@@ -14,28 +14,33 @@ namespace DotNetNuke.Entities.Content.Workflow
 
     public class WorkflowLogger : ServiceLocator<IWorkflowLogger, WorkflowLogger>, IWorkflowLogger
     {
-        private readonly IWorkflowLogRepository _workflowLogRepository;
+        private readonly IWorkflowLogRepository workflowLogRepository;
 
+        /// <summary>Initializes a new instance of the <see cref="WorkflowLogger"/> class.</summary>
         public WorkflowLogger()
         {
-            this._workflowLogRepository = WorkflowLogRepository.Instance;
+            this.workflowLogRepository = WorkflowLogRepository.Instance;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
-            return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
+            return this.workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowLog(int contentItemId, int workflowId, string action, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, WorkflowLogType.CommentProvided, action, comment, userId);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowLogger> GetFactory()
         {
             return () => new WorkflowLogger();
@@ -53,7 +58,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 User = userId,
                 Date = DateTime.UtcNow,
             };
-            this._workflowLogRepository.AddWorkflowLog(workflowLog);
+            this.workflowLogRepository.AddWorkflowLog(workflowLog);
         }
 
         private string GetWorkflowActionText(WorkflowLogType logType)

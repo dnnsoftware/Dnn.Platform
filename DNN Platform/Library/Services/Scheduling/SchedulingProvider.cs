@@ -6,7 +6,8 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -24,33 +25,35 @@ namespace DotNetNuke.Services.Scheduling
 
     public delegate void WorkCompleted(SchedulerClient objSchedulerClient);
 
+    public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
+
     // ReSharper disable InconsistentNaming
     public enum EventName
     {
         // do not add APPLICATION_END
         // it will not reliably complete
-        APPLICATION_START,
+        APPLICATION_START = 0,
     }
 
     public enum ScheduleSource
     {
-        NOT_SET,
-        STARTED_FROM_SCHEDULE_CHANGE,
-        STARTED_FROM_EVENT,
-        STARTED_FROM_TIMER,
-        STARTED_FROM_BEGIN_REQUEST,
+        NOT_SET = 0,
+        STARTED_FROM_SCHEDULE_CHANGE = 1,
+        STARTED_FROM_EVENT = 2,
+        STARTED_FROM_TIMER = 3,
+        STARTED_FROM_BEGIN_REQUEST = 4,
     }
 
     public enum ScheduleStatus
     {
-        NOT_SET,
-        WAITING_FOR_OPEN_THREAD,
-        RUNNING_EVENT_SCHEDULE,
-        RUNNING_TIMER_SCHEDULE,
-        RUNNING_REQUEST_SCHEDULE,
-        WAITING_FOR_REQUEST,
-        SHUTTING_DOWN,
-        STOPPED,
+        NOT_SET = 0,
+        WAITING_FOR_OPEN_THREAD = 1,
+        RUNNING_EVENT_SCHEDULE = 2,
+        RUNNING_TIMER_SCHEDULE = 3,
+        RUNNING_REQUEST_SCHEDULE = 4,
+        WAITING_FOR_REQUEST = 5,
+        SHUTTING_DOWN = 6,
+        STOPPED = 7,
     }
 
     public enum SchedulerMode
@@ -60,12 +63,12 @@ namespace DotNetNuke.Services.Scheduling
         REQUEST_METHOD = 2,
     }
 
-    public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
-
     public abstract class SchedulingProvider
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public EventName EventName;
 
+        /// <summary>Initializes a new instance of the <see cref="SchedulingProvider"/> class.</summary>
         protected SchedulingProvider()
         {
             var settings = this.Settings;

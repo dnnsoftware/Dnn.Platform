@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Common
 {
     using System;
@@ -17,14 +16,16 @@ namespace DotNetNuke.Web.Mvc.Common
         private static readonly MethodInfo CallPropertyGetterByReferenceOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetterByReference", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly MethodInfo CallPropertyGetterOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetter", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly ConcurrentDictionary<Type, PropertyHelper[]> ReflectionCache = new ConcurrentDictionary<Type, PropertyHelper[]>();
-        private readonly Func<object, object> _valueGetter;
+        private readonly Func<object, object> valueGetter;
 
+        /// <summary>Initializes a new instance of the <see cref="PropertyHelper"/> class.</summary>
+        /// <param name="property">The property.</param>
         public PropertyHelper(PropertyInfo property)
         {
             Requires.NotNull("property", property);
 
             this.Name = property.Name;
-            this._valueGetter = MakeFastPropertyGetter(property);
+            this.valueGetter = MakeFastPropertyGetter(property);
         }
 
         // Implementation of the fast getter.
@@ -32,9 +33,7 @@ namespace DotNetNuke.Web.Mvc.Common
 
         public virtual string Name { get; protected set; }
 
-        /// <summary>
-        /// Creates and caches fast property helpers that expose getters for every public get property on the underlying type.
-        /// </summary>
+        /// <summary>Creates and caches fast property helpers that expose getters for every public get property on the underlying type.</summary>
         /// <param name="instance">the instance to extract property accessors for.</param>
         /// <returns>a cached array of all public property getters from the underlying type of this instance.</returns>
         public static PropertyHelper[] GetProperties(object instance)
@@ -42,9 +41,7 @@ namespace DotNetNuke.Web.Mvc.Common
             return GetProperties(instance, CreateInstance, ReflectionCache);
         }
 
-        /// <summary>
-        /// Creates a single fast property getter. The result is not cached.
-        /// </summary>
+        /// <summary>Creates a single fast property getter. The result is not cached.</summary>
         /// <param name="propertyInfo">propertyInfo to extract the getter for.</param>
         /// <returns>a fast getter.</returns>
         /// <remarks>This method is more memory efficient than a dynamically compiled lambda, and about the same speed.</remarks>
@@ -84,8 +81,8 @@ namespace DotNetNuke.Web.Mvc.Common
 
         public object GetValue(object instance)
         {
-            // Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
-            return this._valueGetter(instance);
+            // Contract.Assert(valueGetter != null, "Must call Initialize before using this object");
+            return this.valueGetter(instance);
         }
 
         protected static PropertyHelper[] GetProperties(

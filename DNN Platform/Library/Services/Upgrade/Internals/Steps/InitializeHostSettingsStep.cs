@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
-    using System;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -16,16 +15,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// InstallSuperUserStep - Step that installs SuperUser Account.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>InstallSuperUserStep - Step that installs SuperUser Account.</summary>
     public class InitializeHostSettingsStep : BaseInstallationStep
     {
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
             this.Percentage = 0;

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Repository
 {
     using System;
@@ -14,27 +13,33 @@ namespace Dnn.ExportImport.Repository
     using Dnn.ExportImport.Interfaces;
     using LiteDB;
 
+    /// <inheritdoc/>
     public class ExportImportRepository : IExportImportRepository
     {
-        private LiteDatabase _liteDb;
+        private LiteDatabase liteDb;
 
+        /// <summary>Initializes a new instance of the <see cref="ExportImportRepository"/> class.</summary>
+        /// <param name="dbFileName">The LiteDB connection string.</param>
         public ExportImportRepository(string dbFileName)
         {
-            this._liteDb = new LiteDatabase(dbFileName);
-            this._liteDb.Mapper.EmptyStringToNull = false;
-            this._liteDb.Mapper.TrimWhitespace = false;
+            this.liteDb = new LiteDatabase(new ConnectionString(dbFileName) { Upgrade = true });
+            this.liteDb.Mapper.EmptyStringToNull = false;
+            this.liteDb.Mapper.TrimWhitespace = false;
         }
 
+        /// <summary>Finalizes an instance of the <see cref="ExportImportRepository"/> class.</summary>
         ~ExportImportRepository()
         {
             this.Dispose(false);
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             this.Dispose(true);
         }
 
+        /// <inheritdoc/>
         public T AddSingleItem<T>(T item)
             where T : class
         {
@@ -43,6 +48,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
+        /// <inheritdoc/>
         public T UpdateSingleItem<T>(T item)
             where T : class
         {
@@ -51,6 +57,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
+        /// <inheritdoc/>
         public T GetSingleItem<T>()
             where T : class
         {
@@ -59,6 +66,7 @@ namespace Dnn.ExportImport.Repository
             return collection.FindById(first);
         }
 
+        /// <inheritdoc/>
         public T CreateItem<T>(T item, int? referenceId)
             where T : BasicExportImportDto
         {
@@ -77,6 +85,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
+        /// <inheritdoc/>
         public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null)
             where T : BasicExportImportDto
         {
@@ -100,20 +109,26 @@ namespace Dnn.ExportImport.Repository
             collection.Insert(allItems);
         }
 
+        /// <inheritdoc/>
         public T GetItem<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {
             return this.InternalGetItems(predicate).FirstOrDefault();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> GetItems<T>(
             Expression<Func<T, bool>> predicate,
-            Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
+            Func<T, object> orderKeySelector = null,
+            bool asc = true,
+            int? skip = null,
+            int? max = null)
             where T : BasicExportImportDto
         {
             return this.InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
 
+        /// <inheritdoc/>
         public int GetCount<T>()
             where T : BasicExportImportDto
         {
@@ -121,6 +136,7 @@ namespace Dnn.ExportImport.Repository
             return collection?.Count() ?? 0;
         }
 
+        /// <inheritdoc/>
         public int GetCount<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {
@@ -128,6 +144,7 @@ namespace Dnn.ExportImport.Repository
             return collection?.Count(predicate) ?? 0;
         }
 
+        /// <inheritdoc/>
         public void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false)
             where T : BasicExportImportDto
         {
@@ -135,6 +152,7 @@ namespace Dnn.ExportImport.Repository
             collection.EnsureIndex(predicate, unique);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> GetAllItems<T>(
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
@@ -142,6 +160,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(null, orderKeySelector, asc, skip, max);
         }
 
+        /// <inheritdoc/>
         public T GetItem<T>(int id)
             where T : BasicExportImportDto
         {
@@ -149,6 +168,7 @@ namespace Dnn.ExportImport.Repository
             return collection.FindById(id);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> GetItems<T>(IEnumerable<int> idList)
             where T : BasicExportImportDto
         {
@@ -156,6 +176,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto
         {
@@ -163,6 +184,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {
@@ -170,6 +192,7 @@ namespace Dnn.ExportImport.Repository
             return collection.Find(predicate);
         }
 
+        /// <inheritdoc/>
         public void UpdateItem<T>(T item)
             where T : BasicExportImportDto
         {
@@ -187,6 +210,7 @@ namespace Dnn.ExportImport.Repository
             collection.Update(item);
         }
 
+        /// <inheritdoc/>
         public void UpdateItems<T>(IEnumerable<T> items)
             where T : BasicExportImportDto
         {
@@ -200,6 +224,7 @@ namespace Dnn.ExportImport.Repository
             collection.Update(allItems);
         }
 
+        /// <inheritdoc/>
         public bool DeleteItem<T>(int id)
             where T : BasicExportImportDto
         {
@@ -213,24 +238,26 @@ namespace Dnn.ExportImport.Repository
             return collection.Delete(id);
         }
 
+        /// <inheritdoc/>
         public void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression)
             where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             if (deleteExpression != null)
             {
-                collection.Delete(deleteExpression);
+                collection.DeleteMany(deleteExpression);
             }
         }
 
+        /// <inheritdoc/>
         public void CleanUpLocal(string collectionName)
         {
-            if (!this._liteDb.CollectionExists(collectionName))
+            if (!this.liteDb.CollectionExists(collectionName))
             {
                 return;
             }
 
-            var collection = this._liteDb.GetCollection<BsonDocument>(collectionName);
+            var collection = this.liteDb.GetCollection<BsonDocument>(collectionName);
             var documentsToUpdate = collection.Find(Query.All()).ToList();
             documentsToUpdate.ForEach(x =>
             {
@@ -241,7 +268,7 @@ namespace Dnn.ExportImport.Repository
 
         private void Dispose(bool isDisposing)
         {
-            var temp = Interlocked.Exchange(ref this._liteDb, null);
+            var temp = Interlocked.Exchange(ref this.liteDb, null);
             temp?.Dispose();
             if (isDisposing)
             {
@@ -251,7 +278,10 @@ namespace Dnn.ExportImport.Repository
 
         private IEnumerable<T> InternalGetItems<T>(
             Expression<Func<T, bool>> predicate,
-            Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
+            Func<T, object> orderKeySelector = null,
+            bool asc = true,
+            int? skip = null,
+            int? max = null)
             where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
@@ -268,9 +298,9 @@ namespace Dnn.ExportImport.Repository
             return result.AsEnumerable();
         }
 
-        private LiteCollection<T> DbCollection<T>()
+        private ILiteCollection<T> DbCollection<T>()
         {
-            return this._liteDb.GetCollection<T>(typeof(T).Name);
+            return this.liteDb.GetCollection<T>(typeof(T).Name);
         }
     }
 }

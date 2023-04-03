@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTextButton : LinkButton, ILocalizable
     {
-        private bool _localize = true;
+        private bool localize = true;
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -31,6 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -82,21 +83,24 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public bool Localize
         {
             get
             {
-                return this._localize;
+                return this.localize;
             }
 
             set
             {
-                this._localize = value;
+                this.localize = value;
             }
         }
 
+        /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
+        /// <inheritdoc/>
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -123,6 +127,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -130,6 +135,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

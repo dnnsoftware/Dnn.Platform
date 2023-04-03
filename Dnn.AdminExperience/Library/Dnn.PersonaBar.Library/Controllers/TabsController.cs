@@ -40,9 +40,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
-        public TabDto GetPortalTabs(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true,
-            string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
-            int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
+        public TabDto GetPortalTabs(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
         {
             var portalInfo = PortalController.Instance.GetPortal(portalId);
 
@@ -61,10 +59,18 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 tabs =
                     TabController.GetPortalTabs(
-                        isMultiLanguage
-                            ? TabController.GetTabsBySortOrder(portalId, portalInfo.DefaultLanguage, true)
-                            : TabController.GetTabsBySortOrder(portalId, cultureCode, true), Null.NullInteger, false,
-                        "<" + Localization.GetString("None_Specified") + ">", true, includeDeleted, true, false, false, includeDeletedChildren)
+                            isMultiLanguage
+                                ? TabController.GetTabsBySortOrder(portalId, portalInfo.DefaultLanguage, true)
+                                : TabController.GetTabsBySortOrder(portalId, cultureCode, true),
+                            Null.NullInteger,
+                            false,
+                            "<" + Localization.GetString("None_Specified") + ">",
+                            true,
+                            includeDeleted,
+                            true,
+                            false,
+                            false,
+                            includeDeletedChildren)
                         .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                         .ToList();
 
@@ -313,8 +319,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return filterTabs;
         }
 
-        private TabDto MarkSelectedTab(TabDto rootNode, int selectedTabId, PortalInfo portalInfo, string cultureCode,
-            bool isMultiLanguage, string validateTab)
+        private TabDto MarkSelectedTab(TabDto rootNode, int selectedTabId, PortalInfo portalInfo, string cultureCode, bool isMultiLanguage, string validateTab)
         {
             var tempTabs = new List<int>();
             cultureCode = string.IsNullOrEmpty(cultureCode) ? portalInfo.CultureCode : cultureCode;
@@ -339,8 +344,14 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
 
             tempTabs.Reverse();
-            rootNode.ChildTabs = this.GetDescendantsForTabs(tempTabs, rootNode.ChildTabs, selectedTabId, portalInfo.PortalID,
-                cultureCode, isMultiLanguage).ToList();
+            rootNode.ChildTabs = this.GetDescendantsForTabs(
+                    tempTabs,
+                    rootNode.ChildTabs,
+                    selectedTabId,
+                    portalInfo.PortalID,
+                    cultureCode,
+                    isMultiLanguage)
+                .ToList();
             if (!string.IsNullOrEmpty(validateTab))
             {
                 rootNode.ChildTabs = this.ValidateModuleInTab(rootNode.ChildTabs, validateTab).ToList();
@@ -349,9 +360,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return rootNode;
         }
 
-        private IEnumerable<TabDto> GetDescendantsForTabs(IEnumerable<int> tabIds, IEnumerable<TabDto> tabs,
-            int selectedTabId,
-            int portalId, string cultureCode, bool isMultiLanguage)
+        private IEnumerable<TabDto> GetDescendantsForTabs(IEnumerable<int> tabIds, IEnumerable<TabDto> tabs, int selectedTabId, int portalId, string cultureCode, bool isMultiLanguage)
         {
             var enumerable = tabIds as int[] ?? tabIds.ToArray();
             if (tabs == null || tabIds == null || !enumerable.Any())
@@ -365,19 +374,32 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 if (!tabDtos.Exists(x => Convert.ToInt32(x.TabId) == tabId))
                 {
-                    return this.GetDescendantsForTabs(enumerable.Except(new List<int> { tabId }), tabDtos, selectedTabId,
-                        portalId, cultureCode, isMultiLanguage);
+                    return this.GetDescendantsForTabs(
+                        enumerable.Except(new List<int> { tabId }),
+                        tabDtos,
+                        selectedTabId,
+                        portalId,
+                        cultureCode,
+                        isMultiLanguage);
                 }
 
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
-                    this.GetTabsDescendants(portalId, tabId, cultureCode,
-                        isMultiLanguage).ToList();
+                    this.GetTabsDescendants(
+                            portalId,
+                            tabId,
+                            cultureCode,
+                            isMultiLanguage)
+                        .ToList();
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).IsOpen = true;
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
                     this.GetDescendantsForTabs(
-                        enumerable.Except(new List<int> { tabId }),
-                        tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs, selectedTabId,
-                        portalId, cultureCode, isMultiLanguage).ToList();
+                            enumerable.Except(new List<int> { tabId }),
+                            tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs,
+                            selectedTabId,
+                            portalId,
+                            cultureCode,
+                            isMultiLanguage)
+                        .ToList();
             }
             else
             {

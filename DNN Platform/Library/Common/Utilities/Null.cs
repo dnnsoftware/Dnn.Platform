@@ -134,13 +134,15 @@ namespace DotNetNuke.Common.Utilities
                 {
                     returnValue = NullGuid;
                 }
-                else // complex object
+                else
                 {
+                    // complex object
                     returnValue = null;
                 }
             }
-            else // return value
+            else
             {
+                // return value
                 returnValue = objValue;
             }
 
@@ -194,8 +196,9 @@ namespace DotNetNuke.Common.Utilities
                         Array.Sort(objEnumValues);
                         returnValue = Enum.ToObject(pType, objEnumValues.GetValue(0));
                     }
-                    else // complex object
+                    else
                     {
+                        // complex object
                         returnValue = null;
                     }
 
@@ -384,8 +387,9 @@ namespace DotNetNuke.Common.Utilities
                 {
                     isNull = objField.Equals(NullGuid);
                 }
-                else // complex object
+                else
                 {
+                    // complex object
                     isNull = false;
                 }
             }

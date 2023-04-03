@@ -29,51 +29,55 @@ namespace DotNetNuke.Entities.Content.Workflow
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
         private const string ContentWorkflowNotificationNoActionType = "ContentWorkflowNoActionNotification";
         private const string ContentWorkflowNotificatioStartWorkflowType = "ContentWorkflowStartWorkflowNotification";
-        private readonly IContentController _contentController;
-        private readonly IWorkflowRepository _workflowRepository;
-        private readonly IWorkflowStateRepository _workflowStateRepository;
-        private readonly IWorkflowStatePermissionsRepository _workflowStatePermissionsRepository;
-        private readonly IWorkflowLogRepository _workflowLogRepository;
-        private readonly IWorkflowActionManager _workflowActionManager;
-        private readonly IUserController _userController;
-        private readonly IWorkflowSecurity _workflowSecurity;
-        private readonly INotificationsController _notificationsController;
-        private readonly IWorkflowManager _workflowManager;
-        private readonly IWorkflowLogger _workflowLogger;
-        private readonly ISystemWorkflowManager _systemWorkflowManager;
+        private readonly IContentController contentController;
+        private readonly IWorkflowRepository workflowRepository;
+        private readonly IWorkflowStateRepository workflowStateRepository;
+        private readonly IWorkflowStatePermissionsRepository workflowStatePermissionsRepository;
+        private readonly IWorkflowLogRepository workflowLogRepository;
+        private readonly IWorkflowActionManager workflowActionManager;
+        private readonly IUserController userController;
+        private readonly IWorkflowSecurity workflowSecurity;
+        private readonly INotificationsController notificationsController;
+        private readonly IWorkflowManager workflowManager;
+        private readonly IWorkflowLogger workflowLogger;
+        private readonly ISystemWorkflowManager systemWorkflowManager;
 
+        /// <summary>Initializes a new instance of the <see cref="WorkflowEngine"/> class.</summary>
         public WorkflowEngine()
         {
-            this._contentController = Util.GetContentController();
-            this._workflowRepository = WorkflowRepository.Instance;
-            this._workflowStateRepository = WorkflowStateRepository.Instance;
-            this._workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-            this._workflowLogRepository = WorkflowLogRepository.Instance;
-            this._workflowActionManager = WorkflowActionManager.Instance;
-            this._workflowSecurity = WorkflowSecurity.Instance;
-            this._userController = UserController.Instance;
-            this._notificationsController = NotificationsController.Instance;
-            this._workflowManager = WorkflowManager.Instance;
-            this._workflowLogger = WorkflowLogger.Instance;
-            this._systemWorkflowManager = SystemWorkflowManager.Instance;
+            this.contentController = Util.GetContentController();
+            this.workflowRepository = WorkflowRepository.Instance;
+            this.workflowStateRepository = WorkflowStateRepository.Instance;
+            this.workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
+            this.workflowLogRepository = WorkflowLogRepository.Instance;
+            this.workflowActionManager = WorkflowActionManager.Instance;
+            this.workflowSecurity = WorkflowSecurity.Instance;
+            this.userController = UserController.Instance;
+            this.notificationsController = NotificationsController.Instance;
+            this.workflowManager = WorkflowManager.Instance;
+            this.workflowLogger = WorkflowLogger.Instance;
+            this.systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
+        /// <inheritdoc/>
         public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
         }
 
+        /// <inheritdoc/>
         public UserInfo GetSubmittedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
         }
 
+        /// <inheritdoc/>
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
         {
             Requires.NotNegative("workflowId", workflowId);
 
-            var contentItem = this._contentController.GetContentItem(contentItemId);
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var contentItem = this.contentController.GetContentItem(contentItemId);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
 
             // If already exists a started workflow
             if (workflow != null && !this.IsWorkflowCompleted(contentItem))
@@ -83,7 +87,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (workflow == null || workflow.WorkflowID != workflowId)
             {
-                workflow = this._workflowRepository.GetWorkflow(workflowId);
+                workflow = this.workflowRepository.GetWorkflow(workflowId);
             }
 
             var initialTransaction = this.CreateInitialTransaction(contentItemId, workflow.FirstState.StateID, userId);
@@ -93,13 +97,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
 
             // Send notifications to stater
-            if (workflow.WorkflowID != this._systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) // This notification is not sent in Direct Publish WF
+            if (workflow.WorkflowID != this.systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID)
             {
+                // This notification is not sent in Direct Publish WF
                 this.SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);
             }
 
             // Delete previous logs
-            this._workflowLogRepository.DeleteWorkflowLogs(contentItemId, workflowId);
+            this.workflowLogRepository.DeleteWorkflowLogs(contentItemId, workflowId);
 
             // Add logs
             this.AddWorkflowLog(contentItem, WorkflowLogType.WorkflowStarted, userId);
@@ -109,10 +114,11 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
         }
 
+        /// <inheritdoc/>
         public void CompleteState(StateTransaction stateTransaction)
         {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
 
             if (workflow == null)
             {
@@ -127,12 +133,12 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             var isFirstState = workflow.FirstState.StateID == contentItem.StateID;
 
-            if (!isFirstState && !this._workflowSecurity.HasStateReviewerPermission(workflow.PortalID, stateTransaction.UserId, contentItem.StateID))
+            if (!isFirstState && !this.workflowSecurity.HasStateReviewerPermission(workflow.PortalID, stateTransaction.UserId, contentItem.StateID))
             {
                 throw new WorkflowSecurityException(Localization.GetExceptionMessage("UserCannotReviewWorkflowState", "User cannot review the workflow state"));
             }
 
-            var currentState = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            var currentState = this.workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             if (currentState.StateID != stateTransaction.CurrentStateId)
             {
                 throw new WorkflowConcurrencyException();
@@ -151,15 +157,15 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             // Add logs
             this.AddWorkflowCommentLog(contentItem, currentState, stateTransaction.UserId, stateTransaction.Message.UserComment);
-            this.AddWorkflowLog(contentItem, currentState,
-                currentState.StateID == workflow.FirstState.StateID
-                    ? WorkflowLogType.DraftCompleted
-                    : WorkflowLogType.StateCompleted, stateTransaction.UserId);
             this.AddWorkflowLog(
                 contentItem,
-                nextState.StateID == workflow.LastState.StateID
-                    ? WorkflowLogType.WorkflowApproved
-                    : WorkflowLogType.StateInitiated, stateTransaction.UserId);
+                currentState,
+                currentState.StateID == workflow.FirstState.StateID ? WorkflowLogType.DraftCompleted : WorkflowLogType.StateCompleted,
+                stateTransaction.UserId);
+            this.AddWorkflowLog(
+                contentItem,
+                nextState.StateID == workflow.LastState.StateID ? WorkflowLogType.WorkflowApproved : WorkflowLogType.StateInitiated,
+                stateTransaction.UserId);
 
             this.SendNotificationsToReviewers(contentItem, nextState, stateTransaction, WorkflowActionTypes.CompleteState, new PortalSettings(workflow.PortalID));
 
@@ -169,10 +175,11 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteState);
         }
 
+        /// <inheritdoc/>
         public void DiscardState(StateTransaction stateTransaction)
         {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             if (workflow == null)
             {
                 return;
@@ -186,12 +193,12 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException(Localization.GetExceptionMessage("WorkflowCannotDiscard", "Cannot discard on last workflow state"));
             }
 
-            if (!isFirstState && !this._workflowSecurity.HasStateReviewerPermission(workflow.PortalID, stateTransaction.UserId, contentItem.StateID))
+            if (!isFirstState && !this.workflowSecurity.HasStateReviewerPermission(workflow.PortalID, stateTransaction.UserId, contentItem.StateID))
             {
                 throw new WorkflowSecurityException(Localization.GetExceptionMessage("UserCannotReviewWorkflowState", "User cannot review the workflow state"));
             }
 
-            var currentState = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            var currentState = this.workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             if (currentState.StateID != stateTransaction.CurrentStateId)
             {
                 throw new WorkflowConcurrencyException();
@@ -230,15 +237,17 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardState);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowCompleted(int contentItemId)
         {
-            var contentItem = this._contentController.GetContentItem(contentItemId);
+            var contentItem = this.contentController.GetContentItem(contentItemId);
             return this.IsWorkflowCompleted(contentItem);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowCompleted(ContentItem contentItem)
         {
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             if (workflow == null)
             {
                 return true; // If item has not workflow, then it is considered as completed
@@ -247,15 +256,17 @@ namespace DotNetNuke.Entities.Content.Workflow
             return contentItem.StateID == Null.NullInteger || workflow.LastState.StateID == contentItem.StateID;
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowOnDraft(int contentItemId)
         {
-            var contentItem = this._contentController.GetContentItem(contentItemId); // Ensure DB values
+            var contentItem = this.contentController.GetContentItem(contentItemId); // Ensure DB values
             return this.IsWorkflowOnDraft(contentItem);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowOnDraft(ContentItem contentItem)
         {
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             if (workflow == null)
             {
                 return false; // If item has not workflow, then it is not on Draft
@@ -264,11 +275,12 @@ namespace DotNetNuke.Entities.Content.Workflow
             return contentItem.StateID == workflow.FirstState.StateID;
         }
 
+        /// <inheritdoc/>
         public void DiscardWorkflow(StateTransaction stateTransaction)
         {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
+            var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
 
-            var currentState = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            var currentState = this.workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             if (currentState.StateID != stateTransaction.CurrentStateId)
             {
                 throw new WorkflowConcurrencyException();
@@ -277,7 +289,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             // before-change action
             this.PerformWorkflowActionOnStateChanging(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
 
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             this.UpdateContentItemWorkflowState(workflow.LastState.StateID, contentItem);
 
             // Logs
@@ -292,11 +304,12 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
         }
 
+        /// <inheritdoc/>
         public void CompleteWorkflow(StateTransaction stateTransaction)
         {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
+            var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
 
-            var currentState = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            var currentState = this.workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             if (currentState.StateID != stateTransaction.CurrentStateId)
             {
                 throw new WorkflowConcurrencyException();
@@ -305,7 +318,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             // before-change action
             this.PerformWorkflowActionOnStateChanging(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
 
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             this.UpdateContentItemWorkflowState(workflow.LastState.StateID, contentItem);
 
             // Logs
@@ -320,6 +333,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowEngine> GetFactory()
         {
             return () => new WorkflowEngine();
@@ -382,7 +396,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void PerformWorkflowActionOnStateChanged(StateTransaction stateTransaction, WorkflowActionTypes actionType)
         {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
+            var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
             var workflowAction = this.GetWorkflowActionInstance(contentItem, actionType);
             if (workflowAction != null)
             {
@@ -392,7 +406,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void PerformWorkflowActionOnStateChanging(StateTransaction stateTransaction, WorkflowActionTypes actionType)
         {
-            var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
+            var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
             var workflowAction = this.GetWorkflowActionInstance(contentItem, actionType);
             if (workflowAction != null)
             {
@@ -402,13 +416,13 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private IWorkflowAction GetWorkflowActionInstance(ContentItem contentItem, WorkflowActionTypes actionType)
         {
-            return this._workflowActionManager.GetWorkflowActionInstance(contentItem.ContentTypeId, actionType);
+            return this.workflowActionManager.GetWorkflowActionInstance(contentItem.ContentTypeId, actionType);
         }
 
         private void UpdateContentItemWorkflowState(int stateId, ContentItem item)
         {
             item.StateID = stateId;
-            this._contentController.UpdateContentItem(item);
+            this.contentController.UpdateContentItem(item);
         }
 
         private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem, StateTransaction stateTransaction)
@@ -424,13 +438,13 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private UserInfo GetUserByWorkflowLogType(ContentItem contentItem, WorkflowLogType type)
         {
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             if (workflow == null)
             {
                 return null;
             }
 
-            var logs = this._workflowLogRepository.GetWorkflowLogs(contentItem.ContentItemId, workflow.WorkflowID);
+            var logs = this.workflowLogRepository.GetWorkflowLogs(contentItem.ContentItemId, workflow.WorkflowID);
 
             var logDraftCompleted = logs
                 .OrderByDescending(l => l.Date)
@@ -438,7 +452,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (logDraftCompleted != null && logDraftCompleted.User != Null.NullInteger)
             {
-                return this._userController.GetUserById(workflow.PortalID, logDraftCompleted.User);
+                return this.userController.GetUserById(workflow.PortalID, logDraftCompleted.User);
             }
 
             return null;
@@ -459,18 +473,18 @@ namespace DotNetNuke.Entities.Content.Workflow
         private void DeleteWorkflowNotifications(ContentItem contentItem, WorkflowState state)
         {
             var context = this.GetWorkflowNotificationContext(contentItem, state);
-            var notificationTypeId = this._notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
+            var notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
             this.DeleteNotificationsByType(notificationTypeId, context);
-            notificationTypeId = this._notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
+            notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
             this.DeleteNotificationsByType(notificationTypeId, context);
         }
 
         private void DeleteNotificationsByType(int notificationTypeId, string context)
         {
-            var notifications = this._notificationsController.GetNotificationByContext(notificationTypeId, context);
+            var notifications = this.notificationsController.GetNotificationByContext(notificationTypeId, context);
             foreach (var notification in notifications)
             {
-                this._notificationsController.DeleteAllNotificationRecipients(notification.NotificationID);
+                this.notificationsController.DeleteAllNotificationRecipients(notification.NotificationID);
             }
         }
 
@@ -505,7 +519,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
 
-                this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
+                this.notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
             catch (Exception ex)
             {
@@ -528,13 +542,13 @@ namespace DotNetNuke.Entities.Content.Workflow
                     return;
                 }
 
-                var user = this._userController.GetUser(workflow.PortalID, starterUserId);
+                var user = this.userController.GetUser(workflow.PortalID, starterUserId);
 
                 var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
 
                 var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
 
-                this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
+                this.notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
             catch (Exception ex)
             {
@@ -568,7 +582,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationType);
 
-                this._notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
+                this.notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
             }
             catch (Exception ex)
             {
@@ -576,13 +590,12 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
-        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
-            ActionMessage message, string notificationType)
+        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction, ActionMessage message, string notificationType)
         {
             var notification = new Notification
             {
                 NotificationTypeID =
-                    this._notificationsController.GetNotificationType(notificationType).NotificationTypeId,
+                    this.notificationsController.GetNotificationType(notificationType).NotificationTypeId,
                 Subject = message.Subject,
                 Body = message.Body,
                 IncludeDismissAction = true,
@@ -602,7 +615,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             };
             if (state.SendNotification)
             {
-                var permissions = this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
+                var permissions = this.workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
                 reviewers.Users = GetUsersFromPermissions(portalSettings, permissions);
                 reviewers.Roles = GetRolesFromPermissions(portalSettings, permissions);
             }
@@ -628,7 +641,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 return;
             }
 
-            var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            var state = this.workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
         }
 
@@ -644,7 +657,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void AddWorkflowLog(ContentItem contentItem, WorkflowLogType logType, int userId, string userComment = null)
         {
-            var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
+            var state = this.workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             this.AddWorkflowLog(contentItem, state, logType, userId, userComment);
         }
 
@@ -662,15 +675,15 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void TryAddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment)
         {
-            var workflow = this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this.workflowManager.GetWorkflow(contentItem);
             var logTypeText = GetWorkflowActionComment(logType);
             var logComment = this.ReplaceNotificationTokens(logTypeText, workflow, contentItem, state, userId, userComment);
-            this._workflowLogger.AddWorkflowLog(contentItem.ContentItemId, workflow.WorkflowID, logType, logComment, userId);
+            this.workflowLogger.AddWorkflowLog(contentItem.ContentItemId, workflow.WorkflowID, logType, logComment, userId);
         }
 
         private string ReplaceNotificationTokens(string text, Entities.Workflow workflow, ContentItem item, WorkflowState state, int userId, string comment = "")
         {
-            var user = this._userController.GetUserById(workflow.PortalID, userId);
+            var user = this.userController.GetUserById(workflow.PortalID, userId);
             var datetime = DateTime.UtcNow;
             var result = text.Replace("[USER]", user != null ? user.DisplayName : string.Empty);
             result = result.Replace("[DATE]", datetime.ToString("F", CultureInfo.CurrentCulture));

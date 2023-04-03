@@ -1,37 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+using log4net.ObjectRenderer;
+using log4net.Core;
+using log4net.Util;
+using log4net.Plugin;
+using System.Threading;
 
 namespace log4net.Repository
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.Threading;
-
-    using log4net.Core;
-    using log4net.ObjectRenderer;
-    using log4net.Plugin;
-    using log4net.Util;
-
-    /// <summary>
-    /// Base implementation of <see cref="ILoggerRepository"/>.
-    /// </summary>
+    /// <summary>Base implementation of <see cref="ILoggerRepository"/></summary>
     /// <remarks>
     /// <para>
     /// Default abstract implementation of the <see cref="ILoggerRepository"/> interface.
@@ -41,8 +38,8 @@ namespace log4net.Repository
     /// All <see cref="ILoggerRepository"/> types can extend this type.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public abstract class LoggerRepositorySkeleton : ILoggerRepository, Appender.IFlushable
     {
         private string m_name;
@@ -52,34 +49,23 @@ namespace log4net.Repository
         private Level m_threshold;
         private bool m_configured;
         private ICollection m_configurationMessages;
-
         private event LoggerRepositoryShutdownEventHandler m_shutdownEvent;
-
         private event LoggerRepositoryConfigurationResetEventHandler m_configurationResetEvent;
-
         private event LoggerRepositoryConfigurationChangedEventHandler m_configurationChangedEvent;
-
         private PropertiesDictionary m_properties;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerRepositorySkeleton"/> class.
-        /// Default Constructor.
-        /// </summary>
+        /// <summary>Default Constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes the repository with default (empty) properties.
         /// </para>
         /// </remarks>
-        protected LoggerRepositorySkeleton()
-            : this(new PropertiesDictionary())
+        protected LoggerRepositorySkeleton() : this(new PropertiesDictionary())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerRepositorySkeleton"/> class.
-        /// Construct the repository using specific properties.
-        /// </summary>
-        /// <param name="properties">the properties to set for this repository.</param>
+        /// <summary>Construct the repository using specific properties</summary>
+        /// <param name="properties">the properties to set for this repository</param>
         /// <remarks>
         /// <para>
         /// Initializes the repository with specified properties.
@@ -100,16 +86,14 @@ namespace log4net.Repository
             this.m_threshold = Level.All;
         }
 
-        /// <summary>
-        /// Gets or sets the name of the repository.
-        /// </summary>
+        /// <summary>The name of the repository</summary>
         /// <value>
-        /// The string name of the repository.
+        /// The string name of the repository
         /// </value>
         /// <remarks>
         /// <para>
         /// The name of this repository. The name is
-        /// used to store and lookup the repositories
+        /// used to store and lookup the repositories 
         /// stored by the <see cref="IRepositorySelector"/>.
         /// </para>
         /// </remarks>
@@ -119,26 +103,23 @@ namespace log4net.Repository
             set { this.m_name = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the threshold for all events in this repository.
-        /// </summary>
+        /// <summary>The threshold for all events in this repository</summary>
         /// <value>
-        /// The threshold for all events in this repository.
+        /// The threshold for all events in this repository
         /// </value>
         /// <remarks>
         /// <para>
-        /// The threshold for all events in this repository.
+        /// The threshold for all events in this repository
         /// </para>
         /// </remarks>
         public virtual Level Threshold
         {
             get { return this.m_threshold; }
-
             set
-            {
+            { 
                 if (value != null)
                 {
-                    this.m_threshold = value;
+                    this.m_threshold = value; 
                 }
                 else
                 {
@@ -149,9 +130,7 @@ namespace log4net.Repository
             }
         }
 
-        /// <summary>
-        /// Gets rendererMap accesses the object renderer map for this repository.
-        /// </summary>
+        /// <summary>RendererMap accesses the object renderer map for this repository.</summary>
         /// <value>
         /// RendererMap accesses the object renderer map for this repository.
         /// </value>
@@ -169,9 +148,7 @@ namespace log4net.Repository
             get { return this.m_rendererMap; }
         }
 
-        /// <summary>
-        /// Gets the plugin map for this repository.
-        /// </summary>
+        /// <summary>The plugin map for this repository.</summary>
         /// <value>
         /// The plugin map for this repository.
         /// </value>
@@ -186,9 +163,7 @@ namespace log4net.Repository
             get { return this.m_pluginMap; }
         }
 
-        /// <summary>
-        /// Gets get the level map for the Repository.
-        /// </summary>
+        /// <summary>Get the level map for the Repository.</summary>
         /// <remarks>
         /// <para>
         /// Get the level map for the Repository.
@@ -204,11 +179,9 @@ namespace log4net.Repository
             get { return this.m_levelMap; }
         }
 
-        /// <summary>
-        /// Test if logger exists.
-        /// </summary>
-        /// <param name="name">The name of the logger to lookup.</param>
-        /// <returns>The Logger object with the name specified.</returns>
+        /// <summary>Test if logger exists</summary>
+        /// <param name="name">The name of the logger to lookup</param>
+        /// <returns>The Logger object with the name specified</returns>
         /// <remarks>
         /// <para>
         /// Check if the named logger exists in the repository. If so return
@@ -217,10 +190,8 @@ namespace log4net.Repository
         /// </remarks>
         public abstract ILogger Exists(string name);
 
-        /// <summary>
-        /// Returns all the currently defined loggers in the repository.
-        /// </summary>
-        /// <returns>All the defined loggers.</returns>
+        /// <summary>Returns all the currently defined loggers in the repository</summary>
+        /// <returns>All the defined loggers</returns>
         /// <remarks>
         /// <para>
         /// Returns all the currently defined loggers in the repository as an Array.
@@ -228,11 +199,9 @@ namespace log4net.Repository
         /// </remarks>
         public abstract ILogger[] GetCurrentLoggers();
 
-        /// <summary>
-        /// Return a new logger instance.
-        /// </summary>
-        /// <param name="name">The name of the logger to retrieve.</param>
-        /// <returns>The logger object with the name specified.</returns>
+        /// <summary>Return a new logger instance</summary>
+        /// <param name="name">The name of the logger to retrieve</param>
+        /// <returns>The logger object with the name specified</returns>
         /// <remarks>
         /// <para>
         /// Return a new logger instance.
@@ -245,9 +214,7 @@ namespace log4net.Repository
         /// </remarks>
         public abstract ILogger GetLogger(string name);
 
-        /// <summary>
-        /// Shutdown the repository.
-        /// </summary>
+        /// <summary>Shutdown the repository</summary>
         /// <remarks>
         /// <para>
         /// Shutdown the repository. Can be overridden in a subclass.
@@ -255,10 +222,10 @@ namespace log4net.Repository
         /// listeners and all attached plugins of the shutdown event.
         /// </para>
         /// </remarks>
-        public virtual void Shutdown()
+        public virtual void Shutdown() 
         {
             // Shutdown attached plugins
-            foreach (IPlugin plugin in this.PluginMap.AllPlugins)
+            foreach(IPlugin plugin in this.PluginMap.AllPlugins)
             {
                 plugin.Shutdown();
             }
@@ -267,9 +234,7 @@ namespace log4net.Repository
             this.OnShutdown(null);
         }
 
-        /// <summary>
-        /// Reset the repositories configuration to a default state.
-        /// </summary>
+        /// <summary>Reset the repositories configuration to a default state</summary>
         /// <remarks>
         /// <para>
         /// Reset all values contained in this instance to their
@@ -283,7 +248,7 @@ namespace log4net.Repository
         /// block all logging until it is completed.
         /// </para>
         /// </remarks>
-        public virtual void ResetConfiguration()
+        public virtual void ResetConfiguration() 
         {
             // Clear internal data structures
             this.m_rendererMap.Clear();
@@ -299,14 +264,12 @@ namespace log4net.Repository
             this.OnConfigurationReset(null);
         }
 
-        /// <summary>
-        /// Log the logEvent through this repository.
-        /// </summary>
-        /// <param name="logEvent">the event to log.</param>
+        /// <summary>Log the logEvent through this repository.</summary>
+        /// <param name="logEvent">the event to log</param>
         /// <remarks>
         /// <para>
         /// This method should not normally be used to log.
-        /// The <see cref="ILog"/> interface should be used
+        /// The <see cref="ILog"/> interface should be used 
         /// for routine logging. This interface can be obtained
         /// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
         /// </para>
@@ -317,9 +280,7 @@ namespace log4net.Repository
         /// </remarks>
         public abstract void Log(LoggingEvent logEvent);
 
-        /// <summary>
-        /// Gets or sets a value indicating whether flag indicates if this repository has been configured.
-        /// </summary>
+        /// <summary>Flag indicates if this repository has been configured.</summary>
         /// <value>
         /// Flag indicates if this repository has been configured.
         /// </value>
@@ -328,14 +289,14 @@ namespace log4net.Repository
         /// Flag indicates if this repository has been configured.
         /// </para>
         /// </remarks>
-        public virtual bool Configured
-        {
+        public virtual bool Configured 
+        { 
             get { return this.m_configured; }
             set { this.m_configured = value; }
         }
 
         /// <summary>
-        /// Gets or sets contains a list of internal messages captures during the
+        /// Contains a list of internal messages captures during the 
         /// last configuration.
         /// </summary>
         public virtual ICollection ConfigurationMessages
@@ -344,9 +305,7 @@ namespace log4net.Repository
             set { this.m_configurationMessages = value; }
         }
 
-        /// <summary>
-        /// Event to notify that the repository has been shutdown.
-        /// </summary>
+        /// <summary>Event to notify that the repository has been shutdown.</summary>
         /// <value>
         /// Event to notify that the repository has been shutdown.
         /// </value>
@@ -361,9 +320,7 @@ namespace log4net.Repository
             remove { this.m_shutdownEvent -= value; }
         }
 
-        /// <summary>
-        /// Event to notify that the repository has had its configuration reset.
-        /// </summary>
+        /// <summary>Event to notify that the repository has had its configuration reset.</summary>
         /// <value>
         /// Event to notify that the repository has had its configuration reset.
         /// </value>
@@ -379,9 +336,7 @@ namespace log4net.Repository
             remove { this.m_configurationResetEvent -= value; }
         }
 
-        /// <summary>
-        /// Event to notify that the repository has had its configuration changed.
-        /// </summary>
+        /// <summary>Event to notify that the repository has had its configuration changed.</summary>
         /// <value>
         /// Event to notify that the repository has had its configuration changed.
         /// </value>
@@ -396,34 +351,28 @@ namespace log4net.Repository
             remove { this.m_configurationChangedEvent -= value; }
         }
 
-        /// <summary>
-        /// Gets repository specific properties.
-        /// </summary>
+        /// <summary>Repository specific properties</summary>
         /// <value>
-        /// Repository specific properties.
+        /// Repository specific properties
         /// </value>
         /// <remarks>
-        /// These properties can be specified on a repository specific basis.
+        /// These properties can be specified on a repository specific basis
         /// </remarks>
-        public PropertiesDictionary Properties
-        {
-            get { return this.m_properties; }
+        public PropertiesDictionary Properties 
+        { 
+            get { return this.m_properties; } 
         }
 
-        /// <summary>
-        /// Returns all the Appenders that are configured as an Array.
-        /// </summary>
-        /// <returns>All the Appenders.</returns>
+        /// <summary>Returns all the Appenders that are configured as an Array.</summary>
+        /// <returns>All the Appenders</returns>
         /// <remarks>
         /// <para>
         /// Returns all the Appenders that are configured as an Array.
         /// </para>
         /// </remarks>
-        public abstract log4net.Appender.IAppender[] GetAppenders();
+        public abstract Appender.IAppender[] GetAppenders();
 
-        /// <summary>
-        /// The fully qualified type of the LoggerRepositorySkeleton class.
-        /// </summary>
+        /// <summary>The fully qualified type of the LoggerRepositorySkeleton class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
@@ -438,7 +387,7 @@ namespace log4net.Repository
             // Unrecoverable errors
             this.m_levelMap.Add(Level.Emergency);
             this.m_levelMap.Add(Level.Fatal);
-            this.m_levelMap.Add(Level.Alert);
+            this.m_levelMap.Add(Level.Alert); 
 
             // Recoverable errors
             this.m_levelMap.Add(Level.Critical);
@@ -448,7 +397,7 @@ namespace log4net.Repository
 
             // Information
             this.m_levelMap.Add(Level.Notice);
-            this.m_levelMap.Add(Level.Info);
+            this.m_levelMap.Add(Level.Info); 
 
             // Debug
             this.m_levelMap.Add(Level.Debug);
@@ -461,23 +410,20 @@ namespace log4net.Repository
             this.m_levelMap.Add(Level.All);
         }
 
-        /// <summary>
-        /// Adds an object renderer for a specific class.
-        /// </summary>
+        /// <summary>Adds an object renderer for a specific class. </summary>
         /// <param name="typeToRender">The type that will be rendered by the renderer supplied.</param>
         /// <param name="rendererInstance">The object renderer used to render the object.</param>
         /// <remarks>
         /// <para>
-        /// Adds an object renderer for a specific class.
+        /// Adds an object renderer for a specific class. 
         /// </para>
         /// </remarks>
-        public virtual void AddRenderer(Type typeToRender, IObjectRenderer rendererInstance)
+        public virtual void AddRenderer(Type typeToRender, IObjectRenderer rendererInstance) 
         {
             if (typeToRender == null)
             {
                 throw new ArgumentNullException("typeToRender");
             }
-
             if (rendererInstance == null)
             {
                 throw new ArgumentNullException("rendererInstance");
@@ -486,10 +432,8 @@ namespace log4net.Repository
             this.m_rendererMap.Put(typeToRender, rendererInstance);
         }
 
-        /// <summary>
-        /// Notify the registered listeners that the repository is shutting down.
-        /// </summary>
-        /// <param name="e">Empty EventArgs.</param>
+        /// <summary>Notify the registered listeners that the repository is shutting down</summary>
+        /// <param name="e">Empty EventArgs</param>
         /// <remarks>
         /// <para>
         /// Notify any listeners that this repository is shutting down.
@@ -509,10 +453,8 @@ namespace log4net.Repository
             }
         }
 
-        /// <summary>
-        /// Notify the registered listeners that the repository has had its configuration reset.
-        /// </summary>
-        /// <param name="e">Empty EventArgs.</param>
+        /// <summary>Notify the registered listeners that the repository has had its configuration reset</summary>
+        /// <param name="e">Empty EventArgs</param>
         /// <remarks>
         /// <para>
         /// Notify any listeners that this repository's configuration has been reset.
@@ -532,10 +474,8 @@ namespace log4net.Repository
             }
         }
 
-        /// <summary>
-        /// Notify the registered listeners that the repository has had its configuration changed.
-        /// </summary>
-        /// <param name="e">Empty EventArgs.</param>
+        /// <summary>Notify the registered listeners that the repository has had its configuration changed</summary>
+        /// <param name="e">Empty EventArgs</param>
         /// <remarks>
         /// <para>
         /// Notify any listeners that this repository's configuration has changed.
@@ -555,10 +495,8 @@ namespace log4net.Repository
             }
         }
 
-        /// <summary>
-        /// Raise a configuration changed event on this repository.
-        /// </summary>
-        /// <param name="e">EventArgs.Empty.</param>
+        /// <summary>Raise a configuration changed event on this repository</summary>
+        /// <param name="e">EventArgs.Empty</param>
         /// <remarks>
         /// <para>
         /// Applications that programmatically change the configuration of the repository should
@@ -592,9 +530,7 @@ namespace log4net.Repository
             return timeout;
         }
 
-        /// <summary>
-        /// Flushes all configured Appenders that implement <see cref="log4net.Appender.IFlushable"/>.
-        /// </summary>
+        /// <summary>Flushes all configured Appenders that implement <see cref="log4net.Appender.IFlushable"/>.</summary>
         /// <param name="millisecondsTimeout">The maximum time in milliseconds to wait for logging events from asycnhronous appenders to be flushed,
         /// or <see cref="Timeout.Infinite"/> to wait indefinitely.</param>
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
@@ -612,9 +548,9 @@ namespace log4net.Repository
             DateTime startTimeUtc = DateTime.UtcNow;
 
             // Do buffering appenders first.  These may be forwarding to other appenders
-            foreach (log4net.Appender.IAppender appender in this.GetAppenders())
+            foreach(Appender.IAppender appender in this.GetAppenders())
             {
-                log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
+                Appender.IFlushable flushable = appender as Appender.IFlushable;
                 if (flushable == null)
                 {
                     continue;
@@ -631,9 +567,9 @@ namespace log4net.Repository
             }
 
             // Do non-buffering appenders.
-            foreach (log4net.Appender.IAppender appender in this.GetAppenders())
+            foreach (Appender.IAppender appender in this.GetAppenders())
             {
-                log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
+                Appender.IFlushable flushable = appender as Appender.IFlushable;
                 if (flushable == null)
                 {
                     continue;

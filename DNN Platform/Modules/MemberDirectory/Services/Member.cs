@@ -18,20 +18,23 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
     public class Member
     {
-        private UserInfo _user;
-        private UserInfo _viewer;
-        private PortalSettings _settings;
+        private UserInfo user;
+        private UserInfo viewer;
+        private PortalSettings settings;
 
+        /// <summary>Initializes a new instance of the <see cref="Member"/> class.</summary>
+        /// <param name="user"></param>
+        /// <param name="settings"></param>
         public Member(UserInfo user, PortalSettings settings)
         {
-            this._user = user;
-            this._settings = settings;
-            this._viewer = settings.UserInfo;
+            this.user = user;
+            this.settings = settings;
+            this.viewer = settings.UserInfo;
         }
 
         public int MemberId
         {
-            get { return this._user.UserID; }
+            get { return this.user.UserID; }
         }
 
         public string City
@@ -46,12 +49,12 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string DisplayName
         {
-            get { return this._user.DisplayName; }
+            get { return this.user.DisplayName; }
         }
 
         public string Email
         {
-            get { return this._viewer.IsInRole(this._settings.AdministratorRoleName) ? this._user.Email : string.Empty; }
+            get { return this.viewer.IsInRole(this.settings.AdministratorRoleName) ? this.user.Email : string.Empty; }
         }
 
         public string FirstName
@@ -61,22 +64,22 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public int FollowerStatus
         {
-            get { return (this._user.Social.Follower == null) ? 0 : (int)this._user.Social.Follower.Status; }
+            get { return (this.user.Social.Follower == null) ? 0 : (int)this.user.Social.Follower.Status; }
         }
 
         public int FollowingStatus
         {
-            get { return (this._user.Social.Following == null) ? 0 : (int)this._user.Social.Following.Status; }
+            get { return (this.user.Social.Following == null) ? 0 : (int)this.user.Social.Following.Status; }
         }
 
         public int FriendId
         {
-            get { return (this._user.Social.Friend == null) ? -1 : (int)this._user.Social.Friend.RelatedUserId; }
+            get { return (this.user.Social.Friend == null) ? -1 : (int)this.user.Social.Friend.RelatedUserId; }
         }
 
         public int FriendStatus
         {
-            get { return (this._user.Social.Friend == null) ? 0 : (int)this._user.Social.Friend.Status; }
+            get { return (this.user.Social.Friend == null) ? 0 : (int)this.user.Social.Friend.Status; }
         }
 
         public string LastName
@@ -91,7 +94,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string PhotoURL
         {
-            get { return this._user.Profile.PhotoURL; }
+            get { return this.user.Profile.PhotoURL; }
         }
 
         public Dictionary<string, string> ProfileProperties
@@ -100,14 +103,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 var properties = new Dictionary<string, string>();
                 bool propertyNotFound = false;
-                var propertyAccess = new ProfilePropertyAccess(this._user);
-                foreach (ProfilePropertyDefinition property in this._user.Profile.ProfileProperties)
+                var propertyAccess = new ProfilePropertyAccess(this.user);
+                foreach (ProfilePropertyDefinition property in this.user.Profile.ProfileProperties)
                 {
                     string value = propertyAccess.GetProperty(
                         property.PropertyName,
                         string.Empty,
                         Thread.CurrentThread.CurrentUICulture,
-                        this._viewer,
+                        this.viewer,
                         Scope.DefaultSettings,
                         ref propertyNotFound);
 
@@ -120,12 +123,12 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string Title
         {
-            get { return this._user.Profile.Title; }
+            get { return this.user.Profile.Title; }
         }
 
         public string UserName
         {
-            get { return this._viewer.IsInRole(this._settings.AdministratorRoleName) ? this._user.Username : string.Empty; }
+            get { return this.viewer.IsInRole(this.settings.AdministratorRoleName) ? this.user.Username : string.Empty; }
         }
 
         public string Website
@@ -138,9 +141,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             get { return Globals.UserProfileURL(this.MemberId); }
         }
 
-        /// <summary>
-        /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string.
-        /// </summary>
+        /// <summary>This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string.</summary>
         /// <param name="propertyName">property name.</param>
         /// <returns>property value.</returns>
         private string GetProfileProperty(string propertyName)

@@ -64,7 +64,7 @@ class Seo extends Component {
                                 labelType="inline"
                                 tooltipMessage={Localization.get("AllowIndexing_tooltip") }
                                 label={Localization.get("AllowIndexing") }
-                                />
+                            />
                             <Switch
                                 labelHidden={false}
                                 onText={Localization.get("On") }

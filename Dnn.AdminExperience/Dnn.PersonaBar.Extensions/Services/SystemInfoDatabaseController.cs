@@ -19,28 +19,29 @@ namespace Dnn.PersonaBar.Servers.Services
     public class SystemInfoDatabaseController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseController));
-        private readonly DatabaseController _databaseController = new DatabaseController();
+        private readonly DatabaseController databaseController = new DatabaseController();
 
         [HttpGet]
+
         public HttpResponseMessage GetDatabaseServerInfo()
         {
             try
             {
-                var dbInfo = this._databaseController.GetDbInfo();
-                var dbBackups = this._databaseController.GetDbBackups().Select(b => new
+                var dbInfo = this.databaseController.GetDbInfo();
+                var dbBackups = this.databaseController.GetDbBackups().Select(b => new
                 {
                     name = b.Name,
                     startDate = b.StartDate,
                     finishDate = b.FinishDate,
                     size = b.Size,
-                    backupType = b.BackupType
+                    backupType = b.BackupType,
                 });
-                var dbFileInfo = this._databaseController.GetDbFileInfo().Select(f => new
+                var dbFileInfo = this.databaseController.GetDbFileInfo().Select(f => new
                 {
                     name = f.Name,
                     size = f.Megabytes,
                     fileType = f.FileType,
-                    fileName = f.ShortFileName
+                    fileName = f.ShortFileName,
                 });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
@@ -50,7 +51,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     productEdition = dbInfo.ProductEdition,
                     softwarePlatform = dbInfo.SoftwarePlatform,
                     backups = dbBackups,
-                    files = dbFileInfo
+                    files = dbFileInfo,
                 });
             }
             catch (Exception exc)

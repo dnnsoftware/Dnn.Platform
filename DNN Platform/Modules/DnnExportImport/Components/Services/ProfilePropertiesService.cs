@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
@@ -17,12 +16,16 @@ namespace Dnn.ExportImport.Components.Services
 
     public class ProfilePropertiesService : BasePortableService
     {
+        /// <inheritdoc/>
         public override string Category => Constants.Category_ProfileProps;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 5;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
@@ -42,11 +45,14 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
 
-            var profileProperties =
-                CBO.FillCollection<ExportProfileProperty>(
+            var profileProperties = CBO.FillCollection<ExportProfileProperty>(
                     DataProvider.Instance()
-                        .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, toDate,
-                            fromDate)).ToList();
+                        .GetPropertyDefinitionsByPortal(
+                            exportJob.PortalId,
+                            exportDto.IncludeDeletions,
+                            toDate,
+                            fromDate))
+                .ToList();
             this.CheckPoint.Progress = 50;
 
             // Update the total items count in the check points. This should be updated only once.
@@ -67,6 +73,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -106,7 +113,9 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var createdById = Util.GetUserIdByName(importJob, profileProperty.CreatedByUserId,
+                    var createdById = Util.GetUserIdByName(
+                        importJob,
+                        profileProperty.CreatedByUserId,
                         profileProperty.CreatedByUserName);
 
                     ProcessCreateProfileProperty(importJob, profileProperty, createdById);
@@ -121,6 +130,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportProfileProperty>();
@@ -128,28 +138,44 @@ namespace Dnn.ExportImport.Components.Services
 
         private static void ProcessCreateProfileProperty(
             ExportImportJob importJob,
-            ExportProfileProperty profileProperty, int createdById)
+            ExportProfileProperty profileProperty,
+            int createdById)
         {
             DotNetNuke.Data.DataProvider.Instance()
-                .AddPropertyDefinition(importJob.PortalId, profileProperty.ModuleDefId ?? Null.NullInteger,
+                .AddPropertyDefinition(
+                    importJob.PortalId,
+                    profileProperty.ModuleDefId ?? Null.NullInteger,
                     profileProperty.DataType ?? Null.NullInteger,
-                    profileProperty.DefaultValue, profileProperty.PropertyCategory, profileProperty.PropertyName,
-                    profileProperty.ReadOnly, profileProperty.Required,
-                    profileProperty.ValidationExpression, profileProperty.ViewOrder, profileProperty.Visible,
-                    profileProperty.Length, profileProperty.DefaultVisibility, createdById);
+                    profileProperty.DefaultValue,
+                    profileProperty.PropertyCategory,
+                    profileProperty.PropertyName,
+                    profileProperty.ReadOnly,
+                    profileProperty.Required,
+                    profileProperty.ValidationExpression,
+                    profileProperty.ViewOrder,
+                    profileProperty.Visible,
+                    profileProperty.Length,
+                    profileProperty.DefaultVisibility,
+                    createdById);
         }
 
-        private static void ProcessUpdateProfileProperty(ExportProfileProperty profileProperty, ExportProfileProperty existingProfileProperty,
-            int modifiedById)
+        private static void ProcessUpdateProfileProperty(ExportProfileProperty profileProperty, ExportProfileProperty existingProfileProperty, int modifiedById)
         {
             DotNetNuke.Data.DataProvider.Instance()
                 .UpdatePropertyDefinition(
                     existingProfileProperty.PropertyDefinitionId,
                     profileProperty.DataType ?? Null.NullInteger,
-                    profileProperty.DefaultValue, profileProperty.PropertyCategory, profileProperty.PropertyName,
-                    profileProperty.ReadOnly, profileProperty.Required,
-                    profileProperty.ValidationExpression, profileProperty.ViewOrder, profileProperty.Visible,
-                    profileProperty.Length, profileProperty.DefaultVisibility, modifiedById);
+                    profileProperty.DefaultValue,
+                    profileProperty.PropertyCategory,
+                    profileProperty.PropertyName,
+                    profileProperty.ReadOnly,
+                    profileProperty.Required,
+                    profileProperty.ValidationExpression,
+                    profileProperty.ViewOrder,
+                    profileProperty.Visible,
+                    profileProperty.Length,
+                    profileProperty.DefaultVisibility,
+                    modifiedById);
         }
     }
 }

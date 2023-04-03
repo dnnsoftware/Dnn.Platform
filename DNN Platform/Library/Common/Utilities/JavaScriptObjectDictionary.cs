@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,13 +10,13 @@ using System.Web;
 
 public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, string>>
 {
-    private OrderedDictionary _dictionary = null;
+    private OrderedDictionary dictionary = null;
 
     internal OrderedDictionary Dictionary
     {
         get
         {
-            return this._dictionary ?? (this._dictionary = new OrderedDictionary());
+            return this.dictionary ?? (this.dictionary = new OrderedDictionary());
         }
     }
 
@@ -99,6 +98,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         return ToJavaScriptArrayString(this);
     }
 
+    /// <inheritdoc/>
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
     {
         var enumerator = this.Dictionary.GetEnumerator();
@@ -108,9 +108,16 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         }
     }
 
+    /// <inheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this.GetEnumeratorPrivate();
+    }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
-        return this._dictionary == null ? string.Empty : this._dictionary.ToString();
+        return this.dictionary == null ? string.Empty : this.dictionary.ToString();
     }
 
     private static string ToJsonString(IEnumerable<KeyValuePair<string, string>> methods)
@@ -144,11 +151,6 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
 
         builder.Append('}');
         return builder.ToString();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this.GetEnumeratorPrivate();
     }
 
     private IEnumerator GetEnumeratorPrivate()

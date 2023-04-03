@@ -3,14 +3,12 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Authentication.OAuth
 {
-    using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Comparer class used to perform the sorting of the query parameters.
-    /// </summary>
+    /// <summary>Comparer class used to perform the sorting of the query parameters.</summary>
     internal class QueryParameterComparer : IComparer<QueryParameter>
     {
+        /// <inheritdoc/>
         public int Compare(QueryParameter x, QueryParameter y)
         {
             if (x.Name == y.Name)

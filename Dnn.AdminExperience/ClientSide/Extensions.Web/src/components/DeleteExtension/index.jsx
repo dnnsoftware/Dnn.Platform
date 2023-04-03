@@ -36,7 +36,7 @@ class DeleteExtension extends Component {
     render() {
         const {props} = this;
         const { extensionBeingDeleted } = props;
-        const version = extensionBeingDeleted.version.value ? extensionBeingDeleted.version.value.split(".") : [0, 0, 0];
+        const version = extensionBeingDeleted.version ? extensionBeingDeleted.version.split(".") : [0, 0, 0];
         return (
             <GridCell className={styles.DeleteExtension}>
                 <PersonaBarPageHeader title={Localization.get("DeleteExtension.Action").replace("{0}", extensionBeingDeleted.friendlyName)} />

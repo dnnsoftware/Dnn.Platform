@@ -15,15 +15,12 @@ namespace DotNetNuke.HttpModules.Analytics
     using DotNetNuke.Services.Analytics;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// This module contains functionality for injecting web analytics scripts into the page.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>This module contains functionality for injecting web analytics scripts into the page.</summary>
     public class AnalyticsModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsModule));
 
+        /// <summary>Gets the HttpModule module name.</summary>
         public string ModuleName
         {
             get
@@ -32,11 +29,13 @@ namespace DotNetNuke.HttpModules.Analytics
             }
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
             application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Type: Build/Release"
+      - "Type: Maintenance"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "javascript"
+      - "Type: Maintenance"
+
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - ".NET"
+      - "Type: Maintenance"

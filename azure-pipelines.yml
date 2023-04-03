@@ -1,0 +1,116 @@
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - name: "Build.ArtifactStagingDirectory"
+    value: "Artifacts/"
+  - name: "YARN_CACHE_FOLDER"
+    value: "$(Pipeline.Workspace)/.yarn/cache"
+
+parameters:
+  - name: "CakeTarget"
+    type: string
+    default: "BuildAll"
+  - name: "CakeVerbosity"
+    type: string
+    default: "Normal"
+    values:
+    - "Quiet"
+    - "Minimal"
+    - "Normal"
+    - "Verbose"
+    - "Diagnostic"
+  - name: "ReleaseMode"
+    type: string
+    default: "Beta"
+    values:
+    - "Alpha"
+    - "Beta"
+    - "RC"
+    - "Stable"
+  - name: "RunTests"
+    type: boolean
+    default: true
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - '*'
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+      - '*'
+
+steps:
+
+- task: Cache@2
+  displayName: Cache Yarn packages
+  inputs:
+    key: 'yarn | "$(Agent.OS)" | yarn.lock'
+    restoreKeys: 'yarn | "$(Agent.OS)"'
+    path: $(YARN_CACHE_FOLDER)
+  
+- task: UseDotNet@2
+  displayName: 'Use .NET 6.x SDK'
+  inputs:
+    version: 6.x
+
+- task: PowerShell@2
+  displayName: 'Run DNN Update Versions'
+  inputs:
+    targetType: filePath
+    filePath: ./build.ps1
+    arguments: '--target=BuildServerSetVersion --verbosity=${{ parameters.CakeVerbosity }}'
+
+- ${{ if eq(parameters.RunTests, true) }}:
+  - script: 'sqllocaldb start mssqllocaldb'
+    displayName: 'Start Sql LocalDb Service'
+
+- powershell: 'npm config set registry https://www.myget.org/F/dnn-software-public/npm/'
+  displayName: 'npm config set registry'
+  enabled: false
+
+- powershell: |
+   $path = '.\DNN Platform\Library\Properties\AssemblyInfo.cs'
+   $pattern3 = '\[assembly: AssemblyStatus'
+   (Get-Content $path) | ForEach-Object{
+      if($_ -match $pattern3){
+       # We have found the matching line
+       '[assembly: AssemblyStatus(ReleaseMode.{0})]' -f '${{ parameters.ReleaseMode }}'
+      } else {
+       $_
+      }
+     } | Set-Content $path
+   
+  displayName: 'Update Alpha/Beta/Stable flag'
+
+- task: PowerShell@2
+  displayName: 'Run DNN Build via Cake'
+  inputs:
+    targetType: filePath
+    filePath: ./build.ps1
+    arguments: '--target=${{ parameters.CakeTarget }} --verbosity=${{ parameters.CakeVerbosity }}'
+
+- ${{ if eq(parameters.RunTests, true) }}:
+  - task: PowerShell@2
+    displayName: 'Run Unit Tests via Cake'
+    inputs:
+      targetType: filePath
+      filePath: ./build.ps1
+      arguments: '--target=UnitTests --verbosity=${{ parameters.CakeVerbosity }}'
+    continueOnError: true
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/TestResults/*.xml'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/TestResults/*.trx'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+    condition: always()
+
+- publish: 'Artifacts'
+  artifact: 'Artifacts$(System.JobAttempt)'
+  condition: always()

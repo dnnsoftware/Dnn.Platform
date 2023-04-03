@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CommonUsersActions } from "../../../actions";
@@ -31,11 +31,11 @@ class EditProfile extends Component {
         }));
     }
     render() {
-            return <iframe 
+        return <iframe 
             className="edit-profile" seamless
             src={this.state.userDetails !== undefined && this.state.userDetails.editProfileUrl !== undefined ? 
                 this.state.userDetails.editProfileUrl : ""}
-            />;
+        />;
     }
 }
 

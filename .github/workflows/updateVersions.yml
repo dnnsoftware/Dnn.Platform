@@ -7,30 +7,35 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/') }}
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Get the release branch version
-      uses: valadas/get-release-branch-version@v1
-      id: branchVersion
-      
-    - name: Set versions
-      uses: valadas/set-dnn-manifest-versions@v1
-      with:
-        version: ${{ steps.branchVersion.outputs.manifestSafeVersionString }}
-        skipFile: './Build/Cake/unversionedManifests.txt'
-        includeSolutionInfo: true
-        includeIssueTemplates: true
-        includePackageJson: true
-        includeDnnReactCommon: true
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v2.7.1
-      with:
-        commit-message: Updates versions as per release candidate creation
-        title: Updates versions as per release candidate creation
-        body: This is a release management task and we are self-approving it for that reason.
-        # A comma separated list of labels.
-        labels: 'Type: Build/Release'
-        # The pull request branch name.
-        branch: update-versions/patch
-        # The branch suffix type.
-        branch-suffix: short-commit-hash
+      - name: Get the release branch version
+        uses: valadas/get-release-branch-version@v1.0.1
+        id: branchVersion
+
+      - name: Set versions
+        uses: valadas/set-dnn-manifest-versions@v1.3.0
+        with:
+          version: ${{ steps.branchVersion.outputs.manifestSafeVersionString }}
+          skipFile: "./Build/Tasks/unversionedManifests.txt"
+          includeSolutionInfo: true
+          includeIssueTemplates: true
+          includePackageJson: true
+          includeDnnReactCommon: true
+
+      - name: Update Yarn versions
+        shell: pwsh
+        run: yarn install --mode=update-lockfile --no-immutable
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Updates versions as per release candidate creation
+          title: Updates versions as per release candidate creation
+          body: This is a release management task and we are self-approving it for that reason.
+          # A comma separated list of labels.
+          labels: "Type: Build/Release"
+          # The pull request branch name.
+          branch: update-versions/patch
+          # The branch suffix type.
+          branch-suffix: short-commit-hash

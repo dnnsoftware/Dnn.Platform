@@ -5,9 +5,7 @@
 namespace DotNetNuke.Services.Journal
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -21,6 +19,9 @@ namespace DotNetNuke.Services.Journal
 
         public string JournalType { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string icon { get; set; }
 
         public bool AppliesToProfile { get; set; }
@@ -37,6 +38,7 @@ namespace DotNetNuke.Services.Journal
 
         public bool EnableComments { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -50,6 +52,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(System.Data.IDataReader dr)
         {
             this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);

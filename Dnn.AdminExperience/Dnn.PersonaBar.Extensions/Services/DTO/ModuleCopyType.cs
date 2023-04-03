@@ -6,8 +6,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 {
     public enum ModuleCopyType
     {
-        New,
-        Copy,
-        Reference
+        New = 0,
+        Copy = 1,
+        Reference = 2,
     }
 }

@@ -6,22 +6,15 @@ namespace DotNetNuke.Modules.Html
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      WorkflowStateInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   Defines an instance of a WorkflowState object.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>  Defines an instance of a WorkflowState object.</summary>
     [Serializable]
     public class WorkflowStateInfo
     {
         // local property declarations
-        private bool _IsActive = true;
+        private bool isActive = true;
 
         // public properties
         public int PortalID { get; set; }
@@ -46,12 +39,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return this._IsActive;
+                return this.isActive;
             }
 
             set
             {
-                this._IsActive = value;
+                this.isActive = value;
             }
         }
     }

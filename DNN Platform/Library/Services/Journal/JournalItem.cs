@@ -5,20 +5,17 @@ namespace DotNetNuke.Services.Journal
 {
     using System;
     using System.Data;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Runtime.Serialization.Json;
-    using System.Web.Script.Serialization;
     using System.Xml;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
+    using Newtonsoft.Json;
 
     public class JournalItem : IHydratable, IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -79,9 +76,7 @@ namespace DotNetNuke.Services.Journal
 
         public int SimilarCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
+        /// <summary>Gets or sets the key ID.</summary>
         /// <value>
         /// The key ID.
         /// </value>
@@ -89,6 +84,7 @@ namespace DotNetNuke.Services.Journal
         /// If you derive class has its own key id, please override this property and set the value to your own key id.
         /// </remarks>
         [XmlIgnore]
+        [JsonIgnore]
         public virtual int KeyID
         {
             get
@@ -102,6 +98,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.JournalId = Null.SetNullInteger(dr["JournalId"]);
@@ -146,16 +143,17 @@ namespace DotNetNuke.Services.Journal
             this.SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            string OutputFormat = string.Empty;
+            string outputFormat = string.Empty;
             if (format == string.Empty)
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
             else
             {
-                OutputFormat = format;
+                outputFormat = format;
             }
 
             propertyName = propertyName.ToLowerInvariant();

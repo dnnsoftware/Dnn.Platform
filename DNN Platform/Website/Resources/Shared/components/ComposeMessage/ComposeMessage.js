@@ -263,7 +263,7 @@
                                     displayMessage(composeMessageDialog, opts.createMessageErrorText);
                                 }
                             }).fail(function (xhr, status) {
-                                displayMessage(composeMessageDialog, opts.createMessageErrorWithDescriptionText + eval("(" + xhr.responseText + ")").ExceptionMessage);
+                                displayMessage(composeMessageDialog, opts.createMessageErrorWithDescriptionText + JSON.parse(xhr.responseText).ExceptionMessage);
                             });
                         }
                     },

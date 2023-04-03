@@ -25,15 +25,14 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ScopeTypeTests.
-    /// </summary>
+    /// <summary>  Summary description for ScopeTypeTests.</summary>
     [TestFixture]
     public class ScopeTypeControllerTests
     {
         private Mock<CachingProvider> mockCache;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -155,6 +154,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ScopeTypeController_GetScopeTypes_Calls_DataService()
         {
             // Arrange
@@ -170,6 +170,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ScopeTypeController_GetScopeTypes_Returns_Empty_List_Of_ScopeTypes_If_No_ScopeTypes()
         {
             // Arrange
@@ -186,6 +187,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void ScopeTypeController_GetScopeTypes_Returns_List_Of_ScopeTypes()
         {
             // Arrange

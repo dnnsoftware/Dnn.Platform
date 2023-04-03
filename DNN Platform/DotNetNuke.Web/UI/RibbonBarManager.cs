@@ -7,8 +7,6 @@ namespace DotNetNuke.Web.UI
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Text.RegularExpressions;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -20,31 +18,30 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
     public enum DotNetNukeErrorCode
     {
-        NotSet,
-        PageExists,
-        PageNameRequired,
-        PageNameInvalid,
-        DeserializePanesFailed,
-        PageCircularReference,
-        ParentTabInvalid,
-        PageEditorPermissionError,
-        HostBeforeAfterError,
-        DuplicateWithAlias,
+        NotSet = 0,
+        PageExists = 1,
+        PageNameRequired = 2,
+        PageNameInvalid = 3,
+        DeserializePanesFailed = 4,
+        PageCircularReference = 5,
+        ParentTabInvalid = 6,
+        PageEditorPermissionError = 7,
+        HostBeforeAfterError = 8,
+        DuplicateWithAlias = 9,
     }
 
     public enum TabRelativeLocation
     {
-        NOTSET,
-        BEFORE,
-        AFTER,
-        CHILD,
+        NOTSET = 0,
+        BEFORE = 1,
+        AFTER = 2,
+        CHILD = 3,
     }
 
     public class RibbonBarManager
@@ -90,11 +87,17 @@ namespace DotNetNuke.Web.UI
                 newTab.PortalID = parentTab.PortalID;
                 newTab.ParentId = parentTab.TabID;
                 newTab.Level = parentTab.Level + 1;
-                if (PortalSettings.Current.SSLEnabled)
+                switch (PortalSettings.Current.SSLSetup)
                 {
-                    newTab.IsSecure = parentTab.IsSecure;
-
-                    // Inherit from parent
+                    case Abstractions.Security.SiteSslSetup.Off:
+                        newTab.IsSecure = false;
+                        break;
+                    case Abstractions.Security.SiteSslSetup.Advanced:
+                        newTab.IsSecure = parentTab.IsSecure;
+                        break;
+                    default:
+                        newTab.IsSecure = true;
+                        break;
                 }
             }
             else
@@ -338,9 +341,9 @@ namespace DotNetNuke.Web.UI
                         }
                     }
 
-                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    if (_PortalSettings.ContentLocalizationEnabled)
+                    if (portalSettings.ContentLocalizationEnabled)
                     {
                         Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(tab.PortalID);
                         tab.CultureCode = defaultLocale.Code;
@@ -363,7 +366,7 @@ namespace DotNetNuke.Web.UI
                         tab.TabID = TabController.Instance.AddTab(tab);
                     }
 
-                    if (_PortalSettings.ContentLocalizationEnabled)
+                    if (portalSettings.ContentLocalizationEnabled)
                     {
                         TabController.Instance.CreateLocalizedCopies(tab);
                     }
@@ -499,50 +502,6 @@ namespace DotNetNuke.Web.UI
             }
 
             TabController.Instance.UpdateTab(tab);
-        }
-    }
-
-    public class DotNetNukeException : Exception
-    {
-        private readonly DotNetNukeErrorCode _ErrorCode = DotNetNukeErrorCode.NotSet;
-
-        public DotNetNukeException()
-        {
-        }
-
-        public DotNetNukeException(string message)
-            : base(message)
-        {
-        }
-
-        public DotNetNukeException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode)
-            : base(message)
-        {
-            this._ErrorCode = errorCode;
-        }
-
-        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode)
-            : base(message, innerException)
-        {
-            this._ErrorCode = errorCode;
-        }
-
-        public DotNetNukeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        public DotNetNukeErrorCode ErrorCode
-        {
-            get
-            {
-                return this._ErrorCode;
-            }
         }
     }
 }

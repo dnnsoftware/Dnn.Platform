@@ -60,9 +60,9 @@ if (window.parent['personaBarSettings'].debugMode === true) {
     window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 }
 
-require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../extension',
+require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../extension',
         '../persistent', '../eventEmitter', '../menuIconLoader', '../gateway', 'domReady!', '../exports/export-bundle'],
-    function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, iconLoader, Gateway) {
+    function ($, ko, dayjs, ut, sf, cf, extension, persistent, eventEmitter, iconLoader, Gateway) {
         var iframe = window.parent.document.getElementById("personaBar-iframe");
         if (!iframe) return;
         
@@ -106,7 +106,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         var util = {
             sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken),
             onTouch: onTouch,
-            moment: moment,
+            dayjs: dayjs,
             persistent: persistent.init(config, sf),
             inAnimation: inAnimation,
 
@@ -399,7 +399,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         if (menuItem.id === identifier) {
                             if (menuItem.settings) {
                                 var defaultSettings = { isAdmin: config.isAdmin, isHost: config.isHost };
-                                settings = $.extend({}, defaultSettings, eval("(" + menuItem.settings + ")"));
+                                settings = $.extend({}, defaultSettings, JSON.parse(menuItem.settings));
                             } else {
                                 settings = {};
                             }
@@ -754,8 +754,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         var viewModel = {
                             resx: util.resx.PersonaBar,
                             menu: menuViewModel.menu,
+                            upToDate: ko.observable(true),
                             updateLink: ko.observable(''),
-                            updateType: ko.observable(0),
+                            updateCritical: ko.observable(false),
                             logOff: function() {
                                 function onLogOffSuccess() {
                                     if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
@@ -770,7 +771,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         };
 
                         viewModel.updateText = ko.computed(function() {
-                            return viewModel.updateType() === 2 ? util.resx.PersonaBar.CriticalUpdate : util.resx.PersonaBar.NormalUpdate;
+                            return util.resx.PersonaBar.Update;
                         });
 
                         ko.applyBindings(viewModel, document.getElementById('personabar'));
@@ -779,9 +780,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                         util.sf.moduleRoot = 'personabar';
                         util.sf.controller = "serversummary";
-                        util.sf.getsilence('GetUpdateLink', {}, function (data) {
+                        util.sf.getsilence('GetUpdateInfo', {}, function (data) {
+                            viewModel.upToDate(data.UpToDate);
                             viewModel.updateLink(data.Url);
-                            viewModel.updateType(data.Type);
+                            viewModel.updateCritical(data.Critical);
                         });
 
                         document.addEventListener("click", function(e) {

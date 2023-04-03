@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Extensions
     using System.Linq;
 
     using DotNetNuke.DependencyInjection.Extensions;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -18,6 +19,8 @@ namespace DotNetNuke.Web.Extensions
     /// </summary>
     internal static class StartupExtensions
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StartupExtensions));
+
         /// <summary>
         /// Configures all of the <see cref="DnnApiController"/>'s to be used
         /// with the Service Collection for Dependency Injection.
@@ -28,7 +31,7 @@ namespace DotNetNuke.Web.Extensions
         public static void AddWebApi(this IServiceCollection services)
         {
             var controllerTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.SafeGetTypes())
+                .SelectMany(x => x.SafeGetTypes(Logger))
                 .Where(x => typeof(DnnApiController).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);

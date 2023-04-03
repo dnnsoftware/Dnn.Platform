@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Dto
 {
     using System;
@@ -9,65 +8,40 @@ namespace Dnn.ExportImport.Components.Dto
     using Dnn.ExportImport.Components.Common;
     using Newtonsoft.Json;
 
-    public enum TriCheckedState
-    {
-#if false
-        // for schema 1.0.0
-        Checked = 0,
-        UnChecked = 1,
-        Partial = 2,
-#else
-        UnChecked = 0,
-        Checked = 1,
-        CheckedWithAllChildren = 2,
-#endif
-
-    }
-
+    /// <summary>The export DTO.</summary>
     [JsonObject]
     public class ExportDto
     {
+        /// <summary>Gets the from date (in UTC).</summary>
         [JsonIgnore]
         public DateTime? FromDate => this.FromDateUtc;
 
+        /// <summary>Gets the to date (in UTC).</summary>
         [JsonIgnore]
         public DateTime ToDate => this.ToDateUtc;
 
+        /// <summary>Gets or sets the ID.</summary>
         public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets specifies the version of the exportes schema.
-        /// </summary>
+        /// <summary>Gets or sets specifies the version of the exportes schema.</summary>
         public string SchemaVersion { get; set; } = Constants.CurrentSchemaVersion;
 
-        /// <summary>
-        /// Gets or sets iD of portal to export items from.
-        /// </summary>
+        /// <summary>Gets or sets iD of portal to export items from.</summary>
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets sKU of the product from which the export is done.
-        /// </summary>
+        /// <summary>Gets or sets sKU of the product from which the export is done.</summary>
         public string ProductSku { get; set; }
 
-        /// <summary>
-        /// Gets or sets version of the product from which the export is done.
-        /// </summary>
+        /// <summary>Gets or sets version of the product from which the export is done.</summary>
         public string ProductVersion { get; set; }
 
-        /// <summary>
-        /// Gets or sets name of export job.
-        /// </summary>
+        /// <summary>Gets or sets name of export job.</summary>
         public string ExportName { get; set; }
 
-        /// <summary>
-        /// Gets or sets description of export job.
-        /// </summary>
+        /// <summary>Gets or sets description of export job.</summary>
         public string ExportDescription { get; set; }
 
-        /// <summary>
-        /// Gets or sets names of items to export.
-        /// </summary>
+        /// <summary>Gets or sets names of items to export.</summary>
         /// <example>["Content", "Assets", "Users"].</example>
         public string[] ItemsToExport { get; set; }
 
@@ -91,19 +65,13 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeFiles { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include users in the export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include users in the export file or not.</summary>
         public bool IncludeUsers { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include vocabularies in the export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include vocabularies in the export file or not.</summary>
         public bool IncludeVocabularies { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include page templates in export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include page templates in export file or not.</summary>
         public bool IncludeTemplates { get; set; }
 
         /// <summary>
@@ -112,9 +80,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeProperfileProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to include modules packages in exported file.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to include modules packages in exported file.</summary>
         public bool IncludeExtensions { get; set; }
 
         /// <summary>
@@ -124,14 +90,10 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeRoles { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to incldue permissions with each entity in export file or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to incldue permissions with each entity in export file or not.</summary>
         public bool IncludePermissions { get; set; }
 
-        /// <summary>
-        /// Gets or sets export mode. Differential or Complete.
-        /// </summary>
+        /// <summary>Gets or sets export mode. Differential or Complete.</summary>
         public ExportMode ExportMode { get; set; }
 
         /// <summary>
@@ -156,27 +118,10 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public PageToExport[] Pages { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether whether to run the job immediately or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether whether to run the job immediately or not.</summary>
         public bool RunNow { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether used to determine if the DB file needs cleanup before starting import or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether used to determine if the DB file needs cleanup before starting import or not.</summary>
         public bool IsDirty { get; set; }
-    }
-
-    /// <summary>
-    ///  Spercifies page to be exported.
-    /// </summary>
-    [JsonObject]
-    public class PageToExport
-    {
-        public int TabId { get; set; }
-
-        public int ParentTabId { get; set; }
-
-        public TriCheckedState CheckedState { get; set; }
     }
 }

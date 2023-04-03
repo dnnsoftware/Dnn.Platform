@@ -18,13 +18,14 @@ namespace Dnn.Modules.Console
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Common;
-    using DotNetNuke.Web.UI.WebControls;
     using DotNetNuke.Web.UI.WebControls.Internal;
 
+    /// <summary>Loads and saves the module settings.</summary>
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
+        /// <inheritdoc/>
         public override void LoadSettings()
         {
             try
@@ -39,7 +40,6 @@ namespace Dnn.Modules.Console
 
                     foreach (string val in ConsoleController.GetSizeValues())
                     {
-                        // DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultSize.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
 
@@ -54,7 +54,6 @@ namespace Dnn.Modules.Console
 
                     foreach (var val in ConsoleController.GetViewValues())
                     {
-                        // DefaultView.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultView.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
 
@@ -92,23 +91,24 @@ namespace Dnn.Modules.Console
                     this.SwitchMode();
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception ex)
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
 
+        /// <inheritdoc/>
         public override void UpdateSettings()
         {
             try
             {
                 // validate console width value
-                var wdth = string.Empty;
+                var width = string.Empty;
                 if (this.ConsoleWidth.Text.Trim().Length > 0)
                 {
                     try
                     {
-                        wdth = Unit.Parse(this.ConsoleWidth.Text.Trim()).ToString();
+                        width = Unit.Parse(this.ConsoleWidth.Text.Trim()).ToString();
                     }
                     catch (Exception exc)
                     {
@@ -136,7 +136,7 @@ namespace Dnn.Modules.Console
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "OrderTabsByHierarchy", this.OrderTabsByHierarchy.Checked.ToString(CultureInfo.InvariantCulture));
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "IncludeHiddenPages", this.IncludeHiddenPages.Checked.ToString(CultureInfo.InvariantCulture));
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "IncludeParent", this.IncludeParent.Checked.ToString(CultureInfo.InvariantCulture));
-                ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ConsoleWidth", wdth);
+                ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ConsoleWidth", width);
 
                 foreach (RepeaterItem item in this.tabs.Items)
                 {
@@ -156,19 +156,15 @@ namespace Dnn.Modules.Console
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            this.tabs.ItemDataBound += this.tabs_ItemDataBound;
-            this.modeList.SelectedIndexChanged += this.modeList_SelectedIndexChanged;
+            this.tabs.ItemDataBound += this.TabsItemDataBound;
+            this.modeList.SelectedIndexChanged += this.ModeListSelectedIndexChanged;
 
             this.ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
-        }
-
-        protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
         }
 
         private void BindTabs(int tabId, bool includeParent)
@@ -247,12 +243,12 @@ namespace Dnn.Modules.Console
             this.BindTabs(parentTabId, this.IncludeParent.Checked);
         }
 
-        private void modeList_SelectedIndexChanged(object sender, EventArgs e)
+        private void ModeListSelectedIndexChanged(object sender, EventArgs e)
         {
             this.SwitchMode();
         }
 
-        private void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)
+        private void TabsItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
@@ -264,19 +260,14 @@ namespace Dnn.Modules.Console
 
                 visibilityDropDown.Items.Clear();
 
-                // visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));
                 visibilityDropDown.AddItem(this.LocalizeString("AllUsers"), "AllUsers");
                 if (this.modeList.SelectedValue == "Profile")
                 {
-                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Friends"), "Friends"));
-                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("User"), "User"));
                     visibilityDropDown.AddItem(this.LocalizeString("Friends"), "Friends");
                     visibilityDropDown.AddItem(this.LocalizeString("User"), "User");
                 }
                 else
                 {
-                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Owner"), "Owner"));
-                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Members"), "Members"));
                     visibilityDropDown.AddItem(this.LocalizeString("Owner"), "Owner");
                     visibilityDropDown.AddItem(this.LocalizeString("Members"), "Members");
                 }

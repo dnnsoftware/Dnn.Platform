@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
     using System.Web;
@@ -16,11 +15,10 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     /// </summary>
     public class SimpleWebFarmSynchronizationHandler : IHttpHandler
     {
-        /// <summary>
-        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests.
-        /// </summary>
+        /// <summary>    Gets a value indicating whether indicates that this handler can be reused for multiple requests.</summary>
         public bool IsReusable => true;
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             // Validate the request for required inputs, return if no action possible

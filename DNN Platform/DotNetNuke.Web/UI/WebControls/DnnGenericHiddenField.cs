@@ -13,9 +13,9 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnGenericHiddenField<T> : HiddenField
         where T : class, new()
     {
-        private T _typedValue = null;
+        private T typedValue = null;
 
-        private bool _isValueSerialized = false;
+        private bool isValueSerialized = false;
 
         public T TypedValueOrDefault
         {
@@ -27,41 +27,45 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool HasValue
         {
-            get { return this._typedValue != null; }
+            get { return this.typedValue != null; }
         }
 
         public T TypedValue
         {
             get
             {
-                return this._typedValue;
+                return this.typedValue;
             }
 
             set
             {
-                this._typedValue = value;
-                this._isValueSerialized = false;
+                this.typedValue = value;
+                this.isValueSerialized = false;
             }
         }
 
+        /// <inheritdoc/>
         public override void RenderControl(HtmlTextWriter writer)
         {
             this.EnsureValue();
             base.RenderControl(writer);
         }
 
+        /// <inheritdoc/>
         protected override object SaveViewState()
         {
             this.EnsureValue();
             return base.SaveViewState();
         }
 
+        /// <inheritdoc/>
         protected override void LoadViewState(object savedState)
         {
             base.LoadViewState(savedState);
             this.SetTypedValue();
         }
 
+        /// <inheritdoc/>
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var controlsStateChanged = base.LoadPostData(postDataKey, postCollection);
@@ -73,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return controlsStateChanged;
         }
 
+        /// <inheritdoc/>
         protected override void TrackViewState()
         {
             this.EnsureValue();
@@ -81,12 +86,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void SetTypedValue()
         {
-            this._typedValue = string.IsNullOrEmpty(this.Value) ? null : Json.Deserialize<T>(this.Value);
+            this.typedValue = string.IsNullOrEmpty(this.Value) ? null : Json.Deserialize<T>(this.Value);
         }
 
         private void EnsureValue()
         {
-            if (!this._isValueSerialized)
+            if (!this.isValueSerialized)
             {
                 this.SerializeValue();
             }
@@ -94,8 +99,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void SerializeValue()
         {
-            this.Value = this._typedValue == null ? string.Empty : Json.Serialize(this._typedValue);
-            this._isValueSerialized = true;
+            this.Value = this.typedValue == null ? string.Empty : Json.Serialize(this.typedValue);
+            this.isValueSerialized = true;
         }
     }
 }

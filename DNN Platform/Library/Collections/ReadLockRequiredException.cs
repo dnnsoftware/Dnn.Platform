@@ -5,6 +5,8 @@ namespace DotNetNuke.Collections.Internal
 {
     using System;
 
+    /// <summary>Thrown when a read lock is required but can't be obtained.</summary>
     public class ReadLockRequiredException : Exception
-    {}
+    {
+    }
 }

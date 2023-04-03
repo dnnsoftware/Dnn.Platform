@@ -6,8 +6,10 @@ namespace DotNetNuke.Tests.Core
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Reflection;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -15,14 +17,11 @@ namespace DotNetNuke.Tests.Core
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using ICSharpCode.SharpZipLib.Zip;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   FileSystemUtilsTests.
-    /// </summary>
+    /// <summary>  FileSystemUtilsTests.</summary>
     [TestFixture]
     public class FileSystemUtilsTests
     {
@@ -59,6 +58,7 @@ namespace DotNetNuke.Tests.Core
         [TestCase("\\Test\\mmm\\..\\..\\")]
         [TestCase("\\Test\\")]
         [TestCase("..\\")]
+
         public void DeleteFiles_Should_Not_Able_To_Delete_Root_Folder(string path)
         {
             // Action
@@ -77,8 +77,7 @@ namespace DotNetNuke.Tests.Core
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
             {
-                var zipStream = new ZipOutputStream(stream);
-                zipStream.SetLevel(9);
+                var zipStream = new ZipArchive(stream, ZipArchiveMode.Create, true);
 
                 foreach (var file in files)
                 {
@@ -86,8 +85,7 @@ namespace DotNetNuke.Tests.Core
                     FileSystemUtils.AddToZip(ref zipStream, file, fileName, string.Empty);
                 }
 
-                zipStream.Finish();
-                zipStream.Close();
+                zipStream.Dispose();
             }
 
             // Assert
@@ -101,9 +99,9 @@ namespace DotNetNuke.Tests.Core
             {
                 using (var stream = File.OpenRead(zipFilePath))
                 {
-                    var zipStream = new ZipInputStream(stream);
+                    var zipStream = new ZipArchive(stream, ZipArchiveMode.Read, true);
                     FileSystemUtils.UnzipResources(zipStream, destPath);
-                    zipStream.Close();
+                    zipStream.Dispose();
                 }
 
                 var unZippedFiles = Directory.GetFiles(destPath, "*.*", SearchOption.TopDirectoryOnly);

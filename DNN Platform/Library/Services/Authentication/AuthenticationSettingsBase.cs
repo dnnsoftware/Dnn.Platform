@@ -6,40 +6,30 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationSettingsBase class provides a base class for Authentiication
+    /// The AuthenticationSettingsBase class provides a base class for Authentication
     /// Settings controls.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class AuthenticationSettingsBase : PortalModuleBase
     {
-        private string _AuthenticationType = Null.NullString;
+        private string authenticationType = Null.NullString;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the Type of Authentication associated with this control.</summary>
         public string AuthenticationType
         {
             get
             {
-                return this._AuthenticationType;
+                return this.authenticationType;
             }
 
             set
             {
-                this._AuthenticationType = value;
+                this.authenticationType = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateSettings updates the settings in the Data Store.
-        /// </summary>
+        /// <summary>UpdateSettings updates the settings in the Data Store.</summary>
         /// <remarks>This method must be overriden in the inherited class.</remarks>
-        /// -----------------------------------------------------------------------------
         public abstract void UpdateSettings();
     }
 }

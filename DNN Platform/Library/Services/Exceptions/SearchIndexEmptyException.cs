@@ -8,6 +8,8 @@ namespace DotNetNuke.Services.Exceptions
 
     public class SearchIndexEmptyException : Exception
     {
+        /// <summary>Initializes a new instance of the <see cref="SearchIndexEmptyException"/> class.</summary>
+        /// <param name="message"></param>
         public SearchIndexEmptyException(string message)
             : base(message)
         {

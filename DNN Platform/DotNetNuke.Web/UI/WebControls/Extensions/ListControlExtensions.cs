@@ -69,9 +69,7 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
             }
         }
 
-        /// <summary>
-        /// Use this method instead of ListItemCollection.FindByText to find the specific item with case-insensitive.
-        /// </summary>
+        /// <summary>Use this method instead of ListItemCollection.FindByText to find the specific item with case-insensitive.</summary>
         /// <param name="listItems">the items.</param>
         /// <param name="text">the item with this text want to find.</param>
         /// <returns>the specific item or null if didn't match the text with any item.</returns>
@@ -80,9 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
             return listItems.Cast<ListItem>().FirstOrDefault(item => item.Text.Equals(text, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        /// <summary>
-        /// Use this method instead of ListItemCollection.FindBValue to find the specific item with case-insensitive.
-        /// </summary>
+        /// <summary>Use this method instead of ListItemCollection.FindBValue to find the specific item with case-insensitive.</summary>
         /// <param name="listItems">the items.</param>
         /// <param name="value">the item with this value want to find.</param>
         /// <returns>the specific item or null if didn't match the value with any item.</returns>

@@ -7,77 +7,72 @@ namespace DotNetNuke.Modules.Html.Components
     using System;
     using System.Data;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module.</summary>
     public class DataProvider
     {
         // singleton reference to the instantiated object
-        private static readonly DataProvider provider;
+        private static readonly DataProvider Provider;
 
         // constructor
         static DataProvider()
         {
-            provider = new DataProvider();
+            Provider = new DataProvider();
         }
 
         // return the provider
         public static DataProvider Instance()
         {
-            return provider;
+            return Provider;
         }
 
-        public virtual IDataReader GetHtmlText(int ModuleID, int ItemID)
+        public virtual IDataReader GetHtmlText(int moduleID, int itemID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetHtmlText", ModuleID, ItemID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetHtmlText", moduleID, itemID);
         }
 
-        public virtual IDataReader GetTopHtmlText(int ModuleID, bool IsPublished)
+        public virtual IDataReader GetTopHtmlText(int moduleID, bool isPublished)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetTopHtmlText", ModuleID, IsPublished);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetTopHtmlText", moduleID, isPublished);
         }
 
-        public virtual IDataReader GetAllHtmlText(int ModuleID)
+        public virtual IDataReader GetAllHtmlText(int moduleID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetAllHtmlText", ModuleID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetAllHtmlText", moduleID);
         }
 
-        public virtual int AddHtmlText(int ModuleID, string Content, string Summary, int StateID, bool IsPublished, int CreatedByUserID, int History)
+        public virtual int AddHtmlText(int moduleID, string content, string summary, int stateID, bool isPublished, int createdByUserID, int history)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteScalar<int>("AddHtmlText", ModuleID, Content, Summary, StateID, IsPublished, CreatedByUserID, History);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteScalar<int>("AddHtmlText", moduleID, content, summary, stateID, isPublished, createdByUserID, history);
         }
 
-        public virtual void UpdateHtmlText(int ItemID, string Content, string Summary, int StateID, bool IsPublished, int LastModifiedByUserID)
+        public virtual void UpdateHtmlText(int itemID, string content, string summary, int stateID, bool isPublished, int lastModifiedByUserID)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("UpdateHtmlText", ItemID, Content, Summary, StateID, IsPublished, LastModifiedByUserID);
+            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("UpdateHtmlText", itemID, content, summary, stateID, isPublished, lastModifiedByUserID);
         }
 
-        public virtual void DeleteHtmlText(int ModuleID, int ItemID)
+        public virtual void DeleteHtmlText(int moduleID, int itemID)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("DeleteHtmlText", ModuleID, ItemID);
+            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("DeleteHtmlText", moduleID, itemID);
         }
 
-        public virtual IDataReader GetHtmlTextLog(int ItemID)
+        public virtual IDataReader GetHtmlTextLog(int itemID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetHtmlTextLog", ItemID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetHtmlTextLog", itemID);
         }
 
-        public virtual void AddHtmlTextLog(int ItemID, int StateID, string Comment, bool Approved, int CreatedByUserID)
+        public virtual void AddHtmlTextLog(int itemID, int stateID, string comment, bool approved, int createdByUserID)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("AddHtmlTextLog", ItemID, StateID, Comment, Approved, CreatedByUserID);
+            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("AddHtmlTextLog", itemID, stateID, comment, approved, createdByUserID);
         }
 
-        public virtual IDataReader GetHtmlTextUser(int UserID)
+        public virtual IDataReader GetHtmlTextUser(int userID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetHtmlTextUser", UserID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetHtmlTextUser", userID);
         }
 
-        public virtual void AddHtmlTextUser(int ItemID, int StateID, int ModuleID, int TabID, int UserID)
+        public virtual void AddHtmlTextUser(int itemID, int stateID, int moduleID, int tabID, int userID)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("AddHtmlTextUser", ItemID, StateID, ModuleID, TabID, UserID);
+            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("AddHtmlTextUser", itemID, stateID, moduleID, tabID, userID);
         }
 
         public virtual void DeleteHtmlTextUsers()
@@ -85,14 +80,14 @@ namespace DotNetNuke.Modules.Html.Components
             DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("DeleteHtmlTextUsers");
         }
 
-        public virtual IDataReader GetWorkflows(int PortalID)
+        public virtual IDataReader GetWorkflows(int portalID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflows", PortalID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflows", portalID);
         }
 
-        public virtual IDataReader GetWorkflowStates(int WorkflowID)
+        public virtual IDataReader GetWorkflowStates(int workflowID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStates", WorkflowID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStates", workflowID);
         }
 
         public virtual IDataReader GetWorkflowStatePermissions()
@@ -100,9 +95,9 @@ namespace DotNetNuke.Modules.Html.Components
             return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStatePermissions");
         }
 
-        public virtual IDataReader GetWorkflowStatePermissionsByStateID(int StateID)
+        public virtual IDataReader GetWorkflowStatePermissionsByStateID(int stateID)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStatePermissionsByStateID", StateID);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStatePermissionsByStateID", stateID);
         }
     }
 }

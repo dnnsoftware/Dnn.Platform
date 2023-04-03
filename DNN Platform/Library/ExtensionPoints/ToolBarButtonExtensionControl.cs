@@ -21,6 +21,7 @@ namespace DotNetNuke.ExtensionPoints
         [DefaultValue(false)]
         public bool IsHost { get; set; }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter output)
         {
             var extensionPointManager = new ExtensionPointManager();
@@ -49,6 +50,7 @@ namespace DotNetNuke.ExtensionPoints
             output.Write(str.ToString());
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.RenderContents(writer);

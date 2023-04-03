@@ -1,14 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable CheckNamespace
-namespace DotNetNuke.Modules.Admin.Modules
 
-// ReSharper restore CheckNamespace
+namespace DotNetNuke.Modules.Admin.Modules
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -16,6 +15,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -38,20 +38,19 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private int _moduleId = -1;
-        private Control _control;
-        private ModuleInfo _module;
+        private int moduleId = -1;
+        private Control control;
+        private ModuleInfo module;
 
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
@@ -62,14 +61,14 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private ModuleInfo Module
         {
-            get { return this._module ?? (this._module = ModuleController.Instance.GetModule(this._moduleId, this.TabId, false)); }
+            get { return this.module ?? (this.module = ModuleController.Instance.GetModule(this.moduleId, this.TabId, false)); }
         }
 
         private ISettingsControl SettingsControl
         {
             get
             {
-                return this._control as ISettingsControl;
+                return this.control as ISettingsControl;
             }
         }
 
@@ -77,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
             }
         }
 
@@ -89,7 +88,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 var index = 0;
                 TabController.Instance.PopulateBreadCrumbs(ref tab);
-                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
+                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.IsSuperTab ? Host.HostPortalID : tab.PortalID)
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
                 var portalSettings = new PortalSettings(tab.PortalID)
@@ -97,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     PortalAlias = defaultAlias,
                 };
 
-                var tabUrl = this._navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
+                var tabUrl = this.navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
 
                 foreach (TabInfo t in tab.BreadCrumbs)
                 {
@@ -143,6 +142,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             return this.ModuleContext.Configuration.IsShared && this.ModuleContext.Configuration.IsShareableViewOnly;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 // get ModuleId
                 if (this.Request.QueryString["ModuleId"] != null)
                 {
-                    this._moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
+                    this.moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
                 }
 
                 if (this.Module.ContentItemId == Null.NullInteger && this.Module.ModuleID != Null.NullInteger)
@@ -190,9 +190,9 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-                        this._control = ModuleControlFactory.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
+                        this.control = ModuleControlFactory.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
 
-                        var settingsControl = this._control as ISettingsControl;
+                        var settingsControl = this.control as ISettingsControl;
                         if (settingsControl != null)
                         {
                             this.hlSpecificSettings.Text = Localization.GetString(
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                         this.Module.DesktopModule.FriendlyName);
                             }
 
-                            this.pnlSpecific.Controls.Add(this._control);
+                            this.pnlSpecific.Controls.Add(this.control);
                         }
                     }
                 }
@@ -217,6 +217,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -225,7 +226,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 this.cancelHyperLink.NavigateUrl = this.ReturnURL;
 
-                if (this._moduleId != -1)
+                if (this.moduleId != -1)
                 {
                     this.ctlAudit.Entity = this.Module;
                 }
@@ -235,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.ctlIcon.FileFilter = Globals.glbImageFileTypes;
 
                     this.dgPermissions.TabId = this.PortalSettings.ActiveTab.TabID;
-                    this.dgPermissions.ModuleID = this._moduleId;
+                    this.dgPermissions.ModuleID = this.moduleId;
 
                     this.BindModulePages();
 
@@ -276,7 +277,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         this.cboTab.Enabled = false;
                     }
 
-                    if (this._moduleId != -1)
+                    if (this.moduleId != -1)
                     {
                         this.BindData();
                         this.cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(this.Module) ||
@@ -348,7 +349,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             try
             {
-                ModuleController.Instance.DeleteTabModule(this.TabId, this._moduleId, true);
+                ModuleController.Instance.DeleteTabModule(this.TabId, this.moduleId, true);
                 this.Response.Redirect(this.ReturnURL, true);
             }
             catch (Exception exc)
@@ -384,7 +385,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         this.cboTab.Enabled = false;
                     }
 
-                    this.Module.ModuleID = this._moduleId;
+                    this.Module.ModuleID = this.moduleId;
                     this.Module.ModuleTitle = this.txtTitle.Text;
                     this.Module.Alignment = this.cboAlign.SelectedItem.Value;
                     this.Module.Color = this.txtColor.Text;
@@ -520,11 +521,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         if (this.TabId != newTabId)
                         {
                             // First check if there already is an instance of the module on the target page
-                            var tmpModule = ModuleController.Instance.GetModule(this._moduleId, newTabId, false);
+                            var tmpModule = ModuleController.Instance.GetModule(this.moduleId, newTabId, false);
                             if (tmpModule == null)
                             {
                                 // Move module
-                                ModuleController.Instance.MoveModule(this._moduleId, this.TabId, newTabId, Globals.glbDefaultPane);
+                                ModuleController.Instance.MoveModule(this.moduleId, this.TabId, newTabId, Globals.glbDefaultPane);
                             }
                             else
                             {
@@ -545,7 +546,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             {
                                 foreach (var destinationTab in listTabs)
                                 {
-                                    var module = ModuleController.Instance.GetModule(this._moduleId, destinationTab.TabID, false);
+                                    var module = ModuleController.Instance.GetModule(this.moduleId, destinationTab.TabID, false);
                                     if (module != null)
                                     {
                                         if (module.IsDeleted)
@@ -565,7 +566,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                         else
                         {
-                            ModuleController.Instance.DeleteAllModules(this._moduleId, this.TabId, listTabs, true, false, false);
+                            ModuleController.Instance.DeleteAllModules(this.moduleId, this.TabId, listTabs, true, false, false);
                         }
                     }
 
@@ -589,6 +590,9 @@ namespace DotNetNuke.Modules.Admin.Modules
             this.webSliceTTL.Visible = this.chkWebSlice.Checked;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void dgOnTabs_PageIndexChanging(object sender, System.Web.UI.WebControls.GridViewPageEventArgs e)
         {
             this.dgOnTabs.PageIndex = e.NewPageIndex;
@@ -710,7 +714,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void BindModulePages()
         {
-            var tabsByModule = TabController.Instance.GetTabsByModuleID(this._moduleId);
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(this.moduleId);
             tabsByModule.Remove(this.TabId);
             this.dgOnTabs.DataSource = tabsByModule.Values;
             this.dgOnTabs.DataBind();

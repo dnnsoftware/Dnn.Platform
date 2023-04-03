@@ -69,7 +69,6 @@ class ExtensionDetailRow extends Component {
                         isHost={props.isHost}
                         packageId={state.usagePackageId}
                         packageName={state.usagePackageName}
-                        fixedHeight={500}
                         isOpened={state.inUseModalOpen}
                         onClose={this.toggleInUseModal.bind(this)}>
                     </InUseModal>

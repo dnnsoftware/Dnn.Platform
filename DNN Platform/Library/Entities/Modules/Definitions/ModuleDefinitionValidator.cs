@@ -78,10 +78,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
             return retValue;
         }
 
-        public override bool Validate(Stream XmlStream)
+        /// <inheritdoc/>
+        public override bool Validate(Stream xmlStream)
         {
-            this.SchemaSet.Add(string.Empty, this.GetDnnSchemaPath(XmlStream));
-            return base.Validate(XmlStream);
+            this.SchemaSet.Add(string.Empty, this.GetDnnSchemaPath(xmlStream));
+            return base.Validate(xmlStream);
         }
 
         private static string GetLocalizedString(string key)
@@ -97,9 +98,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         private string GetDnnSchemaPath(Stream xmlStream)
         {
-            ModuleDefinitionVersion Version = this.GetModuleDefinitionVersion(xmlStream);
+            ModuleDefinitionVersion version = this.GetModuleDefinitionVersion(xmlStream);
             string schemaPath = string.Empty;
-            switch (Version)
+            switch (version)
             {
                 case ModuleDefinitionVersion.V2:
                     schemaPath = "components\\ResourceInstaller\\ModuleDef_V2.xsd";

@@ -15,8 +15,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     public class DnnFormToggleButtonItem : DnnFormItemBase
     {
         // private DnnRadButton _checkBox;
-        private CheckBox _checkBox;
+        private CheckBox checkBox;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnFormToggleButtonItem"/> class.</summary>
         public DnnFormToggleButtonItem()
         {
             this.Mode = CheckBoxMode.TrueFalse;
@@ -31,16 +32,17 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public CheckBoxMode Mode { get; set; }
 
+        /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
             // _checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
-            this._checkBox = new CheckBox { ID = this.ID + "_CheckBox", AutoPostBack = false };
+            this.checkBox = new CheckBox { ID = this.ID + "_CheckBox", AutoPostBack = false };
 
-            this._checkBox.CheckedChanged += this.CheckedChanged;
-            container.Controls.Add(this._checkBox);
+            this.checkBox.CheckedChanged += this.CheckedChanged;
+            container.Controls.Add(this.checkBox);
 
             // Load from ControlState
-            if (!this._checkBox.Page.IsPostBack)
+            if (!this.checkBox.Page.IsPostBack)
             {
             }
 
@@ -51,18 +53,19 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     var stringValue = this.Value as string;
                     if (stringValue != null)
                     {
-                        this._checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
+                        this.checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
 
                     break;
                 default:
-                    this._checkBox.Checked = Convert.ToBoolean(this.Value);
+                    this.checkBox.Checked = Convert.ToBoolean(this.Value);
                     break;
             }
 
-            return this._checkBox;
+            return this.checkBox;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -76,13 +79,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             switch (this.Mode)
             {
                 case CheckBoxMode.YN:
-                    newValue = this._checkBox.Checked ? "Y" : "N";
+                    newValue = this.checkBox.Checked ? "Y" : "N";
                     break;
                 case CheckBoxMode.YesNo:
-                    newValue = this._checkBox.Checked ? "Yes" : "No";
+                    newValue = this.checkBox.Checked ? "Yes" : "No";
                     break;
                 default:
-                    newValue = this._checkBox.Checked ? "true" : "false";
+                    newValue = this.checkBox.Checked ? "true" : "false";
                     break;
             }
 

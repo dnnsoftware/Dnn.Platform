@@ -6,7 +6,7 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum DeletedTabHandlingType
     {
-        Do301RedirectToPortalHome,
-        Do404Error,
+        Do301RedirectToPortalHome = 0,
+        Do404Error = 1,
     }
 }

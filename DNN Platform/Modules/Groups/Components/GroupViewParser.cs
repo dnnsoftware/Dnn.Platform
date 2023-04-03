@@ -19,6 +19,12 @@ namespace DotNetNuke.Modules.Groups.Components
 
     public class GroupViewParser
     {
+        /// <summary>Initializes a new instance of the <see cref="GroupViewParser"/> class.</summary>
+        /// <param name="portalSettings"></param>
+        /// <param name="roleInfo"></param>
+        /// <param name="currentUser"></param>
+        /// <param name="template"></param>
+        /// <param name="groupViewTabId"></param>
         public GroupViewParser(PortalSettings portalSettings, RoleInfo roleInfo, UserInfo currentUser, string template, int groupViewTabId)
         {
             this.PortalSettings = portalSettings;

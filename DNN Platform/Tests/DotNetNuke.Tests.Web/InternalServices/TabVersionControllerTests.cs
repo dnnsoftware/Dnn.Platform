@@ -50,7 +50,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
 
         [Test]
-        [TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        [TestCaseSource(typeof(TestCaseFactory), nameof(TestCaseFactory.TestCases))]
+
         public void GetTabVersions_Verify_User_Preferred_TimeZone(string userPreferredTimeZone, DateTime expectedDateTime)
         {
             // Arrange
@@ -145,7 +146,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
 
         private class TabVersionControllerTestable : TabVersionController
-        {}
+        {
+        }
 
         private class DateUtilsTestable : DateUtils
         {

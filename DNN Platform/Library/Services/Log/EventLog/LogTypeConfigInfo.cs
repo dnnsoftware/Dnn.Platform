@@ -5,13 +5,15 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
+    /// <inheritdoc />
     [Serializable]
-    public class LogTypeConfigInfo : LogTypeInfo
+    public partial class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
     {
-        private string _mailFromAddress;
+        private string mailFromAddress;
 
         public enum NotificationThresholdTimeTypes
         {
@@ -22,6 +24,7 @@ namespace DotNetNuke.Services.Log.EventLog
             Days = 4,
         }
 
+        /// <inheritdoc />
         public DateTime StartDateTime
         {
             get
@@ -29,53 +32,74 @@ namespace DotNetNuke.Services.Log.EventLog
                 switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddSeconds((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddMinutes((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddHours((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(this.NotificationThresholdTime * -1);
+                        return DateTime.Now.AddDays((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     default:
                         return Null.NullDate;
                 }
             }
         }
 
+        /// <inheritdoc />
         public bool EmailNotificationIsActive { get; set; }
 
+        /// <inheritdoc />
         public string MailFromAddress
         {
             get
             {
                 var portalSettings = Globals.GetPortalSettings();
                 return
-                    string.IsNullOrWhiteSpace(this._mailFromAddress)
+                    string.IsNullOrWhiteSpace(this.mailFromAddress)
                     ? (portalSettings == null ? string.Empty : portalSettings.Email)
-                    : this._mailFromAddress;
+                    : this.mailFromAddress;
             }
 
-            set { this._mailFromAddress = value; }
+            set
+            {
+                this.mailFromAddress = value;
+            }
         }
 
+        /// <inheritdoc />
         public string MailToAddress { get; set; }
 
+        /// <inheritdoc />
         public int NotificationThreshold { get; set; }
 
+        /// <inheritdoc />
         public int NotificationThresholdTime { get; set; }
 
-        public NotificationThresholdTimeTypes NotificationThresholdTimeType { get; set; }
+        public NotificationThresholdTimeTypes NotificationThresholdTimeType
+        {
+            get => (NotificationThresholdTimeTypes)((ILogTypeConfigInfo)this).NotificationThresholdTimeType;
+            set => ((ILogTypeConfigInfo)this).NotificationThresholdTimeType = (Abstractions.Logging.NotificationThresholdTimeType)value;
+        }
 
-        public string ID { get; set; }
+        /// <inheritdoc />
+        NotificationThresholdTimeType ILogTypeConfigInfo.NotificationThresholdTimeType { get; set; }
 
+        /// <inheritdoc />
+        string ILogTypeConfigInfo.Id { get; set; }
+
+        /// <inheritdoc />
         public bool LoggingIsActive { get; set; }
 
+        /// <inheritdoc />
         public string LogFileName { get; set; }
 
+        /// <inheritdoc />
         public string LogFileNameWithPath { get; set; }
 
-        public string LogTypePortalID { get; set; }
+        /// <inheritdoc />
+        string ILogTypeConfigInfo.LogTypePortalId { get; set; }
 
+        /// <inheritdoc />
         public string KeepMostRecent { get; set; }
     }
 }

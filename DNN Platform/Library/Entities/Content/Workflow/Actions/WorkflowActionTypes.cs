@@ -4,15 +4,13 @@
 
 namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
-    /// <summary>
-    /// This enum represents the workflow action types.
-    /// </summary>
+    /// <summary>This enum represents the workflow action types.</summary>
     public enum WorkflowActionTypes
     {
-        DiscardWorkflow,
-        CompleteWorkflow,
-        DiscardState,
-        CompleteState,
-        StartWorkflow,
+        DiscardWorkflow = 0,
+        CompleteWorkflow = 1,
+        DiscardState = 2,
+        CompleteState = 3,
+        StartWorkflow = 4,
     }
 }

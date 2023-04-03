@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions.Controls
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
@@ -20,17 +21,18 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class FolderPermissionsGrid : PermissionsGrid
     {
-        protected FolderPermissionCollection FolderPermissions;
-        private string _folderPath = string.Empty;
-        private List<PermissionInfoBase> _permissionsList;
-        private bool _refreshGrid;
-        private IList<PermissionInfo> _systemFolderPermissions;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Permission Collection.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        // ReSharper disable once InconsistentNaming
+        protected FolderPermissionCollection FolderPermissions;
+
+        private string folderPath = string.Empty;
+        private List<PermissionInfoBase> permissionsList;
+        private bool refreshGrid;
+        private IList<PermissionInfo> systemFolderPermissions;
+
+        /// <summary>Gets the Permission Collection.</summary>
         public FolderPermissionCollection Permissions
         {
             get
@@ -43,73 +45,65 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and Sets the path of the Folder.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the path of the Folder.</summary>
         public string FolderPath
         {
             get
             {
-                return this._folderPath;
+                return this.folderPath;
             }
 
             set
             {
-                this._folderPath = value;
-                this._refreshGrid = true;
+                this.folderPath = value;
+                this.refreshGrid = true;
                 this.GetFolderPermissions();
             }
         }
 
+        /// <inheritdoc/>
         protected override List<PermissionInfoBase> PermissionsList
         {
             get
             {
-                if (this._permissionsList == null && this.FolderPermissions != null)
+                if (this.permissionsList == null && this.FolderPermissions != null)
                 {
-                    this._permissionsList = this.FolderPermissions.ToList();
+                    this.permissionsList = this.FolderPermissions.ToList();
                 }
 
-                return this._permissionsList;
+                return this.permissionsList;
             }
         }
 
+        /// <inheritdoc/>
         protected override bool RefreshGrid
         {
             get
             {
-                return this._refreshGrid;
+                return this.refreshGrid;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Overrides the Base method to Generate the Data Grid.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override void GenerateDataGrid()
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the TabPermissions from the Data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the TabPermissions from the Data Store.</summary>
         protected virtual void GetFolderPermissions()
         {
             this.FolderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalId, this.FolderPath));
-            this._permissionsList = null;
+            this.permissionsList = null;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += this.RolePermissionsGrid_ItemDataBound;
         }
 
+        /// <inheritdoc/>
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new FolderPermissionInfo(permission)
@@ -124,16 +118,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.FolderPermissions.Add(objPermission, true);
 
             // Clear Permission List
-            this._permissionsList = null;
+            this.permissionsList = null;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates a Permission.
-        /// </summary>
-        /// <param name="permissions">The permissions collection.</param>
-        /// <param name="user">The user to add.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
             bool isMatch = false;
@@ -159,13 +147,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates a Permission.
-        /// </summary>
-        /// <param name="permissions">The permissions collection.</param>
-        /// <param name="role">The role to add.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             // Search TabPermission Collection for the user
@@ -184,30 +166,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Enabled status of the permission.
-        /// </summary>
-        /// <param name="objPerm">The permission being loaded.</param>
-        /// <param name="role">The role.</param>
-        /// <param name="column">The column of the Grid.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
             return !this.IsImplicitRole(role.PortalID, role.RoleID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Value of the permission.
-        /// </summary>
-        /// <param name="objPerm">The permission being loaded.</param>
-        /// <param name="role">The role.</param>
-        /// <param name="column">The column of the Grid.</param>
-        /// <param name="defaultState">Default State.</param>
-        /// <returns>A Boolean (True or False).</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
             string permission;
@@ -224,35 +189,27 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permission;
         }
 
+        /// <inheritdoc/>
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
             return (permissionInfo.PermissionKey == "WRITE") && PermissionProvider.Instance().SupportsFullControl();
         }
 
+        /// <inheritdoc/>
         protected override bool IsViewPermisison(PermissionInfo permissionInfo)
         {
             return permissionInfo.PermissionKey == "READ";
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the permissions from the Database.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override ArrayList GetPermissions()
         {
             ArrayList perms = PermissionController.GetPermissionsByFolder();
-            this._systemFolderPermissions = perms.Cast<PermissionInfo>().ToList();
+            this.systemFolderPermissions = perms.Cast<PermissionInfo>().ToList();
             return perms;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Load the ViewState.
-        /// </summary>
-        /// <param name="savedState">The saved state.</param>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -269,7 +226,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load FolderPath
                 if (myState[1] != null)
                 {
-                    this._folderPath = Convert.ToString(myState[1]);
+                    this.folderPath = Convert.ToString(myState[1]);
                 }
 
                 // Load FolderPermissions
@@ -291,20 +248,16 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.FolderPermissions.Remove(permissionID, roleID, userID);
 
             // Clear Permission List
-            this._permissionsList = null;
+            this.permissionsList = null;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Saves the ViewState.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override object SaveViewState()
         {
             var allStates = new object[3];
@@ -346,23 +299,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             return allStates;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// returns whether or not the derived grid supports Deny permissions.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return this.IsSystemFolderPermission(permissionInfo);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
-        /// </summary>
+        /// <summary>Parse the Permission Keys used to persist the Permissions in the ViewState.</summary>
         /// <param name="settings">A string array of settings.</param>
-        /// -----------------------------------------------------------------------------
         private FolderPermissionInfo ParseKeys(string[] settings)
         {
             var objFolderPermission = new FolderPermissionInfo();
@@ -382,7 +326,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             return objFolderPermission;
         }
 
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        private void RolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
 
@@ -407,7 +351,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
         {
-            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
+            return this.systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
         }
 
         private bool IsImplicitRole(int portalId, int roleId)

@@ -4,35 +4,21 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
-    using System.Collections.Generic;
     using System.Xml;
 
-    /// <summary>
-    ///   Class for managing an OPML feed outline.
-    /// </summary>
+    /// <summary>Class for managing an OPML feed outline.</summary>
     public class OpmlOutline
     {
-        private string _category = string.Empty;
-        private DateTime _created = DateTime.MinValue;
-        private string _description = string.Empty;
-        private string _language = string.Empty;
-        private string _text = string.Empty;
-        private string _title = string.Empty;
-        private string _type = "rss";
-
+        /// <summary>Initializes a new instance of the <see cref="OpmlOutline"/> class.</summary>
         public OpmlOutline()
         {
             this.Outlines = new OpmlOutlines();
         }
 
-        public string Version
-        {
-            get
-            {
-                return "2.0";
-            }
-        }
+        /// <summary>Gets the OPML outline version.</summary>
+        public string Version => "2.0";
 
+        /// <summary>Gets the OPML outline as an <see cref="XmlElement"/>.</summary>
         public XmlElement ToXml
         {
             get
@@ -102,110 +88,43 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        public string Description
-        {
-            get
-            {
-                return this._description;
-            }
+        /// <summary>Gets or sets the OPML outline description.</summary>
+        public string Description { get; set; } = string.Empty;
 
-            set
-            {
-                this._description = value;
-            }
-        }
+        /// <summary>Gets or sets the OPML outline title.</summary>
+        public string Title { get; set; } = string.Empty;
 
-        public string Title
-        {
-            get
-            {
-                return this._title;
-            }
+        /// <summary>Gets or sets the OPML outline type.</summary>
+        public string Type { get; set; } = "rss";
 
-            set
-            {
-                this._title = value;
-            }
-        }
+        /// <summary>Gets or sets the OPML outline text.</summary>
+        public string Text { get; set; } = string.Empty;
 
-        public string Type
-        {
-            get
-            {
-                return this._type;
-            }
-
-            set
-            {
-                this._type = value;
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return this._text;
-            }
-
-            set
-            {
-                this._text = value;
-            }
-        }
-
+        /// <summary>Gets or sets the OPML outline's HTML URL.</summary>
         public Uri HtmlUrl { get; set; }
 
+        /// <summary>Gets or sets the OPML outline's XML URL.</summary>
         public Uri XmlUrl { get; set; }
 
+        /// <summary>Gets or sets the OPML outline's URL.</summary>
         public Uri Url { get; set; }
 
-        public DateTime Created
-        {
-            get
-            {
-                return this._created;
-            }
+        /// <summary>Gets or sets the creation date for the OPML outline.</summary>
+        public DateTime Created { get; set; } = DateTime.MinValue;
 
-            set
-            {
-                this._created = value;
-            }
-        }
-
+        /// <summary>Gets or sets a value indicating whether this OPML outline is a comment.</summary>
         public bool IsComment { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this OPML outline is a breakpoint.</summary>
         public bool IsBreakpoint { get; set; }
 
-        public string Category
-        {
-            get
-            {
-                return this._category;
-            }
+        /// <summary>Gets or sets the OPML outline category.</summary>
+        public string Category { get; set; } = string.Empty;
 
-            set
-            {
-                this._category = value;
-            }
-        }
+        /// <summary>Gets or sets the OPML outline language.</summary>
+        public string Language { get; set; } = string.Empty;
 
-        public string Language
-        {
-            get
-            {
-                return this._language;
-            }
-
-            set
-            {
-                this._language = value;
-            }
-        }
-
+        /// <summary>Gets or sets the outlines contained in this OPML outline.</summary>
         public OpmlOutlines Outlines { get; set; }
     }
-
-    public class OpmlOutlines : List<OpmlOutline>
-    {}
 }

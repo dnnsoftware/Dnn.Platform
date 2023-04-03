@@ -39,7 +39,7 @@ namespace DotNetNuke.Web
                     assembly => assembly.FullName.StartsWith("DotNetNuke", StringComparison.OrdinalIgnoreCase) ? 0 :
                          assembly.FullName.StartsWith("DNN", StringComparison.OrdinalIgnoreCase) ? 1 : 2)
                 .ThenBy(assembly => assembly.FullName)
-                .SelectMany(assembly => assembly.SafeGetTypes().OrderBy(type => type.FullName ?? type.Name))
+                .SelectMany(assembly => assembly.SafeGetTypes(Logger).OrderBy(type => type.FullName ?? type.Name))
                 .Where(type => typeof(IDnnStartup).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract);
 
             var startupInstances = startupTypes.Select(CreateInstance).Where(x => x != null);

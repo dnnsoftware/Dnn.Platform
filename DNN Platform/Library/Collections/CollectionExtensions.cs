@@ -14,12 +14,9 @@ namespace DotNetNuke.Collections
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Provides a collection of useful extensions to collections.
-    /// </summary>
+    /// <summary>Provides a collection of useful extensions to collections.</summary>
     public static class CollectionExtensions
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CollectionExtensions));
@@ -63,9 +60,7 @@ namespace DotNetNuke.Collections
             return dictionary;
         }
 
-        /// <summary>
-        /// Converts a Dictionary with a string key and a string value into a plain string separated by your choice of separators.
-        /// </summary>
+        /// <summary>Converts a Dictionary with a string key and a string value into a plain string separated by your choice of separators.</summary>
         /// <param name="dictionary">The Dictionary to convert.</param>
         /// <param name="pairsSeparator">The separator to use between key-value pairs.</param>
         /// <param name="pairSeparator">The separator to use between each key and value.</param>
@@ -838,13 +833,11 @@ namespace DotNetNuke.Collections
                              .ToLookup(pair => pair.Key, pair => pair.Value);
         }
 
-        /// <summary>
-        /// Executes an action for each element in the source collection.
-        /// </summary>
+        /// <summary>Executes an action for each element in the source collection.</summary>
         /// <typeparam name="TType">The type of the type.</typeparam>
         /// <param name="source">The source.</param>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
+        /// <returns>The provided source after the action was performed on each element.</returns>
         public static IEnumerable<TType> ForEach<TType>(this IEnumerable<TType> source, Action<TType> action)
         {
             foreach (TType element in source)

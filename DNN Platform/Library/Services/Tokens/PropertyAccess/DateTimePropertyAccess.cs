@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Tokens
 
     public class DateTimePropertyAccess : IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -18,9 +19,10 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        /// <inheritdoc/>
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            TimeZoneInfo userTimeZone = AccessingUser.Profile.PreferredTimeZone;
+            TimeZoneInfo userTimeZone = accessingUser.Profile.PreferredTimeZone;
             switch (propertyName.ToLowerInvariant())
             {
                 case "current":
@@ -52,7 +54,7 @@ namespace DotNetNuke.Services.Tokens
 
                     return DateTime.Now.ToUniversalTime().ToString(format, formatProvider);
                 default:
-                    PropertyNotFound = true;
+                    propertyNotFound = true;
                     return string.Empty;
             }
         }

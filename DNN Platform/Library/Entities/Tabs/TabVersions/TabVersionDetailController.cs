@@ -16,11 +16,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public TabVersionDetail GetTabVersionDetail(int tabVersionDetailId, int tabVersionId, bool ignoreCache = false)
         {
             return this.GetTabVersionDetails(tabVersionId, ignoreCache).SingleOrDefault(tvd => tvd.TabVersionDetailId == tabVersionDetailId);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
         {
             // if we are not using the cache
@@ -37,42 +39,54 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
         }
 
+        /// <inheritdoc/>
         public IEnumerable<TabVersionDetail> GetVersionHistory(int tabId, int version)
         {
             return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetailsHistory(tabId, version));
         }
 
+        /// <inheritdoc/>
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail)
         {
             this.SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);
         }
 
+        /// <inheritdoc/>
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID)
         {
             this.SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
         }
 
+        /// <inheritdoc/>
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
         {
             tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(
                 tabVersionDetail.TabVersionDetailId,
-                tabVersionDetail.TabVersionId, tabVersionDetail.ModuleId, tabVersionDetail.ModuleVersion,
-                tabVersionDetail.PaneName, tabVersionDetail.ModuleOrder, (int)tabVersionDetail.Action, createdByUserID,
+                tabVersionDetail.TabVersionId,
+                tabVersionDetail.ModuleId,
+                tabVersionDetail.ModuleVersion,
+                tabVersionDetail.PaneName,
+                tabVersionDetail.ModuleOrder,
+                (int)tabVersionDetail.Action,
+                createdByUserID,
                 modifiedByUserID);
             this.ClearCache(tabVersionDetail.TabVersionId);
         }
 
+        /// <inheritdoc/>
         public void DeleteTabVersionDetail(int tabVersionId, int tabVersionDetailId)
         {
             Provider.DeleteTabVersionDetail(tabVersionDetailId);
             this.ClearCache(tabVersionId);
         }
 
+        /// <inheritdoc/>
         public void ClearCache(int tabVersionId)
         {
             DataCache.RemoveCache(GetTabVersionDetailCacheKey(tabVersionId));
         }
 
+        /// <inheritdoc/>
         protected override System.Func<ITabVersionDetailController> GetFactory()
         {
             return () => new TabVersionDetailController();

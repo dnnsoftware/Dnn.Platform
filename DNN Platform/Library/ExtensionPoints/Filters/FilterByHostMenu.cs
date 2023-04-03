@@ -8,11 +8,14 @@ namespace DotNetNuke.ExtensionPoints.Filters
     {
         private readonly bool isHostMenu;
 
+        /// <summary>Initializes a new instance of the <see cref="FilterByHostMenu"/> class.</summary>
+        /// <param name="isHostMenu"></param>
         public FilterByHostMenu(bool isHostMenu)
         {
             this.isHostMenu = isHostMenu;
         }
 
+        /// <inheritdoc/>
         public bool Condition(IExtensionPointData m)
         {
             return !this.isHostMenu || !m.DisableOnHost;

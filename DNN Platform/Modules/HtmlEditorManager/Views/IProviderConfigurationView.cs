@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Modules.HtmlEditorManager.Views
 {
     using System;
@@ -10,9 +9,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
     using DotNetNuke.Web.Mvp;
 
-    /// <summary>
-    /// Interface for the Provider Configuration View.
-    /// </summary>
+    /// <summary>Interface for the Provider Configuration View.</summary>
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public interface IProviderConfigurationView : IModuleView<ProviderConfigurationViewModel>
     {
@@ -26,6 +23,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         /// <value>The editor panel.</value>
         PlaceHolder Editor { get; set; }
 
+        /// <summary>Refresh the provider configuration view.</summary>
         void Refresh();
     }
 }

@@ -17,30 +17,39 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
     [ConsoleCommand("move-module", Constants.ModulesCategory, "Prompt_MoveModule_Description")]
+
     public class MoveModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_MoveModule_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_MoveModule_FlagPageId", "Integer", true)]
+
         private const string FlagPageId = "pageid";
 
         [FlagParameter("topageid", "Prompt_MoveModule_FlagToPageId", "Integer", true)]
+
         private const string FlagToPageId = "topageid";
 
         [FlagParameter("pane", "Prompt_MoveModule_FlagPane", "String", "ContentPane")]
+
         private const string FlagPane = "pane";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int ModuleId { get; set; }
+
         private int PageId { get; set; }
+
         private int TargetPageId { get; set; }
+
         private string Pane { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
             this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
             this.TargetPageId = this.GetFlagValue(FlagToPageId, "To Page Id", -1, true, false, true);
@@ -52,6 +61,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var modules = new List<ModuleInfoModel>();
@@ -64,10 +74,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 this.Pane,
                 true,
                 out message,
-                true
-                );
+                true);
             if (movedModule == null && !string.IsNullOrEmpty(message.Value))
+            {
                 return new ConsoleErrorResultModel(message.Value);
+            }
+
             modules.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
             return new ConsoleResultModel(this.LocalizeString("Prompt_ModuleMoved")) { Data = modules, Records = modules.Count };
         }

@@ -12,6 +12,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class HttpHandlerPresenter<TView> : Presenter<TView>
         where TView : class, IHttpHandlerView
     {
+        /// <summary>Initializes a new instance of the <see cref="HttpHandlerPresenter{TView}"/> class.</summary>
+        /// <param name="view">The view.</param>
         protected HttpHandlerPresenter(TView view)
             : base(view)
         {

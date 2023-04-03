@@ -20,9 +20,7 @@ namespace Dnn.PersonaBar.Licensing.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LicensingController));
 
         /// GET: api/Licensing/GetProduct
-        /// <summary>
-        /// Gets product info.
-        /// </summary>
+        /// <summary>Gets product info.</summary>
         /// <param></param>
         /// <returns>product info.</returns>
         [HttpGet]
@@ -37,8 +35,8 @@ namespace Dnn.PersonaBar.Licensing.Services
                     {
                         DotNetNukeContext.Current.Application.Name,
                         DotNetNukeContext.Current.Application.SKU,
-                        DotNetNukeContext.Current.Application.Description
-                    }
+                        DotNetNukeContext.Current.Application.Description,
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

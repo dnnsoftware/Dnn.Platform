@@ -9,45 +9,42 @@ namespace DotNetNuke.Services.Installer.Dependencies
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageDependency determines whether the dependent package is installed.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageDependency determines whether the dependent package is installed.</summary>
     public class PackageDependency : DependencyBase
     {
-        private string PackageName;
+        private string packageName;
 
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
             {
-                return Util.INSTALL_Package + " - " + this.PackageName;
+                return Util.INSTALL_Package + " - " + this.packageName;
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
             {
-                bool _IsValid = true;
+                bool isValid = true;
 
                 // Get Package from DataStore
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name.Equals(this.PackageName, StringComparison.OrdinalIgnoreCase));
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name.Equals(this.packageName, StringComparison.OrdinalIgnoreCase));
                 if (package == null)
                 {
-                    _IsValid = false;
+                    isValid = false;
                 }
 
-                return _IsValid;
+                return isValid;
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            this.PackageName = dependencyNav.Value;
+            this.packageName = dependencyNav.Value;
         }
     }
 }

@@ -9,9 +9,7 @@ namespace Dnn.PersonaBar.Security.MenuControllers
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
 
-    /// <summary>
-    /// Controls the security menu.
-    /// </summary>
+    /// <summary>Controls the security menu.</summary>
     public class SecurityMenuController : IMenuItemController
     {
         /// <inheritdoc/>

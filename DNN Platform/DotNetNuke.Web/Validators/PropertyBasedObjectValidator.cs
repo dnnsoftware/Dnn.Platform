@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Validators
 
     public abstract class PropertyBasedObjectValidator : ObjectValidator
     {
+        /// <inheritdoc/>
         public override ValidationResult ValidateObject(object target)
         {
             return target.GetType().GetProperties().Aggregate(ValidationResult.Successful, (result, member) => result.CombineWith(this.ValidateProperty(target, member) ?? ValidationResult.Successful));

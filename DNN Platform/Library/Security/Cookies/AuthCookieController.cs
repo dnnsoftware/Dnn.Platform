@@ -14,8 +14,9 @@ namespace DotNetNuke.Security.Cookies
 
     public class AuthCookieController : ServiceLocator<IAuthCookieController, AuthCookieController>, IAuthCookieController
     {
-        private readonly DataProvider _dataProvider = DataProvider.Instance();
+        private readonly DataProvider dataProvider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public void Update(string cookieValue, DateTime utcExpiry, int userId)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -24,9 +25,10 @@ namespace DotNetNuke.Security.Cookies
             }
 
             DataCache.ClearCache(GetKey(cookieValue));
-            this._dataProvider.UpdateAuthCookie(cookieValue, utcExpiry, userId);
+            this.dataProvider.UpdateAuthCookie(cookieValue, utcExpiry, userId);
         }
 
+        /// <inheritdoc/>
         public PersistedAuthCookie Find(string cookieValue)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -35,10 +37,15 @@ namespace DotNetNuke.Security.Cookies
             }
 
             return CBO.Instance.GetCachedObject<PersistedAuthCookie>(
-                new CacheItemArgs(GetKey(cookieValue), (int)FormsAuthentication.Timeout.TotalMinutes, CacheItemPriority.AboveNormal),
-                _ => CBO.Instance.FillObject<PersistedAuthCookie>(this._dataProvider.FindAuthCookie(cookieValue)), false);
+                new CacheItemArgs(
+                    GetKey(cookieValue),
+                    (int)FormsAuthentication.Timeout.TotalMinutes,
+                    CacheItemPriority.AboveNormal),
+                _ => CBO.Instance.FillObject<PersistedAuthCookie>(this.dataProvider.FindAuthCookie(cookieValue)),
+                false);
         }
 
+        /// <inheritdoc/>
         public void DeleteByValue(string cookieValue)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -48,14 +55,16 @@ namespace DotNetNuke.Security.Cookies
 
             // keep in cache so hacking tries don't hit the database; it will expire automatically
             // DataCache.ClearCache(GetKey(cookieValue));
-            this._dataProvider.DeleteAuthCookie(cookieValue);
+            this.dataProvider.DeleteAuthCookie(cookieValue);
         }
 
+        /// <inheritdoc/>
         public void DeleteExpired(DateTime utcExpiredBefore)
         {
-            this._dataProvider.DeleteExpiredAuthCookies(utcExpiredBefore);
+            this.dataProvider.DeleteExpiredAuthCookies(utcExpiredBefore);
         }
 
+        /// <inheritdoc/>
         protected override Func<IAuthCookieController> GetFactory()
         {
             return () => new AuthCookieController();

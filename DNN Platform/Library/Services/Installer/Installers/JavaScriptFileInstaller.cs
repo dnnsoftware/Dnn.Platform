@@ -4,19 +4,14 @@
 
 namespace DotNetNuke.Services.Installer.Installers
 {
-    using System;
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
 
     public class JavaScriptFileInstaller : FileInstaller
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
@@ -25,12 +20,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("jsfiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("jsfiles").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -39,12 +30,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("jsfile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("jsfile").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -53,13 +40,11 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadCustomManifest method reads the custom manifest items (that subclasses
         /// of FileInstaller may need).
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
             XPathNavigator libraryNav = nav.SelectSingleNode("libraryFolderName");

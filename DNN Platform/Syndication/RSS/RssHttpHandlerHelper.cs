@@ -7,16 +7,18 @@ namespace DotNetNuke.Services.Syndication
     using System.Web;
     using System.Web.Security;
 
-    /// <summary>
-    ///   Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string.
-    /// </summary>
+    /// <summary>Helper class (for <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}"/>) to pack and unpack user name and channel to from/to query string.</summary>
     public class RssHttpHandlerHelper
     {
         private RssHttpHandlerHelper()
         {
         }
 
-        // helper to generate link [to the .ashx] containing channel name and (encoded) userName
+        /// <summary>Generate the link (to the .ashx) containing the channel name and (encoded) userName.</summary>
+        /// <param name="handlerPath">The handler path.</param>
+        /// <param name="channelName">The channel name.</param>
+        /// <param name="userName">The user name.</param>
+        /// <returns>A URL to the channel.</returns>
         public static string GenerateChannelLink(string handlerPath, string channelName, string userName)
         {
             string link = VirtualPathUtility.ToAbsolute(handlerPath);
@@ -36,7 +38,7 @@ namespace DotNetNuke.Services.Syndication
                 }
 
                 userName = "." + userName; // not to confuse the encrypted string with real auth ticket for real user
-                DateTime ticketDate = DateTime.Now.AddDays(-100); // already expried
+                DateTime ticketDate = DateTime.Now.AddDays(-100); // already expired
 
                 var t = new FormsAuthenticationTicket(2, userName, ticketDate, ticketDate.AddDays(2), false, channelName, "/");
 
@@ -46,6 +48,10 @@ namespace DotNetNuke.Services.Syndication
             return link;
         }
 
+        /// <summary>Parses the channel's query-string to extract the channel name and user name.</summary>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="channelName">The channel name.</param>
+        /// <param name="userName">The user name or <see cref="string.Empty"/>.</param>
         internal static void ParseChannelQueryString(HttpRequest request, out string channelName, out string userName)
         {
             string ticket = request.QueryString["t"];

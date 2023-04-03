@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
 
     public class EmailValidator
     {
-        private bool _invalid;
+        private bool invalid;
 
         public bool IsValid(string emailToTest)
         {
@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
                 return false;
             }
 
-            if (this._invalid)
+            if (this.invalid)
             {
                 return false;
             }
@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             }
             catch (Exception)
             {
-                this._invalid = true;
+                this.invalid = true;
             }
 
             return match.Groups[1].Value + domainName;

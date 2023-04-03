@@ -25,64 +25,6 @@ else if (Sys.Browser.agent === Sys.Browser.InternetExplorer && Sys.Browser.versi
     }
 }
 
-//This is temp fix for jQuery UI issue: http://bugs.jqueryui.com/ticket/9315
-//this code can be safe removed after jQuery UI library upgrade to 1.11.
-if ($ && $.ui && $.ui.dialog) {
-    $.extend($.ui.dialog.prototype.options, {
-        open: function () {
-            var htmlElement = $(document).find('html');
-            htmlElement.css('overflow', 'hidden');
-            var cacheScrollTop = htmlElement.find('body').scrollTop();
-            if (cacheScrollTop > 0) {
-                htmlElement.scrollTop(0);
-                var target = $(this);
-                target.data('cacheScrollTop', cacheScrollTop);
-            }
-
-            var uiDialog = $(this).closest('.ui-dialog');
-            if (!$('html').hasClass('mobileView')) {
-                var maxHeight = $(window).height();
-                var dialogHeight = uiDialog.outerHeight();
-                if (maxHeight - 20 >= dialogHeight) {
-                    uiDialog.css({
-                        position: 'fixed',
-                        left: '50%',
-                        top: '50%',
-                        marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
-                        marginTop: '-' + (uiDialog.outerHeight() / 2) + 'px',
-                        maxHeight: 'inherit',
-                        overflow: 'initial'
-                    });
-                } else {
-                    uiDialog.css({
-                        position: 'fixed',
-                        left: '50%',
-                        top: '0',
-                        marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
-                        marginTop: '0',
-                        maxHeight: (maxHeight - 20) + 'px',
-                        overflow: 'auto'
-                    });
-                }
-            }
-
-            uiDialog.find('.ui-dialog-titlebar-close').attr('aria-label', 'Close');
-        },
-
-        beforeClose: function () {
-            var htmlElement = $(document).find('html');
-            htmlElement.css('overflow', '');
-            var cacheScrollTop = $(this).data('cacheScrollTop');
-            if (cacheScrollTop) {
-                htmlElement.find('body').scrollTop(cacheScrollTop);
-                $(this).data('cacheScrollTop', null);
-            }
-			var uiDialog = $(this).closest('.ui-dialog');
-            uiDialog.css({ overflow: 'initial' });
-        }
-    });
-}
-
 var DNN_HIGHLIGHT_COLOR = '#9999FF';
 var COL_DELIMITER = String.fromCharCode(18);
 var ROW_DELIMITER = String.fromCharCode(17);
@@ -153,7 +95,7 @@ dnn.extend(dnn, {
         /// </param>
         /// <returns type="String" />
         if (this.getVars()[key] != null) {
-            var re = eval('/' + QUOTE_REPLACEMENT + '/g');
+            var re = new RegExp(QUOTE_REPLACEMENT, 'g');
             return this.getVars()[key].replace(re, '"');
         }
         return def;
@@ -1297,7 +1239,7 @@ dnn.dom.browser = new dnn.dom.browserObject();
 
 //-- shorthand functions.  Only define if not already present
 if (typeof ($) == 'undefined') {
-    eval("function $() {var ary = new Array(); for (var i=0; i<arguments.length; i++) {var arg = arguments[i]; var ctl; if (typeof arg == 'string') ctl = dnn.dom.getById(arg); else ctl = arg; if (ctl != null && typeof(Element) != 'undefined' && typeof(Element.extend) != 'undefined') Element.extend(ctl); if (arguments.length == 1) return ctl; ary[ary.length] = ctl;} return ary;}");
+    window.$ = function $() {var ary = new Array(); for (var i=0; i<arguments.length; i++) {var arg = arguments[i]; var ctl; if (typeof arg == 'string') ctl = dnn.dom.getById(arg); else ctl = arg; if (ctl != null && typeof(Element) != 'undefined' && typeof(Element.extend) != 'undefined') Element.extend(ctl); if (arguments.length == 1) return ctl; ary[ary.length] = ctl;} return ary;};
 }
 
 //image flickering

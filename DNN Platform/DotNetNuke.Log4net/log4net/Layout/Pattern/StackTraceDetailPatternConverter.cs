@@ -1,48 +1,41 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 
-/*
- *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- *
-*/
-#if !NETCF
+#if !NETCF && (NET_2_0 || NETSTANDARD2_0)
 
 using System;
-using System.Collections;
 using System.Text;
 
-using log4net.Core;
 using log4net.Util;
+using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Write the caller stack frames to the output.
-    /// </summary>
+    /// <summary>Write the caller stack frames to the output</summary>
     /// <remarks>
     /// <para>
     /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer, using format:
     /// type3.MethodCall3(type param,...) > type2.MethodCall2(type param,...) > type1.MethodCall1(type param,...)
     /// </para>
     /// </remarks>
-    /// <author>Adam Davies.</author>
+    /// <author>Adam Davies</author>
     internal class StackTraceDetailPatternConverter : StackTracePatternConverter
     {
         internal override string GetMethodInformation(MethodItem method)
@@ -78,9 +71,7 @@ namespace log4net.Layout.Pattern
             return returnValue;
         }
 
-        /// <summary>
-        /// The fully qualified type of the StackTraceDetailPatternConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the StackTraceDetailPatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
@@ -88,4 +79,4 @@ namespace log4net.Layout.Pattern
         private static readonly Type declaringType = typeof(StackTracePatternConverter);
     }
 }
-#endif
+#endif // !NETCF && NET_2_0

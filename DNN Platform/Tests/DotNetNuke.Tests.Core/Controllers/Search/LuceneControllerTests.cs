@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     using System;
@@ -31,15 +30,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using Moq;
 
     using NUnit.Framework;
+
     using Directory = System.IO.Directory;
 
-    /// <summary>
-    ///  Testing various aspects of LuceneController.
-    /// </summary>
+    /// <summary> Testing various aspects of LuceneController.</summary>
     [TestFixture]
     public class LuceneControllerTests
     {
-        private const string SearchIndexFolder = @"App_Data\LuceneTests";
         private const string WriteLockFile = "write.lock";
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
@@ -66,7 +63,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<ISearchHelper> mockSearchHelper;
         private Mock<SearchQuery> mockSearchQuery;
 
+        private string SearchIndexFolder => this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, string.Empty);
+
         [SetUp]
+
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this.mockHostController = new Mock<IHostController>();
 
-            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(@"App_Data\LuceneTests" + DateTime.UtcNow.Ticks);
             this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this.readerStaleTimeSpan);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
@@ -124,12 +124,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_SearchFolderIsAsExpected()
         {
-            var inf1 = new DirectoryInfo(SearchIndexFolder);
+            var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
+            var inf1 = new DirectoryInfo(searchIndexFolder);
             var inf2 = new DirectoryInfo(this.luceneController.IndexFolder);
-            Assert.AreEqual(inf1.FullName, inf2.FullName);
+            Assert.AreEqual(inf1.Name, inf2.Name);
         }
 
         [Test]
+
         public void LuceneController_Add_Throws_On_Null_Document()
         {
             // Arrange
@@ -147,6 +149,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Add_Empty_FiledsCollection_DoesNot_Create_Index()
         {
             // Arrange
@@ -162,6 +165,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_GetsHighlightedDesc()
         {
             // Arrange
@@ -184,6 +188,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_HighlightedDescHtmlEncodesOutput()
         {
             // Arrange
@@ -209,6 +214,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_FindsResultsUsingNearRealtimeSearchWithoutCommit()
         {
             // Arrange
@@ -230,6 +236,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Returns_Correct_Total_Hits()
         {
             // Arrange
@@ -243,6 +250,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Request_For_1_Result_Returns_1_Record_But_More_TotalHits()
         {
             // Arrange
@@ -256,6 +264,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Request_For_4_Records_Returns_4_Records_With_4_TotalHits_Based_On_PageIndex1_PageSize4()
         {
             // Arrange
@@ -269,6 +278,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Request_For_4_Records_Returns_4_Records_With_4_TotalHits_Based_On_PageIndex4_PageSize1()
         {
             // Arrange
@@ -282,6 +292,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Request_For_NonExisting_PageNumbers_Returns_No_Record()
         {
             // Arrange
@@ -301,6 +312,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Request_For_PagIndex2_PageSize1_Returns_2nd_Record_Only()
         {
             // Arrange
@@ -325,6 +337,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_NumericRangeCheck()
         {
             // Arrange
@@ -360,6 +373,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_DateRangeCheck()
         {
             // Arrange
@@ -419,6 +433,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TestCase(EmptyCustomAnalyzer)]
         [TestCase(InvalidCustomAnalyzer)]
         [TestCase(ValidCustomAnalyzer)]
+
         public void LuceneController_Search_With_Chinese_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
             this.mockHostController.Setup(controller => controller.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
@@ -459,6 +474,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TestCase(EmptyCustomAnalyzer)]
         [TestCase(InvalidCustomAnalyzer)]
         [TestCase(ValidCustomAnalyzer)]
+
         public void LuceneController_Search_With_English_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
             this.mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
@@ -489,6 +505,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Single_FuzzyQuery()
         {
             // Arrange
@@ -510,6 +527,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_Search_Double_FuzzyQuery()
         {
             // Arrange
@@ -550,6 +568,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_ReaderNotChangedBeforeTimeSpanElapsed()
         {
             // Arrange
@@ -570,6 +589,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_ReaderNotChangedIfNoIndexUpdated()
         {
             // Arrange
@@ -590,6 +610,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_ReaderIsChangedWhenIndexIsUpdatedAndTimeIsElapsed()
         {
             // Arrange
@@ -617,14 +638,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_LockFileWhenExistsDoesNotCauseProblemForFirstIController()
         {
             // Arrange
             const string fieldName = "content";
-            var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
-            if (!Directory.Exists(SearchIndexFolder))
+            var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
+            var lockFile = Path.Combine(searchIndexFolder, WriteLockFile);
+            if (!Directory.Exists(searchIndexFolder))
             {
-                Directory.CreateDirectory(SearchIndexFolder);
+                Directory.CreateDirectory(searchIndexFolder);
             }
 
             if (!File.Exists(lockFile))
@@ -642,11 +665,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_LockFileCanBeObtainedByOnlySingleController()
         {
             // Arrange
             const string fieldName = "content";
-            var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
+            var lockFile = Path.Combine(this.luceneController.IndexFolder, WriteLockFile);
 
             // Act
             var doc1 = new Document();
@@ -662,6 +686,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_DocumentMaxAndCountAreCorrect()
         {
             this.AddTestDocs();
@@ -671,6 +696,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_TestDeleteBeforeOptimize()
         {
             // Arrange
@@ -683,6 +709,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_TestDeleteAfterOptimize()
         {
             // Arrange
@@ -696,6 +723,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void LuceneController_TestGetSearchStatistics()
         {
             // Arrange
@@ -709,6 +737,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void SearchController_LuceneControllerReaderIsNotNullWhenWriterIsNull()
         {
             // Arrange
@@ -746,9 +775,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             try
             {
-                if (Directory.Exists(SearchIndexFolder))
+                if (Directory.Exists(this.SearchIndexFolder))
                 {
-                    Directory.Delete(SearchIndexFolder, true);
+                    Directory.Delete(this.SearchIndexFolder, true);
                 }
             }
             catch (Exception ex)
@@ -757,9 +786,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
         }
 
-        /// <summary>
-        /// Adds standarad SearchDocs in Lucene Index.
-        /// </summary>
+        /// <summary>Adds standarad SearchDocs in Lucene Index.</summary>
         private void AddStandardDocs()
         {
             string[] lines =

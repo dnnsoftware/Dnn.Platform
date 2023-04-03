@@ -15,7 +15,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         {
         }
 
-        public JsLibraryPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        public JsLibraryPackageDetailDto(int portalId, PackageInfo package)
+            : base(portalId, package)
         {
         }
 

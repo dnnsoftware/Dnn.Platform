@@ -10,18 +10,15 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Pages.Components.Security;
     using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Controls the pages menu.
-    /// </summary>
+    /// <summary>Controls the pages menu.</summary>
     public class PagesMenuController : IMenuItemController
     {
         private readonly ISecurityService securityService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PagesMenuController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PagesMenuController"/> class.</summary>
         public PagesMenuController()
         {
             this.securityService = SecurityService.Instance;
@@ -44,6 +41,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
             var settings = new Dictionary<string, object>
             {
                 { "canSeePagesList", this.securityService.CanViewPageList(menuItem.MenuId) },
+                { "canAddPages", this.securityService.CanAddPage(PortalSettings.Current?.ActiveTab?.TabID ?? 0) },
                 { "portalName", PortalSettings.Current.PortalName },
                 { "currentPagePermissions", this.securityService.GetCurrentPagePermissions() },
                 { "currentPageName", PortalSettings.Current?.ActiveTab?.TabName },

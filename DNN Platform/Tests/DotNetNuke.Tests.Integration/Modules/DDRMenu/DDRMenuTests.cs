@@ -30,13 +30,14 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
             this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
         }
 
         [Test]
+
         public void Page_Should_Able_To_Duplicate_With_Ddr_Menu_On_It()
         {
             // Create new page with DDR Menu on it

@@ -18,43 +18,49 @@ namespace DotNetNuke.Entities.Content.Workflow
     {
         private const string ReviewPermissionKey = "REVIEW";
         private const string ReviewPermissionCode = "SYSTEM_CONTENTWORKFLOWSTATE";
-        private readonly IUserController _userController = UserController.Instance;
-        private readonly IWorkflowManager _workflowManager = WorkflowManager.Instance;
-        private readonly IWorkflowStatePermissionsRepository _statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
+        private readonly IUserController userController = UserController.Instance;
+        private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
+        private readonly IWorkflowStatePermissionsRepository statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
 
+        /// <inheritdoc/>
         public bool HasStateReviewerPermission(PortalSettings settings, UserInfo user, int stateId)
         {
-            var permissions = this._statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
+            var permissions = this.statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
 
             return user.IsSuperUser ||
                 PortalSecurity.IsInRoles(user, settings, settings.AdministratorRoleName) ||
                 PortalSecurity.IsInRoles(user, settings, PermissionController.BuildPermissions(permissions.ToList(), ReviewPermissionKey));
         }
 
+        /// <inheritdoc/>
         public bool HasStateReviewerPermission(int portalId, int userId, int stateId)
         {
-            var user = this._userController.GetUserById(portalId, userId);
+            var user = this.userController.GetUserById(portalId, userId);
             var portalSettings = new PortalSettings(portalId);
             return this.HasStateReviewerPermission(portalSettings, user, stateId);
         }
 
+        /// <inheritdoc/>
         public bool HasStateReviewerPermission(int stateId)
         {
-            var user = this._userController.GetCurrentUserInfo();
+            var user = this.userController.GetCurrentUserInfo();
             return this.HasStateReviewerPermission(PortalSettings.Current, user, stateId);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowReviewer(int workflowId, int userId)
         {
-            var workflow = this._workflowManager.GetWorkflow(workflowId);
+            var workflow = this.workflowManager.GetWorkflow(workflowId);
             return workflow.States.Any(contentWorkflowState => this.HasStateReviewerPermission(workflow.PortalID, userId, contentWorkflowState.StateID));
         }
 
+        /// <inheritdoc/>
         public PermissionInfo GetStateReviewPermission()
         {
             return (PermissionInfo)new PermissionController().GetPermissionByCodeAndKey(ReviewPermissionCode, ReviewPermissionKey)[0];
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowSecurity> GetFactory()
         {
             return () => new WorkflowSecurity();

@@ -34,8 +34,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
         public string ActionName { get; private set; }
 
         public string ControllerName { get; private set; }
+
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public override void ExecuteResult(ControllerContext context)
         {
             Requires.NotNull("context", context);

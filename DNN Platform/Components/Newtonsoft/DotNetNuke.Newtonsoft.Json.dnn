@@ -1,18 +1,18 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Newtonsoft.Json" type="Library" version="10.00.03" isSystem="true">
+    <package name="DotNetNuke.Newtonsoft.Json" type="Library" version="13.00.01" isSystem="true">
       <friendlyName>Newtonsoft Json Components</friendlyName>
       <description>Provides Newtonsoft Json Components for DotNetNuke.</description>
       <dependencies/>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>
       <license>License.txt</license>
       <releaseNotes>
-        This package includes Newtonsoft.Json assembly version 10.0.3.
+        This package includes Newtonsoft.Json assembly version 13.0.1.
         Please go to https://www.newtonsoft.com/json to view release notes on this particular version.</releaseNotes>
       <components>
         <component type="Assembly">
@@ -20,7 +20,7 @@
             <assembly>
               <path>bin</path>
               <name>Newtonsoft.Json.dll</name>
-              <version>10.0.3</version>
+              <version>13.0.1</version>
             </assembly>
           </assemblies>
         </component>

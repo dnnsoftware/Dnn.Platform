@@ -3,10 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Tabs
 {
-    using System;
-
     public class PermissionsNotMetException : TabException
     {
+        /// <summary>Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.</summary>
+        /// <param name="tabId"></param>
+        /// <param name="message"></param>
         public PermissionsNotMetException(int tabId, string message)
             : base(tabId, message)
         {

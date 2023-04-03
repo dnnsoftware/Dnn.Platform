@@ -43,6 +43,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 installedPackageTypes[packageType.PackageType] = packageType;
             }
+
             return installedPackageTypes;
         }
 
@@ -66,7 +67,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     break;
                 case "corelanguagepack":
                     rootPath = Globals.ApplicationMapPath + "\\Install\\Language";
-                    return true; //core languages should always marked as have available packages.
+                    return true; // core languages should always marked as have available packages.
                 case "module":
                 case "skin":
                 case "container":
@@ -79,6 +80,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     rootPath = string.Empty;
                     break;
             }
+
             if (!string.IsNullOrEmpty(type) && Directory.Exists(rootPath) &&
                 (Directory.GetFiles(rootPath, "*.zip").Length > 0 ||
                     Directory.GetFiles(rootPath, "*.resources").Length > 0))
@@ -104,6 +106,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     {
                         AddModulesToList(portalId, typePackages);
                     }
+
                     break;
                 case "skin":
                 case "container":
@@ -144,9 +147,10 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     PackageType = packageType,
                     ValidPackages = validpackages.Values.Select(p => new PackageInfoSlimDto(Null.NullInteger, p)).ToList(),
-                    InvalidPackages = invalidPackages
+                    InvalidPackages = invalidPackages,
                 });
             }
+
             return packages;
         }
 
@@ -157,6 +161,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 return tabs.Values.ToList();
             }
+
             return null;
         }
 
@@ -172,13 +177,14 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     returnValue.Append(" &gt; ");
                 }
+
                 if (index < tab.BreadCrumbs.Count - 1)
                 {
                     returnValue.AppendFormat("{0}", t.LocalizedTabName);
                 }
                 else
                 {
-                    //use the current portal alias for host tabs
+                    // use the current portal alias for host tabs
                     var alias = t.PortalID == Null.NullInteger || t.PortalID == portalId
                                     ? PortalSettings.Current.PortalAlias
                                     : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
@@ -187,6 +193,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
                     returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
+
                 index = index + 1;
             }
 
@@ -200,7 +207,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return string.Empty;
             }
 
-            if ((packageInfo.PackageType.ToUpper() == "MODULE"))
+            if (packageInfo.PackageType.ToUpper() == "MODULE")
             {
                 if (portalId == Null.NullInteger)
                 {
@@ -211,21 +218,23 @@ namespace Dnn.PersonaBar.Extensions.Components
                     return GetPackagesInUse(false).ContainsKey(packageInfo.PackageID) ? "Yes" : "No";
                 }
             }
+
             return string.Empty;
         }
 
         internal static string UpgradeRedirect(Version version, string packageType, string packageName)
         {
-            return Upgrade.UpgradeRedirect(version, packageType, packageName, "");
+            return Upgrade.UpgradeRedirect(version, packageType, packageName, string.Empty);
         }
 
         internal static string UpgradeIndicator(Version version, string packageType, string packageName)
         {
-            var url = Upgrade.UpgradeIndicator(version, packageType, packageName, "", false, false); // last 2 params are unused
+            var url = Upgrade.UpgradeIndicator(version, packageType, packageName, string.Empty, false, false); // last 2 params are unused
             if (string.IsNullOrEmpty(url))
             {
                 url = Globals.ApplicationPath + "/images/spacer.gif";
             }
+
             return url;
         }
 
@@ -250,8 +259,6 @@ namespace Dnn.PersonaBar.Extensions.Components
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultProviderImage;
                 case "widget":
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultWidgetImage;
-                case "dashboardcontrol":
-                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultDashboardImage;
                 case "library":
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLibraryImage;
                 default:
@@ -268,10 +275,10 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
             packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
-                let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
-                from portalModule in portalModules.Values
-                where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
-                select modulePackage);
+                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
+                              from portalModule in portalModules.Values
+                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
+                              select modulePackage);
         }
 
         private static string FixIconUrl(string url)
@@ -287,21 +294,23 @@ namespace Dnn.PersonaBar.Extensions.Components
             TabCollection allPortalTabs = TabController.Instance.GetTabsByPortal(portalId);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
-            //must get each tab, they parent may not exist
+            // must get each tab, they parent may not exist
             foreach (TabInfo tab in allPortalTabs.Values)
             {
                 AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
             }
+
             return tabsInOrder;
         }
 
         private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
         {
-            if ((tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID)))
+            if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
             {
-                //add current tab
+                // add current tab
                 tabsInOrder.Add(currentTab.TabID, currentTab);
-                //add children of current tab
+
+                // add children of current tab
                 foreach (TabInfo tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {
                     AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
@@ -325,7 +334,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 return false;
             }
-
         }
 
         private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
@@ -343,8 +351,8 @@ namespace Dnn.PersonaBar.Extensions.Components
                     var installedLanguages = installedPackages.Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID)).ToList();
                     foreach (XmlNode language in languages)
                     {
-                        string cultureCode = "";
-                        string version = "";
+                        string cultureCode = string.Empty;
+                        string version = string.Empty;
                         foreach (XmlNode child in language.ChildNodes)
                         {
                             if (child.Name == "culturecode")
@@ -357,6 +365,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                 version = child.InnerText;
                             }
                         }
+
                         if (!string.IsNullOrEmpty(cultureCode) && !string.IsNullOrEmpty(version) && version.Length == 6)
                         {
                             var myCIintl = new CultureInfo(cultureCode, true);
@@ -396,9 +405,9 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             catch (Exception)
             {
-                //suppress for now - need to decide what to do when webservice is unreachable
-                //throw;
-                //same problem happens in InstallWizard.aspx.cs in BindLanguageList method
+                // suppress for now - need to decide what to do when webservice is unreachable
+                // throw;
+                // same problem happens in InstallWizard.aspx.cs in BindLanguageList method
             }
         }
     }

@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Library
 
     internal class Startup : IDnnStartup
     {
+        /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IPersonaBarContainer, PersonaBarContainer>();

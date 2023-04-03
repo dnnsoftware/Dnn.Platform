@@ -12,15 +12,14 @@ namespace DotNetNuke.Services.FileSystem.Internal
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Internal class to check file security.
-    /// </summary>
+    /// <summary>Internal class to check file security.</summary>
     public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
     {
         private const int BufferSize = 4096;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
 
+        /// <inheritdoc/>
         public bool Validate(string fileName, Stream fileContent)
         {
             Requires.NotNullOrEmpty("fileName", fileName);
@@ -42,6 +41,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<IFileSecurityController> GetFactory()
         {
             return () => new FileSecurityController();

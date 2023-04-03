@@ -26,10 +26,13 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         }
 
         public IList<LocaleInfoDto> Locales { get; }
+
         public IList<DnnPageDto> Pages { get; }
+
         public IList<DnnModulesDto> Modules { get; }
 
         public bool HasMissingLanguages { get; set; }
+
         public bool ErrorExists { get; set; }
 
         public DnnPageDto Page(string locale)
@@ -45,8 +48,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 m = new DnnModulesDto(this.Locales.Select(l => l.CultureCode)) { UniqueId = uniqueId };
                 this.Modules.Add(m);
             }
-            return m;
 
+            return m;
         }
 
         public bool Error1(int moduleId, Guid uniqueId, string cultureCode)
@@ -58,7 +61,10 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public void RemoveLocale(string cultureCode)
         {
             var locale = this.Locales.FirstOrDefault(l => l.CultureCode == cultureCode);
-            if (locale != null) this.Locales.Remove(locale);
+            if (locale != null)
+            {
+                this.Locales.Remove(locale);
+            }
         }
     }
 }

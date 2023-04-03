@@ -13,7 +13,7 @@ function CountryRegionService($) {
 				success(data);
 			}
 		}).fail(function (xhr, status) {
-			alert(eval("(" + xhr.responseText + ")").ExceptionMessage);
+			alert(JSON.parse(xhr.responseText).ExceptionMessage);
 		});
 	};
 
@@ -27,7 +27,7 @@ function CountryRegionService($) {
 				success(data);
 			}
 		}).fail(function (xhr, status) {
-			alert(eval("(" + xhr.responseText + ")").ExceptionMessage);
+			alert(JSON.parse(xhr.responseText).ExceptionMessage);
 		});
 	};
 
@@ -116,6 +116,12 @@ function setupCountryAutoComplete() {
 			} else {
 				clearCountryValue(this);
 			}
+		},
+		focus: function (event, ui) {
+			event.preventDefault();
+			this.value = ui.item.name;
+			$(this).attr('data-value', ui.item.id);
+			$(this).attr('data-text', ui.item.name);
 		}
 	});
 	$('input[data-editor="DnnCountryAutocompleteControl"]').change(function () {

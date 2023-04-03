@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React from "react";
 import MainLabel from "./MainLabel";
 import Statistic from "./statistic";
@@ -12,7 +12,7 @@ const PortalListItem = ({portal, portalStatisticInfo, portalButtons}) => (
                 <MainLabel
                     label={portal.PortalName}
                     portalAliases={portal.PortalAliases}
-                    />
+                />
                 <GridCell className="icon-container">
                     {portalButtons}
                 </GridCell>

@@ -46,7 +46,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             var result2 = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response2);
             Console.WriteLine(@"Verify bulk pages ersponse = {0}", response2);
             Assert.AreEqual(0, int.Parse(result2.Status.ToString()));
-            Assert.IsNotNullOrEmpty(result2.Response.Pages.First().ErrorMessage);
+            Assert.That(result2.Response.Pages.First().ErrorMessage, Is.Not.Null.And.Not.Empty);
         }
 
         [JsonObject]

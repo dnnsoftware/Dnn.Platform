@@ -4,12 +4,8 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Services.Search.Entities;
-    using DotNetNuke.Services.Search.Internals;
 
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public abstract class SearchDataStoreProvider
@@ -20,10 +16,21 @@ namespace DotNetNuke.Services.Search
             return ComponentFactory.GetComponent<SearchDataStoreProvider>();
         }
 
+        /// <summary>StoreSearchItems adds the Search Item to the Data Store.</summary>
+        /// <param name="searchItems">A Collection of SearchItems.</param>
         public abstract void StoreSearchItems(SearchItemInfoCollection searchItems);
 
+        /// <summary>GetSearchResults gets the search results for a passed in criteria string.</summary>
+        /// <param name="portalId">A Id of the Portal.</param>
+        /// <param name="criteria">The criteria string.</param>
+        /// <returns>A <see cref="SearchResultsInfoCollection"/>.</returns>
         public abstract SearchResultsInfoCollection GetSearchResults(int portalId, string criteria);
 
+        /// <summary>GetSearchItems gets a collection of Search Items for a Module/Tab/Portal.</summary>
+        /// <param name="portalId">A Id of the Portal.</param>
+        /// <param name="tabId">A Id of the Tab.</param>
+        /// <param name="moduleId">A Id of the Module.</param>
+        /// <returns>A <see cref="SearchResultsInfoCollection"/>.</returns>
         public abstract SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId);
     }
 }

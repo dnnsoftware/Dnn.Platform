@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
     public abstract class BaseSettingsTests
     {
-        public readonly object[] SettingsCases =
+        public static readonly object[] SettingsCases =
         {
             new object[] { "AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1, default(ComplexType), },
             new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1, 5, 6, 7), TestingEnum.Value2, new ComplexType(8, -10), },
@@ -41,13 +41,13 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         public enum TestingEnum
         {
-            Value1,
-            Value2,
+            Value1 = 0,
+            Value2 = 1,
         }
 
         protected static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId, PortalID = PortalId, };
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public virtual void TestFixtureSetUp()
         {
             this.MockRepository = new MockRepository(MockBehavior.Default);
@@ -55,6 +55,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [SetUp]
+
         public virtual void SetUp()
         {
             // Mock Repository and component factory

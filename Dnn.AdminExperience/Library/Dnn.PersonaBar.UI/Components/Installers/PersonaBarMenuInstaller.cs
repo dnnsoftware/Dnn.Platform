@@ -17,22 +17,22 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Installers;
 
-    /// <summary>
-    /// Installer for persona bar menus.
-    /// </summary>
+    /// <summary>Installer for persona bar menus.</summary>
     public class PersonaBarMenuInstaller : ComponentInstallerBase
     {
-        private readonly IList<MenuItem> _menuItems = new List<MenuItem>();
-        private readonly IList<PersonaBarExtension> _extensions = new List<PersonaBarExtension>();
-        private readonly IList<PermissionDefinition> _permissionDefinitions = new List<PermissionDefinition>();
-        private readonly IDictionary<string, string> _extensionMenus = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> _menuRoles = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> _parentMaps = new Dictionary<string, string>();
+        private readonly IList<MenuItem> menuItems = new List<MenuItem>();
+        private readonly IList<PersonaBarExtension> extensions = new List<PersonaBarExtension>();
+        private readonly IList<PermissionDefinition> permissionDefinitions = new List<PermissionDefinition>();
+        private readonly IDictionary<string, string> extensionMenus = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> menuRoles = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> parentMaps = new Dictionary<string, string>();
 
+        /// <inheritdoc/>
         public override void Commit()
         {
         }
 
+        /// <inheritdoc/>
         public override void Install()
         {
             try
@@ -43,9 +43,9 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
                 this.SavePermissionDefinitions();
 
-                if (this._menuItems.Any())
+                if (this.menuItems.Any())
                 {
-                    foreach (var menuItem in this._menuItems)
+                    foreach (var menuItem in this.menuItems)
                     {
                         this.SaveMenuPermissions(menuItem);
                     }
@@ -59,6 +59,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             foreach (XPathNavigator navigator in manifestNav.Select("menu"))
@@ -77,11 +78,13 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             }
         }
 
+        /// <inheritdoc/>
         public override void Rollback()
         {
             this.DeleteMenus();
         }
 
+        /// <inheritdoc/>
         public override void UnInstall()
         {
             this.DeleteMenus();
@@ -89,11 +92,11 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SaveMenuItems()
         {
-            foreach (var menuItem in this._menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
+            foreach (var menuItem in this.menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
             {
-                if (this._parentMaps.ContainsKey(menuItem.Identifier))
+                if (this.parentMaps.ContainsKey(menuItem.Identifier))
                 {
-                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(this._parentMaps[menuItem.Identifier]);
+                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(this.parentMaps[menuItem.Identifier]);
                     if (parentItem != null)
                     {
                         menuItem.ParentId = parentItem.MenuId;
@@ -106,9 +109,9 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SaveMenuExtensions()
         {
-            foreach (var extension in this._extensions)
+            foreach (var extension in this.extensions)
             {
-                var menuIdentifier = this._extensionMenus[extension.Identifier];
+                var menuIdentifier = this.extensionMenus[extension.Identifier];
                 var menu = PersonaBarRepository.Instance.GetMenuItem(menuIdentifier);
                 if (menu != null)
                 {
@@ -121,15 +124,15 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SavePermissionDefinitions()
         {
-            if (!this._menuItems.Any())
+            if (!this.menuItems.Any())
             {
                 return;
             }
 
-            foreach (var definition in this._permissionDefinitions)
+            foreach (var definition in this.permissionDefinitions)
             {
                 var identifier = definition.Identifier;
-                var menu = this._menuItems.FirstOrDefault(m => string.IsNullOrEmpty(identifier) || m.Identifier == identifier);
+                var menu = this.menuItems.FirstOrDefault(m => string.IsNullOrEmpty(identifier) || m.Identifier == identifier);
                 if (menu?.MenuId <= 0)
                 {
                     menu = PersonaBarRepository.Instance.GetMenuItem(identifier);
@@ -164,16 +167,16 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             var parent = Util.ReadElement(menuNavigator, "parent", string.Empty);
             if (!string.IsNullOrEmpty(parent))
             {
-                this._parentMaps.Add(menuItem.Identifier, parent);
+                this.parentMaps.Add(menuItem.Identifier, parent);
             }
 
             var defaultPermissions = Util.ReadElement(menuNavigator, "defaultPermissions", string.Empty);
             if (!string.IsNullOrEmpty(defaultPermissions))
             {
-                this._menuRoles.Add(menuItem.Identifier, defaultPermissions);
+                this.menuRoles.Add(menuItem.Identifier, defaultPermissions);
             }
 
-            this._menuItems.Add(menuItem);
+            this.menuItems.Add(menuItem);
         }
 
         private void ReadExtensionsFromManifest(XPathNavigator menuNavigator)
@@ -189,8 +192,8 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 Enabled = true,
             };
 
-            this._extensions.Add(extension);
-            this._extensionMenus.Add(extension.Identifier, Util.ReadElement(menuNavigator, "menu"));
+            this.extensions.Add(extension);
+            this.extensionMenus.Add(extension.Identifier, Util.ReadElement(menuNavigator, "menu"));
         }
 
         private void ReadPermissionsFromManifest(XPathNavigator menuNavigator)
@@ -202,7 +205,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 Name = Util.ReadElement(menuNavigator, "name"),
             };
 
-            this._permissionDefinitions.Add(permission);
+            this.permissionDefinitions.Add(permission);
         }
 
         private void SaveMenuPermission(MenuItem menuItem, string roleName)
@@ -222,16 +225,16 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SaveMenuPermissions(MenuItem menuItem)
         {
-            if (this._menuRoles.ContainsKey(menuItem.Identifier))
+            if (this.menuRoles.ContainsKey(menuItem.Identifier))
             {
-                var defaultPermissions = this._menuRoles[menuItem.Identifier].Split(',');
+                var defaultPermissions = this.menuRoles[menuItem.Identifier].Split(',');
                 if (menuItem?.MenuId <= 0)
                 {
                     menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
                 }
 
                 PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
-                PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this._menuRoles[menuItem.Identifier]);
+                PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this.menuRoles[menuItem.Identifier]);
 
                 foreach (var roleName in defaultPermissions)
                 {
@@ -247,7 +250,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         {
             try
             {
-                foreach (var menuItem in this._menuItems)
+                foreach (var menuItem in this.menuItems)
                 {
                     PersonaBarRepository.Instance.DeleteMenuItem(menuItem.Identifier);
                 }

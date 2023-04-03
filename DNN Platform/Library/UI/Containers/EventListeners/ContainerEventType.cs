@@ -4,17 +4,12 @@
 
 namespace DotNetNuke.UI.Containers.EventListeners
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ContainerEventType provides a custom enum for Container event types.
-    /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ContainerEventType provides a custom enum for Container event types.</summary>
     public enum ContainerEventType
     {
-        OnContainerInit,
-        OnContainerLoad,
-        OnContainerPreRender,
-        OnContainerUnLoad,
+        OnContainerInit = 0,
+        OnContainerLoad = 1,
+        OnContainerPreRender = 2,
+        OnContainerUnLoad = 3,
     }
 }

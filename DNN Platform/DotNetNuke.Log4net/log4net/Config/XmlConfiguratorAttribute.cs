@@ -1,41 +1,38 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 #if !NETCF
 
 using System;
 using System.Collections;
-using System.IO;
 using System.Reflection;
+using System.IO;
 
+using log4net.Util;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
-using log4net.Util;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Assembly level attribute to configure the <see cref="XmlConfigurator"/>.
-    /// </summary>
+    /// <summary>Assembly level attribute to configure the <see cref="XmlConfigurator"/>.</summary>
     /// <remarks>
     /// <para>
     /// This attribute may only be used at the assembly scope and can only
@@ -56,7 +53,7 @@ namespace log4net.Config
     /// The <see cref="ConfigFileExtension"/> property is used as a postfix to the assembly file name.
     /// The config file must be located in the  application's base directory; <see cref="AppDomain.BaseDirectory"/>.
     /// For example in a console application setting the <see cref="ConfigFileExtension"/> to
-    /// <c>config</c> has the same effect as not specifying the <see cref="ConfigFile"/> or
+    /// <c>config</c> has the same effect as not specifying the <see cref="ConfigFile"/> or 
     /// <see cref="ConfigFileExtension"/> properties.
     /// </para>
     /// <para>
@@ -66,44 +63,39 @@ namespace log4net.Config
     /// <note>
     /// <para>
     /// Log4net will only look for assembly level configuration attributes once.
-    /// When using the log4net assembly level attributes to control the configuration
-    /// of log4net you must ensure that the first call to any of the
+    /// When using the log4net assembly level attributes to control the configuration 
+    /// of log4net you must ensure that the first call to any of the 
     /// <see cref="log4net.Core.LoggerManager"/> methods is made from the assembly with the configuration
-    /// attributes.
+    /// attributes. 
     /// </para>
     /// <para>
-    /// If you cannot guarantee the order in which log4net calls will be made from
+    /// If you cannot guarantee the order in which log4net calls will be made from 
     /// different assemblies you must use programmatic configuration instead, i.e.
     /// call the <see cref="M:XmlConfigurator.Configure()"/> method directly.
     /// </para>
     /// </note>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     [Serializable]
     public /*sealed*/ class XmlConfiguratorAttribute : ConfiguratorAttribute
     {
-        // Class is not sealed because DOMConfiguratorAttribute extends it while it is obsoleted
         //
+        // Class is not sealed because DOMConfiguratorAttribute extends it while it is obsoleted
+        // 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlConfiguratorAttribute"/> class.
-        /// Default constructor.
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
-        /// Default constructor.
+        /// Default constructor
         /// </para>
         /// </remarks>
-        public XmlConfiguratorAttribute()
-            : base(0) /* configurator priority 0 */
+        public XmlConfiguratorAttribute() : base(0) /* configurator priority 0 */
         {
         }
 
-        /// <summary>
-        /// Gets or sets the filename of the configuration file.
-        /// </summary>
+        /// <summary>Gets or sets the filename of the configuration file.</summary>
         /// <value>
         /// The filename of the configuration file.
         /// </value>
@@ -123,16 +115,14 @@ namespace log4net.Config
             set { this.m_configFile = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the extension of the configuration file.
-        /// </summary>
+        /// <summary>Gets or sets the extension of the configuration file.</summary>
         /// <value>
         /// The extension of the configuration file.
         /// </value>
         /// <remarks>
         /// <para>
         /// If specified this is the extension for the configuration file.
-        /// The path to the config file is built by using the <b>application
+        /// The path to the config file is built by using the <b>application 
         /// base</b> directory (<see cref="AppDomain.BaseDirectory"/>),
         /// the <b>assembly file name</b> and the config file extension.
         /// </para>
@@ -151,16 +141,14 @@ namespace log4net.Config
             set { this.m_configFileExtension = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to watch the configuration file.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to watch the configuration file.</summary>
         /// <value>
         /// <c>true</c> if the configuration should be watched, <c>false</c> otherwise.
         /// </value>
         /// <remarks>
         /// <para>
         /// If this flag is specified and set to <c>true</c> then the framework
-        /// will watch the configuration file and will reload the config each time
+        /// will watch the configuration file and will reload the config each time 
         /// the file is modified.
         /// </para>
         /// <para>
@@ -179,9 +167,7 @@ namespace log4net.Config
             set { this.m_configureAndWatch = value; }
         }
 
-        /// <summary>
-        /// Configures the <see cref="ILoggerRepository"/> for the specified assembly.
-        /// </summary>
+        /// <summary>Configures the <see cref="ILoggerRepository"/> for the specified assembly.</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         /// <remarks>
@@ -210,7 +196,7 @@ namespace log4net.Config
                     // and the application does not have PathDiscovery permission
                 }
 
-                if (applicationBaseDirectory == null || new Uri(applicationBaseDirectory).IsFile)
+                if (applicationBaseDirectory == null || (new Uri(applicationBaseDirectory)).IsFile)
                 {
                     this.ConfigureFromFile(sourceAssembly, targetRepository);
                 }
@@ -223,16 +209,14 @@ namespace log4net.Config
             targetRepository.ConfigurationMessages = configurationMessages;
         }
 
-        /// <summary>
-        /// Attempt to load configuration from the local file system.
-        /// </summary>
+        /// <summary>Attempt to load configuration from the local file system</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         private void ConfigureFromFile(Assembly sourceAssembly, ILoggerRepository targetRepository)
         {
             // Work out the full path to the config file
             string fullPath2ConfigFile = null;
-
+            
             // Select the config file
             if (this.m_configFile == null || this.m_configFile.Length == 0)
             {
@@ -243,7 +227,7 @@ namespace log4net.Config
                     {
                         fullPath2ConfigFile = SystemInfo.ConfigurationFileLocation;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         LogLog.Error(declaringType, "XmlConfiguratorAttribute: Exception getting ConfigurationFileLocation. Must be able to resolve ConfigurationFileLocation when ConfigFile and ConfigFileExtension properties are not set.", ex);
                     }
@@ -261,7 +245,7 @@ namespace log4net.Config
                     {
                         applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         LogLog.Error(declaringType, "Exception getting ApplicationBaseDirectory. Must be able to resolve ApplicationBaseDirectory and AssemblyFileName when ConfigFileExtension property is set.", ex);
                     }
@@ -279,9 +263,9 @@ namespace log4net.Config
                 {
                     applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path [" + this.m_configFile + "] will be treated as an absolute path.", ex);
+                    LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+ this.m_configFile+"] will be treated as an absolute path.", ex);
                 }
 
                 if (applicationBaseDirectory != null)
@@ -301,19 +285,17 @@ namespace log4net.Config
             }
         }
 
-        /// <summary>
-        /// Configure the specified repository using a <see cref="FileInfo"/>.
-        /// </summary>
+        /// <summary>Configure the specified repository using a <see cref="FileInfo"/></summary>
         /// <param name="targetRepository">The repository to configure.</param>
-        /// <param name="configFile">the FileInfo pointing to the config file.</param>
+        /// <param name="configFile">the FileInfo pointing to the config file</param>
         private void ConfigureFromFile(ILoggerRepository targetRepository, FileInfo configFile)
         {
-#if SSCLI
-			if (m_configureAndWatch)
-			{
-				LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file not supported on SSCLI");
-			}
-			XmlConfigurator.Configure(targetRepository, configFile);
+#if (SSCLI)
+            if (m_configureAndWatch)
+            {
+                LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file not supported on SSCLI");
+            }
+            XmlConfigurator.Configure(targetRepository, configFile);
 #else
             // Do we configure just once or do we configure and then watch?
             if (this.m_configureAndWatch)
@@ -327,16 +309,14 @@ namespace log4net.Config
 #endif
         }
 
-        /// <summary>
-        /// Attempt to load configuration from a URI.
-        /// </summary>
+        /// <summary>Attempt to load configuration from a URI</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         private void ConfigureFromUri(Assembly sourceAssembly, ILoggerRepository targetRepository)
         {
             // Work out the full path to the config file
             Uri fullPath2ConfigFile = null;
-
+            
             // Select the config file
             if (this.m_configFile == null || this.m_configFile.Length == 0)
             {
@@ -347,7 +327,7 @@ namespace log4net.Config
                     {
                         systemConfigFilePath = SystemInfo.ConfigurationFileLocation;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         LogLog.Error(declaringType, "XmlConfiguratorAttribute: Exception getting ConfigurationFileLocation. Must be able to resolve ConfigurationFileLocation when ConfigFile and ConfigFileExtension properties are not set.", ex);
                     }
@@ -373,7 +353,7 @@ namespace log4net.Config
                     {
                         systemConfigFilePath = SystemInfo.ConfigurationFileLocation;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         LogLog.Error(declaringType, "XmlConfiguratorAttribute: Exception getting ConfigurationFileLocation. Must be able to resolve ConfigurationFileLocation when the ConfigFile property are not set.", ex);
                     }
@@ -389,7 +369,6 @@ namespace log4net.Config
                         {
                             path = path.Substring(0, startOfExtension);
                         }
-
                         path += this.m_configFileExtension;
 
                         builder.Path = path;
@@ -404,9 +383,9 @@ namespace log4net.Config
                 {
                     applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path [" + this.m_configFile + "] will be treated as an absolute URI.", ex);
+                    LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+ this.m_configFile+"] will be treated as an absolute URI.", ex);
                 }
 
                 if (applicationBaseDirectory != null)
@@ -434,7 +413,6 @@ namespace log4net.Config
                     {
                         LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file loaded from a URI");
                     }
-
                     XmlConfigurator.Configure(targetRepository, fullPath2ConfigFile);
                 }
             }
@@ -444,9 +422,7 @@ namespace log4net.Config
         private string m_configFileExtension = null;
         private bool m_configureAndWatch = false;
 
-        /// <summary>
-        /// The fully qualified type of the XmlConfiguratorAttribute class.
-        /// </summary>
+        /// <summary>The fully qualified type of the XmlConfiguratorAttribute class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

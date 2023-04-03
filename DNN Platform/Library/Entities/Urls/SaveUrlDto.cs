@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Entities.Urls
 {
-    using System;
-
     public class SaveUrlDto
     {
         public int Id { get; set; }

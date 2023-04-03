@@ -227,7 +227,7 @@ class RolesPanel extends Component {
                     roleGroups={this.props.roleGroups}
                     onKeywordChanged={this.onKeywordChanged.bind(this)}
                     DeleteAllowed={state.deleteAllowed}
-                    />
+                />
                 <div className="container">
                     {this.renderHeader()}
                     <div className="add-setting-editor">
@@ -275,4 +275,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(RolesPanel);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(RolesPanel);

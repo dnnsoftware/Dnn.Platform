@@ -46,23 +46,20 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [ExpectedException(typeof(WriteLockRequiredException))]
-        [TestCaseSource("GetWriteMethods")]
+        [TestCaseSource(nameof(GetWriteMethods))]
         public void WriteRequiresLock(Action<SharedList<string>> writeAction)
         {
-            writeAction.Invoke(this.InitSharedList("value"));
+            Assert.Throws<WriteLockRequiredException>(() => writeAction.Invoke(this.InitSharedList("value")));
         }
 
         [Test]
-        [ExpectedException(typeof(ReadLockRequiredException))]
-        [TestCaseSource("GetReadMethods")]
+        [TestCaseSource(nameof(GetReadMethods))]
         public void ReadRequiresLock(Action<SharedList<string>> readAction)
         {
-            readAction.Invoke(this.InitSharedList("value"));
+            Assert.Throws<ReadLockRequiredException>(() => readAction.Invoke(this.InitSharedList("value")));
         }
 
         [Test]
-        [ExpectedException(typeof(ReadLockRequiredException))]
         public void DisposedReadLockDeniesRead()
         {
             var d = new SharedList<string>(this.LockingStrategy);
@@ -70,11 +67,10 @@ namespace DotNetNuke.Tests.Core.Collections
             ISharedCollectionLock l = d.GetReadLock();
             l.Dispose();
 
-            d.Contains("foo");
+            Assert.Throws<ReadLockRequiredException>(() => d.Contains("foo"));
         }
 
         [Test]
-        [ExpectedException(typeof(ReadLockRequiredException))]
         public void DisposedWriteLockDeniesRead()
         {
             var d = new SharedList<string>(this.LockingStrategy);
@@ -82,11 +78,10 @@ namespace DotNetNuke.Tests.Core.Collections
             ISharedCollectionLock l = d.GetWriteLock();
             l.Dispose();
 
-            d.Contains("foo");
+            Assert.Throws<ReadLockRequiredException>(() => d.Contains("foo"));
         }
 
         [Test]
-        [ExpectedException(typeof(WriteLockRequiredException))]
         public void DisposedWriteLockDeniesWrite()
         {
             var sharedList = new SharedList<string>(this.LockingStrategy);
@@ -94,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Collections
             ISharedCollectionLock l = sharedList.GetWriteLock();
             l.Dispose();
 
-            sharedList[0] = "foo";
+            Assert.Throws<WriteLockRequiredException>(() => sharedList[0] = "foo");
         }
 
         [Test]
@@ -132,18 +127,16 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [ExpectedException(typeof(ObjectDisposedException))]
-        [TestCaseSource("GetObjectDisposedExceptionMethods")]
+        [TestCaseSource(nameof(GetObjectDisposedExceptionMethods))]
         public void MethodsThrowAfterDisposed(Action<SharedList<string>> methodCall)
         {
             var d = new SharedList<string>(this.LockingStrategy);
 
             d.Dispose();
-            methodCall.Invoke(d);
+            Assert.Throws<ObjectDisposedException>(() => methodCall.Invoke(d));
         }
 
         [Test]
-        [ExpectedException(typeof(LockRecursionException))]
         public void TwoDictsShareALockWriteTest()
         {
             ILockStrategy ls = new ReaderWriterLockStrategy();
@@ -152,24 +145,28 @@ namespace DotNetNuke.Tests.Core.Collections
 
             using (ISharedCollectionLock readLock = d1.GetReadLock())
             {
-                using (ISharedCollectionLock writeLock = d2.GetWriteLock())
-                {
-                    // do nothing
-                }
+                Assert.Throws<LockRecursionException>(
+                    () =>
+                    {
+                        using (ISharedCollectionLock writeLock = d2.GetWriteLock())
+                        {
+                            // do nothing
+                        }
+                    });
             }
         }
 
-        protected IEnumerable<Action<SharedList<string>>> GetObjectDisposedExceptionMethods()
+        protected static IEnumerable<Action<SharedList<string>>> GetObjectDisposedExceptionMethods()
         {
             var list = new List<Action<SharedList<string>>> { (SharedList<string> l) => l.GetReadLock(), (SharedList<string> l) => l.GetWriteLock() };
 
-            list.AddRange(this.GetReadMethods());
-            list.AddRange(this.GetWriteMethods());
+            list.AddRange(GetReadMethods());
+            list.AddRange(GetWriteMethods());
 
             return list;
         }
 
-        protected IEnumerable<Action<SharedList<string>>> GetReadMethods()
+        protected static IEnumerable<Action<SharedList<string>>> GetReadMethods()
         {
             var list = new List<Action<SharedList<string>>>();
 
@@ -189,7 +186,7 @@ namespace DotNetNuke.Tests.Core.Collections
             return list;
         }
 
-        protected IEnumerable<Action<SharedList<string>>> GetWriteMethods()
+        protected static IEnumerable<Action<SharedList<string>>> GetWriteMethods()
         {
             var list = new List<Action<SharedList<string>>> { l => l.Add("more"), l => l.Clear(), l => l.Remove("value"), l => l.Insert(0, "more"), l => l[0] = "more", l => l.RemoveAt(0) };
 

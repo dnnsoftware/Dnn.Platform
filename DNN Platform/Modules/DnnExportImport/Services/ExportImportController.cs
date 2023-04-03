@@ -20,6 +20,7 @@ namespace Dnn.ExportImport.Services
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage Export(ExportDto exportDto)
         {
             var controller = new ExportController();
@@ -30,6 +31,7 @@ namespace Dnn.ExportImport.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage Import(ImportDto importDto)
         {
             var controller = new ImportController();
@@ -44,6 +46,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage VerifyImportPackage(string packageId)
         {
             var controller = new ImportController();
@@ -56,17 +59,15 @@ namespace Dnn.ExportImport.Services
                 : this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
-        /// <summary>
-        /// Get list of packages to import.
-        /// </summary>
+        /// <summary>Get list of packages to import.</summary>
         /// <param name="keyword">Keyword to search the import package. This will look into the package name and description.</param>
         /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name.</param>
         /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
-        /// <returns></returns>
+        /// <returns>An <see cref="HttpResponseMessage"/>.</returns>
         [HttpGet]
-        public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0,
-            int pageSize = 10)
+
+        public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0, int pageSize = 10)
         {
             var controller = new ImportController();
             int total;
@@ -78,6 +79,7 @@ namespace Dnn.ExportImport.Services
         // this is POST so users can't cancel using a simple browser link
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage CancelProcess([FromUri] int jobId)
         {
             var controller = new BaseController();
@@ -89,6 +91,7 @@ namespace Dnn.ExportImport.Services
         // this is POST so users can't remove a job using a browser link
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage RemoveJob([FromUri] int jobId)
         {
             var controller = new BaseController();
@@ -98,6 +101,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage LastJobTime(int portal, JobType jobType)
         {
             if (!this.UserInfo.IsSuperUser && portal != this.PortalSettings.PortalId)
@@ -121,8 +125,8 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage AllJobs(int portal, int? pageSize = 10, int? pageIndex = 0, int? jobType = null,
-            string keywords = null)
+
+        public HttpResponseMessage AllJobs(int portal, int? pageSize = 10, int? pageIndex = 0, int? jobType = null, string keywords = null)
         {
             if (!this.UserInfo.IsSuperUser && portal != this.PortalSettings.PortalId)
             {
@@ -137,6 +141,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage JobDetails(int jobId)
         {
             var controller = new BaseController();

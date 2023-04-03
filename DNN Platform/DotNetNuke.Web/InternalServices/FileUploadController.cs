@@ -200,8 +200,13 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage),
-                                }, mediaTypeFormatter, "text/plain");
+                                    Message = string.Format(
+                                        GetLocalizedString("ErrorMessage"),
+                                        fileName,
+                                        errorMessage),
+                                },
+                                mediaTypeFormatter,
+                                "text/plain");
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
@@ -262,7 +267,7 @@ namespace DotNetNuke.Web.InternalServices
                     foreach (var item in provider.Contents)
                     {
                         var name = item.Headers.ContentDisposition.Name;
-                        switch (name.ToUpper())
+                        switch (name.ToUpperInvariant())
                         {
                             case "\"FOLDER\"":
                                 folder = item.ReadAsStringAsync().Result ?? string.Empty;
@@ -336,91 +341,6 @@ namespace DotNetNuke.Web.InternalServices
                 });
 
             return task;
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
-        public HttpResponseMessage UploadFromUrl(UploadByUrlDto dto)
-        {
-            FileUploadDto result;
-            WebResponse response = null;
-            Stream responseStream = null;
-            var mediaTypeFormatter = new JsonMediaTypeFormatter();
-            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-
-            if (this.VerifySafeUrl(dto.Url) == false)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-            try
-            {
-                var request = (HttpWebRequest)WebRequest.Create(dto.Url);
-                request.Credentials = CredentialCache.DefaultCredentials;
-                response = request.GetResponse();
-                responseStream = response.GetResponseStream();
-                if (responseStream == null)
-                {
-                    throw new Exception("No server response");
-                }
-
-                var fileName = this.GetFileName(response);
-                if (string.IsNullOrEmpty(fileName))
-                {
-                    fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
-                }
-
-                var portalId = dto.PortalId;
-                if (portalId > -1)
-                {
-                    if (!this.IsPortalIdValid(portalId))
-                    {
-                        throw new HttpResponseException(HttpStatusCode.Unauthorized);
-                    }
-                }
-                else
-                {
-                    portalId = this.PortalSettings.PortalId;
-                }
-
-                result = UploadFile(responseStream, portalId, this.UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
-                    fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, dto.ValidationCode);
-
-                /* Response Content Type cannot be application/json
-                    * because IE9 with iframe-transport manages the response
-                    * as a file download
-                    */
-                return this.Request.CreateResponse(
-                    HttpStatusCode.OK,
-                    result,
-                    mediaTypeFormatter,
-                    "text/plain");
-            }
-            catch (Exception ex)
-            {
-                result = new FileUploadDto
-                {
-                    Message = ex.Message,
-                };
-                return this.Request.CreateResponse(
-                    HttpStatusCode.OK,
-                    result,
-                    mediaTypeFormatter,
-                    "text/plain");
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Close();
-                }
-
-                if (responseStream != null)
-                {
-                    responseStream.Close();
-                }
-            }
         }
 
         private static SavedFileDTO SaveFile(
@@ -542,16 +462,16 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         private static FileUploadDto UploadFile(
-            Stream stream,
-            int portalId,
-            UserInfo userInfo,
-            string folder,
-            string filter,
-            string fileName,
-            bool overwrite,
-            bool isHostPortal,
-            bool extract,
-            string validationCode)
+                Stream stream,
+                int portalId,
+                UserInfo userInfo,
+                string folder,
+                string filter,
+                string fileName,
+                bool overwrite,
+                bool isHostPortal,
+                bool extract,
+                string validationCode)
         {
             var result = new FileUploadDto();
             BinaryReader reader = null;
@@ -617,9 +537,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
-                        FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)),
-                        userInfo.UserID);
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
                     if (extract && extension.ToLowerInvariant() == "zip")
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -702,10 +620,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
             var mygroup = (from @group in groups
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                into portals
-                where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                select portals.ToArray()).FirstOrDefault();
+                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                               into portals
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
             return mygroup;
         }
 

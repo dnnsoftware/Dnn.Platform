@@ -11,27 +11,23 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ScriptComponentWriter class handles creating the manifest for Script
     /// Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ScriptComponentWriter : FileComponentWriter
     {
+        /// <summary>Initializes a new instance of the <see cref="ScriptComponentWriter"/> class.</summary>
+        /// <param name="basePath"></param>
+        /// <param name="scripts"></param>
+        /// <param name="package"></param>
         public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package)
             : base(basePath, scripts, package)
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("scripts").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("scripts").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -40,12 +36,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("Script").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Script").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get
@@ -54,12 +46,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("script").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("script").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -68,29 +56,34 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void WriteFileElement(XmlWriter writer, InstallFile file)
         {
             this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase)) // UnInstall.SqlDataprovider
+            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
             {
+                // UnInstall.SqlDataprovider
                 type = "UnInstall";
                 version = this.Package.Version.ToString(3);
             }
-            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase)) // Install.SqlDataprovider
+            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Install.SqlDataprovider
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);
             }
-            else if (fileName.StartsWith("Install")) // Install.xx.xx.xx.SqlDataprovider
+            else if (fileName.StartsWith("Install"))
             {
+                // Install.xx.xx.xx.SqlDataprovider
                 type = "Install";
                 version = fileName.Replace("Install.", string.Empty);
             }
-            else // xx.xx.xx.SqlDataprovider
+            else
             {
+                // xx.xx.xx.SqlDataprovider
                 type = "Install";
                 version = fileName;
             }

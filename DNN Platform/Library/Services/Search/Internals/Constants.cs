@@ -3,13 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
-    using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using Version = Lucene.Net.Util.Version;
 
-    /// <summary>
-    /// Constants.
-    /// </summary>
+    /// <summary>Constants.</summary>
     internal static class Constants
     {
         internal const string UniqueKeyTag = "key";
@@ -89,21 +87,22 @@ namespace DotNetNuke.Services.Search.Internals
         // misc.
         internal const string TlsSearchInfo = "TLS_SEARCH_INFO";
 
-        internal static Version LuceneVersion = Version.LUCENE_30;
         internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
 
         internal static readonly string[] KeyWordSearchFields =
         {
             TitleTag,
-                                                                Tag,
-                                                                DescriptionTag,
-                                                                BodyTag,
-                                                                ContentTag,
-                                                                KeywordsPrefixTag + TitleTag,
-                                                                KeywordsPrefixTag + SubjectTag,
-                                                                KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag,
+            Tag,
+            DescriptionTag,
+            BodyTag,
+            ContentTag,
+            KeywordsPrefixTag + TitleTag,
+            KeywordsPrefixTag + SubjectTag,
+            KeywordsPrefixTag + CommentsTag,
+            KeywordsPrefixTag + AuthorNameTag,
         };
 
-        }
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        internal static Version LuceneVersion = Version.LUCENE_30;
+    }
 }

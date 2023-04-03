@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Tabs
     {
         public const string IsModuleDoesNotBelongToPage = nameof(IsModuleDoesNotBelongToPage);
 
+        /// <inheritdoc/>
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
             var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
@@ -29,6 +30,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <inheritdoc/>
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             if (ModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
@@ -53,6 +55,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <inheritdoc/>
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
@@ -67,6 +70,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <inheritdoc/>
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             if (module != null && TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
@@ -75,6 +79,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <inheritdoc/>
         public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
@@ -83,6 +88,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabChangeTracker();

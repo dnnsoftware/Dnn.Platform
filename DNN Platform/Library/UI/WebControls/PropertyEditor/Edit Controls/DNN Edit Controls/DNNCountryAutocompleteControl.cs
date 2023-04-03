@@ -4,7 +4,6 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
-    using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -12,27 +11,30 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
     public class DnnCountryAutocompleteControl : EditControl
     {
-        private TextBox _CountryName;
+        private TextBox countryName;
 
-        private HiddenField _CountryId;
+        private HiddenField countryId;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         public DnnCountryAutocompleteControl()
         {
             this.Init += this.DnnCountryRegionControl_Init;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
+        /// <param name="type"></param>
         public DnnCountryAutocompleteControl(string type)
         {
             this.Init += this.DnnCountryRegionControl_Init;
             this.SystemType = type;
         }
 
+        /// <inheritdoc/>
         public override string EditControlClientId
         {
             get
@@ -47,6 +49,7 @@ namespace DotNetNuke.UI.WebControls
             get { return Convert.ToString(this.OldValue); }
         }
 
+        /// <inheritdoc/>
         protected override string StringValue
         {
             get
@@ -60,19 +63,22 @@ namespace DotNetNuke.UI.WebControls
                 return strValue;
             }
 
-            set { this.Value = value; }
+            set
+            {
+                this.Value = value;
+            }
         }
 
         private TextBox CountryName
         {
             get
             {
-                if (this._CountryName == null)
+                if (this.countryName == null)
                 {
-                    this._CountryName = new TextBox();
+                    this.countryName = new TextBox();
                 }
 
-                return this._CountryName;
+                return this.countryName;
             }
         }
 
@@ -80,15 +86,16 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._CountryId == null)
+                if (this.countryId == null)
                 {
-                    this._CountryId = new HiddenField();
+                    this.countryId = new HiddenField();
                 }
 
-                return this._CountryId;
+                return this.countryId;
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -103,6 +110,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
+        /// <inheritdoc/>
         protected override void OnDataChanged(EventArgs e)
         {
             PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
@@ -112,6 +120,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -129,6 +138,7 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.CountryId);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -142,6 +152,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
@@ -160,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.CountryName.Text = this.StringValue;
             int countryId = -1;
-            string countryCode = this.StringValue;
+            string countryCode = CountryLookup.CodeByName(this.StringValue);
             if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out countryId))
             {
                 var listController = new ListController();

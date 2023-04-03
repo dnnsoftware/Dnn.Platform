@@ -10,20 +10,29 @@ namespace DotNetNuke.Services.Social.Messaging.Exceptions
     [Serializable]
     public class RecipientLimitExceededException : Exception
     {
+        /// <summary>Initializes a new instance of the <see cref="RecipientLimitExceededException"/> class.</summary>
         public RecipientLimitExceededException()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RecipientLimitExceededException"/> class.</summary>
+        /// <param name="message"></param>
         public RecipientLimitExceededException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RecipientLimitExceededException"/> class.</summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public RecipientLimitExceededException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RecipientLimitExceededException"/> class.</summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public RecipientLimitExceededException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

@@ -100,6 +100,9 @@ class PersonaBarPageTreeviewInteractor extends Component {
         this.setState({
             treeViewActivePage: this.props.activePage
         });
+        if (!this.state.isChildLoaded) {
+            this.loadAllChildList();
+        }
     }
 
     getPageInfo(id) {
@@ -648,14 +651,14 @@ class PersonaBarPageTreeviewInteractor extends Component {
                         });
                     });
             };
-            this.props._traverse((item) => (item.childCount > 0 && item.id === id && !item.hasOwnProperty('childListItems')) ? getChildListItems() : resolve());
+            this.props._traverse((item) => (item.childCount > 0 && item.id === id && !Object.prototype.hasOwnProperty.call(item, "childListItems")) ? getChildListItems() : resolve());
         });
     }
 
     loadAllChildList() {
         let promises = [];
         this.props._traverse((item) => {
-            if (item.childCount > 0 && !item.hasOwnProperty('childListItems')) {
+            if (item.childCount > 0 && !Object.prototype.hasOwnProperty.call(item, "childListItems")) {
                 promises.push(this.loadAllChildListItems(item.id));
             }
         });
@@ -671,7 +674,7 @@ class PersonaBarPageTreeviewInteractor extends Component {
         } = this.state;
 
         this.props._traverse((item, list, updateStore) => {
-            if (item.hasOwnProperty("childListItems") && item.childListItems.length > 0) {
+            if (Object.prototype.hasOwnProperty.call(item, "childListItems") && item.childListItems.length > 0) {
                 item.isOpen = (isTreeviewExpanded) ? false : true;
                 updateStore(list);
                 this.setState({
@@ -767,10 +770,6 @@ class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     render() {
-        if (!this.state.isChildLoaded) {
-            this.loadAllChildList();
-        }
-
         return (
             <div onMouseEnter={() => this.setMouseOver(true)} onMouseLeave={() => this.setMouseOver(false)}>
                 <GridCell

@@ -8,49 +8,36 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      TextEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TextEditControl control provides a standard UI component for editing
     /// string/text properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:TextEditControl runat=server></{0}:TextEditControl>")]
     public class TextEditControl : EditControl
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEditControl"/> class.
         /// Constructs a TextEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public TextEditControl()
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEditControl"/> class.
         /// Constructs a TextEditControl.
         /// </summary>
         /// <param name="type">The type of the property.</param>
-        /// -----------------------------------------------------------------------------
         public TextEditControl(string type)
         {
             this.SystemType = type;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets oldStringValue returns the Boolean representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets oldStringValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
             get
@@ -59,12 +46,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
@@ -84,12 +67,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -99,12 +80,8 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;

@@ -9,11 +9,15 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
     using DotNetNuke.Data;
 
-    /// <summary>
-    /// FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into database.
-    /// </summary>
+    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into database.</summary>
     public class DatabaseResponseFilter : OutputCacheResponseFilter
     {
+        /// <summary>Initializes a new instance of the <see cref="DatabaseResponseFilter"/> class.</summary>
+        /// <param name="itemId"></param>
+        /// <param name="maxVaryByCount"></param>
+        /// <param name="filterChain"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="cacheDuration"></param>
         internal DatabaseResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
             : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
@@ -26,11 +30,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             this.CaptureStream = new MemoryStream();
         }
 
+        /// <inheritdoc/>
         protected override void AddItemToCache(int itemId, string output)
         {
             DataProvider.Instance().AddOutputCacheItem(itemId, this.CacheKey, output, DateTime.UtcNow.Add(this.CacheDuration));
         }
 
+        /// <inheritdoc/>
         protected override void RemoveItemFromCache(int itemId)
         {
             DataProvider.Instance().RemoveOutputCacheItem(itemId);

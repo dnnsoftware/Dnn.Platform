@@ -7,11 +7,14 @@ namespace DotNetNuke.Services.Scheduling
 
     public class PurgeScheduleHistory : SchedulerClient
     {
+        /// <summary>Initializes a new instance of the <see cref="PurgeScheduleHistory"/> class.</summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public PurgeScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

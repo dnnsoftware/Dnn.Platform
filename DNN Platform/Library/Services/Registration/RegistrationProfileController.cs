@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Registration
 
     public class RegistrationProfileController : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
     {
+        /// <inheritdoc/>
         public IEnumerable<string> Search(int portalId, string searchTerm)
         {
             var controller = new ListController();
@@ -39,6 +40,7 @@ namespace DotNetNuke.Services.Registration
             return results;
         }
 
+        /// <inheritdoc/>
         protected override Func<IRegistrationProfileController> GetFactory()
         {
             return () => new RegistrationProfileController();

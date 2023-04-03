@@ -5,7 +5,6 @@
 namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
@@ -20,6 +19,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.GeneratedImage.ImageQuantization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.UserRequest;
@@ -28,10 +28,11 @@ namespace DotNetNuke.Services.GeneratedImage
     {
         private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
 
-        private TimeSpan _clientCacheExpiration = defaultClientCacheExpiration;
-        private IImageStore _imageStore;
-        private DateTime? _now;
+        private TimeSpan clientCacheExpiration = defaultClientCacheExpiration;
+        private IImageStore imageStore;
+        private DateTime? now;
 
+        /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
         public ImageHandlerInternal()
         {
             this.ContentType = ImageFormat.Jpeg;
@@ -40,18 +41,21 @@ namespace DotNetNuke.Services.GeneratedImage
             this.AllowStandalone = false;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
+        /// <param name="imageStore"></param>
+        /// <param name="now"></param>
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
             : this()
         {
-            this._imageStore = imageStore;
-            this._now = now;
+            this.imageStore = imageStore;
+            this.now = now;
         }
 
         public TimeSpan ClientCacheExpiration
         {
             get
             {
-                return this._clientCacheExpiration;
+                return this.clientCacheExpiration;
             }
 
             set
@@ -61,7 +65,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
                 }
 
-                this._clientCacheExpiration = value;
+                this.clientCacheExpiration = value;
                 this.EnableClientCache = true;
             }
         }
@@ -104,7 +108,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return this._now ?? DateTime.Now;
+                return this.now ?? DateTime.Now;
             }
         }
 
@@ -112,7 +116,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return this._imageStore ?? DiskImageStore.Instance;
+                return this.imageStore ?? DiskImageStore.Instance;
             }
         }
 
@@ -213,11 +217,11 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
 
+            var userId = -1;
             var cacheCleared = false;
-            var profilepic = context.Request.QueryString["mode"];
-            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
+            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
+            if (isProfilePic)
             {
-                int userId;
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
                 {
                     cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
@@ -252,6 +256,31 @@ namespace DotNetNuke.Services.GeneratedImage
             // Handle Server cache
             if (this.EnableServerCache)
             {
+                var isAnonymousUser = userId <= 0 ? true : false;
+                if (isProfilePic && !isAnonymousUser && !this.IsPicVisibleToCurrentUser(userId))
+                {
+                    string message = "Not allowed to see profile picture";
+
+                    if (this.LogSecurity)
+                    {
+                        EventLogController logController = new EventLogController();
+                        var logInfo = new LogInfo
+                        {
+                            LogUserID = PortalSettings.Current.UserId,
+                            LogPortalID = PortalSettings.Current.PortalId,
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                        };
+                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.AddProperty("IP", ipAddress);
+                        logController.AddLog(logInfo);
+                    }
+
+                    context.Response.StatusCode = 403;
+                    context.Response.StatusDescription = "Forbidden";
+                    context.Response.End();
+                    return;
+                }
+
                 if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
                 {
                     context.Response.Flush();
@@ -296,7 +325,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             using (var imageOutputBuffer = new MemoryStream())
             {
-                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
+                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null), "Image or ImageByteByffer must have a value");
                 if (imageMethodData.Image != null)
                 {
                     this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
@@ -366,9 +395,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        /// <summary>
-        /// Returns the encoder for the specified mime type.
-        /// </summary>
+        /// <summary>Returns the encoder for the specified mime type.</summary>
         /// <param name="mimeType">The mime type of the content.</param>
         /// <returns>ImageCodecInfo.</returns>
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
@@ -474,6 +501,25 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
+        }
+
+        private bool IsPicVisibleToCurrentUser(int profileUserId)
+        {
+            var settings = PortalController.Instance.GetCurrentSettings();
+            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
+            if (profileUser == null)
+            {
+                return false;
+            }
+
+            var photoProperty = profileUser.Profile.GetProperty("Photo");
+            if (photoProperty == null)
+            {
+                return false;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
         }
     }
 }

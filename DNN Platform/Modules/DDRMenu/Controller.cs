@@ -6,7 +6,6 @@ namespace DotNetNuke.Web.DDRMenu
 {
     using System;
     using System.IO;
-    using System.Reflection;
     using System.Security;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -15,17 +14,30 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Entities.Portals;
 
+    /// <summary>Implements the Dnn interfaces for the module.</summary>
     public class Controller : IUpgradeable, IPortable
     {
+        /// <summary>Regex for replacement of DNNDoneRight.DDRMenu.</summary>
+        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
         public static readonly Regex AscxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private const string ddrMenuModuleName = "DDRMenu";
-        private const string ddrMenuMmoduleDefinitionName = "DDR Menu";
 
+        /// <summary>Regex for replacement of DNNGarden.TemplateEngine.</summary>
+        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
+        public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>Regex for replacement of DNNDoneRight.DDRMenu.</summary>
+        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
+        public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>Regex for replacement of DNNGarden.DDRMenu.</summary>
+        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
+        public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private const string DdrMenuModuleName = "DDRMenu";
+        private const string DdrMenuMmoduleDefinitionName = "DDR Menu";
+
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             UpdateWebConfig();
@@ -39,6 +51,7 @@ namespace DotNetNuke.Web.DDRMenu
             return "UpgradeModule completed OK";
         }
 
+        /// <inheritdoc/>
         public string ExportModule(int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
@@ -61,6 +74,7 @@ namespace DotNetNuke.Web.DDRMenu
             return settings.ToXml();
         }
 
+        /// <inheritdoc/>
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
             var settings = Settings.FromXml(content);
@@ -114,7 +128,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private static void TidyModuleDefinitions()
         {
-            RemoveLegacyModuleDefinitions(ddrMenuModuleName, ddrMenuMmoduleDefinitionName);
+            RemoveLegacyModuleDefinitions(DdrMenuModuleName, DdrMenuMmoduleDefinitionName);
             RemoveLegacyModuleDefinitions("DDRMenuAdmin", "N/A");
         }
 
@@ -189,10 +203,16 @@ namespace DotNetNuke.Web.DDRMenu
                     {
                         var ascxText = File.ReadAllText(skinControl);
                         var originalText = ascxText;
-                        ascxText = AscxText1Regex.Replace(ascxText, @"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""");
-                        ascxText = AscxText2Regex.Replace(ascxText, @"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""");
-                        ascxText = AscxText3Regex.Replace(ascxText, @"Assembly=""DotNetNuke.Web.DDRMenu""");
-                        ascxText = AscxText4Regex.Replace(ascxText, @"Assembly=""DotNetNuke.Web.DDRMenu""");
+
+                        Regex ascxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        Regex ascxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        Regex ascxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        Regex ascxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+                        ascxText = ascxText1Regex.Replace(ascxText, @"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""");
+                        ascxText = ascxText2Regex.Replace(ascxText, @"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""");
+                        ascxText = ascxText3Regex.Replace(ascxText, @"Assembly=""DotNetNuke.Web.DDRMenu""");
+                        ascxText = ascxText4Regex.Replace(ascxText, @"Assembly=""DotNetNuke.Web.DDRMenu""");
 
                         if (!ascxText.Equals(originalText))
                         {

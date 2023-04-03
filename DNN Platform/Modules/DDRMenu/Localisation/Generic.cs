@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.DDRMenu.Localisation
 {
-    using System;
     using System.Reflection;
 
     using DotNetNuke.Entities.Modules;
@@ -13,6 +12,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using DotNetNuke.Framework;
     using DotNetNuke.UI.WebControls;
 
+    /// <summary>Implements generic localization support.</summary>
     public class Generic : ILocalisation
     {
         private bool haveChecked;
@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         private MethodInfo locTab;
         private MethodInfo locNodes;
 
+        /// <inheritdoc/>
         public bool HaveApi()
         {
             if (!this.haveChecked)
@@ -70,11 +71,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return (this.locTab != null) || (this.locNodes != null);
         }
 
+        /// <inheritdoc/>
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return (this.locTab == null) ? null : (TabInfo)this.locTab.Invoke(this.locApi, new object[] { tab, portalId });
         }
 
+        /// <inheritdoc/>
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
             return (this.locNodes == null) ? null : (DNNNodeCollection)this.locNodes.Invoke(this.locApi, new object[] { nodes });

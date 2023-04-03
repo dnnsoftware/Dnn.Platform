@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
-    using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -19,19 +18,19 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
     {
-        private HtmlEditorProvider _richTextEditor;
-        private TextBox _defaultTextEditor;
+        private HtmlEditorProvider richTextEditor;
+        private TextBox defaultTextEditor;
 
         protected Control TextEditControl
         {
             get
             {
-                if (this._richTextEditor != null)
+                if (this.richTextEditor != null)
                 {
-                    return this._richTextEditor.HtmlEditorControl;
+                    return this.richTextEditor.HtmlEditorControl;
                 }
 
-                return this._defaultTextEditor;
+                return this.defaultTextEditor;
             }
         }
 
@@ -39,27 +38,28 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._richTextEditor != null)
+                if (this.richTextEditor != null)
                 {
-                    return this._richTextEditor.Text;
+                    return this.richTextEditor.Text;
                 }
 
-                return this._defaultTextEditor.Text;
+                return this.defaultTextEditor.Text;
             }
 
             set
             {
-                if (this._richTextEditor != null)
+                if (this.richTextEditor != null)
                 {
-                    this._richTextEditor.Text = value;
+                    this.richTextEditor.Text = value;
                 }
                 else
                 {
-                    this._defaultTextEditor.Text = value;
+                    this.defaultTextEditor.Text = value;
                 }
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var dataChanged = false;
@@ -74,6 +74,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             if (this.EditMode == PropertyEditorMode.Edit)
@@ -88,30 +89,30 @@ namespace DotNetNuke.UI.WebControls
                     pnlEditor.CssClass = string.Format("{0} dnnLeft", this.CssClass);
                 }
 
-                this._richTextEditor = HtmlEditorProvider.Instance();
-                if (this._richTextEditor != null)
+                this.richTextEditor = HtmlEditorProvider.Instance();
+                if (this.richTextEditor != null)
                 {
-                    this._richTextEditor.ControlID = this.ID + "edit";
-                    this._richTextEditor.Initialize();
-                    this._richTextEditor.Height = this.ControlStyle.Height;
-                    this._richTextEditor.Width = this.ControlStyle.Width;
-                    if (this._richTextEditor.Height.IsEmpty)
+                    this.richTextEditor.ControlID = this.ID + "edit";
+                    this.richTextEditor.Initialize();
+                    this.richTextEditor.Height = this.ControlStyle.Height;
+                    this.richTextEditor.Width = this.ControlStyle.Width;
+                    if (this.richTextEditor.Height.IsEmpty)
                     {
-                        this._richTextEditor.Height = new Unit(250);
+                        this.richTextEditor.Height = new Unit(250);
                     }
 
-                    this._richTextEditor.Width = new Unit(400);
+                    this.richTextEditor.Width = new Unit(400);
                 }
                 else
                 {
-                    this._defaultTextEditor = new TextBox
+                    this.defaultTextEditor = new TextBox
                     {
                         ID = this.ID + "edit",
                         Width = this.ControlStyle.Width.IsEmpty ? new Unit(300) : this.ControlStyle.Width,
                         Height = this.ControlStyle.Height.IsEmpty ? new Unit(250) : this.ControlStyle.Height,
                         TextMode = TextBoxMode.MultiLine,
                     };
-                    this._defaultTextEditor.Attributes.Add("aria-label", "editor");
+                    this.defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }
 
                 this.Controls.Clear();
@@ -122,6 +123,7 @@ namespace DotNetNuke.UI.WebControls
             base.CreateChildControls();
         }
 
+        /// <inheritdoc/>
         protected override void OnDataChanged(EventArgs e)
         {
             var strValue = this.RemoveBaseTags(Convert.ToString(this.Value));
@@ -130,12 +132,14 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -150,11 +154,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
+        /// <inheritdoc/>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));

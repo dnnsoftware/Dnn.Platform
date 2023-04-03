@@ -25,9 +25,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of SearchController.
-    /// </summary>
+    /// <summary> Testing various aspects of SearchController.</summary>
     [TestFixture]
     public class SearchHelperTests
     {
@@ -46,6 +44,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private SearchHelperImpl _searchHelper;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -71,6 +70,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void SearchHelper_GetSynonyms_Two_Terms_Returns_Correct_Results()
         {
             // Arrange
@@ -84,6 +84,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         public void SearchHelper_GetSynonyms_Three_Terms_Returns_Correct_Results()
         {
             // Arrange

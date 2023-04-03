@@ -8,12 +8,15 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Web.Http.Filters;
     using System.Web.Routing;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Internal.Reflection;
     using DotNetNuke.Framework.Reflections;
@@ -26,9 +29,10 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class ServiceRoutingManagerTests
     {
-        // ReSharper disable UnusedMember.Local
-        private readonly List<string[]> emptyStringArrays = new List<string[]>
-                                                        { null, new string[0], new[] { string.Empty }, new string[] { null } };
+        private static readonly List<string[]> EmptyStringArrays = new List<string[]>
+        {
+            null, new string[0], new[] { string.Empty }, new string[] { null }
+        };
 
         // ReSharper restore UnusedMember.Local
         private Mock<IPortalController> mockPortalController;
@@ -57,6 +61,7 @@ namespace DotNetNuke.Tests.Web.Api
             services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
             services.AddScoped<IPortalAliasService>(_ => this.mockPortalAliasService.Object);
+            services.AddScoped(_ => Mock.Of<IFilterProvider>());
 
             Globals.DependencyProvider = services.BuildServiceProvider();
         }
@@ -103,7 +108,8 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void NameSpaceRequiredOnMapRouteCalls([ValueSource("emptyStringArrays")] string[] namespaces)
+
+        public void NameSpaceRequiredOnMapRouteCalls([ValueSource(nameof(EmptyStringArrays))] string[] namespaces)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
 
@@ -111,6 +117,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RegisterRoutesIsCalledOnAllServiceRouteMappersEvenWhenSomeThrowExceptions()
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
@@ -132,6 +139,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RegisterRoutesIsCalledOnServiceRouteMappers()
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
@@ -150,6 +158,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         [TestCase("")]
         [TestCase(null)]
+
         public void UniqueNameRequiredOnMapRouteCalls(string uniqueName)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
@@ -158,6 +167,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void UrlCanStartWithSlash()
         {
             // Arrange
@@ -171,6 +181,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void NameIsInsertedInRouteDataTokens()
         {
             // Arrange
@@ -192,6 +203,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void TwoRoutesOnTheSameFolderHaveSimilarNames()
         {
             // Arrange
@@ -216,6 +228,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void RoutesShouldHaveBackwardCompability()
         {
             // Arrange

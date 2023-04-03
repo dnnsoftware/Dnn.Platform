@@ -10,15 +10,12 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// ------------------------------------------------------------------------------------------------
-    /// <summary>
-    /// DatabaseVerificationStep - Step that performs database verification checks prior to installation.
-    /// </summary>
-    /// ------------------------------------------------------------------------------------------------
+    /// <summary>DatabaseVerificationStep - Step that performs database verification checks prior to installation.</summary>
     public class ActivateLicenseStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ActivateLicenseStep));
 
+        /// <inheritdoc/>
         public override void Execute()
         {
             this.Percentage = 0;

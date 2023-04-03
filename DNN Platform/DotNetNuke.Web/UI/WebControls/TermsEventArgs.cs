@@ -9,18 +9,20 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class TermsEventArgs : EventArgs
     {
-        private readonly Term _SelectedTerm;
+        private readonly Term selectedTerm;
 
+        /// <summary>Initializes a new instance of the <see cref="TermsEventArgs"/> class.</summary>
+        /// <param name="selectedTerm"></param>
         public TermsEventArgs(Term selectedTerm)
         {
-            this._SelectedTerm = selectedTerm;
+            this.selectedTerm = selectedTerm;
         }
 
         public Term SelectedTerm
         {
             get
             {
-                return this._SelectedTerm;
+                return this.selectedTerm;
             }
         }
     }

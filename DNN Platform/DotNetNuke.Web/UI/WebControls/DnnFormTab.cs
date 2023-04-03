@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnFormTab : WebControl, INamingContainer
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnFormTab"/> class.</summary>
         public DnnFormTab()
         {
             this.Sections = new List<DnnFormSection>();
@@ -30,6 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public List<DnnFormSection> Sections { get; private set; }
 
         public string ResourceKey { get; set; }
+
         internal string ExpandAllScript { get; set; }
     }
 }

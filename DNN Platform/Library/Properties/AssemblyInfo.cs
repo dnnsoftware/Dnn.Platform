@@ -31,9 +31,11 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.MemberDirectory")]
 [assembly: InternalsVisibleTo("DotNetNuke.Provider.AspNetProvider")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Content")]
+[assembly: InternalsVisibleTo("DotNetNuke.Tests.Data")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web.Mvc")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Urls")]
+[assembly: InternalsVisibleTo("DotNetNuke.Tests.Utilities")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Professional")]
 [assembly: InternalsVisibleTo("DotNetNuke.SiteExportImport")]
 [assembly: InternalsVisibleTo("DotNetNuke.Web.DDRMenu")] // Once Globals is refactored to Dependency Injection we should be able to remove this
@@ -46,3 +48,4 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Journal")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.RazorHost")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Website")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.ConfigConsole.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this

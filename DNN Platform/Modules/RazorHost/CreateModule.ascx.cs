@@ -23,20 +23,23 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Implements the logic for the CreateModule view.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
+        /// <summary>Initializes a new instance of the <see cref="CreateModule"/> class.</summary>
         public CreateModule()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>Gets the module control file name without it's extension.</summary>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string ModuleControl
         {
@@ -46,6 +49,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        /// <summary>Gets the razor script path.</summary>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {
@@ -62,24 +66,30 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdCreate.Click += this.cmdCreate_Click;
-            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
+            this.cmdCancel.Click += this.CmdCancel_Click;
+            this.cmdCreate.Click += this.CmdCreate_Click;
+            this.scriptList.SelectedIndexChanged += this.ScriptList_SelectedIndexChanged;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 
             if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL("Access Denied"), true);
             }
 
             if (!this.Page.IsPostBack)
@@ -197,7 +207,7 @@ namespace DotNetNuke.Modules.RazorHost
                     objModule.AllTabs = false;
                     ModuleController.Instance.AddModule(objModule);
 
-                    this.Response.Redirect(this._navigationManager.NavigateURL(newTab.TabID), true);
+                    this.Response.Redirect(this.navigationManager.NavigateURL(newTab.TabID), true);
                 }
                 else
                 {
@@ -207,7 +217,7 @@ namespace DotNetNuke.Modules.RazorHost
             else
             {
                 // Redirect to main extensions page
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
             }
         }
 
@@ -216,19 +226,19 @@ namespace DotNetNuke.Modules.RazorHost
             ModuleDefinitionInfo moduleDefinition = null;
             try
             {
-                var _Installer = new Installer(manifest, this.Request.MapPath("."), true);
+                var installer = new Installer(manifest, this.Request.MapPath("."), true);
 
-                if (_Installer.IsValid)
+                if (installer.IsValid)
                 {
                     // Reset Log
-                    _Installer.InstallerInfo.Log.Logs.Clear();
+                    installer.InstallerInfo.Log.Logs.Clear();
 
                     // Install
-                    _Installer.Install();
+                    installer.Install();
 
-                    if (_Installer.IsValid)
+                    if (installer.IsValid)
                     {
-                        DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(_Installer.InstallerInfo.PackageID);
+                        DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(installer.InstallerInfo.PackageID);
                         if (desktopModule != null && desktopModule.ModuleDefinitions.Count > 0)
                         {
                             foreach (KeyValuePair<string, ModuleDefinitionInfo> kvp in desktopModule.ModuleDefinitions)
@@ -241,13 +251,13 @@ namespace DotNetNuke.Modules.RazorHost
                     else
                     {
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InstallError.Text", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                        this.phInstallLogs.Controls.Add(_Installer.InstallerInfo.Log.GetLogsTable());
+                        this.phInstallLogs.Controls.Add(installer.InstallerInfo.Log.GetLogsTable());
                     }
                 }
                 else
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InstallError.Text", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                    this.phInstallLogs.Controls.Add(_Installer.InstallerInfo.Log.GetLogsTable());
+                    this.phInstallLogs.Controls.Add(installer.InstallerInfo.Log.GetLogsTable());
                 }
             }
             catch (Exception exc)
@@ -285,25 +295,25 @@ namespace DotNetNuke.Modules.RazorHost
             this.lblModuleControl.Text = string.Format(Localization.GetString("SourceControl", this.LocalResourceFile), this.ModuleControl);
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void cmdCreate_Click(object sender, EventArgs e)
+        private void CmdCreate_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+                    this.Response.Redirect(this.navigationManager.NavigateURL("Access Denied"), true);
                 }
 
                 if (this.Page.IsValid)
@@ -311,13 +321,13 @@ namespace DotNetNuke.Modules.RazorHost
                     this.Create();
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
+        private void ScriptList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.DisplayFile();
         }

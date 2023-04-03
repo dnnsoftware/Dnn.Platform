@@ -5,99 +5,76 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      BaseUserInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The BaseUserInfo class provides a base Entity for an online user.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The BaseUserInfo class provides a base Entity for an online user.</summary>
     [Serializable]
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public abstract class BaseUserInfo
     {
-        private DateTime _CreationDate;
-        private DateTime _LastActiveDate;
-        private int _PortalID;
-        private int _TabID;
+        private DateTime creationDate;
+        private DateTime lastActiveDate;
+        private int portalID;
+        private int tabID;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the PortalId for this online user.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the PortalId for this online user.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int PortalID
         {
             get
             {
-                return this._PortalID;
+                return this.portalID;
             }
 
             set
             {
-                this._PortalID = value;
+                this.portalID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the TabId for this online user.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the TabId for this online user.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int TabID
         {
             get
             {
-                return this._TabID;
+                return this.tabID;
             }
 
             set
             {
-                this._TabID = value;
+                this.tabID = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the CreationDate for this online user.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the CreationDate for this online user.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public DateTime CreationDate
         {
             get
             {
-                return this._CreationDate;
+                return this.creationDate;
             }
 
             set
             {
-                this._CreationDate = value;
+                this.creationDate = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the LastActiveDate for this online user.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the LastActiveDate for this online user.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public DateTime LastActiveDate
         {
             get
             {
-                return this._LastActiveDate;
+                return this.lastActiveDate;
             }
 
             set
             {
-                this._LastActiveDate = value;
+                this.lastActiveDate = value;
             }
         }
     }

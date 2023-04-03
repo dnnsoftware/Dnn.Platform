@@ -15,23 +15,18 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.Config;
     using ClientDependency.Core.FileRegistration.Providers;
 
-    /// <summary>
-    /// Registers resources at the top of the body on default.aspx.
-    /// </summary>
+    /// <summary>Registers resources at the top of the body on default.aspx.</summary>
     public class DnnPageHeaderProvider : DnnFileRegistrationProvider
     {
-        /// <summary>
-        /// The default name of the provider.
-        /// </summary>
+        /// <summary>The default name of the provider.</summary>
         public const string DefaultName = "DnnPageHeaderProvider";
 
-        /// <summary>
-        /// The name of the placeholder in which the controls will be rendered.
-        /// </summary>
+        /// <summary>The name of the placeholder in which the controls will be rendered.</summary>
         public const string CssPlaceHolderName = "ClientDependencyHeadCss";
 
         public const string JsPlaceHolderName = "ClientDependencyHeadJs";
 
+        /// <inheritdoc/>
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one
@@ -43,6 +38,7 @@ namespace DotNetNuke.Web.Client.Providers
             base.Initialize(name, config);
         }
 
+        /// <inheritdoc/>
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!jsDependencies.Any())
@@ -71,11 +67,13 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {
             return string.Format(HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
         }
 
+        /// <inheritdoc/>
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!cssDependencies.Any())
@@ -104,14 +102,13 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
         {
             return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
         }
 
-        /// <summary>
-        /// Registers the dependencies in the body of default.aspx.
-        /// </summary>
+        /// <summary>Registers the dependencies in the body of default.aspx.</summary>
         /// <param name="http"></param>
         /// <param name="js"></param>
         /// <param name="css"></param>

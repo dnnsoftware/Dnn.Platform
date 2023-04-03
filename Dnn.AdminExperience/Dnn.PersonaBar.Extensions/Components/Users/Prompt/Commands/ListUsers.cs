@@ -18,34 +18,45 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("list-users", Constants.UsersCategory, "Prompt_ListUsers_Description")]
+
     public class ListUsers : ConsoleCommandBase
     {
         [FlagParameter("email", "Prompt_ListUsers_FlagEmail", "String")]
+
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_ListUsers_FlagUsername", "String")]
+
         private const string FlagUsername = "username";
 
         [FlagParameter("role", "Prompt_ListUsers_FlagRole", "String")]
+
         private const string FlagRole = "role";
 
         [FlagParameter("page", "Prompt_ListUsers_FlagPage", "Integer", "0")]
+
         private const string FlagPage = "page";
 
         [FlagParameter("max", "Prompt_ListUsers_FlagMax", "Integer", "10")]
+
         private const string FlagMax = "max";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
+
         private string Username { get; set; }
+
         private string Role { get; set; }
+
         private int Page { get; set; }
+
         private int Max { get; set; } = 10;
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
             this.Role = this.GetFlagValue(FlagRole, "Role", string.Empty);
@@ -63,7 +74,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     }
                     else
                     {
-                        //assume it's a username
+                        // assume it's a username
                         this.Username = args[1];
                     }
                 }
@@ -72,28 +83,36 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     // ensure only one filter is used
                     var numFilters = 0;
                     if (!string.IsNullOrEmpty(this.Email))
+                    {
                         numFilters += 1;
+                    }
+
                     if (!string.IsNullOrEmpty(this.Username))
+                    {
                         numFilters += 1;
+                    }
+
                     if (!string.IsNullOrEmpty(this.Role))
+                    {
                         numFilters += 1;
+                    }
 
                     if (numFilters != 1)
                     {
                         this.AddMessage(string.Format(this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
                     }
                 }
-
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             var usersList = new List<UserModelBase>();
             var recCount = 0;
             var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
 
-            // We need to cover the site group scenario for child portal 
+            // We need to cover the site group scenario for child portal
             var portalId = PortalController.GetEffectivePortalId(this.PortalId);
             var getUsersContract = new GetUsersContract
             {
@@ -103,7 +122,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 SortColumn = "displayname",
                 SortAscending = true,
                 PortalId = portalId,
-                Filter = UserFilters.All
+                Filter = UserFilters.All,
             };
             if (!string.IsNullOrEmpty(this.Username))
             {
@@ -117,7 +136,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
             else if (!string.IsNullOrEmpty(this.Role))
             {
-                //exact match only allowed at this time. Listing users in multiple roles would require
+                // exact match only allowed at this time. Listing users in multiple roles would require
                 // 1) getting all ID's of roles matching search phrase;
                 // 2) getting all users in each of those roles;
                 // 3) de-duplicating the users list;
@@ -126,7 +145,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 KeyValuePair<HttpStatusCode, string> response;
                 var users = UsersController.Instance.GetUsersInRole(this.PortalSettings, this.Role, out recCount, out response, this.Page, max);
                 if (users != null)
+                {
                     usersList = ConvertList(users);
+                }
                 else
                 {
                     return new ConsoleErrorResultModel(response.Value);
@@ -137,11 +158,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 usersList = ConvertList(UsersController.Instance.GetUsers(getUsersContract, this.User.IsSuperUser, out recCount), this.PortalId);
             }
+
             if ((usersList == null || usersList.Count == 0) && recCount == 0)
             {
                 return new ConsoleResultModel(this.LocalizeString("noUsers"));
             }
-            var totalPages = recCount / max + (recCount % max == 0 ? 0 : 1);
+
+            var totalPages = (recCount / max) + (recCount % max == 0 ? 0 : 1);
             var pageNo = this.Page > 0 ? this.Page : 1;
             return new ConsoleResultModel
             {
@@ -150,10 +173,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = max
+                    PageSize = max,
                 },
                 Records = usersList?.Count ?? 0,
-                Output = usersList?.Count == 0 ? this.LocalizeString("noUsers") : ""
+                Output = usersList?.Count == 0 ? this.LocalizeString("noUsers") : string.Empty,
             };
         }
 

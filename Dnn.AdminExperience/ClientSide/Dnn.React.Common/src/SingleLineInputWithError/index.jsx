@@ -23,10 +23,10 @@ class SingleLineInputWithError extends Component {
 
     onBlur(e) {
         const {props} = this;
-        if (props.hasOwnProperty("onChange")) {
+        if (Object.prototype.hasOwnProperty.call(props, "onChange")) {
             props.onChange(e);
         }
-        if (props.hasOwnProperty("onBlur")) {
+        if (Object.prototype.hasOwnProperty.call(props, "onBlur")) {
             props.onBlur(e);
         }
         this.setState({isFocused: false});
@@ -34,7 +34,7 @@ class SingleLineInputWithError extends Component {
 
     onFocus(e) {
         const {props} = this;
-        if (props.hasOwnProperty("onFocus")) {
+        if (Object.prototype.hasOwnProperty.call(props, "onFocus")) {
             props.onFocus(e);
         }
         this.setState({isFocused: true});

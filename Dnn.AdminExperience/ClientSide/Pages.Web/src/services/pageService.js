@@ -92,6 +92,7 @@ const PageService = function () {
                 page.parentId = parentPage && typeof parentPage !== "function" && parentPage.id || page.parentId;
                 page.iconFile = null;
                 page.iconFileLarge = null;
+                page.sitemapPriority = 0.5;
                 return page;
             });
     };

@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Controls
 
     public partial class Message : PortalModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

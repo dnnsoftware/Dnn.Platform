@@ -1,24 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Abstractions.Prompt;
-using DotNetNuke.Abstractions.Users;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Prompt;
-using DotNetNuke.Security.Permissions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DotNetNuke.Entities.Modules.Prompt
 {
-    /// <summary>
-    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Abstractions.Users;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Prompt;
+    using DotNetNuke.Security.Permissions;
+
+    /// <summary>This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.</summary>
     [ConsoleCommand("list-modules", Constants.CommandCategoryKeys.Modules, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommand
     {
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         [ConsoleCommandParameter("pageid", "Prompt_ListModules_FlagPageId")]
@@ -38,45 +38,52 @@ namespace DotNetNuke.Entities.Modules.Prompt
 
         [ConsoleCommandParameter("deleted", "Prompt_ListModules_FlagDeleted")]
         public bool? Deleted { get; set; }
-        
 
+        /// <inheritdoc/>
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
-            ParseParameters(this);
+            this.ParseParameters(this);
         }
 
+        /// <inheritdoc/>
         public override IConsoleResultModel Run()
         {
-            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+            var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
 
             int total;
-            var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(PortalId);
+            var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(this.PortalId);
 
-            var pageIndex = (Page > 0 ? Page - 1 : 0);
+            var pageIndex = this.Page > 0 ? this.Page - 1 : 0;
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
-            var pageSize = Max;
+            var pageSize = this.Max;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
-            ModuleName = ModuleName?.Replace("*", "");
-            ModuleTitle = ModuleTitle?.Replace("*", "");
-            var modules = ModuleController.Instance.GetModules(PortalSettings.PortalId)
+            this.ModuleName = this.ModuleName?.Replace("*", string.Empty);
+            this.ModuleTitle = this.ModuleTitle?.Replace("*", string.Empty);
+            var modules = ModuleController.Instance.GetModules(this.PortalSettings.PortalId)
                     .Cast<ModuleInfo>().Where(ModulePermissionController.CanViewModule);
-            if (!string.IsNullOrEmpty(ModuleName))
-                modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(ModuleName, StringComparison.OrdinalIgnoreCase) >= 0);
-            if (!string.IsNullOrEmpty(ModuleTitle))
-                modules = modules.Where(module => module.ModuleTitle.IndexOf(ModuleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
-
-            //Return only deleted modules with matching criteria.
-            if (PageId.HasValue && PageId.Value > 0)
+            if (!string.IsNullOrEmpty(this.ModuleName))
             {
-                modules = modules.Where(x => x.TabID == PageId.Value);
-            }
-            if (Deleted.HasValue)
-            {
-                modules = modules.Where(module => module.IsDeleted == Deleted);
+                modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(this.ModuleName, StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
-            //Get distincts.
+            if (!string.IsNullOrEmpty(this.ModuleTitle))
+            {
+                modules = modules.Where(module => module.ModuleTitle.IndexOf(this.ModuleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            // Return only deleted modules with matching criteria.
+            if (this.PageId.HasValue && this.PageId.Value > 0)
+            {
+                modules = modules.Where(x => x.TabID == this.PageId.Value);
+            }
+
+            if (this.Deleted.HasValue)
+            {
+                modules = modules.Where(module => module.IsDeleted == this.Deleted);
+            }
+
+            // Get distincts.
             modules = modules.GroupBy(x => x.ModuleID).Select(group => group.First()).OrderBy(x => x.ModuleID);
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;
@@ -88,10 +95,10 @@ namespace DotNetNuke.Entities.Modules.Prompt
                         kvp.Value.DesktopModuleID == moduleDefinition?.DesktopModuleID);
                 });
 
-            var results = modules.Select(x => PromptModuleInfo.FromDnnModuleInfo(x, Deleted));
+            var results = modules.Select(x => PromptModuleInfo.FromDnnModuleInfo(x, this.Deleted));
 
-            var totalPages = total / max + (total % max == 0 ? 0 : 1);
-            var pageNo = Page > 0 ? Page : 1;
+            var totalPages = (total / max) + (total % max == 0 ? 0 : 1);
+            var pageNo = this.Page > 0 ? this.Page : 1;
             return new ConsoleResultModel
             {
                 Data = results,
@@ -100,10 +107,10 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     PageNo = pageNo,
                     TotalPages = totalPages,
                     TotalRecords = total,
-                    PageSize = max
+                    PageSize = max,
                 },
                 Records = results.Count(),
-                Output = results.Count() == 0 ? LocalizeString("Prompt_NoModules") : ""
+                Output = results.Count() == 0 ? this.LocalizeString("Prompt_NoModules") : string.Empty,
             };
         }
     }

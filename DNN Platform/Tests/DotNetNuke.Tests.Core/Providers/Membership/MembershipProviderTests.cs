@@ -68,10 +68,10 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         {
         }
 
-        // TODO: Must be moved to integration tests.
         // Note: this is the only test in core unit testing project that requires a working db connection to run.
         [Test]
-        [Ignore]
+        [Ignore("TODO: Must be moved to integration tests.")]
+
         public void Password_Should_Saved_In_History_During_Create_User()
         {
             var user = CreateNewUser();
@@ -87,7 +87,8 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         }
 
         [Test]
-        [Ignore]
+        [Ignore("The reasons have been lost to the sands of time…")]
+
         public void ChangeUserName_Should_Success_With_Valid_Username()
         {
             var user = CreateNewUser();
@@ -101,14 +102,14 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         [TestCase("<img>")]
         [TestCase("<img onerror=alert(1)>")]
         [TestCase("<img onload=document.write(1)>")]
-        [ExpectedException(typeof(ArgumentException))]
-        [Ignore]
+        [Ignore("The reasons have been lost to the sands of time…")]
+
         public void ChangeUserName_Should_Throw_Exception_With_Invalid_Username(string invalidParts)
         {
             var user = CreateNewUser();
 
             var newUsername = $"{user.Username}{invalidParts}";
-            UserController.ChangeUsername(user.UserID, newUsername);
+            Assert.Throws<ArgumentException>(() => UserController.ChangeUsername(user.UserID, newUsername));
         }
 
         private static UserInfo CreateNewUser()
@@ -132,7 +133,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
                     Membership = new UserMembership
                     {
                         Approved = true,
-                        Password = Constants.DefaultPassword
+                        Password = Constants.DefaultPassword,
                     },
                 };
             }, "Make sure your connection string is set correctly in the App.config file");

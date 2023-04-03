@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.FileSystem
 
     public class FileLinkClickController : ServiceLocator<IFileLinkClickController, FileLinkClickController>, IFileLinkClickController
     {
+        /// <inheritdoc/>
         public string GetFileLinkClick(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -24,6 +25,7 @@ namespace DotNetNuke.Services.FileSystem
             return TestableGlobals.Instance.LinkClick(string.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
         }
 
+        /// <inheritdoc/>
         public int GetFileIdFromLinkClick(NameValueCollection queryParams)
         {
             var linkClickPortalSettings = this.GetPortalSettingsForLinkClick(this.GetPortalIdFromLinkClick(queryParams));
@@ -32,6 +34,7 @@ namespace DotNetNuke.Services.FileSystem
             return int.TryParse(strFileId, out fileId) ? fileId : -1;
         }
 
+        /// <inheritdoc/>
         protected override Func<IFileLinkClickController> GetFactory()
         {
             return () => new FileLinkClickController();

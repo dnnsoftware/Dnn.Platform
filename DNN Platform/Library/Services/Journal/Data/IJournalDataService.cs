@@ -10,11 +10,9 @@ namespace DotNetNuke.Services.Journal
     {
         IDataReader Journal_ListForSummary(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows);
 
-        IDataReader Journal_ListForProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex,
-                                           int maxRows);
+        IDataReader Journal_ListForProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex, int maxRows);
 
-        IDataReader Journal_ListForGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex,
-                                         int maxRows);
+        IDataReader Journal_ListForGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex, int maxRows);
 
         void Journal_Delete(int journalId);
 
@@ -36,17 +34,13 @@ namespace DotNetNuke.Services.Journal
 
         IDataReader Journal_GetByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted);
 
-        int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
-            string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
+        int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
 
-        int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
-            string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
+        int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
 
-        int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
-            string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
+        int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
 
-        int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
-            string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
+        int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
 
         void Journal_UpdateContentItemId(int journalId, int contentItemId);
 
@@ -80,9 +74,7 @@ namespace DotNetNuke.Services.Journal
 
         void Journal_Types_Delete(int journalTypeId, int portalId);
 
-        int Journal_Types_Save(int journalTypeId, string journalType, string icon, int portalId, bool isEnabled,
-                               bool appliesToProfile, bool appliesToGroup, bool appliesToStream, string options,
-                               bool supportsNotify);
+        int Journal_Types_Save(int journalTypeId, string journalType, string icon, int portalId, bool isEnabled, bool appliesToProfile, bool appliesToGroup, bool appliesToStream, string options, bool supportsNotify);
 
         IDataReader Journal_GetStatsForGroup(int portalId, int groupId);
 

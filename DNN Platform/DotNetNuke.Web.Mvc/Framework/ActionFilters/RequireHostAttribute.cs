@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
@@ -14,8 +13,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
     public class RequireHostAttribute : AuthorizeAttributeBase
     {
-        private UserInfo _user;
+        private UserInfo user;
 
+        /// <inheritdoc/>
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
@@ -25,11 +25,12 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
 
-            this._user = controller.ModuleContext.PortalSettings.UserInfo;
+            this.user = controller.ModuleContext.PortalSettings.UserInfo;
 
             base.OnAuthorization(filterContext);
         }
 
+        /// <inheritdoc/>
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var principal = Thread.CurrentPrincipal;
@@ -38,9 +39,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 return false;
             }
 
-            if (this._user != null)
+            if (this.user != null)
             {
-                return this._user.IsSuperUser;
+                return this.user.IsSuperUser;
             }
 
             return false;

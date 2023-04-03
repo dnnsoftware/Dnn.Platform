@@ -6,10 +6,10 @@ namespace DotNetNuke.Services.Installer.Log
 {
     public enum LogType
     {
-        Info,
-        Warning,
-        Failure,
-        StartJob,
-        EndJob,
+        Info = 0,
+        Warning = 1,
+        Failure = 2,
+        StartJob = 3,
+        EndJob = 4,
     }
 }

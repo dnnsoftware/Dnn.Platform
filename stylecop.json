@@ -43,7 +43,7 @@
       "documentPrivateFields": false,
       "documentationCulture": "en-US",
       "fileNamingConvention": "stylecop",
-      "excludeFromPunctuationCheck": ["seealso"]
+      "excludeFromPunctuationCheck": [ "seealso" ]
     }
   }
 }

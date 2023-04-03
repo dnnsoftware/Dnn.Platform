@@ -24,15 +24,13 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private static readonly object EventSelectionChanged = new object();
 
-        private readonly Lazy<DnnDropDownListOptions> _options =
+        private readonly Lazy<DnnDropDownListOptions> options =
             new Lazy<DnnDropDownListOptions>(() => new DnnDropDownListOptions());
 
-        private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
-        private HtmlAnchor _selectedValue;
+        private DnnGenericHiddenField<DnnDropDownListState> stateControl;
+        private HtmlAnchor selectedValue;
 
-        /// <summary>
-        /// Occurs when the selection from the list control changes between posts to the server.
-        /// </summary>
+        /// <summary>Occurs when the selection from the list control changes between posts to the server.</summary>
         public event EventHandler SelectionChanged
         {
             add
@@ -46,6 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override ControlCollection Controls
         {
             get
@@ -84,9 +83,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
-        /// </summary>
+        /// <summary>Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.</summary>
         public List<string> OnClientSelectionChanged
         {
             get
@@ -95,9 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the selected item in the control, or selects the item in the control.
-        /// </summary>
+        /// <summary>Gets or sets the selected item in the control, or selects the item in the control.</summary>
         public ListItem SelectedItem
         {
             get
@@ -134,9 +129,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets item to be displayed as first item.
-        /// </summary>
+        /// <summary>Gets or sets item to be displayed as first item.</summary>
         public ListItem FirstItem
         {
             get
@@ -151,9 +144,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Sets dropDownList Caption when no Item is selected.
-        /// </summary>
+        /// <summary>Sets dropDownList Caption when no Item is selected.</summary>
         public string SelectItemDefaultText
         {
             set
@@ -168,9 +159,7 @@ namespace DotNetNuke.Web.UI.WebControls
             set;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether a postback to the server automatically occurs when the user changes the list selection.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether a postback to the server automatically occurs when the user changes the list selection.</summary>
         /// <returns>
         /// true if a postback to the server automatically occurs whenever the user changes the selection of the list; otherwise, false. The default is false.
         /// </returns>
@@ -187,9 +176,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether validation is performed when a control is clicked.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether validation is performed when a control is clicked.</summary>
         public virtual bool CausesValidation
         {
             get
@@ -203,9 +190,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the group of controls for which the control causes validation when it posts back to the server.
-        /// </summary>
+        /// <summary>Gets or sets the group of controls for which the control causes validation when it posts back to the server.</summary>
         public virtual string ValidationGroup
         {
             get
@@ -240,7 +225,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._options.Value;
+                return this.options.Value;
             }
         }
 
@@ -249,7 +234,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 this.EnsureChildControls();
-                return this._stateControl;
+                return this.stateControl;
             }
         }
 
@@ -258,7 +243,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 this.EnsureChildControls();
-                return this._selectedValue;
+                return this.selectedValue;
             }
         }
 
@@ -295,23 +280,25 @@ namespace DotNetNuke.Web.UI.WebControls
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
 
             var selectedItemPanel = new Panel { CssClass = "selected-item" };
 
-            this._selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
-            this._selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
-            this._selectedValue.ViewStateMode = ViewStateMode.Disabled;
-            selectedItemPanel.Controls.Add(this._selectedValue);
+            this.selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
+            this.selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
+            this.selectedValue.ViewStateMode = ViewStateMode.Disabled;
+            selectedItemPanel.Controls.Add(this.selectedValue);
             this.Controls.Add(selectedItemPanel);
 
-            this._stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
-            this._stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
-            this.Controls.Add(this._stateControl);
+            this.stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
+            this.stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
+            this.Controls.Add(this.stateControl);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -319,6 +306,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             RegisterClientScript(this.Page, this.Skin);

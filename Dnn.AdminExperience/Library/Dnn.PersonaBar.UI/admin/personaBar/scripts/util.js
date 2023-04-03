@@ -4,7 +4,6 @@ define(['jquery'], function ($) {
     return {
         init: function (config) {
             var loadTempl;
-            var injectBeacon;
             var setDialogClass;
 
             loadTempl = function (folder, template, wrapper, params, self, cb) {
@@ -43,14 +42,6 @@ define(['jquery'], function ($) {
                     } else {
                         moduleJs[loadMethod].call(moduleJs, params, cb);
                     }
-                }
-                injectBeacon(template);
-            };
-            // Beacon injection
-            injectBeacon = function (template) {
-                var beaconUrl = config.beaconUrl !== undefined ? config.beaconUrl : undefined;
-                if (beaconUrl != undefined && beaconUrl !== "" && template !== "tasks") {
-                    (new Image()).src = beaconUrl + "&f=" + encodeURI(template);
                 }
             };
 
@@ -264,18 +255,6 @@ define(['jquery'], function ($) {
                     return trimmed;
                 },
 
-                deserializeCustomDate: function (str) {
-                    if (this.moment) {
-                        return this.moment(str, 'YYYY-MM-DD').toDate();
-                    }
-                },
-
-                serializeCustomDate: function (dateObj) {
-                    if (this.moment) {
-                        return this.moment(dateObj).format('YYYY-MM-DD');
-                    }
-                },
-
                 getObjectCopy: function (object) {
                     if (typeof object === "object") {
                         return JSON.parse(JSON.stringify(object));
@@ -329,7 +308,7 @@ define(['jquery'], function ($) {
                 secondsFormatter: function (seconds) {
                     var oneHour = 3600;
                     var format = seconds >= oneHour ? "H:mm:ss" : "mm:ss";
-                    return moment().startOf('day').add(seconds, 'seconds').format(format);
+                    return dayjs().startOf('day').add(seconds, 'seconds').format(format);
                 },
                 getApplicationRootPath: function getApplicationRootPath() {
                     var rootPath = location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '');

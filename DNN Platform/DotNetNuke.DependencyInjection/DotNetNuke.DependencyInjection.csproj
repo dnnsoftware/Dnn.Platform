@@ -8,8 +8,16 @@
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,9 +34,13 @@
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
+  </ItemGroup>
+
   <Import Project="..\..\DNN_Platform.build" />
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\netstandard2.0\DotNetNuke.DependencyInjection*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y" />
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\netstandard2.0\DotNetNuke.DependencyInjection*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
   </Target>
 
 </Project>

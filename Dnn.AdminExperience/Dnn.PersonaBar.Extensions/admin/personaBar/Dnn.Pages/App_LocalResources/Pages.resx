@@ -156,6 +156,9 @@
   <data name="Continue.Text" xml:space="preserve">
     <value>Continue</value>
   </data>
+  <data name="OnlyAddedSomeMissingLanguagesWarning.Text" xml:space="preserve">
+    <value>Done adding missing languages. Only languages belonging to the parent page were added.</value>
+  </data>
   <data name="UpdateLocalizationWarning.Text" xml:space="preserve">
     <value>Updating localization might take a few minutes depending on the number of modules. Please wait until the process finishes completely.</value>
   </data>
@@ -382,10 +385,10 @@
     <value>Redirect to an existing page on your site.</value>
   </data>
   <data name="ExternalUrl.Text" xml:space="preserve">
-    <value>External Url</value>
+    <value>URL</value>
   </data>
   <data name="ExternalUrlTooltip.Text" xml:space="preserve">
-    <value>Redirect to an External URL Resource.</value>
+    <value>Redirect to an absolute or relative URL.</value>
   </data>
   <data name="PermanentRedirect.Text" xml:space="preserve">
     <value>Permanent Redirect</value>
@@ -431,6 +434,9 @@
   </data>
   <data name="PageType.Text" xml:space="preserve">
     <value>Page Type</value>
+  </data>
+  <data name="PageId.Text" xml:space="preserve">
+    <value>Page ID</value>
   </data>
   <data name="Standard.Text" xml:space="preserve">
     <value>Standard</value>
@@ -1688,7 +1694,7 @@
     <value>Wrong Format</value>
   </data>
   <data name="ExternalRedirectionUrlRequired.Text" xml:space="preserve">
-    <value>The URL is required.</value>
+    <value>An absolute or relative URL is required.</value>
   </data>
   <data name="NoPermissionViewRedirectPage.Text" xml:space="preserve">
     <value>You don't have permission to view the redirect page.</value>
@@ -1758,5 +1764,8 @@
   </data>
   <data name="LocalizedSharedModule_tooltip.Text" xml:space="preserve">
     <value>This is a localized shared module</value>
+  </data>
+  <data name="NoParentTabName.Text" xml:space="preserve">
+    <value>No parent page supplied</value>
   </data>
 </root>

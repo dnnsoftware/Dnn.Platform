@@ -35,7 +35,7 @@ class LanguageVerifierRow extends Component {
                         <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} onClick={this.toggle.bind(this)} />
                     </div>
                 </div>
-                <Collapsible isOpened={opened} style={{ width: "100%", overflow: "visible" }}>{opened && props.children}</Collapsible>
+                <Collapsible isOpened={opened} className="collapsible-body-verifier">{opened && props.children}</Collapsible>
             </div>
         );
     }

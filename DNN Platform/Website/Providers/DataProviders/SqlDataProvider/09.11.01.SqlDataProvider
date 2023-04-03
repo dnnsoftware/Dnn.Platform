@@ -1,0 +1,94 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/****************************************************************
+ * SPROC: UpdatePortalSetting 
+ ****************************************************************/
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]') IS NOT NULL)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+	@PortalID       int,
+	@SettingName    nvarchar(50),
+	@SettingValue   nvarchar(max),
+	@UserID			int,
+	@CultureCode    nvarchar(10),
+	@IsSecure       bit = 0
+AS
+BEGIN
+	-- Define parameter null
+	SELECT	 @PortalID = IsNull(@PortalID, -1)
+			,@SettingName = IsNull(@SettingName, N'')
+			,@SettingValue = IsNull(@SettingValue, N'')
+			,@UserID = IsNull(@UserID, -1)
+			,@CultureCode = IsNull(@CultureCode, N'')
+
+	-- Remove setting when value is null
+	IF @SettingValue = N'' AND @SettingName != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+			WHERE IsNull(PortalID, -1) = @PortalID
+			AND (CultureCode = @CultureCode OR @CultureCode = N'')
+		 	AND SettingName = @SettingName;
+	ELSE IF @SettingName != N'' AND @PortalID != -1  
+	BEGIN
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] settings
+		 USING (SELECT 
+			@PortalID PortalID, 
+			@CultureCode CultureCode, 
+			@SettingName SettingName, 
+			@SettingValue SettingValue, 
+			@IsSecure IsSecure) input
+		 ON (settings.PortalID = input.PortalID 
+			AND IsNull(settings.CultureCode, N'') = input.CultureCode
+			AND settings.SettingName = input.SettingName)
+		 WHEN MATCHED 
+			AND IsNull(settings.SettingValue, N'') != input.SettingValue THEN 
+			-- Update if SettingValue has been modified
+			UPDATE SET 
+				 [SettingValue] = input.SettingValue
+				,[LastModifiedByUserID] = @UserID
+				,[LastModifiedOnDate] = GetDate()
+				,[IsSecure] = input.IsSecure
+		 WHEN NOT MATCHED THEN
+			-- Add new portal setting
+		    INSERT 
+				(PortalID
+				,SettingName
+				,SettingValue
+				,CultureCode
+				,CreatedByUserID
+				,CreatedOnDate
+				,LastModifiedByUserID
+				,LastModifiedOnDate
+				,IsSecure)
+			VALUES 
+				(@PortalID
+				,@SettingName
+				,@SettingValue
+				,NullIf(@CultureCode, N'')
+				,@UserID
+				,GetDate()
+				,@UserID
+				,GetDate()
+				,@IsSecure);
+		-- Saving a neutral setting overwrites all localized settings with same name
+		IF @CultureCode = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+			 WHERE PortalID = @PortalID 
+				AND SettingName = @SettingName 
+				AND CultureCode IS NOT null;
+	END; --ELSE IF
+END; --PROCEDURE
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

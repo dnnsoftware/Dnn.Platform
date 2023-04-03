@@ -11,20 +11,22 @@ namespace DotNetNuke.Entities.Host
 
     public class HostPropertyAccess : DictionaryPropertyAccess
     {
+        /// <summary>Initializes a new instance of the <see cref="HostPropertyAccess"/> class.</summary>
         public HostPropertyAccess()
             : base(HostController.Instance.GetSettingsDictionary())
         {
         }
 
-        public override string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
+        /// <inheritdoc/>
+        public override string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-            if (propertyName.ToLowerInvariant() == "hosttitle" || CurrentScope == Scope.Debug)
+            if (propertyName.ToLowerInvariant() == "hosttitle" || currentScope == Scope.Debug)
             {
-                return base.GetProperty(propertyName, format, formatProvider, AccessingUser, CurrentScope, ref PropertyNotFound);
+                return base.GetProperty(propertyName, format, formatProvider, accessingUser, currentScope, ref propertyNotFound);
             }
             else
             {
-                PropertyNotFound = true;
+                propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
         }

@@ -12,20 +12,20 @@ namespace Dnn.PersonaBar.Library.Model
     [Serializable]
     public class PersonaBarMenu
     {
-        private IList<MenuItem> _allItems;
+        private IList<MenuItem> allItems;
 
         [IgnoreDataMember]
         public IList<MenuItem> AllItems
         {
             get
             {
-                if (this._allItems == null)
+                if (this.allItems == null)
                 {
-                    this._allItems = new List<MenuItem>();
-                    this.FillAllItems(this._allItems, this.MenuItems);
+                    this.allItems = new List<MenuItem>();
+                    this.FillAllItems(this.allItems, this.MenuItems);
                 }
 
-                return this._allItems;
+                return this.allItems;
             }
         }
 

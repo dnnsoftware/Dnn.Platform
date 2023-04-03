@@ -11,8 +11,9 @@ namespace Dnn.PersonaBar.Security.Attributes
     using DotNetNuke.Services.Localization;
 
     [AttributeUsage(AttributeTargets.Property)]
-    class RegistrationFormTypeOption : ValidationAttribute
+    internal class RegistrationFormTypeOption : ValidationAttribute
     {
+        /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
@@ -24,7 +25,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 
             int registrationFormTypeId;
 
-            if (!Int32.TryParse(value.ToString(), out registrationFormTypeId))
+            if (!int.TryParse(value.ToString(), out registrationFormTypeId))
             {
                 return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
             }

@@ -13,19 +13,18 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Title : SkinObjectBase
     {
         private const string MyFileName = "Title.ascx";
 
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -33,6 +32,7 @@ namespace DotNetNuke.UI.Containers
             this.titleLabel.UpdateLabel += this.UpdateTitle;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.Containers
             var canEdit = false;
             if (this.ModuleControl != null && this.ModuleControl.ModuleContext.ModuleId > Null.NullInteger)
             {
-                canEdit = (this.PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
+                canEdit = (Personalization.GetUserMode() == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
             }
 
             return canEdit;

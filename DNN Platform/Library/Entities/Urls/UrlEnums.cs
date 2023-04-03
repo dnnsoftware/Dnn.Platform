@@ -8,9 +8,9 @@ namespace DotNetNuke.Entities.Urls
     {
         internal enum TabKeyPreference
         {
-            TabOK,
-            TabRedirected,
-            TabDeleted,
+            TabOK = 0,
+            TabRedirected = 1,
+            TabDeleted = 2,
         }
     }
 }

@@ -6,5 +6,6 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Entities.Modules;
 
     public class GroupsSettingsBase : ModuleSettingsBase
-    {}
+    {
+    }
 }

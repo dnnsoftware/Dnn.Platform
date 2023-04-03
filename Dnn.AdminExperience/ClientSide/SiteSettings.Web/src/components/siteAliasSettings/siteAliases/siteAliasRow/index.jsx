@@ -61,7 +61,7 @@ class SiteAliasRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapsible fixedHeight={320} keepContent={true} isOpened={opened} style={{ float: "left", width: "100%", overflow: "inherit" }}>{opened && props.children}</Collapsible>
+                <Collapsible isOpened={opened} className="collapsible-alias-body">{opened && props.children}</Collapsible>
             </div>
         );
     }

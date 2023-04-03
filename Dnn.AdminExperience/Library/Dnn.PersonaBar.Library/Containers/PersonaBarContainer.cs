@@ -6,8 +6,10 @@ namespace Dnn.PersonaBar.Library.Containers
 {
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Threading;
     using System.Web;
+    using System.Web.Hosting;
     using System.Web.UI;
 
     using Dnn.PersonaBar.Library.Common;
@@ -18,8 +20,7 @@ namespace Dnn.PersonaBar.Library.Containers
     using DotNetNuke.Application;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.ImprovementsProgram;
+    using DotNetNuke.Services.Personalization;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json.Linq;
 
@@ -27,7 +28,7 @@ namespace Dnn.PersonaBar.Library.Containers
 
     public class PersonaBarContainer : IPersonaBarContainer
     {
-        private static IPersonaBarContainer _instance;
+        private static IPersonaBarContainer instance;
 
         public PersonaBarContainer(INavigationManager navigationManager)
         {
@@ -38,38 +39,42 @@ namespace Dnn.PersonaBar.Library.Containers
         {
             get
             {
-                if (_instance == null)
+                if (instance == null)
                 {
-                    _instance = Globals.DependencyProvider.GetRequiredService<IPersonaBarContainer>();
+                    instance = Globals.DependencyProvider.GetRequiredService<IPersonaBarContainer>();
                 }
 
-                return _instance;
+                return instance;
             }
         }
 
+        /// <inheritdoc/>
         public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
 
+        /// <inheritdoc/>
         public virtual bool Visible => true;
 
         protected INavigationManager NavigationManager { get; }
 
         public static void SetInstance(IPersonaBarContainer instance, bool overwrite = false)
         {
-            if (_instance == null || overwrite)
+            if (PersonaBarContainer.instance == null || overwrite)
             {
-                _instance = instance;
+                PersonaBarContainer.instance = instance;
             }
         }
 
         public static void ClearInstance()
         {
-            _instance = null;
+            instance = null;
         }
 
+        /// <inheritdoc/>
         public virtual void Initialize(UserControl personaBarControl)
         {
         }
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, object> GetConfiguration()
         {
             var portalSettings = PortalSettings.Current;
@@ -77,15 +82,9 @@ namespace Dnn.PersonaBar.Library.Containers
             return this.GetConfigration(portalSettings);
         }
 
+        /// <inheritdoc/>
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
-        }
-
-        private static string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
         }
 
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
@@ -104,7 +103,7 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("culture", Thread.CurrentThread.CurrentUICulture.Name);
             settings.Add("logOff", this.NavigationManager.NavigateURL("Logoff"));
             settings.Add("visible", this.Visible);
-            settings.Add("userMode", portalSettings.UserMode.ToString());
+            settings.Add("userMode", Personalization.GetUserMode().ToString());
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());
             settings.Add("menuStructure", JObject.FromObject(menuStructure));
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);
@@ -122,15 +121,14 @@ namespace Dnn.PersonaBar.Library.Containers
                 settings.Add("isHost", user.IsSuperUser);
             }
 
-            if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
-            {
-                settings.Add("beaconUrl", GetBeaconUrl());
-            }
-
             var customModules = new List<string>() { "serversummary" };
             settings.Add("customModules", customModules);
 
             settings.Add("disableEditBar", Host.DisableEditBar);
+
+            var customPersonaBarThemePath = HostingEnvironment.MapPath("~/Portals/_default/PersonaBarTheme.css");
+            var customPersonaBarThemeExists = File.Exists(customPersonaBarThemePath);
+            settings.Add("personaBarTheme", customPersonaBarThemeExists);
 
             return settings;
         }

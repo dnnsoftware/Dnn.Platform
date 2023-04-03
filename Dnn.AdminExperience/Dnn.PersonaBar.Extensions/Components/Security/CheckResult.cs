@@ -11,6 +11,9 @@ namespace Dnn.PersonaBar.Security.Components
 
     public class CheckResult
     {
+        /// <summary>Initializes a new instance of the <see cref="CheckResult"/> class.</summary>
+        /// <param name="severity"></param>
+        /// <param name="checkname"></param>
         public CheckResult(SeverityEnum severity, string checkname)
         {
             this.Severity = severity;
@@ -40,15 +43,15 @@ namespace Dnn.PersonaBar.Security.Components
         {
             get
             {
-
                 return this.CheckName + " : " + Localization.GetString(this.CheckName + "Name", this.LocalResourceFile);
             }
         }
 
         public SeverityEnum Severity { get; set; }
+
         public string CheckName { get; set; }
 
-        public IList<String> Notes { get; set; }
+        public IList<string> Notes { get; set; }
 
         private string LocalResourceFile
         {

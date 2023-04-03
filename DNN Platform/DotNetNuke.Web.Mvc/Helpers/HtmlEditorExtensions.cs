@@ -9,14 +9,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Represents support for the HTML input element in an application.
-    /// </summary>
+    /// <summary>Represents support for the HTML input element in an application.</summary>
     public static class HtmlEditorExtensions
     {
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -27,9 +23,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Editor(expression);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -40,9 +34,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Editor(expression, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using the specified template.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using the specified template.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -53,9 +45,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Editor(expression, templateName);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using the specified template and additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using the specified template and additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -66,9 +56,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Editor(expression, templateName, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using the specified template and HTML field name.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using the specified template and HTML field name.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -79,9 +67,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Editor(expression, templateName, htmlFieldName);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using the specified template, HTML field name, and additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using the specified template, HTML field name, and additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -92,9 +78,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Editor(expression, templateName, htmlFieldName, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -105,9 +89,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorFor(expression);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -118,9 +100,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorFor(expression, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression, using the specified template.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression, using the specified template.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -131,9 +111,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorFor(expression, templateName);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using the specified template and additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using the specified template and additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -144,9 +122,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorFor(expression, templateName, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression, using the specified template and HTML field name.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression, using the specified template and HTML field name.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -157,9 +133,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorFor(expression, templateName, htmlFieldName);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the object that is represented by the expression, using the specified template, HTML field name, and additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the expression, using the specified template, HTML field name, and additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -170,9 +144,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorFor(expression, templateName, htmlFieldName, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the model.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the model.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the model.
@@ -183,9 +155,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorForModel();
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the model, using additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the model, using additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the model.
@@ -196,9 +166,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorForModel(additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the model, using the specified template.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the model, using the specified template.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the model and in the specified template.
@@ -209,9 +177,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorForModel(templateName);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the model, using the specified template and additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the model, using the specified template and additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the model.
@@ -222,9 +188,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorForModel(templateName, additionalViewData);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the model, using the specified template name and HTML field name.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the model, using the specified template name and HTML field name.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the model and in the named template.
@@ -235,9 +199,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.EditorForModel(templateName, htmlFieldName);
         }
 
-        /// <summary>
-        /// Returns an HTML input element for each property in the model, using the template name, HTML field name, and additional view data.
-        /// </summary>
+        /// <summary>Returns an HTML input element for each property in the model, using the template name, HTML field name, and additional view data.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the model.

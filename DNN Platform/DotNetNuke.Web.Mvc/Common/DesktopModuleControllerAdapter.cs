@@ -11,11 +11,13 @@ namespace DotNetNuke.Web.Mvc.Common
 
     public class DesktopModuleControllerAdapter : ServiceLocator<IDesktopModuleController, DesktopModuleControllerAdapter>, IDesktopModuleController
     {
+        /// <inheritdoc/>
         public DesktopModuleInfo GetDesktopModule(int desktopModuleId, int portalId)
         {
             return Entities.Modules.DesktopModuleController.GetDesktopModule(desktopModuleId, portalId);
         }
 
+        /// <inheritdoc/>
         protected override Func<IDesktopModuleController> GetFactory()
         {
             return () => new DesktopModuleControllerAdapter();

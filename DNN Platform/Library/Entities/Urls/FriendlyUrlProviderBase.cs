@@ -3,15 +3,15 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
 {
-    using System;
     using System.Collections.Specialized;
 
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
 
     public abstract class FriendlyUrlProviderBase
     {
+        /// <summary>Initializes a new instance of the <see cref="FriendlyUrlProviderBase"/> class.</summary>
+        /// <param name="attributes">The provider attributes.</param>
         internal FriendlyUrlProviderBase(NameValueCollection attributes)
         {
             if (!string.IsNullOrEmpty(attributes["urlFormat"]))

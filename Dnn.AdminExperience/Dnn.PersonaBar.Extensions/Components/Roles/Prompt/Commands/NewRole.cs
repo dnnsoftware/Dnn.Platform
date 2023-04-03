@@ -20,34 +20,47 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Security.Roles;
 
     [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
+
     public class NewRole : ConsoleCommandBase
     {
         [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
+
         private const string FlagIsPublic = "public";
 
         [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
+
         private const string FlagAutoAssign = "autoassign";
 
         [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]
+
         private const string FlagRoleName = "name";
 
         [FlagParameter("description", "Prompt_NewRole_FlagDescription", "String")]
+
         private const string FlagDescription = "description";
 
         [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
+
         private const string FlagStatus = "status";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
+
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public string RoleName { get; set; }
+
         public string Description { get; set; }
+
         public bool IsPublic { get; set; }
+
         public bool AutoAssign { get; set; }
+
         public RoleStatus Status { get; set; }
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.RoleName = this.GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
             this.Description = this.GetFlagValue(FlagDescription, "Description", string.Empty);
             this.IsPublic = this.GetFlagValue(FlagIsPublic, "Is Public", false);
@@ -70,6 +83,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             try
@@ -85,11 +99,14 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     IsPublic = this.IsPublic,
                     GroupId = -1,
                     IsSystem = false,
-                    SecurityMode = SecurityMode.SecurityRole
+                    SecurityMode = SecurityMode.SecurityRole,
                 };
                 KeyValuePair<HttpStatusCode, string> message;
                 var success = RolesController.Instance.SaveRole(this.PortalSettings, roleDto, false, out message);
-                if (!success) return new ConsoleErrorResultModel(message.Value);
+                if (!success)
+                {
+                    return new ConsoleErrorResultModel(message.Value);
+                }
 
                 lstResults.Add(new RoleModel(RoleController.Instance.GetRoleById(this.PortalId, roleDto.Id)));
                 return new ConsoleResultModel(this.LocalizeString("RoleAdded.Message")) { Data = lstResults, Records = lstResults.Count };
@@ -99,7 +116,6 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                 Logger.Error(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleAdded.Error"));
             }
-
         }
     }
 }

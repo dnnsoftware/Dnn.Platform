@@ -27,26 +27,40 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 if (this.CultureCode == portalSettings.DefaultLanguage)
+                {
                     return Localization.GetString("Default.Text", this.LocalResourceFile);
+                }
 
                 return IsLanguagePublished(portalSettings.PortalId, this.CultureCode)
-                    ? ""
+                    ? string.Empty
                     : Localization.GetString("NotActive.Text", this.LocalResourceFile);
             }
         }
 
         public int TabId { get; set; }
+
         public string TabName { get; set; }
+
         public string Title { get; set; }
+
         public string Description { get; set; }
+
         public string CultureCode { get; set; }
+
         public Guid DefaultLanguageGuid { get; set; }
+
         public bool IsTranslated { get; set; }
+
         public bool IsPublished { get; set; }
+
         public string Position { get; set; }
+
         public string Path { get; set; }
+
         public bool HasChildren { get; set; }
+
         public string PageUrl { get; set; }
+
         public bool IsSpecial { get; set; }
 
         [JsonIgnore]
@@ -66,6 +80,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             {
                 isPublished = enabledLanguage.IsPublished;
             }
+
             return isPublished;
         }
     }

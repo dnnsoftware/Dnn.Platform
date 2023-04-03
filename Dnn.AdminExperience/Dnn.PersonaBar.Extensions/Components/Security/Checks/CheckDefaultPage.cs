@@ -14,10 +14,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckDefaultPage : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckDefaultPage";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -54,6 +57,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 throw;
             }
+
             return result;
         }
 
@@ -69,7 +73,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             var dataNodes = sumData.SelectNodes("/checksums/sum[@version=\"" + appVersion + "\"][@type=\"" + appType + "\"]");
             if (dataNodes == null || dataNodes.Count == 0)
             {
-                return true; //when no record matched, need notify user to update the module.
+                return true; // when no record matched, need notify user to update the module.
             }
 
             var fileModified = false;

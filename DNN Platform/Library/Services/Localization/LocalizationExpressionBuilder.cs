@@ -10,12 +10,12 @@ namespace DotNetNuke.Services.Localization
     using System.Web;
     using System.Web.Compilation;
     using System.Web.UI;
-    using System.Web.UI.Design;
 
     [ExpressionPrefix("dnnLoc")]
     [ExpressionEditor("DotNetNuke.Services.Localization.LocalizationExpressionBuilderEditor")]
     public class LocalizationExpressionBuilder : ExpressionBuilder
     {
+        /// <inheritdoc/>
         public override bool SupportsEvaluate
         {
             get
@@ -71,6 +71,7 @@ namespace DotNetNuke.Services.Localization
             return value;
         }
 
+        /// <inheritdoc/>
         public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
         {
             var inputParams = new CodeExpression[]
@@ -84,6 +85,7 @@ namespace DotNetNuke.Services.Localization
             return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(this.GetType()), "GetLocalizedResource", inputParams);
         }
 
+        /// <inheritdoc/>
         public override object EvaluateExpression(object target, BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
         {
             string key = entry.Expression.Trim();
@@ -92,14 +94,6 @@ namespace DotNetNuke.Services.Localization
             string virtualPath = context.VirtualPath;
 
             return GetLocalizedResource(key, targetType, propertyName, virtualPath);
-        }
-    }
-
-    public class LocalizationExpressionBuilderEditor : ExpressionEditor
-    {
-        public override object EvaluateExpression(string expression, object parseTimeData, Type propertyType, IServiceProvider serviceProvider)
-        {
-            return string.Concat("[dnnLoc:", expression, "]");
         }
     }
 }

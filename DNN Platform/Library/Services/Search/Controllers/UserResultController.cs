@@ -17,10 +17,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Search Result Controller for Tab Indexer.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Search Result Controller for Tab Indexer.</summary>
     [Serializable]
     public class UserResultController : BaseResultController
     {
@@ -28,6 +25,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
 
+        /// <inheritdoc/>
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
 
         private PortalSettings PortalSettings
@@ -35,6 +33,7 @@ namespace DotNetNuke.Services.Search.Controllers
             get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
 
+        /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var userId = GetUserId(searchResult);
@@ -92,6 +91,7 @@ namespace DotNetNuke.Services.Search.Controllers
             return false;
         }
 
+        /// <inheritdoc/>
         public override string GetDocUrl(SearchResult searchResult)
         {
             var url = TestableGlobals.Instance.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));

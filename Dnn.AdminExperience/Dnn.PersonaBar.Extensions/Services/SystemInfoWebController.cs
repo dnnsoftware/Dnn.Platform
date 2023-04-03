@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
 
         [HttpGet]
+
         public HttpResponseMessage GetWebServerInfo()
         {
             try
@@ -35,7 +36,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     physicalPath = serverInfo.PhysicalPath,
                     url = serverInfo.Url,
                     relativePath = serverInfo.RelativePath,
-                    serverTime = serverInfo.ServerTime
+                    serverTime = serverInfo.ServerTime,
                 });
             }
             catch (Exception exc)

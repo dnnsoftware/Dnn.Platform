@@ -18,9 +18,7 @@ namespace Dnn.ExportImport.Components.Services
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
-    /// <summary>
-    /// Service to export/import users.
-    /// </summary>
+    /// <summary>Service to export/import users.</summary>
     public class UsersExportService : BasePortableService
     {
         private static readonly Tuple<string, Type>[] UsersDatasetColumns =
@@ -62,12 +60,16 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("AuthenticationToken", typeof(string)),
         };
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Users;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 0;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -267,6 +269,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -485,6 +488,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportUser>();

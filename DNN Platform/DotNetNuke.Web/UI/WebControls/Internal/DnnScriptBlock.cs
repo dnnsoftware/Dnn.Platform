@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.IO;
     using System.Text;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
 
@@ -16,6 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnScriptBlock : Control
     {
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (!this.DesignMode)
@@ -25,8 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 {
                     StringBuilder scriBuilder = new StringBuilder();
                     base.Render(new HtmlTextWriter(new StringWriter(scriBuilder)));
-                    ScriptManager.RegisterClientScriptBlock(this.Page, typeof(Page), this.UniqueID, scriBuilder.ToString(),
-                        false);
+                    ScriptManager.RegisterClientScriptBlock(this.Page, typeof(Page), this.UniqueID, scriBuilder.ToString(), false);
                 }
                 else
                 {

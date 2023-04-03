@@ -16,11 +16,13 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class ProfileVisibilityDto
     {
+        /// <summary>Initializes a new instance of the <see cref="ProfileVisibilityDto"/> class.</summary>
         public ProfileVisibilityDto()
         {
-
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ProfileVisibilityDto"/> class.</summary>
+        /// <param name="visibility"></param>
         public ProfileVisibilityDto(ProfileVisibility visibility)
         {
             this.VisibilityMode = visibility.VisibilityMode;

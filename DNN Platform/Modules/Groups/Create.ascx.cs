@@ -22,13 +22,15 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class Create : GroupsModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
         public Create()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -121,7 +123,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(this.PortalId, roleInfo.RoleID);
 
-            var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, string.Empty, new string[] { "groupid=" + roleInfo.RoleID.ToString() });
+            var groupUrl = this.navigationManager.NavigateURL(this.GroupViewTabId, string.Empty, new string[] { "groupid=" + roleInfo.RoleID.ToString() });
             if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
             {
                 const int startIndex = 8; // length of https://
@@ -136,20 +138,20 @@ namespace DotNetNuke.Modules.Groups
             RoleController.Instance.UpdateRoleSettings(roleInfo, true);
             if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
             {
-                IFileManager _fileManager = FileManager.Instance;
-                IFolderManager _folderManager = FolderManager.Instance;
+                IFileManager fileManager = FileManager.Instance;
+                IFolderManager folderManager = FolderManager.Instance;
                 var rootFolderPath = PathUtils.Instance.FormatFolderPath(this.PortalSettings.HomeDirectory);
 
-                IFolderInfo groupFolder = _folderManager.GetFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                IFolderInfo groupFolder = folderManager.GetFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                 if (groupFolder == null)
                 {
-                    groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                    groupFolder = folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                 }
 
                 if (groupFolder != null)
                 {
                     var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
-                    var fileInfo = _fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true);
+                    var fileInfo = fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true);
                     roleInfo.IconFile = "FileID=" + fileInfo.FileId;
                     RoleController.Instance.UpdateRole(roleInfo);
                 }

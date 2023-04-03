@@ -4,11 +4,9 @@
 
 namespace DotNetNuke.Entities.Users.Membership
 {
-    using System;
     using System.Web;
     using System.Web.Security;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Security.Membership;
 
     public class MembershipPasswordSettings
@@ -33,17 +31,16 @@ namespace DotNetNuke.Entities.Users.Membership
                 this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
                 this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
-            else // setup default values during install process.
+            else
             {
+                // setup default values during install process.
                 this.EnableStrengthMeter = true;
                 this.EnableBannedList = true;
                 this.EnablePasswordHistory = true;
             }
         }
 
-        /// <summary>
-        /// Gets minimum number of non-alphanumeric characters setting for password strength indicator.
-        /// </summary>
+        /// <summary>Gets minimum number of non-alphanumeric characters setting for password strength indicator.</summary>
         public int MinNonAlphanumericCharacters
         {
             get
@@ -52,9 +49,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets minimum length of password setting for password strength indicator.
-        /// </summary>
+        /// <summary>Gets minimum length of password setting for password strength indicator.</summary>
         public int MinPasswordLength
         {
             get
@@ -63,9 +58,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets currently configured password format for installation.
-        /// </summary>
+        /// <summary>Gets currently configured password format for installation.</summary>
         public PasswordFormat PasswordFormat
         {
             get
@@ -82,9 +75,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets regular Expression to validate password strength.
-        /// </summary>
+        /// <summary>Gets regular Expression to validate password strength.</summary>
         public string ValidationExpression
         {
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }

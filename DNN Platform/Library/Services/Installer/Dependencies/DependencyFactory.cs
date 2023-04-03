@@ -8,23 +8,12 @@ namespace DotNetNuke.Services.Installer.Dependencies
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Framework;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The DependencyFactory is a factory class that is used to instantiate the
-    /// appropriate Dependency.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The DependencyFactory is a factory class that is used to instantiate the appropriate Dependency.</summary>
     public class DependencyFactory
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The GetDependency method instantiates (and returns) the relevant Dependency.
-        /// </summary>
+        /// <summary>The GetDependency method instantiates (and returns) the relevant Dependency.</summary>
         /// <param name="dependencyNav">The manifest (XPathNavigator) for the dependency.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>An <see cref="IDependency"/> instance.</returns>
         public static IDependency GetDependency(XPathNavigator dependencyNav)
         {
             IDependency dependency = null;

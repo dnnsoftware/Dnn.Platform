@@ -8,7 +8,10 @@ namespace Dnn.PersonaBar.Pages.Components.Exceptions
 
     public class PageException : Exception
     {
-        public PageException(string message) : base(message)
+        /// <summary>Initializes a new instance of the <see cref="PageException"/> class.</summary>
+        /// <param name="message"></param>
+        public PageException(string message)
+            : base(message)
         {
         }
     }

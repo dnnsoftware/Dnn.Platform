@@ -11,10 +11,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckModuleHeaderAndFooter : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckModuleHeaderAndFooter";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -32,10 +35,12 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                     {
                         note += string.Format("<br />Header: {0}", HttpUtility.HtmlEncode(headerValue));
                     }
+
                     if (!string.IsNullOrEmpty(footerValue))
                     {
                         note += string.Format("<br />Footer: {0}", HttpUtility.HtmlEncode(footerValue));
                     }
+
                     note += "< br />";
 
                     result.Notes.Add(note);

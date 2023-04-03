@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
     using System;
@@ -19,9 +18,9 @@ namespace DotNetNuke.Web.Mvc.Routing
     public sealed class MvcRoutingManager : IMapRoute
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
-        private readonly Dictionary<string, int> _moduleUsage = new Dictionary<string, int>();
-        private readonly RouteCollection _routes;
-        private readonly PortalAliasMvcRouteManager _portalAliasMvcRouteManager;
+        private readonly Dictionary<string, int> moduleUsage = new Dictionary<string, int>();
+        private readonly RouteCollection routes;
+        private readonly PortalAliasMvcRouteManager portalAliasMvcRouteManager;
 
         public MvcRoutingManager()
             : this(RouteTable.Routes)
@@ -30,23 +29,26 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         internal MvcRoutingManager(RouteCollection routes)
         {
-            this._routes = routes;
-            this._portalAliasMvcRouteManager = new PortalAliasMvcRouteManager();
+            this.routes = routes;
+            this.portalAliasMvcRouteManager = new PortalAliasMvcRouteManager();
             this.TypeLocator = new TypeLocator();
         }
 
         internal ITypeLocator TypeLocator { get; set; }
 
+        /// <inheritdoc/>
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);
         }
 
+        /// <inheritdoc/>
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, defaults, null /* constraints */, namespaces);
         }
 
+        /// <inheritdoc/>
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
@@ -61,7 +63,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             url = url.Trim('/', '\\');
 
-            var prefixCounts = this._portalAliasMvcRouteManager.GetRoutePrefixCounts();
+            var prefixCounts = this.portalAliasMvcRouteManager.GetRoutePrefixCounts();
             Route route = null;
 
             if (url == null)
@@ -71,10 +73,10 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             foreach (var count in prefixCounts)
             {
-                var fullRouteName = this._portalAliasMvcRouteManager.GetRouteName(moduleFolderName, routeName, count);
-                var routeUrl = this._portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
+                var fullRouteName = this.portalAliasMvcRouteManager.GetRouteName(moduleFolderName, routeName, count);
+                var routeUrl = this.portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
-                this._routes.Add(route);
+                this.routes.Add(route);
                 Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
             }
 
@@ -85,13 +87,13 @@ namespace DotNetNuke.Web.Mvc.Routing
         {
             // add standard tab and module id provider
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
-            using (this._routes.GetWriteLock())
+            using (this.routes.GetWriteLock())
             {
-                // _routes.Clear(); -- don't use; it will remove original WEP API maps
+                // routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
             }
 
-            Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
+            Logger.TraceFormat("Registered a total of {0} routes", this.routes.Count);
         }
 
         internal static bool IsValidServiceRouteMapper(Type t)
@@ -108,7 +110,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static void RegisterSystemRoutes()
         {
-            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            // routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private static Route MapRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
@@ -144,7 +146,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
-            this._moduleUsage.Clear();
+            this.moduleUsage.Clear();
             foreach (var routeMapper in this.GetServiceRouteMappers())
             {
                 try
@@ -153,15 +155,14 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName,
-                                 e.Message, e.StackTrace);
+                    Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
                 }
             }
         }
 
         private void ClearCachedRouteData()
         {
-            this._portalAliasMvcRouteManager.ClearCachedData();
+            this.portalAliasMvcRouteManager.ClearCachedData();
         }
 
         private IEnumerable<IMvcRouteMapper> GetServiceRouteMappers()
@@ -177,8 +178,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName,
-                                 e.Message);
+                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
                     routeMapper = null;
                 }
 

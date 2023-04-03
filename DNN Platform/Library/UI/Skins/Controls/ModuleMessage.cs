@@ -4,33 +4,33 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
 
     /// <summary></summary>
-    /// <remarks></remarks>
     public class ModuleMessage : SkinObjectBase
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel dnnSkinMessage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblHeading;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblMessage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Control scrollScript;
 
         public enum ModuleMessageType
         {
-            GreenSuccess,
-            YellowWarning,
-            RedError,
-            BlueInfo,
+            GreenSuccess = 0,
+            YellowWarning = 1,
+            RedError = 2,
+            BlueInfo = 3,
         }
 
-        /// <summary>
-        /// Gets a value indicating whether check this message is shown as page message or module message.
-        /// </summary>
+        /// <summary>Gets a value indicating whether check this message is shown as page message or module message.</summary>
         public bool IsModuleMessage
         {
             get
@@ -97,12 +97,13 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.lblHeading.Text = this.Heading;
                 }
             }
-            catch (Exception exc) // Control failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc, false);
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

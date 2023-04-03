@@ -5,18 +5,16 @@ namespace DotNetNuke.Security.Permissions
 {
     using System.Collections;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : CompareTabPermissions
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// CompareTabPermissions provides the a custom IComparer implementation for
     /// TabPermissionInfo objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     internal class CompareFolderPermissions : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             return ((FolderPermissionInfo)x).FolderPermissionID.CompareTo(((FolderPermissionInfo)y).FolderPermissionID);

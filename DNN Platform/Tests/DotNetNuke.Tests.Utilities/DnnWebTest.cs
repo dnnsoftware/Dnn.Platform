@@ -11,10 +11,15 @@ namespace DotNetNuke.Tests.Utilities
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.HTMLEditorProvider;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.Security.Membership;
@@ -31,6 +36,9 @@ namespace DotNetNuke.Tests.Utilities
     using DotNetNuke.Services.Search;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Url.FriendlyUrl;
+    using DotNetNuke.Web;
+    using DotNetNuke.Web.Common;
+    using Microsoft.Extensions.DependencyInjection;
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
     using RoleProvider = DotNetNuke.Security.Roles.RoleProvider;
@@ -44,24 +52,13 @@ namespace DotNetNuke.Tests.Utilities
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
             simulator.SimulateRequest(new Uri(this.WebsiteAppPath));
 
+            SetupContainer();
             InstallComponents();
 
             HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
             HttpContextSource.RegisterInstance(httpContextBase);
 
             LoadDnnProviders("data;logging;caching;authentication;members;roles;profiles;permissions;folder;clientcapability");
-
-            // fix Globals.ApplicationMapPath
-            var appPath = this.WebsitePhysicalAppPath;
-            if (!string.IsNullOrEmpty(appPath))
-            {
-                var mappath = typeof(Globals).GetField("_applicationMapPath", BindingFlags.Static | BindingFlags.NonPublic);
-                mappath.SetValue(null, appPath);
-            }
-
-            // fix Globals.Status
-            var status = typeof(Globals).GetField("_status", BindingFlags.Static | BindingFlags.NonPublic);
-            status.SetValue(null, Globals.UpgradeStatus.None);
 
             // fix membership
             var providerProp = typeof(Membership).GetField("s_Provider", BindingFlags.Static | BindingFlags.NonPublic);
@@ -75,6 +72,11 @@ namespace DotNetNuke.Tests.Utilities
         }
 
         public int PortalId { get; private set; }
+
+        private static void SetupContainer()
+        {
+            Globals.DependencyProvider = DependencyInjectionInitialize.BuildServiceProvider();
+        }
 
         private static void InstallComponents()
         {
@@ -137,7 +139,7 @@ namespace DotNetNuke.Tests.Utilities
 
         /// <summary>
         /// This proc loads up specified DNN providers, because the BuildManager doesn't get the context right
-        /// The providers are cahced so that the DNN base buildManager calls don't have to load up hte providers.
+        /// The providers are cached so that the DNN base buildManager calls don't have to load up the providers.
         /// </summary>
         private static void LoadDnnProviders(string providerList)
         {

@@ -27,8 +27,13 @@ namespace Dnn.PersonaBar.Recyclebin.Services
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class RecyclebinController : PersonaBarApiController
     {
+        private const string EmptyRecycleBinPermission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinModulesView + "&" +
+                                                         Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinPagesEdit + "&" +
+                                                         Components.Constants.RecycleBinModulesEdit + "&" + Components.Constants.RecycleBinUsersEdit;
+
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView)]
+
         public HttpResponseMessage GetDeletedPageList(int pageIndex = -1, int pageSize = -1)
         {
             var totalRecords = 0;
@@ -39,13 +44,14 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 Success = true,
                 Results = deletedtabs,
-                TotalResults = totalRecords
+                TotalResults = totalRecords,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView)]
+
         public HttpResponseMessage GetDeletedModuleList(int pageIndex = -1, int pageSize = -1)
         {
             var totalRecords = 0;
@@ -55,13 +61,14 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 Success = true,
                 Results = deletedmodules,
-                TotalResults = totalRecords
+                TotalResults = totalRecords,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView)]
+
         public HttpResponseMessage GetDeletedUserList(int pageIndex = -1, int pageSize = -1)
         {
             var totalRecords = 0;
@@ -71,7 +78,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 Success = true,
                 Results = deletedusers,
-                TotalResults = totalRecords
+                TotalResults = totalRecords,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -93,7 +100,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Message =
                         string.Format(
                             Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabError"),
-                            errors)
+                            errors),
                 });
             }
 
@@ -117,7 +124,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Message =
                         string.Format(
                             Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabModuleError"),
-                            errors)
+                            errors),
                 });
             }
 
@@ -140,7 +147,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Status = 1,
                     Message =
                         string.Format(
-                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors)
+                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors),
                 });
             }
 
@@ -150,6 +157,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinPagesEdit)]
+
         public HttpResponseMessage RestorePage(List<PageItem> pages)
         {
             var errors = new StringBuilder();
@@ -162,20 +170,23 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     {
                         return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
+
                     string resultmessage;
                     Components.RecyclebinController.Instance.RestoreTab(tab, out resultmessage);
                     errors.Append(resultmessage);
                 }
             }
+
             return errors.Length > 0
-                ? this.Request.CreateResponse(HttpStatusCode.OK,
+                ? this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Status = 1,
                         Message =
                             string.Format(
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
-                                errors)
+                                errors),
                     })
                 : this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
@@ -183,9 +194,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit)]
+
         public HttpResponseMessage RestoreModule(List<ModuleItem> modules)
         {
-            //modules dic stores module.Key=moduleId, module.Value=pageId;
+            // modules dic stores module.Key=moduleId, module.Value=pageId;
             var result = true;
             var errors = new StringBuilder();
             if (modules != null && modules.Any())
@@ -197,23 +209,25 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     {
                         return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
-                    string resultmessage;
-                    result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID,
-                        out resultmessage);
-                    errors.Append(resultmessage);
 
+                    string resultmessage;
+                    result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID, out resultmessage);
+                    errors.Append(resultmessage);
                 }
             }
+
             if (!result)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = errors });
             }
+
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinUsersEdit)]
+
         public HttpResponseMessage RestoreUser(List<UserItem> users)
         {
             var errors = new StringBuilder();
@@ -226,30 +240,29 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     {
                         return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
+
                     string resultmessage;
                     Components.RecyclebinController.Instance.RestoreUser(user, out resultmessage);
                     errors.Append(resultmessage);
                 }
             }
+
             return errors.Length > 0
-                ? this.Request.CreateResponse(HttpStatusCode.OK,
+                ? this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Status = 1,
                         Message =
                             string.Format(
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
-                                errors)
+                                errors),
                     })
                 : this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName,
-            Permission =
-                Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinModulesView + "&" +
-                Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinPagesEdit + "&" +
-                Components.Constants.RecycleBinModulesEdit + "&" + Components.Constants.RecycleBinUsersEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = EmptyRecycleBinPermission)]
         public HttpResponseMessage EmptyRecycleBin()
         {
             var totalRecords = 0;
@@ -272,7 +285,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Message =
                         string.Format(
                             Components.RecyclebinController.Instance.LocalizeString("Service_EmptyRecycleBinError"),
-                            errors)
+                            errors),
                 });
             }
 
@@ -294,12 +307,14 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, this.PortalSettings),
                 TabPath = tab.TabPath.Replace("//", "/"),
                 LastModifiedOnDate =
-                    tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
+                    tab.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate =
-                    tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
+                    tab.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
-                UseDefaultSkin = this.UseDefaultSkin(tab)
+                UseDefaultSkin = this.UseDefaultSkin(tab),
             };
         }
 
@@ -322,11 +337,13 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 TabID = tab.TabID,
                 TabDeleted = tab.IsDeleted,
                 LastModifiedOnDate =
-                    mod.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
+                    mod.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate =
-                    mod.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
-                        CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US"))
+                    mod.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
+                        CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US")),
             };
         }
 
@@ -340,11 +357,13 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 DisplayName = user.DisplayName,
                 Email = user.Email,
                 LastModifiedOnDate =
-                    user.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
+                    user.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
                 FriendlyLastModifiedOnDate =
-                    user.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
-                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US"))
+                    user.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
+                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
             };
         }
     }

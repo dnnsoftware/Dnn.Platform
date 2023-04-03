@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.FileSystem
 
     public abstract class FolderMappingSettingsControlBase : PortalModuleBase
     {
-        /// <summary>
-        /// Use this method to load the provider's concrete settings.
-        /// </summary>
+        /// <summary>Use this method to load the provider's concrete settings.</summary>
         /// <param name="folderMappingSettings">The Hashtable containing the folder mapping settings.</param>
         /// <example>
         /// public override void LoadSettings(Hashtable folderMappingSettings)
@@ -25,9 +23,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </example>
         public abstract void LoadSettings(Hashtable folderMappingSettings);
 
-        /// <summary>
-        /// Use this method to update the provider's concrete settings for the specified folder mapping.
-        /// </summary>
+        /// <summary>Use this method to update the provider's concrete settings for the specified folder mapping.</summary>
         /// <param name="folderMappingID">The folder mapping identifier.</param>
         /// <remarks>
         /// Because this method is executed after adding / updating the folder mapping, if there are validation errors,

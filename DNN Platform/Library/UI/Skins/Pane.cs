@@ -7,7 +7,6 @@ namespace DotNetNuke.UI.Skins
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Threading;
     using System.Web;
     using System.Web.UI;
@@ -19,36 +18,27 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.UI.WebControls;
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Skins
     /// Class    : Pane
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Pane class represents a Pane within the Skin.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The Pane class represents a Pane within the Skin.</summary>
     public class Pane
     {
         private const string CPaneOutline = "paneOutline";
-        private HtmlGenericControl _containerWrapperControl;
-        private Dictionary<string, Containers.Container> _containers;
+        private HtmlGenericControl containerWrapperControl;
+        private Dictionary<string, Containers.Container> containers;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="Pane"/> class.
         /// Constructs a new Pane object from the Control in the Skin.
         /// </summary>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
-        /// -----------------------------------------------------------------------------
         public Pane(HtmlContainerControl pane)
         {
             this.PaneControl = pane;
@@ -58,38 +48,28 @@ namespace DotNetNuke.UI.Skins
             this.Name = pane.ID;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="Pane"/> class.
         /// Constructs a new Pane object from the Control in the Skin.
         /// </summary>
         /// <param name="name">The name (ID) of the HtmlContainerControl.</param>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
-        /// -----------------------------------------------------------------------------
         public Pane(string name, HtmlContainerControl pane)
         {
             this.PaneControl = pane;
             this.Name = name;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Containers.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a Dictionary of Containers.</summary>
         protected Dictionary<string, Containers.Container> Containers
         {
             get
             {
-                return this._containers ?? (this._containers = new Dictionary<string, Containers.Container>());
+                return this.containers ?? (this.containers = new Dictionary<string, Containers.Container>());
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the PortalSettings of the Portal.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the PortalSettings of the Portal.</summary>
         protected PortalSettings PortalSettings
         {
             get
@@ -98,30 +78,18 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the name (ID) of the Pane.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the name (ID) of the Pane.</summary>
         protected string Name { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the HtmlContainerControl.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets or sets the HtmlContainerControl.</summary>
         protected HtmlContainerControl PaneControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// InjectModule injects a Module (and its container) into the Pane.
-        /// </summary>
+        /// <summary>InjectModule injects a Module (and its container) into the Pane.</summary>
         /// <param name="module">The Module.</param>
-        /// -----------------------------------------------------------------------------
         public void InjectModule(ModuleInfo module)
         {
-            this._containerWrapperControl = new HtmlGenericControl("div");
-            this.PaneControl.Controls.Add(this._containerWrapperControl);
+            this.containerWrapperControl = new HtmlGenericControl("div");
+            this.PaneControl.Controls.Add(this.containerWrapperControl);
 
             // inject module classes
             string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
@@ -137,13 +105,13 @@ namespace DotNetNuke.UI.Skins
                 classFormatString += " DnnVersionableControl";
             }
 
-            this._containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
+            this.containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
 
             try
             {
-                if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || this.PortalSettings.UserMode != PortalSettings.Mode.View))
+                if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
                 {
-                    this._containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
+                    this.containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
                 }
 
                 // Load container control
@@ -178,7 +146,7 @@ namespace DotNetNuke.UI.Skins
 
                     // Assume that the title control is named dnnTitle.  If this becomes an issue we could loop through the controls looking for the title type of skin object
                     dragDropContainer.ID = container.ID + "_DD";
-                    this._containerWrapperControl.Controls.Add(dragDropContainer);
+                    this.containerWrapperControl.Controls.Add(dragDropContainer);
 
                     // inject the container into the page pane - this triggers the Pre_Init() event for the user control
                     dragDropContainer.Controls.Add(container);
@@ -201,10 +169,10 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this._containerWrapperControl.Controls.Add(container);
+                    this.containerWrapperControl.Controls.Add(container);
                     if (Globals.IsAdminControl())
                     {
-                        this._containerWrapperControl.Attributes["class"] += " DnnModule-Admin";
+                        this.containerWrapperControl.Attributes["class"] += " DnnModule-Admin";
                     }
                 }
 
@@ -227,7 +195,7 @@ namespace DotNetNuke.UI.Skins
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    this._containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, Skin.MODULELOAD_ERROR, lex).Container);
+                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, Skin.MODULELOAD_ERROR, lex).Container);
                 }
 
                 Exceptions.LogException(exc);
@@ -235,11 +203,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProcessPane processes the Attributes for the PaneControl.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>ProcessPane processes the Attributes for the PaneControl.</summary>
         public void ProcessPane()
         {
             if (this.PaneControl != null)
@@ -294,8 +258,9 @@ namespace DotNetNuke.UI.Skins
                     }
 
                     // Add support for drag and drop
-                    if (Globals.IsEditMode()) // this call also checks for permission
+                    if (Globals.IsEditMode())
                     {
+                        // this call also checks for permission
                         if (this.PaneControl.Attributes["class"] != null)
                         {
                             this.PaneControl.Attributes["class"] = this.PaneControl.Attributes["class"] + " dnnSortable";
@@ -343,13 +308,9 @@ namespace DotNetNuke.UI.Skins
             return canCollapsePane;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadContainerByPath gets the Container from its Url(Path).
-        /// </summary>
+        /// <summary>LoadContainerByPath gets the Container from its Url(Path).</summary>
         /// <param name="containerPath">The Url to the Container control.</param>
         /// <returns>A Container.</returns>
-        /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerByPath(string containerPath)
         {
             if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("/skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("\\skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 ||
@@ -381,7 +342,7 @@ namespace DotNetNuke.UI.Skins
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    this._containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
+                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
                 }
 
                 Exceptions.LogException(lex);
@@ -390,13 +351,9 @@ namespace DotNetNuke.UI.Skins
             return container;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadModuleContainer gets the Container for cookie.
-        /// </summary>
+        /// <summary>LoadModuleContainer gets the Container for cookie.</summary>
         /// <param name="request">Current Http Request.</param>
         /// <returns>A Container.</returns>
-        /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerFromCookie(HttpRequest request)
         {
             Containers.Container container = null;
@@ -476,7 +433,7 @@ namespace DotNetNuke.UI.Skins
                 // unless the administrator is in view mode
                 if (displayTitle)
                 {
-                    displayTitle = this.PortalSettings.UserMode != PortalSettings.Mode.View;
+                    displayTitle = Personalization.GetUserMode() != PortalSettings.Mode.View;
                 }
 
                 if (displayTitle == false)
@@ -579,12 +536,8 @@ namespace DotNetNuke.UI.Skins
             return container;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop.
-        /// </summary>
+        /// <summary>ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop.</summary>
         /// <param name="args">A ClientAPIPostBackEventArgs object.</param>
-        /// -----------------------------------------------------------------------------
         private void ModuleMoveToPanePostBack(ClientAPIPostBackEventArgs args)
         {
             var portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];

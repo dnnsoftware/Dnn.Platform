@@ -4,25 +4,15 @@
 
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Security;
 
     public sealed class ValidationUtils
     {
-        internal static string GetDecryptionKey()
-        {
-            var machineKey = Config.GetDecryptionkey();
-            var key = $"{machineKey ?? string.Empty}{Host.GUID.Replace("-", string.Empty)}";
-            return FIPSCompliant.EncryptAES(key, key, Host.GUID);
-        }
-
-        internal static string ComputeValidationCode(IList<object> parameters)
+        public static string ComputeValidationCode(IList<object> parameters)
         {
             if (parameters != null && parameters.Any())
             {
@@ -42,6 +32,13 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return string.Empty;
+        }
+
+        internal static string GetDecryptionKey()
+        {
+            var machineKey = Config.GetDecryptionkey();
+            var key = $"{machineKey ?? string.Empty}{Host.GUID.Replace("-", string.Empty)}";
+            return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
 
         internal static bool ValidationCodeMatched(IList<object> parameters, string validationCode)
