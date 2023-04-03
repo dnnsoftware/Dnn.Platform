@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Packages
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Xml;
     using System.Xml.XPath;
@@ -22,16 +23,11 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
-    using ICSharpCode.SharpZipLib.Zip;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageController class provides the business class for the packages.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The PackageController class provides the business class for the packages.</summary>
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
-        private static readonly DataProvider provider = DataProvider.Instance();
+        private static readonly DataProvider Provider = DataProvider.Instance();
 
         public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
         {
@@ -66,14 +62,14 @@ namespace DotNetNuke.Services.Installer.Packages
                     case "Container":
                         // Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
                         string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
-                        SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                        SkinPackageInfo skinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
+                        string strFolderPath = Path.Combine(skinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
 
                         bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
-                        if (_SkinPackageInfo.PortalID != Null.NullInteger)
+                        if (skinPackageInfo.PortalID != Null.NullInteger)
                         {
                             // To be compliant with all versions
-                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
                             bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
                         }
 
@@ -111,154 +107,146 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public static IDictionary<int, PackageInfo> GetModulePackagesInUse(int portalID, bool forHost)
         {
-            return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
+            return CBO.FillDictionary<int, PackageInfo>("PackageID", Provider.GetModulePackagesInUse(portalID, forHost));
         }
 
         public static void ParsePackage(string file, string installPath, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
         {
-            var unzip = new ZipInputStream(new FileStream(file, FileMode.Open, FileAccess.Read));
-            var manifestReader = new StreamReader(unzip);
+            var unzip = new ZipArchive(new FileStream(file, FileMode.Open, FileAccess.Read));
             try
             {
-                ZipEntry entry = unzip.GetNextEntry();
-                while (entry != null)
+                foreach (var entry in unzip.FileEntries())
                 {
-                    entry.CheckZipEntry();
-                    if (!entry.IsDirectory)
+                    var fileName = entry.FullName;
+                    string extension = Path.GetExtension(fileName);
+                    if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        var fileName = entry.Name;
-                        string extension = Path.GetExtension(fileName);
-                        if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))
+                        // Manifest
+                        var manifest = entry.ReadTextFile();
+
+                        var package = new PackageInfo { Manifest = manifest };
+                        if (!string.IsNullOrEmpty(manifest))
                         {
-                            // Manifest
-                            var manifest = manifestReader.ReadToEnd();
-
-                            var package = new PackageInfo { Manifest = manifest };
-                            if (!string.IsNullOrEmpty(manifest))
+                            var doc = new XPathDocument(new StringReader(manifest));
+                            XPathNavigator rootNav = doc.CreateNavigator().SelectSingleNode("dotnetnuke");
+                            string packageType = string.Empty;
+                            if (rootNav.Name == "dotnetnuke")
                             {
-                                var doc = new XPathDocument(new StringReader(manifest));
-                                XPathNavigator rootNav = doc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                                string packageType = string.Empty;
-                                if (rootNav.Name == "dotnetnuke")
-                                {
-                                    packageType = XmlUtils.GetAttributeValue(rootNav, "type");
-                                }
-                                else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
-                                {
-                                    packageType = "LanguagePack";
-                                }
-
-                                XPathNavigator nav = null;
-                                switch (packageType.ToLowerInvariant())
-                                {
-                                    case "package":
-                                        nav = rootNav.SelectSingleNode("packages/package");
-                                        break;
-                                    case "module":
-                                    case "languagepack":
-                                    case "skinobject":
-                                        nav = Installer.ConvertLegacyNavigator(rootNav, new InstallerInfo()).SelectSingleNode("packages/package");
-                                        break;
-                                }
-
-                                if (nav != null)
-                                {
-                                    package.Name = XmlUtils.GetAttributeValue(nav, "name");
-                                    package.PackageType = XmlUtils.GetAttributeValue(nav, "type");
-                                    package.IsSystemPackage = XmlUtils.GetAttributeValueAsBoolean(nav, "isSystem", false);
-                                    package.Version = new Version(XmlUtils.GetAttributeValue(nav, "version"));
-                                    package.FriendlyName = XmlUtils.GetNodeValue(nav, "friendlyName");
-                                    if (string.IsNullOrEmpty(package.FriendlyName))
-                                    {
-                                        package.FriendlyName = package.Name;
-                                    }
-
-                                    package.Description = XmlUtils.GetNodeValue(nav, "description");
-                                    package.FileName = file.Replace(installPath + "\\", string.Empty);
-
-                                    XPathNavigator foldernameNav;
-                                    switch (package.PackageType)
-                                    {
-                                        case "Module":
-                                            // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
-                                            // To ensure that FolderName is DesktopModules...
-                                            var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
-                                            if (!string.IsNullOrEmpty(folderNameValue))
-                                            {
-                                                package.FolderName = folderNameValue.Replace('\\', '/');
-                                            }
-
-                                            break;
-                                        case "Auth_System":
-                                            foldernameNav = nav.SelectSingleNode("components/component/files");
-                                            if (foldernameNav != null)
-                                            {
-                                                package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
-                                            }
-
-                                            break;
-                                        case "Container":
-                                            foldernameNav = nav.SelectSingleNode("components/component/containerFiles");
-                                            if (foldernameNav != null)
-                                            {
-                                                package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
-                                            }
-
-                                            break;
-                                        case "Skin":
-                                            foldernameNav = nav.SelectSingleNode("components/component/skinFiles");
-                                            if (foldernameNav != null)
-                                            {
-                                                package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
-                                            }
-
-                                            break;
-                                        default:
-                                            break;
-                                    }
-
-                                    XPathNavigator iconFileNav = nav.SelectSingleNode("iconFile");
-                                    if (package.FolderName != string.Empty && iconFileNav != null)
-                                    {
-                                        if ((iconFileNav.Value != string.Empty) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
-                                        {
-                                            if (iconFileNav.Value.StartsWith("~/"))
-                                            {
-                                                package.IconFile = iconFileNav.Value;
-                                            }
-                                            else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
-                                            {
-                                                package.IconFile = string.Format("~/{0}", iconFileNav.Value);
-                                            }
-                                            else
-                                            {
-                                                package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? string.Empty : package.FolderName + "/") + iconFileNav.Value;
-                                                package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
-                                            }
-                                        }
-                                    }
-
-                                    // Parse the Dependencies
-                                    foreach (XPathNavigator dependencyNav in nav.CreateNavigator().Select("dependencies/dependency"))
-                                    {
-                                        var dependency = DependencyFactory.GetDependency(dependencyNav);
-                                        var packageDependecy = dependency as IManagedPackageDependency;
-
-                                        if (packageDependecy != null)
-                                        {
-                                            package.Dependencies.Add(packageDependecy.PackageDependency);
-                                        }
-                                    }
-
-                                    packages.Add(file, package);
-                                }
+                                packageType = XmlUtils.GetAttributeValue(rootNav, "type");
+                            }
+                            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                packageType = "LanguagePack";
                             }
 
-                            break;
-                        }
-                    }
+                            XPathNavigator nav = null;
+                            switch (packageType.ToLowerInvariant())
+                            {
+                                case "package":
+                                    nav = rootNav.SelectSingleNode("packages/package");
+                                    break;
+                                case "module":
+                                case "languagepack":
+                                case "skinobject":
+                                    nav = Installer.ConvertLegacyNavigator(rootNav, new InstallerInfo()).SelectSingleNode("packages/package");
+                                    break;
+                            }
 
-                    entry = unzip.GetNextEntry();
+                            if (nav != null)
+                            {
+                                package.Name = XmlUtils.GetAttributeValue(nav, "name");
+                                package.PackageType = XmlUtils.GetAttributeValue(nav, "type");
+                                package.IsSystemPackage = XmlUtils.GetAttributeValueAsBoolean(nav, "isSystem", false);
+                                package.Version = new Version(XmlUtils.GetAttributeValue(nav, "version"));
+                                package.FriendlyName = XmlUtils.GetNodeValue(nav, "friendlyName");
+                                if (string.IsNullOrEmpty(package.FriendlyName))
+                                {
+                                    package.FriendlyName = package.Name;
+                                }
+
+                                package.Description = XmlUtils.GetNodeValue(nav, "description");
+                                package.FileName = file.Replace(installPath + "\\", string.Empty);
+
+                                XPathNavigator foldernameNav;
+                                switch (package.PackageType)
+                                {
+                                    case "Module":
+                                        // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                                        // To ensure that FolderName is DesktopModules...
+                                        var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
+                                        if (!string.IsNullOrEmpty(folderNameValue))
+                                        {
+                                            package.FolderName = folderNameValue.Replace('\\', '/');
+                                        }
+
+                                        break;
+                                    case "Auth_System":
+                                        foldernameNav = nav.SelectSingleNode("components/component/files");
+                                        if (foldernameNav != null)
+                                        {
+                                            package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                                        }
+
+                                        break;
+                                    case "Container":
+                                        foldernameNav = nav.SelectSingleNode("components/component/containerFiles");
+                                        if (foldernameNav != null)
+                                        {
+                                            package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                                        }
+
+                                        break;
+                                    case "Skin":
+                                        foldernameNav = nav.SelectSingleNode("components/component/skinFiles");
+                                        if (foldernameNav != null)
+                                        {
+                                            package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                                        }
+
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                XPathNavigator iconFileNav = nav.SelectSingleNode("iconFile");
+                                if (package.FolderName != string.Empty && iconFileNav != null)
+                                {
+                                    if ((iconFileNav.Value != string.Empty) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
+                                    {
+                                        if (iconFileNav.Value.StartsWith("~/"))
+                                        {
+                                            package.IconFile = iconFileNav.Value;
+                                        }
+                                        else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                                        }
+                                        else
+                                        {
+                                            package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? string.Empty : package.FolderName + "/") + iconFileNav.Value;
+                                            package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                        }
+                                    }
+                                }
+
+                                // Parse the Dependencies
+                                foreach (XPathNavigator dependencyNav in nav.CreateNavigator().Select("dependencies/dependency"))
+                                {
+                                    var dependency = DependencyFactory.GetDependency(dependencyNav);
+                                    var packageDependecy = dependency as IManagedPackageDependency;
+
+                                    if (packageDependecy != null)
+                                    {
+                                        package.Dependencies.Add(packageDependecy.PackageDependency);
+                                    }
+                                }
+
+                                packages.Add(file, package);
+                            }
+                        }
+
+                        break;
+                    }
                 }
             }
             catch (Exception)
@@ -267,8 +255,6 @@ namespace DotNetNuke.Services.Installer.Packages
             }
             finally
             {
-                manifestReader.Dispose();
-                unzip.Close();
                 unzip.Dispose();
             }
         }
@@ -364,6 +350,7 @@ namespace DotNetNuke.Services.Installer.Packages
             Instance.SaveExtensionPackage(package);
         }
 
+        /// <inheritdoc/>
         public void DeleteExtensionPackage(PackageInfo package)
         {
             switch (package.PackageType)
@@ -406,11 +393,13 @@ namespace DotNetNuke.Services.Installer.Packages
             DeletePackageInternal(package);
         }
 
+        /// <inheritdoc/>
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackage(portalId, predicate, false);
         }
 
+        /// <inheritdoc/>
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
         {
             var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
@@ -423,23 +412,23 @@ namespace DotNetNuke.Services.Installer.Packages
             return package;
         }
 
+        /// <inheritdoc/>
         public IList<PackageInfo> GetExtensionPackages(int portalId)
         {
             var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
             return CBO.GetCachedObject<List<PackageInfo>>(
                 cacheItemArgs,
-                c => CBO.FillCollection<PackageInfo>(provider.GetPackages(portalId)));
+                c => CBO.FillCollection<PackageInfo>(Provider.GetPackages(portalId)));
         }
 
+        /// <inheritdoc/>
         public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackages(portalId).Where(predicate).ToList();
         }
 
-        /// <summary>
-        /// Save or update the package.
-        /// </summary>
+        /// <summary>Save or update the package.</summary>
         /// <param name="package"></param>
         public void SaveExtensionPackage(PackageInfo package)
         {
@@ -453,11 +442,13 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
+        /// <inheritdoc/>
         public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
         {
             return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
         }
 
+        /// <inheritdoc/>
         public IList<PackageType> GetExtensionPackageTypes()
         {
             return CBO.GetCachedObject<List<PackageType>>(
@@ -465,9 +456,10 @@ namespace DotNetNuke.Services.Installer.Packages
                 DataCache.PackageTypesCacheKey,
                 DataCache.PackageTypesCacheTimeout,
                 DataCache.PackageTypesCachePriority),
-                c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
+                c => CBO.FillCollection<PackageType>(Provider.GetPackageTypes()));
         }
 
+        /// <inheritdoc/>
         public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
         {
             return GetPackageDependencies().Where(predicate).ToList();
@@ -494,6 +486,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return result;
         }
 
+        /// <inheritdoc/>
         protected override Func<IPackageController> GetFactory()
         {
             return () => new PackageController();
@@ -511,7 +504,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void AddPackageInternal(PackageInfo package)
         {
-            package.PackageID = provider.AddPackage(
+            package.PackageID = Provider.AddPackage(
                 package.PortalID,
                 package.Name,
                 package.FriendlyName,
@@ -553,7 +546,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void DeletePackageInternal(PackageInfo package)
         {
-            provider.DeletePackage(package.PackageID);
+            Provider.DeletePackage(package.PackageID);
             AddLog(package, EventLogController.EventLogType.PACKAGE_DELETED);
 
             if (PortalSettings.Current != null)
@@ -571,12 +564,12 @@ namespace DotNetNuke.Services.Installer.Packages
                 DataCache.PackageDependenciesCacheKey,
                 DataCache.PackagesCacheTimeout,
                 DataCache.PackagesCachePriority),
-                c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
+                c => CBO.FillCollection<PackageDependencyInfo>(Provider.GetPackageDependencies()));
         }
 
         private static void UpdatePackageInternal(PackageInfo package)
         {
-            provider.UpdatePackage(
+            Provider.UpdatePackage(
                 package.PackageID,
                 package.PortalID,
                 package.FriendlyName,
@@ -608,8 +601,11 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void SavePackageDependency(PackageDependencyInfo dependency)
         {
-            dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-                           dependency.Version.ToString());
+            dependency.PackageDependencyId = Provider.SavePackageDependency(
+                dependency.PackageDependencyId,
+                dependency.PackageId,
+                dependency.PackageName,
+                dependency.Version.ToString());
 
             ClearDependenciesCache();
         }

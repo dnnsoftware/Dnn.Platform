@@ -6,12 +6,9 @@ namespace DotNetNuke.Framework
 {
     using System;
 
-    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Enables modules to support Services Framework features.
-    /// </summary>
+    /// <summary>Enables modules to support Services Framework features.</summary>
     public class ServicesFramework : ServiceLocator<IServicesFramework, ServicesFramework>
     {
         public static string GetServiceFrameworkRoot()
@@ -40,6 +37,7 @@ namespace DotNetNuke.Framework
             return path;
         }
 
+        /// <inheritdoc/>
         protected override Func<IServicesFramework> GetFactory()
         {
             return () => new ServicesFrameworkImpl();

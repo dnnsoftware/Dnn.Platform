@@ -28,10 +28,12 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 return input;
             }
-            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+
+            return input.First().ToString().ToUpper() + string.Join(string.Empty, input.Skip(1));
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetApplicationInfo()
         {
             try
@@ -50,7 +52,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
                     schedulerMode = DotNetNuke.Entities.Host.Host.SchedulerMode.ToString(),
                     webFarmEnabled = DotNetNuke.Services.Cache.CachingProvider.Instance().IsWebFarm().ToString(),
-                    casPermissions = SecurityPolicy.Permissions
+                    casPermissions = SecurityPolicy.Permissions,
                 });
             }
             catch (Exception exc)

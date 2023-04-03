@@ -8,6 +8,7 @@ namespace DotNetNuke.Common.Utilities
 
     public partial class KeepAlive : Page
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -17,6 +18,7 @@ namespace DotNetNuke.Common.Utilities
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>Logo Skin Object</summary>
+    /// <summary>Logo Skin Object.</summary>
     public partial class Logo : SkinObjectBase
     {
         private readonly INavigationManager navigationManager;

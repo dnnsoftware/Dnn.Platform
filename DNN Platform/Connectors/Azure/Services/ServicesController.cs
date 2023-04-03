@@ -15,9 +15,13 @@ namespace Dnn.AzureConnector.Services
     using DotNetNuke.Web.Api;
     using Microsoft.WindowsAzure.Storage;
 
+    /// <inheritdoc/>
     [DnnAuthorize]
     public class ServicesController : DnnApiController
     {
+        /// <summary>Gets all containers.</summary>
+        /// <param name="id">The folder mapping ID.</param>
+        /// <returns>An <see cref="HttpResponseMessage"/> wrapping a <see cref="List{T}"/> of <see cref="string"/>.</returns>
         [HttpGet]
         public HttpResponseMessage GetAllContainers(int id)
         {
@@ -47,10 +51,14 @@ namespace Dnn.AzureConnector.Services
             }
         }
 
+        /// <summary>Gets the folder mapping ID.</summary>
+        /// <returns>An <see cref="HttpResponseMessage"/> wrapping the folder mapping ID.</returns>
         [HttpGet]
         public HttpResponseMessage GetFolderMappingId()
         {
-            return this.Request.CreateResponse(HttpStatusCode.OK, Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId).FolderMappingID);
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
+                Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId).FolderMappingID);
         }
     }
 }

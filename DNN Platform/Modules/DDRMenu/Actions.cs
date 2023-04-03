@@ -19,23 +19,29 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
+    /// <summary>Represents DDR Menu Actions.</summary>
     public class Actions : ActionBase
     {
         private DDRMenuNavigationProvider navProvider;
         private Dictionary<int, ModuleAction> actions;
 
+        /// <summary>Gets or sets the path system script.</summary>
         public string PathSystemScript { get; set; }
 
+        /// <summary>Gets or sets the menu style.</summary>
         public string MenuStyle { get; set; }
 
+        /// <summary>Gets or sets the client options.</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<ClientOption> ClientOptions { get; set; }
 
+        /// <summary>Gets or sets the template arguments.</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<TemplateArgument> TemplateArguments { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             using (new DNNContext(this))
@@ -51,6 +57,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             using (new DNNContext(this))
@@ -61,6 +68,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))

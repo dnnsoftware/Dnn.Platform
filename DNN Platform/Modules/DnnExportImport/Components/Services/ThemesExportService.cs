@@ -23,16 +23,20 @@ namespace Dnn.ExportImport.Components.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesExportService));
 
-        private ExportImportJob _exportImportJob;
-        private PortalSettings _portalSettings;
-        private int _importCount;
+        private ExportImportJob exportImportJob;
+        private PortalSettings portalSettings;
+        private int importCount;
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Themes;
 
+        /// <inheritdoc/>
         public override string ParentCategory => Constants.Category_Pages;
 
+        /// <inheritdoc/>
         public override uint Priority => 10;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -46,8 +50,8 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
 
-            this._exportImportJob = exportJob;
-            this._portalSettings = new PortalSettings(exportJob.PortalId);
+            this.exportImportJob = exportJob;
+            this.portalSettings = new PortalSettings(exportJob.PortalId);
 
             // Create Zip File to hold files
             var currentIndex = 0;
@@ -74,7 +78,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         foreach (var theme in exportThemes)
                         {
-                            var filePath = SkinController.FormatSkinSrc(theme, this._portalSettings);
+                            var filePath = SkinController.FormatSkinSrc(theme, this.portalSettings);
                             var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
                             if (Directory.Exists(physicalPath))
                             {
@@ -111,6 +115,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -124,16 +129,16 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
 
-            this._exportImportJob = importJob;
+            this.exportImportJob = importJob;
 
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this._exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
+            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
                 var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : new string[0];
                 var portalSettings = new PortalSettings(importDto.PortalId);
-                this._importCount = exporeFiles.Length;
+                this.importCount = exporeFiles.Length;
 
                 this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exporeFiles.Length : this.CheckPoint.TotalItems;
                 if (this.CheckPointStageCallback(this))
@@ -208,9 +213,10 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
-            return this._importCount;
+            return this.importCount;
         }
 
         private IList<string> GetExportThemes()
@@ -218,17 +224,17 @@ namespace Dnn.ExportImport.Components.Services
             var exportThemes = new List<string>();
 
             // get site level themes
-            exportThemes.Add(this._portalSettings.DefaultPortalSkin);
-            exportThemes.Add(this._portalSettings.DefaultPortalContainer);
+            exportThemes.Add(this.portalSettings.DefaultPortalSkin);
+            exportThemes.Add(this.portalSettings.DefaultPortalContainer);
 
-            if (!exportThemes.Contains(this._portalSettings.DefaultAdminSkin))
+            if (!exportThemes.Contains(this.portalSettings.DefaultAdminSkin))
             {
-                exportThemes.Add(this._portalSettings.DefaultAdminSkin);
+                exportThemes.Add(this.portalSettings.DefaultAdminSkin);
             }
 
-            if (!exportThemes.Contains(this._portalSettings.DefaultAdminContainer))
+            if (!exportThemes.Contains(this.portalSettings.DefaultAdminContainer))
             {
-                exportThemes.Add(this._portalSettings.DefaultAdminContainer);
+                exportThemes.Add(this.portalSettings.DefaultAdminContainer);
             }
 
             exportThemes.AddRange(this.LoadExportThemesForPages());

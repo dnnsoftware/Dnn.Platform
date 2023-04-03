@@ -3,15 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
-    using System;
     using System.Collections;
-    using System.ComponentModel;
 
-    using DotNetNuke.Common;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>Base class for module settings.</summary>
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
     {
+        /// <summary>Gets the module settings.</summary>
         public Hashtable ModuleSettings
         {
             get
@@ -20,6 +19,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Gets the tab module settings.</summary>
         public Hashtable TabModuleSettings
         {
             get
@@ -28,10 +28,12 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public virtual void LoadSettings()
         {
         }
 
+        /// <inheritdoc/>
         public virtual void UpdateSettings()
         {
         }

@@ -9,11 +9,14 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public class PurgeLogBuffer : SchedulerClient
     {
+        /// <summary>Initializes a new instance of the <see cref="PurgeLogBuffer"/> class.</summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public PurgeLogBuffer(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try
@@ -24,7 +27,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Purged log entries successfully"); // OPTIONAL
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("EXCEPTION: " + exc); // OPTIONAL

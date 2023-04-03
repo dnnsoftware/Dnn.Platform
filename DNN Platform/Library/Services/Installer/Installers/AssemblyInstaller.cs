@@ -12,25 +12,15 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The AssemblyInstaller installs Assembly Components to a DotNetNuke site.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The AssemblyInstaller installs Assembly Components to a DotNetNuke site.</summary>
     public class AssemblyInstaller : FileInstaller
     {
         private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
+        /// <inheritdoc />
         public override string AllowableFiles
         {
             get
@@ -39,11 +29,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("assemblies").
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets the name of the Collection Node (<c>assemblies</c>).</summary>
         protected override string CollectionNodeName
         {
             get
@@ -52,11 +38,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the default Path for the file - if not present in the manifest.
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets the default Path for the file - if not present in the manifest.</summary>
         protected override string DefaultPath
         {
             get
@@ -65,11 +47,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("assembly").
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets the name of the Item Node (<c>assembly</c>).</summary>
         protected override string ItemNodeName
         {
             get
@@ -78,11 +56,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the PhysicalBasePath for the assemblies.
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets the PhysicalBasePath for the assemblies.</summary>
         protected override string PhysicalBasePath
         {
             get
@@ -91,11 +65,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteFile method deletes a single assembly.
-        /// </summary>
-        /// <param name="file">The InstallFile to delete.</param>
+        /// <inheritdoc />
         protected override void DeleteFile(InstallFile file)
         {
             // Attempt to unregister assembly this will return False if the assembly is used by another package and
@@ -115,29 +85,28 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that determines what type of file this installer supports.
-        /// </summary>
-        /// <param name="type">The type of file being processed.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         protected override bool IsCorrectType(InstallFileType type)
         {
             return type == InstallFileType.Assembly;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The InstallFile method installs a single assembly.
-        /// </summary>
-        /// <param name="file">The InstallFile to install.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         protected override bool InstallFile(InstallFile file)
         {
             bool bSuccess = true;
             if (file.Action == "UnRegister")
             {
-                this.DeleteFile(file);
+                var prevDeleteFiles = this.DeleteFiles;
+                try
+                {
+                    this.DeleteFiles = true;
+                    this.DeleteFile(file);
+                }
+                finally
+                {
+                    this.DeleteFiles = prevDeleteFiles;
+                }
             }
             else
             {
@@ -290,7 +259,13 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
         private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
         {
-            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
+            var assemblyFileFullPath = Path.Combine(this.PhysicalBasePath, file.FullName);
+            if (!File.Exists(assemblyFileFullPath))
+            {
+                return false;
+            }
+
+            var assemblyName = ReadAssemblyName(assemblyFileFullPath);
             var publicKeyToken = ReadPublicKey(assemblyName);
             if (string.IsNullOrEmpty(publicKeyToken))
             {
@@ -303,7 +278,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
             var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, this.Package.Version.ToString(), this.Package.Name);
             xmlMerge.UpdateConfigs();
 
             return true;

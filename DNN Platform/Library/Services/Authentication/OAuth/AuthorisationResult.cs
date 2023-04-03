@@ -6,8 +6,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
 {
     public enum AuthorisationResult
     {
-        Denied,
-        Authorized,
-        RequestingCode,
+        Denied = 0,
+        Authorized = 1,
+        RequestingCode = 2,
     }
 }

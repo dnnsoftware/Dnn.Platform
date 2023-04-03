@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  margin-right: 1em;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  thead{
+    font-weight: bold;
+    tr{
+      border-bottom: 2px solid lightgray;
+    }
+  }
+  tbody{
+    tr{
+      border-bottom: 1px solid lightgray;
+      transition: all 100ms ease-in-out;
+      &:hover, &:focus{
+        background-color: #eee;
+      }
+      td{
+        &.radio{
+          opacity: 0;
+          transition: all 100ms ease-in-out;
+        }
+        img{
+          height: 2.5em;
+          display: block;
+          margin: 0 auto;
+        }
+        .date{
+          display: flex;
+          flex-direction: column;
+        }
+        &.size{
+          text-align: right;
+        }
+      }
+      &:hover, &:focus, &.selected{
+        td.radio{
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+dnn-collapsible{
+  position: fixed;
+  display: none;
+  border: 1px solid lightgray;
+  box-shadow: 2px 2px 4px -2px;
+  background-color: white;
+  z-index: 1;
+}

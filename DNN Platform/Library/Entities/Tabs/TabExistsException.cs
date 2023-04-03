@@ -3,10 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Tabs
 {
-    using System;
-
     public class TabExistsException : TabException
     {
+        /// <summary>Initializes a new instance of the <see cref="TabExistsException"/> class.</summary>
+        /// <param name="tabId"></param>
+        /// <param name="message"></param>
         public TabExistsException(int tabId, string message)
             : base(tabId, message)
         {

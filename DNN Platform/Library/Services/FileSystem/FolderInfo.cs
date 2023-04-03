@@ -4,8 +4,6 @@
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Web;
@@ -17,28 +15,45 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using Newtonsoft.Json;
 
     [XmlRoot("folder", IsNullable = false)]
     [Serializable]
     public class FolderInfo : BaseEntityInfo, IHydratable, IFolderInfo
     {
         // local property declarations
-        private string _displayName;
-        private string _displayPath;
-        private FolderPermissionCollection _folderPermissions;
-        private int _folderMappingId;
+        private string displayName;
+        private string displayPath;
+        private FolderPermissionCollection folderPermissions;
+        private int folderMappingId;
 
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
         public FolderInfo()
             : this(false)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
+        /// <param name="portalId"></param>
+        /// <param name="folderpath"></param>
+        /// <param name="storageLocation"></param>
+        /// <param name="isProtected"></param>
+        /// <param name="isCached"></param>
+        /// <param name="lastUpdated"></param>
         [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
             : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
+        /// <param name="uniqueId"></param>
+        /// <param name="portalId"></param>
+        /// <param name="folderpath"></param>
+        /// <param name="storageLocation"></param>
+        /// <param name="isProtected"></param>
+        /// <param name="isCached"></param>
+        /// <param name="lastUpdated"></param>
         [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
         {
@@ -55,6 +70,8 @@ namespace DotNetNuke.Services.FileSystem
             this.LastUpdated = lastUpdated;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
+        /// <param name="initialiseEmptyPermissions"></param>
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
             this.FolderID = Null.NullInteger;
@@ -63,16 +80,19 @@ namespace DotNetNuke.Services.FileSystem
             this.WorkflowID = Null.NullInteger;
             if (initialiseEmptyPermissions)
             {
-                this._folderPermissions = new FolderPermissionCollection();
+                this.folderPermissions = new FolderPermissionCollection();
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("uniqueid")]
         public Guid UniqueId { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("foldername")]
         public string FolderName
         {
@@ -88,9 +108,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the folder has any child subfolder.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the folder has any child subfolder.</summary>
         [XmlElement("haschildren")]
         public bool HasChildren
         {
@@ -100,18 +118,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Gets or sets a reference to the active Workflow for the folder.
-        /// </summary>
+        /// <summary>Gets or sets a reference to the active Workflow for the folder.</summary>
         [XmlElement("workflowid")]
         public int WorkflowID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a reference to the parent folder.
-        /// </summary>
+        /// <summary>Gets or sets a reference to the parent folder.</summary>
         [XmlElement("parentid")]
         public int ParentID { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("physicalpath")]
         public string PhysicalPath
         {
@@ -147,21 +162,25 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("portalid")]
         public int PortalID { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("storagelocation")]
         public int StorageLocation { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("folderpermissions")]
         public FolderPermissionCollection FolderPermissions
         {
             get
             {
-                return this._folderPermissions ?? (this._folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
+                return this.folderPermissions ?? (this.folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
             }
         }
 
+        /// <inheritdoc/>
         public bool IsStorageSecure
         {
             get
@@ -171,113 +190,112 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("folderid")]
         public int FolderID { get; set; }
 
-
+        /// <inheritdoc/>
         [XmlElement("displayname")]
         public string DisplayName
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayName))
+                if (string.IsNullOrEmpty(this.displayName))
                 {
-                    this._displayName = this.FolderName;
+                    this.displayName = this.FolderName;
                 }
 
-                return this._displayName;
+                return this.displayName;
             }
 
             set
             {
-                this._displayName = value;
+                this.displayName = value;
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("folderpath")]
         public string FolderPath { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("displaypath")]
         public string DisplayPath
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayPath))
+                if (string.IsNullOrEmpty(this.displayPath))
                 {
-                    this._displayPath = this.FolderPath;
+                    this.displayPath = this.FolderPath;
                 }
 
-                return this._displayPath;
+                return this.displayPath;
             }
 
             set
             {
-                this._displayPath = value;
+                this.displayPath = value;
             }
         }
 
+        /// <inheritdoc/>
         [XmlElement("iscached")]
         public bool IsCached { get; set; }
 
+        /// <inheritdoc/>
         [XmlElement("isprotected")]
         public bool IsProtected { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether file versions are active for the folder.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether file versions are active for the folder.</summary>
         [XmlElement("isversioned")]
         public bool IsVersioned { get; set; }
 
-        /// <summary>
-        /// Gets or sets the path this folder is mapped on its provider file system.
-        /// </summary>
+        /// <summary>Gets or sets the path this folder is mapped on its provider file system.</summary>
         [XmlElement("mappedpath")]
         public string MappedPath { get; set; }
 
-
+        /// <inheritdoc/>
         [XmlIgnore]
+        [JsonIgnore]
         public DateTime LastUpdated { get; set; }
 
-
+        /// <inheritdoc/>
         public int FolderMappingID
         {
             get
             {
-                if (this._folderMappingId == 0)
+                if (this.folderMappingId == 0)
                 {
                     switch (this.StorageLocation)
                     {
                         case (int)FolderController.StorageLocationTypes.InsecureFileSystem:
-                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Standard").FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Standard").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Secure").FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Secure").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Database").FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Database").FolderMappingID;
                             break;
                         default:
-                            this._folderMappingId = FolderMappingController.Instance.GetDefaultFolderMapping(this.PortalID).FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetDefaultFolderMapping(this.PortalID).FolderMappingID;
                             break;
                     }
                 }
 
-                return this._folderMappingId;
+                return this.folderMappingId;
             }
 
             set
             {
-                this._folderMappingId = value;
+                this.folderMappingId = value;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>  Gets or sets and sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
@@ -291,12 +309,8 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Fills a FolderInfo from a Data Reader.
-        /// </summary>
-        /// <param name = "dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  Fills a FolderInfo from a Data Reader.</summary>
+        /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
             this.FolderID = Null.SetNullInteger(dr["FolderID"]);

@@ -9,22 +9,27 @@ namespace DotNetNuke.Common.Internal
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.ExtensionPoints;
     using DotNetNuke.Instrumentation;
+    using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A container to hold event handlers.</summary>
+    /// <typeparam name="T">The type of event handlers.</typeparam>
     internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventHandlersContainer<T>));
 
         [ImportMany]
-        private IEnumerable<Lazy<T>> _eventHandlers = new List<Lazy<T>>();
+        private IEnumerable<Lazy<T>> eventHandlers = new List<Lazy<T>>();
 
+        /// <summary>Initializes a new instance of the <see cref="EventHandlersContainer{T}"/> class.</summary>
         public EventHandlersContainer()
         {
             try
             {
-                if (this.GetCurrentStatus() != Globals.UpgradeStatus.None)
+                if (this.GetCurrentStatus() != UpgradeStatus.None)
                 {
                     return;
                 }
@@ -37,23 +42,24 @@ namespace DotNetNuke.Common.Internal
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Lazy<T>> EventHandlers
         {
             get
             {
-                return this._eventHandlers;
+                return this.eventHandlers;
             }
         }
 
-        private Globals.UpgradeStatus GetCurrentStatus()
+        private UpgradeStatus GetCurrentStatus()
         {
             try
             {
-                return Globals.Status;
+                return Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
             }
             catch (NullReferenceException)
             {
-                return Globals.UpgradeStatus.Unknown;
+                return UpgradeStatus.Unknown;
             }
         }
     }

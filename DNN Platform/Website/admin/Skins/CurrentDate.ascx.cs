@@ -7,17 +7,14 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Entities.Users;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class CurrentDate : SkinObjectBase
     {
         public string CssClass { get; set; }
 
         public string DateFormat { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -25,6 +22,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

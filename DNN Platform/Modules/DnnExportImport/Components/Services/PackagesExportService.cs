@@ -26,14 +26,18 @@ namespace Dnn.ExportImport.Components.Services
 
         private static readonly Regex ExtensionPackageFilesRegex = new Regex(@"^(.+?)_(.+?)_(\d+\.\d+\.\d+).resources$", RegexOptions.Compiled);
 
-        private ExportImportJob _exportImportJob;
+        private ExportImportJob exportImportJob;
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Packages;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 18; // execute before pages service.
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -73,26 +77,29 @@ namespace Dnn.ExportImport.Components.Services
                         return;
                     }
 
-                    foreach (var file in skinPackageFiles)
+                    using (var zipArchive = CompressionUtil.OpenCreate(packagesZipFile))
                     {
-                        var exportPackage = this.GenerateExportPackage(file);
-                        if (exportPackage != null)
+                        foreach (var file in skinPackageFiles)
                         {
-                            this.Repository.CreateItem(exportPackage, null);
-                            totalPackagesExported += 1;
-                            var folderOffset = Path.GetDirectoryName(file)?.Length + 1;
+                            var exportPackage = this.GenerateExportPackage(file);
+                            if (exportPackage != null)
+                            {
+                                this.Repository.CreateItem(exportPackage, null);
+                                totalPackagesExported += 1;
+                                var folderOffset = Path.GetDirectoryName(file)?.Length + 1;
 
-                            CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset.GetValueOrDefault(0));
-                        }
+                                CompressionUtil.AddFileToArchive(zipArchive, file, folderOffset.GetValueOrDefault(0));
+                            }
 
-                        this.CheckPoint.ProcessedItems++;
-                        this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
-                        currentIndex++;
+                            this.CheckPoint.ProcessedItems++;
+                            this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
+                            currentIndex++;
 
-                        // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
-                        {
-                            return;
+                            // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                            {
+                                return;
+                            }
                         }
                     }
 
@@ -110,6 +117,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -123,11 +131,12 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
 
-            this._exportImportJob = importJob;
+            this.exportImportJob = importJob;
 
             this.ProcessImportModulePackages(importDto);
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPackage>();
@@ -265,7 +274,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportModulePackages(ImportDto importDto)
         {
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this._exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {

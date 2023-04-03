@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
@@ -34,15 +33,19 @@ namespace Dnn.ExportImport.Components.Services
             @"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private readonly string _assetsFolder =
+        private readonly string assetsFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipFiles}";
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Assets;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 50;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -65,7 +68,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var assetsFile = string.Format(this._assetsFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var assetsFile = string.Format(this.assetsFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -140,8 +143,14 @@ namespace Dnn.ExportImport.Components.Services
 
                             if (folder.StorageLocation != (int)FolderController.StorageLocationTypes.DatabaseSecure)
                             {
-                                CompressionUtil.AddFilesToArchive(zipArchive, files.Select(file => portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(file)),
-                                    folderOffset, isUserFolder ? "TempUsers" : null);
+                                CompressionUtil.AddFilesToArchive(
+                                    zipArchive,
+                                    files.Select(
+                                        file => portal.HomeDirectoryMapPath
+                                                + folder.FolderPath
+                                                + this.GetActualFileName(file)),
+                                    folderOffset,
+                                    isUserFolder ? "TempUsers" : null);
                             }
 
                             this.CheckPoint.ProcessedItems++;
@@ -177,6 +186,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -200,20 +210,24 @@ namespace Dnn.ExportImport.Components.Services
             var currentIndex = skip;
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            var assetsFile = string.Format(this._assetsFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
+            var assetsFile = string.Format(this.assetsFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (this.CheckPoint.Stage == 0)
             {
                 if (!File.Exists(assetsFile))
                 {
-                    this.Result.AddLogEntry("AssetsFileNotFound", "Assets file not found. Skipping assets import",
+                    this.Result.AddLogEntry(
+                        "AssetsFileNotFound",
+                        "Assets file not found. Skipping assets import",
                         ReportLevel.Warn);
                     this.CheckPoint.Completed = true;
                     this.CheckPointStageCallback(this);
                 }
                 else
                 {
-                    CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath,
+                    CompressionUtil.UnZipArchive(
+                        assetsFile,
+                        portal.HomeDirectoryMapPath,
                         importDto.CollisionResolution == CollisionResolution.Overwrite);
 
                     // Stage 1: Once unzipping of portal files is completed.
@@ -272,14 +286,21 @@ namespace Dnn.ExportImport.Components.Services
 
                                 // PROCESS FOLDER PERMISSIONS
                                 // File local files in the system related to the folder path.
-                                var localPermissions =
-                                    CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                        .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath,
-                                            DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+                                var localPermissions = CBO.FillCollection<ExportFolderPermission>(
+                                    DataProvider.Instance()
+                                        .GetFolderPermissionsByPath(
+                                            portalId,
+                                            sourceFolder.FolderPath,
+                                            DateUtils.GetDatabaseUtcTime()
+                                                .AddYears(1),
+                                            null));
 
                                 foreach (var folderPermission in sourceFolderPermissions)
                                 {
-                                    this.ProcessFolderPermission(importJob, importDto, folderPermission,
+                                    this.ProcessFolderPermission(
+                                        importJob,
+                                        importDto,
+                                        folderPermission,
                                         localPermissions);
                                 }
 
@@ -298,10 +319,14 @@ namespace Dnn.ExportImport.Components.Services
                             });
 
                             // File local files in the system related to the folder
-                            var localFiles =
-                                CBO.FillCollection<ExportFile>(DataProvider.Instance()
-                                    .GetFiles(portalId, sourceFolder.FolderId,
-                                        DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+                            var localFiles = CBO.FillCollection<ExportFile>(
+                                DataProvider.Instance()
+                                    .GetFiles(
+                                        portalId,
+                                        sourceFolder.FolderId,
+                                        DateUtils.GetDatabaseUtcTime()
+                                            .AddYears(1),
+                                        null));
 
                             foreach (var file in sourceFiles)
                             {
@@ -346,6 +371,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportFolder>();
@@ -400,10 +426,21 @@ namespace Dnn.ExportImport.Components.Services
             {
                 Util.FixDateTime(existingFolder);
                 DotNetNuke.Data.DataProvider.Instance()
-                    .UpdateFolder(importJob.PortalId, folder.VersionGuid, existingFolder.FolderId, folder.FolderPath,
-                        folder.StorageLocation, folder.MappedPath, folder.IsProtected, folder.IsCached,
-                        DateUtils.GetDatabaseLocalTime(), modifiedBy, folderMapping.FolderMappingID, folder.IsVersioned,
-                        workFlowId, existingFolder.ParentId ?? Null.NullInteger);
+                    .UpdateFolder(
+                        importJob.PortalId,
+                        folder.VersionGuid,
+                        existingFolder.FolderId,
+                        folder.FolderPath,
+                        folder.StorageLocation,
+                        folder.MappedPath,
+                        folder.IsProtected,
+                        folder.IsCached,
+                        DateUtils.GetDatabaseLocalTime(),
+                        modifiedBy,
+                        folderMapping.FolderMappingID,
+                        folder.IsVersioned,
+                        workFlowId,
+                        existingFolder.ParentId ?? Null.NullInteger);
 
                 folder.FolderId = existingFolder.FolderId;
 
@@ -426,10 +463,20 @@ namespace Dnn.ExportImport.Components.Services
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
                 {
                     folder.FolderId = DotNetNuke.Data.DataProvider.Instance()
-                        .AddFolder(importJob.PortalId, Guid.NewGuid(), folder.VersionGuid, folder.FolderPath,
-                            folder.MappedPath, folder.StorageLocation, folder.IsProtected, folder.IsCached,
+                        .AddFolder(
+                            importJob.PortalId,
+                            Guid.NewGuid(),
+                            folder.VersionGuid,
+                            folder.FolderPath,
+                            folder.MappedPath,
+                            folder.StorageLocation,
+                            folder.IsProtected,
+                            folder.IsCached,
                             DateUtils.GetDatabaseLocalTime(),
-                            createdBy, folderMapping.FolderMappingID, folder.IsVersioned, workFlowId,
+                            createdBy,
+                            folderMapping.FolderMappingID,
+                            folder.IsVersioned,
+                            workFlowId,
                             folder.ParentId ?? Null.NullInteger);
                 }
 
@@ -460,8 +507,7 @@ namespace Dnn.ExportImport.Components.Services
             return true;
         }
 
-        private void ProcessFolderPermission(ExportImportJob importJob, ImportDto importDto,
-            ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
+        private void ProcessFolderPermission(ExportImportJob importJob, ImportDto importDto, ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
         {
             var portalId = importJob.PortalId;
             var noRole = Convert.ToInt32(Globals.glbRoleNothing);
@@ -498,20 +544,29 @@ namespace Dnn.ExportImport.Components.Services
 
             if (isUpdate)
             {
-                var modifiedBy = Util.GetUserIdByName(importJob, folderPermission.LastModifiedByUserId,
+                var modifiedBy = Util.GetUserIdByName(
+                    importJob,
+                    folderPermission.LastModifiedByUserId,
                     folderPermission.LastModifiedByUserName);
 
                 DotNetNuke.Data.DataProvider.Instance()
-                    .UpdateFolderPermission(existingFolderPermission.FolderPermissionId, folderPermission.FolderId,
-                        existingFolderPermission.PermissionId, existingFolderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing),
-                        folderPermission.AllowAccess, existingFolderPermission.UserId ?? Null.NullInteger, modifiedBy);
+                    .UpdateFolderPermission(
+                        existingFolderPermission.FolderPermissionId,
+                        folderPermission.FolderId,
+                        existingFolderPermission.PermissionId,
+                        existingFolderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing),
+                        folderPermission.AllowAccess,
+                        existingFolderPermission.UserId ?? Null.NullInteger,
+                        modifiedBy);
 
                 folderPermission.FolderPermissionId = existingFolderPermission.FolderPermissionId;
             }
             else
             {
                 var permissionId = DataProvider.Instance()
-                    .GetPermissionId(folderPermission.PermissionCode, folderPermission.PermissionKey,
+                    .GetPermissionId(
+                        folderPermission.PermissionCode,
+                        folderPermission.PermissionKey,
                         folderPermission.PermissionName);
 
                 if (permissionId != null)
@@ -535,13 +590,19 @@ namespace Dnn.ExportImport.Components.Services
                         }
                     }
 
-                    var createdBy = Util.GetUserIdByName(importJob, folderPermission.CreatedByUserId,
+                    var createdBy = Util.GetUserIdByName(
+                        importJob,
+                        folderPermission.CreatedByUserId,
                         folderPermission.CreatedByUserName);
 
                     folderPermission.FolderPermissionId = DotNetNuke.Data.DataProvider.Instance()
-                        .AddFolderPermission(folderPermission.FolderId, folderPermission.PermissionId,
-                            folderPermission.RoleId ?? noRole, folderPermission.AllowAccess,
-                            folderPermission.UserId ?? Null.NullInteger, createdBy);
+                        .AddFolderPermission(
+                            folderPermission.FolderId,
+                            folderPermission.PermissionId,
+                            folderPermission.RoleId ?? noRole,
+                            folderPermission.AllowAccess,
+                            folderPermission.UserId ?? Null.NullInteger,
+                            createdBy);
                 }
             }
 
@@ -576,10 +637,24 @@ namespace Dnn.ExportImport.Components.Services
                 var modifiedBy = Util.GetUserIdByName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);
                 file.FileId = existingFile.FileId;
                 DotNetNuke.Data.DataProvider.Instance()
-                    .UpdateFile(existingFile.FileId, file.VersionGuid, file.FileName, file.Extension, file.Size,
-                        file.Width ?? Null.NullInteger, file.Height ?? Null.NullInteger, file.ContentType, file.FolderId,
-                        modifiedBy, file.Sha1Hash, DateUtils.GetDatabaseLocalTime(), file.Title, file.Description,
-                        file.StartDate, file.EndDate ?? Null.NullDate, file.EnablePublishPeriod,
+                    .UpdateFile(
+                        existingFile.FileId,
+                        file.VersionGuid,
+                        file.FileName,
+                        file.Extension,
+                        file.Size,
+                        file.Width ?? Null.NullInteger,
+                        file.Height ?? Null.NullInteger,
+                        file.ContentType,
+                        file.FolderId,
+                        modifiedBy,
+                        file.Sha1Hash,
+                        DateUtils.GetDatabaseLocalTime(),
+                        file.Title,
+                        file.Description,
+                        file.StartDate,
+                        file.EndDate ?? Null.NullDate,
+                        file.EnablePublishPeriod,
                         existingFile.ContentItemId ?? Null.NullInteger);
 
                 if ((file.Content != null && existingFile.Content == null) ||
@@ -594,15 +669,28 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var createdBy = Util.GetUserIdByName(importJob, file.CreatedByUserId, file.CreatedByUserName);
                 file.FileId = DotNetNuke.Data.DataProvider.Instance()
-                    .AddFile(importJob.PortalId, Guid.NewGuid(), file.VersionGuid, file.FileName, file.Extension,
+                    .AddFile(
+                        importJob.PortalId,
+                        Guid.NewGuid(),
+                        file.VersionGuid,
+                        file.FileName,
+                        file.Extension,
                         file.Size,
-                        file.Width ?? Null.NullInteger, file.Height ?? Null.NullInteger, file.ContentType, file.Folder,
+                        file.Width ?? Null.NullInteger,
+                        file.Height ?? Null.NullInteger,
+                        file.ContentType,
+                        file.Folder,
                         file.FolderId,
-                        createdBy, file.Sha1Hash, DateUtils.GetDatabaseLocalTime(), file.Title, file.Description,
-                        file.StartDate, file.EndDate ?? Null.NullDate, file.EnablePublishPeriod,
-
-                        // file.ContentItemId ?? Null.NullInteger);--If we keep it we will see FK_PK relationship errors.
+                        createdBy,
+                        file.Sha1Hash,
+                        DateUtils.GetDatabaseLocalTime(),
+                        file.Title,
+                        file.Description,
+                        file.StartDate,
+                        file.EndDate ?? Null.NullDate,
+                        file.EnablePublishPeriod,
                         Null.NullInteger);
+                        ////file.ContentItemId ?? Null.NullInteger);--If we keep it we will see FK_PK relationship errors.
 
                 if (file.Content != null)
                 {
@@ -662,7 +750,8 @@ namespace Dnn.ExportImport.Components.Services
 
         private int GetLocalWorkFlowId(int? exportedWorkFlowId)
         {
-            if (exportedWorkFlowId != null && exportedWorkFlowId > 1) // 1 is direct publish
+            const int directPublishWorkflowId = 1;
+            if (exportedWorkFlowId != null && exportedWorkFlowId > directPublishWorkflowId)
             {
                 var state = this.Repository.GetItem<ExportWorkflow>(item => item.WorkflowID == exportedWorkFlowId);
                 return state?.LocalId ?? -1;

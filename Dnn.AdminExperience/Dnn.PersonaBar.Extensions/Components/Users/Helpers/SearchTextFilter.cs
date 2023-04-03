@@ -15,32 +15,32 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
             {
                 return null;
             }
-            var pattern = "";
+
+            var pattern = string.Empty;
 
             var prefixWildcard = searchText.StartsWith("%") || searchText.StartsWith("*");
             var suffixWildcard = searchText.EndsWith("%") || searchText.EndsWith("*");
 
-            bool IN_STRING = true == prefixWildcard && true == suffixWildcard;
-            bool PREFIX = true == prefixWildcard && false == suffixWildcard;
-            bool SUFFIX = true == suffixWildcard && false == prefixWildcard;
-            bool EXACT = false == suffixWildcard && false == prefixWildcard;
+            bool iN_STRING = prefixWildcard == true && suffixWildcard == true;
+            bool pREFIX = prefixWildcard == true && suffixWildcard == false;
+            bool sUFFIX = suffixWildcard == true && prefixWildcard == false;
+            bool eXACT = suffixWildcard == false && prefixWildcard == false;
 
-            if (EXACT)
+            if (eXACT)
             {
-                pattern = searchText.Replace("*", "").Replace("%", "");
+                pattern = searchText.Replace("*", string.Empty).Replace("%", string.Empty);
             }
             else
             {
-
-                if (IN_STRING == true)
+                if (iN_STRING == true)
                 {
                     pattern = GetInStringSearchPattern(searchText);
                 }
-                else if (PREFIX == true)
+                else if (pREFIX == true)
                 {
                     pattern = GetPrefixSearchPattern(searchText);
                 }
-                else if (SUFFIX == true)
+                else if (sUFFIX == true)
                 {
                     pattern = GetSuffixSearchPattern(searchText);
                 }
@@ -63,11 +63,11 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
                 if (matchText != null && !string.IsNullOrEmpty(matchText))
                 {
                     pattern.Append("%");
-                    pattern.Append(matchText.Replace("*", "").Replace("%", ""));
+                    pattern.Append(matchText.Replace("*", string.Empty).Replace("%", string.Empty));
                     pattern.Append("%");
-
                 }
             }
+
             return pattern.ToString();
         }
 
@@ -85,9 +85,10 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
                 if (matchText != null && !string.IsNullOrEmpty(matchText))
                 {
                     pattern.Append("%");
-                    pattern.Append(matchText.Replace("*", "").Replace("%", ""));
+                    pattern.Append(matchText.Replace("*", string.Empty).Replace("%", string.Empty));
                 }
             }
+
             return pattern.ToString();
         }
 
@@ -104,10 +105,11 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
                 var matchText = matches[0].Groups[1].Value;
                 if (matchText != null && !string.IsNullOrEmpty(matchText))
                 {
-                    pattern.Append(matchText.Replace("*", "").Replace("%", ""));
+                    pattern.Append(matchText.Replace("*", string.Empty).Replace("%", string.Empty));
                     pattern.Append("%");
                 }
             }
+
             return pattern.ToString();
         }
     }

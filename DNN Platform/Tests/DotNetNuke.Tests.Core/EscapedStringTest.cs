@@ -115,15 +115,29 @@ namespace DotNetNuke.Tests.Core
             this.DoTest(new[] { @"\,", @"\,\,", @"\,\,\," }, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
         }
 
+        [Test]
+        public void TrimWhitespaces()
+        {
+            this.SeperateTest(
+                new[] { "item1", "ite\nm2", "item3", "item4", "item5", "item6", "item7" }, "item1,ite\nm2,\nitem3, item4,item5\t,\r\nitem6,\vitem7", true);
+        }
+
+        [Test]
+        public void KeepWhitespaces()
+        {
+            this.SeperateTest(
+                new[] { "item1", "ite\nm2", "\nitem3", " item4", "item5\t", "\r\nitem6", "\vitem7" }, "item1,ite\nm2,\nitem3, item4,item5\t,\r\nitem6,\vitem7", false);
+        }
+
         private void DoTest(IEnumerable enumerable, string s)
         {
             this.CombineTest(enumerable, s);
             this.SeperateTest(enumerable.Cast<string>(), s);
         }
 
-        private void SeperateTest(IEnumerable<string> expected, string data)
+        private void SeperateTest(IEnumerable<string> expected, string data, bool trimWhitespaces = false)
         {
-            var result = EscapedString.Seperate(data);
+            var result = EscapedString.Seperate(data, trimWhitespaces);
 
             CollectionAssert.AreEqual(expected, result);
         }

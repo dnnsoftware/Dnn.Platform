@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.UI.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -15,6 +16,7 @@ namespace Dnn.PersonaBar.UI.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.UI.Services.DTO;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
@@ -23,9 +25,7 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
-    /// <summary>
-    /// Services used for common components.
-    /// </summary>
+    /// <summary>Services used for common components.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ComponentsController : PersonaBarApiController
     {
@@ -33,7 +33,10 @@ namespace Dnn.PersonaBar.UI.Services
 
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
+        private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
+
         [HttpGet]
+
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
             try
@@ -62,6 +65,7 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetSuggestionUsers(string keyword, int count)
         {
             try
@@ -74,8 +78,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
                 var totalRecords2 = 0;
-                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false);
+                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count, ref totalRecords, false, false);
                 matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
                 var finalUsers = matchedUsers
                     .Cast<UserInfo>()
@@ -105,16 +108,23 @@ namespace Dnn.PersonaBar.UI.Services
                 }
 
                 var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
-                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
-                                   && r.Status == RoleStatus.Approved)
-                    .Select(r => new SuggestionDto()
-                    {
-                        Value = r.RoleID,
-                        Label = r.RoleName,
-                    });
+                                                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
+                                                          && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
+                                                          && r.Status == RoleStatus.Approved).ToList();
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, matchedRoles);
+                if (roleGroupId <= Null.NullInteger
+                        && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
+                }
+
+                var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
+                {
+                    Value = r.RoleID,
+                    Label = r.RoleName,
+                });
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
             catch (Exception ex)
             {

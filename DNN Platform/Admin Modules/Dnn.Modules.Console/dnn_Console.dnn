@@ -1,12 +1,12 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Console" type="Module" version="09.07.02">
+        <package name="DotNetNuke.Console" type="Module" version="09.11.02">
             <friendlyName>Console</friendlyName>
             <description>Display children pages as icon links for navigation.</description>
             <iconFile>~/DesktopModules/Admin/Console/console.png</iconFile>
             <owner>
-                <name>DNN</name>
-                <organization>.NET Foundation</organization>
+                <name>.NET Foundation and Contributors</name>
+                <organization>DNN Community</organization>
                 <url>https://dnncommunity.org</url>
                 <email>info@dnncommunity.org</email>
             </owner>

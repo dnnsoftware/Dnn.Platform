@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Validators
     public abstract class AttributeBasedObjectValidator<TAttribute> : PropertyBasedObjectValidator
         where TAttribute : Attribute
     {
+        /// <inheritdoc/>
         protected override ValidationResult ValidateProperty(object target, PropertyInfo targetProperty)
         {
             return targetProperty.GetCustomAttributes(true).OfType<TAttribute>().Aggregate(

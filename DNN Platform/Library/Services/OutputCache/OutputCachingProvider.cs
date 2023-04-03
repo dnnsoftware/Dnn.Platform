@@ -20,9 +20,9 @@ namespace DotNetNuke.Services.OutputCache
             return ComponentFactory.GetComponents<OutputCachingProvider>();
         }
 
-        public static OutputCachingProvider Instance(string FriendlyName)
+        public static OutputCachingProvider Instance(string friendlyName)
         {
-            return ComponentFactory.GetComponent<OutputCachingProvider>(FriendlyName);
+            return ComponentFactory.GetComponent<OutputCachingProvider>(friendlyName);
         }
 
         public static void RemoveItemFromAllProviders(int tabId)

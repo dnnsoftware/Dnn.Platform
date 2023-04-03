@@ -14,13 +14,16 @@ namespace Dnn.EditBar.UI.Items
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Web.Components.Controllers;
 
     [Serializable]
     public class AddModuleMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "AddModule";
 
+        /// <inheritdoc/>
         public override string Text
         {
             get
@@ -29,6 +32,7 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string CssClass
         {
             get
@@ -37,14 +41,19 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string Template { get; } = string.Empty;
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "AddModule";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 5;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
             var portalSettings = PortalSettings.Current;
@@ -53,7 +62,7 @@ namespace Dnn.EditBar.UI.Items
                 return false;
             }
 
-            return portalSettings.UserMode == PortalSettings.Mode.Edit
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit
                 && ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "All", string.Empty).Any();
         }
     }

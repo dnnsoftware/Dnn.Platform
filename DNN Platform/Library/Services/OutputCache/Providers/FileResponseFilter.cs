@@ -5,18 +5,23 @@
 namespace DotNetNuke.Services.OutputCache.Providers
 {
     using System;
+    using System.Globalization;
     using System.IO;
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into files.
-    /// </summary>
+    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into files.</summary>
     public class FileResponseFilter : OutputCacheResponseFilter
     {
         // Private _content As StringBuilder
-        private DateTime _cacheExpiration;
+        private DateTime cacheExpiration;
 
+        /// <summary>Initializes a new instance of the <see cref="FileResponseFilter"/> class.</summary>
+        /// <param name="itemId"></param>
+        /// <param name="maxVaryByCount"></param>
+        /// <param name="filterChain"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="cacheDuration"></param>
         internal FileResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
             : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
@@ -50,7 +55,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     throw;
                 }
 
-                this._cacheExpiration = DateTime.UtcNow.Add(cacheDuration);
+                this.cacheExpiration = DateTime.UtcNow.Add(cacheDuration);
                 this.HasErrored = false;
             }
         }
@@ -65,15 +70,16 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             get
             {
-                return this._cacheExpiration;
+                return this.cacheExpiration;
             }
 
             set
             {
-                this._cacheExpiration = value;
+                this.cacheExpiration = value;
             }
         }
 
+        /// <inheritdoc/>
         public override byte[] StopFiltering(int itemId, bool deleteData)
         {
             if (this.HasErrored)
@@ -93,7 +99,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 File.Move(this.CachedOutputTempFileName, this.CachedOutputFileName);
 
                 StreamWriter oWrite = File.CreateText(this.CachedOutputAttribFileName);
-                oWrite.WriteLine(this._cacheExpiration.ToString());
+                oWrite.WriteLine(this.cacheExpiration.ToString(CultureInfo.InvariantCulture));
                 oWrite.Close();
             }
 

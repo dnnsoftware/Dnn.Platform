@@ -1,33 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+using System.IO;
+
+using log4net.Core;
+using log4net.Layout.Pattern;
+using log4net.Util;
 
 namespace log4net.Layout
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.IO;
-
-    using log4net.Core;
-    using log4net.Layout.Pattern;
-    using log4net.Util;
-
     /// <summary>
     /// A flexible layout configurable with pattern string that re-evaluates on each call.
     /// </summary>
@@ -50,21 +50,20 @@ namespace log4net.Layout
     /// &lt;/layout&gt;
     /// </example>
     /// </remarks>
-    public class DynamicPatternLayout : PatternLayout
+    public class DynamicPatternLayout: PatternLayout
     {
         /// <summary>
-        /// The header PatternString.
+        /// The header PatternString
         /// </summary>
         private PatternString m_headerPatternString = new PatternString(string.Empty);
 
         /// <summary>
-        /// The footer PatternString.
+        /// The footer PatternString
         /// </summary>
-        private PatternString m_footerPatternString = new PatternString(string.Empty);
+        private PatternString m_footerPatternString  = new PatternString(string.Empty);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicPatternLayout"/> class.
-        /// Constructs a DynamicPatternLayout using the DefaultConversionPattern.
+        /// Constructs a DynamicPatternLayout using the DefaultConversionPattern
         /// </summary>
         /// <remarks>
         /// <para>
@@ -77,21 +76,20 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicPatternLayout"/> class.
-        /// Constructs a DynamicPatternLayout using the supplied conversion pattern.
+        /// Constructs a DynamicPatternLayout using the supplied conversion pattern
         /// </summary>
-        /// <param name="pattern">the pattern to use.</param>
+        /// <param name="pattern">the pattern to use</param>
         /// <remarks>
         /// </remarks>
-        public DynamicPatternLayout(string pattern)
+        public DynamicPatternLayout (string pattern) 
             : base(pattern)
         {
         }
 
         /// <summary>
-        /// Gets or sets the header for the layout format.
+        /// The header for the layout format.
         /// </summary>
-        /// <value>the layout header.</value>
+        /// <value>the layout header</value>
         /// <remarks>
         /// <para>
         /// The Header text will be appended before any logging events
@@ -105,7 +103,6 @@ namespace log4net.Layout
             {
                 return this.m_headerPatternString.Format();
             }
-
             set
             {
                 base.Header = value;
@@ -114,9 +111,9 @@ namespace log4net.Layout
         } /* property DynamicPatternLayout Header */
 
         /// <summary>
-        /// Gets or sets the footer for the layout format.
+        /// The footer for the layout format.
         /// </summary>
-        /// <value>the layout footer.</value>
+        /// <value>the layout footer</value>
         /// <remarks>
         /// <para>
         /// The Footer text will be appended after all the logging events
@@ -130,12 +127,11 @@ namespace log4net.Layout
             {
                 return this.m_footerPatternString.Format();
             }
-
             set
             {
                 base.Footer = value;
                 this.m_footerPatternString = new PatternString(value);
             }
-        } /* property DynamicPatternLayout Footer */
-    } /* class DynamicPatternLayout */
-} /* namespace log4net.Layout */
+        }		/* property DynamicPatternLayout Footer */
+    }			/* class DynamicPatternLayout */
+}				/* namespace log4net.Layout */

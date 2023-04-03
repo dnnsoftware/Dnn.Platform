@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnSkinComboBox"/> class.</summary>
         public DnnSkinComboBox()
         {
             this.PortalId = Null.NullInteger;
@@ -41,6 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             get { return this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId); }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -71,6 +73,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.AttachEvents();
         }
 
+        /// <inheritdoc/>
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
             // do not select item during data binding, item will select later

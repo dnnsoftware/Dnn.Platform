@@ -1,52 +1,47 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+
+using log4net.Util;
+using log4net.Repository;
 
 namespace log4net.Plugin
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
-    using log4net.Repository;
-    using log4net.Util;
-
-    /// <summary>
-    /// Map of repository plugins.
-    /// </summary>
+    /// <summary>Map of repository plugins.</summary>
     /// <remarks>
     /// <para>
     /// This class is a name keyed map of the plugins that are
     /// attached to a repository.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public sealed class PluginMap
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PluginMap"/> class.
-        /// Constructor.
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="repository">The repository that the plugins should be attached to.</param>
         /// <remarks>
         /// <para>
-        /// Initialize a new instance of the <see cref="PluginMap" /> class with a
+        /// Initialize a new instance of the <see cref="PluginMap" /> class with a 
         /// repository that the plugins should be attached to.
         /// </para>
         /// </remarks>
@@ -55,12 +50,10 @@ namespace log4net.Plugin
             this.m_repository = repository;
         }
 
-        /// <summary>
-        /// Gets a <see cref="IPlugin" /> by name.
-        /// </summary>
+        /// <summary>Gets a <see cref="IPlugin" /> by name.</summary>
         /// <param name="name">The name of the <see cref="IPlugin" /> to lookup.</param>
         /// <returns>
-        /// The <see cref="IPlugin" /> from the map with the name specified, or
+        /// The <see cref="IPlugin" /> from the map with the name specified, or 
         /// <c>null</c> if no plugin is found.
         /// </returns>
         /// <remarks>
@@ -78,16 +71,14 @@ namespace log4net.Plugin
                     throw new ArgumentNullException("name");
                 }
 
-                lock (this)
+                lock(this)
                 {
                     return (IPlugin)this.m_mapName2Plugin[name];
                 }
             }
         }
 
-        /// <summary>
-        /// Gets all possible plugins as a list of <see cref="IPlugin" /> objects.
-        /// </summary>
+        /// <summary>Gets all possible plugins as a list of <see cref="IPlugin" /> objects.</summary>
         /// <value>All possible plugins as a list of <see cref="IPlugin" /> objects.</value>
         /// <remarks>
         /// <para>
@@ -98,23 +89,21 @@ namespace log4net.Plugin
         {
             get
             {
-                lock (this)
+                lock(this)
                 {
                     return new PluginCollection(this.m_mapName2Plugin.Values);
                 }
             }
         }
 
-        /// <summary>
-        /// Adds a <see cref="IPlugin" /> to the map.
-        /// </summary>
+        /// <summary>Adds a <see cref="IPlugin" /> to the map.</summary>
         /// <param name="plugin">The <see cref="IPlugin" /> to add to the map.</param>
         /// <remarks>
         /// <para>
         /// The <see cref="IPlugin" /> will be attached to the repository when added.
         /// </para>
         /// <para>
-        /// If there already exists a plugin with the same name
+        /// If there already exists a plugin with the same name 
         /// attached to the repository then the old plugin will
         /// be <see cref="IPlugin.Shutdown"/> and replaced with
         /// the new plugin.
@@ -129,7 +118,7 @@ namespace log4net.Plugin
 
             IPlugin curPlugin = null;
 
-            lock (this)
+            lock(this)
             {
                 // Get the current plugin if it exists
                 curPlugin = this.m_mapName2Plugin[plugin.Name] as IPlugin;
@@ -148,9 +137,7 @@ namespace log4net.Plugin
             plugin.Attach(this.m_repository);
         }
 
-        /// <summary>
-        /// Removes a <see cref="IPlugin" /> from the map.
-        /// </summary>
+        /// <summary>Removes a <see cref="IPlugin" /> from the map.</summary>
         /// <param name="plugin">The <see cref="IPlugin" /> to remove from the map.</param>
         /// <remarks>
         /// <para>
@@ -163,8 +150,7 @@ namespace log4net.Plugin
             {
                 throw new ArgumentNullException("plugin");
             }
-
-            lock (this)
+            lock(this)
             {
                 this.m_mapName2Plugin.Remove(plugin.Name);
             }

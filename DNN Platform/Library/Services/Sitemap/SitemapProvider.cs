@@ -60,6 +60,17 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
+        /// <summary>Includes page urls on the sitemap.</summary>
+        /// <remarks>
+        ///   Pages that are included:
+        ///   <list type="bullet">
+        ///     <item><description>are not deleted</description></item>
+        ///     <item><description>are not disabled</description></item>
+        ///     <item><description>are normal pages (not links, …)</description></item>
+        ///     <item><description>are visible (based on date and permissions)</description></item>
+        ///   </list>
+        /// </remarks>
+        /// <returns>A <see cref="List"/> of <see cref="SitemapUrl"/> instances.</returns>
         public abstract List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version);
     }
 }

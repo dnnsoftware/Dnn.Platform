@@ -3,97 +3,90 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
+
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Users;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>BaseCustomTokenReplace allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.</summary>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
-        protected TokenProvider Provider {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
+        protected Dictionary<string, IPropertyAccess> PropertySource;
+
+        private TokenContext tokenContext = new TokenContext();
+
+        /// <summary>Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.</summary>
+        public BaseCustomTokenReplace()
+        {
+            this.PropertySource = this.TokenContext.PropertySource;
+        }
+
+        public TokenContext TokenContext
+        {
+            get => this.tokenContext;
+            set
+            {
+                this.tokenContext = value;
+                this.PropertySource = this.tokenContext.PropertySource;
+            }
+        }
+
+        /// <summary>Gets or sets the user object representing the currently accessing user (permission).</summary>
+        /// <value>UserInfo object.</value>
+        public UserInfo AccessingUser
+        {
+            get => this.TokenContext.AccessingUser;
+            set => this.TokenContext.AccessingUser = value;
+        }
+
+        /// <summary>Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.</summary>
+        /// <remarks>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages.</remarks>
+        public bool DebugMessages
+        {
+            get => this.TokenContext.DebugMessages;
+            set => this.TokenContext.DebugMessages = value;
+        }
+
+        /// <summary>Gets or sets the language to be used, e.g. for date format.</summary>
+        /// <value>A string, representing the locale.</value>
+        public override string Language
+        {
+            get => this.TokenContext.Language.ToString();
+            set
+            {
+                this.TokenContext.Language = new CultureInfo(value);
+            }
+        }
+
+        protected TokenProvider Provider
+        {
             get => ComponentFactory.GetComponent<TokenProvider>();
         }
 
-        TokenContext _tokenContext = new TokenContext();
-        public TokenContext TokenContext {
-            get => _tokenContext;
-            set {
-                _tokenContext = value;
-                PropertySource = _tokenContext.PropertySource;
-            }
-        }
-
-        protected Dictionary<string, IPropertyAccess> PropertySource;
-
-        /// <summary>
-        /// Gets or sets /sets the user object representing the currently accessing user (permission).
-        /// </summary>
-        /// <value>UserInfo oject.</value>
-        public UserInfo AccessingUser
+        /// <summary>Gets the Format provider as Culture info from stored language or current culture.</summary>
+        protected override CultureInfo FormatProvider
         {
-            get => TokenContext.AccessingUser;
-            set => TokenContext.AccessingUser = value;
+            get => this.TokenContext.Language;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
-        /// </summary>
-        /// <value>
-        /// <placeholder>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages</placeholder>
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public bool DebugMessages
-        {
-            get => TokenContext.DebugMessages;
-            set => TokenContext.DebugMessages = value;
-        }
-
-        /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture
-        /// </summary>
-        /// <value>An CultureInfo</value>
-        protected override CultureInfo FormatProvider {
-            get => TokenContext.Language;
-        }
-
-        /// <summary>
-        /// Gets/sets the language to be used, e.g. for date format
-        /// </summary>
-        /// <value>A string, representing the locale</value>
-        public override string Language {
-            get => TokenContext.Language.ToString();
-            set {
-                TokenContext.Language = new CultureInfo(value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets /sets the current Access Level controlling access to critical user settings.
-        /// </summary>
-        /// <value>A TokenAccessLevel as defined above.</value>
+        /// <summary>Gets or sets the current Access Level controlling access to critical user settings.</summary>
         protected Scope CurrentAccessLevel
         {
-            get => TokenContext.CurrentAccessLevel;
-            set => TokenContext.CurrentAccessLevel = value;
+            get => this.TokenContext.CurrentAccessLevel;
+            set => this.TokenContext.CurrentAccessLevel = value;
         }
 
-        public BaseCustomTokenReplace() {
-            PropertySource = TokenContext.PropertySource;
-        }
-
-        /// <summary>
-        /// returns cacheability of the passed text regarding all contained tokens.
-        /// </summary>
+        /// <summary>returns cacheability of the passed text regarding all contained tokens.</summary>
         /// <param name="sourceText">the text to parse for tokens to replace.</param>
         /// <returns>cacheability level (not - safe - fully).</returns>
         /// <remarks>always check cacheability before caching a module!.</remarks>
@@ -103,7 +96,7 @@ namespace DotNetNuke.Services.Tokens
             if (sourceText != null && !string.IsNullOrEmpty(sourceText))
             {
                 // initialize PropertyAccess classes
-                string DummyResult = this.ReplaceTokens(sourceText);
+                string dummyResult = this.ReplaceTokens(sourceText);
 
                 foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
                 {
@@ -132,23 +125,22 @@ namespace DotNetNuke.Services.Tokens
             return isSafe;
         }
 
-        /// <summary>
-        /// Checks for present [Object:Property] tokens.
-        /// </summary>
-        /// <param name="strSourceText">String with [Object:Property] tokens.</param>
-        /// <returns></returns>
+        /// <summary>Checks for present <c>[Object:Property]</c> tokens.</summary>
+        /// <param name="strSourceText">String with <c>[Object:Property]</c> tokens.</param>
+        /// <returns><see langword="true"/> if the source text contains tokens, otherwise <see langword="false"/>.</returns>
         public bool ContainsTokens(string strSourceText)
         {
             if (string.IsNullOrEmpty(strSourceText))
-			{
+            {
                 return false;
-			}
+            }
 
             // also check providers, since they might support different syntax than square brackets
             return this.TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0)
-                || Provider.ContainsTokens(strSourceText, TokenContext);
+                || this.Provider.ContainsTokens(strSourceText, this.TokenContext);
         }
 
+        /// <inheritdoc/>
         protected override string replacedTokenValue(string objectName, string propertyName, string format)
         {
             string result = string.Empty;
@@ -194,9 +186,10 @@ namespace DotNetNuke.Services.Tokens
             return result;
         }
 
+        /// <inheritdoc/>
         protected override string ReplaceTokens(string sourceText)
         {
-            return Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : Provider.Tokenize(sourceText, TokenContext);
+            return this.Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : this.Provider.Tokenize(sourceText, this.TokenContext);
         }
     }
 }

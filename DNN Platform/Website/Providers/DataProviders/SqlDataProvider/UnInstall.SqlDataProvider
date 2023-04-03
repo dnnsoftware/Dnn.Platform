@@ -396,6 +396,14 @@ DROP INDEX {databaseOwner}[{objectQualifier}UserRoles].[IX_{objectQualifier}User
 GO
 DROP INDEX {databaseOwner}[{objectQualifier}VendorClassification].[IX_{objectQualifier}VendorClassification_1]
 GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalPermission]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SavePortalPermission]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalPermission]
+GO
+DROP TABLE {databaseOwner}[{objectQualifier}PortalPermission]
+GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}GetCurrencies]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
@@ -1163,6 +1171,8 @@ GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}SetCorePackageVersions]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettingsBySetting]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]
 GO
 
 /** Remove AspNet Data **/

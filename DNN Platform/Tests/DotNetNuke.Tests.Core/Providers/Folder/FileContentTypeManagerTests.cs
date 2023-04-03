@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -20,12 +21,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     public class FileContentTypeManagerTests
     {
         [SetUp]
+
         public void Setup()
         {
             var serviceCollection = new ServiceCollection();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            serviceCollection.AddTransient<IEventLogger>(container => Mock.Of<IEventLogger>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();

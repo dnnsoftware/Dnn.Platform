@@ -21,13 +21,11 @@ namespace DotNetNuke.Services.Cache
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// CachingProvider provides basic component of cache system, by default it will use HttpRuntime.Cache.
-    /// </summary>
+    /// <summary>CachingProvider provides basic component of cache system, by default it will use HttpRuntime.Cache.</summary>
     /// <remarks>
     /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
     /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
-    /// such as if a data has already been deleted but the cache arn't clear, it will cause un expected errors.
+    /// such as if a data has already been deleted but the cache aren't clear, it will cause un expected errors.
     /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
     /// update cache immediately after the data changed.</para>
     /// </remarks>
@@ -44,70 +42,58 @@ namespace DotNetNuke.Services.Cache
         private const string CachePrefix = "DNN_";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
 
-        private static System.Web.Caching.Cache _cache;
+        private static System.Web.Caching.Cache cache;
 
-        /// <summary>
-        /// Gets the default cache provider.
-        /// </summary>
+        /// <summary>Gets the default cache provider.</summary>
         /// <value>HttpRuntime.Cache.</value>
         protected static System.Web.Caching.Cache Cache
         {
             get
             {
-                return _cache ?? (_cache = HttpRuntime.Cache);
+                return cache ?? (cache = HttpRuntime.Cache);
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether whether current caching provider disabled to expire cache.
-        /// </summary>
+        /// <summary>Gets a value indicating whether whether current caching provider disabled to expire cache.</summary>
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }
 
-        /// <summary>
-        /// Cleans the cache key by remove cache key prefix.
-        /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
+        /// <summary>Cleans the cache key by remove cache key prefix.</summary>
+        /// <param name="cacheKey">The cache key.</param>
         /// <returns>cache key without prefix.</returns>
         /// <exception cref="ArgumentException">cache key is empty.</exception>
-        public static string CleanCacheKey(string CacheKey)
+        public static string CleanCacheKey(string cacheKey)
         {
-            if (string.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(cacheKey))
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
 
-            return CacheKey.Substring(CachePrefix.Length);
+            return cacheKey.Substring(CachePrefix.Length);
         }
 
-        /// <summary>
-        /// Gets the cache key with key prefix.
-        /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
+        /// <summary>Gets the cache key with key prefix.</summary>
+        /// <param name="cacheKey">The cache key.</param>
         /// <returns>CachePrefix + CacheKey.</returns>
         /// <exception cref="ArgumentException">Cache key is empty.</exception>
-        public static string GetCacheKey(string CacheKey)
+        public static string GetCacheKey(string cacheKey)
         {
-            if (string.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(cacheKey))
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
 
-            return CachePrefix + CacheKey;
+            return CachePrefix + cacheKey;
         }
 
-        /// <summary>
-        /// Instances of  caching provider.
-        /// </summary>
-        /// <returns>The Implemments provider of cache system defind in web.config.</returns>
+        /// <summary>Gets the instance of caching provider.</summary>
+        /// <returns>The <see cref="CachingProvider"/> instance defined in <c>web.config</c>.</returns>
         public static CachingProvider Instance()
         {
             return ComponentFactory.GetComponent<CachingProvider>();
         }
 
-        /// <summary>
-        /// Clears the specified type.
-        /// </summary>
+        /// <summary>Clears the specified type.</summary>
         /// <param name="type">The type.</param>
         /// <param name="data">The data.</param>
         public virtual void Clear(string type, string data)
@@ -120,9 +106,7 @@ namespace DotNetNuke.Services.Cache
             return Cache.GetEnumerator();
         }
 
-        /// <summary>
-        /// Gets the item.
-        /// </summary>
+        /// <summary>Gets the item.</summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <returns>cache content.</returns>
         public virtual object GetItem(string cacheKey)
@@ -130,9 +114,7 @@ namespace DotNetNuke.Services.Cache
             return Cache[cacheKey];
         }
 
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
+        /// <summary>Inserts the specified cache key.</summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <param name="itemToCache">The object.</param>
         public virtual void Insert(string cacheKey, object itemToCache)
@@ -140,9 +122,7 @@ namespace DotNetNuke.Services.Cache
             this.Insert(cacheKey, itemToCache, null as DNNCacheDependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
+        /// <summary>Inserts the specified cache key.</summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <param name="itemToCache">The object.</param>
         /// <param name="dependency">The dependency.</param>
@@ -151,9 +131,7 @@ namespace DotNetNuke.Services.Cache
             this.Insert(cacheKey, itemToCache, dependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
+        /// <summary>Inserts the specified cache key.</summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <param name="itemToCache">The object.</param>
         /// <param name="dependency">The dependency.</param>
@@ -164,9 +142,7 @@ namespace DotNetNuke.Services.Cache
             this.Insert(cacheKey, itemToCache, dependency, absoluteExpiration, slidingExpiration, CacheItemPriority.Default, null);
         }
 
-        /// <summary>
-        /// Inserts the specified cache key.
-        /// </summary>
+        /// <summary>Inserts the specified cache key.</summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <param name="itemToCache">The value.</param>
         /// <param name="dependency">The dependency.</param>
@@ -174,43 +150,34 @@ namespace DotNetNuke.Services.Cache
         /// <param name="slidingExpiration">The sliding expiration.</param>
         /// <param name="priority">The priority.</param>
         /// <param name="onRemoveCallback">The on remove callback.</param>
-        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                   CacheItemRemovedCallback onRemoveCallback)
+        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
             Cache.Insert(cacheKey, itemToCache, dependency == null ? null : dependency.SystemCacheDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
 
-        /// <summary>
-        /// Determines whether is web farm.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if is web farm; otherwise, <c>false</c>.
-        /// </returns>
+        /// <summary>Determines whether is web farm.</summary>
+        /// <returns><c>true</c> if is web farm; otherwise, <c>false</c>.</returns>
         public virtual bool IsWebFarm()
         {
             return ServerController.GetEnabledServers().Count > 1;
         }
 
-        /// <summary>
-        /// Purges the cache.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Purges the cache.</summary>
+        /// <returns>A message indicating the results of the cache purge.</returns>
         public virtual string PurgeCache()
         {
             return Localization.GetString("PurgeCacheUnsupported.Text", Localization.GlobalResourceFile);
         }
 
-        /// <summary>
-        /// Removes the specified cache key.
-        /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
-        public virtual void Remove(string CacheKey)
+        /// <summary>Removes the specified cache key.</summary>
+        /// <param name="cacheKey">The cache key.</param>
+        public virtual void Remove(string cacheKey)
         {
-            this.RemoveInternal(CacheKey);
+            this.RemoveInternal(cacheKey);
         }
 
         /// <summary>
-        /// Disable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
+        /// Disable Cache Expiration. This control won't affect core caching provider, its behavior determined by extended caching provider.
         /// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
         /// </summary>
         /// <seealso cref="CacheExpirationDisable"/>
@@ -221,7 +188,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
-        /// Enable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
+        /// Enable Cache Expiration. This control won't affect core caching provider, its behavior determined by extended caching provider.
         /// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
         /// </summary>
         /// <seealso cref="CacheExpirationDisable"/>
@@ -232,9 +199,7 @@ namespace DotNetNuke.Services.Cache
             Logger.Warn("Enable cache expiration.");
         }
 
-        /// <summary>
-        /// Clears the cache internal.
-        /// </summary>
+        /// <summary>Clears the cache internal.</summary>
         /// <param name="cacheType">Type of the cache.</param>
         /// <param name="data">The data.</param>
         /// <param name="clearRuntime">if set to <c>true</c> clear runtime cache.</param>
@@ -272,9 +237,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Removes the internal.
-        /// </summary>
+        /// <summary>Removes value from the cache.</summary>
         /// <param name="cacheKey">The cache key.</param>
         protected void RemoveInternal(string cacheKey)
         {
@@ -475,38 +438,38 @@ namespace DotNetNuke.Services.Cache
             this.RemoveCacheKey(string.Format(DataCache.TabSettingsCacheKey, portalId), clearRuntime);
         }
 
-        private void RemoveCacheKey(string CacheKey, bool clearRuntime)
+        private void RemoveCacheKey(string cacheKey, bool clearRuntime)
         {
             if (clearRuntime)
             {
                 // remove item from runtime cache
-                this.RemoveInternal(GetCacheKey(CacheKey));
+                this.RemoveInternal(GetCacheKey(cacheKey));
             }
             else
             {
                 // Call provider's remove method
-                this.Remove(GetCacheKey(CacheKey));
+                this.Remove(GetCacheKey(cacheKey));
             }
         }
 
-        private void RemoveFormattedCacheKey(string CacheKeyBase, bool clearRuntime, params object[] parameters)
+        private void RemoveFormattedCacheKey(string cacheKeyBase, bool clearRuntime, params object[] parameters)
         {
             if (clearRuntime)
             {
                 // remove item from runtime cache
-                this.RemoveInternal(string.Format(GetCacheKey(CacheKeyBase), parameters));
+                this.RemoveInternal(string.Format(GetCacheKey(cacheKeyBase), parameters));
             }
             else
             {
                 // Call provider's remove method
-                this.Remove(string.Format(GetCacheKey(CacheKeyBase), parameters));
+                this.Remove(string.Format(GetCacheKey(cacheKeyBase), parameters));
             }
         }
 
         private void ReloadServicesFrameworkRoutes()
         {
             // registration of routes when the servers is operating is done as part of the cache
-            // because the web request cahcing provider is the only inter-server communication channel
+            // because the web request caching provider is the only inter-server communication channel
             // that is reliable
             ServicesRoutingManager.RegisterServiceRoutes();
         }

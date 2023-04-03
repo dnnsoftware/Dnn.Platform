@@ -8,9 +8,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using ClientDependency.Core.Controls;
 
-    /// <summary>
-    /// Registers a JavaScript resource.
-    /// </summary>
+    /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : JsInclude
     {
         /// <summary>
@@ -22,6 +20,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.ForceProvider = ClientResourceManager.DefaultJsProvider;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
             base.OnLoad(e);
@@ -29,6 +28,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)

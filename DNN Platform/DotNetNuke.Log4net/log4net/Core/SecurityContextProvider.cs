@@ -1,32 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Util;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    using log4net.Util;
-
-    /// <summary>
-    /// The <see cref="SecurityContextProvider"/> providers default <see cref="SecurityContext"/> instances.
-    /// </summary>
+    /// <summary>The <see cref="SecurityContextProvider"/> providers default <see cref="SecurityContext"/> instances.</summary>
     /// <remarks>
     /// <para>
     /// A configured component that interacts with potentially protected system
@@ -45,7 +43,7 @@ namespace log4net.Core
     /// This default behavior can be overridden by subclassing the <see cref="SecurityContextProvider"/>
     /// and overriding the <see cref="CreateSecurityContext"/> method to return
     /// the desired <see cref="SecurityContext"/> objects. The default provider
-    /// can be replaced by programmatically setting the value of the
+    /// can be replaced by programmatically setting the value of the 
     /// <see cref="SecurityContextProvider.DefaultProvider"/> property.
     /// </para>
     /// <para>
@@ -55,19 +53,15 @@ namespace log4net.Core
     /// the type to use as the <see cref="SecurityContextProvider"/> as an argument.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Nicko Cadell</author>
     public class SecurityContextProvider
     {
-        /// <summary>
-        /// The default provider.
-        /// </summary>
+        /// <summary>The default provider</summary>
         private static SecurityContextProvider s_defaultProvider = new SecurityContextProvider();
 
-        /// <summary>
-        /// Gets or sets the default SecurityContextProvider.
-        /// </summary>
+        /// <summary>Gets or sets the default SecurityContextProvider</summary>
         /// <value>
-        /// The default SecurityContextProvider.
+        /// The default SecurityContextProvider
         /// </value>
         /// <remarks>
         /// <para>
@@ -91,24 +85,19 @@ namespace log4net.Core
             set { s_defaultProvider = value; }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityContextProvider"/> class.
-        /// Protected default constructor to allow subclassing.
-        /// </summary>
+        /// <summary>Protected default constructor to allow subclassing</summary>
         /// <remarks>
         /// <para>
-        /// Protected default constructor to allow subclassing.
+        /// Protected default constructor to allow subclassing
         /// </para>
         /// </remarks>
         protected SecurityContextProvider()
         {
         }
 
-        /// <summary>
-        /// Create a SecurityContext for a consumer.
-        /// </summary>
-        /// <param name="consumer">The consumer requesting the SecurityContext.</param>
-        /// <returns>An impersonation context.</returns>
+        /// <summary>Create a SecurityContext for a consumer</summary>
+        /// <param name="consumer">The consumer requesting the SecurityContext</param>
+        /// <returns>An impersonation context</returns>
         /// <remarks>
         /// <para>
         /// The default implementation is to return a <see cref="NullSecurityContext"/>.

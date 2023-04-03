@@ -14,6 +14,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         HasAgreedToTerms = 5,
         HasNotAgreedToTerms = 6,
         RequestedRemoval = 7,
-        All = 8
+        All = 8,
     }
 }

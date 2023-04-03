@@ -54,37 +54,33 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Folder()
         {
             var stream = new Mock<Stream>();
 
-            this._sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void AddFile_Throws_On_NullOrEmpty_FileName(string fileName)
         {
             var stream = new Mock<Stream>();
 
-            this._sfp.AddFile(this._folderInfo.Object, fileName, stream.Object);
+            Assert.Throws<ArgumentException>(() => this._sfp.AddFile(this._folderInfo.Object, fileName, stream.Object));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Content()
         {
-            this._sfp.AddFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.AddFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
         {
-            this._sfp.DeleteFile(null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.DeleteFile(null));
         }
 
         [Test]
@@ -112,17 +108,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_Folder()
         {
-            this._sfp.FileExists(null, Constants.FOLDER_ValidFileName);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.FileExists(null, Constants.FOLDER_ValidFileName));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_FileName()
         {
-            this._sfp.FileExists(this._folderInfo.Object, null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.FileExists(this._folderInfo.Object, null));
         }
 
         [Test]
@@ -160,19 +154,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderMapping()
         {
-            this._sfp.FolderExists(Constants.FOLDER_ValidFolderPath, null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.FolderExists(Constants.FOLDER_ValidFolderPath, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderPath()
         {
             var folderMapping = new FolderMappingInfo();
 
-            this._sfp.FolderExists(null, folderMapping);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.FolderExists(null, folderMapping));
         }
 
         [Test]
@@ -216,10 +208,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileAttributes_Throws_On_Null_File()
         {
-            this._sfp.GetFileAttributes(null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.GetFileAttributes(null));
         }
 
         [Test]
@@ -259,10 +250,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFiles_Throws_On_Null_Folder()
         {
-            this._sfp.GetFiles(null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.GetFiles(null));
         }
 
         [Test]
@@ -305,17 +295,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileStream_Throws_On_Null_Folder()
         {
-            this._sfp.GetFileStream(null, Constants.FOLDER_ValidFileName);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.GetFileStream(null, Constants.FOLDER_ValidFileName));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetFileStream_Throws_On_Null_FileName()
         {
-            this._sfp.GetFileStream(this._folderInfo.Object, null);
+            Assert.Throws<ArgumentException>(() => this._sfp.GetFileStream(this._folderInfo.Object, null));
         }
 
         [Test]
@@ -380,10 +368,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetLastModificationTime_Throws_On_Null_File()
         {
-            this._sfp.GetLastModificationTime(null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.GetLastModificationTime(null));
         }
 
         [Test]
@@ -425,19 +412,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderMapping()
         {
-            this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderPath, null).ToList();
+            Assert.Throws<ArgumentNullException>(() => this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderPath, null).ToList());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderPath()
         {
             var folderMapping = new FolderMappingInfo();
 
-            this._sfp.GetSubFolders(null, folderMapping).ToList();
+            Assert.Throws<ArgumentNullException>(() => this._sfp.GetSubFolders(null, folderMapping).ToList());
         }
 
         [Test]
@@ -503,10 +488,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IsInSync_Throws_On_Null_File()
         {
-            this._sfp.IsInSync(null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.IsInSync(null));
         }
 
         [Test]
@@ -536,19 +520,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RenameFile_Throws_On_Null_File()
         {
-            this._sfp.RenameFile(null, Constants.FOLDER_ValidFileName);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.RenameFile(null, Constants.FOLDER_ValidFileName));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void RenameFile_Throws_On_NullOrEmpty_NewFileName(string newFileName)
         {
-            this._sfp.RenameFile(this._fileInfo.Object, newFileName);
+            Assert.Throws<ArgumentException>(() => this._sfp.RenameFile(this._fileInfo.Object, newFileName));
         }
 
         [Test]
@@ -577,10 +559,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SetFileAttributes_Throws_On_Null_File()
         {
-            this._sfp.SetFileAttributes(null, FileAttributes.Archive);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.SetFileAttributes(null, FileAttributes.Archive));
         }
 
         [Test]
@@ -604,30 +585,27 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateFile_Throws_On_Null_Folder()
         {
             var stream = new Mock<Stream>();
 
-            this._sfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void UpdateFile_Throws_On_NullOrEmpty_FileName(string fileName)
         {
             var stream = new Mock<Stream>();
 
-            this._sfp.UpdateFile(this._folderInfo.Object, fileName, stream.Object);
+            Assert.Throws<ArgumentException>(() => this._sfp.UpdateFile(this._folderInfo.Object, fileName, stream.Object));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateFile_Throws_On_Null_Content()
         {
-            this._sfp.UpdateFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null);
+            Assert.Throws<ArgumentNullException>(() => this._sfp.UpdateFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null));
         }
 
         [Test]

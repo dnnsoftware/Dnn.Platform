@@ -10,16 +10,12 @@ namespace Dnn.PersonaBar.Library.Model
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : MenuPermissionInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// MenuPermissionInfo provides the Entity Layer for Module Permissions.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>MenuPermissionInfo provides the Entity Layer for Module Permissions.</summary>
     [Serializable]
     public class PermissionInfo : BaseEntityInfo, IHydratable
     {
@@ -35,13 +31,10 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("permissionName")]
         public string PermissionName { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
@@ -55,12 +48,8 @@ namespace Dnn.PersonaBar.Library.Model
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a MenuPermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);

@@ -48,6 +48,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetsPortalSettingsViaTestablePortalController()
         {
             // Arrange
@@ -66,7 +67,8 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         internal class DnnApiControllerHelper : DnnApiController
-        {}
+        {
+        }
 
         // A test that would be nice to run, but I see not good way to test the source of the
         // userinfo

@@ -8,15 +8,11 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The WidgetPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The WidgetPackageWriter class.</summary>
     public class WidgetPackageWriter : PackageWriterBase
     {
+        /// <summary>Initializes a new instance of the <see cref="WidgetPackageWriter"/> class.</summary>
+        /// <param name="package"></param>
         public WidgetPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -29,6 +25,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine("Resources\\Widgets\\User", company);
         }
 
+        /// <inheritdoc/>
         public override bool IncludeAssemblies
         {
             get
@@ -37,12 +34,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 
+        /// <inheritdoc/>
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             string company = this.Package.Name.Substring(0, this.Package.Name.IndexOf("."));

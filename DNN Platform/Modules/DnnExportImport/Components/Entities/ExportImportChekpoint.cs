@@ -16,7 +16,7 @@ namespace Dnn.ExportImport.Components.Entities
     [PrimaryKey("CheckpointId")]
     public class ExportImportChekpoint : IHydratable
     {
-        private double _progress;
+        private double progress;
 
         public int CheckpointId { get; set; }
 
@@ -38,7 +38,10 @@ namespace Dnn.ExportImport.Components.Entities
 
         public double Progress
         {
-            get { return this._progress; }
+            get
+            {
+                return this.progress;
+            }
 
             set
             {
@@ -51,7 +54,7 @@ namespace Dnn.ExportImport.Components.Entities
                     value = 100;
                 }
 
-                this._progress = value;
+                this.progress = value;
             }
         }
 
@@ -59,12 +62,14 @@ namespace Dnn.ExportImport.Components.Entities
 
         public int ProcessedItems { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.CheckpointId; }
             set { this.CheckpointId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.CheckpointId = Null.SetNullInteger(dr[nameof(this.CheckpointId)]);

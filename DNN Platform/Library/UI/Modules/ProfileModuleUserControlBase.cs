@@ -17,13 +17,16 @@ namespace DotNetNuke.UI.Modules
 
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
     {
+        /// <summary>Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.</summary>
         public ProfileModuleUserControlBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         public abstract bool DisplayModule { get; }
 
+        /// <inheritdoc/>
         public int ProfileUserId
         {
             get
@@ -49,6 +52,7 @@ namespace DotNetNuke.UI.Modules
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&

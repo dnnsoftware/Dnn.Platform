@@ -10,10 +10,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckSiteRegistration : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckSiteRegistration";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -23,7 +26,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 result.Severity = SeverityEnum.Pass;
                 foreach (PortalInfo portal in portalController.GetPortals())
                 {
-                    //check for public registration
+                    // check for public registration
                     if (portal.UserRegistration == 2)
                     {
                         result.Severity = SeverityEnum.Warning;

@@ -11,7 +11,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
@@ -24,12 +23,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Controller class for social Messaging.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  The Controller class for social Messaging.</summary>
     public class MessagingController
                                 : ServiceLocator<IMessagingController, MessagingController>,
                                 IMessagingController
@@ -44,26 +38,31 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const bool ConstAscending = true;
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
-        private readonly IDataService _dataService;
+        private readonly IDataService dataService;
 
+        /// <summary>Initializes a new instance of the <see cref="MessagingController"/> class.</summary>
         public MessagingController()
             : this(DataService.Instance)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MessagingController"/> class.</summary>
+        /// <param name="dataService"></param>
         public MessagingController(IDataService dataService)
         {
             // Argument Contract
             Requires.NotNull("dataService", dataService);
 
-            this._dataService = dataService;
+            this.dataService = dataService;
         }
 
+        /// <inheritdoc/>
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs)
         {
             this.SendMessage(message, roles, users, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
+        /// <inheritdoc/>
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs, UserInfo sender)
         {
             if (sender == null || sender.UserID <= 0)
@@ -178,7 +177,7 @@ namespace DotNetNuke.Services.Social.Messaging
             message.SenderUserID = sender.UserID;
             message.From = sender.DisplayName;
 
-            message.MessageID = this._dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
+            message.MessageID = this.dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
 
             // associate attachments
             if (fileIDs != null)
@@ -187,7 +186,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 {
                     if (this.CanViewFile(attachment.FileID))
                     {
-                        this._dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
+                        this.dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                     }
                 }
             }
@@ -201,7 +200,7 @@ namespace DotNetNuke.Services.Social.Messaging
                     .Aggregate(roleIds, (current, roleId) => current + (roleId + ","))
                     .Trim(',');
 
-                this._dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // send message to each User - this should be called after CreateMessageRecipientsForRole.
@@ -212,7 +211,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             foreach (var recipient in from user in users where InternalMessagingController.Instance.GetMessageRecipient(message.MessageID, user.UserID) == null select new MessageRecipient { MessageID = message.MessageID, UserID = user.UserID, Read = false, RecipientID = Null.NullInteger })
             {
-                this._dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             if (users.All(u => u.UserID != sender.UserID))
@@ -223,7 +222,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 {
                     // add sender as a recipient of the message
                     recipient = new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger };
-                    recipient.RecipientID = this._dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
+                    recipient.RecipientID = this.dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
 
                 InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, recipient.RecipientID);
@@ -264,6 +263,7 @@ namespace DotNetNuke.Services.Social.Messaging
             return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
+        /// <inheritdoc/>
         protected override Func<IMessagingController> GetFactory()
         {
             return () => new MessagingController();

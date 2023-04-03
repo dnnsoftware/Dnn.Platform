@@ -8,21 +8,19 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class RegularExpressionValidatorAttribute : Attribute
     {
-        private readonly string _Expression;
+        private readonly string expression;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RegularExpressionValidatorAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RegularExpressionValidatorAttribute"/> class.</summary>
         public RegularExpressionValidatorAttribute(string expression)
         {
-            this._Expression = expression;
+            this.expression = expression;
         }
 
         public string Expression
         {
             get
             {
-                return this._Expression;
+                return this.expression;
             }
         }
     }

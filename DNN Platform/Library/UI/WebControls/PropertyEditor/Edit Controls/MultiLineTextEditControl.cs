@@ -6,17 +6,14 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Web.UI;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MultiLineTextEditControl control provides a standard UI component for editing
     /// string/text properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:MultiLineTextEditControl runat=server></{0}:MultiLineTextEditControl>")]
     public class MultiLineTextEditControl : TextEditControl
     {
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             string propValue = Convert.ToString(this.Value);

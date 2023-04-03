@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
     public abstract class OAuthLoginBase : AuthenticationLoginBase
     {
+        /// <inheritdoc/>
         public override bool Enabled
         {
             get { return OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId).Enabled; }
@@ -29,6 +30,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

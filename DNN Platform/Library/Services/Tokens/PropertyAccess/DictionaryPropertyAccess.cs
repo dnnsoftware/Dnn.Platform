@@ -11,13 +11,16 @@ namespace DotNetNuke.Services.Tokens
 
     public class DictionaryPropertyAccess : IPropertyAccess
     {
-        private readonly IDictionary NameValueCollection;
+        private readonly IDictionary nameValueCollection;
 
+        /// <summary>Initializes a new instance of the <see cref="DictionaryPropertyAccess"/> class.</summary>
+        /// <param name="list"></param>
         public DictionaryPropertyAccess(IDictionary list)
         {
-            this.NameValueCollection = list;
+            this.nameValueCollection = list;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -26,18 +29,19 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        /// <inheritdoc/>
+        public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            if (this.NameValueCollection == null)
+            if (this.nameValueCollection == null)
             {
                 return string.Empty;
             }
 
-            object valueObject = this.NameValueCollection[propertyName];
-            string OutputFormat = format;
+            object valueObject = this.nameValueCollection[propertyName];
+            string outputFormat = format;
             if (string.IsNullOrEmpty(format))
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
 
             if (valueObject != null)
@@ -53,14 +57,14 @@ namespace DotNetNuke.Services.Tokens
                     case "Single":
                     case "Int32":
                     case "Int64":
-                        return ((IFormattable)valueObject).ToString(OutputFormat, formatProvider);
+                        return ((IFormattable)valueObject).ToString(outputFormat, formatProvider);
                     default:
                         return PropertyAccess.FormatString(valueObject.ToString(), format);
                 }
             }
             else
             {
-                PropertyNotFound = true;
+                propertyNotFound = true;
                 return string.Empty;
             }
         }

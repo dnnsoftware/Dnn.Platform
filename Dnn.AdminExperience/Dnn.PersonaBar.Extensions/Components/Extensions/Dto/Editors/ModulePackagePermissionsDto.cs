@@ -9,11 +9,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class ModulePackagePermissionsDto : PackageInfoDto
     {
+        /// <summary>Initializes a new instance of the <see cref="ModulePackagePermissionsDto"/> class.</summary>
         public ModulePackagePermissionsDto()
         {
         }
 
-        public ModulePackagePermissionsDto(int portalId, PackageInfo package) : base(portalId, package)
+        /// <summary>Initializes a new instance of the <see cref="ModulePackagePermissionsDto"/> class.</summary>
+        /// <param name="portalId"></param>
+        /// <param name="package"></param>
+        public ModulePackagePermissionsDto(int portalId, PackageInfo package)
+            : base(portalId, package)
         {
         }
 

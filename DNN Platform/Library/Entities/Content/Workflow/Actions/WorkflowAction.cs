@@ -6,26 +6,18 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    /// <summary>
-    /// This entity represents a workflow action implementation.
-    /// </summary>
+    /// <summary>This entity represents a workflow action implementation.</summary>
     [PrimaryKey("ActionId")]
     [TableName("ContentWorkflowActions")]
     public class WorkflowAction
     {
-        /// <summary>
-        /// Gets or sets action Id.
-        /// </summary>
+        /// <summary>Gets or sets action Id.</summary>
         public int ActionId { get; set; }
 
-        /// <summary>
-        /// Gets or sets content item type Id.
-        /// </summary>
+        /// <summary>Gets or sets content item type Id.</summary>
         public int ContentTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets action type. This is a string representation of the enum <see cref="WorkflowActionTypes"/>.
-        /// </summary>
+        /// <summary>Gets or sets action type. This is a string representation of the enum <see cref="WorkflowActionTypes"/>.</summary>
         public string ActionType { get; set; }
 
         /// <summary>

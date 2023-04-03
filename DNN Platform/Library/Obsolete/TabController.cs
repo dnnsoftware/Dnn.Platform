@@ -7,23 +7,13 @@ namespace DotNetNuke.Entities.Tabs
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
     using System.Linq;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// TabController provides all operation to tabinfo.
-    /// </summary>
+    /// <summary>TabController provides all operation to tabinfo.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
     /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
@@ -52,7 +42,7 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabsByPortal. Scheduled removal in v10.0.0.")]
         public ArrayList GetAllTabs()
         {
-            return CBO.FillCollection(this._dataProvider.GetAllTabs(), typeof(TabInfo));
+            return CBO.FillCollection(this.dataProvider.GetAllTabs(), typeof(TabInfo));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -87,7 +77,7 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached. Scheduled removal in v10.0.0.")]
         public TabInfo GetTabByUniqueID(Guid uniqueID)
         {
-            return CBO.FillObject<TabInfo>(this._dataProvider.GetTabByUniqueID(uniqueID));
+            return CBO.FillObject<TabInfo>(this.dataProvider.GetTabByUniqueID(uniqueID));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

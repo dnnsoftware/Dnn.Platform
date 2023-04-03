@@ -93,7 +93,7 @@ class Body extends Component {
     }
 
     toggleCreateBox() {
-        this.userTable.wrappedInstance.onAddUser();
+        this.userTable.current.onAddUser();
     }
     canAddUser()
     {
@@ -113,14 +113,14 @@ class Body extends Component {
                     }
                     {
                         appSettings.applicationSettings.settings.isAdmin &&  
-                    <Button type="secondary" size="large" onClick={() => {this.onRemoveDeletedUsers()}} title={Localization.get("RemoveDeleted.Btn")}>
+                    <Button type="secondary" size="large" onClick={() => {this.onRemoveDeletedUsers();}} title={Localization.get("RemoveDeleted.Btn")}>
                         {Localization.get("RemoveDeleted.Btn") }
                     </Button>
                     }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
-                    <UserTable ref={(node) => this.userTable = node} appSettings={appSettings} filter={state.searchParameters.filter} 
-                            changeSortOrder={(c, a) => this.onSortChanged(c, a)} currentSortAscending={state.searchParameters.sortAscending} currentSortColumn={state.searchParameters.sortColumn} />
+                    <UserTable ref={this.userTable} appSettings={appSettings} filter={state.searchParameters.filter} 
+                        changeSortOrder={(c, a) => this.onSortChanged(c, a)} currentSortAscending={state.searchParameters.sortAscending} currentSortColumn={state.searchParameters.sortColumn} />
                     {
                         <div className="users-paging">
                             <Pager pageSizeDropDownWithoutBorder={true} 

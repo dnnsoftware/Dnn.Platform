@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     public class ManagedPackageDependency : DependencyBase, IManagedPackageDependency
     {
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
@@ -20,11 +21,12 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
             {
-                bool _IsValid = true;
+                bool isValid = true;
 
                 // Get Package from DataStore
                 PackageInfo package = PackageController.Instance.GetExtensionPackage(
@@ -33,15 +35,17 @@ namespace DotNetNuke.Services.Installer.Dependencies
                                                                 && p.Version >= this.PackageDependency.Version);
                 if (package == null)
                 {
-                    _IsValid = false;
+                    isValid = false;
                 }
 
-                return _IsValid;
+                return isValid;
             }
         }
 
+        /// <inheritdoc/>
         public PackageDependencyInfo PackageDependency { get; set; }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.PackageDependency = new PackageDependencyInfo

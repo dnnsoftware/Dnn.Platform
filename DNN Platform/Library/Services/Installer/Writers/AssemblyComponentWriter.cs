@@ -7,27 +7,23 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AssemblyComponentWriter class handles creating the manifest for Assembly
     /// Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class AssemblyComponentWriter : FileComponentWriter
     {
+        /// <summary>Initializes a new instance of the <see cref="AssemblyComponentWriter"/> class.</summary>
+        /// <param name="basePath"></param>
+        /// <param name="assemblies"></param>
+        /// <param name="package"></param>
         public AssemblyComponentWriter(string basePath, Dictionary<string, InstallFile> assemblies, PackageInfo package)
             : base(basePath, assemblies, package)
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("assemblies").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("assemblies").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -36,12 +32,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("Assembly").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Assembly").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get
@@ -50,12 +42,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("assembly").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("assembly").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get

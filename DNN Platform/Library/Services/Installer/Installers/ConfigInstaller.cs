@@ -10,89 +10,63 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ConfigInstaller installs Config changes.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ConfigInstaller installs Config changes.</summary>
     public class ConfigInstaller : ComponentInstallerBase
     {
-        private string _FileName = Null.NullString;
-        private string _InstallConfig = Null.NullString;
-        private XmlDocument _TargetConfig;
-        private InstallFile _TargetFile;
-        private string _UnInstallConfig = Null.NullString;
-        private string _UninstallFileName = Null.NullString;
-        private XmlMerge _xmlMerge;
+        private string fileName = Null.NullString;
+        private string installConfig = Null.NullString;
+        private XmlDocument targetConfig;
+        private InstallFile targetFile;
+        private string unInstallConfig = Null.NullString;
+        private string uninstallFileName = Null.NullString;
+        private XmlMerge xmlMerge;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Install config changes.
-        /// </summary>
+        /// <summary>Gets the Install config changes.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string InstallConfig
         {
             get
             {
-                return this._InstallConfig;
+                return this.installConfig;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Target Config XmlDocument.
-        /// </summary>
+        /// <summary>Gets the Target Config XmlDocument.</summary>
         /// <value>An XmlDocument.</value>
-        /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig
         {
             get
             {
-                return this._TargetConfig;
+                return this.targetConfig;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Target Config file to change.
-        /// </summary>
+        /// <summary>Gets the Target Config file to change.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public InstallFile TargetFile
         {
             get
             {
-                return this._TargetFile;
+                return this.targetFile;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the UnInstall config changes.
-        /// </summary>
+        /// <summary>Gets the UnInstall config changes.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string UnInstallConfig
         {
             get
             {
-                return this._UnInstallConfig;
+                return this.unInstallConfig;
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Commit method finalises the Install and commits any pending changes.</summary>
         public override void Commit()
         {
             try
             {
-                if (string.IsNullOrEmpty(this._FileName) && this._xmlMerge.ConfigUpdateChangedNodes)
+                if (string.IsNullOrEmpty(this.fileName) && this.xmlMerge.ConfigUpdateChangedNodes)
                 {
                     // Save the XmlDocument
                     Config.Save(this.TargetConfig, this.TargetFile.FullName);
@@ -100,8 +74,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    this._xmlMerge.SavePendingConfigs();
-                    foreach (var key in this._xmlMerge.PendingDocuments.Keys)
+                    this.xmlMerge.SavePendingConfigs();
+                    foreach (var key in this.xmlMerge.PendingDocuments.Keys)
                     {
                         this.Log.AddInfo(Util.CONFIG_Committed + " - " + key);
                     }
@@ -113,45 +87,41 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the config component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Install method installs the config component.</summary>
         public override void Install()
         {
             try
             {
-                if (string.IsNullOrEmpty(this._FileName))
+                if (string.IsNullOrEmpty(this.fileName))
                 {
                     // First backup the config file
                     Util.BackupFile(this.TargetFile, this.PhysicalSitePath, this.Log);
 
                     // Create an XmlDocument for the config file
-                    this._TargetConfig = new XmlDocument { XmlResolver = null };
+                    this.targetConfig = new XmlDocument { XmlResolver = null };
                     this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
 
                     // Create XmlMerge instance from InstallConfig source
-                    this._xmlMerge = new XmlMerge(new StringReader(this.InstallConfig), this.Package.Version.ToString(), this.Package.Name);
+                    this.xmlMerge = new XmlMerge(new StringReader(this.InstallConfig), this.Package.Version.ToString(), this.Package.Name);
 
                     // Update the Config file - Note that this method does not save the file - we will save it in Commit
-                    this._xmlMerge.UpdateConfig(this.TargetConfig);
+                    this.xmlMerge.UpdateConfig(this.TargetConfig);
                     this.Completed = true;
                     this.Log.AddInfo(Util.CONFIG_Updated + " - " + this.TargetFile.Name);
                 }
                 else
                 {
                     // Process external file
-                    string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._FileName);
+                    string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this.fileName);
                     if (File.Exists(strConfigFile))
                     {
                         // Create XmlMerge instance from config file source
                         using (var stream = File.OpenText(strConfigFile))
                         {
-                            this._xmlMerge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " Install");
+                            this.xmlMerge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " Install");
 
                             // Process merge
-                            this._xmlMerge.UpdateConfigs(false);
+                            this.xmlMerge.UpdateConfigs(false);
                         }
 
                         this.Completed = true;
@@ -165,17 +135,13 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file for the config compoent.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadManifest method reads the manifest file for the config compoent.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            this._FileName = Util.ReadAttribute(manifestNav, "fileName");
-            this._UninstallFileName = Util.ReadAttribute(manifestNav, "unInstallFileName");
+            this.fileName = Util.ReadAttribute(manifestNav, "fileName");
+            this.uninstallFileName = Util.ReadAttribute(manifestNav, "unInstallFileName");
 
-            if (string.IsNullOrEmpty(this._FileName))
+            if (string.IsNullOrEmpty(this.fileName))
             {
                 XPathNavigator nav = manifestNav.SelectSingleNode("config");
 
@@ -184,44 +150,38 @@ namespace DotNetNuke.Services.Installer.Installers
                 string targetFileName = nodeNav.Value;
                 if (!string.IsNullOrEmpty(targetFileName))
                 {
-                    this._TargetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
+                    this.targetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
                 }
 
                 // Get the Install config changes
                 nodeNav = nav.SelectSingleNode("install");
-                this._InstallConfig = nodeNav.InnerXml;
+                this.installConfig = nodeNav.InnerXml;
 
                 // Get the UnInstall config changes
                 nodeNav = nav.SelectSingleNode("uninstall");
-                this._UnInstallConfig = nodeNav.InnerXml;
+                this.unInstallConfig = nodeNav.InnerXml;
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the file component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             // Do nothing as the changes are all in memory
             this.Log.AddInfo(Util.CONFIG_RolledBack + " - " + this.TargetFile.Name);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the config component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The UnInstall method uninstalls the config component.</summary>
         public override void UnInstall()
         {
-            if (string.IsNullOrEmpty(this._UninstallFileName))
+            if (string.IsNullOrEmpty(this.uninstallFileName))
             {
                 if (!string.IsNullOrEmpty(this.UnInstallConfig))
                 {
                     // Create an XmlDocument for the config file
-                    this._TargetConfig = new XmlDocument { XmlResolver = null };
+                    this.targetConfig = new XmlDocument { XmlResolver = null };
                     this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
 
                     // Create XmlMerge instance from UnInstallConfig source
@@ -234,7 +194,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Process external file
-                string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._UninstallFileName);
+                string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this.uninstallFileName);
                 if (File.Exists(strConfigFile))
                 {
                     // Create XmlMerge instance from config file source

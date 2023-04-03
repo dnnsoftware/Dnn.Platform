@@ -10,17 +10,23 @@ namespace DotNetNuke.Services.OutputCache
     // helper class to capture the response into a file
     public abstract class OutputCacheResponseFilter : Stream
     {
-        private Stream _captureStream;
+        private Stream captureStream;
 
+        /// <summary>Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.</summary>
+        /// <param name="filterChain"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="cacheDuration"></param>
+        /// <param name="maxVaryByCount"></param>
         public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
         {
             this.ChainedStream = filterChain;
             this.CacheKey = cacheKey;
             this.CacheDuration = cacheDuration;
             this.MaxVaryByCount = maxVaryByCount;
-            this._captureStream = this.CaptureStream;
+            this.captureStream = this.CaptureStream;
         }
 
+        /// <inheritdoc/>
         public override bool CanRead
         {
             get
@@ -29,6 +35,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanSeek
         {
             get
@@ -37,6 +44,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanWrite
         {
             get
@@ -45,6 +53,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
+        /// <inheritdoc/>
         public override long Length
         {
             get
@@ -61,12 +70,12 @@ namespace DotNetNuke.Services.OutputCache
         {
             get
             {
-                return this._captureStream;
+                return this.captureStream;
             }
 
             set
             {
-                this._captureStream = value;
+                this.captureStream = value;
             }
         }
 
@@ -76,6 +85,7 @@ namespace DotNetNuke.Services.OutputCache
 
         public int MaxVaryByCount { get; set; }
 
+        /// <inheritdoc/>
         public override long Position
         {
             get
@@ -89,6 +99,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
+        /// <inheritdoc/>
         public override void Flush()
         {
             this.ChainedStream.Flush();
@@ -97,12 +108,13 @@ namespace DotNetNuke.Services.OutputCache
                 return;
             }
 
-            if (this._captureStream != null)
+            if (this.captureStream != null)
             {
-                this._captureStream.Flush();
+                this.captureStream.Flush();
             }
         }
 
+        /// <inheritdoc/>
         public override void Write(byte[] buffer, int offset, int count)
         {
             this.ChainedStream.Write(buffer, offset, count);
@@ -111,22 +123,25 @@ namespace DotNetNuke.Services.OutputCache
                 return;
             }
 
-            if (this._captureStream != null)
+            if (this.captureStream != null)
             {
-                this._captureStream.Write(buffer, offset, count);
+                this.captureStream.Write(buffer, offset, count);
             }
         }
 
+        /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public override void SetLength(long value)
         {
             throw new NotSupportedException();

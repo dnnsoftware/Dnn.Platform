@@ -10,20 +10,29 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class InvalidFilenameException : Exception
     {
+        /// <summary>Initializes a new instance of the <see cref="InvalidFilenameException"/> class.</summary>
         public InvalidFilenameException()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="InvalidFilenameException"/> class.</summary>
+        /// <param name="message"></param>
         public InvalidFilenameException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="InvalidFilenameException"/> class.</summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public InvalidFilenameException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="InvalidFilenameException"/> class.</summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public InvalidFilenameException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

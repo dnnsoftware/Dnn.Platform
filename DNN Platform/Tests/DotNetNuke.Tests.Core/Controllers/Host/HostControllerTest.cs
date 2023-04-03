@@ -33,6 +33,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         private Mock<DataProvider> _mockData;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -79,6 +80,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_GetSettings_GetList()
         {
             // Arrange
@@ -108,6 +110,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_GetSettingsDictionary_GetList()
         {
             // Arrange
@@ -122,6 +125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_ExistingValue()
         {
             // Arrange
@@ -138,6 +142,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_ExistingValue_ResetCache()
         {
             // Arrange
@@ -154,6 +159,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_ExistingValue_ResetCache_With_Overload()
         {
             // Arrange
@@ -170,6 +176,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_ExistingValue_Dont_Reset_Cache()
         {
             // Arrange
@@ -188,6 +195,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_Dictionary()
         {
             // Arrange
@@ -205,6 +213,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_NewValue()
         {
             // Arrange
@@ -221,6 +230,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_NewValue_ResetCache_With_Overload()
         {
             // Arrange
@@ -237,6 +247,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_NewValue_ResetCache()
         {
             // Arrange
@@ -253,6 +264,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         }
 
         [Test]
+
         public void HostController_Update_NewValue_Dont_Reset_Cache()
         {
             // Arrange
@@ -273,6 +285,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [TestCase("String_2_S")]
         [TestCase("String_3_U")]
         [TestCase("String_4_U")]
+
         public void HostController_GetString_If_Key_Exists(string key)
         {
             Assert.AreEqual(HostController.Instance.GetString(key), this.GetValue(key));
@@ -282,6 +295,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetString_InvalidKey_Returns_Null_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetString(key), Null.NullString);
@@ -290,6 +304,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetString_InvalidKey_Returns_Default_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetString(key, "Hello Default"), "Hello Default");
@@ -298,15 +313,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
+
         public void HostController_GetString_NullEmpty(string key)
         {
-            HostController.Instance.GetString(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetString(key));
         }
 
         [Test]
         [TestCase("Int_5_U")]
         [TestCase("Int_6_S")]
+
         public void HostController_GetInteger_If_Key_Exists(string key)
         {
             int s = HostController.Instance.GetInteger(key);
@@ -317,6 +333,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetInteger_InvalidKey_Returns_Null_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetInteger(key), Null.NullInteger);
@@ -325,6 +342,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetInteger_InvalidKey_Returns_Default_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetInteger(key, 6969), 6969);
@@ -333,15 +351,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
+
         public void HostController_GetInteger_NullEmpty(string key)
         {
-            HostController.Instance.GetInteger(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetInteger(key));
         }
 
         [Test]
         [TestCase("Bool_9_U")]
         [TestCase("Bool_10_S")]
+
         public void HostController_GetBoolean_If_Key_Exists(string key)
         {
             Assert.AreEqual(HostController.Instance.GetBoolean(key).ToString(), this.GetValue(key));
@@ -352,6 +371,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetBoolean_InvalidKey_Returns_Null_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetBoolean(key), Null.NullBoolean);
@@ -360,6 +380,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetBoolean_InvalidKey_Returns_Default_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetBoolean(key, true), true);
@@ -369,15 +390,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
+
         public void HostController_GetBoolean_NullEmpty(string key)
         {
-            HostController.Instance.GetBoolean(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetBoolean(key));
         }
 
         [Test]
         [TestCase("Double_7_S")]
         [TestCase("Double_8_U")]
+
         public void HostController_GetDouble_If_Key_Exists(string key)
         {
             double s = HostController.Instance.GetDouble(key);
@@ -388,6 +410,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetDouble_InvalidKey_Returns_Null_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetDouble(key), Null.NullDouble);
@@ -396,6 +419,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
+
         public void HostController_GetDouble_InvalidKey_Returns_Default_Value(string key)
         {
             Assert.AreEqual(HostController.Instance.GetDouble(key, 21.58), 21.58);
@@ -404,10 +428,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
+
         public void HostController_GetDouble_NullEmpty(string key)
         {
-            HostController.Instance.GetDouble(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetDouble(key));
         }
 
         private string GetValue(string key)

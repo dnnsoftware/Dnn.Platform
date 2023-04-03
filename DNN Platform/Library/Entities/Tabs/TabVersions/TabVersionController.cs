@@ -11,7 +11,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
 
@@ -19,11 +18,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false)
         {
             return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
             // if we are not using the cache, then remove from cache and re-add loaded items when needed later
@@ -44,22 +45,26 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return tabVersions;
         }
 
+        /// <inheritdoc/>
         public void SaveTabVersion(TabVersion tabVersion)
         {
             this.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
         }
 
+        /// <inheritdoc/>
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID)
         {
             this.SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
         }
 
+        /// <inheritdoc/>
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
         {
             tabVersion.TabVersionId = Provider.SaveTabVersion(tabVersion.TabVersionId, tabVersion.TabId, tabVersion.TimeStamp, tabVersion.Version, tabVersion.IsPublished, createdByUserID, modifiedByUserID);
             this.ClearCache(tabVersion.TabId);
         }
 
+        /// <inheritdoc/>
         public TabVersion CreateTabVersion(int tabId, int createdByUserID, bool isPublished = false)
         {
             var lastTabVersion = this.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
@@ -81,17 +86,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return this.GetTabVersion(tabVersionId, tabId);
         }
 
+        /// <inheritdoc/>
         public void DeleteTabVersion(int tabId, int tabVersionId)
         {
             Provider.DeleteTabVersion(tabVersionId);
             this.ClearCache(tabId);
         }
 
+        /// <inheritdoc/>
         public void DeleteTabVersionDetailByModule(int moduleId)
         {
             Provider.DeleteTabVersionDetailByModule(moduleId);
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabVersionController> GetFactory()
         {
             return () => new TabVersionController();

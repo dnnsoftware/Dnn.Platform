@@ -8,11 +8,13 @@ namespace DotNetNuke.Entities.Content.Common
 
     internal class ContentItemEqualityComparer : IEqualityComparer<ContentItem>
     {
+        /// <inheritdoc/>
         public bool Equals(ContentItem x, ContentItem y)
         {
             return x.ContentItemId == y.ContentItemId;
         }
 
+        /// <inheritdoc/>
         public int GetHashCode(ContentItem obj)
         {
             return obj.ContentItemId.GetHashCode();

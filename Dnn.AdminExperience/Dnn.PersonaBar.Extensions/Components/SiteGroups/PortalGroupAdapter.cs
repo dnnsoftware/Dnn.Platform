@@ -16,11 +16,12 @@ namespace Dnn.PersonaBar.SiteGroups
 
     public class PortalGroupAdapter : IManagePortalGroups
     {
-        IPortalGroupController PortalGroupController
+        private IPortalGroupController PortalGroupController
         {
             get { return DotNetNuke.Entities.Portals.PortalGroupController.Instance; }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<PortalGroupInfo> SiteGroups()
         {
             return this.PortalGroupController.GetPortalGroups().Select(g => new PortalGroupInfo
@@ -31,19 +32,19 @@ namespace Dnn.PersonaBar.SiteGroups
                 MasterPortal = new PortalInfo
                 {
                     PortalName = g.MasterPortalName,
-                    PortalId = g.MasterPortalId
+                    PortalId = g.MasterPortalId,
                 },
                 PortalGroupName = g.PortalGroupName,
                 Portals = this.PortalsOfGroup(g.PortalGroupId, g.MasterPortalId)
                         .Select(p => new PortalInfo
                         {
                             PortalId = p.PortalID,
-                            PortalName = p.PortalName
-                        })
-
+                            PortalName = p.PortalName,
+                        }),
             });
         }
 
+        /// <inheritdoc/>
         public IEnumerable<PortalInfo> AvailablePortals()
         {
             return new PortalController().GetPortals()
@@ -52,10 +53,11 @@ namespace Dnn.PersonaBar.SiteGroups
                         .Select(p => new PortalInfo
                         {
                             PortalId = p.PortalID,
-                            PortalName = p.PortalName
+                            PortalName = p.PortalName,
                         });
         }
 
+        /// <inheritdoc/>
         public int Save(PortalGroupInfo portalGroup)
         {
             if (portalGroup.PortalGroupId == -1)
@@ -68,22 +70,23 @@ namespace Dnn.PersonaBar.SiteGroups
             }
         }
 
+        /// <inheritdoc/>
         public void Delete(int portalGroupId)
         {
             var group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);
             this.PortalGroupController.DeletePortalGroup(group);
         }
 
-        IEnumerable<DotNetNuke.Entities.Portals.PortalInfo> PortalsOfGroup(int groupId, int masterPortalId)
+        private IEnumerable<DotNetNuke.Entities.Portals.PortalInfo> PortalsOfGroup(int groupId, int masterPortalId)
         {
             return this.PortalGroupController
                 .GetPortalsByGroup(groupId)
                 .Where(x => x.PortalID != masterPortalId);
         }
 
-        int UpdatePortalGroup(PortalGroupInfo portalGroup)
+        private int UpdatePortalGroup(PortalGroupInfo portalGroup)
         {
-            UserCopiedCallback callback = delegate { };
+            UserCopiedCallback callback = e => { };
             var @group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroup.PortalGroupId);
             @group.PortalGroupName = portalGroup.PortalGroupName;
             @group.AuthenticationDomain = portalGroup.AuthenticationDomain;
@@ -93,10 +96,13 @@ namespace Dnn.PersonaBar.SiteGroups
             foreach (var portal in currentPortals)
             {
                 if (portalGroup.Portals == null || portalGroup.Portals.All(p => p.PortalId != portal.PortalID))
+                {
                     this.PortalGroupController.RemovePortalFromGroup(portal, @group, false, callback);
+                }
             }
 
             if (portalGroup.Portals != null)
+            {
                 foreach (var portal in portalGroup.Portals)
                 {
                     if (currentPortals.All(p => p.PortalID != portal.PortalId))
@@ -105,18 +111,20 @@ namespace Dnn.PersonaBar.SiteGroups
                         this.PortalGroupController.AddPortalToGroup(p, @group, callback);
                     }
                 }
+            }
+
             return @group.PortalGroupId;
         }
 
-        int AddPortalGroup(PortalGroupInfo portalGroup)
+        private int AddPortalGroup(PortalGroupInfo portalGroup)
         {
-            UserCopiedCallback callback = delegate { };
+            UserCopiedCallback callback = e => { };
             var group = new DotNetNuke.Entities.Portals.PortalGroupInfo
             {
                 AuthenticationDomain = portalGroup.AuthenticationDomain,
                 MasterPortalId = portalGroup.MasterPortal.PortalId,
                 PortalGroupDescription = portalGroup.Description,
-                PortalGroupName = portalGroup.PortalGroupName
+                PortalGroupName = portalGroup.PortalGroupName,
             };
             this.PortalGroupController.AddPortalGroup(@group);
             if (portalGroup.Portals != null)
@@ -127,6 +135,7 @@ namespace Dnn.PersonaBar.SiteGroups
                     this.PortalGroupController.AddPortalToGroup(p, @group, callback);
                 }
             }
+
             return @group.PortalGroupId;
         }
     }

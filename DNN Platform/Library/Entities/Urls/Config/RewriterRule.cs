@@ -12,24 +12,24 @@ namespace DotNetNuke.Entities.Urls.Config
     public class RewriterRule
     {
         [NonSerialized]
-        private Regex _matchRx;
+        private Regex matchRx;
 
-        private string _lookFor;
-        private string _sendTo;
+        private string lookFor;
+        private string sendTo;
 
         public string LookFor
         {
             get
             {
-                return this._lookFor;
+                return this.lookFor;
             }
 
             set
             {
-                if (this._lookFor != value)
+                if (this.lookFor != value)
                 {
-                    this._lookFor = value;
-                    this._matchRx = null;
+                    this.lookFor = value;
+                    this.matchRx = null;
                 }
             }
         }
@@ -38,12 +38,12 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             get
             {
-                return this._sendTo;
+                return this.sendTo;
             }
 
             set
             {
-                this._sendTo = value;
+                this.sendTo = value;
             }
         }
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Urls.Config
         // also don't worry about locking; the worst case this will be created more than once
         public Regex GetRuleRegex(string applicationPath)
         {
-            return this._matchRx ?? (this._matchRx =
+            return this.matchRx ?? (this.matchRx =
                 RegexUtils.GetCachedRegex(
                     "^" + RewriterUtils.ResolveUrl(applicationPath, this.LookFor) + "$",
                     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));

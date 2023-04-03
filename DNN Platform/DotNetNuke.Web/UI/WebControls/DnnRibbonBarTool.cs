@@ -27,9 +27,9 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
     {
-        private IDictionary<string, RibbonBarToolInfo> _allTools;
-        private DnnTextLink _dnnLink;
-        private DnnTextButton _dnnLinkButton;
+        private IDictionary<string, RibbonBarToolInfo> allTools;
+        private DnnTextLink dnnLink;
+        private DnnTextButton dnnLinkButton;
 
         public DnnRibbonBarTool()
         {
@@ -106,6 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public virtual string ToolName
         {
             get
@@ -132,13 +133,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._dnnLinkButton == null)
+                if (this.dnnLinkButton == null)
                 {
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
-                    this._dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
+                    this.dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
                 }
 
-                return this._dnnLinkButton;
+                return this.dnnLinkButton;
             }
         }
 
@@ -146,12 +147,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._dnnLink == null)
+                if (this.dnnLink == null)
                 {
-                    this._dnnLink = new DnnTextLink();
+                    this.dnnLink = new DnnTextLink();
                 }
 
-                return this._dnnLink;
+                return this.dnnLink;
             }
         }
 
@@ -159,9 +160,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._allTools == null)
+                if (this.allTools == null)
                 {
-                    this._allTools = new Dictionary<string, RibbonBarToolInfo>
+                    this.allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
                                         // Framework
                                         { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, string.Empty, string.Empty, string.Empty, true) },
@@ -185,7 +186,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     };
                 }
 
-                return this._allTools;
+                return this.allTools;
             }
         }
 
@@ -245,6 +246,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -252,12 +254,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Controls.Add(this.DnnLink);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             this.ProcessTool();
@@ -306,7 +310,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             // Prevent PageSettings in a popup if SSL is enabled and enforced, which causes redirection/javascript broswer security issues.
                             if (this.ToolInfo.ToolName == "PageSettings" || this.ToolInfo.ToolName == "CopyPage" || this.ToolInfo.ToolName == "NewPage")
                             {
-                                if (!(PortalSettings.SSLEnabled && PortalSettings.SSLEnforced))
+                                if (!(PortalSettings.SSLSetup != Abstractions.Security.SiteSslSetup.Off && PortalSettings.SSLEnforced))
                                 {
                                     this.DnnLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.DnnLink.NavigateUrl, this, PortalSettings, true, false));
                                 }

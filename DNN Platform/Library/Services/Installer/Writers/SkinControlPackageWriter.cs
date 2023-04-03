@@ -12,15 +12,11 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The SkinControlPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The SkinControlPackageWriter class.</summary>
     public class SkinControlPackageWriter : PackageWriterBase
     {
+        /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
+        /// <param name="package"></param>
         public SkinControlPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -29,6 +25,9 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
+        /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
+        /// <param name="skinControl"></param>
+        /// <param name="package"></param>
         public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package)
             : base(package)
         {
@@ -37,6 +36,9 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
+        /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
+        /// <param name="manifestNav"></param>
+        /// <param name="installer"></param>
         public SkinControlPackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
             this.SkinControl = new SkinControlInfo();
@@ -55,14 +57,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated SkinControl.
-        /// </summary>
+        /// <summary>Gets or sets the associated SkinControl.</summary>
         /// <value>A SkinControlInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
 
+        /// <inheritdoc/>
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Start component Element

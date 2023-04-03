@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Entities.Portals
 {
     using System;
@@ -15,11 +14,13 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// PortalInfo provides a base class for Portal information
-    /// This class inherites from the <c>BaseEntityInfo</c> and is <c>Hydratable</c>.
+    /// This class inherits from the <c>BaseEntityInfo</c> and is <c>Hydratable</c>.
     /// </summary>
     /// <remarks><seealso cref="IHydratable"/>
     /// <example>This example shows how the <c>PortalInfo</c> class is used to get physical file names
@@ -53,16 +54,14 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalInfo : BaseEntityInfo, IHydratable, IPortalInfo
     {
-        private string _administratorRoleName;
-        private int _pages = Null.NullInteger;
-        private string _registeredRoleName;
+        private string administratorRoleName;
+        private int pages = Null.NullInteger;
+        private string registeredRoleName;
+        private PortalPermissionCollection permissions;
 
-        private int _users;
+        private int users;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalInfo"/> class.
-        /// Create new Portalinfo instance.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalInfo"/> class.</summary>
         /// <remarks>
         /// <example>This example illustrates the creation of a new <c>PortalInfo</c> object
         /// <code lang="vbnet">
@@ -95,6 +94,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public string HomeDirectoryMapPath
         {
             get
@@ -105,6 +105,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public string HomeSystemDirectoryMapPath
         {
             get
@@ -125,11 +126,9 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("admintabid")]
         public int AdminTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets image (bitmap) file that is used as background for the portal.
-        /// </summary>
+        /// <summary>Gets or sets image (bitmap) file that is used as background for the portal.</summary>
         /// <value>Name of the file that is used as background.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("backgroundfile")]
         public string BackgroundFile { get; set; }
 
@@ -137,11 +136,9 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("crmversion")]
         public string CrmVersion { get; set; }
 
-        /// <summary>
-        /// Gets or sets setting for the type of banner advertising in the portal.
-        /// </summary>
+        /// <summary>Gets or sets setting for the type of banner advertising in the portal.</summary>
         /// <value>Type of banner advertising.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("banneradvertising")]
         public int BannerAdvertising { get; set; }
 
@@ -149,11 +146,9 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("cultureCode")]
         public string CultureCode { get; set; }
 
-        /// <summary>
-        /// Gets or sets curreny format that is used in the portal.
-        /// </summary>
+        /// <summary>Gets or sets currency format that is used in the portal.</summary>
         /// <value>Currency of the portal.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("currency")]
         public string Currency { get; set; }
 
@@ -175,17 +170,16 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public Guid GUID { get; set; }
 
         /// <inheritdoc />
         [XmlElement("hometabid")]
         public int HomeTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets amount of currency that is used as a hosting fee of the portal.
-        /// </summary>
+        /// <summary>Gets or sets amount of currency that is used as a hosting fee of the portal.</summary>
         /// <value>Currency amount hosting fee.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("hostfee")]
         public float HostFee { get; set; }
 
@@ -209,54 +203,59 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("pagequota")]
         public int PageQuota { get; set; }
 
-        /// <summary>
-        /// Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal.
-        /// </summary>
+        /// <summary>Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal.</summary>
         /// <value>Name of the portal payment processor.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("paymentprocessor")]
         public string PaymentProcessor { get; set; }
 
         /// <inheritdoc />
         [XmlElement("portalid")]
-        public int PortalId { get; set; }
+        int IPortalInfo.PortalId { get; set; }
 
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalId instead.")]
         public int PortalID
         {
-            get => PortalId;
-            set => PortalId = value;
+            get => this.ThisAsInterface.PortalId;
+            set => this.ThisAsInterface.PortalId = value;
+        }
+
+        /// <summary>Gets the permissions collection for the portal.</summary>
+        [XmlArray("portalpermissions")]
+        [XmlArrayItem("permission")]
+        public PortalPermissionCollection PortalPermissions
+        {
+            get
+            {
+                return this.permissions ?? (this.permissions = new PortalPermissionCollection(PortalPermissionController.GetPortalPermissions(this.ThisAsInterface.PortalId)));
+            }
         }
 
         /// <inheritdoc />
-        public int PortalGroupId { get; set; }
+        int IPortalInfo.PortalGroupId { get; set; }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalGroupId instead.")]
         public int PortalGroupID
         {
-            get => PortalGroupId;
-            set => PortalGroupId = value;
+            get => this.ThisAsInterface.PortalGroupId;
+            set => this.ThisAsInterface.PortalGroupId = value;
         }
 
         /// <inheritdoc />
         [XmlElement("portalname")]
         public string PortalName { get; set; }
 
-        /// <summary>
-        /// Gets or sets password to use in the payment processor.
-        /// </summary>
+        /// <summary>Gets or sets password to use in the payment processor.</summary>
         /// <value>Payment Processor password.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("processorpassword")]
         public string ProcessorPassword { get; set; }
 
-        /// <summary>
-        /// Gets or sets payment Processor userId.
-        /// </summary>
+        /// <summary>Gets or sets payment Processor userId.</summary>
         /// <value>
-        /// <placeholder>Payment Processor userId</placeholder>
+        /// Payment Processor userId.
         /// </value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("processoruserid")]
         public string ProcessorUserId { get; set; }
 
@@ -312,32 +311,31 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("usertabid")]
         public int UserTabId { get; set; }
 
-        /// <summary>
-        /// Gets or sets actual number of actual users for this portal.
-        /// </summary>
+        /// <summary>Gets or sets actual number of actual users for this portal.</summary>
         /// <value>Number of users for the portal.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("users")]
         public int Users
         {
             get
             {
-                if (this._users < 0)
+                if (this.users < 0)
                 {
-                    this._users = UserController.GetUserCountByPortal(this.PortalID);
+                    this.users = UserController.GetUserCountByPortal(this.ThisAsInterface.PortalId);
                 }
 
-                return this._users;
+                return this.users;
             }
 
-            set { this._users = value; }
+            set
+            {
+                this.users = value;
+            }
         }
 
-        /// <summary>
-        /// Gets or sets dNN Version # of the portal installation.
-        /// </summary>
+        /// <summary>Gets or sets dNN Version # of the portal installation.</summary>
         /// <value>Version # of the portal installation.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("version")]
         public string Version { get; set; }
 
@@ -347,46 +345,44 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (this._administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
+                if (this.administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
                 {
                     // Get Role Name
-                    RoleInfo adminRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.AdministratorRoleId);
+                    RoleInfo adminRole = RoleController.Instance.GetRole(this.ThisAsInterface.PortalId, r => r.RoleID == this.AdministratorRoleId);
                     if (adminRole != null)
                     {
-                        this._administratorRoleName = adminRole.RoleName;
+                        this.administratorRoleName = adminRole.RoleName;
                     }
                 }
 
-                return this._administratorRoleName;
+                return this.administratorRoleName;
             }
 
             set
             {
-                this._administratorRoleName = value;
+                this.administratorRoleName = value;
             }
         }
 
-        /// <summary>
-        /// Gets or sets actual number of pages of the portal.
-        /// </summary>
+        /// <summary>Gets or sets actual number of pages of the portal.</summary>
         /// <value>Number of pages of the portal.</value>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v10.0.0.")]
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("pages")]
         public int Pages
         {
             get
             {
-                if (this._pages < 0)
+                if (this.pages < 0)
                 {
-                    this._pages = TabController.Instance.GetUserTabsByPortal(this.PortalID).Count;
+                    this.pages = TabController.Instance.GetUserTabsByPortal(this.ThisAsInterface.PortalId).Count;
                 }
 
-                return this._pages;
+                return this.pages;
             }
 
             set
             {
-                this._pages = value;
+                this.pages = value;
             }
         }
 
@@ -396,26 +392,27 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (this._registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
+                if (this.registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
                 {
                     // Get Role Name
-                    RoleInfo regUsersRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.RegisteredRoleId);
+                    RoleInfo regUsersRole = RoleController.Instance.GetRole(this.ThisAsInterface.PortalId, r => r.RoleID == this.RegisteredRoleId);
                     if (regUsersRole != null)
                     {
-                        this._registeredRoleName = regUsersRole.RoleName;
+                        this.registeredRoleName = regUsersRole.RoleName;
                     }
                 }
 
-                return this._registeredRoleName;
+                return this.registeredRoleName;
             }
 
             set
             {
-                this._registeredRoleName = value;
+                this.registeredRoleName = value;
             }
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
         public int TimeZoneOffset { get; set; }
 
@@ -424,28 +421,28 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return this.PortalID;
+                return this.ThisAsInterface.PortalId;
             }
 
             set
             {
-                this.PortalID = value;
+                this.ThisAsInterface.PortalId = value;
             }
         }
 
-        /// <summary>
-        /// Fills a PortalInfo from a Data Reader.
-        /// </summary>
+        private IPortalInfo ThisAsInterface => this;
+
+        /// <summary>Fills a PortalInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         /// <remarks>Standard IHydratable.Fill implementation.
         /// <seealso cref="KeyID"></seealso></remarks>
         public void Fill(IDataReader dr)
         {
-            this.PortalId = Null.SetNullInteger(dr["PortalID"]);
+            this.ThisAsInterface.PortalId = Null.SetNullInteger(dr["PortalID"]);
 
             try
             {
-                this.PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
+                this.ThisAsInterface.PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
             }
             catch (IndexOutOfRangeException)
             {

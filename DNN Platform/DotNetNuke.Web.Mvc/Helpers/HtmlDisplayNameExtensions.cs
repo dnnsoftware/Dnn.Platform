@@ -10,14 +10,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Provides a mechanism to get display names.
-    /// </summary>
+    /// <summary>Provides a mechanism to get display names.</summary>
     public static class HtmlDisplayNameExtensions
     {
-        /// <summary>
-        /// Gets the display name.
-        /// </summary>
+        /// <summary>Gets the display name.</summary>
         ///
         /// <returns>
         /// The display name.
@@ -28,9 +24,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.DisplayName(expression);
         }
 
-        /// <summary>
-        /// Gets the display name for the model.
-        /// </summary>
+        /// <summary>Gets the display name for the model.</summary>
         ///
         /// <returns>
         /// The display name for the model.
@@ -41,9 +35,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.DisplayNameFor(expression);
         }
 
-        /// <summary>
-        /// Gets the display name for the model.
-        /// </summary>
+        /// <summary>Gets the display name for the model.</summary>
         ///
         /// <returns>
         /// The display name for the model.
@@ -54,9 +46,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.DisplayNameFor(expression);
         }
 
-        /// <summary>
-        /// Gets the display name for the model.
-        /// </summary>
+        /// <summary>Gets the display name for the model.</summary>
         ///
         /// <returns>
         /// The display name for the model.

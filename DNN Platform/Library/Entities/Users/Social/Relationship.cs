@@ -10,13 +10,11 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Users.Social;
+    using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      Relationship
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Relationship class describes the relationships that a user or portal owns.
     /// A handful of default Portal-Level Relationships will be be present for every portal (e.g. Friends, Followers, Family).
@@ -24,19 +22,18 @@ namespace DotNetNuke.Entities.Users.Social
     /// Any custom User-Level Relationship created by user will also be defined by this class (e.g. My InLaws, Engineering Group).
     /// User-Relationship will always have an associcated PortalId. User-Level Relationship will always be tied to a specific Portal.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class Relationship : BaseEntityInfo, IHydratable
     {
+        /// <summary>Initializes a new instance of the <see cref="Relationship"/> class.</summary>
         public Relationship()
         {
             this.RelationshipId = -1;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether is this a Portal-Level Relationship.
-        /// </summary>
+        /// <summary>Gets a value indicating whether is this a Portal-Level Relationship.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsPortalList
         {
             get
@@ -45,10 +42,9 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether is this a Host-Level Relationship (very uncommon).
-        /// </summary>
+        /// <summary>Gets a value indicating whether is this a Host-Level Relationship (very uncommon).</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsHostList
         {
             get
@@ -57,10 +53,9 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether is this a USer-Level Relationship.
-        /// </summary>
+        /// <summary>Gets a value indicating whether is this a USer-Level Relationship.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsUserList
         {
             get
@@ -69,52 +64,37 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets or sets relationshipId - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets relationshipId - The primary key.</summary>
         [XmlAttribute]
         public int RelationshipId { get; set; }
 
-        /// <summary>
-        /// Gets or sets relationship Name.
-        /// </summary>
+        /// <summary>Gets or sets relationship Name.</summary>
         [XmlAttribute]
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets relationship Description.
-        /// </summary>
+        /// <summary>Gets or sets relationship Description.</summary>
         [XmlAttribute]
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets userId of the User that owns the Relationship. A value of -1 indicates that it's a Portal-Level Relationship.
-        /// </summary>
+        /// <summary>Gets or sets userId of the User that owns the Relationship. A value of -1 indicates that it's a Portal-Level Relationship.</summary>
         [XmlAttribute]
         public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets portalId of the User that owns the Relationship. A value of -1 in UserID field indicates that it's a Portal-Level Relationship.
-        /// </summary>
+        /// <summary>Gets or sets portalId of the User that owns the Relationship. A value of -1 in UserID field indicates that it's a Portal-Level Relationship.</summary>
         [XmlAttribute]
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).
-        /// </summary>
+        /// <summary>Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).</summary>
         [XmlAttribute]
         public int RelationshipTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets default Relationship Status to be provided to any new Relationship Request.
-        /// </summary>
+        /// <summary>Gets or sets default Relationship Status to be provided to any new Relationship Request.</summary>
         [XmlAttribute]
         public RelationshipStatus DefaultResponse { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
@@ -128,9 +108,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

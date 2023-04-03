@@ -14,24 +14,20 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Services.Installer.Dependencies;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The PackageInstaller class is an Installer for Packages.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    using SchwabenCode.QuickIO;
+
+    /// <summary>The PackageInstaller class is an Installer for Packages.</summary>
     public class PackageInstaller : ComponentInstallerBase
     {
-        private readonly SortedList<int, ComponentInstallerBase> _componentInstallers = new SortedList<int, ComponentInstallerBase>();
-        private PackageInfo _installedPackage;
-        private EventMessage _eventMessage;
+        private readonly SortedList<int, ComponentInstallerBase> componentInstallers = new SortedList<int, ComponentInstallerBase>();
+        private PackageInfo installedPackage;
+        private EventMessage eventMessage;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
         /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
         /// <param name="package">A PackageInfo instance.</param>
-        /// -----------------------------------------------------------------------------
         public PackageInstaller(PackageInfo package)
         {
             this.IsValid = true;
@@ -54,25 +50,22 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     // Set type
                     installer.Type = package.PackageType;
-                    this._componentInstallers.Add(0, installer);
+                    this.componentInstallers.Add(0, installer);
                 }
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
         /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
         /// <param name="info">An InstallerInfo instance.</param>
         /// <param name="packageManifest">The manifest as a string.</param>
-        /// -----------------------------------------------------------------------------
         public PackageInstaller(string packageManifest, InstallerInfo info)
         {
             this.IsValid = true;
             this.DeleteFiles = Null.NullBoolean;
-            this.Package = new PackageInfo(info);
-            this.Package.Manifest = packageManifest;
+            this.Package = new PackageInfo(info) { Manifest = packageManifest, };
 
             if (!string.IsNullOrEmpty(packageManifest))
             {
@@ -83,33 +76,20 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
-        /// package.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the package.</summary>
         /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
         public bool DeleteFiles { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Package is Valid.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Package is Valid.</summary>
         /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method commits the package installation.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Commit method commits the package installation.</summary>
         public override void Commit()
         {
-            for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
+            for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
             {
-                ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
+                ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
                 if (compInstaller.Version >= this.Package.InstalledVersion && compInstaller.Completed)
                 {
                     compInstaller.Commit();
@@ -117,10 +97,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             // Add Event Message
-            if (this._eventMessage != null && !string.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
+            if (this.eventMessage != null && !string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
             {
-                this._eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
-                EventQueueController.SendMessage(this._eventMessage, "Application_Start");
+                this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
+                EventQueueController.SendMessage(this.eventMessage, "Application_Start");
             }
 
             if (this.Log.Valid)
@@ -135,30 +115,26 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Package.InstallerInfo.PackageID = this.Package.PackageID;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the components of the package.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Install method installs the components of the package.</summary>
         public override void Install()
         {
             bool isCompleted = true;
             try
             {
                 // Save the Package Information
-                if (this._installedPackage != null)
+                if (this.installedPackage != null)
                 {
-                    this.Package.PackageID = this._installedPackage.PackageID;
+                    this.Package.PackageID = this.installedPackage.PackageID;
                 }
 
                 // Save Package
                 PackageController.Instance.SaveExtensionPackage(this.Package);
 
                 // Iterate through all the Components
-                for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
+                for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
                 {
-                    ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
-                    if ((this._installedPackage == null) || (compInstaller.Version > this.Package.InstalledVersion) || this.Package.InstallerInfo.RepairInstall)
+                    ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
+                    if ((this.installedPackage == null) || (compInstaller.Version > this.Package.InstalledVersion) || this.Package.InstallerInfo.RepairInstall)
                     {
                         this.Log.AddInfo(Util.INSTALL_Start + " - " + compInstaller.Type);
                         compInstaller.Install();
@@ -199,11 +175,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file and parses it into components.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadManifest method reads the manifest file and parses it into components.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Get Name Property
@@ -248,20 +220,20 @@ namespace DotNetNuke.Services.Installer.Installers
 
             if (packageType.SupportsSideBySideInstallation)
             {
-                this._installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
+                this.installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.Version == this.Package.Version);
             }
             else
             {
-                this._installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
+                this.installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (this._installedPackage != null)
+            if (this.installedPackage != null)
             {
-                this.Package.InstalledVersion = this._installedPackage.Version;
-                this.Package.InstallerInfo.PackageID = this._installedPackage.PackageID;
+                this.Package.InstalledVersion = this.installedPackage.Version;
+                this.Package.InstallerInfo.PackageID = this.installedPackage.PackageID;
 
                 if (this.Package.InstalledVersion > this.Package.Version)
                 {
@@ -271,7 +243,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 else if (this.Package.InstalledVersion == this.Package.Version)
                 {
                     this.Package.InstallerInfo.Installed = true;
-                    this.Package.InstallerInfo.PortalID = this._installedPackage.PortalID;
+                    this.Package.InstallerInfo.PortalID = this.installedPackage.PortalID;
                 }
             }
 
@@ -279,12 +251,12 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Package.FriendlyName = Util.ReadElement(manifestNav, "friendlyName", this.Package.Name);
             this.Package.Description = Util.ReadElement(manifestNav, "description");
 
-            XPathNavigator foldernameNav = null;
+            XPathNavigator folderNameNav = null;
             this.Package.FolderName = string.Empty;
             switch (this.Package.PackageType)
             {
                 case "Module":
-                    // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                    // In Dynamics modules, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                     // To ensure that FolderName is DesktopModules...
                     var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                     if (!string.IsNullOrEmpty(folderNameValue))
@@ -294,26 +266,26 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     break;
                 case "Auth_System":
-                    foldernameNav = manifestNav.SelectSingleNode("components/component/files");
-                    if (foldernameNav != null)
+                    folderNameNav = manifestNav.SelectSingleNode("components/component/files");
+                    if (folderNameNav != null)
                     {
-                        this.Package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                        this.Package.FolderName = Util.ReadElement(folderNameNav, "basePath").Replace('\\', '/');
                     }
 
                     break;
                 case "Container":
-                    foldernameNav = manifestNav.SelectSingleNode("components/component/containerFiles");
-                    if (foldernameNav != null)
+                    folderNameNav = manifestNav.SelectSingleNode("components/component/containerFiles");
+                    if (folderNameNav != null)
                     {
-                        this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                        this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(folderNameNav, "containerName").Replace('\\', '/');
                     }
 
                     break;
                 case "Skin":
-                    foldernameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
-                    if (foldernameNav != null)
+                    folderNameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
+                    if (folderNameNav != null)
                     {
-                        this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                        this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(folderNameNav, "skinName").Replace('\\', '/');
                     }
 
                     break;
@@ -328,7 +300,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
             }
 
-            this._eventMessage = this.ReadEventMessageNode(manifestNav);
+            this.eventMessage = this.ReadEventMessageNode(manifestNav);
 
             // Get Icon
             XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
@@ -375,6 +347,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     this.Package.License = this.ReadTextFromFile(licenseSrc);
+                    if (this.Package.License == null)
+                    {
+                        // failure reading file
+                        return;
+                    }
                 }
             }
 
@@ -397,6 +374,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     this.Package.ReleaseNotes = this.ReadTextFromFile(relNotesSrc);
+                    if (this.Package.ReleaseNotes == null)
+                    {
+                        // failure reading file
+                        return;
+                    }
                 }
             }
 
@@ -411,11 +393,9 @@ namespace DotNetNuke.Services.Installer.Installers
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
                 var dependency = DependencyFactory.GetDependency(dependencyNav);
-                var packageDependecy = dependency as IManagedPackageDependency;
-
-                if (packageDependecy != null)
+                if (dependency is IManagedPackageDependency packageDependency)
                 {
-                    packageDependencies.Add(packageDependecy.PackageDependency);
+                    packageDependencies.Add(packageDependency.PackageDependency);
                 }
 
                 if (!dependency.IsValid)
@@ -429,16 +409,12 @@ namespace DotNetNuke.Services.Installer.Installers
             this.ReadComponents(manifestNav);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method rolls back the package installation.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Rollback method rolls back the package installation.</summary>
         public override void Rollback()
         {
-            for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
+            for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
             {
-                ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
+                ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
                 if (compInstaller.Version > this.Package.InstalledVersion && compInstaller.Completed)
                 {
                     this.Log.AddInfo(Util.COMPONENT_RollingBack + " - " + compInstaller.Type);
@@ -448,7 +424,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             // If Previously Installed Package exists then we need to update the DataStore with this
-            if (this._installedPackage == null)
+            if (this.installedPackage == null)
             {
                 // No Previously Installed Package - Delete newly added Package
                 PackageController.Instance.DeleteExtensionPackage(this.Package);
@@ -456,23 +432,18 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Previously Installed Package - Rollback to Previously Installed
-                PackageController.Instance.SaveExtensionPackage(this._installedPackage);
+                PackageController.Instance.SaveExtensionPackage(this.installedPackage);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Uninstall method uninstalls the components of the package.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Uninstall method uninstalls the components of the package.</summary>
         public override void UnInstall()
         {
             // Iterate through all the Components
-            for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
+            for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
             {
-                ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
-                var fileInstaller = compInstaller as FileInstaller;
-                if (fileInstaller != null)
+                ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
+                if (compInstaller is FileInstaller fileInstaller)
                 {
                     fileInstaller.DeleteFiles = this.DeleteFiles;
                 }
@@ -495,11 +466,7 @@ namespace DotNetNuke.Services.Installer.Installers
             PackageController.Instance.DeleteExtensionPackage(this.Package);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CheckSecurity method checks whether the user has the appropriate security.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The CheckSecurity method checks whether the user has the appropriate security.</summary>
         private void CheckSecurity()
         {
             PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
@@ -521,17 +488,13 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadComponents method reads the components node of the manifest file.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadComponents method reads the components node of the manifest file.</summary>
         private void ReadComponents(XPathNavigator manifestNav)
         {
             foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))
             {
                 // Set default order to next value (ie the same as the size of the collection)
-                int order = this._componentInstallers.Count;
+                int order = this.componentInstallers.Count;
 
                 string type = componentNav.GetAttribute("type", string.Empty);
                 if (this.InstallMode == InstallMode.Install)
@@ -563,7 +526,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    this._componentInstallers.Add(order, installer);
+                    this.componentInstallers.Add(order, installer);
                     this.Package.InstallerInfo.AllowableFiles += ", " + installer.AllowableFiles;
                 }
             }
@@ -571,14 +534,20 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private string ReadTextFromFile(string source)
         {
-            string strText = Null.NullString;
-            if (this.Package.InstallerInfo.InstallMode != InstallMode.ManifestOnly)
+            if (this.Package.InstallerInfo.InstallMode == InstallMode.ManifestOnly)
             {
-                // Load from file
-                strText = FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+                return Null.NullString;
             }
 
-            return strText;
+            try
+            {
+                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+            }
+            catch (PathNotFoundException)
+            {
+                this.Log.AddFailure($"Unable to read {source}, file not found");
+                return null;
+            }
         }
     }
 }

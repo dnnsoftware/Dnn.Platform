@@ -12,21 +12,25 @@ namespace DotNetNuke.Services.Messaging.Data
     {
         private readonly DataProvider provider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public IDataReader GetMessageByID(int messageId)
         {
             return this.provider.ExecuteReader("Messaging_GetMessage", messageId);
         }
 
-        public IDataReader GetUserInbox(int PortalID, int UserID, int PageNumber, int PageSize)
+        /// <inheritdoc/>
+        public IDataReader GetUserInbox(int portalID, int userID, int pageNumber, int pageSize)
         {
-            return this.provider.ExecuteReader("Messaging_GetInbox", PortalID, UserID, PageNumber, PageSize);
+            return this.provider.ExecuteReader("Messaging_GetInbox", portalID, userID, pageNumber, pageSize);
         }
 
-        public int GetInboxCount(int PortalID, int UserID)
+        /// <inheritdoc/>
+        public int GetInboxCount(int portalID, int userID)
         {
-            return this.provider.ExecuteScalar<int>("Messaging_GetInboxCount", PortalID, UserID);
+            return this.provider.ExecuteScalar<int>("Messaging_GetInboxCount", portalID, userID);
         }
 
+        /// <inheritdoc/>
         public long SaveMessage(Message objMessaging)
         {
             return this.provider.ExecuteScalar<long>(
@@ -45,21 +49,25 @@ namespace DotNetNuke.Services.Messaging.Data
                 objMessaging.SkipInbox);
         }
 
-        public int GetNewMessageCount(int PortalID, int UserID)
+        /// <inheritdoc/>
+        public int GetNewMessageCount(int portalID, int userID)
         {
-            return this.provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", PortalID, UserID);
+            return this.provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", portalID, userID);
         }
 
-        public IDataReader GetNextMessageForDispatch(Guid SchedulerInstance)
+        /// <inheritdoc/>
+        public IDataReader GetNextMessageForDispatch(Guid schedulerInstance)
         {
-            return this.provider.ExecuteReader("Messaging_GetNextMessageForDispatch", SchedulerInstance);
+            return this.provider.ExecuteReader("Messaging_GetNextMessageForDispatch", schedulerInstance);
         }
 
-        public void MarkMessageAsDispatched(int MessageID)
+        /// <inheritdoc/>
+        public void MarkMessageAsDispatched(int messageID)
         {
-            this.provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", MessageID);
+            this.provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", messageID);
         }
 
+        /// <inheritdoc/>
         public void UpdateMessage(Message message)
         {
             this.provider.ExecuteNonQuery(

@@ -95,10 +95,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void AddFolder_Throws_On_Null_FolderPath()
         {
-            this.folderManager.AddFolder(It.IsAny<FolderMappingInfo>(), null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.AddFolder(It.IsAny<FolderMappingInfo>(), null));
         }
 
         // [Test]
@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         // _mockFolderManager.Verify();
         // }
         [Test]
-        [ExpectedException(typeof(FolderAlreadyExistsException))]
+
         public void AddFolder_Throws_When_Folder_Already_Exists()
         {
             var folderMapping = new FolderMappingInfo
@@ -180,11 +180,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this.mockFolderManager.Setup(mfm => mfm.FolderExists(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderRelativePath)).Returns(true);
 
-            this.mockFolderManager.Object.AddFolder(folderMapping, Constants.FOLDER_ValidSubFolderRelativePath);
+            Assert.Throws<FolderAlreadyExistsException>(() => this.mockFolderManager.Object.AddFolder(folderMapping, Constants.FOLDER_ValidSubFolderRelativePath));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidFolderPathException))]
+
         public void AddFolder_Throws_When_FolderPath_Is_Invalid()
         {
             // arrange
@@ -202,7 +202,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .Returns(false);
 
             // act
-            this.mockFolderManager.Object.AddFolder(folderMapping, Constants.FOLDER_ValidSubFolderRelativePath);
+            Assert.Throws<InvalidFolderPathException>(() => this.mockFolderManager.Object.AddFolder(folderMapping, Constants.FOLDER_ValidSubFolderRelativePath));
 
             // assert (implicit)
         }
@@ -232,14 +232,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void DeleteFolder_Throws_On_Null_Folder()
         {
-            this.folderManager.DeleteFolder(null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.DeleteFolder(null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void DeleteFolder_Throws_OnNullFolder_WhenRecursive()
         {
             // Arrange
@@ -248,10 +248,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             // Act
             var notDeletedSubfolders = new List<IFolderInfo>();
-            this.folderManager.DeleteFolder(null, notDeletedSubfolders);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.DeleteFolder(null, notDeletedSubfolders));
         }
 
         [Test]
+
         public void DeleteFolder_CallsFolderProviderDeleteFolder_WhenRecursive()
         {
             // Arrange
@@ -281,6 +282,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DeleteFolder_CallsFolderProviderDeleteFolder_WhenRecursive_WhenExistSubfolders()
         {
             // Arrange
@@ -329,6 +331,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DeleteFolder_SubFoldersCollectionIsNotEmpty_WhenRecursive_WhenUserHasNotDeletePermission()
         {
             // Arrange
@@ -375,7 +378,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(FileLockedException))]
+
         public void DeleteFolder_Throws_OnFileDeletionControllerThrows_WhenRecursive_WhenFileIsLocked()
         {
             // Arrange
@@ -412,10 +415,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(fileInfo2)).Throws<FileLockedException>();
 
             // Act
-            this.mockFolderManager.Object.DeleteFolder(folderInfo, new List<IFolderInfo>());
+            Assert.Throws<FileLockedException>(() => this.mockFolderManager.Object.DeleteFolder(folderInfo, new List<IFolderInfo>()));
         }
 
         [Test]
+
         public void DeleteFolder_Calls_FolderProvider_DeleteFolder()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -437,7 +441,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(FolderProviderException))]
+
         public void DeleteFolder_Throws_When_FolderProvider_Throws()
         {
             this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
@@ -448,10 +452,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this.mockFolder.Setup(mf => mf.DeleteFolder(this.folderInfo.Object)).Throws<Exception>();
 
-            this.mockFolderManager.Object.DeleteFolder(this.folderInfo.Object);
+            Assert.Throws<FolderProviderException>(() => this.mockFolderManager.Object.DeleteFolder(this.folderInfo.Object));
         }
 
         [Test]
+
         public void DeleteFolder_Calls_Directory_Delete_When_Directory_Exists()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -476,6 +481,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void DeleteFolder_Calls_FolderManager_DeleteFolder_Overload()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -497,10 +503,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderPath()
         {
-            this.folderManager.FolderExists(Constants.CONTENT_ValidPortalId, null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.FolderExists(Constants.CONTENT_ValidPortalId, null));
         }
 
         [Test]
@@ -534,10 +539,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFilesByFolder_Throws_On_Null_Folder()
         {
-            this.folderManager.GetFiles(null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.GetFiles(null));
         }
 
         [Test]
@@ -667,10 +671,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFolder_Throws_On_Null_FolderPath()
         {
-            this.folderManager.GetFolder(It.IsAny<int>(), null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.GetFolder(It.IsAny<int>(), null));
         }
 
         [Test]
@@ -744,10 +747,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFoldersByParentFolder_Throws_On_Null_ParentFolder()
         {
-            this.folderManager.GetFolders((IFolderInfo)null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.GetFolders((IFolderInfo)null));
         }
 
         [Test]
@@ -795,23 +797,20 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RenameFolder_Throws_On_Null_Folder()
         {
-            this.folderManager.RenameFolder(null, It.IsAny<string>());
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.RenameFolder(null, It.IsAny<string>()));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void RenameFolder_Throws_On_Null_Or_Empty_NewFolderName(string newFolderName)
         {
-            this.folderManager.RenameFolder(this.folderInfo.Object, newFolderName);
+            Assert.Throws<ArgumentException>(() => this.folderManager.RenameFolder(this.folderInfo.Object, newFolderName));
         }
 
         [Test]
-        [ExpectedException(typeof(FolderAlreadyExistsException))]
         public void RenameFolder_Throws_When_DestinationFolder_Exists()
         {
             this.pathUtils.Setup(pu => pu.FormatFolderPath(Constants.FOLDER_OtherValidFolderName)).Returns(Constants.FOLDER_OtherValidFolderRelativePath);
@@ -822,17 +821,18 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this.mockFolderManager.Setup(mfm => mfm.FolderExists(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidFolderRelativePath)).Returns(true);
 
-            this.mockFolderManager.Object.RenameFolder(this.folderInfo.Object, Constants.FOLDER_OtherValidFolderName);
+            Assert.Throws<FolderAlreadyExistsException>(() => this.mockFolderManager.Object.RenameFolder(this.folderInfo.Object, Constants.FOLDER_OtherValidFolderName));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void UpdateFolder_Throws_On_Null_Folder()
         {
-            this.folderManager.UpdateFolder(null);
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.UpdateFolder(null));
         }
 
         [Test]
+
         public void UpdateFolder_Calls_DataProvider_UpdateFolder()
         {
             this.mockFolderManager.Setup(mfm => mfm.AddLogEntry(this.folderInfo.Object, It.IsAny<EventLogController.EventLogType>()));
@@ -860,20 +860,20 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+
         public void SynchronizeFolder_Throws_On_Null_RelativePath()
         {
-            this.folderManager.Synchronize(It.IsAny<int>(), null, It.IsAny<bool>(), It.IsAny<bool>());
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.Synchronize(It.IsAny<int>(), null, It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         [Test]
-        [ExpectedException(typeof(NoNetworkAvailableException))]
+
         public void SynchronizeFolder_Throws_When_Some_Folder_Mapping_Requires_Network_Connectivity_But_There_Is_No_Network_Available()
         {
             this.mockFolderManager.Setup(mfm => mfm.AreThereFolderMappingsRequiringNetworkConnectivity(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath, false)).Returns(true);
             this.mockFolderManager.Setup(mfm => mfm.IsNetworkAvailable()).Returns(false);
 
-            this.mockFolderManager.Object.Synchronize(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath, false, false);
+            Assert.Throws<NoNetworkAvailableException>(() => this.mockFolderManager.Object.Synchronize(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath, false, false));
         }
 
         [Test]
@@ -2090,22 +2090,21 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    _directory.Verify(d => d.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
         // }
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MoveFolder_Throws_On_Null_Folder()
         {
-            this.folderManager.MoveFolder(null, It.IsAny<string>());
+            Assert.Throws<ArgumentNullException>(() => this.folderManager.MoveFolder(null, It.IsAny<string>()));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void MoveFolder_Throws_On_Null_Or_Emtpy_NewFolderPath(string newFolderPath)
         {
-            this.folderManager.MoveFolder(this.folderInfo.Object, newFolderPath);
+            Assert.Throws<ArgumentException>(() => this.folderManager.MoveFolder(this.folderInfo.Object, newFolderPath));
         }
 
         [Test]
+
         public void MoveFolder_Returns_The_Same_Folder_If_The_Paths_Are_The_Same()
         {
             this.folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
@@ -2121,7 +2120,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
+
         public void MoveFolder_Throws_When_Move_Operation_Is_Not_Valid()
         {
             this.folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
@@ -2137,7 +2136,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.mockFolderManager.Setup(mfm => mfm.CanMoveBetweenFolderMappings(It.IsAny<FolderMappingInfo>(), It.IsAny<FolderMappingInfo>())).Returns(true);
             this.mockFolderManager.Setup(mfm => mfm.IsMoveOperationValid(this.folderInfo.Object, destinationFolder, It.IsAny<string>())).Returns(false);
 
-            this.mockFolderManager.Object.MoveFolder(this.folderInfo.Object, destinationFolder);
+            Assert.Throws<InvalidOperationException>(() => this.mockFolderManager.Object.MoveFolder(this.folderInfo.Object, destinationFolder));
         }
 
         // [Test]
@@ -2194,6 +2193,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         // _mockFolderManager.Verify();
         // }
         [Test]
+
         public void OverwriteFolder_Calls_MoveFile_For_Each_File_In_Source_Folder()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -2227,6 +2227,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void OverwriteFolder_Deletes_Source_Folder_In_Database()
         {
             var fileManager = new Mock<IFileManager>();
@@ -2254,6 +2255,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void OverwriteFolder_Adds_Folder_To_FoldersToDelete_If_FolderMapping_Is_Editable()
         {
             var fileManager = new Mock<IFileManager>();

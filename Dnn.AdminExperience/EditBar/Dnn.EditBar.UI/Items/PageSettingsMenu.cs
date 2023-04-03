@@ -17,23 +17,30 @@ namespace Dnn.EditBar.UI.Items
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
 
     [Serializable]
     public class PageSettingsMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "PageSettings";
 
+        /// <inheritdoc/>
         public override string Text { get; } = "PageSettings";
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "PageSettings";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 15;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit
                 && Host.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
         }
     }

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Themes.Components
 {
     using System;
@@ -31,14 +30,9 @@ namespace Dnn.PersonaBar.Themes.Components
         internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default" };
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
 
-        private static readonly object _threadLocker = new object();
+        private static readonly object ThreadLocker = new object();
 
-        /// <summary>
-        /// Get Skins.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="level">portal level or host level.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<ThemeInfo> GetLayouts(PortalSettings portalSettings, ThemeLevel level)
         {
             var themes = new List<ThemeInfo>();
@@ -60,12 +54,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return themes;
         }
 
-        /// <summary>
-        /// Get Containers.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="level">portal level or host level.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<ThemeInfo> GetContainers(PortalSettings portalSettings, ThemeLevel level)
         {
             var themes = new List<ThemeInfo>();
@@ -87,12 +76,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return themes;
         }
 
-        /// <summary>
-        /// get skin files in the skin.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="theme"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IList<ThemeFileInfo> GetThemeFiles(PortalSettings portalSettings, ThemeInfo theme)
         {
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
@@ -152,6 +136,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return themeFiles;
         }
 
+        /// <inheritdoc />
         public ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type)
         {
             var themeName = SkinController.FormatSkinPath(filePath)
@@ -171,12 +156,7 @@ namespace Dnn.PersonaBar.Themes.Components
             return null;
         }
 
-        /// <summary>
-        /// update portal skin.
-        /// </summary>
-        /// <param name="portalId">portal id.</param>
-        /// <param name="themeFile">skin info.</param>
-        /// <param name="scope">change skin or container.</param>
+        /// <inheritdoc />
         public void ApplyTheme(int portalId, ThemeFileInfo themeFile, ApplyThemeScope scope)
         {
             var skinPath = themeFile.Path + ".ascx";
@@ -193,27 +173,25 @@ namespace Dnn.PersonaBar.Themes.Components
                     {
                         SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Admin, skinPath);
                     }
+
                     break;
                 case ThemeType.Skin:
                     if ((scope & ApplyThemeScope.Site) == ApplyThemeScope.Site)
                     {
                         SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Portal, skinPath);
                     }
+
                     if ((scope & ApplyThemeScope.Edit) == ApplyThemeScope.Edit)
                     {
                         SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Admin, skinPath);
                     }
+
                     DataCache.ClearPortalCache(portalId, true);
                     break;
             }
         }
 
-        /// <summary>
-        /// update portal skin.
-        /// </summary>
-        /// <param name="portalSettings">portal settings.</param>
-        /// <param name="themeName"></param>
-        /// <param name="level"></param>
+        /// <inheritdoc />
         public void ApplyDefaultTheme(PortalSettings portalSettings, string themeName, ThemeLevel level)
         {
             var skin = this.GetLayouts(portalSettings, ThemeLevel.All)
@@ -239,11 +217,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// delete a skin or container.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="themeFile"></param>
+        /// <inheritdoc />
         public void DeleteTheme(PortalSettings portalSettings, ThemeFileInfo themeFile)
         {
             var themePath = SkinController.FormatSkinSrc(themeFile.Path, portalSettings);
@@ -258,11 +232,7 @@ namespace Dnn.PersonaBar.Themes.Components
             DataCache.ClearPortalCache(portalSettings.PortalId, true);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="theme"></param>
+        /// <inheritdoc />
         public void DeleteThemePackage(PortalSettings portalSettings, ThemeInfo theme)
         {
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
@@ -285,6 +255,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 {
                     Globals.DeleteFolderRecursive(themePath);
                 }
+
                 if (Directory.Exists(themePath.Replace("\\" + SkinController.RootSkin.ToLower() + "\\", "\\" + SkinController.RootContainer + "\\")))
                 {
                     Globals.DeleteFolderRecursive(themePath.Replace("\\" + SkinController.RootSkin.ToLower() + "\\", "\\" + SkinController.RootContainer + "\\"));
@@ -305,11 +276,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// Update Theme Attributes.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="updateTheme"></param>
+        /// <inheritdoc />
         public void UpdateTheme(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
             var themePath = SkinController.FormatSkinSrc(updateTheme.Path + ".ascx", portalSettings);
@@ -328,11 +295,12 @@ namespace Dnn.PersonaBar.Themes.Components
                 string strValue = updateTheme.Value;
                 if (intStartAttribute != -1 && intStartAttribute < intCloseTag)
                 {
-                    //remove attribute
+                    // remove attribute
                     var intEndAttribute = strSkin.IndexOf("\" ", intStartAttribute);
                     strSkin = strSkin.Substring(0, intStartAttribute) + strSkin.Substring(intEndAttribute + 2);
                 }
-                //add attribute
+
+                // add attribute
                 strSkin = strSkin.Insert(intOpenTag + strTag.Length, " " + strAttribute + "=\"" + strValue + "\"");
 
                 File.SetAttributes(themePath, FileAttributes.Normal);
@@ -344,24 +312,20 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        /// <summary>
-        /// Parse skin package.
-        /// </summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="theme"></param>
-        /// <param name="parseType"></param>
+        /// <inheritdoc />
         public void ParseTheme(PortalSettings portalSettings, ThemeInfo theme, ParseType parseType)
         {
             var strRootPath = Null.NullString;
             switch (theme.Level)
             {
-                case ThemeLevel.Global: //global
+                case ThemeLevel.Global: // global
                     strRootPath = Globals.HostMapPath;
                     break;
-                case ThemeLevel.Site: //local
+                case ThemeLevel.Site: // local
                     strRootPath = portalSettings.HomeDirectoryMapPath;
                     break;
             }
+
             var objSkinFiles = new SkinFileProcessor(strRootPath, theme.Type == ThemeType.Container ? SkinController.RootContainer : SkinController.RootSkin, theme.PackageName);
             var arrSkinFiles = new ArrayList();
 
@@ -380,22 +344,25 @@ namespace Dnn.PersonaBar.Themes.Components
                             {
                                 arrSkinFiles.Add(strFile);
                             }
+
                             break;
                         case ".ascx":
                             if (File.Exists(strFile.Replace(".ascx", ".htm")) == false && File.Exists(strFile.Replace(".ascx", ".html")) == false)
                             {
                                 arrSkinFiles.Add(strFile);
                             }
+
                             break;
                     }
                 }
             }
+
             switch (parseType)
             {
-                case ParseType.Localized: //localized
+                case ParseType.Localized: // localized
                     objSkinFiles.ProcessList(arrSkinFiles, SkinParser.Localized);
                     break;
-                case ParseType.Portable: //portable
+                case ParseType.Portable: // portable
                     objSkinFiles.ProcessList(arrSkinFiles, SkinParser.Portable);
                     break;
             }
@@ -415,56 +382,57 @@ namespace Dnn.PersonaBar.Themes.Components
 
             if (NeedCreateThumbnail(strThumbnail, strImage))
             {
-                lock (_threadLocker)
+                lock (ThreadLocker)
                 {
                     if (NeedCreateThumbnail(strThumbnail, strImage))
                     {
-                        const int intSize = 150; //size of the thumbnail 
+                        const int intSize = 150; // size of the thumbnail
                         try
                         {
                             var objImage = Image.FromFile(strImage);
 
-                            //scale the image to prevent distortion
+                            // scale the image to prevent distortion
                             int intHeight;
                             int intWidth;
                             double dblScale;
                             if (objImage.Height > objImage.Width)
                             {
-                                //The height was larger, so scale the width 
+                                // The height was larger, so scale the width
                                 dblScale = (double)intSize / objImage.Height;
                                 intHeight = intSize;
                                 intWidth = Convert.ToInt32(objImage.Width * dblScale);
                             }
                             else
                             {
-                                //The width was larger, so scale the height 
+                                // The width was larger, so scale the height
                                 dblScale = (double)intSize / objImage.Width;
                                 intWidth = intSize;
                                 intHeight = Convert.ToInt32(objImage.Height * dblScale);
                             }
 
-                            //create the thumbnail image
+                            // create the thumbnail image
                             var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
 
-                            //delete the old file ( if it exists )
+                            // delete the old file ( if it exists )
                             if (File.Exists(strThumbnail))
                             {
                                 File.Delete(strThumbnail);
                             }
 
-                            //save the thumbnail image 
+                            // save the thumbnail image
                             objThumbnail.Save(strThumbnail, objImage.RawFormat);
 
-                            //set the file attributes
+                            // set the file attributes
                             File.SetAttributes(strThumbnail, FileAttributes.Normal);
                             File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
 
-                            //tidy up
+                            // tidy up
                             objImage.Dispose();
                             objThumbnail.Dispose();
                         }
-                        catch (Exception ex) //problem creating thumbnail
+                        catch (Exception ex)
                         {
+                            // problem creating thumbnail
                             Logger.Error(ex);
                         }
                     }
@@ -474,7 +442,7 @@ namespace Dnn.PersonaBar.Themes.Components
             strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
             strThumbnail = strThumbnail.Replace("\\", "/");
 
-            //return thumbnail filename
+            // return thumbnail filename
             return strThumbnail;
         }
 
@@ -486,7 +454,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
             {
                 var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
-                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : "")}{themeFilePath}";
+                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : string.Empty)}{themeFilePath}";
             }
 
             if (themeFilePath.IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
@@ -521,7 +489,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
                     if (strName != "_default")
                     {
-                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
+                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, string.Empty).TrimStart('\\').ToLowerInvariant();
                         var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
                         var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
                         var defaultThemeFile = GetDefaultThemeFileName(themePath, type);
@@ -532,7 +500,7 @@ namespace Dnn.PersonaBar.Themes.Components
                             Path = themePath,
                             DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
                             Thumbnail = GetThumbnail(themePath, defaultThemeFile),
-                            CanDelete = canDelete
+                            CanDelete = canDelete,
                         });
                     }
                 }
@@ -592,6 +560,7 @@ namespace Dnn.PersonaBar.Themes.Components
             {
                 strDefaultContainerPath = strDefaultContainerPath.Substring(0, strDefaultContainerPath.Length - 1);
             }
+
             return skinPath.IndexOf(strDefaultContainerPath, StringComparison.CurrentCultureIgnoreCase) != -1;
         }
 
@@ -602,6 +571,7 @@ namespace Dnn.PersonaBar.Themes.Components
             {
                 strDefaultSkinPath = strDefaultSkinPath.Substring(0, strDefaultSkinPath.Length - 1);
             }
+
             return skinPath.ToLowerInvariant() == strDefaultSkinPath.ToLowerInvariant();
         }
 
@@ -626,7 +596,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             var strUrl = lowercasePath.Substring(filePath.IndexOf("\\" + strRootSkin + "\\", StringComparison.OrdinalIgnoreCase))
-                        .Replace(".ascx", "")
+                        .Replace(".ascx", string.Empty)
                         .Replace("\\", "/")
                         .TrimStart('/');
 
@@ -643,6 +613,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 {
                     strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
                 }
+
                 XmlDocument xmlDoc = null;
                 try
                 {
@@ -653,16 +624,18 @@ namespace Dnn.PersonaBar.Themes.Components
                 {
                     xmlDoc.InnerXml = "<Objects></Objects>";
                 }
+
                 var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
                 if (xmlToken == null)
                 {
-                    //add token
+                    // add token
                     string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
                     xmlToken = xmlDoc.CreateElement("Object");
                     xmlToken.InnerXml = strToken;
                     xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
                     xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
                 }
+
                 var strValue = updateTheme.Value;
 
                 var blnUpdate = false;
@@ -674,6 +647,7 @@ namespace Dnn.PersonaBar.Themes.Components
                         blnUpdate = true;
                     }
                 }
+
                 if (blnUpdate == false)
                 {
                     var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
@@ -681,12 +655,14 @@ namespace Dnn.PersonaBar.Themes.Components
                     xmlSetting.InnerXml = strSetting;
                     xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
                 }
+
                 try
                 {
                     if (File.Exists(strFile))
                     {
                         File.SetAttributes(strFile, FileAttributes.Normal);
                     }
+
                     var objStream = File.CreateText(strFile);
                     var strXML = xmlDoc.InnerXml;
                     strXML = strXML.Replace("><", ">" + Environment.NewLine + "<");
@@ -698,7 +674,6 @@ namespace Dnn.PersonaBar.Themes.Components
                     Logger.Error(ex);
                 }
             }
-
         }
     }
 }

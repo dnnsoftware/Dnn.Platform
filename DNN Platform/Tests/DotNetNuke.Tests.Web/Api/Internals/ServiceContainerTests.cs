@@ -5,6 +5,7 @@
 namespace DotNetNuke.Tests.Web.Api.Internals
 {
     using System.Web;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -17,18 +18,18 @@ namespace DotNetNuke.Tests.Web.Api.Internals
     [TestFixture]
     public class ServiceContainerTests
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             var serviceCollection = new ServiceCollection();
 
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            
+
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             Globals.DependencyProvider = null;

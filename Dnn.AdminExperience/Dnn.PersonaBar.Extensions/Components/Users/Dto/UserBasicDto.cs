@@ -15,11 +15,13 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
         public UserBasicDto()
         {
-
         }
 
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
+        /// <param name="user"></param>
         public UserBasicDto(UserInfo user)
         {
             this.UserId = user.UserID;
@@ -33,10 +35,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.RequestsRemoval = user.RequestsRemoval;
             this.IsSuperUser = user.IsSuperUser;
             this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
+            this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
         }
 
         [DataMember(Name = "avatar")]
-        public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
+        public string AvatarUrl { get; set; }
 
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
@@ -81,7 +84,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {
-            if (user == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
+
             return new UserBasicDto
             {
                 UserId = user.UserID,
@@ -93,13 +100,17 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Authorized = user.Membership.Approved,
                 HasAgreedToTerms = user.HasAgreedToTerms,
                 RequestsRemoval = user.RequestsRemoval,
-                IsSuperUser = user.IsSuperUser
+                IsSuperUser = user.IsSuperUser,
             };
         }
 
         public static UserBasicDto FromUserDetails(UserDetailDto user)
         {
-            if (user == null) return null;
+            if (user == null)
+            {
+                return null;
+            }
+
             return new UserBasicDto
             {
                 UserId = user.UserId,
@@ -111,7 +122,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Authorized = user.Authorized,
                 HasAgreedToTerms = user.HasAgreedToTerms,
                 RequestsRemoval = user.RequestsRemoval,
-                IsSuperUser = user.IsSuperUser
+                IsSuperUser = user.IsSuperUser,
             };
         }
     }

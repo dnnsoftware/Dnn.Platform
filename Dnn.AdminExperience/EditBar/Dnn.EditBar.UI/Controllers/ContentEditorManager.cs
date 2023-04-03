@@ -37,14 +37,12 @@ namespace Dnn.EditBar.UI.Controllers
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// Content Editor Manager.
-    /// </summary>
+    /// <summary>Content Editor Manager.</summary>
     public class ContentEditorManager : UserControlBase
     {
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
         private const int CssFileOrder = 40;
-        private bool _supportAjax = true;
+        private bool supportAjax = true;
 
         public Skin Skin { get; set; }
 
@@ -57,12 +55,12 @@ namespace Dnn.EditBar.UI.Controllers
         {
             get
             {
-                return ScriptManager.GetCurrent(this.Page) != null && this._supportAjax;
+                return ScriptManager.GetCurrent(this.Page) != null && this.supportAjax;
             }
 
             set
             {
-                this._supportAjax = value;
+                this.supportAjax = value;
             }
         }
 
@@ -95,6 +93,7 @@ namespace Dnn.EditBar.UI.Controllers
             return null;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -113,7 +112,7 @@ namespace Dnn.EditBar.UI.Controllers
                 ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(), true);
             }
 
-            if (this.PortalSettings.UserMode != PortalSettings.Mode.Edit
+            if (Personalization.GetUserMode() != PortalSettings.Mode.Edit
                     || !this.IsPageEditor()
                     || EditBarController.Instance.GetMenuItems().Count == 0)
             {
@@ -136,6 +135,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.EnsureChildControls();
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -144,6 +144,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.RegisterInitScripts();
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -221,6 +222,7 @@ namespace Dnn.EditBar.UI.Controllers
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             var scripts = ScriptManager.GetCurrent(this.Page).GetRegisteredStartupScripts()
@@ -270,7 +272,8 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
             ClientResourceManager.RegisterStyleSheet(
                 this.Page,
-                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), CssFileOrder);
+                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"),
+                CssFileOrder);
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -644,7 +647,7 @@ namespace Dnn.EditBar.UI.Controllers
             HttpCookie cookie = this.Request.Cookies["StayInEditMode"];
             if (cookie != null && cookie.Value == "YES")
             {
-                if (PortalSettings.Current.UserMode != PortalSettings.Mode.Edit)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
                 {
                     this.SetUserMode("EDIT");
                     this.SetLastPageHistory(pageId);
@@ -660,7 +663,7 @@ namespace Dnn.EditBar.UI.Controllers
             if (lastPageId != pageId && !isShowAsCustomError)
             {
                 // navigate between pages
-                if (PortalSettings.Current.UserMode != PortalSettings.Mode.View)
+                if (Personalization.GetUserMode() != PortalSettings.Mode.View)
                 {
                     this.SetUserMode("VIEW");
                     this.SetLastPageHistory(pageId);
@@ -682,11 +685,11 @@ namespace Dnn.EditBar.UI.Controllers
 
         public class ProxyPage : CDefault
         {
-            private readonly Page _originalPage;
+            private readonly Page originalPage;
 
             public ProxyPage(Page originalPage)
             {
-                this._originalPage = originalPage;
+                this.originalPage = originalPage;
 
                 this.SetField("_header", originalPage.Header);
                 this.SetField("_request", originalPage.Request);
@@ -703,9 +706,10 @@ namespace Dnn.EditBar.UI.Controllers
                 }
             }
 
+            /// <inheritdoc/>
             public override Control FindControl(string id)
             {
-                return this._originalPage.FindControl(id);
+                return this.originalPage.FindControl(id);
             }
 
             private void SetField(string name, object value)

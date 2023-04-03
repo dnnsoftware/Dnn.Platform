@@ -40,17 +40,6 @@ namespace DotNetNuke.Framework
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Class    : CDefault
-    ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
@@ -72,16 +61,10 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
-        /// </summary>
+        /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
         /// <value>
-        /// <placeholder>Property to allow the programmatic assigning of ScrollTop position</placeholder>
+        /// Property to allow the programmatic assigning of ScrollTop position.
         /// </value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public int PageScrollTop
         {
             get
@@ -96,7 +79,10 @@ namespace DotNetNuke.Framework
                 return pageScrollTop;
             }
 
-            set { this.ScrollTop.Value = value.ToString(); }
+            set
+            {
+                this.ScrollTop.Value = value.ToString();
+            }
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -137,6 +123,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -167,10 +154,7 @@ namespace DotNetNuke.Framework
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Contains the functionality to populate the Root aspx page with controls.
-        /// </summary>
+        /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
         /// <param name="e"></param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
@@ -178,7 +162,6 @@ namespace DotNetNuke.Framework
         /// - initialise reference paths to load the cascading style sheets
         /// - add skin control placeholder.  This holds all the modules and content of the page.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -220,8 +203,11 @@ namespace DotNetNuke.Framework
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, heading, message,
-                                                 ModuleMessage.ModuleMessageType.YellowWarning);
+                    UI.Skins.Skin.AddPageMessage(
+                        ctlSkin,
+                        heading,
+                        message,
+                        ModuleMessage.ModuleMessageType.YellowWarning);
                 }
                 else
                 {
@@ -240,8 +226,9 @@ namespace DotNetNuke.Framework
             if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
             {
                 string primaryHttpAlias = null;
-                if (Config.GetFriendlyUrlProvider() == "advanced") // advanced mode compares on the primary alias as set during alias identification
+                if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
+                    // advanced mode compares on the primary alias as set during alias identification
                     if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
                     {
                         if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
@@ -250,16 +237,18 @@ namespace DotNetNuke.Framework
                         }
                     }
                 }
-                else // other modes just depend on the default alias
+                else
                 {
+                    // other modes just depend on the default alias
                     if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
                     {
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                     }
                 }
 
-                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl))
                 {
+                    // a primary http alias was identified
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
                     this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
 
@@ -267,21 +256,6 @@ namespace DotNetNuke.Framework
                     {
                         this.CanonicalLinkUrl = this.CanonicalLinkUrl.Replace("http://", "https://");
                     }
-                }
-            }
-
-            // check if running with known account defaults
-            if (this.Request.IsAuthenticated && string.IsNullOrEmpty(this.Request.QueryString["runningDefault"]) == false)
-            {
-                var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
-                var usernameLower = userInfo?.Username?.ToLowerInvariant();
-
-                // only show message to default users
-                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
-                {
-                    var messageText = this.RenderDefaultsWarning();
-                    var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
                 }
             }
 
@@ -316,14 +290,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
-        /// </summary>
+        /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
         /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -337,6 +305,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
@@ -378,9 +347,10 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
-            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+            if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
             {
                 var editClass = "dnnEditState";
 
@@ -398,7 +368,6 @@ namespace DotNetNuke.Framework
             base.Render(writer);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///
         /// </summary>
@@ -411,7 +380,6 @@ namespace DotNetNuke.Framework
         /// - set the background image if there is one selected
         /// - set META tags, copyright, keywords and description.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
             // There could be a pending installation/upgrade process
@@ -518,8 +486,10 @@ namespace DotNetNuke.Framework
                         default:
                             control.LocalResourceFile = string.Concat(
                                 slaveModule.ModuleControl.ControlSrc.Replace(
-                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
-                                Localization.LocalResourceDirectory, "/",
+                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc),
+                                    string.Empty),
+                                Localization.LocalResourceDirectory,
+                                "/",
                                 Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                             break;
                     }
@@ -571,7 +541,7 @@ namespace DotNetNuke.Framework
 
             // META Refresh
             // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
-            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && this.PortalSettings.UserMode == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
+            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && Personalization.GetUserMode() == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
             {
                 this.MetaRefresh.Content = this.PortalSettings.ActiveTab.RefreshInterval.ToString();
                 this.MetaRefresh.Visible = true;
@@ -639,21 +609,32 @@ namespace DotNetNuke.Framework
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
-                string versionString = string.Format(" ({0} Version: {1})", DotNetNukeContext.Current.Application.Status,
-                                                     DotNetNukeContext.Current.Application.Version);
+                string versionString =
+                    $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
                 this.Title += versionString;
             }
 
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
-                var customStylesheet = Path.Combine(this.PortalSettings.HomeDirectory, this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
-                ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
+                var styleSheet = this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
+
+                // Try and go through the FolderProvider first
+                var stylesheetFile = this.GetPageStylesheetFileInfo(styleSheet);
+                if (stylesheetFile != null)
+                {
+                    ClientResourceManager.RegisterStyleSheet(this, FileManager.Instance.GetUrl(stylesheetFile));
+                }
+                else
+                {
+                    ClientResourceManager.RegisterStyleSheet(this, styleSheet);
+                }
             }
 
             // Cookie Consent
             if (this.PortalSettings.ShowCookieConsent)
             {
+                JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn);
                 ClientAPI.RegisterClientVariable(this, "cc_morelink", this.PortalSettings.CookieMoreLink, true);
                 ClientAPI.RegisterClientVariable(this, "cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
@@ -664,14 +645,11 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         private void SetSkinDoctype()
         {
             string strLang = CultureInfo.CurrentCulture.ToString();
@@ -738,31 +716,6 @@ namespace DotNetNuke.Framework
             return objDict;
         }
 
-        /// <summary>
-        /// check if a warning about account defaults needs to be rendered.
-        /// </summary>
-        /// <returns>localised error message.</returns>
-        /// <remarks></remarks>
-        private string RenderDefaultsWarning()
-        {
-            var warningLevel = this.Request.QueryString["runningDefault"];
-            var warningMessage = string.Empty;
-            switch (warningLevel)
-            {
-                case "1":
-                    warningMessage = Localization.GetString("InsecureAdmin.Text", Localization.SharedResourceFile);
-                    break;
-                case "2":
-                    warningMessage = Localization.GetString("InsecureHost.Text", Localization.SharedResourceFile);
-                    break;
-                case "3":
-                    warningMessage = Localization.GetString("InsecureDefaults.Text", Localization.SharedResourceFile);
-                    break;
-            }
-
-            return warningMessage;
-        }
-
         private IFileInfo GetBackgroundFileInfo()
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
@@ -776,6 +729,22 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfoCallBack(CacheItemArgs itemArgs)
         {
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
+        }
+
+        private IFileInfo GetPageStylesheetFileInfo(string styleSheet)
+        {
+            string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + styleSheet);
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet),
+                this.GetPageStylesheetInfoCallBack);
+
+            return file;
+        }
+
+        private IFileInfo GetPageStylesheetInfoCallBack(CacheItemArgs itemArgs)
+        {
+            var styleSheet = itemArgs.Params[0].ToString();
+            return FileManager.Instance.GetFile(this.PortalSettings.PortalId, styleSheet);
         }
     }
 }

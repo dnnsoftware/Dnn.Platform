@@ -13,141 +13,35 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Tags : SkinObjectBase
     {
         private const string MyFileName = "Tags.ascx";
-        private readonly INavigationManager _navigationManager;
-        private string _AddImageUrl = IconController.IconURL("Add");
-        private bool _AllowTagging = true;
-        private string _CancelImageUrl = IconController.IconURL("Lt");
-        private string _ObjectType = "Page";
-        private string _RepeatDirection = "Horizontal";
-        private string _SaveImageUrl = IconController.IconURL("Save");
-        private string _Separator = ",&nbsp;";
-        private bool _ShowCategories = true;
-        private bool _ShowTags = true;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
         public Tags()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        public string AddImageUrl
-        {
-            get
-            {
-                return this._AddImageUrl;
-            }
+        public string AddImageUrl { get; set; } = IconController.IconURL("Add");
 
-            set
-            {
-                this._AddImageUrl = value;
-            }
-        }
+        public bool AllowTagging { get; set; } = true;
 
-        public bool AllowTagging
-        {
-            get
-            {
-                return this._AllowTagging;
-            }
-
-            set
-            {
-                this._AllowTagging = value;
-            }
-        }
-
-        public string CancelImageUrl
-        {
-            get
-            {
-                return this._CancelImageUrl;
-            }
-
-            set
-            {
-                this._CancelImageUrl = value;
-            }
-        }
+        public string CancelImageUrl { get; set; } = IconController.IconURL("Lt");
 
         public string CssClass { get; set; }
 
-        public string ObjectType
-        {
-            get
-            {
-                return this._ObjectType;
-            }
+        public string ObjectType { get; set; } = "Page";
 
-            set
-            {
-                this._ObjectType = value;
-            }
-        }
+        public string RepeatDirection { get; set; } = "Horizontal";
 
-        public string RepeatDirection
-        {
-            get
-            {
-                return this._RepeatDirection;
-            }
+        public string SaveImageUrl { get; set; } = IconController.IconURL("Save");
 
-            set
-            {
-                this._RepeatDirection = value;
-            }
-        }
+        public string Separator { get; set; } = ",&nbsp;";
 
-        public string SaveImageUrl
-        {
-            get
-            {
-                return this._SaveImageUrl;
-            }
+        public bool ShowCategories { get; set; } = true;
 
-            set
-            {
-                this._SaveImageUrl = value;
-            }
-        }
+        public bool ShowTags { get; set; } = true;
 
-        public string Separator
-        {
-            get
-            {
-                return this._Separator;
-            }
-
-            set
-            {
-                this._Separator = value;
-            }
-        }
-
-        public bool ShowCategories
-        {
-            get
-            {
-                return this._ShowCategories;
-            }
-
-            set
-            {
-                this._ShowCategories = value;
-            }
-        }
-
-        public bool ShowTags
-        {
-            get
-            {
-                return this._ShowTags;
-            }
-
-            set
-            {
-                this._ShowTags = value;
-            }
-        }
-
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -168,7 +62,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.tagsControl.CssClass = this.CssClass;
 
             this.tagsControl.AllowTagging = this.AllowTagging && this.Request.IsAuthenticated;
-            this.tagsControl.NavigateUrlFormatString = this._navigationManager.NavigateURL(this.PortalSettings.SearchTabId, string.Empty, "Tag={0}");
+            this.tagsControl.NavigateUrlFormatString = this.navigationManager.NavigateURL(this.PortalSettings.SearchTabId, string.Empty, "Tag={0}");
             this.tagsControl.RepeatDirection = this.RepeatDirection;
             this.tagsControl.Separator = this.Separator;
             this.tagsControl.ShowCategories = this.ShowCategories;

@@ -32,7 +32,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             this.UpdateContentLocalization(true);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         {
             var connector = WebApiTestHelper.LoginHost();
 
-            var postData = new { SSLEnabled = sslEnabled, SSLEnforced = false, SSLURL = string.Empty, STDURL = string.Empty, SSLOffloadHeader = string.Empty };
+            var postData = new { SSLSetup = 2, SSLEnforced = false, SSLURL = string.Empty, STDURL = string.Empty, SSLOffloadHeader = string.Empty };
             connector.PostJson("API/PersonaBar/Security/UpdateSslSettings", postData);
         }
 

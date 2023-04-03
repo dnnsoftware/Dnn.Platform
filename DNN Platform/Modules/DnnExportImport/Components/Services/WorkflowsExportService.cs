@@ -23,17 +23,22 @@ namespace Dnn.ExportImport.Components.Services
 
     public class WorkflowsExportService : BasePortableService
     {
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Workflows;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 6;
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<TaxonomyVocabulary>() + this.Repository.GetCount<TaxonomyTerm>();
         }
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -83,6 +88,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob) || this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed || this.CheckPointStageCallback(this))
@@ -195,7 +201,8 @@ namespace Dnn.ExportImport.Components.Services
                                     {
                                         this.Result.AddLogEntry(
                                             "Couldn't add tab permission; User is undefined!",
-                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
+                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}",
+                                            ReportLevel.Warn);
                                         continue;
                                     }
 
@@ -208,7 +215,8 @@ namespace Dnn.ExportImport.Components.Services
                                     {
                                         this.Result.AddLogEntry(
                                             "Couldn't add tab permission; Role is undefined!",
-                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
+                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}",
+                                            ReportLevel.Warn);
                                         continue;
                                     }
 

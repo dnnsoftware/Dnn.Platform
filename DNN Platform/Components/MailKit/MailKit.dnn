@@ -1,0 +1,45 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.MailKit" type="Library" version="2.15.0.0">
+      <friendlyName>MailKit Components</friendlyName>
+      <description>Libraries required for MailKit.</description>
+      <dependencies/>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>
+        This package includes MailKit assembly version 2.15.0 and MimeKit assembly version 2.15.1.
+        Please go to http://www.mimekit.com/ to view release notes on this particular version.</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>MailKit.dll</name>
+              <version>2.15.0.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>MimeKit.dll</name>
+              <version>2.15.1.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>BouncyCastle.Crypto.dll</name>
+              <version>1.8.10.1</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Buffers.dll</name>
+              <version>4.6.28619.01</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

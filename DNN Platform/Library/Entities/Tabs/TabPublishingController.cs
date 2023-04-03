@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Tabs
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
 
+        /// <inheritdoc/>
         public bool IsTabPublished(int tabID, int portalID)
         {
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
@@ -30,6 +31,7 @@ namespace DotNetNuke.Entities.Tabs
             return existPermission != null && existPermission.AllowAccess;
         }
 
+        /// <inheritdoc/>
         public void SetTabPublishing(int tabID, int portalID, bool publish)
         {
             var tab = TabController.Instance.GetTab(tabID, portalID);
@@ -51,6 +53,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <inheritdoc/>
         public bool CanPublishingBePerformed(int tabID, int portalID)
         {
             var tab = TabController.Instance.GetTab(tabID, portalID);
@@ -72,6 +75,7 @@ namespace DotNetNuke.Entities.Tabs
             return (workflowID == 1) || (workflowID == -1);
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabPublishingController> GetFactory()
         {
             return () => new TabPublishingController();

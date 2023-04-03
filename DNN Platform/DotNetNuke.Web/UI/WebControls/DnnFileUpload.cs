@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.UI.WebControls
     using System;
     using System.Globalization;
     using System.Linq;
-    using System.Web.Services.Description;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -23,13 +22,13 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnFileUpload runat='server'></{0}:DnnFileUpload>")]
     public class DnnFileUpload : Control, INamingContainer
     {
-        private readonly Lazy<DnnFileUploadOptions> _options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
+        private readonly Lazy<DnnFileUploadOptions> options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
         public DnnFileUploadOptions Options
         {
             get
             {
-                return this._options.Value;
+                return this.options.Value;
             }
         }
 
@@ -74,6 +73,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -82,6 +82,7 @@ namespace DotNetNuke.Web.UI.WebControls
             jQuery.RegisterFileUpload(this.Page);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

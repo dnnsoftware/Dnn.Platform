@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
@@ -21,9 +20,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnComboBox : DropDownList
     {
-        private string _initValue;
-        private string _multipleValue;
+        private string initValue;
+        private string multipleValue;
 
+        /// <inheritdoc/>
         public override string SelectedValue
         {
             get
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 if (this.RequiresDataBinding)
                 {
-                    this._initValue = value;
+                    this.initValue = value;
                 }
 
                 if (this.Items.Cast<ListItem>().Any(i => i.Value == value))
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 if (this.TagKey == HtmlTextWriterTag.Input)
                 {
-                    return this._multipleValue ?? string.Empty;
+                    return this.multipleValue ?? string.Empty;
                 }
 
                 return this.SelectedValue ?? string.Empty;
@@ -77,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -85,11 +86,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         public override void DataBind()
         {
-            if (!string.IsNullOrEmpty(this._initValue))
+            if (!string.IsNullOrEmpty(this.initValue))
             {
-                this.DataBind(this._initValue);
+                this.DataBind(this.initValue);
             }
             else
             {
@@ -152,17 +154,19 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
+        /// <inheritdoc/>
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var postData = postCollection[postDataKey];
             if (!string.IsNullOrEmpty(postData))
             {
-                this._multipleValue = postData;
+                this.multipleValue = postData;
             }
 
             return base.LoadPostData(postDataKey, postCollection);
         }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (this.TagKey == HtmlTextWriterTag.Select)
@@ -171,6 +175,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplySkin(this);
@@ -224,11 +229,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.css");
                     ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.default.css");
 
-                    var options = JsonConvert.SerializeObject(this.Options, Formatting.None,
-                                    new JsonSerializerSettings
-                                    {
-                                        NullValueHandling = NullValueHandling.Ignore,
-                                    });
+                    var options = JsonConvert.SerializeObject(this.Options, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, });
 
                     var initScripts = $"$('#{this.ClientID}').dnnComboBox({options});";
 

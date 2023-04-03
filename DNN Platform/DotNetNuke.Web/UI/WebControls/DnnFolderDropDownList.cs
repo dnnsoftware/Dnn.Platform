@@ -11,20 +11,16 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Common;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
     [ToolboxData("<{0}:DnnFolderDropDownList runat='server'></{0}:DnnFolderDropDownList>")]
     public class DnnFolderDropDownList : DnnDropDownList
     {
-        /// <summary>
-        /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
-        /// </summary>
+        /// <summary>Gets or sets the selected Folder in the control, or selects the Folder in the control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IFolderInfo SelectedFolder
@@ -47,6 +43,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -62,6 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Options.ItemList.DisableUnspecifiedOrder = true;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("folder");

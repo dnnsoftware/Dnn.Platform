@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     {
         // DNN Platform for example
         public string Product { get; set; }
+
         public string Version { get; set; }
 
         public bool UpgradeAvailable { get; set; }
@@ -29,13 +30,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
         // prompt.com
         public string Site { get; set; }
+
         public string Title { get; set; }
+
         public string Url { get; set; }
+
         public string Email { get; set; }
+
         public string Theme { get; set; }
+
         public string Container { get; set; }
+
         public string EditTheme { get; set; }
+
         public string EditContainer { get; set; }
+
         public int PortalCount { get; set; }
 
         public static HostModel Current()
@@ -65,7 +74,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
                 EditTheme = Utilities.FormatSkinName(Host.DefaultAdminSkin),
                 Container = Utilities.FormatContainerName(Host.DefaultPortalContainer),
                 EditContainer = Utilities.FormatContainerName(Host.DefaultAdminContainer),
-                PortalCount = portalCount
+                PortalCount = portalCount,
             };
             return hostModel;
         }

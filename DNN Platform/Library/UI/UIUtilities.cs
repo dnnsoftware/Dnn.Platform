@@ -9,14 +9,12 @@ namespace DotNetNuke.UI
     using System.Web;
     using System.Web.UI;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.UI.Skins;
 
     public class UIUtilities
     {

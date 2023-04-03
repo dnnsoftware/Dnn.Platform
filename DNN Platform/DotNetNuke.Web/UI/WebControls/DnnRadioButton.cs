@@ -11,28 +11,32 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnRadioButton : RadioButton, ILocalizable
     {
-        private bool _Localize = true;
+        private bool localize = true;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnRadioButton"/> class.</summary>
         public DnnRadioButton()
         {
             this.CssClass = "SubHead dnnLabel";
         }
 
+        /// <inheritdoc/>
         public bool Localize
         {
             get
             {
-                return this._Localize;
+                return this.localize;
             }
 
             set
             {
-                this._Localize = value;
+                this.localize = value;
             }
         }
 
+        /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
+        /// <inheritdoc/>
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -54,12 +58,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

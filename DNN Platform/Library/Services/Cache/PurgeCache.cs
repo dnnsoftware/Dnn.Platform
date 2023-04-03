@@ -9,11 +9,14 @@ namespace DotNetNuke.Services.Cache
 
     public class PurgeCache : SchedulerClient
     {
+        /// <summary>Initializes a new instance of the <see cref="PurgeCache"/> class.</summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public PurgeCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try
@@ -23,7 +26,7 @@ namespace DotNetNuke.Services.Cache
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote(str);
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 

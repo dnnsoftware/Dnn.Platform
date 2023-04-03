@@ -20,24 +20,27 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
         where TModel : class, new()
     {
+        /// <summary>Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.</summary>
         public ProfileModuleViewBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         public abstract bool DisplayModule { get; }
 
+        /// <inheritdoc/>
         public int ProfileUserId
         {
             get
             {
-                int UserId = Null.NullInteger;
+                int userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    UserId = int.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"]);
                 }
 
-                return UserId;
+                return userId;
             }
         }
 
@@ -56,6 +59,7 @@ namespace DotNetNuke.Web.Mvp
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             if (this.ProfileUserId == Null.NullInteger &&

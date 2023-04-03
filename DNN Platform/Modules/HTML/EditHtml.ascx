@@ -206,7 +206,12 @@
                 if (editorid) {
                     var ckeditor = CKEDITOR.instances[editorid];
                     if (ckeditor && ckeditor.status == 'ready') {
-                        ckeditor.resize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.dnnTextPanelView').height() - $('.divCurrentVersion').height() - $('.ehCurrentContent .dnnTextPanel p').height() - $('.ehmContent').height());
+                        var newEditorHeight = $('.ehCurrentContent').height();
+                        if($('.dnnTextPanelView').length > 0) {newEditorHeight = newEditorHeight - $('.dnnTextPanelView').height()}
+                        if($('.divCurrentVersion').length > 0) {newEditorHeight = newEditorHeight - $('.divCurrentVersion').height()}
+                        if($('.ehCurrentContent .dnnTextPanel p').length > 0) {newEditorHeight = newEditorHeight - $('.ehCurrentContent .dnnTextPanel p').height()}
+                        if($('.ehmContent').length > 0) {newEditorHeight = newEditorHeight - $('.ehmContent').height()}
+                        ckeditor.resize($('.ehCurrentContent').width(), newEditorHeight);
                         $('.ehCurrentContent').css('overflow', 'hidden');
                         $('.ehCurrentContent .dnnTextPanel p').css('margin-bottom', '0');
                     }

@@ -37,7 +37,7 @@ class SearchAdvanced extends Component {
                     </span>
                 </div>
                 <Collapsible isOpened={this.state.collapsed} className="search-header-collapsible">
-                        {this.state.collapsed && 
+                    {this.state.collapsed && 
                             <SearchAdvancedDetails 
                                 getFilterByPageTypeOptions={this.props.getFilterByPageTypeOptions}
                                 getFilterByPageStatusOptions={this.props.getFilterByPageStatusOptions}
@@ -60,7 +60,7 @@ class SearchAdvanced extends Component {
                                 clearAdvancedSearchDateInterval={this.props.clearAdvancedSearchDateInterval}
                                 updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
                             />
-                        }
+                    }
                 </Collapsible>    
             </div>
         );

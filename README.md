@@ -1,4 +1,4 @@
-[![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/DNN%20%5BCI%5D?branchName=develop)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=27&branchName=develop)
+[![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/dnnsoftware.Dnn.Platform?branchName=develop)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=145&branchName=develop)
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
@@ -15,7 +15,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 * Static and dynamic Localization - 6 languages out-of-the-box (English, Dutch, French, German, Italian, and Spanish)
 * Customized web site templates and themes
 * Cloud-ready with MS Azure compatibility
-* 100's of REST API for site and content managment
+* 100's of REST API for site and content management
 * Modern client-side Web tools like CSS 3, HTML 5, JQuery, and React
 * UI with drag and drop capability, and rich-text editor for in-place UI editing
 * Extensible through custom modules and many third party modules available in the DNN store

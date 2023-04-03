@@ -5,21 +5,11 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System.Xml.XPath;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ProviderInstaller installs Provider Components to a DotNetNuke site.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ProviderInstaller installs Provider Components to a DotNetNuke site.</summary>
     public class ProviderInstaller : ComponentInstallerBase
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
@@ -28,25 +18,30 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        /// <inheritdoc/>
         public override void Commit()
         {
             this.Completed = true;
         }
 
+        /// <inheritdoc/>
         public override void Install()
         {
             this.Completed = true;
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
         }
 
+        /// <inheritdoc/>
         public override void Rollback()
         {
             this.Completed = true;
         }
 
+        /// <inheritdoc/>
         public override void UnInstall()
         {
             this.Completed = true;

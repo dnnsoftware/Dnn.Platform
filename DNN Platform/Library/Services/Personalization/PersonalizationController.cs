@@ -6,13 +6,11 @@ namespace DotNetNuke.Services.Personalization
     using System;
     using System.Collections;
     using System.Data;
-    using System.Text;
     using System.Web;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Security;
 
     public class PersonalizationController
@@ -40,8 +38,13 @@ namespace DotNetNuke.Services.Personalization
             {
                 var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
                 profileData = CBO.GetCachedObject<string>(
-                     new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
-                     DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
+                    new CacheItemArgs(
+                        cacheKey,
+                        DataCache.UserPersonalizationCacheTimeout,
+                        DataCache.UserPersonalizationCachePriority,
+                        portalId,
+                        userId),
+                    GetCachedUserPersonalizationCallback);
             }
             else
             {
@@ -64,7 +67,7 @@ namespace DotNetNuke.Services.Personalization
             }
 
             personalization.Profile = string.IsNullOrEmpty(profileData)
-                ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
+                ? new Hashtable() : XmlUtils.DeSerializeHashtable(profileData, "profile");
             return personalization;
         }
 
@@ -85,7 +88,7 @@ namespace DotNetNuke.Services.Personalization
         {
             if (personalization != null && personalization.IsModified)
             {
-                var profileData = Globals.SerializeHashTableXml(personalization.Profile);
+                var profileData = XmlUtils.SerializeDictionary(personalization.Profile, "profile");
                 if (userId > Null.NullInteger)
                 {
                     DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
@@ -95,8 +98,10 @@ namespace DotNetNuke.Services.Personalization
                     DataCache.RemoveCache(cacheKey);
                     CBO.GetCachedObject<string>(
                         new CacheItemArgs(
-                        cacheKey,
-                        DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority), _ => profileData);
+                            cacheKey,
+                            DataCache.UserPersonalizationCacheTimeout,
+                            DataCache.UserPersonalizationCachePriority),
+                        _ => profileData);
                 }
                 else
                 {
@@ -128,8 +133,9 @@ namespace DotNetNuke.Services.Personalization
                 {
                     returnValue = dr["ProfileData"].ToString();
                 }
-                else // does not exist
+                else
                 {
+                    // does not exist
                     DataProvider.Instance().AddProfile(userId, portalId);
                 }
             }

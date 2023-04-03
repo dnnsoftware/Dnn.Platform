@@ -5,25 +5,36 @@
 namespace DotNetNuke.Data.PetaPoco
 {
     using System;
+
     using global::PetaPoco;
 
     [CLSCompliant(false)]
     public class FluentColumnMap
     {
+        /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
         public FluentColumnMap()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
+        /// <param name="columnInfo"></param>
         public FluentColumnMap(ColumnInfo columnInfo)
             : this(columnInfo, null)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
+        /// <param name="columnInfo"></param>
+        /// <param name="fromDbConverter"></param>
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter)
             : this(columnInfo, fromDbConverter, null)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
+        /// <param name="columnInfo"></param>
+        /// <param name="fromDbConverter"></param>
+        /// <param name="toDbConverter"></param>
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter, Func<object, object> toDbConverter)
         {
             this.ColumnInfo = columnInfo;

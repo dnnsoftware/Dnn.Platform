@@ -10,22 +10,19 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.WebControls
     /// Class    : ActionLink
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ActionLink provides a button for a single action.
-    /// </summary>
+    /// <summary>ActionLink provides a button for a single action.</summary>
     /// <remarks>
     /// ActionBase inherits from HyperLink.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
     {
+        /// <summary>Initializes a new instance of the <see cref="ActionLink"/> class.</summary>
         public ActionLink()
         {
             this.RequireEditMode = false;
@@ -48,11 +45,7 @@ namespace DotNetNuke.UI.WebControls
 
         public IModuleControl ModuleControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateChildControls builds the control tree.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>CreateChildControls builds the control tree.</summary>
         protected override void CreateChildControls()
         {
             // Call base class method to ensure Control Tree is built
@@ -62,11 +55,7 @@ namespace DotNetNuke.UI.WebControls
             this.EnableViewState = false;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnPreRender runs when just before the Render phase of the Page Lifecycle.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>OnPreRender runs when just before the Render phase of the Page Lifecycle.</summary>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -94,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
             bool isVisible = false;
             if (ModulePermissionController.HasModuleAccess(security, Null.NullString, this.ModuleControl.ModuleContext.Configuration))
             {
-                if ((this.RequireEditMode != true || this.ModuleControl.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
+                if ((this.RequireEditMode != true || Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
                 {
                     isVisible = true;
                 }

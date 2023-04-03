@@ -2,7 +2,7 @@ import util from "../utils";
 function serializeQueryStringParameters(obj) {
     let s = [];
     for (let p in obj) {
-        if (obj.hasOwnProperty(p)) {
+        if (Object.prototype.hasOwnProperty.call(obj, p)) {
             s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
         }
     }
@@ -79,6 +79,11 @@ class ApplicationService {
     updateSslSettings(payload, callback) {
         const sf = this.getServiceFramework("Security");
         sf.post("UpdateSslSettings", payload, callback);
+    }
+
+    setAllPagesSecure(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("SetAllPagesSecure", {}, callback);
     }
 
     getOtherSettings(callback) {

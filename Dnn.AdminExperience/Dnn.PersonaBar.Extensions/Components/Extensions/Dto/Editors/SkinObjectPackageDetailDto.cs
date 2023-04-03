@@ -13,7 +13,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         {
         }
 
-        public SkinObjectPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        public SkinObjectPackageDetailDto(int portalId, PackageInfo package)
+            : base(portalId, package)
         {
         }
 

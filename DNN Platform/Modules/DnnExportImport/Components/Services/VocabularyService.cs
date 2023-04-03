@@ -20,12 +20,16 @@ namespace Dnn.ExportImport.Components.Services
 
     public class VocabularyService : BasePortableService
     {
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Vocabularies;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 5;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -113,6 +117,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -157,6 +162,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<TaxonomyVocabulary>() + this.Repository.GetCount<TaxonomyTerm>();
@@ -172,8 +178,7 @@ namespace Dnn.ExportImport.Components.Services
             return CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(portalId, toDate, fromDate));
         }
 
-        private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto,
-            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
+        private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto, IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
             var changed = false;
             var dataService = Util.GetDataService();
@@ -240,8 +245,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto,
-            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
+        private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto, IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
 

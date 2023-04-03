@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
     public partial class Settings : AuthenticationSettingsBase
     {
+        /// <inheritdoc/>
         public override void UpdateSettings()
         {
             if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
@@ -19,6 +20,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

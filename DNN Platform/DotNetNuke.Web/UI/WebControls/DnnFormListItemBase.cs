@@ -7,7 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public abstract class DnnFormListItemBase : DnnFormItemBase
     {
-        private IEnumerable _listSource;
+        private IEnumerable listSource;
 
         public string DefaultValue { get; set; }
 
@@ -15,15 +15,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._listSource;
+                return this.listSource;
             }
 
             set
             {
-                var changed = !Equals(this._listSource, value);
+                var changed = !Equals(this.listSource, value);
                 if (changed)
                 {
-                    this._listSource = value;
+                    this.listSource = value;
                     this.BindList();
                 }
             }

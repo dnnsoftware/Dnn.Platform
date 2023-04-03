@@ -4,7 +4,6 @@
 namespace DotNetNuke.Web.Api
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -16,7 +15,7 @@ namespace DotNetNuke.Web.Api
 
     internal class PortalAliasRouteManager : IPortalAliasRouteManager
     {
-        private List<int> _prefixCounts;
+        private List<int> prefixCounts;
 
         // TODO: this method need remove after drop use old api format.
         [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
@@ -28,6 +27,7 @@ namespace DotNetNuke.Web.Api
             return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
         }
 
+        /// <inheritdoc/>
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.Api
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <inheritdoc/>
         public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
         {
             var alias = portalAlias.HTTPAlias;
@@ -52,6 +53,7 @@ namespace DotNetNuke.Web.Api
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
+        /// <inheritdoc/>
         public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
         {
             var allRouteValues = new HttpRouteValueDictionary(routeValues);
@@ -71,6 +73,7 @@ namespace DotNetNuke.Web.Api
             return allRouteValues;
         }
 
+        /// <inheritdoc/>
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
@@ -79,14 +82,16 @@ namespace DotNetNuke.Web.Api
             return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
         }
 
+        /// <inheritdoc/>
         public void ClearCachedData()
         {
-            this._prefixCounts = null;
+            this.prefixCounts = null;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (this._prefixCounts == null)
+            if (this.prefixCounts == null)
             {
                 // prefixCounts are required for each route that is mapped but they only change
                 // when a new portal is added so cache them until that time
@@ -112,10 +117,10 @@ namespace DotNetNuke.Web.Api
                 }
 
                 IEnumerable<int> segmentCounts = segmentCounts1;
-                this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
+                this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }
 
-            return this._prefixCounts;
+            return this.prefixCounts;
         }
 
         private static int CalcAliasPrefixCount(string alias)

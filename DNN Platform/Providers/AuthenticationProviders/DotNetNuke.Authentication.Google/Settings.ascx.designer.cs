@@ -15,6 +15,5 @@ namespace DotNetNuke.Authentication.Google {
     
     
     public partial class Settings {
-        
     }
 }

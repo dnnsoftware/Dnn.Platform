@@ -6,25 +6,17 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
 {
     using System;
 
-    /// <summary>
-    /// This class represents a Subscription Type.
-    /// </summary>
+    /// <summary>This class represents a Subscription Type.</summary>
     [Serializable]
     public class SubscriptionType
     {
-        /// <summary>
-        /// Gets or sets the Subscription Type identifier.
-        /// </summary>
+        /// <summary>Gets or sets the Subscription Type identifier.</summary>
         public int SubscriptionTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Subscription Name.
-        /// </summary>
+        /// <summary>Gets or sets the Subscription Name.</summary>
         public string SubscriptionName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Subscription Friendly Name.
-        /// </summary>
+        /// <summary>Gets or sets the Subscription Friendly Name.</summary>
         public string FriendlyName { get; set; }
 
         /// <summary>

@@ -7,22 +7,20 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections.Specialized;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
 
     public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-        private string _RepeatDirection = "Horizontal";
-        private string _Separator = ",&nbsp;";
+        private string repeatDirection = "Horizontal";
+        private string separator = ",&nbsp;";
 
-        private string _Tags;
+        private string tags;
 
         public event EventHandler<EventArgs> TagsUpdated;
 
@@ -38,13 +36,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                bool _IsEditMode = false;
+                bool isEditMode = false;
                 if (this.ViewState["IsEditMode"] != null)
                 {
-                    _IsEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
+                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
                 }
 
-                return _IsEditMode;
+                return isEditMode;
             }
 
             set
@@ -59,12 +57,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._RepeatDirection;
+                return this.repeatDirection;
             }
 
             set
             {
-                this._RepeatDirection = value;
+                this.repeatDirection = value;
             }
         }
 
@@ -74,12 +72,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._Separator;
+                return this.separator;
             }
 
             set
             {
-                this._Separator = value;
+                this.separator = value;
             }
         }
 
@@ -96,6 +94,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override void RenderControl(HtmlTextWriter writer)
         {
             // Render Outer Div
@@ -206,17 +205,20 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.RenderEndTag();
         }
 
+        /// <inheritdoc/>
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            this._Tags = postCollection[postDataKey];
+            this.tags = postCollection[postDataKey];
 
             return true;
         }
 
+        /// <inheritdoc/>
         public void RaisePostDataChangedEvent()
         {
         }
 
+        /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
             switch (eventArgument)
@@ -244,6 +246,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -271,11 +274,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string LocalizeString(string key)
         {
-            string LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            string localResourceFile = Utilities.GetLocalResourceFile(this);
             string localizedString = null;
-            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(LocalResourceFile))
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(localResourceFile))
             {
-                localizedString = Localization.GetString(key, LocalResourceFile);
+                localizedString = Localization.GetString(key, localResourceFile);
             }
             else
             {
@@ -320,7 +323,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void SaveTags()
         {
-            string tags = this._Tags;
+            string tags = this.tags;
 
             if (!string.IsNullOrEmpty(tags))
             {

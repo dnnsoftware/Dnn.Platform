@@ -16,18 +16,10 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Settings class manages Module Settings.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The Settings class manages Module Settings.</summary>
     public partial class ListSettings : GroupsSettingsBase
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
         {
             try
@@ -93,17 +85,13 @@ namespace DotNetNuke.Modules.Groups
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateSettings saves the modified settings to the Database.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>UpdateSettings saves the modified settings to the Database.</summary>
         public override void UpdateSettings()
         {
             try
@@ -120,7 +108,7 @@ namespace DotNetNuke.Modules.Groups
                 ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, this.radSortDirection.SelectedItem.Value);
                 ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, this.chkUserGroups.Checked.ToString());
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

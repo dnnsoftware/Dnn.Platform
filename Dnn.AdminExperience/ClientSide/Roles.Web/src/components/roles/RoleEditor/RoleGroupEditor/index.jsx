@@ -39,7 +39,7 @@ class RoleGroupEditor extends Component {
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        var node = this.rootElement !== undefined ? this.rootElement.current : null;
+        let node = this.rootElement !== undefined ? this.rootElement.current : null;
         if (node && !node.contains(event.target) &&
             (event.target.firstChild !== null && typeof event.target.firstChild.className === "string" && event.target.firstChild.className.indexOf("do-not-close") === -1)) {
             if (typeof this.props.onCancel === "function") {

@@ -16,9 +16,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for DataCacheTests.
-    /// </summary>
+    /// <summary>  Summary description for DataCacheTests.</summary>
     [TestFixture]
     public class DataCacheTests
     {
@@ -126,12 +124,14 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void DataCache_SetCache_Should_Throw_On_Null_CacheKey(string key)
         {
             Assert.Throws<ArgumentException>(() => DataCache.SetCache(key, Constants.CACHEING_ValidValue));
         }
 
         [Test]
+
         public void DataCache_SetCache_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
@@ -156,6 +156,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void DataCache_SetCache_With_Dependency_Should_Throw_On_Null_CacheKey(string key)
         {
             DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
@@ -163,6 +164,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void DataCache_SetCache_With_Dependency_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
@@ -187,6 +189,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void DataCache_SetCache_With_AbsoluteExpiration_Should_Throw_On_Null_CacheKey(string key)
         {
             DateTime absExpiry = DateTime.Today.AddDays(1); // DateTime doesn't matter
@@ -194,6 +197,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void DataCache_SetCache_With_AbsoluteExpiration_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
@@ -219,6 +223,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void DataCache_SetCache_With_SlidingExpiration_Should_Throw_On_Null_CacheKey(string key)
         {
             TimeSpan slidingExpiry = TimeSpan.FromMinutes(5); // TimeSpan doesn't matter
@@ -226,6 +231,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void DataCache_SetCache_With_SlidingExpiration_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
@@ -252,6 +258,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void DataCache_SetCache_With_CacheDependency_AbsoluteExpiration_SlidingExpiration_Should_Throw_On_Null_CacheKey(string key)
         {
             DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
@@ -261,6 +268,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void DataCache_SetCache_With_CacheDependency_AbsoluteExpiration_SlidingExpiration_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
@@ -280,6 +288,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void DataCache_SetCache_With_Priority_Should_Throw_On_Null_CacheKey(string key)
         {
             DNNCacheDependency dep = this.CreateTestDependency(); // Dependency type or value doesn't matter
@@ -290,6 +299,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void DataCache_SetCache_With_Priority_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange
@@ -306,6 +316,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         public void DataCache_SetCache_With_Callback_Should_Succeed_On_Valid_CacheKey_And_Any_Value()
         {
             // Arrange

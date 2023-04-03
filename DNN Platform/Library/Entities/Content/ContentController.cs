@@ -20,30 +20,34 @@ namespace DotNetNuke.Entities.Content
 
     public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
-        private readonly IDataService _dataService;
+        private readonly IDataService dataService;
 
+        /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
         public ContentController()
             : this(Util.GetDataService())
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
+        /// <param name="dataService">The data service.</param>
         public ContentController(IDataService dataService)
         {
-            this._dataService = dataService;
+            this.dataService = dataService;
         }
 
+        /// <inheritdoc/>
         public int AddContentItem(ContentItem contentItem)
         {
             // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var createdByUserId = currentUser.UserID;
-            if (contentItem.CreatedByUserID != currentUser.UserID)
+            if (contentItem.CreatedByUserID >= 0 && contentItem.CreatedByUserID != currentUser.UserID)
             {
                 createdByUserId = contentItem.CreatedByUserID;
             }
 
-            contentItem.ContentItemId = this._dataService.AddContentItem(contentItem, createdByUserId);
+            contentItem.ContentItemId = this.dataService.AddContentItem(contentItem, createdByUserId);
             contentItem.CreatedByUserID = createdByUserId;
             contentItem.LastModifiedByUserID = currentUser.UserID;
 
@@ -54,6 +58,7 @@ namespace DotNetNuke.Entities.Content
             return contentItem.ContentItemId;
         }
 
+        /// <inheritdoc/>
         public void DeleteContentItem(ContentItem contentItem)
         {
             // Argument Contract
@@ -69,17 +74,19 @@ namespace DotNetNuke.Entities.Content
             };
             DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
 
-            this._dataService.DeleteContentItem(contentItem.ContentItemId);
+            this.dataService.DeleteContentItem(contentItem.ContentItemId);
 
             UpdateContentItemsCache(contentItem, false);
         }
 
+        /// <inheritdoc/>
         public void DeleteContentItem(int contentItemId)
         {
             var contentItem = this.GetContentItem(contentItemId);
             this.DeleteContentItem(contentItem);
         }
 
+        /// <inheritdoc/>
         public ContentItem GetContentItem(int contentItemId)
         {
             // Argument Contract
@@ -87,44 +94,48 @@ namespace DotNetNuke.Entities.Content
 
             return CBO.GetCachedObject<ContentItem>(
                 new CacheItemArgs(GetContentItemCacheKey(contentItemId), DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority),
-                c => CBO.FillObject<ContentItem>(this._dataService.GetContentItem(contentItemId)));
+                c => CBO.FillObject<ContentItem>(this.dataService.GetContentItem(contentItemId)));
         }
 
         public IQueryable<ContentItem> GetContentItems(int contentTypeId, int tabId, int moduleId)
         {
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItems(contentTypeId, tabId, moduleId));
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItems(contentTypeId, tabId, moduleId));
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByTerm(string term)
         {
             // Argument Contract
             Requires.NotNullOrEmpty("term", term);
 
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTerm(term));
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByTerm(term));
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByTerm(Term term)
         {
             return this.GetContentItemsByTerm(term.Name);
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
         {
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByContentType(contentTypeId));
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByContentType(contentTypeId));
         }
 
-        /// <summary>Get a list of content items by ContentType.</summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
         {
             return this.GetContentItemsByContentType(contentType.ContentTypeId);
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
         {
             return this.GetContentItemsByTerms(terms.Select(t => t.Name).ToArray());
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
         {
             var union = new List<ContentItem>();
@@ -139,26 +150,31 @@ namespace DotNetNuke.Entities.Content
             return union.AsQueryable();
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByTabId(int tabId)
         {
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTabId(tabId));
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByTabId(tabId));
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
         {
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByVocabularyId(vocabularyId));
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByVocabularyId(vocabularyId));
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetUnIndexedContentItems()
         {
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetUnIndexedContentItems());
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetUnIndexedContentItems());
         }
 
+        /// <inheritdoc/>
         public IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId)
         {
-            return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByModuleId(moduleId));
+            return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByModuleId(moduleId));
         }
 
+        /// <inheritdoc/>
         public void UpdateContentItem(ContentItem contentItem)
         {
             // Argument Contract
@@ -170,12 +186,13 @@ namespace DotNetNuke.Entities.Content
             this.SaveMetadataDelta(contentItem);
 
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            this._dataService.UpdateContentItem(contentItem, userId);
+            this.dataService.UpdateContentItem(contentItem, userId);
             contentItem.LastModifiedByUserID = userId;
 
             UpdateContentItemsCache(contentItem);
         }
 
+        /// <inheritdoc/>
         public void AddMetaData(ContentItem contentItem, string name, string value)
         {
             // Argument Contract
@@ -183,11 +200,12 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
 
-            this._dataService.AddMetaData(contentItem, name, value);
+            this.dataService.AddMetaData(contentItem, name, value);
 
             UpdateContentItemsCache(contentItem, false);
         }
 
+        /// <inheritdoc/>
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
         {
             // Argument Contract
@@ -195,11 +213,12 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
 
-            this._dataService.DeleteMetaData(contentItem, name, value);
+            this.dataService.DeleteMetaData(contentItem, name, value);
 
             UpdateContentItemsCache(contentItem, false);
         }
 
+        /// <inheritdoc/>
         public void DeleteMetaData(ContentItem contentItem, string name)
         {
             if (contentItem.Metadata.AllKeys.Contains(name))
@@ -208,6 +227,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
+        /// <inheritdoc/>
         public NameValueCollection GetMetaData(int contentItemId)
         {
             // Argument Contract
@@ -215,7 +235,7 @@ namespace DotNetNuke.Entities.Content
 
             var metadata = new NameValueCollection();
 
-            using (var dr = this._dataService.GetMetaData(contentItemId))
+            using (var dr = this.dataService.GetMetaData(contentItemId))
             {
                 if (dr != null)
                 {
@@ -229,6 +249,7 @@ namespace DotNetNuke.Entities.Content
             return metadata;
         }
 
+        /// <inheritdoc/>
         protected override Func<IContentController> GetFactory()
         {
             return () => new ContentController();
@@ -246,10 +267,13 @@ namespace DotNetNuke.Entities.Content
             DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
             if (readdItem)
             {
-                CBO.GetCachedObject<ContentItem>(
+                CBO.Instance.GetCachedObject<ContentItem>(
                     new CacheItemArgs(
-                    GetContentItemCacheKey(contentItem.ContentItemId),
-                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+                        GetContentItemCacheKey(contentItem.ContentItemId),
+                        DataCache.ContentItemsCacheTimeOut,
+                        DataCache.ContentItemsCachePriority),
+                    c => contentItem,
+                    false);
             }
         }
 
@@ -277,7 +301,7 @@ namespace DotNetNuke.Entities.Content
             // Items included in the object but missing from the database (newly added).
             var added = rh.Except(lh).ToArray();
 
-            this._dataService.SynchronizeMetaData(contentItem, added, deleted);
+            this.dataService.SynchronizeMetaData(contentItem, added, deleted);
 
             UpdateContentItemsCache(contentItem, false);
         }

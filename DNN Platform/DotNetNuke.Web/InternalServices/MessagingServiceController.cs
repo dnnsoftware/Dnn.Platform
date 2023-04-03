@@ -6,19 +6,19 @@ namespace DotNetNuke.Web.InternalServices
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Messaging;
     using DotNetNuke.Services.Social.Messaging.Internal;
@@ -64,7 +64,9 @@ namespace DotNetNuke.Web.InternalServices
                     users = userIdsList.Select(id => UserController.Instance.GetUser(portalId, id)).Where(user => user != null).ToList();
                 }
 
-                var message = new Message { Subject = HttpUtility.UrlDecode(postData.Subject), Body = HttpUtility.UrlDecode(postData.Body) };
+                var body = HttpUtility.UrlDecode(postData.Body);
+                body = PortalSecurity.Instance.InputFilter(body, PortalSecurity.FilterFlag.NoMarkup);
+                var message = new Message { Subject = HttpUtility.UrlDecode(postData.Subject), Body = body };
                 MessagingController.Instance.SendMessage(message, roles, users, fileIdsList);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Value = message.MessageID });
             }
@@ -88,11 +90,11 @@ namespace DotNetNuke.Web.InternalServices
                 q = q.Replace(",", string.Empty).Replace("'", string.Empty);
                 if (q.Length == 0)
                 {
-                    return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                    return this.Request.CreateResponse<object>(HttpStatusCode.OK, null);
                 }
 
                 var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
-                    .Select(user => new SearchResult
+                    .Select(user => new
                     {
                         id = "user-" + user.UserID,
                         name = user.DisplayName,
@@ -105,7 +107,7 @@ namespace DotNetNuke.Web.InternalServices
                                  where
                                      isAdmin ||
                                      this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
-                                 select new SearchResult
+                                 select new
                                  {
                                      id = "role-" + roleInfo.RoleID,
                                      name = roleInfo.RoleName,
@@ -125,26 +127,16 @@ namespace DotNetNuke.Web.InternalServices
 
         public class CreateDTO
         {
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string Subject;
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string Body;
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string RoleIds;
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string UserIds;
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string FileIds;
-        }
-
-        /// <summary>
-        /// This class stores a single search result needed by jQuery Tokeninput.
-        /// </summary>
-        private class SearchResult
-        {
-            // ReSharper disable InconsistentNaming
-            // ReSharper disable NotAccessedField.Local
-            public string id;
-            public string name;
-            public string iconfile;
-
-            // ReSharper restore NotAccessedField.Local
-            // ReSharper restore InconsistentNaming
         }
     }
 }

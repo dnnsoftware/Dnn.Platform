@@ -24,12 +24,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     public class TabModuleSettingsTests : BaseSettingsTests
     {
         [SetUp]
+
         public void Setup()
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            serviceCollection.AddTransient<ISerializationManager, SerializationManager>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
@@ -42,6 +44,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -50,6 +53,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ca-ES")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -58,6 +62,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("zh-CN")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -66,6 +71,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("en-US")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -74,6 +80,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("fr-FR")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -82,6 +89,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("he-IL")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -90,6 +98,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ru-RU")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -98,12 +107,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("tr-TR")]
+
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
         [Test]
+
         public void SaveSettings_UpdatesCache()
         {
             // Arrange
@@ -122,6 +133,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
+
         public void GetSettings_CallsGetCachedObject()
         {
             // Arrange
@@ -141,6 +153,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -149,6 +162,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ca-ES")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -157,6 +171,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("zh-CN")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -165,6 +180,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("en-US")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -173,6 +189,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("fr-FR")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -181,6 +198,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("he-IL")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -189,6 +207,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ru-RU")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -197,6 +216,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("tr-TR")]
+
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -300,6 +320,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class MyTabModuleSettingsRepository : SettingsRepository<MyTabModuleSettings>
-        {}
+        {
+        }
     }
 }

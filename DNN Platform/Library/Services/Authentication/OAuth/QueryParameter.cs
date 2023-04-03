@@ -4,11 +4,12 @@
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
-    /// <summary>
-    /// Provides an internal structure to sort the query parameter.
-    /// </summary>
+    /// <summary>Provides an internal structure to sort the query parameter.</summary>
     public class QueryParameter
     {
+        /// <summary>Initializes a new instance of the <see cref="QueryParameter"/> class.</summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         public QueryParameter(string name, string value)
         {
             this.Name = name;

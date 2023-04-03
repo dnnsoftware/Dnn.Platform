@@ -3,16 +3,12 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
-    using System;
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal.</summary>
     public class PortalConfig
     {
+        /// <summary>Initializes a new instance of the <see cref="PortalConfig"/> class.</summary>
         public PortalConfig()
         {
             this.PortAliases = new List<string>();
@@ -41,5 +37,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
         public string HomeDirectory { get; set; }
 
         public IList<string> PortAliases { get; set; }
+
+        public bool IsSsl { get; set; }
     }
 }

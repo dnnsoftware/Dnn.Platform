@@ -15,13 +15,10 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Dto.Assets;
     using Dnn.ExportImport.Dto.Users;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Supplementary service to import users additional data.
-    /// </summary>
+    /// <summary>Supplementary service to import users additional data.</summary>
     public class UsersDataExportService : BasePortableService
     {
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =
@@ -51,12 +48,16 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("IsSuperUser", typeof(bool)),
         };
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_UsersData;
 
+        /// <inheritdoc/>
         public override string ParentCategory => Constants.Category_Users;
 
+        /// <inheritdoc/>
         public override uint Priority => 10;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             this.CheckPoint.Progress += 100;
@@ -68,6 +69,7 @@ namespace Dnn.ExportImport.Components.Services
             // No implementation required in export users child as everything is exported in parent service.
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -185,7 +187,8 @@ namespace Dnn.ExportImport.Components.Services
                                         {
                                             var profileDefinitionId = Util.GetProfilePropertyId(
                                                 importJob.PortalId,
-                                                userProfile.PropertyDefinitionId, userProfile.PropertyName);
+                                                userProfile.PropertyDefinitionId,
+                                                userProfile.PropertyName);
                                             if (profileDefinitionId == null || profileDefinitionId == -1)
                                             {
                                                 continue;
@@ -223,8 +226,11 @@ namespace Dnn.ExportImport.Components.Services
                             if (includeProfile)
                             {
                                 DotNetNuke.Data.DataProvider.Instance()
-                                    .BulkInsert("ExportImport_AddUpdateUsersProfilesBulk", "@DataTable",
-                                        tableUserProfile, new Dictionary<string, object> { { "Overwrite", overwrite } });
+                                    .BulkInsert(
+                                        "ExportImport_AddUpdateUsersProfilesBulk",
+                                        "@DataTable",
+                                        tableUserProfile,
+                                        new Dictionary<string, object> { { "Overwrite", overwrite } });
                                 totalProfilesImported += tempUserProfileCount;
                             }
 
@@ -265,6 +271,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportUser>();

@@ -12,32 +12,35 @@ namespace DotNetNuke.Data.PetaPoco
 
     public class PetaPocoMapper : IMapper
     {
-        private static IMapper _defaultMapper;
-        private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-        private readonly string _tablePrefix;
+        private static IMapper defaultMapper;
+        private static ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
+        private readonly string tablePrefix;
 
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoMapper"/> class.</summary>
+        /// <param name="tablePrefix"></param>
         public PetaPocoMapper(string tablePrefix)
         {
-            this._tablePrefix = tablePrefix;
-            _defaultMapper = new StandardMapper();
+            this.tablePrefix = tablePrefix;
+            defaultMapper = new StandardMapper();
         }
 
         public static void SetMapper<T>(IMapper mapper)
         {
-            _lock.EnterWriteLock();
+            @lock.EnterWriteLock();
             try
             {
-                if (Mappers.GetMapper(typeof(T), _defaultMapper) is StandardMapper)
+                if (Mappers.GetMapper(typeof(T), defaultMapper) is StandardMapper)
                 {
                     Mappers.Register(typeof(T), mapper);
                 }
             }
             finally
             {
-                _lock.ExitWriteLock();
+                @lock.ExitWriteLock();
             }
         }
 
+        /// <inheritdoc/>
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
             bool includeColumn = true;
@@ -73,6 +76,7 @@ namespace DotNetNuke.Data.PetaPoco
             return ci;
         }
 
+        /// <inheritdoc/>
         public TableInfo GetTableInfo(Type pocoType)
         {
             TableInfo ti = TableInfo.FromPoco(pocoType);
@@ -80,7 +84,7 @@ namespace DotNetNuke.Data.PetaPoco
             // Table Name
             ti.TableName = DataUtil.GetTableName(pocoType, ti.TableName + "s");
 
-            ti.TableName = this._tablePrefix + ti.TableName;
+            ti.TableName = this.tablePrefix + ti.TableName;
 
             // Primary Key
             ti.PrimaryKey = DataUtil.GetPrimaryKeyColumn(pocoType, ti.PrimaryKey);
@@ -90,12 +94,14 @@ namespace DotNetNuke.Data.PetaPoco
             return ti;
         }
 
-        public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type SourceType)
+        /// <inheritdoc/>
+        public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
         {
             return null;
         }
 
-        public Func<object, object> GetToDbConverter(PropertyInfo SourceProperty)
+        /// <inheritdoc/>
+        public Func<object, object> GetToDbConverter(PropertyInfo sourceProperty)
         {
             return null;
         }

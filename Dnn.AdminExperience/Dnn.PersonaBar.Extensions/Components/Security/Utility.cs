@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Security.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Security.Components
 
     public class Utility
     {
-        private const long MaxFileSize = 1024 * 1024 * 10; //10M
+        private const long MaxFileSize = 1024 * 1024 * 10; // 10M
 
         private const int ModifiedFilesCount = 50;
 
@@ -38,9 +38,7 @@ namespace Dnn.PersonaBar.Security.Components
             new Regex(Regex.Escape(AppDomain.CurrentDomain.BaseDirectory + "web.config"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
-        /// <summary>
-        ///     delete unnedded installwizard files.
-        /// </summary>
+        /// <summary>delete unneeded installwizard files.</summary>
         public static void CleanUpInstallerFiles()
         {
             var files = new List<string>
@@ -66,16 +64,14 @@ namespace Dnn.PersonaBar.Security.Components
                 }
                 catch (Exception)
                 {
-                    //do nothing.
+                    // do nothing.
                 }
             }
         }
 
-        /// <summary>
-        ///     search all files in the website for matching text.
-        /// </summary>
+        /// <summary>search all files in the website for matching text.</summary>
         /// <param name="searchText">the matching text.</param>
-        /// <returns>ienumerable of file names.</returns>
+        /// <returns>A sequence of new <see cref="SearchFileInfo"/> instances.</returns>
         public static IEnumerable<object> SearchFiles(string searchText)
         {
             try
@@ -88,20 +84,19 @@ namespace Dnn.PersonaBar.Security.Components
                     select new SearchFileInfo
                     {
                         FileName = f.FullName,
-                        LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture)
+                        LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture),
                     };
             }
             catch
             {
-                //suppress any unexpected error
+                // suppress any unexpected error
             }
+
             return null;
         }
 
-        /// <summary>
-        ///     search all website files for files with a potential dangerous extension.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>search all website files for files with a potential dangerous extension.</summary>
+        /// <returns>A sequence of file paths.</returns>
         public static IEnumerable<string> FindUnexpectedExtensions(IList<string> invalidFolders)
         {
             var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories, invalidFolders)
@@ -109,10 +104,8 @@ namespace Dnn.PersonaBar.Security.Components
             return files;
         }
 
-        /// <summary>
-        ///     search all website files which are hidden or system.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>search all website files which are hidden or system.</summary>
+        /// <returns>A sequence of file paths.</returns>
         public static IEnumerable<string> FineHiddenSystemFiles()
         {
             var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
@@ -140,19 +133,19 @@ namespace Dnn.PersonaBar.Security.Components
                 {
                     while (dr.Read())
                     {
-
                         results.Add(new
                         {
                             ColumnName = dr["ColumnName"],
-                            ColumnValue = dr["ColumnValue"]
+                            ColumnValue = dr["ColumnValue"],
                         });
                     }
                 }
             }
             catch
             {
-                //ignore
+                // ignore
             }
+
             return results;
         }
 
@@ -183,7 +176,7 @@ namespace Dnn.PersonaBar.Security.Components
             {
                 using (var stream = File.OpenRead(fileName))
                 {
-                    return BitConverter.ToString(cryptographyProvider.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+                    return BitConverter.ToString(cryptographyProvider.ComputeHash(stream)).Replace("-", string.Empty).ToLowerInvariant();
                 }
             }
         }
@@ -242,15 +235,14 @@ namespace Dnn.PersonaBar.Security.Components
             .Select(f => new FileInfo(f))
             .OrderByDescending(f => f.LastWriteTime)
             .Take(ModifiedFilesCount).ToList();
-
         }
 
         private static bool FileContainsText(string name, string searchText)
         {
             try
             {
-                // If the file has been deleted since we took  
-                // the snapshot, ignore it and return the empty string. 
+                // If the file has been deleted since we took
+                // the snapshot, ignore it and return the empty string.
                 if (IsReadable(name))
                 {
                     return File.ReadAllText(name).IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
@@ -258,7 +250,7 @@ namespace Dnn.PersonaBar.Security.Components
             }
             catch (Exception)
             {
-                //might be a locking issue
+                // might be a locking issue
             }
 
             return false;
@@ -272,18 +264,17 @@ namespace Dnn.PersonaBar.Security.Components
             }
 
             var file = new FileInfo(name);
-            if (file.Length > MaxFileSize) //when file large than 10M, then don't read it.
+            if (file.Length > MaxFileSize)
             {
+                // when file large than 10M, then don't read it.
                 return false;
             }
 
             return true;
         }
 
-        /// <summary>
-        /// Recursively finds file.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Recursively finds file.</summary>
+        /// <returns>A sequence of file paths.</returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
             try
@@ -296,13 +287,11 @@ namespace Dnn.PersonaBar.Security.Components
             }
         }
 
-        /// <summary>
-        /// Recursively finds file.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Recursively finds file.</summary>
+        /// <returns>A sequence of file paths.</returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, ICollection<string> invalidFolders)
         {
-            //Looking at the root folder only. There should not be any permission issue here.
+            // Looking at the root folder only. There should not be any permission issue here.
             IList<string> files;
             try
             {
@@ -334,7 +323,7 @@ namespace Dnn.PersonaBar.Security.Components
 
                 foreach (var folder in folders)
                 {
-                    //recursive call to the same method
+                    // recursive call to the same method
                     foreach (var f in GetFiles(folder, searchPattern, searchOption, invalidFolders))
                     {
                         yield return f;
@@ -347,7 +336,9 @@ namespace Dnn.PersonaBar.Security.Components
         [JsonObject]
         private class SearchFileInfo
         {
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string FileName;
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string LastWriteTime;
         }
     }

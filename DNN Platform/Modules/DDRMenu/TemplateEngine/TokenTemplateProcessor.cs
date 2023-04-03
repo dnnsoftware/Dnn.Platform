@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     public class TokenTemplateProcessor : ITemplateProcessor
     {
-        private static readonly Dictionary<string, string> aliases = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
                                                                      { { "page", "node" }, { "name", "text" } };
 
         private static readonly Regex TemplatesRegex =
@@ -28,6 +28,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         private XslCompiledTransform xsl;
 
+        /// <inheritdoc/>
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             if (!baseDefinition.TemplateVirtualPath.EndsWith(".txt", StringComparison.InvariantCultureIgnoreCase))
@@ -74,7 +75,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 var modeName = match.Groups["modename"].Value.ToLowerInvariant();
 
                 string alias;
-                if (aliases.TryGetValue(nodeName, out alias))
+                if (Aliases.TryGetValue(nodeName, out alias))
                 {
                     nodeName = alias;
                 }
@@ -159,6 +160,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return true;
         }
 
+        /// <inheritdoc/>
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             var resolver = new PathResolver(liveDefinition.Folder);

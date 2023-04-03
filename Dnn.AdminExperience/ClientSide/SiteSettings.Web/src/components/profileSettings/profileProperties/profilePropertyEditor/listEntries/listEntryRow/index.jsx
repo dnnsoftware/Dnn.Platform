@@ -51,9 +51,9 @@ class ListEntryRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapsible fixedHeight={props.enableSortOrder === undefined || props.enableSortOrder === null ? 270 : 220}
+                <Collapsible 
                     isOpened={opened}
-                    style={{ width: "100%", overflow: "visible" }}>
+                    className={"collapsible-entry-body " + (props.enableSortOrder ? "with-sort-order" : "")}>
                     {opened && props.children}
                 </Collapsible>
             </div>

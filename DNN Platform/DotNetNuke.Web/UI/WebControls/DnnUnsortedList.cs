@@ -4,14 +4,11 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
     using System.ComponentModel;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>
-    /// Creates a control that renders its childs as a bulleted list.
-    /// </summary>
+    /// <summary>Creates a control that renders its childs as a bulleted list.</summary>
     /// <remarks>
     /// Control renders an unordered list HTML contol.
     /// Each child control in <see cref="DnnUnsortedList"/> is rendered as a separate list item.
@@ -20,8 +17,9 @@ namespace DotNetNuke.Web.UI.WebControls
     /// </remarks>
     public class DnnUnsortedList : WebControl, INamingContainer
     {
-        private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> _listItems = null;
+        private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> listItems = null;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnUnsortedList"/> class.</summary>
         public DnnUnsortedList()
             : base(HtmlTextWriterTag.Ul)
         {
@@ -33,13 +31,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._listItems ?? (this._listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
+                return this.listItems ?? (this.listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
             }
         }
 
-        /// <summary>
-        /// A "macro" that adds a set of controls or control as a single list item (li).  Use ListItems.Add(UnsortedListItem) method.
-        /// </summary>
+        /// <summary>A "macro" that adds a set of controls or control as a single list item (li).  Use ListItems.Add(UnsortedListItem) method.</summary>
         /// <remarks>
         /// All controls from the list will be rendered as a childs of a single list item.
         /// </remarks>
@@ -50,11 +46,13 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ListItems.Add(listItem);
         }
 
+        /// <inheritdoc/>
         protected override sealed ControlCollection CreateControlCollection()
         {
             return new TypedControlCollection<DnnUnsortedListItem>(this);
         }
 
+        /// <inheritdoc/>
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);

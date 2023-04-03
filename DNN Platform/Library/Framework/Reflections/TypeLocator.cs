@@ -14,14 +14,9 @@ namespace DotNetNuke.Framework.Reflections
 
     public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
-        private IAssemblyLocator _assemblyLocator;
+        private IAssemblyLocator assemblyLocator;
 
-        internal IAssemblyLocator AssemblyLocator
-        {
-            get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
-            set { this._assemblyLocator = value; }
-        }
-
+        /// <inheritdoc/>
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
             // this method is not readily testable as the assemblies in the current app domain
@@ -29,11 +24,18 @@ namespace DotNetNuke.Framework.Reflections
             get
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                       where this.CanScan(assembly)
-                       select new AssemblyWrapper(assembly);
+                    where this.CanScan(assembly)
+                    select new AssemblyWrapper(assembly);
             }
         }
 
+        internal IAssemblyLocator AssemblyLocator
+        {
+            get { return this.assemblyLocator ?? (this.assemblyLocator = this); }
+            set { this.assemblyLocator = value; }
+        }
+
+        /// <inheritdoc/>
         public IEnumerable<Type> GetAllMatchingTypes(Predicate<Type> predicate)
         {
             foreach (var assembly in this.AssemblyLocator.Assemblies)

@@ -13,30 +13,43 @@ namespace DotNetNuke.Entities.Users.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead. Scheduled removal in v10.0.0.")]
     public class TestableUserController : ServiceLocator<IUserController, TestableUserController>, IUserController
     {
+        /// <inheritdoc/>
         public UserInfo GetUserByDisplayname(int portalId, string displayName)
         {
             return UserController.Instance.GetUserByDisplayname(portalId, displayName);
         }
 
+        /// <inheritdoc/>
         public UserInfo GetUserById(int portalId, int userId)
         {
             return UserController.Instance.GetUserById(portalId, userId);
         }
 
-        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
-            bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames,
-            string propertyValues)
+        /// <inheritdoc/>
+        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId, bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames, string propertyValues)
         {
-            return UserController.Instance.GetUsersAdvancedSearch(portalId, userId, filterUserId, filterRoleId,
-                relationTypeId, isAdmin, pageIndex, pageSize, sortColumn, sortAscending, propertyNames, propertyValues);
+            return UserController.Instance.GetUsersAdvancedSearch(
+                portalId,
+                userId,
+                filterUserId,
+                filterRoleId,
+                relationTypeId,
+                isAdmin,
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortAscending,
+                propertyNames,
+                propertyValues);
         }
 
-        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending,
-            string propertyName, string propertyValue)
+        /// <inheritdoc/>
+        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyName, string propertyValue)
         {
             return UserController.Instance.GetUsersBasicSearch(portalId, pageIndex, pageSize, sortColumn, sortAscending, propertyName, propertyValue);
         }
 
+        /// <inheritdoc/>
         protected override Func<IUserController> GetFactory()
         {
             return () => new TestableUserController();

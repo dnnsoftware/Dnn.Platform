@@ -8,14 +8,13 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public class DnnFormPasswordItem : DnnFormItemBase
     {
-        private TextBox _password;
+        private TextBox password;
 
         public string TextBoxCssClass
         {
@@ -43,14 +42,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Use container to add custom control hierarchy to.
-        /// </summary>
+        /// <summary>Use container to add custom control hierarchy to.</summary>
         /// <param name="container"></param>
         /// <returns>An "input" control that can be used for attaching validators.</returns>
         protected override WebControl CreateControlInternal(Control container)
         {
-            this._password = new TextBox()
+            this.password = new TextBox()
             {
                 ID = this.ID + "_TextBox",
                 TextMode = TextBoxMode.Password,
@@ -58,21 +55,22 @@ namespace DotNetNuke.Web.UI.WebControls
                 MaxLength = 39, // ensure password cannot be cut if too long
                 Text = Convert.ToString(this.Value), // Load from ControlState
             };
-            this._password.Attributes.Add("autocomplete", "off");
-            this._password.Attributes.Add("aria-label", this.DataField);
-            this._password.TextChanged += this.TextChanged;
+            this.password.Attributes.Add("autocomplete", "off");
+            this.password.Attributes.Add("aria-label", this.DataField);
+            this.password.TextChanged += this.TextChanged;
 
             var passwordContainer = new Panel() { ID = "passwordContainer", CssClass = this.ContainerCssClass };
 
             // add control hierarchy to the container
             container.Controls.Add(passwordContainer);
 
-            passwordContainer.Controls.Add(this._password);
+            passwordContainer.Controls.Add(this.password);
 
             // return input control that can be used for validation
-            return this._password;
+            return this.password;
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -85,15 +83,15 @@ namespace DotNetNuke.Web.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
             var options = new DnnPaswordStrengthOptions();
             var optionsAsJsonString = Json.Serialize(options);
-            var script = string.Format(
-                "dnn.initializePasswordStrength('.{0}', {1});{2}",
-                this.TextBoxCssClass, optionsAsJsonString, Environment.NewLine);
+            var script =
+                $"dnn.initializePasswordStrength('.{this.TextBoxCssClass}', {optionsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -108,7 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void TextChanged(object sender, EventArgs e)
         {
-            this.UpdateDataSource(this.Value, this._password.Text, this.DataField);
+            this.UpdateDataSource(this.Value, this.password.Text, this.DataField);
         }
     }
 }

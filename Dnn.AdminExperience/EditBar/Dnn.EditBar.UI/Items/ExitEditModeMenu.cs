@@ -15,27 +15,36 @@ namespace Dnn.EditBar.UI.Items
     using Dnn.EditBar.UI.Helpers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
 
     [Serializable]
     public class ExitEditModeMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "ExitEditMode";
 
+        /// <inheritdoc/>
         public override string Text => "ExitEditMode";
 
+        /// <inheritdoc/>
         public override string CssClass => string.Empty;
 
+        /// <inheritdoc/>
         public override string Template { get; } = string.Empty;
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.RightMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "ExitEditMode";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 100;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit;
         }
     }
 }

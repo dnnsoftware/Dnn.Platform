@@ -24,7 +24,7 @@ DDRjQuery(function ($) {
 		me.clientID = jqContainer[0].id;
 
 		me.showEffect = dnnNavParams.effect || "slide";
-		me.showEffectOptions = eval("(function(){ return " + (dnnNavParams.effectOptions || "{}") + ";})()");
+		me.showEffectOptions = JSON.parse(dnnNavParams.effectOptions) || {};
 		me.showEffectSpeed = dnnNavParams.effectSpeed || 200;
 		me.orientHorizontal = (dnnNavParams.ControlOrientation != "Vertical");
 

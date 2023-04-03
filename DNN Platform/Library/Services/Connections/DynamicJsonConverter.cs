@@ -15,11 +15,13 @@ namespace DotNetNuke.Services.Connections
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
     {
+        /// <inheritdoc/>
         public override IEnumerable<Type> SupportedTypes
         {
             get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
 
+        /// <inheritdoc/>
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
             if (dictionary == null)
@@ -30,6 +32,7 @@ namespace DotNetNuke.Services.Connections
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
         }
 
+        /// <inheritdoc/>
         public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
         {
             throw new NotImplementedException();
@@ -37,7 +40,7 @@ namespace DotNetNuke.Services.Connections
 
         private sealed class DynamicJsonObject : DynamicObject
         {
-            private readonly IDictionary<string, object> _dictionary;
+            private readonly IDictionary<string, object> dictionary;
 
             public DynamicJsonObject(IDictionary<string, object> dictionary)
             {
@@ -46,7 +49,7 @@ namespace DotNetNuke.Services.Connections
                     throw new ArgumentNullException("dictionary");
                 }
 
-                this._dictionary = dictionary;
+                this.dictionary = dictionary;
             }
 
             public override string ToString()
@@ -58,7 +61,7 @@ namespace DotNetNuke.Services.Connections
 
             public override bool TryGetMember(GetMemberBinder binder, out object result)
             {
-                if (!this._dictionary.TryGetValue(binder.Name, out result))
+                if (!this.dictionary.TryGetValue(binder.Name, out result))
                 {
                     // return null to avoid exception.  caller can check for null this way...
                     result = null;
@@ -73,7 +76,7 @@ namespace DotNetNuke.Services.Connections
             {
                 if (indexes.Length == 1 && indexes[0] != null)
                 {
-                    if (!this._dictionary.TryGetValue(indexes[0].ToString(), out result))
+                    if (!this.dictionary.TryGetValue(indexes[0].ToString(), out result))
                     {
                         // return null to avoid exception.  caller can check for null this way...
                         result = null;
@@ -109,7 +112,7 @@ namespace DotNetNuke.Services.Connections
             private void ToString(StringBuilder sb)
             {
                 var firstInDictionary = true;
-                foreach (var pair in this._dictionary)
+                foreach (var pair in this.dictionary)
                 {
                     if (!firstInDictionary)
                     {

@@ -1,28 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
     /// <summary>
     /// An always empty <see cref="IDictionary"/>.
     /// </summary>
@@ -32,15 +32,15 @@ namespace log4net.Util
     /// interface that always represents an empty collection.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
 #if !NETCF
     [Serializable]
 #endif
     public sealed class EmptyDictionary : IDictionary
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmptyDictionary" /> class.
+        /// Initializes a new instance of the <see cref="EmptyDictionary" /> class. 
         /// </summary>
         /// <remarks>
         /// <para>
@@ -66,27 +66,27 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Copies the elements of the <see cref="ICollection"/> to an
+        /// Copies the elements of the <see cref="ICollection"/> to an 
         /// <see cref="Array"/>, starting at a particular Array index.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="Array"/>
-        /// that is the destination of the elements copied from
-        /// <see cref="ICollection"/>. The Array must have zero-based
+        /// <param name="array">The one-dimensional <see cref="Array"/> 
+        /// that is the destination of the elements copied from 
+        /// <see cref="ICollection"/>. The Array must have zero-based 
         /// indexing.</param>
-        /// <param name="index">The zero-based index in array at which
+        /// <param name="index">The zero-based index in array at which 
         /// copying begins.</param>
         /// <remarks>
         /// <para>
         /// As the collection is empty no values are copied into the array.
         /// </para>
         /// </remarks>
-        public void CopyTo(System.Array array, int index)
+        public void CopyTo(Array array, int index)
         {
             // copy nothing
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets a value indicating if access to the <see cref="ICollection"/> is synchronized (thread-safe).
+        /// Gets a value indicating if access to the <see cref="ICollection"/> is synchronized (thread-safe).
         /// </summary>
         /// <value>
         /// <b>true</b> if access to the <see cref="ICollection"/> is synchronized (thread-safe); otherwise, <b>false</b>.
@@ -98,11 +98,11 @@ namespace log4net.Util
         /// </remarks>
         public bool IsSynchronized
         {
-            get { return true; }
+            get	{ return true; }
         }
 
         /// <summary>
-        /// Gets the number of elements contained in the <see cref="ICollection"/>.
+        /// Gets the number of elements contained in the <see cref="ICollection"/>
         /// </summary>
         /// <value>
         /// The number of elements contained in the <see cref="ICollection"/>.
@@ -138,7 +138,7 @@ namespace log4net.Util
         /// Returns an enumerator that can iterate through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="IEnumerator"/> that can be used to
+        /// An <see cref="IEnumerator"/> that can be used to 
         /// iterate through the collection.
         /// </returns>
         /// <remarks>
@@ -152,7 +152,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Adds an element with the provided key and value to the
+        /// Adds an element with the provided key and value to the 
         /// <see cref="EmptyDictionary" />.
         /// </summary>
         /// <param name="key">The <see cref="object" /> to use as the key of the element to add.</param>
@@ -185,11 +185,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Determines whether the <see cref="EmptyDictionary" /> contains an element
+        /// Determines whether the <see cref="EmptyDictionary" /> contains an element 
         /// with the specified key.
         /// </summary>
         /// <param name="key">The key to locate in the <see cref="EmptyDictionary" />.</param>
-        /// <returns><c>false</c>.</returns>
+        /// <returns><c>false</c></returns>
         /// <remarks>
         /// <para>
         /// As the collection is empty the <see cref="Contains"/> method always returns <c>false</c>.
@@ -204,7 +204,7 @@ namespace log4net.Util
         /// Returns an enumerator that can iterate through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="IEnumerator"/> that can be used to
+        /// An <see cref="IEnumerator"/> that can be used to 
         /// iterate through the collection.
         /// </returns>
         /// <remarks>
@@ -236,7 +236,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets a value indicating whether the <see cref="EmptyDictionary" /> has a fixed size.
         /// </summary>
-        /// <value><c>true</c>.</value>
+        /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
         /// As the collection is empty <see cref="IsFixedSize"/> always returns <c>true</c>.
@@ -250,7 +250,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets a value indicating whether the <see cref="EmptyDictionary" /> is read-only.
         /// </summary>
-        /// <value><c>true</c>.</value>
+        /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
         /// As the collection is empty <see cref="IsReadOnly"/> always returns <c>true</c>.
@@ -258,7 +258,7 @@ namespace log4net.Util
         /// </remarks>
         public bool IsReadOnly
         {
-            get { return true; }
+            get	{ return true; }
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace log4net.Util
         /// As the collection is empty a <see cref="EmptyCollection"/> is returned.
         /// </para>
         /// </remarks>
-        public System.Collections.ICollection Keys
+        public ICollection Keys
         {
             get { return EmptyCollection.Instance; }
         }
@@ -284,7 +284,7 @@ namespace log4net.Util
         /// As the collection is empty a <see cref="EmptyCollection"/> is returned.
         /// </para>
         /// </remarks>
-        public System.Collections.ICollection Values
+        public ICollection Values
         {
             get { return EmptyCollection.Instance; }
         }
@@ -293,10 +293,10 @@ namespace log4net.Util
         /// Gets or sets the element with the specified key.
         /// </summary>
         /// <param name="key">The key of the element to get or set.</param>
-        /// <value><c>null</c>.</value>
+        /// <value><c>null</c></value>
         /// <remarks>
         /// <para>
-        /// As the collection is empty no values can be looked up or stored.
+        /// As the collection is empty no values can be looked up or stored. 
         /// If the index getter is called then <c>null</c> is returned.
         /// A <see cref="InvalidOperationException"/> is thrown if the setter is called.
         /// </para>

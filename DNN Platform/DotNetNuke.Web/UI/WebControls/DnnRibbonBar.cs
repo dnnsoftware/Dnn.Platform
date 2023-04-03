@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBar : WebControl
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBar"/> class.</summary>
         public DnnRibbonBar()
             : base("div")
         {
@@ -30,6 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void AddParsedSubObject(object obj)
         {
             if (obj is DnnRibbonBarGroup)
@@ -42,11 +44,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override ControlCollection CreateControlCollection()
         {
             return new DnnRibbonBarGroupCollection(this);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -56,6 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.Groups.Count > 0)

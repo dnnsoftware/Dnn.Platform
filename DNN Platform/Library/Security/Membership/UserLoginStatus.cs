@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Security.Membership
 {
+    using System;
+
     public enum UserLoginStatus
     {
         LOGIN_FAILURE = 0,
@@ -11,7 +13,9 @@ namespace DotNetNuke.Security.Membership
         LOGIN_SUPERUSER = 2,
         LOGIN_USERLOCKEDOUT = 3,
         LOGIN_USERNOTAPPROVED = 4,
+        [Obsolete("Deprecated in 9.8.1.  Scheduled removal in v11.0.0.  No alternative method implemented.")]
         LOGIN_INSECUREADMINPASSWORD = 5,
+        [Obsolete("Deprecated in 9.8.1.  Scheduled removal in v11.0.0.  No alternative method implemented.")]
         LOGIN_INSECUREHOSTPASSWORD = 6,
     }
 }

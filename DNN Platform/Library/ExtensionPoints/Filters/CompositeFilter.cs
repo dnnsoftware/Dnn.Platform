@@ -11,6 +11,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
     {
         private readonly IList<IExtensionPointFilter> filters;
 
+        /// <summary>Initializes a new instance of the <see cref="CompositeFilter"/> class.</summary>
         public CompositeFilter()
         {
             this.filters = new List<IExtensionPointFilter>();
@@ -22,6 +23,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
             return this;
         }
 
+        /// <inheritdoc/>
         public bool Condition(IExtensionPointData m)
         {
             return this.filters.All(f => f.Condition(m));

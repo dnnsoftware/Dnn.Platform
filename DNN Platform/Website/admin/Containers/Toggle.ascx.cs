@@ -11,15 +11,12 @@ namespace DotNetNuke.UI.Containers.Controls
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     [ParseChildren(false)]
     [PersistChildren(true)]
     public partial class Toggle : SkinObjectBase
     {
-        private string _target;
+        private string target;
 
         public string Class { get; set; }
 
@@ -27,12 +24,12 @@ namespace DotNetNuke.UI.Containers.Controls
         {
             get
             {
-                if (this.Parent == null || string.IsNullOrEmpty(this._target))
+                if (this.Parent == null || string.IsNullOrEmpty(this.target))
                 {
                     return string.Empty;
                 }
 
-                var targetControl = this.Parent.FindControl(this._target);
+                var targetControl = this.Parent.FindControl(this.target);
                 if (targetControl == null)
                 {
                     return string.Empty;
@@ -45,10 +42,11 @@ namespace DotNetNuke.UI.Containers.Controls
 
             set
             {
-                this._target = value;
+                this.target = value;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.jQuery);
@@ -61,6 +59,7 @@ namespace DotNetNuke.UI.Containers.Controls
             this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID, toggleScript);
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute("id", this.ClientID);

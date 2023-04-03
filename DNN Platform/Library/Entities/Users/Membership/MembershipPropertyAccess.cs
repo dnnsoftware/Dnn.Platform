@@ -12,11 +12,14 @@ namespace DotNetNuke.Entities.Users
     {
         private readonly UserInfo objUser;
 
-        public MembershipPropertyAccess(UserInfo User)
+        /// <summary>Initializes a new instance of the <see cref="MembershipPropertyAccess"/> class.</summary>
+        /// <param name="user"></param>
+        public MembershipPropertyAccess(UserInfo user)
         {
-            this.objUser = User;
+            this.objUser = user;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -25,22 +28,23 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
+        /// <inheritdoc/>
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             UserMembership objMembership = this.objUser.Membership;
-            bool UserQueriesHimself = this.objUser.UserID == AccessingUser.UserID && this.objUser.UserID != -1;
-            if (CurrentScope < Scope.DefaultSettings || (CurrentScope == Scope.DefaultSettings && !UserQueriesHimself) ||
-                ((CurrentScope != Scope.SystemMessages || this.objUser.IsSuperUser)
+            bool userQueriesHimself = this.objUser.UserID == accessingUser.UserID && this.objUser.UserID != -1;
+            if (currentScope < Scope.DefaultSettings || (currentScope == Scope.DefaultSettings && !userQueriesHimself) ||
+                ((currentScope != Scope.SystemMessages || this.objUser.IsSuperUser)
                     && (propertyName.Equals("password", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordanswer", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordquestion", StringComparison.InvariantCultureIgnoreCase))))
             {
-                PropertyNotFound = true;
+                propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
 
-            string OutputFormat = string.Empty;
+            string outputFormat = string.Empty;
             if (format == string.Empty)
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
 
             switch (propertyName.ToLowerInvariant())
@@ -48,17 +52,17 @@ namespace DotNetNuke.Entities.Users
                 case "approved":
                     return PropertyAccess.Boolean2LocalizedYesNo(objMembership.Approved, formatProvider);
                 case "createdondate":
-                    return objMembership.CreatedDate.ToString(OutputFormat, formatProvider);
+                    return objMembership.CreatedDate.ToString(outputFormat, formatProvider);
                 case "isonline":
                     return PropertyAccess.Boolean2LocalizedYesNo(objMembership.IsOnLine, formatProvider);
                 case "lastactivitydate":
-                    return objMembership.LastActivityDate.ToString(OutputFormat, formatProvider);
+                    return objMembership.LastActivityDate.ToString(outputFormat, formatProvider);
                 case "lastlockoutdate":
-                    return objMembership.LastLockoutDate.ToString(OutputFormat, formatProvider);
+                    return objMembership.LastLockoutDate.ToString(outputFormat, formatProvider);
                 case "lastlogindate":
-                    return objMembership.LastLoginDate.ToString(OutputFormat, formatProvider);
+                    return objMembership.LastLoginDate.ToString(outputFormat, formatProvider);
                 case "lastpasswordchangedate":
-                    return objMembership.LastPasswordChangeDate.ToString(OutputFormat, formatProvider);
+                    return objMembership.LastPasswordChangeDate.ToString(outputFormat, formatProvider);
                 case "lockedout":
                     return PropertyAccess.Boolean2LocalizedYesNo(objMembership.LockedOut, formatProvider);
                 case "objecthydrated":
@@ -81,7 +85,7 @@ namespace DotNetNuke.Entities.Users
                     return PropertyAccess.FormatString(this.objUser.Email, format);
             }
 
-            return PropertyAccess.GetObjectProperty(objMembership, propertyName, format, formatProvider, ref PropertyNotFound);
+            return PropertyAccess.GetObjectProperty(objMembership, propertyName, format, formatProvider, ref propertyNotFound);
         }
     }
 }

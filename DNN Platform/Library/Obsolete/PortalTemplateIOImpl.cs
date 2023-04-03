@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Xml;
 
     using DotNetNuke.Common;
 
@@ -16,6 +17,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalTemplateIO. Scheduled removal in v10.0.0.")]
     public class PortalTemplateIOImpl : IPortalTemplateIO
     {
+        /// <inheritdoc/>
         public IEnumerable<string> EnumerateTemplates()
         {
             string path = Globals.HostMapPath;
@@ -27,6 +29,7 @@ namespace DotNetNuke.Entities.Portals.Internal
             return new string[0];
         }
 
+        /// <inheritdoc/>
         public IEnumerable<string> EnumerateLanguageFiles()
         {
             string path = Globals.HostMapPath;
@@ -38,19 +41,47 @@ namespace DotNetNuke.Entities.Portals.Internal
             return new string[0];
         }
 
+        /// <inheritdoc/>
         public string GetResourceFilePath(string templateFilePath)
         {
             return CheckFilePath(templateFilePath + ".resources");
         }
 
+        /// <inheritdoc/>
         public string GetLanguageFilePath(string templateFilePath, string cultureCode)
         {
             return CheckFilePath(string.Format("{0}.{1}.resx", templateFilePath, cultureCode));
         }
 
+        /// <inheritdoc/>
         public TextReader OpenTextReader(string filePath)
         {
             return new StreamReader(File.Open(filePath, FileMode.Open));
+        }
+
+        /// <inheritdoc/>
+        public (string, List<string>) GetTemplateLanguages(string templateFilePath)
+        {
+            var defaultLanguage = string.Empty;
+            var locales = new List<string>();
+            var templateXml = new XmlDocument() { XmlResolver = null };
+            templateXml.Load(templateFilePath);
+            var node = templateXml.SelectSingleNode("//settings/defaultlanguage");
+            if (node != null)
+            {
+                defaultLanguage = node.InnerText;
+            }
+
+            node = templateXml.SelectSingleNode("//locales");
+            if (node != null)
+            {
+                foreach (XmlNode lnode in node.SelectNodes("//locale"))
+                {
+                    locales.Add(lnode.InnerText);
+                }
+            }
+
+            return (defaultLanguage, locales);
         }
 
         private static string CheckFilePath(string path)

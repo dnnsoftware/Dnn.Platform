@@ -12,8 +12,9 @@ namespace Dnn.PersonaBar.Security.Attributes
     using DotNetNuke.Services.Localization;
 
     [AttributeUsage(AttributeTargets.Property)]
-    class TabExistAttribute : ValidationAttribute
+    internal class TabExistAttribute : ValidationAttribute
     {
+        /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;

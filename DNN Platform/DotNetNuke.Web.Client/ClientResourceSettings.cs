@@ -23,23 +23,23 @@ namespace DotNetNuke.Web.Client
         public static readonly string OverrideDefaultSettingsKey = "CrmUseApplicationSettings";
         public static readonly string VersionKey = "CrmVersion";
 
-        private static readonly Type _portalControllerType;
-        private static readonly Type _portalAliasControllerType;
-        private static readonly Type _hostControllerType;
-        private static readonly Type _commonGlobalsType;
+        private static readonly Type PortalControllerType;
+        private static readonly Type PortalAliasControllerType;
+        private static readonly Type HostControllerType;
+        private static readonly Type CommonGlobalsType;
 
-        private bool _statusChecked;
-        private UpgradeStatus _status;
+        private bool statusChecked;
+        private UpgradeStatus status;
 
         static ClientResourceSettings()
         {
             try
             {
                 // all these types are part of the same library, so we don't need a separate catch for each one
-                _commonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
-                _portalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
-                _portalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
-                _hostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
+                CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
+                PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
+                PortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
+                HostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
             }
             catch (Exception)
             {
@@ -49,65 +49,65 @@ namespace DotNetNuke.Web.Client
 
         private enum UpgradeStatus
         {
-            /// <summary>
-            /// The application need update to a higher version.
-            /// </summary>
-            Upgrade,
+            /// <summary>The application need update to a higher version.</summary>
+            Upgrade = 0,
 
-            /// <summary>
-            /// The application need to install itself.
-            /// </summary>
-            Install,
+            /// <summary>The application need to install itself.</summary>
+            Install = 1,
 
-            /// <summary>
-            /// The application is normal running.
-            /// </summary>
-            None,
+            /// <summary>The application is normal running.</summary>
+            None = 2,
 
-            /// <summary>
-            /// The application occur error when running.
-            /// </summary>
-            Error,
+            /// <summary>The application occur error when running.</summary>
+            Error = 3,
 
-            /// <summary>
-            /// The application status is unknown,
-            /// </summary>
+            /// <summary>The application status is unknown,</summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown,
+            Unknown = 4,
         }
 
         private UpgradeStatus Status
         {
             get
             {
-                if (!this._statusChecked)
+                if (!this.statusChecked)
                 {
-                    this._status = this.GetStatusByReflection();
-                    this._statusChecked = true;
+                    this.status = this.GetStatusByReflection();
+                    this.statusChecked = true;
                 }
 
-                return this._status;
+                return this.status;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
+        [Obsolete("Deprecated in DotNetNuke 9.10.3.  Use overload taking portalId. Scheduled removal in v11.0.0.")]
         public bool IsOverridingDefaultSettingsEnabled()
         {
-            var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
-            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+            int? portalId = GetPortalIdThroughReflection();
+            return this.IsOverridingDefaultSettingsEnabled(portalId);
+        }
+
+        public bool IsOverridingDefaultSettingsEnabled(int? portalId)
+        {
+            var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
+            var overrideDefaultSettings = GetBooleanSetting(portalId, PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
 
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
             return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
         }
 
+        [Obsolete("Deprecated in DotNetNuke 9.10.3.  Use overload taking portalId. Scheduled removal in v11.0.0.")]
         public int? GetVersion()
         {
-            var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
-            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+            int? portalId = GetPortalIdThroughReflection();
+            return this.GetVersion(portalId);
+        }
+
+        public int? GetVersion(int? portalId)
+        {
+            var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
+            var overrideDefaultSettings = GetBooleanSetting(portalId, PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
 
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.Client
             }
 
             // otherwise return the host setting
-            var hostVersion = GetIntegerSetting(HostSettingsDictionaryKey, VersionKey);
+            var hostVersion = GetIntegerSetting(portalId, HostSettingsDictionaryKey, VersionKey);
             if (hostVersion.HasValue)
             {
                 return hostVersion.Value;
@@ -129,22 +129,25 @@ namespace DotNetNuke.Web.Client
 
         public bool? AreCompositeFilesEnabled()
         {
-            return this.IsBooleanSettingEnabled(EnableCompositeFilesKey);
+            int? portalId = GetPortalIdThroughReflection();
+            return this.IsBooleanSettingEnabled(portalId, EnableCompositeFilesKey);
         }
 
         public bool? EnableCssMinification()
         {
-            return this.IsBooleanSettingEnabled(MinifyCssKey);
+            int? portalId = GetPortalIdThroughReflection();
+            return this.IsBooleanSettingEnabled(portalId, MinifyCssKey);
         }
 
         public bool? EnableJsMinification()
         {
-            return this.IsBooleanSettingEnabled(MinifyJsKey);
+            int? portalId = GetPortalIdThroughReflection();
+            return this.IsBooleanSettingEnabled(portalId, MinifyJsKey);
         }
 
-        private static bool? GetBooleanSetting(string dictionaryKey, string settingKey)
+        private static bool? GetBooleanSetting(int? portalId, string dictionaryKey, string settingKey)
         {
-            var setting = GetSetting(dictionaryKey, settingKey);
+            var setting = GetSetting(portalId, dictionaryKey, settingKey);
             bool result;
             if (setting != null && bool.TryParse(setting, out result))
             {
@@ -154,9 +157,9 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private static int? GetIntegerSetting(string dictionaryKey, string settingKey)
+        private static int? GetIntegerSetting(int? portalId, string dictionaryKey, string settingKey)
         {
-            var setting = GetSetting(dictionaryKey, settingKey);
+            var setting = GetSetting(portalId, dictionaryKey, settingKey);
             int version;
             if (setting != null && int.TryParse(setting, out version))
             {
@@ -169,7 +172,7 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private static string GetSetting(string dictionaryKey, string settingKey)
+        private static string GetSetting(int? portalId, string dictionaryKey, string settingKey)
         {
             bool isHttpContext = HttpContext.Current != null && HttpContext.Current.Items.Contains(dictionaryKey);
             var settings = isHttpContext ? HttpContext.Current.Items[dictionaryKey] : null;
@@ -180,7 +183,7 @@ namespace DotNetNuke.Web.Client
                     return GetHostSettingThroughReflection(settingKey);
                 }
 
-                return GetPortalSettingThroughReflection(settingKey);
+                return GetPortalSettingThroughReflection(portalId, settingKey);
             }
 
             string value;
@@ -194,14 +197,13 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private static string GetPortalSettingThroughReflection(string settingKey)
+        private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
         {
             try
             {
-                int? portalId = GetPortalIdThroughReflection();
                 if (portalId.HasValue)
                 {
-                    var method = _portalControllerType.GetMethod("GetPortalSettingsDictionary");
+                    var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary");
                     var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
                     string value;
                     if (dictionary.TryGetValue(settingKey, out value))
@@ -222,8 +224,8 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = _portalAliasControllerType.GetMethod("GetPortalAliasInfo");
-                var portalAliasInfo = method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host });
+                var method = PortalAliasControllerType.GetMethod("GetPortalAliasInfo");
+                var portalAliasInfo = HttpContext.Current != null ? method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host }) : null;
                 if (portalAliasInfo != null)
                 {
                     object portalId = portalAliasInfo.GetType().GetProperty("PortalID").GetValue(portalAliasInfo, new object[] { });
@@ -242,8 +244,8 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = _hostControllerType.GetMethod("GetSettingsDictionary");
-                var property = _hostControllerType.BaseType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
+                var method = HostControllerType.GetMethod("GetSettingsDictionary");
+                var property = HostControllerType.BaseType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
                 var instance = property.GetValue(null, Type.EmptyTypes);
                 var dictionary = (Dictionary<string, string>)method.Invoke(instance, Type.EmptyTypes);
                 string value;
@@ -260,15 +262,15 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private bool? IsBooleanSettingEnabled(string settingKey)
+        private bool? IsBooleanSettingEnabled(int? portalId, string settingKey)
         {
             if (this.Status != UpgradeStatus.None)
             {
                 return false;
             }
 
-            var portalEnabled = GetBooleanSetting(PortalSettingsDictionaryKey, settingKey);
-            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+            var portalEnabled = GetBooleanSetting(portalId, PortalSettingsDictionaryKey, settingKey);
+            var overrideDefaultSettings = GetBooleanSetting(portalId, PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
 
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
@@ -278,7 +280,7 @@ namespace DotNetNuke.Web.Client
             }
 
             // otherwise return the host setting
-            var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
+            var hostEnabled = GetBooleanSetting(portalId, HostSettingsDictionaryKey, settingKey);
             if (hostEnabled.HasValue)
             {
                 return hostEnabled.Value;
@@ -292,7 +294,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var property = _commonGlobalsType.GetProperty("Status", BindingFlags.Static | BindingFlags.Public);
+                var property = CommonGlobalsType.GetProperty("Status", BindingFlags.Static | BindingFlags.Public);
                 var status = (UpgradeStatus)property.GetValue(null, null);
                 return status;
             }

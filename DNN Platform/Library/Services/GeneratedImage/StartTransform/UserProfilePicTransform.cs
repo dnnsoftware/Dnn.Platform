@@ -1,13 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Drawing2D;
-    using System.Drawing.Imaging;
     using System.IO;
 
     using DotNetNuke.Common;
@@ -15,11 +13,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// User Profile Picture ImageTransform class.
-    /// </summary>
+    /// <summary>User Profile Picture ImageTransform class.</summary>
     public class UserProfilePicTransform : ImageTransform
     {
+        /// <summary>Initializes a new instance of the <see cref="UserProfilePicTransform"/> class.</summary>
         public UserProfilePicTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -28,26 +25,16 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             this.CompositingQuality = CompositingQuality.HighQuality;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for the image transformation.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for the image transformation.</summary>
         public override string UniqueString => base.UniqueString + this.UserID;
 
-        /// <summary>
-        /// Gets a value indicating whether is reusable.
-        /// </summary>
+        /// <summary>Gets a value indicating whether is reusable.</summary>
         public bool IsReusable => false;
 
-        /// <summary>
-        /// Gets or sets the UserID of the profile pic.
-        /// </summary>
+        /// <summary>Gets or sets the UserID of the profile pic.</summary>
         public int UserID { get; set; }
 
-        /// <summary>
-        /// Processes an input image returning the user profile picture.
-        /// </summary>
-        /// <param name="image">Input image.</param>
-        /// <returns>Image result after image transformation.</returns>
+        /// <inheritdoc />
         public override Image ProcessImage(Image image)
         {
             IFileInfo photoFile;
@@ -68,10 +55,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             return this.GetNoAvatarImage();
         }
 
-        /// <summary>
-        /// Get the Bitmap of the No Avatar Image.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Get the Bitmap of the No Avatar Image.</summary>
+        /// <returns>A <see cref="Bitmap"/> of the No Avatar image.</returns>
         public Bitmap GetNoAvatarImage()
         {
             var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
@@ -81,16 +66,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             }
         }
 
-        /// <summary>
-        /// whether current user has permission to view target user's photo.
-        /// </summary>
-        /// <param name="photoFile"></param>
-        /// <returns></returns>
+        /// <summary>whether current user has permission to view target user's photo.</summary>
+        /// <param name="photoFile">The user's profile photo file, or <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the file was able to be retrieved, otherwise <see langword="false"/>.</returns>
         public bool TryGetPhotoFile(out IFileInfo photoFile)
         {
             photoFile = null;
 
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var targetUser = UserController.Instance.GetUser(settings.PortalId, this.UserID);
             if (targetUser == null)
             {

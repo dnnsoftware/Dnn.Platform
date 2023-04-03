@@ -5,43 +5,33 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project     : DotNetNuke
     /// Namespace   : DotNetNuke.Services.Installer.Packages
     /// Class       : PackageCreatedEventArgs
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// PackageCreatedEventArgs provides a custom EventArgs class for a
     /// Package Created Event.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class PackageCreatedEventArgs : EventArgs
     {
-        private readonly PackageInfo _Package;
+        private readonly PackageInfo package;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PackageCreatedEventArgs"/> class.
         /// Builds a new PackageCreatedEventArgs.
         /// </summary>
         /// <param name="package">The package associated with this event.</param>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public PackageCreatedEventArgs(PackageInfo package)
         {
-            this._Package = package;
+            this.package = package;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Package associated with this event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Package associated with this event.</summary>
         public PackageInfo Package
         {
             get
             {
-                return this._Package;
+                return this.package;
             }
         }
     }

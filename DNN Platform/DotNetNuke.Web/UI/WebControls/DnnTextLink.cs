@@ -12,9 +12,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTextLink : WebControl, ILocalizable
     {
-        private bool _localize = true;
-        private HyperLink _textHyperlinkControl;
+        private bool localize = true;
+        private HyperLink textHyperlinkControl;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnTextLink"/> class.</summary>
         public DnnTextLink()
             : base("span")
         {
@@ -39,6 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -107,34 +109,37 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public bool Localize
         {
             get
             {
-                return this._localize;
+                return this.localize;
             }
 
             set
             {
-                this._localize = value;
+                this.localize = value;
             }
         }
 
+        /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
         private HyperLink TextHyperlinkControl
         {
             get
             {
-                if (this._textHyperlinkControl == null)
+                if (this.textHyperlinkControl == null)
                 {
-                    this._textHyperlinkControl = new HyperLink();
+                    this.textHyperlinkControl = new HyperLink();
                 }
 
-                return this._textHyperlinkControl;
+                return this.textHyperlinkControl;
             }
         }
 
+        /// <inheritdoc/>
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -161,18 +166,21 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
             this.Controls.Add(this.TextHyperlinkControl);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

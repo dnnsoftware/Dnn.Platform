@@ -8,16 +8,10 @@ namespace Dnn.ExportImport.Components.Controllers
 
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    ///
-    /// </summary>
+    /// <inheritdoc/>
     public class BusinessController : IUpgradeable
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="version"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             try

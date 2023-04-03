@@ -22,11 +22,12 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
     public class SecurityService : ISecurityService
     {
-        private readonly ITabController _tabController;
+        private readonly ITabController tabController;
 
+        /// <summary>Initializes a new instance of the <see cref="SecurityService"/> class.</summary>
         public SecurityService()
         {
-            this._tabController = TabController.Instance;
+            this.tabController = TabController.Instance;
         }
 
         public static ISecurityService Instance
@@ -43,87 +44,99 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             }
         }
 
+        /// <inheritdoc/>
         public virtual bool IsPageAdminUser()
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
+        /// <inheritdoc/>
         public virtual bool IsVisible(MenuItem menuItem)
         {
             return this.IsPageAdminUser() || this.CanViewPageList(menuItem.MenuId);
         }
 
+        /// <inheritdoc/>
         public virtual JObject GetCurrentPagePermissions()
         {
             var permissions = new JObject
             {
-                {"addContentToPage", TabPermissionController.CanAddContentToPage()},
-                {"addPage", TabPermissionController.CanAddPage()},
-                {"adminPage", TabPermissionController.CanAdminPage()},
-                {"copyPage", TabPermissionController.CanCopyPage()},
-                {"deletePage", TabPermissionController.CanDeletePage()},
-                {"exportPage", TabPermissionController.CanExportPage()},
-                {"importPage", TabPermissionController.CanImportPage()},
-                {"managePage", TabPermissionController.CanManagePage()}
+                { "addContentToPage", TabPermissionController.CanAddContentToPage() },
+                { "addPage", TabPermissionController.CanAddPage() },
+                { "adminPage", TabPermissionController.CanAdminPage() },
+                { "copyPage", TabPermissionController.CanCopyPage() },
+                { "deletePage", TabPermissionController.CanDeletePage() },
+                { "exportPage", TabPermissionController.CanExportPage() },
+                { "importPage", TabPermissionController.CanImportPage() },
+                { "managePage", TabPermissionController.CanManagePage() },
             };
 
             return permissions;
         }
 
+        /// <inheritdoc/>
         public virtual JObject GetPagePermissions(TabInfo tab)
         {
             var permissions = new JObject
             {
-                {"addContentToPage", TabPermissionController.CanAddContentToPage(tab)},
-                {"addPage", TabPermissionController.CanAddPage(tab)},
-                {"adminPage", TabPermissionController.CanAdminPage(tab)},
-                {"copyPage", TabPermissionController.CanCopyPage(tab)},
-                {"deletePage", TabPermissionController.CanDeletePage(tab)},
-                {"exportPage", TabPermissionController.CanExportPage(tab)},
-                {"importPage", TabPermissionController.CanImportPage(tab)},
-                {"managePage", TabPermissionController.CanManagePage(tab)}
+                { "addContentToPage", TabPermissionController.CanAddContentToPage(tab) },
+                { "addPage", TabPermissionController.CanAddPage(tab) },
+                { "adminPage", TabPermissionController.CanAdminPage(tab) },
+                { "copyPage", TabPermissionController.CanCopyPage(tab) },
+                { "deletePage", TabPermissionController.CanDeletePage(tab) },
+                { "exportPage", TabPermissionController.CanExportPage(tab) },
+                { "importPage", TabPermissionController.CanImportPage(tab) },
+                { "managePage", TabPermissionController.CanManagePage(tab) },
             };
 
             return permissions;
         }
 
+        /// <inheritdoc/>
         public virtual bool CanAdminPage(int tabId)
         {
             return this.IsPageAdminUser() || TabPermissionController.CanAdminPage(this.GetTabById(tabId));
         }
 
+        /// <inheritdoc/>
         public virtual bool CanManagePage(int tabId)
         {
             return this.CanAdminPage(tabId) || TabPermissionController.CanManagePage(this.GetTabById(tabId));
         }
 
+        /// <inheritdoc/>
         public virtual bool CanDeletePage(int tabId)
         {
             return this.CanAdminPage(tabId) || TabPermissionController.CanDeletePage(this.GetTabById(tabId));
         }
 
+        /// <inheritdoc/>
         public virtual bool CanAddPage(int tabId)
         {
             return this.CanAdminPage(tabId) || TabPermissionController.CanAddPage(this.GetTabById(tabId));
         }
 
+        /// <inheritdoc/>
         public virtual bool CanCopyPage(int tabId)
         {
             return this.CanAdminPage(tabId) || TabPermissionController.CanCopyPage(this.GetTabById(tabId));
         }
 
+        /// <inheritdoc/>
         public virtual bool CanExportPage(int tabId)
         {
             return this.CanAdminPage(tabId) || TabPermissionController.CanExportPage(this.GetTabById(tabId));
         }
 
+        /// <inheritdoc/>
         public virtual bool CanViewPageList(int menuId)
         {
             var permissions = MenuPermissionController.GetMenuPermissions(PortalSettings.Current.PortalId, menuId);
             return MenuPermissionController.HasMenuPermission(new MenuPermissionCollection(permissions), "VIEW_PAGE_LIST") || this.IsPageAdmin();
         }
 
+        /// <inheritdoc/>
         public virtual bool CanSavePageDetails(PageSettings pageSettings)
         {
             var tabId = pageSettings.TabId;
@@ -143,16 +156,16 @@ namespace Dnn.PersonaBar.Pages.Components.Security
                 }
             }
 
-            return (
+            return
                 this.IsPageAdminUser() ||
-                creatingPage && this.CanAddPage(parentId) && !creatingTemplate ||
-                creatingTemplate && this.CanExportPage(pageSettings.TemplateTabId) ||
-                updatingPage && this.CanManagePage(tabId) && !updatingParentPage ||
-                updatingParentPage && this.CanManagePage(tabId) && this.CanAddPage(parentId) ||
-                duplicatingPage && this.CanCopyPage(pageSettings.TemplateTabId) && this.CanAddPage(parentId)
-            );
+                (creatingPage && this.CanAddPage(parentId) && !creatingTemplate) ||
+                (creatingTemplate && this.CanExportPage(pageSettings.TemplateTabId)) ||
+                (updatingPage && this.CanManagePage(tabId) && !updatingParentPage) ||
+                (updatingParentPage && this.CanManagePage(tabId) && this.CanAddPage(parentId)) ||
+                (duplicatingPage && this.CanCopyPage(pageSettings.TemplateTabId) && this.CanAddPage(parentId));
         }
 
+        /// <inheritdoc/>
         public virtual bool IsAdminHostSystemPage()
         {
             return PortalSettings.Current.ActiveTab.IsSystem || PortalSettings.Current.ActiveTab.IsSuperTab ||
@@ -161,7 +174,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         private bool IsPageAdmin()
         {
-            return //TabPermissionController.CanAddContentToPage() ||
+            return // TabPermissionController.CanAddContentToPage() ||
                 TabPermissionController.CanAddPage()
                 || TabPermissionController.CanAdminPage()
                 || TabPermissionController.CanCopyPage()
@@ -174,7 +187,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         private TabInfo GetTabById(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return pageId <= 0 ? new TabInfo() : this._tabController.GetTab(pageId, portalSettings.PortalId, false);
+            return pageId <= 0 ? new TabInfo { PortalID = portalSettings.PortalId } : this.tabController.GetTab(pageId, portalSettings.PortalId, false);
         }
     }
 }

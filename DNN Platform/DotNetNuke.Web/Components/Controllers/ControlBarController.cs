@@ -22,25 +22,27 @@ namespace DotNetNuke.Web.Components.Controllers
     {
         private const string BookmarkModulesTitle = "module";
         private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";
-        private readonly ExtensionPointManager _mef;
+        private readonly ExtensionPointManager mef;
 
         public ControlBarController()
         {
-            this._mef = new ExtensionPointManager();
+            this.mef = new ExtensionPointManager();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "")
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
 
-            Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter = category == "All"
+            Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> filter = category == "All"
                 ? (kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm))
                 : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
 
-            var portalModulesList = DesktopModuleController.GetPortalDesktopModules(portalId).Where(Filter);
+            var portalModulesList = DesktopModuleController.GetPortalDesktopModules(portalId).Where(filter);
             return portalModulesList;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedDesktopModules(int portalId, int userId, string searchTerm = "")
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
@@ -51,6 +53,7 @@ namespace DotNetNuke.Web.Components.Controllers
             return bookmarkedModules;
         }
 
+        /// <inheritdoc/>
         public void SaveBookMark(int portalId, int userId, string bookmarkTitle, string bookmarkValue)
         {
             var ensuredBookmarkValue = bookmarkValue;
@@ -66,6 +69,7 @@ namespace DotNetNuke.Web.Components.Controllers
             personalizationController.SaveProfile(personalization);
         }
 
+        /// <inheritdoc/>
         public string GetBookmarkCategory(int portalId)
         {
             var bookmarkCategory = PortalController.GetPortalSetting(BookmarkCategoryProperty, portalId, string.Empty);
@@ -78,23 +82,27 @@ namespace DotNetNuke.Web.Components.Controllers
             return bookmarkCategory;
         }
 
+        /// <inheritdoc/>
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
             var imageUrl = Upgrade.UpgradeIndicator(version, isLocal, isSecureConnection);
             return !string.IsNullOrEmpty(imageUrl) ? this.GetDefaultUpgradeIndicator(imageUrl) : null;
         }
 
+        /// <inheritdoc/>
         public string GetControlBarLogoURL()
         {
             return HostController.Instance.GetString("ControlBarLogoURL", "~/admin/controlpanel/controlbarimages/dnnLogo.png");
         }
 
+        /// <inheritdoc/>
         public IEnumerable<MenuItemViewModel> GetCustomMenuItems()
         {
-            var menuItemsExtensionPoints = this._mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
+            var menuItemsExtensionPoints = this.mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
             return menuItemsExtensionPoints.Select(this.GetMenuItemFromExtensionPoint);
         }
 
+        /// <inheritdoc/>
         protected override Func<IControlBarController> GetFactory()
         {
             return () => new ControlBarController();

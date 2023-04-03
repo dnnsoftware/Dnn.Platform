@@ -5,17 +5,20 @@
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Caching;
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.UI.Services.DTO;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -29,20 +32,15 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
-        private const string CriticalUpdateHash = "e67b666fb40c4f304a41d1706d455c09017b7bcf4ec1e411450ebfcd2c8f12d0";
-        private const string NormalUpdateHash = "df29e1cda367bb8fa8534b5fb2415406100252dec057138b8d63cbadb44fb8e7";
-
         private enum UpdateType
         {
-            None,
-            Normal,
-            Critical,
+            None = 0,
+            Normal = 1,
+            Critical = 2,
         }
 
-        /// <summary>
-        /// Return server info.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Return server info.</summary>
+        /// <returns>A response with server info.</returns>
         [HttpGet]
         public HttpResponseMessage GetServerInfo()
         {
@@ -57,6 +55,7 @@ namespace Dnn.PersonaBar.UI.Services
                     ServerName = isHost ? Globals.ServerName : string.Empty,
                     LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
                     DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),
+                    Update = this.UpdateInfo(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -68,13 +67,13 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
+        /// <summary>Returns update information about current framework version.</summary>
+        /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
-        public HttpResponseMessage GetUpdateLink()
-        {
-            UpdateType updateType;
-            var url = this.NeedUpdate(out updateType) ? Upgrade.UpgradeRedirect() : string.Empty;
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Url = url, Type = updateType });
+        public HttpResponseMessage GetUpdateInfo()
+        {
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());
         }
 
         private bool GetVisibleSetting(string settingName)
@@ -85,70 +84,67 @@ namespace Dnn.PersonaBar.UI.Services
                    || portalSettings[settingName] == "true";
         }
 
-        private bool NeedUpdate(out UpdateType updateType)
+        private FrameworkQueryDTO UpdateInfo()
         {
-            updateType = UpdateType.None;
-
             if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
             {
-                return false;
+                return new FrameworkQueryDTO();
             }
 
-            var version = DotNetNukeContext.Current.Application.Version;
-            var request = HttpContext.Current.Request;
+            return CBO.GetCachedObject<FrameworkQueryDTO>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
+        }
 
-            var imageUrl = Upgrade.UpgradeIndicator(version, request.IsLocal, request.IsSecureConnection);
-            imageUrl = Globals.AddHTTP(imageUrl.TrimStart('/'));
-
+        private FrameworkQueryDTO RetrieveUpdateUrl(CacheItemArgs args)
+        {
             try
             {
-                string hash;
-                const string cacheKey = "UpdateServiceUrlCacheKey";
-                var cachedData = DataCache.GetCache(cacheKey) as string;
-                if (cachedData != null)
+                var url = $"{DotNetNukeContext.Current.Application.UpgradeUrl}/Update/FrameworkStatus";
+                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, string.Empty);
+                url += "&type=" + DotNetNukeContext.Current.Application.Type;
+                url += "&name=" + DotNetNukeContext.Current.Application.Name;
+                url += "&id=" + Host.GUID;
+                url += "&no=" + PortalController.Instance.GetPortals().Count;
+                url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
+                url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);
+                url += "&db=" + Globals.FormatVersion(Globals.DatabaseEngineVersion, "00", 2, string.Empty);
+                var response = this.GetJsonObject<FrameworkQueryDTO>(url);
+                if (response.Version.Length == 6)
                 {
-                    hash = cachedData;
-                }
-                else
-                {
-                    var webRequest = WebRequest.CreateHttp(imageUrl);
-                    webRequest.Timeout = Host.WebRequestTimeout;
-                    webRequest.UserAgent = request.UserAgent;
-                    webRequest.Referer = request.RawUrl;
-
-                    using (var stream = ((HttpWebResponse)webRequest.GetResponse()).GetResponseStream())
-                    {
-                        if (stream == null)
-                        {
-                            return false;
-                        }
-
-                        using (var sha256 = SHA256.Create())
-                        {
-                            hash =
-                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", string.Empty).ToLowerInvariant();
-                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency)null,
-                                Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
-                        }
-                    }
+                    response.Version = $"v. {response.Version.Substring(0, 2)}.{response.Version.Substring(2, 2)}.{response.Version.Substring(4, 2)}";
                 }
 
-                switch (hash)
-                {
-                    case NormalUpdateHash:
-                        updateType = UpdateType.Normal;
-                        return true;
-                    case CriticalUpdateHash:
-                        updateType = UpdateType.Critical;
-                        return true;
-                    default:
-                        return false;
-                }
+                return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                Exceptions.LogException(ex);
             }
+
+            return new FrameworkQueryDTO();
+        }
+
+        private T GetJsonObject<T>(string url)
+        {
+            var request = Globals.GetExternalRequest(url);
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var dataStream = response.GetResponseStream();
+                    var reader = new StreamReader(dataStream);
+                    var responseFromServer = reader.ReadToEnd();
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseFromServer);
+                }
+            }
+
+            return default(T);
+        }
+
+        private string UpdateUrl()
+        {
+            var url = DotNetNukeContext.Current.Application.UpgradeUrl;
+
+            return url;
         }
     }
 }

@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 {
     using System.Linq;
     using System.Web.Mvc;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -38,6 +39,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
+
         public void Should_Forward_FindPartialView_To_Current_ModuleApplication_ViewEngineCollection()
         {
             // Arrange
@@ -69,6 +71,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
+
         public void Should_Forward_FindView_To_Current_ModuleApplication_ViewEngineCollection()
         {
             // Arrange
@@ -101,6 +104,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
+
         public void Should_Track_ViewEngine_View_Pairs_On_FindView_And_Releases_View_Appropriately()
         {
             // Arrange
@@ -133,6 +137,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
+
         public void Should_Track_ViewEngine_View_Pairs_On_FindPartialView_And_Releases_View_Appropriately()
         {
             // Arrange
@@ -164,6 +169,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
+
         public void Should_Return_Failed_ViewEngineResult_For_FindView_If_No_Current_Module_Application()
         {
             // Arrange
@@ -183,6 +189,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
+
         public void Should_Return_Failed_ViewEngineResult_For_FindPartialView_If_No_Current_Module_Application()
         {
             // Arrange

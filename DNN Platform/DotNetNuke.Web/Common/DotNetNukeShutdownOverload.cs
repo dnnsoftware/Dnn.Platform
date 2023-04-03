@@ -17,11 +17,11 @@ namespace DotNetNuke.Web.Common.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeShutdownOverload));
 
-        private static Timer _shutDownDelayTimer;
-        private static bool _handleShutdowns;
-        private static bool _shutdownInprogress;
-        private static FileSystemWatcher _binOrRootWatcher;
-        private static string _binFolder = string.Empty;
+        private static Timer shutDownDelayTimer;
+        private static bool handleShutdowns;
+        private static bool shutdownInprogress;
+        private static FileSystemWatcher binOrRootWatcher;
+        private static string binFolder = string.Empty;
 
         internal static void InitializeFcnSettings()
         {
@@ -52,7 +52,9 @@ namespace DotNetNuke.Web.Common.Internal
                     var dirMonCount = (int)dirMonCompletion.InvokeMember(
                         "_activeDirMonCompletions",
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
-                        null, null, null);
+                        null,
+                        null,
+                        null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
 
                     // enable our monitor only when fcnMode="Disabled"
@@ -70,38 +72,38 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void AddSiteFilesMonitoring(bool handleShutdowns)
         {
-            if (_binOrRootWatcher == null)
+            if (binOrRootWatcher == null)
             {
                 lock (typeof(Initialize))
                 {
-                    if (_binOrRootWatcher == null)
+                    if (binOrRootWatcher == null)
                     {
                         try
                         {
-                            _handleShutdowns = handleShutdowns;
-                            if (_handleShutdowns)
+                            DotNetNukeShutdownOverload.handleShutdowns = handleShutdowns;
+                            if (DotNetNukeShutdownOverload.handleShutdowns)
                             {
-                                _shutDownDelayTimer = new Timer(InitiateShutdown);
+                                shutDownDelayTimer = new Timer(InitiateShutdown);
                             }
 
-                            _binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLowerInvariant();
-                            _binOrRootWatcher = new FileSystemWatcher
+                            binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLowerInvariant();
+                            binOrRootWatcher = new FileSystemWatcher
                             {
                                 Filter = "*.*",
-                                Path = handleShutdowns ? _binFolder : Globals.ApplicationMapPath,
+                                Path = handleShutdowns ? binFolder : Globals.ApplicationMapPath,
                                 NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
                                 IncludeSubdirectories = true,
                             };
 
-                            _binOrRootWatcher.Created += WatcherOnCreated;
-                            _binOrRootWatcher.Deleted += WatcherOnDeleted;
-                            _binOrRootWatcher.Renamed += WatcherOnRenamed;
-                            _binOrRootWatcher.Changed += WatcherOnChanged;
-                            _binOrRootWatcher.Error += WatcherOnError;
+                            binOrRootWatcher.Created += WatcherOnCreated;
+                            binOrRootWatcher.Deleted += WatcherOnDeleted;
+                            binOrRootWatcher.Renamed += WatcherOnRenamed;
+                            binOrRootWatcher.Changed += WatcherOnChanged;
+                            binOrRootWatcher.Error += WatcherOnError;
 
                             // begin watching;
-                            _binOrRootWatcher.EnableRaisingEvents = true;
-                            Logger.Trace("Added watcher for: " + _binOrRootWatcher.Path + "\\" + _binOrRootWatcher.Filter);
+                            binOrRootWatcher.EnableRaisingEvents = true;
+                            Logger.Trace("Added watcher for: " + binOrRootWatcher.Path + "\\" + binOrRootWatcher.Filter);
                         }
                         catch (Exception ex)
                         {
@@ -114,7 +116,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void InitiateShutdown(object state)
         {
-            if (!_handleShutdowns)
+            if (!handleShutdowns)
             {
                 return;
             }
@@ -125,7 +127,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
             catch (Exception ex)
             {
-                _shutdownInprogress = false;
+                shutdownInprogress = false;
                 Logger.Error(ex);
             }
         }
@@ -133,12 +135,12 @@ namespace DotNetNuke.Web.Common.Internal
         private static void ShceduleShutdown()
         {
             // no need for locking; worst case is timer extended a bit more
-            if (_handleShutdowns && !_shutdownInprogress)
+            if (handleShutdowns && !shutdownInprogress)
             {
-                _shutdownInprogress = true;
+                shutdownInprogress = true;
 
                 // delay for a very short period
-                _shutDownDelayTimer.Change(1500, Timeout.Infinite);
+                shutDownDelayTimer.Change(1500, Timeout.Infinite);
             }
         }
 
@@ -149,7 +151,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -162,7 +164,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -175,7 +177,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
             }
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -188,7 +190,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShceduleShutdown();
             }

@@ -11,23 +11,20 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : Containers.Icon
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class PrintModule : ActionBase
     {
         public string PrintIcon { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -48,7 +45,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -60,27 +57,27 @@ namespace DotNetNuke.UI.Containers
             {
                 if (action.Visible)
                 {
-                    if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+                    if ((Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
                     {
                         if (this.ModuleContext.Configuration.DisplayPrint)
                         {
-                            var ModuleActionIcon = new ImageButton();
+                            var moduleActionIcon = new ImageButton();
                             if (!string.IsNullOrEmpty(this.PrintIcon))
                             {
-                                ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
+                                moduleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
                             }
                             else
                             {
-                                ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
+                                moduleActionIcon.ImageUrl = "~/images/" + action.Icon;
                             }
 
-                            ModuleActionIcon.ToolTip = action.Title;
-                            ModuleActionIcon.ID = "ico" + action.ID;
-                            ModuleActionIcon.CausesValidation = false;
+                            moduleActionIcon.ToolTip = action.Title;
+                            moduleActionIcon.ID = "ico" + action.ID;
+                            moduleActionIcon.CausesValidation = false;
 
-                            ModuleActionIcon.Click += this.IconAction_Click;
+                            moduleActionIcon.Click += this.IconAction_Click;
 
-                            this.Controls.Add(ModuleActionIcon);
+                            this.Controls.Add(moduleActionIcon);
                         }
                     }
                 }
@@ -98,7 +95,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((ImageButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -17,8 +17,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public bool CheckUpgrade { get; set; }
 
-        public bool DnnImprovementProgram { get; set; }
-
         public bool DataConsentActive { get; set; }
 
         public int DataConsentConsentRedirect { get; set; }

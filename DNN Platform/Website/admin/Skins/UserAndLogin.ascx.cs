@@ -25,16 +25,14 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class UserAndLogin : SkinObjectBase
     {
         private const string MyFileName = "UserAndLogin.ascx";
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
         public UserAndLogin()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
         public bool ShowInErrorPage { get; set; }
 
         protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(this.PortalSettings.UserId, 32, 32);
@@ -109,7 +107,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Globals.RegisterURL(HttpUtility.UrlEncode(this._navigationManager.NavigateURL()), Null.NullString);
+                return Globals.RegisterURL(HttpUtility.UrlEncode(this.navigationManager.NavigateURL()), Null.NullString);
             }
         }
 
@@ -139,6 +137,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return Localization.GetString(key, Localization.GetResourceFile(this, MyFileName));
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -146,6 +145,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Visible = !this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -157,11 +157,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.viewProfileLink.NavigateUrl = Globals.UserProfileURL(this.PortalSettings.UserId);
                 this.viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(this.PortalSettings.UserId);
-                this.logoffLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
-                this.editProfileLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=2");
-                this.accountLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=1");
-                this.messagesLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId));
-                this.notificationsLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId), "view=notifications", "action=notifications");
+                this.logoffLink.NavigateUrl = this.navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
+                this.editProfileLink.NavigateUrl = this.navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=2");
+                this.accountLink.NavigateUrl = this.navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=1");
+                this.messagesLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId));
+                this.notificationsLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId), "view=notifications", "action=notifications");
 
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.PortalSettings.UserId, this.PortalSettings.PortalId);
                 var unreadAlerts = NotificationsController.Instance.CountNotifications(this.PortalSettings.UserId, this.PortalSettings.PortalId);

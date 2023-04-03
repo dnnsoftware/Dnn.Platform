@@ -1,0 +1,155 @@
+﻿/****************************************************************
+ * SPROC: GetFoldersByPermission
+ ****************************************************************/
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') IS NOT NULL)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+	@PortalID int,
+	@Permissions nvarchar(300),
+	@UserID int,
+	@FolderID int,
+	@FolderPath nvarchar(300)
+
+AS
+	DECLARE @IsSuperUser bit = 0
+	DECLARE @IsAdmin bit = 0
+	DECLARE @ReadID int = 0
+	DECLARE @WriteID int = 0
+	DECLARE @BrowseID int = 0
+	DECLARE @AddID int = 0
+	
+	--Define NULL 
+	SELECT	 @PortalID = IsNull(@PortalID, -1)
+			,@Permissions = IsNull(@Permissions, N'')
+			,@UserID = IsNull(@UserID, -1)
+			,@FolderID = IsNull(@FolderID, -1)
+			,@FolderPath = IsNull(@FolderPath, N'')
+
+	--Determine Admin or SuperUser
+	IF @UserID > 0
+	BEGIN
+		SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}[{objectQualifier}Users] WHERE UserId = @UserId
+		SELECT @IsAdmin = CASE WHEN @IsSuperUser = 1 THEN 1 -- superusers are the portal admin
+							WHEN @PortalID = -1 THEN 0 -- only superusers may access host files
+							WHEN {databaseOwner}[{objectQualifier}UserIsInRole](@UserId, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalId)) = 1 THEN 1
+						  END
+	END;
+
+	IF (@PortalID = -1 AND @IsSuperUser = 1) OR (@IsAdmin = 1)
+		BEGIN
+			--Retrieve All Folders
+			SELECT [FolderID]
+			  ,[PortalID]
+			  ,[FolderPath]
+			  ,[StorageLocation]
+			  ,[IsProtected]
+			  ,[IsCached]
+			  ,[LastUpdated]
+			  ,[CreatedByUserID]
+			  ,[CreatedOnDate]
+			  ,[LastModifiedByUserID]
+			  ,[LastModifiedOnDate]
+			  ,[UniqueId]
+			  ,[VersionGuid]
+			  ,[FolderMappingID]
+			  ,[ParentID]
+			  ,[IsVersioned]
+			  ,[WorkflowID]
+			  ,[MappedPath]
+			FROM {databaseOwner}[{objectQualifier}Folders]
+			WHERE IsNull(PortalID, -1) = @PortalId
+			   AND (FolderID = @FolderID OR (@FolderID = -1))
+			   AND (FolderPath = @FolderPath OR (@FolderPath = N''))
+			ORDER BY PortalID, FolderPath
+			OPTION (OPTIMIZE FOR (@PortalID UNKNOWN));
+		END
+	ELSE
+		BEGIN			
+			--Retrieve Permission Ids
+			IF @Permissions LIKE '%WRITE%' SELECT TOP 1 @WriteID = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'WRITE';
+			IF @Permissions LIKE '%READ%' SELECT TOP 1 @ReadID = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'READ';
+			IF @Permissions LIKE '%BROWSE%' SELECT TOP 1 @BrowseID = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'BROWSE';
+			IF @Permissions LIKE '%ADD%' SELECT TOP 1 @AddID = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = 'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = 'ADD';
+
+			--Retreive Folders by User Roles
+			WITH UserPortalRoles AS (
+				SELECT RoleID
+				FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
+				WHERE PortalID = @PortalID
+					AND UserID = @UserID
+					AND IsNull(EffectiveDate, GetDate()) <= GetDate()
+					AND IsNull(ExpiryDate, GetDate()) >= GetDate()
+				UNION (SELECT -1)
+				UNION (SELECT -3 WHERE @UserID <= 0))
+			SELECT [FolderID]
+				  ,[PortalID]
+				  ,[FolderPath]
+				  ,[StorageLocation]
+				  ,[IsProtected]
+				  ,[IsCached]
+				  ,[LastUpdated]
+				  ,[CreatedByUserID]
+				  ,[CreatedOnDate]
+				  ,[LastModifiedByUserID]
+				  ,[LastModifiedOnDate]
+				  ,[UniqueId]
+				  ,[VersionGuid]
+				  ,[FolderMappingID]
+				  ,[ParentID]
+				  ,[IsVersioned]
+				  ,[WorkflowID]
+				  ,[MappedPath]
+			FROM {databaseOwner}[{objectQualifier}Folders]
+			WHERE (IsNull(PortalID, -1) = @PortalId)
+				AND (FolderPath = @FolderPath OR @FolderPath = N'')
+				AND (FolderID   = @FolderID   OR @FolderID = -1)
+				AND FolderID IN -- granted folders
+					(SELECT P.FolderID FROM {databaseOwner}[{objectQualifier}FolderPermission] P
+					 LEFT JOIN UserPortalRoles R ON P.RoleID = R.RoleID
+					 WHERE (P.UserID = @UserID OR (R.RoleID IS NOT NULL))
+						AND PermissionID IN (@AddID, @ReadID, @BrowseID, @WriteID)
+						AND AllowAccess = 1
+					 GROUP BY P.FolderID)
+				AND NOT FolderId IN -- denied folders
+					(SELECT P.FolderID FROM {databaseOwner}[{objectQualifier}FolderPermission] P
+                     LEFT JOIN UserPortalRoles R ON P.RoleID = R.RoleID
+					 WHERE (P.UserID = @UserID OR (R.RoleID IS NOT NULL))
+						AND PermissionID IN (@AddID, @ReadID, @BrowseID, @WriteID)
+						AND AllowAccess = 0
+					 GROUP BY P.FolderID)
+         ORDER BY PortalID, FolderPath
+         OPTION (OPTIMIZE FOR (@FolderPath Unknown, @FolderID Unknown, @UserID Unknown));
+		END
+GO 
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}OutputCacheAddItem') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}OutputCacheAddItem]
+  @ItemId     Int,
+	@CacheKey   VarChar ( 36),
+	@Data	    nVarChar(Max),
+	@Expiration DateTime
+AS
+BEGIN
+	IF NOT EXISTS (SELECT CacheKey from {databaseOwner}{objectQualifier}OutputCache where CacheKey = @CacheKey)
+		begin
+		    INSERT INTO dbo.OutputCache
+				(ItemId, 
+				CacheKey, 
+				Data, 
+				Expiration
+				) VALUES 
+				(@ItemId, 
+				@CacheKey, 
+				@Data, 
+				@Expiration
+				)
+		end
+	ELSE UPDATE {databaseOwner}{objectQualifier}OutputCache Set Data = @Data, Expiration = @Expiration Where CacheKey = @CacheKey
+END
+
+GO

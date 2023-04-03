@@ -28,29 +28,26 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Export : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private new int ModuleId = -1;
-        private ModuleInfo _module;
+        private int moduleId = -1;
+        private ModuleInfo module;
 
+        /// <summary>Initializes a new instance of the <see cref="Export"/> class.</summary>
         public Export()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private ModuleInfo Module
         {
             get
             {
-                return this._module ?? (this._module = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false));
+                return this.module ?? (this.module = ModuleController.Instance.GetModule(this.moduleId, this.TabId, false));
             }
         }
 
@@ -58,17 +55,18 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             if (this.Request.QueryString["moduleid"] != null)
             {
-                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                int.TryParse(this.Request.QueryString["moduleid"], out this.moduleId);
             }
 
             if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", this.Module))
@@ -77,6 +75,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -87,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (this.Request.QueryString["moduleid"] != null)
                 {
-                    int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                    int.TryParse(this.Request.QueryString["moduleid"], out this.moduleId);
                 }
 
                 if (!this.Page.IsPostBack)
@@ -121,7 +120,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (folder != null)
                 {
                     var strFile = "content." + CleanName(this.Module.DesktopModule.ModuleName) + "." + CleanName(this.txtFile.Text) + ".export";
-                    var strMessage = this.ExportModule(this.ModuleId, strFile, folder);
+                    var strMessage = this.ExportModule(this.moduleId, strFile, folder);
                     if (string.IsNullOrEmpty(strMessage))
                     {
                         this.Response.Redirect(this.ReturnURL, true);

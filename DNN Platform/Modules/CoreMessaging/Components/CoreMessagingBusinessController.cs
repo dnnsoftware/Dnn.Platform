@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
@@ -15,27 +16,31 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade;
 
+    /// <summary>Module business controller to implement Dnn module interfaces.</summary>
     public class CoreMessagingBusinessController : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreMessagingBusinessController));
 
-        public string UpgradeModule(string Version)
+        /// <summary>Runs upgrade logic upon module upgrade.</summary>
+        /// <param name="version">The version we are upgrading to.</param>
+        /// <returns>"Success" or "Failed".</returns>
+        public string UpgradeModule(string version)
         {
             try
             {
-                switch (Version)
+                switch (version)
                 {
                     case "06.02.00":
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
                         if (moduleDefinition != null)
                         {
                             var portals = PortalController.Instance.GetPortals();
-                            foreach (PortalInfo portal in portals)
+                            foreach (IPortalInfo portal in portals)
                             {
                                 if (portal.UserTabId > Null.NullInteger)
                                 {
                                     // Find TabInfo
-                                    var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
+                                    var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalId, true);
                                     if (tab != null)
                                     {
                                         foreach (var module in ModuleController.Instance.GetTabModules(portal.UserTabId).Values)

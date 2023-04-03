@@ -1,6 +1,6 @@
 <%@ Control language="C#" Inherits="Dnn.PersonaBar.UI.UserControls.PersonaBarContainer" AutoEventWireup="false"  Codebehind="PersonaBarContainer.ascx.cs" %>
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<asp:Panel runat="server" ID="PersonaBarPanel" Visible="False" CssClass="personalBarContainer">
+<asp:Panel runat="server" ID="PersonaBarPanel" Visible="False" CssClass="personaBarContainer personalBarContainer">
     <div id="personabar-placeholder" class="personabar-placeholder">
         <!--
             A temporary UI placeholder to avoid the sliding effect when PersonaBar loads

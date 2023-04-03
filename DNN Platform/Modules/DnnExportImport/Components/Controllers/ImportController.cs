@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
@@ -15,8 +14,13 @@ namespace Dnn.ExportImport.Components.Controllers
     using Dnn.ExportImport.Repository;
     using Newtonsoft.Json;
 
+    /// <summary>The import controller.</summary>
     public class ImportController : BaseController
     {
+        /// <summary>Queues an import operation.</summary>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="importDto">The import DTO.</param>
+        /// <returns>The job ID.</returns>
         public int QueueOperation(int userId, ImportDto importDto)
         {
             using (var repository = new ExportImportRepository(GetPackageDbPath(importDto.PackageId)))
@@ -41,17 +45,19 @@ namespace Dnn.ExportImport.Components.Controllers
             return jobId;
         }
 
-        /// <summary>
-        /// Get list of packages to import.
-        /// </summary>
+        /// <summary>Get list of packages to import.</summary>
         /// <param name="total">Total number of packages.</param>
         /// <param name="keyword">Keyword to search the import package. This will look into the package name and description.</param>
         /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name.</param>
         /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
-        /// <returns></returns>
-        public IEnumerable<ImportPackageInfo> GetImportPackages(out int total, string keyword, string order = "newest",
-            int pageIndex = 0, int pageSize = 10)
+        /// <returns>A sequence of <seealso cref="ImportPackageInfo"/> instances.</returns>
+        public IEnumerable<ImportPackageInfo> GetImportPackages(
+            out int total,
+            string keyword,
+            string order = "newest",
+            int pageIndex = 0,
+            int pageSize = 10)
         {
             pageSize = pageSize > 100 ? 100 : pageSize;
             var directories = Directory.GetDirectories(ExportFolder);
@@ -73,6 +79,11 @@ namespace Dnn.ExportImport.Components.Controllers
             return importPackages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
+        /// <summary>Verifies an import package.</summary>
+        /// <param name="packageId">The package ID.</param>
+        /// <param name="summary">The summary.</param>
+        /// <param name="errorMessage">An error message.</param>
+        /// <returns><c>true</c> if the package is value, otherwise <c>false</c>.</returns>
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
         {
             bool isValid;

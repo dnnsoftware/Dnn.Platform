@@ -41,22 +41,22 @@ class PageLocalization extends Component {
         this.setState({ Pages });
     }
 
-    removeLocaleFromState(cultureCode){
+    removeLocaleFromState(cultureCode) {
         const {Locales} = this.state;
         let index = Locales.findIndex(l => l.CultureCode === cultureCode);
-        if(index > -1){
+        if (index > -1) {
             Locales.splice(index, 1);
             this.setState({ Locales });
         }
     }
 
-    onDeletePage(page){
+    onDeletePage(page) {
         return new Promise((resolve) => {
             this.props.onDeletePage({tabId: page.TabId});
             resolve();
         }).then(() => {
             this.removeLocaleFromState(page.CultureCode);
-            if(page.TabId === utils.getCurrentPageId()){
+            if (page.TabId === utils.getCurrentPageId()) {
                 let panelId = window.$('.socialpanel:visible').attr('id');
                 utils.getUtilities().panelViewData(panelId, {tab: [0]});
                 window.top.location.href = utils.getDefaultPageUrl();
@@ -116,7 +116,12 @@ class PageLocalization extends Component {
     onAddMissingLanguages() {
         const {props} = this;
         const {tabId} = props.page;
-        props.dispatch(LanguagesActions.addMissingLanguages(tabId, () => {
+        props.dispatch(LanguagesActions.addMissingLanguages(tabId, (data) => {
+            if (data && data.Success && !data.AllLanguagesAdded) {
+                utils.notify(Localization.get("OnlyAddedSomeMissingLanguagesWarning"), { clickToClose: true });
+            } else if (!data || !data.Success) {
+                utils.notifyError(Localization.get("AnErrorOccurred"));
+            }
             this.getLanguages();
         }));
     }
@@ -160,7 +165,7 @@ class PageLocalization extends Component {
             onUpdatePages={this.onUpdatePages.bind(this) }
             onUpdateModules={this.onUpdateModules.bind(this) }
             onDeletePage={this.onDeletePage.bind(this)}
-            />;
+        />;
     }
 
     renderDefaultPageLanguage() {

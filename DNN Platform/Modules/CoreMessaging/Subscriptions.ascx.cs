@@ -25,24 +25,26 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    /// <summary>Implementes the logic of the Subscription view.</summary>
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
+        /// <summary>Gets or sets the module context.</summary>
         public ModuleInstanceContext ModuleContext { get; set; }
 
+        /// <summary>Gets or sets the module information.</summary>
         public ModuleInfo ModuleConfiguration
         {
-            get { return this.ModuleContext != null ? this.ModuleContext.Configuration : null; }
-
-            set
-            {
-                this.ModuleContext.Configuration = value;
-            }
+            get => this.ModuleContext != null ? this.ModuleContext.Configuration : null;
+            set => this.ModuleContext.Configuration = value;
         }
 
+        /// <summary>Gets or sets the localization resource file.</summary>
         public string LocalResourceFile { get; set; }
 
+        /// <summary>Gets the settings formatted as a json string.</summary>
+        /// <returns>The settings formatted as a json string.</returns>
         public string GetSettingsAsJson()
         {
             var settings = GetModuleSettings(PortalSettings.Current, this.ModuleConfiguration, Null.NullInteger);
@@ -61,11 +63,15 @@ namespace DotNetNuke.Modules.CoreMessaging
             return settings.ToJson();
         }
 
+        /// <summary>Localizes a string.</summary>
+        /// <param name="key">The localization key to get the localized value.</param>
+        /// <returns>The localized value for the provided key.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

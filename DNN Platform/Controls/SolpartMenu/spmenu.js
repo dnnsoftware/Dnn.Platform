@@ -223,7 +223,7 @@ __db(this._m_oMenu.id + ' - GenerateMenuHTML');
   	  
 	    if (this.xmlFileName.length)
 	    {
-	      oXML.onload = eval('onxmlload' + this._m_sNSpace); 
+	      oXML.onload = window['onxmlload' + this._m_sNSpace]; 
 	      oXML.load(this.xmlFileName);
 	      return; //async load
 	    }
@@ -858,17 +858,17 @@ SolpartMenu.prototype.GetMenuItems = function (oParent)
   //used for raising events to client javascript
   SolpartMenu.prototype.fireEvent = function (sEvent, src) 
   {
-		return; //disabled for now
-    if (eval('this.' + sEvent + ' != null'))
-		{
-			var e = new Object();
-			if (src != null)
-				e.srcElement = src;
-			else
-				e.srcElement = this._m_oMenu;
-				
-				eval('this.' + sEvent + '(e)');
-		}
+    return; //disabled for now
+    ////if (this[sEvent] != null)
+    ////{
+    ////    var e = new Object();
+    ////    if (src != null)
+    ////        e.srcElement = src;
+    ////    else
+    ////        e.srcElement = this._m_oMenu;
+          
+    ////        this[sEvent](e);
+    ////}
   }
 
 	//--- called by setTimeOut to check mouseout hide delay ---//

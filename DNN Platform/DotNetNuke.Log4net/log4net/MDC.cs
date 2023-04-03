@@ -1,31 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
 
 namespace log4net
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
-    /// <summary>
-    /// Implementation of Mapped Diagnostic Contexts.
-    /// </summary>
+    /// <summary>Implementation of Mapped Diagnostic Contexts.</summary>
     /// <remarks>
     /// <note>
     /// <para>
@@ -46,14 +44,12 @@ namespace log4net
     /// </para>
     /// </remarks>
     /// <threadsafety static="true" instance="true" />
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /*[Obsolete("MDC has been replaced by ThreadContext.Properties")]*/
     public sealed class MDC
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MDC" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MDC" /> class. </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.
         /// </remarks>
@@ -61,9 +57,7 @@ namespace log4net
         {
         }
 
-        /// <summary>
-        /// Gets the context value identified by the <paramref name="key" /> parameter.
-        /// </summary>
+        /// <summary>Gets the context value identified by the <paramref name="key" /> parameter.</summary>
         /// <param name="key">The key to lookup in the MDC.</param>
         /// <returns>The string value held for the key, or a <c>null</c> reference if no corresponding value is found.</returns>
         /// <remarks>
@@ -78,7 +72,7 @@ namespace log4net
         /// previously defined context then <c>null</c> will be returned.
         /// </para>
         /// </remarks>
-        /*[Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v11.0.0.")]*/
+        /*[Obsolete("MDC has been replaced by ThreadContext.Properties")]*/
         public static string Get(string key)
         {
             object obj = ThreadContext.Properties[key];
@@ -86,13 +80,10 @@ namespace log4net
             {
                 return null;
             }
-
             return obj.ToString();
         }
 
-        /// <summary>
-        /// Add an entry to the MDC.
-        /// </summary>
+        /// <summary>Add an entry to the MDC</summary>
         /// <param name="key">The key to store the value under.</param>
         /// <param name="value">The value to store.</param>
         /// <remarks>
@@ -109,19 +100,17 @@ namespace log4net
         /// </para>
         /// <para>
         /// If a value is already defined for the <paramref name="key" />
-        /// specified then the value will be replaced. If the <paramref name="value" />
+        /// specified then the value will be replaced. If the <paramref name="value" /> 
         /// is specified as <c>null</c> then the key value mapping will be removed.
         /// </para>
         /// </remarks>
-        [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
+        /*[Obsolete("MDC has been replaced by ThreadContext.Properties")]*/
         public static void Set(string key, string value)
         {
             ThreadContext.Properties[key] = value;
         }
 
-        /// <summary>
-        /// Removes the key value mapping for the key specified.
-        /// </summary>
+        /// <summary>Removes the key value mapping for the key specified.</summary>
         /// <param name="key">The key to remove.</param>
         /// <remarks>
         /// <note>
@@ -131,18 +120,16 @@ namespace log4net
         /// </para>
         /// </note>
         /// <para>
-        /// Remove the specified entry from this thread's MDC.
+        /// Remove the specified entry from this thread's MDC
         /// </para>
         /// </remarks>
-        [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
+        /*[Obsolete("MDC has been replaced by ThreadContext.Properties")]*/
         public static void Remove(string key)
         {
             ThreadContext.Properties.Remove(key);
         }
 
-        /// <summary>
-        /// Clear all entries in the MDC.
-        /// </summary>
+        /// <summary>Clear all entries in the MDC</summary>
         /// <remarks>
         /// <note>
         /// <para>
@@ -151,10 +138,10 @@ namespace log4net
         /// </para>
         /// </note>
         /// <para>
-        /// Remove all the entries from this thread's MDC.
+        /// Remove all the entries from this thread's MDC
         /// </para>
         /// </remarks>
-        [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
+        /*[Obsolete("MDC has been replaced by ThreadContext.Properties")]*/
         public static void Clear()
         {
             ThreadContext.Properties.Clear();

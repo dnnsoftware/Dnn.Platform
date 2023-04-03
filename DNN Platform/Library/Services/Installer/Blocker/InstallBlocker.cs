@@ -11,44 +11,49 @@ namespace DotNetNuke.Services.Installer.Blocker
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
 
-    /// <summary>
-    /// This class ...
-    /// </summary>
+    /// <summary>This class ...</summary>
     public class InstallBlocker : ServiceLocator<IInstallBlocker, InstallBlocker>, IInstallBlocker
     {
-        private const string installBlockerFile = "\\installBlocker.lock";
+        private const string InstallBlockerFile = "\\installBlocker.lock";
         private bool fileCreated = false;
 
+        /// <inheritdoc/>
         public void RegisterInstallBegining()
         {
             if (!this.fileCreated)
             {
-                File.Create(Globals.ApplicationMapPath + installBlockerFile);
+                File.Create(Globals.ApplicationMapPath + InstallBlockerFile);
             }
 
             this.fileCreated = true;
         }
 
+        /// <inheritdoc/>
         public bool IsInstallInProgress()
         {
-            return this.fileCreated || File.Exists(Globals.ApplicationMapPath + installBlockerFile);
+            return this.fileCreated || File.Exists(Globals.ApplicationMapPath + InstallBlockerFile);
         }
 
+        /// <inheritdoc/>
         public void RegisterInstallEnd()
         {
             var retryable = new RetryableAction(
                 () =>
-            {
-                if (this.IsInstallInProgress() && this.fileCreated)
                 {
-                    File.Delete(Globals.ApplicationMapPath + installBlockerFile);
-                }
-            }, "Deleting lock file", 60, TimeSpan.FromSeconds(1));
+                    if (this.IsInstallInProgress() && this.fileCreated)
+                    {
+                        File.Delete(Globals.ApplicationMapPath + InstallBlockerFile);
+                    }
+                },
+                "Deleting lock file",
+                60,
+                TimeSpan.FromSeconds(1));
 
             retryable.TryIt();
             this.fileCreated = false;
         }
 
+        /// <inheritdoc/>
         protected override Func<IInstallBlocker> GetFactory()
         {
             return () => new InstallBlocker();

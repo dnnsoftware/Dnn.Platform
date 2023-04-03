@@ -7,25 +7,32 @@ namespace DotNetNuke.Entities.Users
     using System;
     using System.Runtime.Serialization;
 
-    using DotNetNuke.Services.Exceptions;
-
     [Serializable]
     public class UserRelationshipBlockedException : Exception
     {
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
         public UserRelationshipBlockedException()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
+        /// <param name="message"></param>
         public UserRelationshipBlockedException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public UserRelationshipBlockedException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public UserRelationshipBlockedException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

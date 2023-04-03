@@ -124,6 +124,10 @@
                             <asp:RequiredFieldValidator ID="valWebsiteName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="WebsiteName.Required" Display="Dynamic" ControlToValidate="txtWebsiteName"  />
                         </div>
                         <div class="dnnFormItem">
+                            <dnn:Label ID="lblWebsiteSsl" runat="server" ControlName="chkWebsiteSsl" ResourceKey="WebsiteSsl" />
+                            <asp:CheckBox ID="chkWebsiteSsl" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
                             <dnn:Label ID="lblTemplate" runat="server" ControlName="templateList" ResourceKey="WebsiteTemplate" />
                             <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
@@ -205,17 +209,6 @@
                             <asp:Label ID="lblDatabaseError" runat="server" CssClass="NormalRed" />
                         </div>
 
-                    </div>
-                </div>
-                <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
-                    <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
-                    <div class="dnnFormItem">
-                        <div class="dnnLabel"></div>
-                        <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
-                    </div>
-                    <div class="dnnFormItem information-checkbox">
-                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="False" CssClass="dnnLabel"/>
-                        <asp:Label id="lblImprovementProgram" AssociatedControlID="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                     </div>
                 </div>
                 <hr/>
@@ -663,6 +656,7 @@
                             confirmPassword: $('#<%= txtConfirmPassword.ClientID %>')[0].value,
                             email: $('#<%= txtEmail.ClientID %>')[0].value,
                             websiteName: $('#<%= txtWebsiteName.ClientID %>')[0].value,
+                            websiteSsl: $('#<%= chkWebsiteSsl.ClientID %>')[0].checked.toString(),
                             template: $('#<%= templateList.ClientID %>').val(),
                             language: $('#<%= languageList.ClientID %>').val(),
                             databaseSetup: $('#<%= databaseSetupType.ClientID %> input:checked').val(),
@@ -676,7 +670,6 @@
                             databaseUsername: "",
                             databasePassword: "",
                             databaseRunAsOwner: null,
-                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N",
                             acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');

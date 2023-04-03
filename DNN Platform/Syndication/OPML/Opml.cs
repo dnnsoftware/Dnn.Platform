@@ -8,234 +8,74 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Class for managing an OPML feed.
-    /// </summary>
+    /// <summary>Class for managing an OPML feed.</summary>
     public class Opml
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
-        private DateTime _dateCreated = DateTime.MinValue;
-        private DateTime _dateModified = DateTime.MinValue;
-        private string _docs = string.Empty;
-        private string _expansionState = string.Empty;
-        private OpmlOutlines _outlines;
-        private string _ownerEmail = string.Empty;
-        private string _ownerId = string.Empty;
-        private string _ownerName = string.Empty;
-        private string _title = string.Empty;
-        private DateTime _utcExpiry = DateTime.Now.AddMinutes(180);
-        private string _vertScrollState = string.Empty;
-        private string _windowBottom = string.Empty;
-        private string _windowLeft = string.Empty;
-        private string _windowRight = string.Empty;
-        private string _windowTop = string.Empty;
         private XmlDocument opmlDoc;
 
+        /// <summary>Initializes a new instance of the <see cref="Opml"/> class.</summary>
         public Opml()
         {
-            this._outlines = new OpmlOutlines();
+            this.Outlines = new OpmlOutlines();
         }
 
-        public DateTime UtcExpiry
-        {
-            get
-            {
-                return this._utcExpiry;
-            }
+        /// <summary>Gets or sets the expiration (in UTC).</summary>
+        public DateTime UtcExpiry { get; set; } = DateTime.Now.AddMinutes(180);
 
-            set
-            {
-                this._utcExpiry = value;
-            }
-        }
+        /// <summary>Gets or sets the title.</summary>
+        public string Title { get; set; } = string.Empty;
 
-        public string Title
-        {
-            get
-            {
-                return this._title;
-            }
+        /// <summary>Gets or sets the created date.</summary>
+        public DateTime DateCreated { get; set; } = DateTime.MinValue;
 
-            set
-            {
-                this._title = value;
-            }
-        }
+        /// <summary>Gets or sets the date modified.</summary>
+        public DateTime DateModified { get; set; } = DateTime.MinValue;
 
-        public DateTime DateCreated
-        {
-            get
-            {
-                return this._dateCreated;
-            }
+        /// <summary>Gets or sets owner name.</summary>
+        public string OwnerName { get; set; } = string.Empty;
 
-            set
-            {
-                this._dateCreated = value;
-            }
-        }
+        /// <summary>Gets or sets the owner email.</summary>
+        public string OwnerEmail { get; set; } = string.Empty;
 
-        public DateTime DateModified
-        {
-            get
-            {
-                return this._dateModified;
-            }
+        /// <summary>Gets or sets the owner ID.</summary>
+        public string OwnerId { get; set; } = string.Empty;
 
-            set
-            {
-                this._dateModified = value;
-            }
-        }
+        /// <summary>Gets or sets the docs.</summary>
+        public string Docs { get; set; } = string.Empty;
 
-        public string OwnerName
-        {
-            get
-            {
-                return this._ownerName;
-            }
+        /// <summary>Gets or sets the expansion state.</summary>
+        public string ExpansionState { get; set; } = string.Empty;
 
-            set
-            {
-                this._ownerName = value;
-            }
-        }
+        /// <summary>Gets or sets the vertical scroll state.</summary>
+        public string VertScrollState { get; set; } = string.Empty;
 
-        public string OwnerEmail
-        {
-            get
-            {
-                return this._ownerEmail;
-            }
+        /// <summary>Gets or sets window top position.</summary>
+        public string WindowTop { get; set; } = string.Empty;
 
-            set
-            {
-                this._ownerEmail = value;
-            }
-        }
+        /// <summary>Gets or sets window left position.</summary>
+        public string WindowLeft { get; set; } = string.Empty;
 
-        public string OwnerId
-        {
-            get
-            {
-                return this._ownerId;
-            }
+        /// <summary>Gets or sets the window bottom position.</summary>
+        public string WindowBottom { get; set; } = string.Empty;
 
-            set
-            {
-                this._ownerId = value;
-            }
-        }
+        /// <summary>Gets or sets the window right position.</summary>
+        public string WindowRight { get; set; } = string.Empty;
 
-        public string Docs
-        {
-            get
-            {
-                return this._docs;
-            }
+        /// <summary>Gets or sets the outlines.</summary>
+        public OpmlOutlines Outlines { get; set; }
 
-            set
-            {
-                this._docs = value;
-            }
-        }
-
-        public string ExpansionState
-        {
-            get
-            {
-                return this._expansionState;
-            }
-
-            set
-            {
-                this._expansionState = value;
-            }
-        }
-
-        public string VertScrollState
-        {
-            get
-            {
-                return this._vertScrollState;
-            }
-
-            set
-            {
-                this._vertScrollState = value;
-            }
-        }
-
-        public string WindowTop
-        {
-            get
-            {
-                return this._windowTop;
-            }
-
-            set
-            {
-                this._windowTop = value;
-            }
-        }
-
-        public string WindowLeft
-        {
-            get
-            {
-                return this._windowLeft;
-            }
-
-            set
-            {
-                this._windowLeft = value;
-            }
-        }
-
-        public string WindowBottom
-        {
-            get
-            {
-                return this._windowBottom;
-            }
-
-            set
-            {
-                this._windowBottom = value;
-            }
-        }
-
-        public string WindowRight
-        {
-            get
-            {
-                return this._windowRight;
-            }
-
-            set
-            {
-                this._windowRight = value;
-            }
-        }
-
-        public OpmlOutlines Outlines
-        {
-            get
-            {
-                return this._outlines;
-            }
-
-            set
-            {
-                this._outlines = value;
-            }
-        }
-
+        /// <summary>Loads an OPML feed from a URL.</summary>
+        /// <param name="uri">The feed's URL.</param>
+        /// <returns>The OPML feed, or an empty OPML feed if there's an error loading it.</returns>
         public static Opml LoadFromUrl(Uri uri)
         {
             return OpmlDownloadManager.GetOpmlFeed(uri);
         }
 
+        /// <summary>Loads an OPML feed from a file path.</summary>
+        /// <param name="path">The file path.</param>
+        /// <returns>The OPML feed, or an empty OPML feed if there's an error loading it.</returns>
         public static Opml LoadFromFile(string path)
         {
             try
@@ -251,9 +91,12 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        /// <summary>Loads an OPML feed from an XML document.</summary>
+        /// <param name="doc">The XML document.</param>
+        /// <returns>The OPML feed, or an empty OPML feed if there's an error loading it.</returns>
         public static Opml LoadFromXml(XmlDocument doc)
         {
-            var _out = new Opml();
+            var @out = new Opml();
             try
             {
                 // Parse head
@@ -274,67 +117,67 @@ namespace DotNetNuke.Services.Syndication
 
                 if (title != null)
                 {
-                    _out.Title = title.InnerText;
+                    @out.Title = title.InnerText;
                 }
 
                 if (dateCreated != null)
                 {
-                    _out.DateCreated = DateTime.Parse(dateCreated.InnerText);
+                    @out.DateCreated = DateTime.Parse(dateCreated.InnerText);
                 }
 
                 if (dateModified != null)
                 {
-                    _out.DateModified = DateTime.Parse(dateModified.InnerText);
+                    @out.DateModified = DateTime.Parse(dateModified.InnerText);
                 }
 
                 if (ownerName != null)
                 {
-                    _out.OwnerName = ownerName.InnerText;
+                    @out.OwnerName = ownerName.InnerText;
                 }
 
                 if (ownerEmail != null)
                 {
-                    _out.OwnerEmail = ownerEmail.InnerText;
+                    @out.OwnerEmail = ownerEmail.InnerText;
                 }
 
                 if (ownerId != null)
                 {
-                    _out.OwnerId = ownerId.InnerText;
+                    @out.OwnerId = ownerId.InnerText;
                 }
 
                 if (docs != null)
                 {
-                    _out.Docs = docs.InnerText;
+                    @out.Docs = docs.InnerText;
                 }
 
                 if (expansionState != null)
                 {
-                    _out.ExpansionState = expansionState.InnerText;
+                    @out.ExpansionState = expansionState.InnerText;
                 }
 
                 if (vertScrollState != null)
                 {
-                    _out.VertScrollState = vertScrollState.InnerText;
+                    @out.VertScrollState = vertScrollState.InnerText;
                 }
 
                 if (windowTop != null)
                 {
-                    _out.WindowTop = windowTop.InnerText;
+                    @out.WindowTop = windowTop.InnerText;
                 }
 
                 if (windowLeft != null)
                 {
-                    _out.WindowLeft = windowLeft.InnerText;
+                    @out.WindowLeft = windowLeft.InnerText;
                 }
 
                 if (windowBottom != null)
                 {
-                    _out.WindowBottom = windowBottom.InnerText;
+                    @out.WindowBottom = windowBottom.InnerText;
                 }
 
                 if (windowLeft != null)
                 {
-                    _out.WindowLeft = windowLeft.InnerText;
+                    @out.WindowLeft = windowLeft.InnerText;
                 }
 
                 // Parse body
@@ -342,10 +185,10 @@ namespace DotNetNuke.Services.Syndication
                 XmlNodeList outlineList = body.SelectNodes("./outline");
                 foreach (XmlElement outline in outlineList)
                 {
-                    _out.Outlines.Add(ParseXml(outline));
+                    @out.Outlines.Add(ParseXml(outline));
                 }
 
-                return _out;
+                return @out;
             }
             catch
             {
@@ -353,16 +196,29 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        /// <summary>Adds an <paramref name="item"/> to the <see cref="Outlines"/>.</summary>
+        /// <param name="item">The outline item.</param>
         public void AddOutline(OpmlOutline item)
         {
-            this._outlines.Add(item);
+            this.Outlines.Add(item);
         }
 
+        /// <summary>Adds an item to the <see cref="Outlines"/>.</summary>
+        /// <param name="text">The item text.</param>
+        /// <param name="type">The item type.</param>
+        /// <param name="xmlUrl">The XML URL for the item.</param>
+        /// <param name="category">The item's category.</param>
         public void AddOutline(string text, string type, Uri xmlUrl, string category)
         {
             this.AddOutline(text, type, xmlUrl, category, null);
         }
 
+        /// <summary>Adds an item to the <see cref="Outlines"/>.</summary>
+        /// <param name="text">The item text.</param>
+        /// <param name="type">The item type.</param>
+        /// <param name="xmlUrl">The XML URL for the item.</param>
+        /// <param name="category">The item's category.</param>
+        /// <param name="outlines">The item's outlines.</param>
         public void AddOutline(string text, string type, Uri xmlUrl, string category, OpmlOutlines outlines)
         {
             var item = new OpmlOutline();
@@ -371,14 +227,18 @@ namespace DotNetNuke.Services.Syndication
             item.XmlUrl = xmlUrl;
             item.Category = category;
             item.Outlines = outlines;
-            this._outlines.Add(item);
+            this.Outlines.Add(item);
         }
 
+        /// <summary>Get the OPML doc as XML.</summary>
+        /// <returns>The XML markup for this OPML feed.</returns>
         public string GetXml()
         {
             return this.opmlDoc.OuterXml;
         }
 
+        /// <summary>Saves this OPML feed as an XML file.</summary>
+        /// <param name="fileName">The file path.</param>
         public void Save(string fileName)
         {
             this.opmlDoc = new XmlDocument { XmlResolver = null };
@@ -459,7 +319,7 @@ namespace DotNetNuke.Services.Syndication
             XmlElement opmlBody = this.opmlDoc.CreateElement("body");
             opml.AppendChild(opmlBody);
 
-            foreach (OpmlOutline outline in this._outlines)
+            foreach (OpmlOutline outline in this.Outlines)
             {
                 opmlBody.AppendChild(outline.ToXml);
             }
@@ -467,6 +327,9 @@ namespace DotNetNuke.Services.Syndication
             this.opmlDoc.Save(fileName);
         }
 
+        /// <summary>Parses a <paramref name="node"/> into an <see cref="OpmlOutline"/>.</summary>
+        /// <param name="node">The XML element to parse.</param>
+        /// <returns>A new <see cref="OpmlOutline"/> instance.</returns>
         internal static OpmlOutline ParseXml(XmlElement node)
         {
             var newOutline = new OpmlOutline();

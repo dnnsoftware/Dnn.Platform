@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.Api
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.
-    /// </summary>
+    /// <summary>A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.</summary>
     public class StringPassThroughMediaTypeFormatter : MediaTypeFormatter
     {
         /// <summary>
@@ -38,16 +36,19 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanReadType(Type type)
         {
             return type == typeof(string);
         }
 
+        /// <inheritdoc/>
         public override bool CanWriteType(Type type)
         {
             return type == typeof(string);
         }
 
+        /// <inheritdoc/>
         public override Task<object> ReadFromStreamAsync(Type type, Stream readStream, System.Net.Http.HttpContent content, IFormatterLogger formatterLogger)
         {
             using (var reader = new StreamReader(readStream))
@@ -60,6 +61,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <inheritdoc/>
         public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, System.Net.Http.HttpContent content, TransportContext transportContext)
         {
             using (var writer = new StreamWriter(writeStream))

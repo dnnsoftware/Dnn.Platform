@@ -15,11 +15,13 @@ namespace DotNetNuke.Services.UserRequest
 
     public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController, UserRequestIPAddressController>, IUserRequestIPAddressController
     {
+        /// <inheritdoc/>
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {
             return this.GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
         }
 
+        /// <inheritdoc/>
         public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
         {
             var userRequestIPHeader = HostController.Instance.GetString("UserRequestIPHeader", "X-Forwarded-For");
@@ -29,6 +31,15 @@ namespace DotNetNuke.Services.UserRequest
             {
                 userIPAddress = request.Headers[userRequestIPHeader];
                 userIPAddress = userIPAddress.Split(',')[0];
+                if (ipFamily == IPAddressFamily.IPv4 && userIPAddress.Contains(':'))
+                {
+                    userIPAddress = userIPAddress.Split(':')[0];
+                }
+                else if (ipFamily == IPAddressFamily.IPv6
+                    && userIPAddress.StartsWith("[") && userIPAddress.Contains(']'))
+                {
+                    userIPAddress = userIPAddress.Split(']')[0].Substring(1);
+                }
             }
 
             if (string.IsNullOrEmpty(userIPAddress))
@@ -58,6 +69,7 @@ namespace DotNetNuke.Services.UserRequest
             return userIPAddress;
         }
 
+        /// <inheritdoc/>
         protected override Func<IUserRequestIPAddressController> GetFactory()
         {
             return () => new UserRequestIPAddressController();

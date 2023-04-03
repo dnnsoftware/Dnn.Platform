@@ -6,8 +6,8 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum UrlFormatType
     {
-        SearchFriendly,
-        HumanFriendly,
-        Advanced,
+        SearchFriendly = 0,
+        HumanFriendly = 1,
+        Advanced = 2,
     }
 }

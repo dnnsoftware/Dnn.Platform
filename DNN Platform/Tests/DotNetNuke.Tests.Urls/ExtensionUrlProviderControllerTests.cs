@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Urls
 {
     using System;
@@ -10,6 +9,8 @@ namespace DotNetNuke.Tests.Urls
     using System.Data;
     using System.Linq;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -17,12 +18,27 @@ namespace DotNetNuke.Tests.Urls
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Mocks;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class ExtensionUrlProviderControllerTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        }
+
         [Test]
+
         public void GetModuleProviders_ExcludeSingleProviderWithTypeThatDoesNotExist()
         {
             var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();
@@ -37,6 +53,7 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [Test]
+
         public void GetModuleProviders_OnlyExcludeProviderWithTypeThatDoesNotExistButIncludeOther()
         {
             var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();

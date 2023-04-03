@@ -14,27 +14,36 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
 
+    /// <summary>Represents a single menu node.</summary>
     [Serializable]
     [XmlRoot("root", Namespace = "")]
     public class MenuNode : IXmlSerializable
     {
-        private List<MenuNode> _Children;
+        private List<MenuNode> children;
 
+        /// <summary>Initializes a new instance of the <see cref="MenuNode"/> class.</summary>
         public MenuNode()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MenuNode"/> class from existing nodes.</summary>
+        /// <param name="dnnNodes">The collection of Dnn nodes.</param>
         public MenuNode(DNNNodeCollection dnnNodes)
         {
             this.Children = ConvertDNNNodeCollection(dnnNodes, this);
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MenuNode"/> class from existing nodes.</summary>
+        /// <param name="nodes">A list of <see cref="MenuNode"/>.</param>
         public MenuNode(List<MenuNode> nodes)
         {
             this.Children = nodes;
             this.Children.ForEach(c => c.Parent = this);
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MenuNode"/> class from an existing node and a parent.</summary>
+        /// <param name="dnnNode">The <see cref="DNNNode"/> to initialize from.</param>
+        /// <param name="parent">The parent <see cref="MenuNode"/>.</param>
         public MenuNode(DNNNode dnnNode, MenuNode parent)
         {
             this.TabId = Convert.ToInt32(dnnNode.ID);
@@ -63,16 +72,19 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <summary>Gets a value indicating whether this node is the first of it's level.</summary>
         public bool First
         {
             get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
         }
 
+        /// <summary>Gets a value indicating whether this node is the last of it's level.</summary>
         public bool Last
         {
             get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
         }
 
+        /// <summary>Gets a value indicating how deep this node is in the nodes hierarchy.</summary>
         public int Depth
         {
             get
@@ -89,44 +101,65 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <summary>Gets or sets the id of the tab (page) for this node.</summary>
         public int TabId { get; set; }
 
+        /// <summary>Gets or sets the text of the node.</summary>
         public string Text { get; set; }
 
+        /// <summary>Gets or sets the title of this node.</summary>
         public string Title { get; set; }
 
+        /// <summary>Gets or sets the url of this node.</summary>
         public string Url { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this node is enabled.</summary>
         public bool Enabled { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this node is selected.</summary>
         public bool Selected { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this node is included in the breadcrumb.</summary>
         public bool Breadcrumb { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this node is a separator.</summary>
         public bool Separator { get; set; }
 
+        /// <summary>Gets or sets the icon for this node.</summary>
         public string Icon { get; set; }
 
+        /// <summary>Gets or sets the large image for this node.</summary>
         public string LargeImage { get; set; }
 
+        /// <summary>Gets or sets the command name for this node.</summary>
         public string CommandName { get; set; }
 
+        /// <summary>Gets or sets the command argument for this node.</summary>
         public string CommandArgument { get; set; }
 
+        /// <summary>Gets or sets the html target for this node.</summary>
         public string Target { get; set; }
 
+        /// <summary>Gets or sets the keywords for this node.</summary>
         public string Keywords { get; set; }
 
+        /// <summary>Gets or sets the description for this node.</summary>
         public string Description { get; set; }
 
+        /// <summary>Gets or sets the childrens of this node.</summary>
         public List<MenuNode> Children
         {
-            get { return this._Children ?? (this._Children = new List<MenuNode>()); }
-            set { this._Children = value; }
+            get { return this.children ?? (this.children = new List<MenuNode>()); }
+            set { this.children = value; }
         }
 
+        /// <summary>Gets or sets the parent node for this node.</summary>
         public MenuNode Parent { get; set; }
 
+        /// <summary>Converts a <see cref="DNNNodeCollection"/> into a <see cref="List{MenuNode}"/>.</summary>
+        /// <param name="dnnNodes">The DNNNodeCollection to convert.</param>
+        /// <param name="parent">The parent node in which to place the nodes.</param>
+        /// <returns><see cref="List{MenuNode}"/>.</returns>
         public static List<MenuNode> ConvertDNNNodeCollection(DNNNodeCollection dnnNodes, MenuNode parent)
         {
             var result = new List<MenuNode>();
@@ -138,6 +171,9 @@ namespace DotNetNuke.Web.DDRMenu
             return result;
         }
 
+        /// <summary>Finds a node by a provided tab (page) id.</summary>
+        /// <param name="tabId">The id of the tab (page).</param>
+        /// <returns>The found  <see cref="MenuNode"/> or null.</returns>
         public MenuNode FindById(int tabId)
         {
             if (tabId == this.TabId)
@@ -157,6 +193,9 @@ namespace DotNetNuke.Web.DDRMenu
             return null;
         }
 
+        /// <summary>Finds a node by the tab (page) name.</summary>
+        /// <param name="tabName">The name of the tab (page).</param>
+        /// <returns>A <see cref="MenuNode"/> or null.</returns>
         public MenuNode FindByName(string tabName)
         {
             if (tabName.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
@@ -176,6 +215,9 @@ namespace DotNetNuke.Web.DDRMenu
             return null;
         }
 
+        /// <summary>Flattens the hierarchy of the children nodes.</summary>
+        /// <param name="root">The root menu node.</param>
+        /// <returns>A new flattened list of <see cref="MenuNode"/>.</returns>
         public List<MenuNode> FlattenChildren(MenuNode root)
         {
             var flattened = new List<MenuNode>();
@@ -197,6 +239,9 @@ namespace DotNetNuke.Web.DDRMenu
             return flattened;
         }
 
+        /// <summary>Finds a menu node either by it's name or it's id.</summary>
+        /// <param name="tabNameOrId">A string representing either the tab (page) name or id.</param>
+        /// <returns>The found <see cref="MenuNode"/> or null.</returns>
         public MenuNode FindByNameOrId(string tabNameOrId)
         {
             if (tabNameOrId.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
@@ -221,16 +266,20 @@ namespace DotNetNuke.Web.DDRMenu
             return null;
         }
 
+        /// <summary>Checks if this node has childrens.</summary>
+        /// <returns>A value indicating whether this node has childrens.</returns>
         public bool HasChildren()
         {
             return this.Children.Count > 0;
         }
 
+        /// <inheritdoc/>
         public XmlSchema GetSchema()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public void ReadXml(XmlReader reader)
         {
             var empty = reader.IsEmptyElement;
@@ -325,6 +374,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
             if (this.Parent != null)
@@ -360,6 +410,8 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <summary>Removes all the provided nodes.</summary>
+        /// <param name="filteredNodes">The list of nodes to remove.</param>
         internal void RemoveAll(List<MenuNode> filteredNodes)
         {
             this.Children.RemoveAll(filteredNodes.Contains);
@@ -369,6 +421,8 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <summary>Applies context to the node for paths and urls.</summary>
+        /// <param name="defaultImagePath">The default location for images.</param>
         internal void ApplyContext(string defaultImagePath)
         {
             this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);

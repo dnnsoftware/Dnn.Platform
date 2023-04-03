@@ -13,7 +13,6 @@ class Dropdown extends Component {
         super();
         this.state = {
             dropDownOpen: false,
-            fixedHeight: 0,
             dropdownText: "",
             closestValue: null,
             selectedOption: {}
@@ -44,31 +43,10 @@ class Dropdown extends Component {
                 dropDownOpen: false
             });
         }
-        if (props.options && props.options.length > 0) {
-            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
-            this.setState({
-                fixedHeight
-            });
-        }
-    }
-
-    getDropdownHeight() {
-        const {props} = this;
-        const maxHeight = props.fixedHeight ? props.fixedHeight : DNN_DROPDOWN_MINHEIGHT;
-        return this.dropDownListElement ? Math.min(this.dropDownListElement.offsetHeight, maxHeight) + 20 : 0;
     }
 
     componentDidUpdate(prevProps) {
         const { props } = this;
-        if (props.options !== prevProps.options) {
-            if (props.options && props.options.length > 0) {
-                let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
-                this.setState({
-                    fixedHeight
-                });
-            }
-        }
-
         if (props.isDropDownOpen !== prevProps.isDropDownOpen) {
             this.setState({dropDownOpen: !props.isDropDownOpen}, () => this.toggleDropdown(true));
         }
@@ -359,10 +337,8 @@ class Dropdown extends Component {
 
 Dropdown.propTypes = {
     label: PropTypes.string,
-    fixedHeight: PropTypes.number,
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
-    keepCollapsedContent: PropTypes.bool,
     className: PropTypes.string,
     scrollAreaStyle: PropTypes.object,
     options: PropTypes.array,
@@ -374,7 +350,7 @@ Dropdown.propTypes = {
     autoHide: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     closeOnClick: PropTypes.bool,
-    prependWith: PropTypes.string,
+    prependWith: PropTypes.object,
     labelIsMultiLine: PropTypes.bool,
     title: PropTypes.string,
     onScrollUpdate: PropTypes.func,

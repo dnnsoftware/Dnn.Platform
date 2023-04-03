@@ -11,18 +11,20 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Razor;
 
+    /// <summary>Implements the RazorHost view logic.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class RazorHost : RazorModuleBase, IActionable
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleActionCollection ModuleActions
         {
             get
             {
-                var Actions = new ModuleActionCollection();
-                Actions.Add(
+                var actions = new ModuleActionCollection();
+                actions.Add(
                     this.ModuleContext.GetNextActionID(),
                     Localization.GetString(ModuleActionType.EditContent, this.LocalResourceFile),
                     ModuleActionType.AddContent,
@@ -33,7 +35,7 @@ namespace DotNetNuke.Modules.RazorHost
                     SecurityAccessLevel.Host,
                     true,
                     false);
-                Actions.Add(
+                actions.Add(
                     this.ModuleContext.GetNextActionID(),
                     Localization.GetString("CreateModule.Action", this.LocalResourceFile),
                     ModuleActionType.AddContent,
@@ -44,10 +46,11 @@ namespace DotNetNuke.Modules.RazorHost
                     SecurityAccessLevel.Host,
                     true,
                     false);
-                return Actions;
+                return actions;
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override string RazorScriptFile
         {

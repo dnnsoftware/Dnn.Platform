@@ -1,0 +1,1 @@
+﻿<p>Please see https://www.github.com/dnnsoftware for the complete release history.</p>

@@ -23,12 +23,14 @@ namespace DotNetNuke.Security.Cookies
 
         public DateTime ExpiresOn { get; private set; } // UTC
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.CookieId; }
             set { this.CookieId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.CookieId = Null.SetNullInteger(dr[nameof(this.CookieId)]);
@@ -38,9 +40,14 @@ namespace DotNetNuke.Security.Cookies
             if (this.ExpiresOn.Kind != DateTimeKind.Utc)
             {
                 this.ExpiresOn = new DateTime(
-                    this.ExpiresOn.Year, this.ExpiresOn.Month, this.ExpiresOn.Day,
-                    this.ExpiresOn.Hour, this.ExpiresOn.Minute, this.ExpiresOn.Second,
-                    this.ExpiresOn.Millisecond, DateTimeKind.Utc);
+                    this.ExpiresOn.Year,
+                    this.ExpiresOn.Month,
+                    this.ExpiresOn.Day,
+                    this.ExpiresOn.Hour,
+                    this.ExpiresOn.Minute,
+                    this.ExpiresOn.Second,
+                    this.ExpiresOn.Millisecond,
+                    DateTimeKind.Utc);
             }
         }
     }

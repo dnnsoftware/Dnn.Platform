@@ -14,12 +14,15 @@ namespace Dnn.EditBar.UI.Items
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
 
     [Serializable]
     public class AddExistingModuleMenu : BaseMenuItem
     {
+        /// <inheritdoc/>
         public override string Name { get; } = "AddExistingModule";
 
+        /// <inheritdoc/>
         public override string Text
         {
             get
@@ -28,6 +31,7 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string CssClass
         {
             get
@@ -36,17 +40,22 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string Template { get; } = string.Empty;
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "AddExistingModule";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 10;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit;
         }
     }
 }

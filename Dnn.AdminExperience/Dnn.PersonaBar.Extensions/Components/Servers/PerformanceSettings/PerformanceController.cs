@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             return new[]
             {
                 new KeyValuePair<string, string>("Page", "P"),
-                new KeyValuePair<string, string>("Memory", "M")
+                new KeyValuePair<string, string>("Memory", "M"),
             };
         }
 
@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
                 new KeyValuePair<string, int>("NoCaching", 0),
                 new KeyValuePair<string, int>("LightCaching", 1),
                 new KeyValuePair<string, int>("ModerateCaching", 3),
-                new KeyValuePair<string, int>("HeavyCaching", 6)
+                new KeyValuePair<string, int>("HeavyCaching", 6),
             };
         }
 
@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
                 new KeyValuePair<string, string>("Public", "2"),
                 new KeyValuePair<string, string>("Server", "3"),
                 new KeyValuePair<string, string>("ServerAndNoCache", "4"),
-                new KeyValuePair<string, string>("ServerAndPrivate", "5")
+                new KeyValuePair<string, string>("ServerAndPrivate", "5"),
             };
         }
 

@@ -1,56 +1,46 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 
-
-#if !NETCF
+using System;
+using System.Collections;
+using System.IO;
 using System.Runtime.Serialization;
-
-#if !NETSTANDARD1_3
+using System.Security;
+#if !NETCF && !NETSTANDARD1_3
 using System.Security.Principal;
-
 #endif
-#endif
-
-using log4net.Repository;
 using log4net.Util;
+using log4net.Repository;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.IO;
-
-    /// <summary>
-    /// Portable data structure used by <see cref="LoggingEvent"/>.
-    /// </summary>
+    /// <summary>Portable data structure used by <see cref="LoggingEvent"/></summary>
     /// <remarks>
     /// <para>
-    /// Portable data structure used by <see cref="LoggingEvent"/>.
+    /// Portable data structure used by <see cref="LoggingEvent"/>
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Nicko Cadell</author>
     public struct LoggingEventData
     {
-        /// <summary>
-        /// The logger name.
-        /// </summary>
+        /// <summary>The logger name.</summary>
         /// <remarks>
         /// <para>
         /// The logger name.
@@ -58,9 +48,7 @@ namespace log4net.Core
         /// </remarks>
         public string LoggerName;
 
-        /// <summary>
-        /// Level of logging event.
-        /// </summary>
+        /// <summary>Level of logging event.</summary>
         /// <remarks>
         /// <para>
         /// Level of logging event. Level cannot be Serializable
@@ -70,9 +58,7 @@ namespace log4net.Core
         /// </remarks>
         public Level Level;
 
-        /// <summary>
-        /// The application supplied message.
-        /// </summary>
+        /// <summary>The application supplied message.</summary>
         /// <remarks>
         /// <para>
         /// The application supplied message of logging event.
@@ -80,30 +66,25 @@ namespace log4net.Core
         /// </remarks>
         public string Message;
 
-        /// <summary>
-        /// The name of thread.
-        /// </summary>
+        /// <summary>The name of thread</summary>
         /// <remarks>
         /// <para>
-        /// The name of thread in which this logging event was generated.
+        /// The name of thread in which this logging event was generated
         /// </para>
         /// </remarks>
         public string ThreadName;
 
-        /// <summary>
-        /// Gets or sets the local time the event was logged.
-        /// </summary>
+        /// <summary>Gets or sets the local time the event was logged</summary>
         /// <remarks>
         /// <para>
         /// Prefer using the <see cref="TimeStampUtc"/> setter, since local time can be ambiguous.
         /// </para>
         /// </remarks>
-        [Obsolete("Prefer using TimeStampUtc, since local time can be ambiguous in time zones with daylight savings time.. Scheduled removal in v11.0.0.")]
+        [Obsolete(
+            "Prefer using TimeStampUtc, since local time can be ambiguous in time zones with daylight savings time.")]
         public DateTime TimeStamp;
 
-        /// <summary>
-        /// Gets or sets the UTC time the event was logged.
-        /// </summary>
+        /// <summary>Gets or sets the UTC time the event was logged</summary>
         /// <remarks>
         /// <para>
         /// The TimeStamp is stored in the UTC time zone.
@@ -114,8 +95,7 @@ namespace log4net.Core
         {
             get
             {
-                if (this.TimeStamp != default(DateTime) &&
-                    this._timeStampUtc == default(DateTime))
+                if (this.TimeStamp != default(DateTime) && this._timeStampUtc == default(DateTime))
                 {
                     // TimeStamp field has been set explicitly but TimeStampUtc hasn't
                     // => use TimeStamp
@@ -124,11 +104,9 @@ namespace log4net.Core
 
                 return this._timeStampUtc;
             }
-
             set
             {
                 this._timeStampUtc = value;
-
                 // For backwards compatibility
                 this.TimeStamp = this._timeStampUtc.ToLocalTime();
             }
@@ -137,9 +115,7 @@ namespace log4net.Core
         private DateTime _timeStampUtc;
 #pragma warning restore 618
 
-        /// <summary>
-        /// Location information for the caller.
-        /// </summary>
+        /// <summary>Location information for the caller.</summary>
         /// <remarks>
         /// <para>
         /// Location information for the caller.
@@ -147,20 +123,16 @@ namespace log4net.Core
         /// </remarks>
         public LocationInfo LocationInfo;
 
-        /// <summary>
-        /// String representation of the user.
-        /// </summary>
+        /// <summary>String representation of the user</summary>
         /// <remarks>
         /// <para>
         /// String representation of the user's windows name,
-        /// like DOMAIN\username.
+        /// like DOMAIN\username
         /// </para>
         /// </remarks>
         public string UserName;
 
-        /// <summary>
-        /// String representation of the identity.
-        /// </summary>
+        /// <summary>String representation of the identity.</summary>
         /// <remarks>
         /// <para>
         /// String representation of the current thread's principal identity.
@@ -168,19 +140,15 @@ namespace log4net.Core
         /// </remarks>
         public string Identity;
 
-        /// <summary>
-        /// The string representation of the exception.
-        /// </summary>
+        /// <summary>The string representation of the exception</summary>
         /// <remarks>
         /// <para>
-        /// The string representation of the exception.
+        /// The string representation of the exception
         /// </para>
         /// </remarks>
         public string ExceptionString;
 
-        /// <summary>
-        /// String representation of the AppDomain.
-        /// </summary>
+        /// <summary>String representation of the AppDomain.</summary>
         /// <remarks>
         /// <para>
         /// String representation of the AppDomain.
@@ -188,9 +156,7 @@ namespace log4net.Core
         /// </remarks>
         public string Domain;
 
-        /// <summary>
-        /// Additional event specific properties.
-        /// </summary>
+        /// <summary>Additional event specific properties</summary>
         /// <remarks>
         /// <para>
         /// A logger or an appender may attach additional
@@ -201,91 +167,63 @@ namespace log4net.Core
         public PropertiesDictionary Properties;
     }
 
-    /// <summary>
-    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property.
-    /// </summary>
+    /// <summary>Flags passed to the <see cref="LoggingEvent.Fix"/> property</summary>
     /// <remarks>
     /// <para>
-    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property.
+    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Nicko Cadell</author>
     [Flags]
     public enum FixFlags
     {
-        /// <summary>
-        /// Fix the MDC
-        /// </summary>
-        [Obsolete("Replaced by composite Properties. Scheduled removal in v10.0.0.")]
+        /// <summary>Fix the MDC</summary>
+        [Obsolete("Replaced by composite Properties")]
         Mdc = 0x01,
 
-        /// <summary>
-        /// Fix the NDC
-        /// </summary>
+        /// <summary>Fix the NDC</summary>
         Ndc = 0x02,
 
-        /// <summary>
-        /// Fix the rendered message
-        /// </summary>
+        /// <summary>Fix the rendered message</summary>
         Message = 0x04,
 
-        /// <summary>
-        /// Fix the thread name
-        /// </summary>
+        /// <summary>Fix the thread name</summary>
         ThreadName = 0x08,
 
-        /// <summary>
-        /// Fix the callers location information
-        /// </summary>
+        /// <summary>Fix the callers location information</summary>
         /// <remarks>
         /// CAUTION: Very slow to generate
         /// </remarks>
         LocationInfo = 0x10,
 
-        /// <summary>
-        /// Fix the callers windows user name
-        /// </summary>
+        /// <summary>Fix the callers windows user name</summary>
         /// <remarks>
         /// CAUTION: Slow to generate
         /// </remarks>
         UserName = 0x20,
 
-        /// <summary>
-        /// Fix the domain friendly name
-        /// </summary>
+        /// <summary>Fix the domain friendly name</summary>
         Domain = 0x40,
 
-        /// <summary>
-        /// Fix the callers principal name
-        /// </summary>
+        /// <summary>Fix the callers principal name</summary>
         /// <remarks>
         /// CAUTION: May be slow to generate
         /// </remarks>
         Identity = 0x80,
 
-        /// <summary>
-        /// Fix the exception text
-        /// </summary>
+        /// <summary>Fix the exception text</summary>
         Exception = 0x100,
 
-        /// <summary>
-        /// Fix the event properties. Active properties must implement <see cref="IFixingRequired"/> in order to be eligible for fixing.
-        /// </summary>
+        /// <summary>Fix the event properties. Active properties must implement <see cref="IFixingRequired"/> in order to be eligible for fixing.</summary>
         Properties = 0x200,
 
-        /// <summary>
-        /// No fields fixed
-        /// </summary>
+        /// <summary>No fields fixed</summary>
         None = 0x0,
 
-        /// <summary>
-        /// All fields fixed
-        /// </summary>
+        /// <summary>All fields fixed</summary>
         All = 0xFFFFFFF,
 
-        /// <summary>
-        /// Partial fields fixed
-        /// </summary>
+        /// <summary>Partial fields fixed</summary>
         /// <remarks>
         /// <para>
         /// This set of partial fields gives good performance. The following fields are fixed:
@@ -301,13 +239,11 @@ namespace log4net.Core
         Partial = Message | ThreadName | Exception | Domain | Properties,
     }
 
-    /// <summary>
-    /// The internal representation of logging events.
-    /// </summary>
+    /// <summary>The internal representation of logging events. </summary>
     /// <remarks>
     /// <para>
-    /// When an affirmative decision is made to log then a
-    /// <see cref="LoggingEvent"/> instance is created. This instance
+    /// When an affirmative decision is made to log then a 
+    /// <see cref="LoggingEvent"/> instance is created. This instance 
     /// is passed around to the different log4net components.
     /// </para>
     /// <para>
@@ -324,10 +260,10 @@ namespace log4net.Core
     /// is essential to maintaining data consistency.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    /// <author>Douglas de la Torre.</author>
-    /// <author>Daniel Cazzulino.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /// <author>Douglas de la Torre</author>
+    /// <author>Daniel Cazzulino</author>
 #if !NETCF
     [Serializable]
 #endif
@@ -351,7 +287,7 @@ namespace log4net.Core
         /// <param name="exception">The exception for this event.</param>
         /// <remarks>
         /// <para>
-        /// Except <see cref="TimeStamp"/>, <see cref="Level"/> and <see cref="LoggerName"/>,
+        /// Except <see cref="TimeStamp"/>, <see cref="Level"/> and <see cref="LoggerName"/>, 
         /// all fields of <c>LoggingEvent</c> are filled when actually needed. Call
         /// <see cref="M:FixVolatileData()"/> to cache all data locally
         /// to prevent inconsistencies.
@@ -360,7 +296,12 @@ namespace log4net.Core
         /// to create a logging event.
         /// </para>
         /// </remarks>
-        public LoggingEvent(Type callerStackBoundaryDeclaringType, log4net.Repository.ILoggerRepository repository, string loggerName, Level level, object message, Exception exception)
+        public LoggingEvent(Type callerStackBoundaryDeclaringType,
+            ILoggerRepository repository,
+            string loggerName,
+            Level level,
+            object message,
+            Exception exception)
         {
             this.m_callerStackBoundaryDeclaringType = callerStackBoundaryDeclaringType;
             this.m_message = message;
@@ -375,7 +316,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggingEvent" /> class
+        /// Initializes a new instance of the <see cref="LoggingEvent" /> class 
         /// using specific data.
         /// </summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
@@ -390,7 +331,7 @@ namespace log4net.Core
         /// be useful if you require a custom serialization scheme.
         /// </para>
         /// <para>
-        /// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an
+        /// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an 
         /// instance of the <see cref="LoggingEventData"/> class.
         /// </para>
         /// <para>
@@ -399,7 +340,10 @@ namespace log4net.Core
         /// will be captured from the environment if requested or fixed.
         /// </para>
         /// </remarks>
-        public LoggingEvent(Type callerStackBoundaryDeclaringType, log4net.Repository.ILoggerRepository repository, LoggingEventData data, FixFlags fixedData)
+        public LoggingEvent(Type callerStackBoundaryDeclaringType,
+            ILoggerRepository repository,
+            LoggingEventData data,
+            FixFlags fixedData)
         {
             this.m_callerStackBoundaryDeclaringType = callerStackBoundaryDeclaringType;
             this.m_repository = repository;
@@ -409,7 +353,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggingEvent" /> class
+        /// Initializes a new instance of the <see cref="LoggingEvent" /> class 
         /// using specific data.
         /// </summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
@@ -423,7 +367,7 @@ namespace log4net.Core
         /// be useful if you require a custom serialization scheme.
         /// </para>
         /// <para>
-        /// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an
+        /// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an 
         /// instance of the <see cref="LoggingEventData"/> class.
         /// </para>
         /// <para>
@@ -432,13 +376,14 @@ namespace log4net.Core
         /// parameter and no other data should be captured from the environment.
         /// </para>
         /// </remarks>
-        public LoggingEvent(Type callerStackBoundaryDeclaringType, log4net.Repository.ILoggerRepository repository, LoggingEventData data)
-            : this(callerStackBoundaryDeclaringType, repository, data, FixFlags.All)
+        public LoggingEvent(Type callerStackBoundaryDeclaringType,
+            ILoggerRepository repository,
+            LoggingEventData data) : this(callerStackBoundaryDeclaringType, repository, data, FixFlags.All)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggingEvent" /> class
+        /// Initializes a new instance of the <see cref="LoggingEvent" /> class 
         /// using specific data.
         /// </summary>
         /// <param name="data">Data used to initialize the logging event.</param>
@@ -449,7 +394,7 @@ namespace log4net.Core
         /// be useful if you require a custom serialization scheme.
         /// </para>
         /// <para>
-        /// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an
+        /// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an 
         /// instance of the <see cref="LoggingEventData"/> class.
         /// </para>
         /// <para>
@@ -458,22 +403,18 @@ namespace log4net.Core
         /// parameter and no other data should be captured from the environment.
         /// </para>
         /// </remarks>
-        public LoggingEvent(LoggingEventData data)
-            : this(null, null, data)
+        public LoggingEvent(LoggingEventData data) : this(null, null, data)
         {
         }
 
-#if !(NETCF || NETSTANDARD1_3)
+#if !NETCF
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LoggingEvent"/> class.
-        /// Serialization constructor.
-        /// </summary>
+        /// <summary>Serialization constructor</summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="LoggingEvent" /> class
+        /// Initializes a new instance of the <see cref="LoggingEvent" /> class 
         /// with serialized data.
         /// </para>
         /// </remarks>
@@ -482,7 +423,7 @@ namespace log4net.Core
             this.m_data.LoggerName = info.GetString("LoggerName");
 
             // Note we are deserializing the whole level object. That is the
-            // name and the value. This value is correct for the source
+            // name and the value. This value is correct for the source 
             // hierarchy but may not be for the target hierarchy that this
             // event may be re-logged into. If it is to be re-logged it may
             // be necessary to re-lookup the level based only on the name.
@@ -505,9 +446,7 @@ namespace log4net.Core
 
 #endif
 
-        /// <summary>
-        /// Gets the time when the current process started.
-        /// </summary>
+        /// <summary>Gets the time when the current process started.</summary>
         /// <value>
         /// This is the time when this process started.
         /// </value>
@@ -531,9 +470,7 @@ namespace log4net.Core
             get { return SystemInfo.ProcessStartTimeUtc.ToLocalTime(); }
         }
 
-        /// <summary>
-        /// Gets the UTC time when the current process started.
-        /// </summary>
+        /// <summary>Gets the UTC time when the current process started.</summary>
         /// <value>
         /// This is the UTC time when this process started.
         /// </value>
@@ -554,9 +491,7 @@ namespace log4net.Core
             get { return SystemInfo.ProcessStartTimeUtc; }
         }
 
-        /// <summary>
-        /// Gets the <see cref="Level" /> of the logging event.
-        /// </summary>
+        /// <summary>Gets the <see cref="Level" /> of the logging event.</summary>
         /// <value>
         /// The <see cref="Level" /> of the logging event.
         /// </value>
@@ -570,9 +505,7 @@ namespace log4net.Core
             get { return this.m_data.Level; }
         }
 
-        /// <summary>
-        /// Gets the time of the logging event.
-        /// </summary>
+        /// <summary>Gets the time of the logging event.</summary>
         /// <value>
         /// The time of the logging event.
         /// </value>
@@ -586,9 +519,7 @@ namespace log4net.Core
             get { return this.m_data.TimeStampUtc.ToLocalTime(); }
         }
 
-        /// <summary>
-        /// Gets UTC the time of the logging event.
-        /// </summary>
+        /// <summary>Gets UTC the time of the logging event.</summary>
         /// <value>
         /// The UTC time of the logging event.
         /// </value>
@@ -597,9 +528,7 @@ namespace log4net.Core
             get { return this.m_data.TimeStampUtc; }
         }
 
-        /// <summary>
-        /// Gets the name of the logger that logged the event.
-        /// </summary>
+        /// <summary>Gets the name of the logger that logged the event.</summary>
         /// <value>
         /// The name of the logger that logged the event.
         /// </value>
@@ -613,9 +542,7 @@ namespace log4net.Core
             get { return this.m_data.LoggerName; }
         }
 
-        /// <summary>
-        /// Gets the location information for this logging event.
-        /// </summary>
+        /// <summary>Gets the location information for this logging event.</summary>
         /// <value>
         /// The location information for this logging event.
         /// </value>
@@ -642,9 +569,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets the message object used to initialize this event.
-        /// </summary>
+        /// <summary>Gets the message object used to initialize this event.</summary>
         /// <value>
         /// The message object used to initialize this event.
         /// </value>
@@ -652,9 +577,9 @@ namespace log4net.Core
         /// <para>
         /// Gets the message object used to initialize this event.
         /// Note that this event may not have a valid message object.
-        /// If the event is serialized the message object will not
+        /// If the event is serialized the message object will not 
         /// be transferred. To get the text of the message the
-        /// <see cref="RenderedMessage"/> property must be used
+        /// <see cref="RenderedMessage"/> property must be used 
         /// not this property.
         /// </para>
         /// <para>
@@ -667,9 +592,7 @@ namespace log4net.Core
             get { return this.m_message; }
         }
 
-        /// <summary>
-        /// Gets the exception object used to initialize this event.
-        /// </summary>
+        /// <summary>Gets the exception object used to initialize this event.</summary>
         /// <value>
         /// The exception object used to initialize this event.
         /// </value>
@@ -677,9 +600,9 @@ namespace log4net.Core
         /// <para>
         /// Gets the exception object used to initialize this event.
         /// Note that this event may not have a valid exception object.
-        /// If the event is serialized the exception object will not
+        /// If the event is serialized the exception object will not 
         /// be transferred. To get the text of the exception the
-        /// <see cref="GetExceptionString"/> method must be used
+        /// <see cref="GetExceptionString"/> method must be used 
         /// not this property.
         /// </para>
         /// <para>
@@ -692,9 +615,7 @@ namespace log4net.Core
             get { return this.m_thrownException; }
         }
 
-        /// <summary>
-        /// Gets the <see cref="ILoggerRepository"/> that this event was created in.
-        /// </summary>
+        /// <summary>The <see cref="ILoggerRepository"/> that this event was created in.</summary>
         /// <remarks>
         /// <para>
         /// The <see cref="ILoggerRepository"/> that this event was created in.
@@ -705,10 +626,8 @@ namespace log4net.Core
             get { return this.m_repository; }
         }
 
-        /// <summary>
-        /// Ensure that the repository is set.
-        /// </summary>
-        /// <param name="repository">the value for the repository.</param>
+        /// <summary>Ensure that the repository is set.</summary>
+        /// <param name="repository">the value for the repository</param>
         internal void EnsureRepository(ILoggerRepository repository)
         {
             if (repository != null)
@@ -717,9 +636,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets the message, rendered through the <see cref="ILoggerRepository.RendererMap" />.
-        /// </summary>
+        /// <summary>Gets the message, rendered through the <see cref="ILoggerRepository.RendererMap" />.</summary>
         /// <value>
         /// The message rendered through the <see cref="ILoggerRepository.RendererMap" />.
         /// </value>
@@ -740,7 +657,7 @@ namespace log4net.Core
                     }
                     else if (this.m_message is string)
                     {
-                        this.m_data.Message = this.m_message as string;
+                        this.m_data.Message = (this.m_message as string);
                     }
                     else if (this.m_repository != null)
                     {
@@ -757,14 +674,12 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Write the rendered message to a TextWriter.
-        /// </summary>
-        /// <param name="writer">the writer to write the message to.</param>
+        /// <summary>Write the rendered message to a TextWriter</summary>
+        /// <param name="writer">the writer to write the message to</param>
         /// <remarks>
         /// <para>
         /// Unlike the <see cref="RenderedMessage"/> property this method
-        /// does store the message data in the internal cache. Therefore
+        /// does store the message data in the internal cache. Therefore 
         /// if called only once this method should be faster than the
         /// <see cref="RenderedMessage"/> property, however if the message is
         /// to be accessed multiple times then the property will be more efficient.
@@ -797,11 +712,9 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets the name of the current thread.
-        /// </summary>
+        /// <summary>Gets the name of the current thread.  </summary>
         /// <value>
-        /// The name of the current thread, or the thread ID when
+        /// The name of the current thread, or the thread ID when 
         /// the name is not available.
         /// </value>
         /// <remarks>
@@ -815,28 +728,39 @@ namespace log4net.Core
             {
                 if (this.m_data.ThreadName == null && this.m_cacheUpdatable)
                 {
-#if NETCF || NETSTANDARD1_3
-					// Get thread ID only
-					m_data.ThreadName = SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+#if NETCF
+                    // Get thread ID only
+                    m_data.ThreadName =
+ SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
 #else
-                    this.m_data.ThreadName = System.Threading.Thread.CurrentThread.Name;
-                    if (this.m_data.ThreadName == null || this.m_data.ThreadName.Length == 0)
+                    // '.NET ThreadPool Worker' appears as a default thread pool name in .NET 6+.
+                    // Prefer the numeric thread ID instead.
+                    string threadName = System.Threading.Thread.CurrentThread.Name;
+                    if (!string.IsNullOrEmpty(threadName) && threadName != ".NET ThreadPool Worker")
                     {
-                        // The thread name is not available. Therefore we
-                        // go the the AppDomain to get the ID of the
+                        this.m_data.ThreadName = threadName;
+                    }
+                    else
+                    {
+                        // The thread name is not available or unsuitable. Therefore we
+                        // go the the AppDomain to get the ID of the 
                         // current thread. (Why don't Threads know their own ID?)
                         try
                         {
-                            this.m_data.ThreadName = SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+                            this.m_data.ThreadName =
+                                SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo
+                                    .InvariantInfo);
                         }
-                        catch (System.Security.SecurityException)
+                        catch (SecurityException)
                         {
-                            // This security exception will occur if the caller does not have
+                            // This security exception will occur if the caller does not have 
                             // some undefined set of SecurityPermission flags.
-                            LogLog.Debug(declaringType, "Security exception while trying to get current thread ID. Error Ignored. Empty thread name.");
+                            LogLog.Debug(declaringType,
+                                "Security exception while trying to get current thread ID. Error Ignored. Empty thread name.");
 
                             // As a last resort use the hash code of the Thread object
-                            this.m_data.ThreadName = System.Threading.Thread.CurrentThread.GetHashCode().ToString(System.Globalization.CultureInfo.InvariantCulture);
+                            this.m_data.ThreadName = System.Threading.Thread.CurrentThread.GetHashCode()
+                                .ToString(System.Globalization.CultureInfo.InvariantCulture);
                         }
                     }
 #endif
@@ -846,12 +770,10 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets the name of the current user.
-        /// </summary>
+        /// <summary>Gets the name of the current user.</summary>
         /// <value>
-        /// The name of the current user, or <c>NOT AVAILABLE</c> when the
-        /// underlying runtime has no support for retrieving the name of the
+        /// The name of the current user, or <c>NOT AVAILABLE</c> when the 
+        /// underlying runtime has no support for retrieving the name of the 
         /// current user.
         /// </value>
         /// <remarks>
@@ -860,14 +782,14 @@ namespace log4net.Core
         /// the current windows user.
         /// </para>
         /// <para>
-        /// To improve performance, we could cache the string representation of
-        /// the name, and reuse that as long as the identity stayed constant.
-        /// Once the identity changed, we would need to re-assign and re-render
+        /// To improve performance, we could cache the string representation of 
+        /// the name, and reuse that as long as the identity stayed constant.  
+        /// Once the identity changed, we would need to re-assign and re-render 
         /// the string.
         /// </para>
         /// <para>
-        /// However, the <c>WindowsIdentity.GetCurrent()</c> call seems to
-        /// return different objects every time, so the current implementation
+        /// However, the <c>WindowsIdentity.GetCurrent()</c> call seems to 
+        /// return different objects every time, so the current implementation 
         /// doesn't do this type of caching.
         /// </para>
         /// <para>
@@ -888,8 +810,8 @@ namespace log4net.Core
         ///   </item>
         /// </list>
         /// <para>
-        /// This means we could speed things up almost 40 times by caching the
-        /// value of the <c>WindowsIdentity.GetCurrent().Name</c> property, since
+        /// This means we could speed things up almost 40 times by caching the 
+        /// value of the <c>WindowsIdentity.GetCurrent().Name</c> property, since 
         /// this takes (8.04-0.20) = 7.84375 seconds.
         /// </para>
         /// </remarks>
@@ -897,42 +819,63 @@ namespace log4net.Core
         {
             get
             {
-                if (this.m_data.UserName == null && this.m_cacheUpdatable)
+                if (this.m_data.UserName == null)
                 {
-#if NETCF || SSCLI || NETSTANDARD1_3 // NETSTANDARD1_3 TODO requires platform-specific code
-					// On compact framework there's no notion of current Windows user
-					m_data.UserName = SystemInfo.NotAvailableText;
-#else
-                    try
-                    {
-                        WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
-                        if (windowsIdentity != null && windowsIdentity.Name != null)
-                        {
-                            this.m_data.UserName = windowsIdentity.Name;
-                        }
-                        else
-                        {
-                            this.m_data.UserName = string.Empty;
-                        }
-                    }
-                    catch (System.Security.SecurityException)
-                    {
-                        // This security exception will occur if the caller does not have
-                        // some undefined set of SecurityPermission flags.
-                        LogLog.Debug(declaringType, "Security exception while trying to get current windows identity. Error Ignored. Empty user name.");
-
-                        this.m_data.UserName = string.Empty;
-                    }
-#endif
+                    this.m_data.UserName = TryGetCurrentUserName() ?? SystemInfo.NotAvailableText;
                 }
 
                 return this.m_data.UserName;
             }
         }
 
-        /// <summary>
-        /// Gets the identity of the current thread principal.
-        /// </summary>
+        private static string TryGetCurrentUserName()
+        {
+#if (NETCF || SSCLI || NETSTANDARD1_3)
+                    // On compact framework there's no notion of current Windows user
+                    return SystemInfo.NotAvailableText;
+#else
+            if (_platformDoesNotSupportWindowsIdentity)
+            {
+                // we've already received one PlatformNotSupportedException
+                // and it's highly unlikely that will change
+                return Environment.UserName;
+            }
+
+            try
+            {
+                using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
+                {
+                    return windowsIdentity?.Name ?? string.Empty;
+                }
+            }
+            catch (PlatformNotSupportedException)
+            {
+                _platformDoesNotSupportWindowsIdentity = true;
+                return Environment.UserName;
+            }
+            catch (SecurityException)
+            {
+                // This security exception will occur if the caller does not have 
+                // some undefined set of SecurityPermission flags.
+                LogLog.Debug(
+                    declaringType,
+                    "Security exception while trying to get current windows identity. Error Ignored."
+                );
+                return Environment.UserName;
+            }
+            catch
+            {
+                return null;
+            }
+#endif
+        }
+
+#if (NETCF || SSCLI || NETSTANDARD1_3)
+#else
+        private static bool _platformDoesNotSupportWindowsIdentity;
+#endif
+
+        /// <summary>Gets the identity of the current thread principal.</summary>
         /// <value>
         /// The string name of the identity of the current thread principal.
         /// </value>
@@ -948,9 +891,9 @@ namespace log4net.Core
             {
                 if (this.m_data.Identity == null && this.m_cacheUpdatable)
                 {
-#if NETCF || SSCLI || NETSTANDARD1_3
-					// On compact framework there's no notion of current thread principals
-					m_data.Identity = SystemInfo.NotAvailableText;
+#if (NETCF || SSCLI || NETSTANDARD1_3)
+                    // On compact framework there's no notion of current thread principals
+                    m_data.Identity = SystemInfo.NotAvailableText;
 #else
                     try
                     {
@@ -970,15 +913,17 @@ namespace log4net.Core
                         // This exception will occur if System.Threading.Thread.CurrentPrincipal.Identity is not null but
                         // the getter of the property Name tries to access disposed objects.
                         // Seen to happen on IIS 7 or greater with windows authentication.
-                        LogLog.Debug(declaringType, "Object disposed exception while trying to get current thread principal. Error Ignored. Empty identity name.");
+                        LogLog.Debug(declaringType,
+                            "Object disposed exception while trying to get current thread principal. Error Ignored. Empty identity name.");
 
                         this.m_data.Identity = string.Empty;
                     }
-                    catch (System.Security.SecurityException)
+                    catch (SecurityException)
                     {
-                        // This security exception will occur if the caller does not have
+                        // This security exception will occur if the caller does not have 
                         // some undefined set of SecurityPermission flags.
-                        LogLog.Debug(declaringType, "Security exception while trying to get current thread principal. Error Ignored. Empty identity name.");
+                        LogLog.Debug(declaringType,
+                            "Security exception while trying to get current thread principal. Error Ignored. Empty identity name.");
 
                         this.m_data.Identity = string.Empty;
                     }
@@ -989,9 +934,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets the AppDomain friendly name.
-        /// </summary>
+        /// <summary>Gets the AppDomain friendly name.</summary>
         /// <value>
         /// The AppDomain friendly name.
         /// </value>
@@ -1013,9 +956,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets additional event specific properties.
-        /// </summary>
+        /// <summary>Additional event specific properties.</summary>
         /// <value>
         /// Additional event specific properties.
         /// </value>
@@ -1058,11 +999,9 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets or sets the fixed fields in this event.
-        /// </summary>
+        /// <summary>The fixed fields in this event</summary>
         /// <value>
-        /// The set of fields that are fixed in this event.
+        /// The set of fields that are fixed in this event
         /// </value>
         /// <remarks>
         /// <para>
@@ -1078,9 +1017,7 @@ namespace log4net.Core
 
 #if !NETCF
 
-        /// <summary>
-        /// Serializes this object into the <see cref="SerializationInfo" /> provided.
-        /// </summary>
+        /// <summary>Serializes this object into the <see cref="SerializationInfo" /> provided.</summary>
         /// <param name="info">The <see cref="SerializationInfo" /> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         /// <remarks>
@@ -1089,24 +1026,26 @@ namespace log4net.Core
         /// </para>
         /// <para>
         /// The <see cref="M:FixVolatileData()"/> method must be called during the
-        /// <see cref="log4net.Appender.IAppender.DoAppend"/> method call if this event
+        /// <see cref="log4net.Appender.IAppender.DoAppend"/> method call if this event 
         /// is to be used outside that method.
         /// </para>
         /// </remarks>
-#if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
-        [System.Security.SecurityCritical]
-#else
-		[System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter=true)]
+#if NET_4_0 || MONO_4_0 || NETSTANDARD
+        [SecurityCritical]
+#endif
+#if !NETCF && !NETSTANDARD1_3
+        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand,
+            SerializationFormatter = true)]
 #endif
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // The caller must call FixVolatileData before this object
             // can be serialized.
+
             info.AddValue("LoggerName", this.m_data.LoggerName);
             info.AddValue("Level", this.m_data.Level);
             info.AddValue("Message", this.m_data.Message);
             info.AddValue("ThreadName", this.m_data.ThreadName);
-
             // TODO: consider serializing UTC rather than local time.  Not implemented here because it
             // would give an unexpected result if client and server have different versions of this class.
             // info.AddValue("TimeStamp", m_data.TimeStampUtc);
@@ -1123,9 +1062,7 @@ namespace log4net.Core
 
 #endif
 
-        /// <summary>
-        /// Gets the portable data for this <see cref="LoggingEvent" />.
-        /// </summary>
+        /// <summary>Gets the portable data for this <see cref="LoggingEvent" />.</summary>
         /// <returns>The <see cref="LoggingEventData"/> for this event.</returns>
         /// <remarks>
         /// <para>
@@ -1142,10 +1079,8 @@ namespace log4net.Core
             return this.GetLoggingEventData(FixFlags.Partial);
         }
 
-        /// <summary>
-        /// Gets the portable data for this <see cref="LoggingEvent" />.
-        /// </summary>
-        /// <param name="fixFlags">The set of data to ensure is fixed in the LoggingEventData.</param>
+        /// <summary>Gets the portable data for this <see cref="LoggingEvent" />.</summary>
+        /// <param name="fixFlags">The set of data to ensure is fixed in the LoggingEventData</param>
         /// <returns>The <see cref="LoggingEventData"/> for this event.</returns>
         /// <remarks>
         /// <para>
@@ -1160,7 +1095,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Returns this event's exception's rendered using the
+        /// Returns this event's exception's rendered using the 
         /// <see cref="ILoggerRepository.RendererMap" />.
         /// </summary>
         /// <returns>
@@ -1171,14 +1106,14 @@ namespace log4net.Core
         /// <b>Obsolete. Use <see cref="GetExceptionString"/> instead.</b>
         /// </para>
         /// </remarks>
-        [Obsolete("Use GetExceptionString instead. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use GetExceptionString instead")]
         public string GetExceptionStrRep()
         {
             return this.GetExceptionString();
         }
 
         /// <summary>
-        /// Returns this event's exception's rendered using the
+        /// Returns this event's exception's rendered using the 
         /// <see cref="ILoggerRepository.RendererMap" />.
         /// </summary>
         /// <returns>
@@ -1186,7 +1121,7 @@ namespace log4net.Core
         /// </returns>
         /// <remarks>
         /// <para>
-        /// Returns this event's exception's rendered using the
+        /// Returns this event's exception's rendered using the 
         /// <see cref="ILoggerRepository.RendererMap" />.
         /// </para>
         /// </remarks>
@@ -1216,9 +1151,7 @@ namespace log4net.Core
             return this.m_data.ExceptionString;
         }
 
-        /// <summary>
-        /// Fix instance fields that hold volatile data.
-        /// </summary>
+        /// <summary>Fix instance fields that hold volatile data.</summary>
         /// <remarks>
         /// <para>
         /// Some of the values in instances of <see cref="LoggingEvent"/>
@@ -1240,15 +1173,13 @@ namespace log4net.Core
         /// information.
         /// </para>
         /// </remarks>
-        [Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use Fix property")]
         public void FixVolatileData()
         {
             this.Fix = FixFlags.All;
         }
 
-        /// <summary>
-        /// Fixes instance fields that hold volatile data.
-        /// </summary>
+        /// <summary>Fixes instance fields that hold volatile data.</summary>
         /// <param name="fastButLoose">Set to <c>true</c> to not fix data that takes a long time to fix.</param>
         /// <remarks>
         /// <para>
@@ -1263,18 +1194,18 @@ namespace log4net.Core
         /// </para>
         /// <para>
         /// The <paramref name="fastButLoose"/> param controls the data that
-        /// is fixed. Some of the data that can be fixed takes a long time to
+        /// is fixed. Some of the data that can be fixed takes a long time to 
         /// generate, therefore if you do not require those settings to be fixed
         /// they can be ignored by setting the <paramref name="fastButLoose"/> param
         /// to <c>true</c>. This setting will ignore the <see cref="LocationInformation"/>
         /// and <see cref="UserName"/> settings.
         /// </para>
         /// <para>
-        /// Set <paramref name="fastButLoose"/> to <c>false</c> to ensure that all
+        /// Set <paramref name="fastButLoose"/> to <c>false</c> to ensure that all 
         /// settings are fixed.
         /// </para>
         /// </remarks>
-        [Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use Fix property")]
         public void FixVolatileData(bool fastButLoose)
         {
             if (fastButLoose)
@@ -1287,10 +1218,8 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Fix the fields specified by the <see cref="FixFlags"/> parameter.
-        /// </summary>
-        /// <param name="flags">the fields to fix.</param>
+        /// <summary>Fix the fields specified by the <see cref="FixFlags"/> parameter</summary>
+        /// <param name="flags">the fields to fix</param>
         /// <remarks>
         /// <para>
         /// Only fields specified in the <paramref name="flags"/> will be fixed.
@@ -1302,13 +1231,13 @@ namespace log4net.Core
         {
             object forceCreation = null;
 
-            // Unlock the cache so that new values can be stored
-            // This may not be ideal if we are no longer in the correct context
-            // and someone calls fix.
+            //Unlock the cache so that new values can be stored
+            //This may not be ideal if we are no longer in the correct context
+            //and someone calls fix. 
             this.m_cacheUpdatable = true;
 
             // determine the flags that we are actually fixing
-            FixFlags updateFlags = (FixFlags)((flags ^ this.m_fixFlags) & flags);
+            var updateFlags = (FixFlags)((flags ^ this.m_fixFlags) & flags);
 
             if (updateFlags > 0)
             {
@@ -1381,26 +1310,26 @@ namespace log4net.Core
             {
             }
 
-            // Finaly lock everything we've cached.
+            //Finaly lock everything we've cached.
             this.m_cacheUpdatable = false;
         }
 
         private void CreateCompositeProperties()
         {
-            CompositeProperties compositeProperties = new CompositeProperties();
+            var compositeProperties = new CompositeProperties();
 
             if (this.m_eventProperties != null)
             {
                 compositeProperties.Add(this.m_eventProperties);
             }
-#if !(NETCF || NETSTANDARD1_3)
-            PropertiesDictionary logicalThreadProperties = LogicalThreadContext.Properties.GetProperties(false);
+#if !NETCF
+            var logicalThreadProperties = LogicalThreadContext.Properties.GetProperties(false);
             if (logicalThreadProperties != null)
             {
                 compositeProperties.Add(logicalThreadProperties);
             }
 #endif
-            PropertiesDictionary threadProperties = ThreadContext.Properties.GetProperties(false);
+            var threadProperties = ThreadContext.Properties.GetProperties(false);
             if (threadProperties != null)
             {
                 compositeProperties.Add(threadProperties);
@@ -1409,7 +1338,7 @@ namespace log4net.Core
             // TODO: Add Repository Properties
 
             // event properties
-            PropertiesDictionary eventProperties = new PropertiesDictionary();
+            var eventProperties = new PropertiesDictionary();
             eventProperties[UserNameProperty] = this.UserName;
             eventProperties[IdentityProperty] = this.Identity;
             compositeProperties.Add(eventProperties);
@@ -1427,21 +1356,21 @@ namespace log4net.Core
                     this.CreateCompositeProperties();
                 }
 
-                PropertiesDictionary flattenedProperties = this.m_compositeProperties.Flatten();
+                var flattenedProperties = this.m_compositeProperties.Flatten();
 
-                PropertiesDictionary fixedProperties = new PropertiesDictionary();
+                var fixedProperties = new PropertiesDictionary();
 
                 // Validate properties
                 foreach (DictionaryEntry entry in flattenedProperties)
                 {
-                    string key = entry.Key as string;
+                    var key = entry.Key as string;
 
                     if (key != null)
                     {
-                        object val = entry.Value;
+                        var val = entry.Value;
 
                         // Fix any IFixingRequired objects
-                        IFixingRequired fixingRequired = val as IFixingRequired;
+                        var fixingRequired = val as IFixingRequired;
                         if (fixingRequired != null)
                         {
                             val = fixingRequired.GetFixedObject();
@@ -1459,20 +1388,18 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Lookup a composite property in this event.
-        /// </summary>
-        /// <param name="key">the key for the property to lookup.</param>
-        /// <returns>the value for the property.</returns>
+        /// <summary>Lookup a composite property in this event</summary>
+        /// <param name="key">the key for the property to lookup</param>
+        /// <returns>the value for the property</returns>
         /// <remarks>
         /// <para>
         /// This event has composite properties that combine together properties from
         /// several different contexts in the following order:
         /// <list type="definition">
-        ///         <item>
+        ///        <item>
         ///         <term>this events properties</term>
         ///         <description>
-        ///         This event has <see cref="Properties"/> that can be set. These
+        ///         This event has <see cref="Properties"/> that can be set. These 
         ///         properties are specific to this event only.
         ///         </description>
         ///     </item>
@@ -1486,7 +1413,7 @@ namespace log4net.Core
         ///     <item>
         ///         <term>the global properties</term>
         ///         <description>
-        ///         The <see cref="GlobalContext.Properties"/> that are set globally. These
+        ///         The <see cref="GlobalContext.Properties"/> that are set globally. These 
         ///         properties are shared by all the threads in the AppDomain.
         ///         </description>
         ///     </item>
@@ -1508,13 +1435,11 @@ namespace log4net.Core
             return this.m_compositeProperties[key];
         }
 
-        /// <summary>
-        /// Get all the composite properties in this event.
-        /// </summary>
-        /// <returns>the <see cref="PropertiesDictionary"/> containing all the properties.</returns>
+        /// <summary>Get all the composite properties in this event</summary>
+        /// <returns>the <see cref="PropertiesDictionary"/> containing all the properties</returns>
         /// <remarks>
         /// <para>
-        /// See <see cref="LookupProperty"/> for details of the composite properties
+        /// See <see cref="LookupProperty"/> for details of the composite properties 
         /// stored by the event.
         /// </para>
         /// <para>
@@ -1537,80 +1462,58 @@ namespace log4net.Core
             return this.m_compositeProperties.Flatten();
         }
 
-        /// <summary>
-        /// The internal logging event data.
-        /// </summary>
+        /// <summary>The internal logging event data.</summary>
         private LoggingEventData m_data;
 
-        /// <summary>
-        /// The internal logging event data.
-        /// </summary>
+        /// <summary>The internal logging event data.</summary>
         private CompositeProperties m_compositeProperties;
 
-        /// <summary>
-        /// The internal logging event data.
-        /// </summary>
+        /// <summary>The internal logging event data.</summary>
         private PropertiesDictionary m_eventProperties;
 
         /// <summary>
-        /// The fully qualified Type of the calling
+        /// The fully qualified Type of the calling 
         /// logger class in the stack frame (i.e. the declaring type of the method).
         /// </summary>
         private readonly Type m_callerStackBoundaryDeclaringType;
 
-        /// <summary>
-        /// The application supplied message of logging event.
-        /// </summary>
+        /// <summary>The application supplied message of logging event.</summary>
         private readonly object m_message;
 
-        /// <summary>
-        /// The exception that was thrown.
-        /// </summary>
+        /// <summary>The exception that was thrown.</summary>
         /// <remarks>
         /// This is not serialized. The string representation
         /// is serialized instead.
         /// </remarks>
         private readonly Exception m_thrownException;
 
-        /// <summary>
-        /// The repository that generated the logging event.
-        /// </summary>
+        /// <summary>The repository that generated the logging event</summary>
         /// <remarks>
         /// This is not serialized.
         /// </remarks>
         private ILoggerRepository m_repository = null;
 
-        /// <summary>
-        /// The fix state for this event.
-        /// </summary>
+        /// <summary>The fix state for this event</summary>
         /// <remarks>
         /// These flags indicate which fields have been fixed.
         /// Not serialized.
         /// </remarks>
         private FixFlags m_fixFlags = FixFlags.None;
 
-        /// <summary>
-        /// Indicated that the internal cache is updateable (ie not fixed).
-        /// </summary>
+        /// <summary>Indicated that the internal cache is updateable (ie not fixed)</summary>
         /// <remarks>
         /// This is a seperate flag to m_fixFlags as it allows incrementel fixing and simpler
         /// changes in the caching strategy.
         /// </remarks>
         private bool m_cacheUpdatable = true;
 
-        /// <summary>
-        /// The key into the Properties map for the host name value.
-        /// </summary>
+        /// <summary>The key into the Properties map for the host name value.</summary>
         public const string HostNameProperty = "log4net:HostName";
 
-        /// <summary>
-        /// The key into the Properties map for the thread identity value.
-        /// </summary>
+        /// <summary>The key into the Properties map for the thread identity value.</summary>
         public const string IdentityProperty = "log4net:Identity";
 
-        /// <summary>
-        /// The key into the Properties map for the user name value.
-        /// </summary>
+        /// <summary>The key into the Properties map for the user name value.</summary>
         public const string UserNameProperty = "log4net:UserName";
     }
 }

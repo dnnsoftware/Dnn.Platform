@@ -133,7 +133,7 @@
     <value>Authentication Domain:</value>
   </data>
   <data name="AuthenticationDomain.Help" xml:space="preserve">
-    <value>Typically not required.</value>
+    <value>Optionally supply the root domain for the authentication cookie, allows users to stay signed-in between subdomains that share the same root domain.</value>
   </data>
   <data name="EditModule_Unassigned.Label" xml:space="preserve">
     <value>Unassigned</value>
@@ -169,7 +169,7 @@
     <value>Master Site:</value>
   </data>
   <data name="MasterSite.Help" xml:space="preserve">
-    <value>Master Site</value>
+    <value>Master Site for this group</value>
   </data>
   <data name="ChooseASite.Label" xml:space="preserve">
     <value>Choose a site</value>

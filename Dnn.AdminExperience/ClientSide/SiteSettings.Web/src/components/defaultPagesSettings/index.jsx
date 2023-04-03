@@ -58,7 +58,7 @@ class DefaultPagesSettingsPanelBody extends Component {
     loadData() {
         const { props } = this;
         props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
-            if(this._mounted) {
+            if (this._mounted) {
                 this.setState({
                     defaultPagesSettings: Object.assign({}, data.Settings)
                 });
@@ -215,7 +215,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_2}
-                     />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label

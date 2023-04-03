@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public static bool IsWorkflowCompleted(TabInfo tab)
         {
-            //If tab exists but ContentItem not, then we create it
+            // If tab exists but ContentItem not, then we create it
             if (tab.ContentItemId == Null.NullInteger && tab.TabID != Null.NullInteger)
             {
                 TabController.Instance.CreateContentItem(tab);

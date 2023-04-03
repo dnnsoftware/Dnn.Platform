@@ -100,6 +100,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void ParentPortalOnVirtualDirReturnsAnEmptyPrefix()
         {
             // Arrange
@@ -110,11 +111,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
                 });
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
                 });
 
             var mockGlobals = new Mock<IGlobals>();
@@ -129,6 +130,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void SingleParentPortalReturnsAnEmptyPrefix()
         {
             // Arrange
@@ -139,11 +141,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" },
                 });
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" },
                 });
 
             var mockGlobals = new Mock<IGlobals>();
@@ -158,6 +160,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void PrefixCountsAreCached()
         {
             // Arrange
@@ -183,6 +186,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void PrefixCountsCacheCanBeCleared()
         {
             // Arrange
@@ -209,6 +213,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void VirtralDirWithChildPortalHasABlankAndASinglePrefix()
         {
             // Arrange
@@ -259,6 +264,7 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("mfn", "name", "ce.lvh.me", "mfn-name-0")]
         [TestCase("mfn", "", "ce.lvh.me/child", "mfn--1")]
         [TestCase("first", "second", "ce.lvh.me/child1/child2/child3/child4/child5", "first-second-5")]
+
         public void GetRouteNameWithPortalAliasInfoHashesNameInCorrectFormat(string moduleFolderName, string routeName, string httpAlias, string expected)
         {
             // Arrange
@@ -273,30 +279,29 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetRouteNameThrowsOnEmptyModuleFolderName(string moduleFolderName)
         {
             // Arrange
 
             // Act
-            new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0);
+            Assert.Throws<ArgumentException>(() => new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void GetRouteNameThrowsOnCountLessThan0()
         {
             // Arrange
 
             // Act
-            new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1));
 
             // Assert
         }
 
         [Test]
+
         public void GetAllRouteValuesWorksWithNullRouteValues()
         {
             // Arrange
@@ -309,6 +314,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesPreservesPassedInRouteValues()
         {
             // Arrange
@@ -324,6 +330,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesExtractsChildPortalParams()
         {
             // Arrange
@@ -340,6 +347,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesExtractsManyChildPortalParamsAndPreservesRouteValues()
         {
             // Arrange

@@ -8,17 +8,20 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckDebug : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckDebug";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id)
             {
                 Severity = HttpContext.Current.IsDebuggingEnabled
                     ? SeverityEnum.Warning
-                    : SeverityEnum.Pass
+                    : SeverityEnum.Pass,
             };
             return result;
         }

@@ -4,13 +4,13 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
     using System.Text;
 
     using DotNetNuke.Common;
 
     public class ToolBarButtonRenderer : IExtensionControlRenderer
     {
+        /// <inheritdoc/>
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarButtonExtensionPoint)extensionPoint;
@@ -32,8 +32,12 @@ namespace DotNetNuke.ExtensionPoints
             var quote = action.Contains("'") ? "\"" : "'";
             var str = new StringBuilder();
             str.AppendFormat(
-                        "<button id=\"{0}\" class=\"{1}\" onclick={4}{2}; return false;{4} title=\"{3}\">",
-                        extension.ButtonId, cssClass, action, extension.Text, quote);
+                "<button id=\"{0}\" class=\"{1}\" onclick={4}{2}; return false;{4} title=\"{3}\">",
+                extension.ButtonId,
+                cssClass,
+                action,
+                extension.Text,
+                quote);
 
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",

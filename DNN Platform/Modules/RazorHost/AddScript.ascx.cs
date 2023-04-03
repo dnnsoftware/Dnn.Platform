@@ -13,56 +13,70 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Implements the AddScript view logic.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
+        /// <summary>Initializes a new instance of the <see cref="AddScript"/> class.</summary>
         public AddScript()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.scriptFileType.SelectedIndexChanged += this.scriptFileType_SelectedIndexChanged;
+            this.cmdCancel.Click += this.CmdCancel_Click;
+            this.cmdAdd.Click += this.CmdAdd_Click;
+            this.scriptFileType.SelectedIndexChanged += this.ScriptFileType_SelectedIndexChanged;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 
             this.DisplayExtension();
         }
 
+        /// <summary>Cancel button click event handler.</summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected void cmdCancel_Click(object sender, EventArgs e)
+        protected void CmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
                 this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        /// <summary>Add button event handler.</summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected void cmdAdd_Click(object sender, EventArgs e)
+        protected void CmdAdd_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+                    this.Response.Redirect(this.navigationManager.NavigateURL("Access Denied"), true);
                 }
 
                 if (this.Page.IsValid)
@@ -80,7 +94,7 @@ namespace DotNetNuke.Modules.RazorHost
                     this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -91,7 +105,7 @@ namespace DotNetNuke.Modules.RazorHost
             this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
         }
 
-        private void scriptFileType_SelectedIndexChanged(object sender, EventArgs e)
+        private void ScriptFileType_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.DisplayExtension();
         }

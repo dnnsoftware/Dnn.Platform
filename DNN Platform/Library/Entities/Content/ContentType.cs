@@ -10,9 +10,7 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Content type of a content item.
-    /// </summary>
+    /// <summary>Content type of a content item.</summary>
     /// <remarks>
     /// Content Types, simply put, are a way of telling the framework what module/functionality is associated with a Content Item.
     /// Each product (ie. module) that wishes to allow categorization of data (via Taxonomy or Folksonomy) for it's content items
@@ -21,19 +19,22 @@ namespace DotNetNuke.Entities.Content
     [Serializable]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
-        private const string desktopModuleContentTypeName = "DesktopModule";
-        private const string moduleContentTypeName = "Module";
-        private const string tabContentTypeName = "Tab";
+        private const string DesktopModuleContentTypeName = "DesktopModule";
+        private const string ModuleContentTypeName = "Module";
+        private const string TabContentTypeName = "Tab";
 
-        private static ContentType _desktopModule;
-        private static ContentType _module;
-        private static ContentType _tab;
+        private static ContentType desktopModule;
+        private static ContentType module;
+        private static ContentType tab;
 
+        /// <summary>Initializes a new instance of the <see cref="ContentType"/> class.</summary>
         public ContentType()
             : this(Null.NullString)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ContentType"/> class.</summary>
+        /// <param name="contentType"></param>
         public ContentType(string contentType)
         {
             this.ContentTypeId = Null.NullInteger;
@@ -44,7 +45,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == desktopModuleContentTypeName));
+                return desktopModule ?? (desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == DesktopModuleContentTypeName));
             }
         }
 
@@ -52,7 +53,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == moduleContentTypeName));
+                return module ?? (module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == ModuleContentTypeName));
             }
         }
 
@@ -60,21 +61,17 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == tabContentTypeName));
+                return tab ?? (tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
 
-        /// <summary>
-        /// Gets or sets the content type id.
-        /// </summary>
+        /// <summary>Gets or sets the content type id.</summary>
         /// <value>
         /// The content type id.
         /// </value>
         public int ContentTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
+        /// <summary>Gets or sets the key ID.</summary>
         /// <value>
         /// ContentTypeID.
         /// </value>
@@ -91,9 +88,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Fill this content object will the information from data reader.
-        /// </summary>
+        /// <summary>Fill this content object will the information from data reader.</summary>
         /// <param name="dr">The data reader.</param>
         /// <seealso cref="IHydratable.Fill"/>
         public void Fill(IDataReader dr)
@@ -102,9 +97,7 @@ namespace DotNetNuke.Entities.Content
             this.ContentType = Null.SetNullString(dr["ContentType"]);
         }
 
-        /// <summary>
-        /// override ToString to return content type.
-        /// </summary>
+        /// <summary>override ToString to return content type.</summary>
         /// <returns>
         /// property ContentType's value.
         /// </returns>

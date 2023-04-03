@@ -19,22 +19,28 @@ namespace DotNetNuke.Web.Mvp
             this.AutoDataBind = true;
         }
 
+        /// <inheritdoc/>
         public event EventHandler Initialize;
 
+        /// <inheritdoc/>
         public new event EventHandler Load;
 
+        /// <inheritdoc/>
         public bool ThrowExceptionIfNoPresenterBound
         {
             get { return true; }
         }
 
+        /// <inheritdoc/>
         public bool AutoDataBind { get; set; }
 
+        /// <inheritdoc/>
         public void ProcessModuleLoadException(Exception ex)
         {
             Exceptions.ProcessModuleLoadException(this, ex);
         }
 
+        /// <inheritdoc/>
         public void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType)
         {
             DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, messageHeader, message, messageType);
@@ -43,8 +49,8 @@ namespace DotNetNuke.Web.Mvp
         protected T DataItem<T>()
             where T : class, new()
         {
-            var _T = this.Page.GetDataItem() as T ?? new T();
-            return _T;
+            var t = this.Page.GetDataItem() as T ?? new T();
+            return t;
         }
 
         protected T DataValue<T>()
@@ -57,6 +63,7 @@ namespace DotNetNuke.Web.Mvp
             return string.Format(CultureInfo.CurrentCulture, format, this.DataValue<T>());
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             PageViewHost.Register(this, this.Context, false);

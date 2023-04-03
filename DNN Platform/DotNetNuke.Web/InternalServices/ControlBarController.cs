@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.InternalServices
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -39,12 +38,12 @@ namespace DotNetNuke.Web.InternalServices
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
-        private readonly Components.Controllers.IControlBarController Controller;
-        private IDictionary<string, string> _nameDics;
+        private readonly Components.Controllers.IControlBarController controller;
+        private IDictionary<string, string> nameDics;
 
         public ControlBarController()
         {
-            this.Controller = Components.Controllers.ControlBarController.Instance;
+            this.controller = Components.Controllers.ControlBarController.Instance;
         }
 
         [HttpGet]
@@ -56,12 +55,12 @@ namespace DotNetNuke.Web.InternalServices
                 category = "All";
             }
 
-            var bookmarCategory = this.Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
-            var bookmarkedModules = this.Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
-            var bookmarkCategoryModules = this.Controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, bookmarCategory, searchTerm);
+            var bookmarCategory = this.controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
+            var bookmarkedModules = this.controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
+            var bookmarkCategoryModules = this.controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, bookmarCategory, searchTerm);
 
             var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct()
-                                            : this.Controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
+                                            : this.controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
 
             if (!string.IsNullOrEmpty(excludeCategories))
             {
@@ -416,7 +415,7 @@ namespace DotNetNuke.Web.InternalServices
                 bookmark.Bookmark = string.Empty;
             }
 
-            this.Controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
+            this.controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
@@ -517,9 +516,9 @@ namespace DotNetNuke.Web.InternalServices
 
             string imageUrl =
                 (from pkgs in packages
-                    join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                    where portMods.Value.DesktopModuleID == moduleId
-                    select pkgs.IconFile).FirstOrDefault();
+                 join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                 where portMods.Value.DesktopModuleID == moduleId
+                 select pkgs.IconFile).FirstOrDefault();
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
@@ -533,11 +532,11 @@ namespace DotNetNuke.Web.InternalServices
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from pkgs in packages
-                join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-                join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-                where tabMods.Value.ModuleID == moduleId
-                select pkgs.IconFile).FirstOrDefault();
+                               join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                               join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+                               join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+                               where tabMods.Value.ModuleID == moduleId
+                               select pkgs.IconFile).FirstOrDefault();
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
@@ -567,7 +566,7 @@ namespace DotNetNuke.Web.InternalServices
                 userID = user.UserID;
             }
 
-            if (moduleInfo != null)
+            if (moduleInfo != null && !moduleInfo.IsDeleted)
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -585,6 +584,11 @@ namespace DotNetNuke.Web.InternalServices
                         case ModuleSharing.Unknown:
                             break;
                     }
+                }
+
+                if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                {
+                    throw new SecurityException($"Module '{moduleInfo.ModuleID}' is not available in current context.");
                 }
 
                 // clone the module object ( to avoid creating an object reference to the data cache )
@@ -829,9 +833,9 @@ namespace DotNetNuke.Web.InternalServices
 
         private string GetModuleName(string moduleName)
         {
-            if (this._nameDics == null)
+            if (this.nameDics == null)
             {
-                this._nameDics = new Dictionary<string, string>
+                this.nameDics = new Dictionary<string, string>
                 {
                     { "SearchCrawlerAdmin", "SearchCrawler Admin" },
                     { "SearchCrawlerInput", "SearchCrawler Input" },
@@ -839,7 +843,7 @@ namespace DotNetNuke.Web.InternalServices
                 };
             }
 
-            return this._nameDics.ContainsKey(moduleName) ? this._nameDics[moduleName] : moduleName;
+            return this.nameDics.ContainsKey(moduleName) ? this.nameDics[moduleName] : moduleName;
         }
 
         public class ModuleDefDTO

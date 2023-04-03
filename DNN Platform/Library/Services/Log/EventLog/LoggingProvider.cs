@@ -6,17 +6,17 @@ namespace DotNetNuke.Services.Log.EventLog
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.ComponentModel;
 
     public abstract class LoggingProvider
     {
+        [Obsolete("Deprecated in 9.8.0. Not suitable replacement, use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public enum ReturnType
         {
-            LogInfoObjects,
-            XML,
+            LogInfoObjects = 0,
+            XML = 1,
         }
 
         // return the provider
@@ -51,6 +51,11 @@ namespace DotNetNuke.Services.Log.EventLog
         public abstract LogTypeConfigInfo GetLogTypeConfigInfoByID(string id);
 
         public abstract object GetSingleLog(LogInfo logInfo, ReturnType returnType);
+
+        /// <summary>Retrieves a single event log via the Log Guid.</summary>
+        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <returns>The <see cref="ILogInfo"/>.</returns>
+        public abstract ILogInfo GetLog(string logGuid);
 
         public abstract bool LoggingIsEnabled(string logType, int portalID);
 

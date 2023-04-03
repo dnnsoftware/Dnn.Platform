@@ -36,7 +36,8 @@ namespace Dnn.PersonaBar.Pages.Components
             input.Name = Clean(input.Name);
         }
 
-        public static string Clean(string input,
+        public static string Clean(
+            string input,
             PortalSecurity.FilterFlag filterFlag = PortalSecurity.FilterFlag.NoMarkup)
         {
             return PortalSecurity.Instance.InputFilter(input, filterFlag);

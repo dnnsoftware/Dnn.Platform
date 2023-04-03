@@ -11,48 +11,47 @@ namespace DotNetNuke.ComponentModel
 
     public class SimpleContainer : AbstractContainer
     {
-        private readonly string _name;
-        private readonly ComponentBuilderCollection _componentBuilders = new ComponentBuilderCollection();
+        private readonly string name;
+        private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
 
-        private readonly SharedDictionary<string, IDictionary> _componentDependencies = new SharedDictionary<string, IDictionary>();
+        private readonly SharedDictionary<string, IDictionary> componentDependencies = new SharedDictionary<string, IDictionary>();
 
-        private readonly ComponentTypeCollection _componentTypes = new ComponentTypeCollection();
+        private readonly ComponentTypeCollection componentTypes = new ComponentTypeCollection();
 
-        private readonly SharedDictionary<Type, string> _registeredComponents = new SharedDictionary<Type, string>();
+        private readonly SharedDictionary<Type, string> registeredComponents = new SharedDictionary<Type, string>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
         public SimpleContainer()
             : this(string.Format("Container_{0}", Guid.NewGuid()))
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
-        /// </summary>
-        /// <param name = "name"></param>
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        /// <param name="name"></param>
         public SimpleContainer(string name)
         {
-            this._name = name;
+            this.name = name;
         }
 
+        /// <inheritdoc/>
         public override string Name
         {
             get
             {
-                return this._name;
+                return this.name;
             }
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponent(string name, Type type)
         {
-            using (this._registeredComponents.GetWriteLock())
+            using (this.registeredComponents.GetWriteLock())
             {
-                this._registeredComponents[type] = name;
+                this.registeredComponents[type] = name;
             }
         }
 
+        /// <inheritdoc/>
         public override object GetComponent(string name)
         {
             IComponentBuilder builder = this.GetComponentBuilder(name);
@@ -60,6 +59,7 @@ namespace DotNetNuke.ComponentModel
             return this.GetComponent(builder);
         }
 
+        /// <inheritdoc/>
         public override object GetComponent(Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -85,6 +85,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
+        /// <inheritdoc/>
         public override object GetComponent(string name, Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -100,13 +101,14 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
+        /// <inheritdoc/>
         public override string[] GetComponentList(Type contractType)
         {
             var components = new List<string>();
 
-            using (this._registeredComponents.GetReadLock())
+            using (this.registeredComponents.GetReadLock())
             {
-                foreach (KeyValuePair<Type, string> kvp in this._registeredComponents)
+                foreach (KeyValuePair<Type, string> kvp in this.registeredComponents)
                 {
                     if (contractType.IsAssignableFrom(kvp.Key))
                     {
@@ -118,17 +120,19 @@ namespace DotNetNuke.ComponentModel
             return components.ToArray();
         }
 
+        /// <inheritdoc/>
         public override IDictionary GetComponentSettings(string name)
         {
             IDictionary settings;
-            using (this._componentDependencies.GetReadLock())
+            using (this.componentDependencies.GetReadLock())
             {
-                settings = this._componentDependencies[name];
+                settings = this.componentDependencies[name];
             }
 
             return settings;
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
             this.AddComponentType(contractType);
@@ -149,6 +153,7 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, type);
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponentInstance(string name, Type contractType, object instance)
         {
             this.AddComponentType(contractType);
@@ -158,11 +163,12 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, instance.GetType());
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponentSettings(string name, IDictionary dependencies)
         {
-            using (this._componentDependencies.GetWriteLock())
+            using (this.componentDependencies.GetWriteLock())
             {
-                this._componentDependencies[name] = dependencies;
+                this.componentDependencies[name] = dependencies;
             }
         }
 
@@ -178,9 +184,9 @@ namespace DotNetNuke.ComponentModel
                     builders.AddBuilder(builder, true);
                 }
 
-                using (this._componentBuilders.GetWriteLock())
+                using (this.componentBuilders.GetWriteLock())
                 {
-                    this._componentBuilders.AddBuilder(builder, false);
+                    this.componentBuilders.AddBuilder(builder, false);
                 }
             }
         }
@@ -193,9 +199,9 @@ namespace DotNetNuke.ComponentModel
             {
                 componentType = new ComponentType(contractType);
 
-                using (this._componentTypes.GetWriteLock())
+                using (this.componentTypes.GetWriteLock())
                 {
-                    this._componentTypes[componentType.BaseType] = componentType;
+                    this.componentTypes[componentType.BaseType] = componentType;
                 }
             }
         }
@@ -219,9 +225,9 @@ namespace DotNetNuke.ComponentModel
         {
             IComponentBuilder builder;
 
-            using (this._componentBuilders.GetReadLock())
+            using (this.componentBuilders.GetReadLock())
             {
-                this._componentBuilders.TryGetValue(name, out builder);
+                this.componentBuilders.TryGetValue(name, out builder);
             }
 
             return builder;
@@ -243,9 +249,9 @@ namespace DotNetNuke.ComponentModel
         {
             ComponentType componentType;
 
-            using (this._componentTypes.GetReadLock())
+            using (this.componentTypes.GetReadLock())
             {
-                this._componentTypes.TryGetValue(contractType, out componentType);
+                this.componentTypes.TryGetValue(contractType, out componentType);
             }
 
             return componentType;

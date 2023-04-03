@@ -18,15 +18,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Web.Api.Internal;
     using Newtonsoft.Json;
 
+    /// <summary>Provides a file upload web service.</summary>
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
-        private readonly IFileManager _fileManager = FileManager.Instance;
-        private readonly IFolderManager _folderManager = FolderManager.Instance;
+        private readonly IFileManager fileManager = FileManager.Instance;
+        private readonly IFolderManager folderManager = FolderManager.Instance;
 
+        /// <summary>Attempts to upload a file.</summary>
+        /// <returns>A collection of <see cref="FilesStatus"/>.</returns>
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
+
         public HttpResponseMessage UploadFile()
         {
             var statuses = new List<FilesStatus>();
@@ -67,10 +71,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 try
                 {
-                    var userFolder = this._folderManager.GetUserFolder(this.UserInfo);
+                    var userFolder = this.folderManager.GetUserFolder(this.UserInfo);
 
                     // todo: deal with the case where the exact file name already exists.
-                    var fileInfo = this._fileManager.AddFile(userFolder, fileName, file.InputStream, true);
+                    var fileInfo = this.fileManager.AddFile(userFolder, fileName, file.InputStream, true);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))
                     {

@@ -20,6 +20,7 @@ namespace DotNetNuke.Modules.MemberDirectory
 
     public partial class View : ProfileModuleUserControlBase
     {
+        /// <inheritdoc/>
         public override bool DisplayModule
         {
             get
@@ -145,6 +146,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             get { return UserController.Instance.GetCurrentUserInfo(); }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

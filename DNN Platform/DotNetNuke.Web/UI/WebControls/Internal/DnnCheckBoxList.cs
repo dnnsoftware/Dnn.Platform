@@ -4,8 +4,6 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
-    using System.ComponentModel;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
@@ -18,8 +16,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnCheckBoxList : CheckBoxList
     {
-        private string _initValue;
+        private string initValue;
 
+        /// <inheritdoc/>
         public override string SelectedValue
         {
             get
@@ -31,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 if (this.RequiresDataBinding)
                 {
-                    this._initValue = value;
+                    this.initValue = value;
                 }
                 else
                 {
@@ -40,11 +39,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         public override void DataBind()
         {
-            if (!string.IsNullOrEmpty(this._initValue))
+            if (!string.IsNullOrEmpty(this.initValue))
             {
-                this.DataBind(this._initValue);
+                this.DataBind(this.initValue);
             }
             else
             {
@@ -107,12 +107,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.RepeatColumns = 1;
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplySkin(this);

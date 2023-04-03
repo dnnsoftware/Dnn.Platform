@@ -16,23 +16,23 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     {
         internal const string AuthenticationScheme = "Digest";
         private static readonly MD5 Md5 = new MD5CryptoServiceProvider();
-        private readonly int _portalId;
-        private readonly string _ipAddress;
-        private DigestAuthenticationRequest _request;
-        private string _password;
+        private readonly int portalId;
+        private readonly string ipAddress;
+        private DigestAuthenticationRequest request;
+        private string password;
 
         public DigestAuthentication(DigestAuthenticationRequest request, int portalId, string ipAddress)
         {
-            this._request = request;
-            this._portalId = portalId;
-            this._ipAddress = ipAddress ?? string.Empty;
+            this.request = request;
+            this.portalId = portalId;
+            this.ipAddress = ipAddress ?? string.Empty;
             this.AuthenticateRequest();
         }
 
         public DigestAuthenticationRequest Request
         {
-            get { return this._request; }
-            set { this._request = value; }
+            get { return this.request; }
+            set { this.request = value; }
         }
 
         public bool IsValid { get; private set; }
@@ -89,26 +89,26 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         private void AuthenticateRequest()
         {
-            this._password = this.GetPassword(this.Request);
-            if (this._password != null)
+            this.password = this.GetPassword(this.Request);
+            if (this.password != null)
             {
-                this.IsNonceStale = !IsNonceValid(this._request.RequestParams["nonce"]);
+                this.IsNonceStale = !IsNonceValid(this.request.RequestParams["nonce"]);
 
                 // Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
-                if ((!this.IsNonceStale) && this._request.RequestParams["response"] == this.CalculateHashedDigest())
+                if ((!this.IsNonceStale) && this.request.RequestParams["response"] == this.CalculateHashedDigest())
                 {
                     this.IsValid = true;
-                    this.User = new GenericPrincipal(new GenericIdentity(this._request.RawUsername, AuthenticationScheme), null);
+                    this.User = new GenericPrincipal(new GenericIdentity(this.request.RawUsername, AuthenticationScheme), null);
                 }
             }
         }
 
         private string GetPassword(DigestAuthenticationRequest request)
         {
-            UserInfo user = UserController.GetUserByName(this._portalId, request.CleanUsername);
+            UserInfo user = UserController.GetUserByName(this.portalId, request.CleanUsername);
             if (user == null)
             {
-                user = UserController.GetUserByName(this._portalId, request.RawUsername);
+                user = UserController.GetUserByName(this.portalId, request.RawUsername);
             }
 
             if (user == null)
@@ -120,28 +120,27 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
             // Try to validate user
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", string.Empty, this._ipAddress, ref loginStatus);
+            user = UserController.ValidateUser(this.portalId, user.Username, password, "DNN", string.Empty, this.ipAddress, ref loginStatus);
 
             return user != null ? password : null;
         }
 
         private string GenerateUnhashedDigest()
         {
-            string a1 = string.Format("{0}:{1}:{2}", this._request.RequestParams["username"].Replace("\\\\", "\\"),
-                                      this._request.RequestParams["realm"], this._password);
+            string a1 =
+                $"{this.request.RequestParams["username"].Replace("\\\\", "\\")}:{this.request.RequestParams["realm"]}:{this.password}";
             string ha1 = CreateMd5HashBinHex(a1);
-            string a2 = string.Format("{0}:{1}", this._request.HttpMethod, this._request.RequestParams["uri"]);
+            string a2 = $"{this.request.HttpMethod}:{this.request.RequestParams["uri"]}";
             string ha2 = CreateMd5HashBinHex(a2);
             string unhashedDigest;
-            if (this._request.RequestParams["qop"] != null)
+            if (this.request.RequestParams["qop"] != null)
             {
-                unhashedDigest = string.Format("{0}:{1}:{2}:{3}:{4}:{5}", ha1, this._request.RequestParams["nonce"],
-                                               this._request.RequestParams["nc"], this._request.RequestParams["cnonce"],
-                                               this._request.RequestParams["qop"], ha2);
+                unhashedDigest =
+                    $"{ha1}:{this.request.RequestParams["nonce"]}:{this.request.RequestParams["nc"]}:{this.request.RequestParams["cnonce"]}:{this.request.RequestParams["qop"]}:{ha2}";
             }
             else
             {
-                unhashedDigest = string.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
+                unhashedDigest = $"{ha1}:{this.request.RequestParams["nonce"]}:{ha2}";
             }
 
             // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)

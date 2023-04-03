@@ -14,18 +14,18 @@ namespace DotNetNuke.Services.Social.Subscriptions
     using DotNetNuke.Services.Social.Subscriptions.Data;
     using DotNetNuke.Services.Social.Subscriptions.Entities;
 
-    /// <summary>
-    /// This controller is responsible to manage the subscription types.
-    /// </summary>
+    /// <summary>This controller is responsible to manage the subscription types.</summary>
     public class SubscriptionTypeController : ServiceLocator<ISubscriptionTypeController, SubscriptionTypeController>, ISubscriptionTypeController
     {
         private readonly IDataService dataService;
 
+        /// <summary>Initializes a new instance of the <see cref="SubscriptionTypeController"/> class.</summary>
         public SubscriptionTypeController()
         {
             this.dataService = DataService.Instance;
         }
 
+        /// <inheritdoc/>
         public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             CleanCache();
         }
 
+        /// <inheritdoc/>
         public SubscriptionType GetSubscriptionType(Func<SubscriptionType, bool> predicate)
         {
             Requires.NotNull("predicate", predicate);
@@ -45,6 +46,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().SingleOrDefault(predicate);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()
         {
             var cacheArgs = new CacheItemArgs(
@@ -57,6 +59,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
         }
 
+        /// <inheritdoc/>
         public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
         {
             Requires.NotNull("predicate", predicate);
@@ -64,6 +67,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().Where(predicate);
         }
 
+        /// <inheritdoc/>
         public void DeleteSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -73,6 +77,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             CleanCache();
         }
 
+        /// <inheritdoc/>
         protected override Func<ISubscriptionTypeController> GetFactory()
         {
             return () => new SubscriptionTypeController();

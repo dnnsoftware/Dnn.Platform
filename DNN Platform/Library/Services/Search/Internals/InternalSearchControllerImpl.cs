@@ -31,14 +31,10 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Impl Controller class for Lucene.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>  The Impl Controller class for Lucene.</summary>
     internal class InternalSearchControllerImpl : IInternalSearchController
     {
-        private const string SearchableModuleDefsKey = "{0}-{1}";
+        private const string SearchableModuleDefsKey = "{0}-{1}-{2}";
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
@@ -55,28 +51,35 @@ namespace DotNetNuke.Services.Search.Internals
         private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
 
-        private readonly int _titleBoost;
-        private readonly int _tagBoost;
-        private readonly int _contentBoost;
-        private readonly int _descriptionBoost;
-        private readonly int _authorBoost;
-        private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
+        private readonly int titleBoost;
+        private readonly int tagBoost;
+        private readonly int contentBoost;
+        private readonly int descriptionBoost;
+        private readonly int authorBoost;
+        private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
+        /// <summary>Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.</summary>
         public InternalSearchControllerImpl()
         {
             var hostController = HostController.Instance;
-            this._titleBoost = hostController.GetInteger(Constants.SearchTitleBoostSetting, Constants.DefaultSearchTitleBoost);
-            this._tagBoost = hostController.GetInteger(Constants.SearchTagBoostSetting, Constants.DefaultSearchTagBoost);
-            this._contentBoost = hostController.GetInteger(Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost);
-            this._descriptionBoost = hostController.GetInteger(Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost);
-            this._authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
+            this.titleBoost = hostController.GetInteger(Constants.SearchTitleBoostSetting, Constants.DefaultSearchTitleBoost);
+            this.tagBoost = hostController.GetInteger(Constants.SearchTagBoostSetting, Constants.DefaultSearchTagBoost);
+            this.contentBoost = hostController.GetInteger(Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost);
+            this.descriptionBoost = hostController.GetInteger(Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost);
+            this.authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
-                    string.Format(SearchableModuleDefsKey, SearchableModuleDefsCacheKey, portalId),
-                    120, CacheItemPriority.Default);
+                string.Format(
+                    SearchableModuleDefsKey,
+                    SearchableModuleDefsCacheKey,
+                    portalId,
+                    Thread.CurrentThread.CurrentCulture),
+                120,
+                CacheItemPriority.Default);
 
             var list = CBO.GetCachedObject<IList<SearchContentSource>>(
                 searchableModuleDefsCacheArgs, this.SearchContentSourceCallback);
@@ -84,21 +87,24 @@ namespace DotNetNuke.Services.Search.Internals
             return list;
         }
 
+        /// <inheritdoc/>
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
-            var key = string.Format("{0}-{1}", searchResult.SearchTypeId, searchResult.ModuleDefId);
+            var key = string.Format("{0}-{1}-{2}", searchResult.SearchTypeId, searchResult.ModuleDefId, Thread.CurrentThread.CurrentCulture);
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
                             new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
 
             return keys.ContainsKey(key) ? keys[key] : string.Empty;
         }
 
+        /// <inheritdoc/>
         public void AddSearchDocument(SearchDocument searchDocument)
         {
             this.AddSearchDocumentInternal(searchDocument, false);
         }
 
+        /// <inheritdoc/>
         public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
         {
             var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
@@ -131,11 +137,13 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteSearchDocument(SearchDocument searchDocument)
         {
             this.DeleteSearchDocumentInternal(searchDocument, false);
         }
 
+        /// <inheritdoc/>
         public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
         {
             Requires.NotNegative("PortalId", portalId);
@@ -149,6 +157,7 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
+        /// <inheritdoc/>
         public void DeleteAllDocuments(int portalId, int searchTypeId)
         {
             Requires.NotNegative("SearchTypeId", searchTypeId);
@@ -160,17 +169,20 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
+        /// <inheritdoc/>
         public void Commit()
         {
             LuceneController.Instance.Commit();
         }
 
+        /// <inheritdoc/>
         public bool OptimizeSearchIndex()
         {
             // run optimization in background
             return LuceneController.Instance.OptimizeSearchIndex(true);
         }
 
+        /// <inheritdoc/>
         public SearchStatistics GetSearchStatistics()
         {
             return LuceneController.Instance.GetSearchStatistics();
@@ -251,9 +263,7 @@ namespace DotNetNuke.Services.Search.Internals
             return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
         }
 
-        /// <summary>
-        /// Add Field to Doc when supplied fieldValue > 0.
-        /// </summary>
+        /// <summary>Add Field to Doc when supplied fieldValue > 0.</summary>
         private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {
             if (fieldValue > 0)
@@ -327,7 +337,7 @@ namespace DotNetNuke.Services.Search.Internals
                 var searchContentSources = this.GetSearchContentSourceList(portal.PortalID);
                 foreach (var searchContentSource in searchContentSources)
                 {
-                    var key = string.Format("{0}-{1}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId);
+                    var key = string.Format("{0}-{1}-{2}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId, Thread.CurrentThread.CurrentCulture);
                     if (!data.ContainsKey(key))
                     {
                         data.Add(key, searchContentSource.LocalizedName);
@@ -346,7 +356,7 @@ namespace DotNetNuke.Services.Search.Internals
             Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
             Requires.PropertyNotEqualTo("searchDocument", "ModifiedTimeUtc", searchDocument.ModifiedTimeUtc.ToString(CultureInfo.InvariantCulture), DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
 
-            if (searchDocument.SearchTypeId == this._moduleSearchTypeId)
+            if (searchDocument.SearchTypeId == this.moduleSearchTypeId)
             {
                 if (searchDocument.ModuleDefId <= 0)
                 {
@@ -487,9 +497,9 @@ namespace DotNetNuke.Services.Search.Internals
             if (!string.IsNullOrEmpty(searchDocument.Title))
             {
                 var field = new Field(Constants.TitleTag, StripTagsRetainAttributes(searchDocument.Title, HtmlAttributesToRetain, false, true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (this._titleBoost > 0 && this._titleBoost != Constants.StandardLuceneBoost)
+                if (this.titleBoost > 0 && this.titleBoost != Constants.StandardLuceneBoost)
                 {
-                    field.Boost = this._titleBoost / 10f;
+                    field.Boost = this.titleBoost / 10f;
                 }
 
                 doc.Add(field);
@@ -498,9 +508,9 @@ namespace DotNetNuke.Services.Search.Internals
             if (!string.IsNullOrEmpty(searchDocument.Description))
             {
                 var field = new Field(Constants.DescriptionTag, StripTagsRetainAttributes(searchDocument.Description, HtmlAttributesToRetain, false, true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (this._descriptionBoost > 0 && this._descriptionBoost != Constants.StandardLuceneBoost)
+                if (this.descriptionBoost > 0 && this.descriptionBoost != Constants.StandardLuceneBoost)
                 {
-                    field.Boost = this._descriptionBoost / 10f;
+                    field.Boost = this.descriptionBoost / 10f;
                 }
 
                 doc.Add(field);
@@ -529,30 +539,30 @@ namespace DotNetNuke.Services.Search.Internals
                 switch (key)
                 {
                     case Constants.TitleTag:
-                        if (this._titleBoost > 0 && this._titleBoost != Constants.StandardLuceneBoost)
+                        if (this.titleBoost > 0 && this.titleBoost != Constants.StandardLuceneBoost)
                         {
-                            field.Boost = this._titleBoost / 10f;
+                            field.Boost = this.titleBoost / 10f;
                         }
 
                         break;
                     case Constants.SubjectTag:
-                        if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost)
+                        if (this.contentBoost > 0 && this.contentBoost != Constants.StandardLuceneBoost)
                         {
-                            field.Boost = this._contentBoost / 10f;
+                            field.Boost = this.contentBoost / 10f;
                         }
 
                         break;
                     case Constants.CommentsTag:
-                        if (this._descriptionBoost > 0 && this._descriptionBoost != Constants.StandardLuceneBoost)
+                        if (this.descriptionBoost > 0 && this.descriptionBoost != Constants.StandardLuceneBoost)
                         {
-                            field.Boost = this._descriptionBoost / 10f;
+                            field.Boost = this.descriptionBoost / 10f;
                         }
 
                         break;
                     case Constants.AuthorNameTag:
-                        if (this._authorBoost > 0 && this._authorBoost != Constants.StandardLuceneBoost)
+                        if (this.authorBoost > 0 && this.authorBoost != Constants.StandardLuceneBoost)
                         {
-                            field.Boost = this._authorBoost / 10f;
+                            field.Boost = this.authorBoost / 10f;
                         }
 
                         break;
@@ -573,9 +583,9 @@ namespace DotNetNuke.Services.Search.Internals
                 var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLowerInvariant(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (!tagBoostApplied)
                 {
-                    if (this._tagBoost > 0 && this._tagBoost != Constants.StandardLuceneBoost)
+                    if (this.tagBoost > 0 && this.tagBoost != Constants.StandardLuceneBoost)
                     {
-                        field.Boost = this._tagBoost / 10f;
+                        field.Boost = this.tagBoost / 10f;
                         tagBoostApplied = true;
                     }
                 }
@@ -595,9 +605,9 @@ namespace DotNetNuke.Services.Search.Internals
                 if (user != null && !string.IsNullOrEmpty(user.DisplayName))
                 {
                     var field = new Field(Constants.AuthorNameTag, user.DisplayName, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                    if (this._authorBoost > 0 && this._authorBoost != Constants.StandardLuceneBoost)
+                    if (this.authorBoost > 0 && this.authorBoost != Constants.StandardLuceneBoost)
                     {
-                        field.Boost = this._authorBoost / 10f;
+                        field.Boost = this.authorBoost / 10f;
                     }
 
                     doc.Add(field);
@@ -609,15 +619,22 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new Field(Constants.PermissionsTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.Permissions, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
 
-            doc.Add(new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true).SetLongValue(long.Parse(searchDocument.ModifiedTimeUtc.ToString(Constants.DateTimeFormat))));
+            doc.Add(
+                new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true)
+                .SetLongValue(
+                    long.Parse(
+                        searchDocument.ModifiedTimeUtc.ToString(
+                            Constants.DateTimeFormat,
+                            CultureInfo.InvariantCulture),
+                        CultureInfo.InvariantCulture)));
 
             if (sb.Length > 0)
             {
                 var field = new Field(Constants.ContentTag, SearchHelper.Instance.StripTagsNoAttributes(sb.ToString(), true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 doc.Add(field);
-                if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost)
+                if (this.contentBoost > 0 && this.contentBoost != Constants.StandardLuceneBoost)
                 {
-                    field.Boost = this._contentBoost / 10f;
+                    field.Boost = this.contentBoost / 10f;
                 }
             }
         }

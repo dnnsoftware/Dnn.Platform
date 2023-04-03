@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Entities.Users
 {
-    using System;
-
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -15,6 +13,7 @@ namespace DotNetNuke.Entities.Users
 
     public class UserRegistrationEmailNotifier
     {
+        /// <summary>Initializes a new instance of the <see cref="UserRegistrationEmailNotifier"/> class.</summary>
         public UserRegistrationEmailNotifier()
         {
         }
@@ -44,9 +43,11 @@ namespace DotNetNuke.Entities.Users
             switch (PortalSettings.Current.UserRegistration)
             {
                 case (int)PortalRegistrationType.PrivateRegistration:
-                    NotifyUser(user, CurrentUser != null && CurrentUser.UserID != Null.NullInteger ?
-                        MessageType.UserRegistrationPrivateNoApprovalRequired :
-                        MessageType.UserRegistrationPrivate);
+                    var messageType =
+                        CurrentUser != null && CurrentUser.UserID != Null.NullInteger
+                            ? MessageType.UserRegistrationPrivateNoApprovalRequired
+                            : MessageType.UserRegistrationPrivate;
+                    NotifyUser(user, messageType);
                     break;
                 case (int)PortalRegistrationType.PublicRegistration:
                     NotifyUser(user, MessageType.UserRegistrationPublic);

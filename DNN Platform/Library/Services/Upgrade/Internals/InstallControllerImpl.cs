@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Upgrade.Internals
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Globalization;
@@ -13,8 +12,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     using System.Web;
     using System.Xml;
 
-    using DotNetNuke.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.FileSystem;
@@ -23,22 +20,16 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Controller class for Installer.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Controller class for Installer.</summary>
     internal class InstallControllerImpl : IInstallController
     {
+        /// <inheritdoc/>
         public string InstallerLogName
         {
             get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
         }
 
-        /// <summary>
-        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.
-        /// </summary>
+        /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
         /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public ConnectionConfig GetConnectionFromWebConfig()
         {
@@ -91,9 +82,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return connectionConfig;
         }
 
-        /// <summary>
-        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.
-        /// </summary>
+        /// <summary>SetInstallConfig - Saves configuration in <c>DotNetNuke.Install.Config</c>.</summary>
         public void SetInstallConfig(InstallConfig installConfig)
         {
             if (installConfig == null)
@@ -185,6 +174,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     XmlNode administratorNode = AppendNewXmlNode(ref installTemplate, ref portalNode, "administrator", null);
                     XmlNode portalAliasesNode = AppendNewXmlNode(ref installTemplate, ref portalNode, "portalaliases", null);
                     AppendNewXmlNode(ref installTemplate, ref portalNode, "portalname", portalConfig.PortalName);
+                    AppendNewXmlNode(ref installTemplate, ref portalNode, "isssl", portalConfig.IsSsl.ToString());
                     AppendNewXmlNode(ref installTemplate, ref administratorNode, "firstname", portalConfig.AdminFirstName);
                     AppendNewXmlNode(ref installTemplate, ref administratorNode, "lastname", portalConfig.AdminLastName);
                     AppendNewXmlNode(ref installTemplate, ref administratorNode, "username", portalConfig.AdminUserName);
@@ -256,6 +246,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
+        /// <inheritdoc/>
         public void RemoveFromInstallConfig(string xmlNodePath)
         {
             InstallConfig config = this.GetInstallConfig();
@@ -275,9 +266,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
-        /// <summary>
-        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.
-        /// </summary>
+        /// <summary>GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.</summary>
         /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public InstallConfig GetInstallConfig()
         {
@@ -404,6 +393,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     {
                         var portalConfig = new PortalConfig();
                         portalConfig.PortalName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "portalname");
+                        portalConfig.IsSsl = bool.Parse(XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "isssl", "false"));
 
                         XmlNode adminNode = portalNode.SelectSingleNode("administrator");
                         if (adminNode != null)
@@ -442,6 +432,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return installConfig;
         }
 
+        /// <inheritdoc/>
         public bool IsValidSqlServerVersion(string connectionString)
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
@@ -494,6 +485,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return isValidVersion;
         }
 
+        /// <inheritdoc/>
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
             var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
@@ -504,12 +496,14 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return string.IsNullOrEmpty(strExceptions);
         }
 
+        /// <inheritdoc/>
         public bool IsValidDotNetVersion()
         {
             // todo: check that this works for 4.5 etc.
             return Upgrade.IsNETFrameworkCurrent("4.0");
         }
 
+        /// <inheritdoc/>
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
@@ -523,6 +517,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
+        /// <inheritdoc/>
         public bool IsAvailableLanguagePack(string cultureCode)
         {
             try
@@ -548,6 +543,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
+        /// <inheritdoc/>
         public CultureInfo GetCurrentLanguage()
         {
             CultureInfo pageCulture = null;
@@ -564,12 +560,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return pageCulture;
         }
 
-        /// <summary>
-        /// Tests the Database Connection using the database connection config.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <returns></returns>
+        /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>).</returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
             DbConnectionStringBuilder builder = DataProvider.Instance().GetConnectionStringBuilder();
@@ -599,6 +591,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return DataProvider.Instance().TestDatabaseConnection(builder, owner, objectQualifier);
         }
 
+        /// <inheritdoc/>
         public CultureInfo GetCultureFromCookie()
         {
             var langCookie = HttpContext.Current.Request.Cookies["language"];

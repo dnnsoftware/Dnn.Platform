@@ -9,15 +9,11 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ProviderPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ProviderPackageWriter class.</summary>
     public class ProviderPackageWriter : PackageWriterBase
     {
+        /// <summary>Initializes a new instance of the <see cref="ProviderPackageWriter"/> class.</summary>
+        /// <param name="package"></param>
         public ProviderPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -35,6 +31,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        /// <inheritdoc/>
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             base.GetFiles(includeSource, false);

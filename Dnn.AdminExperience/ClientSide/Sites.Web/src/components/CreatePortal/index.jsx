@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Collapsible as Collapse, Switch, DropdownWithError, RadioButtons, Button, PersonaBarPageHeader, PersonaBarPageBody, GridCell, GridSystem, SingleLineInputWithError, MultiLineInputWithError } from "@dnnsoftware/dnn-react-common";
@@ -88,7 +88,7 @@ class CreatePortal extends Component {
             if (newPortal.SiteAlias !== "" && newPortal.SiteAlias.indexOf(rootDomain) === -1) {
                 newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteAlias;
             } else {
-                newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteName.replace(/[^a-zA-Z0-9-_]/g, '');
+                newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteName.replace(/[^a-zA-Z0-9-_]/g, "");
             }
             error.SiteAlias = this.resolveSiteAliasError(newPortal.SiteAlias, isChildSite);
             this.setState({ newPortal, error });
@@ -258,7 +258,7 @@ class CreatePortal extends Component {
                                 errorMessage={Localization.get("SiteTitleRequired.Error")}
                                 onChange={this.onChange.bind(this, "SiteName")}
                                 error={state.error.SiteName && state.triedToSave}
-                                />
+                            />
                         </GridCell>
                         <GridCell>
                             <MultiLineInputWithError
@@ -268,7 +268,7 @@ class CreatePortal extends Component {
                                 className="portal-description"
                                 onChange={this.onChange.bind(this, "SiteDescription")}
                                 error={false}
-                                />
+                            />
                             <hr />
                         </GridCell>
                         <GridCell className="site-thumbnails-container">
@@ -278,7 +278,7 @@ class CreatePortal extends Component {
                                 value={state.newPortal.SiteTemplate}
                                 defaultDropdownValue={state.defaultTemplate}
                                 onSelect={this.onSelect.bind(this)}
-                                />
+                            />
                             <hr />
                         </GridCell>
                         <GridCell className="site-type-container">
@@ -308,7 +308,7 @@ class CreatePortal extends Component {
                                     onChange={this.onChange.bind(this, "HomeDirectory")}
                                     labelType="inline"
                                     error={false}
-                                    />
+                                />
                             </GridCell>
                             <GridCell>
                                 <SingleLineInputWithError
@@ -318,7 +318,7 @@ class CreatePortal extends Component {
                                     onChange={this.onChange.bind(this, "SiteAlias")}
                                     errorMessage={Localization.get("SiteAliasRequired.Error")}
                                     error={state.error.SiteAlias && state.triedToSave}
-                                    />
+                                />
                             </GridCell>
                         </GridCell>
                         <GridCell className="user-as-admin">
@@ -328,8 +328,8 @@ class CreatePortal extends Component {
                                 offText={Localization.get("SwitchOff")}
                                 value={state.newPortal.UseCurrentUserAsAdmin}
                                 onChange={this.onChange.bind(this, "UseCurrentUserAsAdmin")}
-                                />
-                            <Collapse style={{clear:"both"}} isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>
+                            />
+                            <Collapse className="user-as-admin-collapse" isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>
                                 <GridSystem className="with-right-border top-half">
                                     <GridCell>
                                         <SingleLineInputWithError
@@ -340,7 +340,7 @@ class CreatePortal extends Component {
                                             errorMessage={Localization.get("UsernameRequired.Error")}
                                             error={state.error.Username && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
-                                            />
+                                        />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminFirstName.Label")}
                                             inputId="admin-first-name"
@@ -349,7 +349,7 @@ class CreatePortal extends Component {
                                             errorMessage={Localization.get("FirstNameRequired.Error")}
                                             error={state.error.Firstname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
-                                            />
+                                        />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminLastName.Label")}
                                             inputId="admin-last-name"
@@ -358,7 +358,7 @@ class CreatePortal extends Component {
                                             errorMessage={Localization.get("LastNameRequired.Error")}
                                             error={state.error.Lastname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
-                                            />
+                                        />
                                     </GridCell>
                                     <GridCell>
                                         <SingleLineInputWithError
@@ -369,7 +369,7 @@ class CreatePortal extends Component {
                                             errorMessage={Localization.get("EmailRequired.Error")}
                                             error={state.error.Email && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
-                                            />
+                                        />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminPassword.Label")}
                                             inputId="admin-password"
@@ -379,7 +379,7 @@ class CreatePortal extends Component {
                                             errorMessage={Localization.get("PasswordRequired.Error")}
                                             error={state.error.Password && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
-                                            />
+                                        />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminPasswordConfirm.Label")}
                                             inputId="admin-password-confirm"
@@ -389,7 +389,7 @@ class CreatePortal extends Component {
                                             onChange={this.onChange.bind(this, "PasswordConfirm")}
                                             error={state.error.PasswordConfirm && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
-                                            />
+                                        />
                                     </GridCell>
                                 </GridSystem>
                                 <div style={{clear:"both"}}></div>

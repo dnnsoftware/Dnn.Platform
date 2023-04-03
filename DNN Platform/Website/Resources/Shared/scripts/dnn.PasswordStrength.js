@@ -45,7 +45,7 @@
 	            handler._$meter.width(handler.$element.outerWidth());
                 handler._$tooltipContent.width(handler.$element.outerWidth() - 20);
 	        }, 50);
-            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="last" /></div>').appendTo(this._$meter);
+            this._$meterValue = $('<div><span class=""></span><span class=""></span><span class=""></span><span class="last"></span></div>').appendTo(this._$meter);
             this._$meterText = $("<label/>").prependTo(this._$meterValue);
 
             this._$tooltipContainer = $('<div class="password-strength-tooltip" />');

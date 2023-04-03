@@ -9,34 +9,34 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      SettingsEditorInfoAdapter
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SettingsEditorInfoAdapter control provides a factory for creating the
     /// appropriate EditInfo object.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SettingsEditorInfoAdapter : IEditorInfoAdapter
     {
-        private readonly object DataMember;
-        private readonly object DataSource;
-        private string FieldName;
+        private readonly object dataMember;
+        private readonly object dataSource;
+        private string fieldName;
 
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.</summary>
+        /// <param name="dataSource"></param>
+        /// <param name="dataMember"></param>
+        /// <param name="fieldName"></param>
         public SettingsEditorInfoAdapter(object dataSource, object dataMember, string fieldName)
         {
-            this.DataMember = dataMember;
-            this.DataSource = dataSource;
-            this.FieldName = fieldName;
+            this.dataMember = dataMember;
+            this.dataSource = dataSource;
+            this.fieldName = fieldName;
         }
 
+        /// <inheritdoc/>
         public EditorInfo CreateEditControl()
         {
-            var info = (SettingInfo)this.DataMember;
+            var info = (SettingInfo)this.dataMember;
             var editInfo = new EditorInfo();
 
             // Get the Name of the property
@@ -71,6 +71,7 @@ namespace DotNetNuke.UI.WebControls
             return editInfo;
         }
 
+        /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
             string key;
@@ -79,9 +80,9 @@ namespace DotNetNuke.UI.WebControls
             object oldValue = e.OldValue;
             object newValue = e.Value;
             object stringValue = e.StringValue;
-            bool _IsDirty = Null.NullBoolean;
+            bool isDirty = Null.NullBoolean;
 
-            var settings = (Hashtable)this.DataSource;
+            var settings = (Hashtable)this.dataSource;
             IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
@@ -94,15 +95,16 @@ namespace DotNetNuke.UI.WebControls
                     if ((!ReferenceEquals(newValue, oldValue)) || changed)
                     {
                         settings[key] = newValue;
-                        _IsDirty = true;
+                        isDirty = true;
                         break;
                     }
                 }
             }
 
-            return _IsDirty;
+            return isDirty;
         }
 
+        /// <inheritdoc/>
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
             return false;

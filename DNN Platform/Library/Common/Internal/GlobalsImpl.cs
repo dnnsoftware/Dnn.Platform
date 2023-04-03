@@ -9,71 +9,85 @@ namespace DotNetNuke.Common.Internal
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.UI.UserControls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A collection of Dnn global methods and properties.</summary>
     public class GlobalsImpl : IGlobals
     {
+        /// <summary>Initializes a new instance of the <see cref="GlobalsImpl"/> class.</summary>
         public GlobalsImpl()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         public string ApplicationPath
         {
             get { return Globals.ApplicationPath; }
         }
 
+        /// <inheritdoc/>
         public string HostMapPath
         {
             get { return Globals.HostMapPath; }
         }
 
+        /// <summary>Gets a navigation manager to provide navigation services.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public string GetSubFolderPath(string strFileNamePath, int portalId)
         {
             return Globals.GetSubFolderPath(strFileNamePath, portalId);
         }
 
+        /// <inheritdoc/>
         public string LinkClick(string link, int tabId, int moduleId)
         {
             return Globals.LinkClick(link, tabId, moduleId);
         }
 
+        /// <inheritdoc/>
         public string LinkClick(string link, int tabID, int moduleID, bool trackClicks, bool forceDownload, int portalId, bool enableUrlLanguage, string portalGuid)
         {
             return Globals.LinkClick(link, tabID, moduleID, trackClicks, forceDownload, portalId, enableUrlLanguage, portalGuid);
         }
 
+        /// <inheritdoc/>
         public string ResolveUrl(string url)
         {
             return Globals.ResolveUrl(url);
         }
 
+        /// <inheritdoc/>
         public bool IsHostTab(int tabId)
         {
             return Globals.IsHostTab(tabId);
         }
 
+        /// <inheritdoc/>
         public string AddHTTP(string strURL)
         {
             return Globals.AddHTTP(strURL);
         }
 
-        public string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)
+        /// <inheritdoc/>
+        public string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP)
         {
-            return Globals.GetPortalDomainName(strPortalAlias, Request, blnAddHTTP);
+            return Globals.GetPortalDomainName(strPortalAlias, request, blnAddHTTP);
         }
 
+        /// <inheritdoc/>
         public string GetDomainName(Uri requestedUri)
         {
             return this.GetDomainName(requestedUri, false);
         }
 
+        /// <inheritdoc/>
         public string GetDomainName(Uri requestedUri, bool parsePortNumber)
         {
             var domainName = new StringBuilder();
@@ -153,106 +167,127 @@ namespace DotNetNuke.Common.Internal
             return domainName.ToString();
         }
 
-        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
+        /// <inheritdoc/>
+        public string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name)
         {
-            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name);
+            return Globals.FormatHelpUrl(helpUrl, objPortalSettings, name);
         }
 
-        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version)
+        /// <inheritdoc/>
+        public string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name, string version)
         {
-            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name, Version);
+            return Globals.FormatHelpUrl(helpUrl, objPortalSettings, name, version);
         }
 
+        /// <inheritdoc/>
         public string AccessDeniedURL()
         {
             return Globals.AccessDeniedURL();
         }
 
-        public string AccessDeniedURL(string Message)
+        /// <inheritdoc/>
+        public string AccessDeniedURL(string message)
         {
-            return Globals.AccessDeniedURL(Message);
+            return Globals.AccessDeniedURL(message);
         }
 
+        /// <inheritdoc/>
         public string LoginURL(string returnURL, bool @override)
         {
             return Globals.LoginURL(returnURL, @override);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL()
         {
             return this.NavigationManager.NavigateURL();
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID)
         {
             return this.NavigationManager.NavigateURL(tabID);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab)
         {
             return this.NavigationManager.NavigateURL(tabID, isSuperTab);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(string controlKey)
         {
             return this.NavigationManager.NavigateURL(controlKey);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
             return this.NavigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, string controlKey)
         {
             return this.NavigationManager.NavigateURL(tabID, controlKey);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
             return this.NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return this.NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path)
         {
             return Globals.FriendlyUrl(tab, path);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             return Globals.FriendlyUrl(tab, path, pageName);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, settings);
+            return Globals.FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, pageName, settings);
+            return Globals.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return Globals.FriendlyUrl(tab, path, pageName, portalAlias);

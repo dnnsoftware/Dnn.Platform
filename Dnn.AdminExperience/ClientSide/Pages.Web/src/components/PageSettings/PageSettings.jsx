@@ -16,9 +16,9 @@ import permissionTypes from "../../services/permissionTypes";
 
 class PageSettings extends Component {
 
-    constructor(){
+    constructor() {
         super();
-        this.state = { selectedPageName: "" }
+        this.state = { selectedPageName: "" };
     }
 
     hasPageErrors() {

@@ -81,12 +81,7 @@ export default class CollapsibleRow extends Component {
                 <Collapse
                     ref={node => this.node = node}
                     isOpened={!this.state.collapsed}
-                    style={Object.assign({ float: "left" }, props.collapseStyle) }
-                    keepCollapsedContent={props.keepCollapsedContent}
-                    springConfig={props.springConfig}
-                    fixedHeight={props.fixedHeight}
-                    onRest={props.onRest}
-                    onHeightReady={props.onHeightReady}>
+                    theme={{collapse: "collapsible-row ReactCollapse--collapse", content: "ReactCollapse--content"}}>
                     {props.children }
                     {!props.buttonsAreHidden &&
                         <div className="collapsible-footer">
@@ -102,12 +97,6 @@ export default class CollapsibleRow extends Component {
 
 CollapsibleRow.propTypes = {
     label: PropTypes.node,
-    collapseStyle: PropTypes.object,
-    keepCollapsedContent: PropTypes.bool,
-    springConfig: PropTypes.object,
-    fixedHeight: PropTypes.number,
-    onRest: PropTypes.func,
-    onHeightReady: PropTypes.func,
     children: PropTypes.node,
     disabled: PropTypes.bool,
     className: PropTypes.string,

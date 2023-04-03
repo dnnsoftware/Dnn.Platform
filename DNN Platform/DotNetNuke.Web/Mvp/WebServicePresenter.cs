@@ -12,6 +12,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class WebServicePresenter<TView> : Presenter<TView>
         where TView : class, IWebServiceView
     {
+        /// <summary>Initializes a new instance of the <see cref="WebServicePresenter{TView}"/> class.</summary>
+        /// <param name="view">The view.</param>
         protected WebServicePresenter(TView view)
             : base(view)
         {

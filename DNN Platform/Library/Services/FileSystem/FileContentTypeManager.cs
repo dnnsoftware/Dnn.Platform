@@ -4,43 +4,42 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     using DotNetNuke.Common.Lists;
     using DotNetNuke.ComponentModel;
 
     public class FileContentTypeManager : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
     {
-        private static readonly object _threadLocker = new object();
-        private IDictionary<string, string> _contentTypes;
+        private static readonly object ThreadLocker = new object();
+        private IDictionary<string, string> contentTypes;
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, string> ContentTypes
         {
             get
             {
-                if (this._contentTypes == null)
+                if (this.contentTypes == null)
                 {
-                    lock (_threadLocker)
+                    lock (ThreadLocker)
                     {
-                        if (this._contentTypes == null)
+                        if (this.contentTypes == null)
                         {
                             var listController = new ListController();
                             var listEntries = listController.GetListEntryInfoItems("ContentTypes");
                             if (listEntries == null || !listEntries.Any())
                             {
-                                this._contentTypes = this.GetDefaultContentTypes();
+                                this.contentTypes = this.GetDefaultContentTypes();
                             }
                             else
                             {
-                                this._contentTypes = new Dictionary<string, string>();
+                                this.contentTypes = new Dictionary<string, string>();
                                 if (listEntries != null)
                                 {
                                     foreach (var contentTypeEntry in listEntries)
                                     {
-                                        this._contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+                                        this.contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
                                     }
                                 }
                             }
@@ -48,10 +47,11 @@ namespace DotNetNuke.Services.FileSystem
                     }
                 }
 
-                return this._contentTypes;
+                return this.contentTypes;
             }
         }
 
+        /// <inheritdoc/>
         public virtual string GetContentType(string extension)
         {
             if (string.IsNullOrEmpty(extension))
@@ -101,6 +101,7 @@ namespace DotNetNuke.Services.FileSystem
             contentTypes.Add("pps", "application/vnd.ms-powerpoint");
             contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
             contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+            contentTypes.Add("css", "text/css");
 
             return contentTypes;
         }

@@ -8,17 +8,12 @@ namespace DotNetNuke.Security.Roles
     using System.Collections;
     using System.ComponentModel;
     using System.Linq;
-    using System.Web.Services.Description;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// The RoleController class provides Business Layer methods for Roles.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The RoleController class provides Business Layer methods for Roles.</summary>
     public partial class RoleController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

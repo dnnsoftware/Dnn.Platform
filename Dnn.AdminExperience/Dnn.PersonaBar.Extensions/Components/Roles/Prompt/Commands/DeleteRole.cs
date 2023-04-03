@@ -17,23 +17,27 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
 
     [ConsoleCommand("delete-role", Constants.RolesCategory, "Prompt_DeleteRole_Description")]
+
     public class DeleteRole : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_DeleteRole_FlagId", "Integer", true)]
+
         private const string FlagId = "id";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true, true);
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             try

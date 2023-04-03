@@ -3,23 +3,12 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Xml;
-    using System.Xml.Serialization;
-    using System.Xml.XPath;
-    using System.Xml.Xsl;
 
-    /// <summary>
-    /// The XmlExtensions class allows you to write more efficient code to manage Xml documents.
-    /// </summary>
+    /// <summary>The XmlExtensions class allows you to write more efficient code to manage Xml documents.</summary>
     public static class XmlExtensions
     {
-        /// <summary>
-        /// Adds an element to the specified XmlNode.
-        /// </summary>
+        /// <summary>Adds an element to the specified XmlNode.</summary>
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element.</param>
         /// <param name="elementValue">The element value.</param>
@@ -31,9 +20,7 @@ namespace DotNetNuke.Common.Utilities
             return node.AddElement(elementName, elementValue, false);
         }
 
-        /// <summary>
-        /// Adds an element to the specified XmlNode.
-        /// </summary>
+        /// <summary>Adds an element to the specified XmlNode.</summary>
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element.</param>
         /// <param name="elementValue">The element value.</param>
@@ -58,9 +45,7 @@ namespace DotNetNuke.Common.Utilities
             return newElement;
         }
 
-        /// <summary>
-        /// Adds an element to the specified XmlNode using the specified namespace.
-        /// </summary>
+        /// <summary>Adds an element to the specified XmlNode using the specified namespace.</summary>
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element (without the abbreviated prefix).</param>
         /// <param name="elementValue">The element value.</param>
@@ -87,9 +72,7 @@ namespace DotNetNuke.Common.Utilities
             return newElement;
         }
 
-        /// <summary>
-        /// Adds an attribute to the specified node.
-        /// </summary>
+        /// <summary>Adds an attribute to the specified node.</summary>
         /// <param name="node">The node to add the attribute to.</param>
         /// <param name="attributeName">Name of the attribute.</param>
         /// <param name="attributeValue">The attribute value.</param>
@@ -102,9 +85,7 @@ namespace DotNetNuke.Common.Utilities
             return node;
         }
 
-        /// <summary>
-        /// Adds an attribute to an XmlNode using the specified namespace.
-        /// </summary>
+        /// <summary>Adds an attribute to an XmlNode using the specified namespace.</summary>
         /// <param name="node">The node to add the attribtue to.</param>
         /// <param name="attributeName">Name of the attribute without the namespace abbreviation prefix.</param>
         /// <param name="attributeValue">The attribute value.</param>

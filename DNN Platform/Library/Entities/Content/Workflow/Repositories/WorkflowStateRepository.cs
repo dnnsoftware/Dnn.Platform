@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
     internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
     {
+        /// <inheritdoc/>
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -26,6 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public WorkflowState GetWorkflowStateByID(int stateId)
         {
             return CBO.GetCachedObject<WorkflowState>(
@@ -41,6 +43,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 });
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -60,6 +63,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             this.CacheWorkflowState(state);
         }
 
+        /// <inheritdoc/>
         public void UpdateWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -82,6 +86,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             this.CacheWorkflowState(state);
         }
 
+        /// <inheritdoc/>
         public void DeleteWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -97,6 +102,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowStateRepository> GetFactory()
         {
             return () => new WorkflowStateRepository();
@@ -105,8 +111,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
         {
             return rep.Find(
-                "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
-                state.StateName, state.WorkflowID, state.StateID).SingleOrDefault() != null;
+                           "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
+                           state.StateName,
+                           state.WorkflowID,
+                           state.StateID)
+                       .SingleOrDefault() != null;
         }
 
         private static string GetWorkflowStateKey(int stateId)

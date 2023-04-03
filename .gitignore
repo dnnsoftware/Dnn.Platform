@@ -53,7 +53,7 @@ Artifacts/
 *.gitmodules
 
 ## TODO: If you have NuGet Package Restore enabled, uncomment this
-[Pp]ackages/
+/[Pp]ackages/
 
 # Visual Studio profiler
 *.psess
@@ -114,6 +114,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 DNN [Pp]latform/[Cc]onnectors/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
+DNN [Pp]latform/Modules/ResourceManager/**/scripts/*-bundle.*
+
 # ignore all other language resx files
 *.de-DE.resx
 *.es-ES.resx
@@ -130,3 +132,16 @@ DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
 # Add fips back
 !DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
+
+yarn-error.log
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+/Build/bin/
+/.dotnet/
+/Build/Tools/

@@ -12,16 +12,18 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
 
     public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager>, IWorkflowActionManager
     {
-        private readonly IWorkflowActionRepository _workflowActionRepository;
+        private readonly IWorkflowActionRepository workflowActionRepository;
 
+        /// <summary>Initializes a new instance of the <see cref="WorkflowActionManager"/> class.</summary>
         public WorkflowActionManager()
         {
-            this._workflowActionRepository = WorkflowActionRepository.Instance;
+            this.workflowActionRepository = WorkflowActionRepository.Instance;
         }
 
+        /// <inheritdoc/>
         public IWorkflowAction GetWorkflowActionInstance(int contentTypeId, WorkflowActionTypes actionType)
         {
-            var action = this._workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
+            var action = this.workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
             if (action == null)
             {
                 return null;
@@ -30,6 +32,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
             return Reflection.CreateInstance(Reflection.CreateType(action.ActionSource)) as IWorkflowAction;
         }
 
+        /// <inheritdoc/>
         public void RegisterWorkflowAction(WorkflowAction workflowAction)
         {
             Requires.NotNull("workflowAction", workflowAction);
@@ -40,9 +43,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
                 throw new ArgumentException("The specified ActionSource does not implement the IWorkflowAction interface");
             }
 
-            this._workflowActionRepository.AddWorkflowAction(workflowAction);
+            this.workflowActionRepository.AddWorkflowAction(workflowAction);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowActionManager> GetFactory()
         {
             return () => new WorkflowActionManager();

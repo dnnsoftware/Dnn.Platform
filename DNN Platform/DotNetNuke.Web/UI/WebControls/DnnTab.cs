@@ -9,11 +9,13 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnTab : WebControl
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnTab"/> class.</summary>
         public DnnTab()
             : base("div")
         {
         }
 
+        /// <inheritdoc/>
         public override ControlCollection Controls
         {
             get
@@ -29,12 +31,14 @@ namespace DotNetNuke.Web.UI.WebControls
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Content { get; set; }
 
+        /// <inheritdoc/>
         public override Control FindControl(string id)
         {
             this.EnsureChildControls();
             return base.FindControl(id);
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -45,6 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.RenderBeginTag(writer);

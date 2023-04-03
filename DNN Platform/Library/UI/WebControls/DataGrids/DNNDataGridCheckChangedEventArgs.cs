@@ -7,25 +7,29 @@ namespace DotNetNuke.UI.WebControls
 
     public delegate void DNNDataGridCheckedColumnEventHandler(object sender, DNNDataGridCheckChangedEventArgs e);
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNDataGrid
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNDataGridCheckChangedEventArgs class is a cusom EventArgs class for
     /// handling Event Args from the CheckChanged event in a CheckBox Column.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class DNNDataGridCheckChangedEventArgs : DataGridItemEventArgs
     {
+        /// <summary>Initializes a new instance of the <see cref="DNNDataGridCheckChangedEventArgs"/> class.</summary>
+        /// <param name="item"></param>
+        /// <param name="isChecked"></param>
+        /// <param name="field"></param>
         public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field)
             : this(item, isChecked, field, false)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DNNDataGridCheckChangedEventArgs"/> class.</summary>
+        /// <param name="item"></param>
+        /// <param name="isChecked"></param>
+        /// <param name="field"></param>
+        /// <param name="isAll"></param>
         public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field, bool isAll)
             : base(item)
         {

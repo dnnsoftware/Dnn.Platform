@@ -4,12 +4,15 @@
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Entities.Users;
 
     public class UserModel : UserModelBase
     {
         // provide a default field order for use of callers
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static new string[] FieldOrder =
         {
             "UserId",
@@ -25,14 +28,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             "IsDeleted",
             "IsAuthorized",
             "IsLockedOut",
-            "Created"
+            "Created",
         };
 
         public UserModel()
         {
         }
 
-        public UserModel(UserInfo user) : base(user)
+        public UserModel(UserInfo user)
+            : base(user)
         {
             this.LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
             this.DisplayName = user.DisplayName;
@@ -45,11 +49,17 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         }
 
         public string DisplayName { get; set; }
+
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
+
         public string LastActivity { get; set; }
+
         public string LastLockout { get; set; }
+
         public string LastPasswordChange { get; set; }
+
         public string Created { get; set; }
     }
 }

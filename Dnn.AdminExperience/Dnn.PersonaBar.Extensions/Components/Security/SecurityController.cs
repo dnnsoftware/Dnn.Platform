@@ -32,11 +32,11 @@ namespace Dnn.PersonaBar.Security.Components
         {
             var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
             UserControl uc = new UserControl();
-            var authProviders = (from authProvider in authSystems
+            var authProviders = from authProvider in authSystems
                                  let authLoginControl = (AuthenticationLoginBase)uc.LoadControl("~/" + authProvider.LoginControlSrc)
                                  let oAuthLoginControl = authLoginControl as OAuthLoginBase
                                  where oAuthLoginControl == null && authLoginControl.Enabled
-                                 select authProvider.AuthenticationType);
+                                 select authProvider.AuthenticationType;
 
             return authProviders;
         }
@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Security.Components
                 Name = PortalSettings.PortalName,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ParentTabId = Null.NullInteger,
-                ChildTabs = new List<TabDto>()
+                ChildTabs = new List<TabDto>(),
             };
 
             var portalInfo = PortalController.Instance.GetPortal(portalId);
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Security.Components
                         Name = tab.TabName,
                         TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                         ParentTabId = tab.ParentId,
-                        ChildTabs = new List<TabDto>()
+                        ChildTabs = new List<TabDto>(),
                     };
 
                     this.AddChildNodes(node, portalInfo, cultureCode);
@@ -103,6 +103,7 @@ namespace Dnn.PersonaBar.Security.Components
                 }
                 while (!reader.IsClosed);
             }
+
             return tables;
         }
 
@@ -123,7 +124,7 @@ namespace Dnn.PersonaBar.Security.Components
                         {
                             Name = tab.TabName,
                             TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                            ParentTabId = tab.ParentId
+                            ParentTabId = tab.ParentId,
                         };
                         this.AddChildNodes(node, portal, cultureCode);
                         parentNode.ChildTabs.Add(node);

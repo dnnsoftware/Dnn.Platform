@@ -22,29 +22,29 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public enum Alignment
         {
-            Left,
-            Right,
-            Center,
-            Justify,
+            Left = 0,
+            Right = 1,
+            Center = 2,
+            Justify = 3,
         }
 
         public enum HoverAction
         {
-            Expand,
-            None,
+            Expand = 0,
+            None = 1,
         }
 
         public enum HoverDisplay
         {
-            Highlight,
-            Outset,
-            None,
+            Highlight = 0,
+            Outset = 1,
+            None = 2,
         }
 
         public enum Orientation
         {
-            Horizontal,
-            Vertical,
+            Horizontal = 0,
+            Vertical = 1,
         }
 
         public abstract Control NavigationControl { get; }
@@ -979,9 +979,9 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-        public static NavigationProvider Instance(string FriendlyName)
+        public static NavigationProvider Instance(string friendlyName)
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", FriendlyName, string.Empty, string.Empty);
+            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();
@@ -1022,18 +1022,6 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
-        }
-    }
-
-    public class NavigationEventArgs
-    {
-        public string ID;
-        public DNNNode Node;
-
-        public NavigationEventArgs(string strID, DNNNode objNode)
-        {
-            this.ID = strID;
-            this.Node = objNode;
         }
     }
 }

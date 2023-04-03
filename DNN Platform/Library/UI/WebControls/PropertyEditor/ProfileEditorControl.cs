@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable CheckNamespace
+
 namespace DotNetNuke.UI.WebControls
 
 // ReSharper restore CheckNamespace
@@ -12,29 +12,19 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      ProfileEditorControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileEditorControl control provides a Control to display Profile
     /// Properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
     public class ProfileEditorControl : CollectionEditorControl
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateEditor creates the control collection.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>CreateEditor creates the control collection.</summary>
         protected override void CreateEditor()
         {
             this.CategoryDataField = "PropertyCategory";

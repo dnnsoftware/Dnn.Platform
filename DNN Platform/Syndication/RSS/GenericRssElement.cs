@@ -5,30 +5,18 @@ namespace DotNetNuke.Services.Syndication
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    ///   Late-bound RSS element (used for late bound item and image).
-    /// </summary>
+    /// <summary>Late-bound RSS element (used for late bound item and image).</summary>
     public sealed class GenericRssElement : RssElementBase
     {
-        public new Dictionary<string, string> Attributes
-        {
-            get
-            {
-                return base.Attributes;
-            }
-        }
+        /// <inheritdoc cref="RssElementBase.Attributes" />
+        public new Dictionary<string, string> Attributes => base.Attributes;
 
+        /// <summary>Gets or sets the element's attributes.</summary>
+        /// <param name="attributeName">The attribute name.</param>
         public string this[string attributeName]
         {
-            get
-            {
-                return this.GetAttributeValue(attributeName);
-            }
-
-            set
-            {
-                this.Attributes[attributeName] = value;
-            }
+            get => this.GetAttributeValue(attributeName);
+            set => this.Attributes[attributeName] = value;
         }
     }
 }

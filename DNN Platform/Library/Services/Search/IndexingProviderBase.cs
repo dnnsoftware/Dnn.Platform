@@ -23,9 +23,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed.</param>
         /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing.</param>
         /// <returns>The number of documents indexed.</returns>
-        public abstract int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer);
+        public abstract int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer);
 
         [Obsolete("Deprecated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.. Scheduled removal in v10.0.0.")]
         public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)

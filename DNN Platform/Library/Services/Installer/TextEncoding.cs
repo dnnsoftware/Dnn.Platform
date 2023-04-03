@@ -6,10 +6,10 @@ namespace DotNetNuke.Services.Installer
 {
     public enum TextEncoding
     {
-        UTF7,
-        UTF8,
-        UTF16BigEndian,
-        UTF16LittleEndian,
-        Unknown,
+        UTF7 = 0,
+        UTF8 = 1,
+        UTF16BigEndian = 2,
+        UTF16LittleEndian = 3,
+        Unknown = 4,
     }
 }

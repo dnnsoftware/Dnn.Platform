@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Mobile
 {
-    using System;
     using System.Collections.Generic;
     using System.Web;
 

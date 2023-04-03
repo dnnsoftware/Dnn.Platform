@@ -11,14 +11,10 @@ namespace Dnn.EditBar.UI.Helpers
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
 
-    /// <summary>
-    /// This class offers some common methods to work with pages and their permission.
-    /// </summary>
+    /// <summary>This class offers some common methods to work with pages and their permission.</summary>
     public class PageSecurityHelper
     {
-        /// <summary>
-        /// Checks if current user is page editor of the passed tab.
-        /// </summary>
+        /// <summary>Checks if current user is page editor of the passed tab.</summary>
         /// <param name="tabId">Tab ID.</param>
         /// <param name="portalSettings">Portal Settings related with the portal which contains the tab.</param>
         /// <returns>Returns true if current user has a edit permission on the page or is admin of some module in the page. Otherwise, returns false.</returns>
@@ -29,9 +25,7 @@ namespace Dnn.EditBar.UI.Helpers
                 || IsModuleAdmin(portalSettings, TabController.Instance.GetTab(tabId, portalSettings.PortalId));
         }
 
-        /// <summary>
-        /// Checks if current user is page admin of the currentpage.
-        /// </summary>
+        /// <summary>Checks if current user is page admin of the currentpage.</summary>
         /// <returns>Returns true if current user has any admin permission. Otherwise returns false.</returns>
         public static bool IsPageAdmin()
         {
@@ -39,9 +33,7 @@ namespace Dnn.EditBar.UI.Helpers
                 TabPermissionController.CanDeletePage() || TabPermissionController.CanExportPage() || TabPermissionController.CanImportPage() || TabPermissionController.CanManagePage();
         }
 
-        /// <summary>
-        /// Check if current user is Module admin of any module in the current page.
-        /// </summary>
+        /// <summary>Check if current user is Module admin of any module in the current page.</summary>
         /// <param name="portalSettings">Portal Settings related with the portal which contains the tab.</param>
         /// <returns>Returns true if current user has admin permission over some module in the current page. Otherwise, returns false.</returns>
         public static bool IsModuleAdmin(PortalSettings portalSettings)
@@ -49,9 +41,7 @@ namespace Dnn.EditBar.UI.Helpers
             return IsModuleAdmin(portalSettings, portalSettings.ActiveTab);
         }
 
-        /// <summary>
-        /// Check if current user is Module admin of any module in the passed page.
-        /// </summary>
+        /// <summary>Check if current user is Module admin of any module in the passed page.</summary>
         /// <param name="portalSettings">Portal Settings related with the portal which contains the tab.</param>
         /// <param name="tab">Tab to check.</param>
         /// <returns>Returns true if current user has admin permission over some module in the passed page. Otherwise, returns false.</returns>

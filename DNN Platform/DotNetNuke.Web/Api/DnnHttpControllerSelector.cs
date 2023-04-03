@@ -23,24 +23,27 @@ namespace DotNetNuke.Web.Api
         private const string ControllerSuffix = "Controller";
         private const string ControllerKey = "controller";
 
-        private readonly HttpConfiguration _configuration;
-        private readonly Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>> _descriptorCache;
+        private readonly HttpConfiguration configuration;
+        private readonly Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>> descriptorCache;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnHttpControllerSelector"/> class.</summary>
+        /// <param name="configuration">The HTTP configuration.</param>
         public DnnHttpControllerSelector(HttpConfiguration configuration)
         {
             Requires.NotNull("configuration", configuration);
 
-            this._configuration = configuration;
-            this._descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
+            this.configuration = configuration;
+            this.descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
                 this.InitTypeCache,
                 isThreadSafe: true);
         }
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
         {
-            get { return this._descriptorCache.Value; }
+            get { return this.descriptorCache.Value; }
         }
 
+        /// <inheritdoc/>
         public HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
             Requires.NotNull("request", request);
@@ -51,8 +54,7 @@ namespace DotNetNuke.Web.Api
             {
                 throw new HttpResponseException(request.CreateErrorResponse(
                     HttpStatusCode.NotFound,
-                    "Unable to locate a controller for " +
-                                                                            request.RequestUri));
+                    "Unable to locate a controller for " + request.RequestUri));
             }
 
             var matches = new List<HttpControllerDescriptor>();
@@ -81,6 +83,7 @@ namespace DotNetNuke.Web.Api
             throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Conflict, string.Format(Localization.GetString("AmbiguousController", Localization.ExceptionsResourceFile), controllerName, string.Join(", ", namespaces))));
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping()
         {
             return this.DescriptorCache;
@@ -118,8 +121,8 @@ namespace DotNetNuke.Web.Api
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> InitTypeCache()
         {
-            IAssembliesResolver assembliesResolver = this._configuration.Services.GetAssembliesResolver();
-            IHttpControllerTypeResolver controllersResolver = this._configuration.Services.GetHttpControllerTypeResolver();
+            IAssembliesResolver assembliesResolver = this.configuration.Services.GetAssembliesResolver();
+            IHttpControllerTypeResolver controllersResolver = this.configuration.Services.GetHttpControllerTypeResolver();
 
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
 
@@ -130,7 +133,7 @@ namespace DotNetNuke.Web.Api
                 if (type.FullName != null)
                 {
                     string controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
-                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(this._configuration, controllerName, type));
+                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(this.configuration, controllerName, type));
                 }
             }
 
