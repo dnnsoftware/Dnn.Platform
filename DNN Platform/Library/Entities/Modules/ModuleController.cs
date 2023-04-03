@@ -95,14 +95,6 @@ namespace DotNetNuke.Entities.Modules
             module.DisplayTitle = sourceModule.DisplayTitle;
             module.DisplayPrint = sourceModule.DisplayPrint;
             module.DisplaySyndicate = sourceModule.DisplaySyndicate;
-            module.IsWebSlice = sourceModule.IsWebSlice;
-
-            if (module.IsWebSlice)
-            {
-                module.WebSliceTitle = sourceModule.WebSliceTitle;
-                module.WebSliceExpiryDate = sourceModule.WebSliceExpiryDate;
-                module.WebSliceTTL = sourceModule.WebSliceTTL;
-            }
 
             // DNN-24983 get culture from page
             var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
@@ -424,10 +416,6 @@ namespace DotNetNuke.Entities.Modules
                     module.DisplayTitle,
                     module.DisplayPrint,
                     module.DisplaySyndicate,
-                    module.IsWebSlice,
-                    module.WebSliceTitle,
-                    module.WebSliceExpiryDate,
-                    module.WebSliceTTL,
                     module.UniqueId,
                     module.VersionGuid,
                     module.DefaultLanguageGuid,
@@ -561,10 +549,6 @@ namespace DotNetNuke.Entities.Modules
                     destinationModule.DisplayTitle,
                     destinationModule.DisplayPrint,
                     destinationModule.DisplaySyndicate,
-                    destinationModule.IsWebSlice,
-                    destinationModule.WebSliceTitle,
-                    destinationModule.WebSliceExpiryDate,
-                    destinationModule.WebSliceTTL,
                     destinationModule.UniqueId,
                     destinationModule.VersionGuid,
                     destinationModule.DefaultLanguageGuid,
@@ -827,10 +811,6 @@ namespace DotNetNuke.Entities.Modules
                         newModule.DisplayTitle,
                         newModule.DisplayPrint,
                         newModule.DisplaySyndicate,
-                        newModule.IsWebSlice,
-                        newModule.WebSliceTitle,
-                        newModule.WebSliceExpiryDate,
-                        newModule.WebSliceTTL,
                         newModule.VersionGuid,
                         newModule.DefaultLanguageGuid,
                         newModule.LocalizedVersionGuid,
@@ -1356,10 +1336,6 @@ namespace DotNetNuke.Entities.Modules
                     module.DisplayTitle,
                     module.DisplayPrint,
                     module.DisplaySyndicate,
-                    module.IsWebSlice,
-                    module.WebSliceTitle,
-                    module.WebSliceExpiryDate,
-                    module.WebSliceTTL,
                     module.VersionGuid,
                     module.DefaultLanguageGuid,
                     module.LocalizedVersionGuid,
@@ -1436,10 +1412,6 @@ namespace DotNetNuke.Entities.Modules
                                 module.DisplayTitle,
                                 module.DisplayPrint,
                                 module.DisplaySyndicate,
-                                module.IsWebSlice,
-                                module.WebSliceTitle,
-                                module.WebSliceExpiryDate,
-                                module.WebSliceTTL,
                                 targetModule.VersionGuid,
                                 targetModule.DefaultLanguageGuid,
                                 targetModule.LocalizedVersionGuid,
@@ -1913,13 +1885,6 @@ namespace DotNetNuke.Entities.Modules
             module.DisplayTitle = XmlUtils.GetNodeValueBoolean(nodeModule, "displaytitle", true);
             module.DisplayPrint = XmlUtils.GetNodeValueBoolean(nodeModule, "displayprint", true);
             module.DisplaySyndicate = XmlUtils.GetNodeValueBoolean(nodeModule, "displaysyndicate", false);
-            module.IsWebSlice = XmlUtils.GetNodeValueBoolean(nodeModule, "iswebslice", false);
-            if (module.IsWebSlice)
-            {
-                module.WebSliceTitle = XmlUtils.GetNodeValue(nodeModule, "webslicetitle", module.ModuleTitle);
-                module.WebSliceExpiryDate = XmlUtils.GetNodeValueDate(nodeModule, "websliceexpirydate", module.EndDate);
-                module.WebSliceTTL = XmlUtils.GetNodeValueInt(nodeModule, "webslicettl", module.CacheTime / 60);
-            }
 
             return module;
         }
@@ -2340,10 +2305,6 @@ namespace DotNetNuke.Entities.Modules
                     newModule.DisplayTitle,
                     newModule.DisplayPrint,
                     newModule.DisplaySyndicate,
-                    newModule.IsWebSlice,
-                    newModule.WebSliceTitle,
-                    newModule.WebSliceExpiryDate,
-                    newModule.WebSliceTTL,
                     newModule.VersionGuid,
                     newModule.DefaultLanguageGuid,
                     newModule.LocalizedVersionGuid,
