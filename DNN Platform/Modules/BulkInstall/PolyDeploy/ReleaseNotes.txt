@@ -1,0 +1,7 @@
+﻿<h3>PolyDeploy</h3>
+<p class="Contributor">
+	Cantarus <br />
+	<a href="mailto:dotnetnuke@cantarus.com">dotnetnuke@cantarus.com</a><br />
+	<a href=http://www.cantarus.com>http://www.cantarus.com</a><br />
+</p>
+<hr/>

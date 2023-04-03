@@ -1,0 +1,206 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.09.03">
+      <friendlyName>Cantarus PolyDeploy</friendlyName>
+      <description>Cantarus PolyDeploy module</description>
+      <iconFile>Images/polydeploy-logo-icon.png</iconFile>
+      <owner>
+        <name>Cantarus</name>
+        <organization>Cantarus</organization>
+        <url>http://www.cantarus.com</url>
+        <email>dotnetnuke@cantarus.com</email>
+      </owner>
+      <license></license>
+      <releaseNotes></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+
+      <components>
+
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <component type="Module">
+          <desktopModule>
+            <moduleName>PolyDeploy</moduleName>
+            <foldername>/Cantarus/PolyDeploy</foldername>
+            <businessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Upgradeable"/>
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>PolyDeploy</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Clients/Deploy/Deploy.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Manage</controlKey>
+                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Clients/Manage/Manage.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>PolyDeploy Manage</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <BusinessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</BusinessControllerClass>
+              <UpgradeVersionsList>00.09.00,00.09.01</UpgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+
+        <component type="Script">
+          <scripts>
+
+            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
+
+            <!-- v0.1.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.01.00.SqlDataProvider</name>
+              <version>00.01.00</version>
+            </script>
+
+            <!-- v0.2.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.02.00.SqlDataProvider</name>
+              <version>00.02.00</version>
+            </script>
+
+            <!-- v0.3.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.03.00.SqlDataProvider</name>
+              <version>00.03.00</version>
+            </script>
+
+            <!-- v0.4.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.04.00.SqlDataProvider</name>
+              <version>00.04.00</version>
+            </script>
+
+            <!-- v0.5.0-->
+            <!-- No script. -->
+
+            <!-- v0.6.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.06.00.SqlDataProvider</name>
+              <version>00.06.00</version>
+            </script>
+
+            <!-- v0.7.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.07.00.SqlDataProvider</name>
+              <version>00.07.00</version>
+            </script>
+
+            <!-- v0.8.0-->
+            <!-- No script. -->
+
+            <!-- v0.9.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.09.00.SqlDataProvider</name>
+              <version>00.09.00</version>
+            </script>
+
+            <!-- v0.9.1 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.09.01.SqlDataProvider</name>
+              <version>00.09.01</version>
+            </script>
+
+            <!-- v0.9.2 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.09.02.SqlDataProvider</name>
+              <version>00.09.02</version>
+            </script>
+
+            <!-- v0.9.3 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.09.03.SqlDataProvider</name>
+              <version>00.09.03</version>
+            </script>
+
+            <!-- Uninstall -->
+            <script type="Uninstall">
+              <path>SqlDataProviders</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version />
+            </script>
+
+          </scripts>
+        </component>
+
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin</basePath>
+            <assembly>
+              <name>Cantarus.Modules.PolyDeploy.dll</name>
+            </assembly>
+            <assembly>
+              <name>Cantarus.Libraries.Encryption.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings" action="update" collision="overwrite" key="key">
+                    <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings/add[@key='aspnet:UseTaskFriendlySynchronizationContext']" action="remove" collision="overwrite" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

@@ -1,0 +1,106 @@
+﻿/************************************************************/
+/***** SqlDataProvider                                  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/*** Cantarus_PolyDeploy v0.9.1                           ***/
+/************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_IPSpecs TABLE *******************************************************************/
+/***                                                                                                   ***/
+/*** Rename existing IPSpecs table so it can be used in the upgrade process after the application      ***/
+/*** restarts. Create new IPSpecs table with the new structure.                                        ***/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        EXEC sp_rename '{objectQualifier}Cantarus_PolyDeploy_IPSpecs', '{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption'
+        EXEC sp_rename 'PK_{objectQualifier}Cantarus_PolyDeploy_IPSpecs', 'PK_{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption'
+    END
+GO
+
+IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        CREATE TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]
+        (
+            [IPSpecID]      [INT] NOT NULL IDENTITY,
+            [Name]          [NVARCHAR](64) NOT NULL,
+            [Address_Sha]   [CHAR](64) NOT NULL,
+            [Salt]          [CHAR](32) NOT NULL,
+
+            CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_IPSpecs]
+                PRIMARY KEY CLUSTERED ([IPSpecID]),
+
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_IPSpecs_Name]
+                UNIQUE ([Name]),
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_IPSpecs_Address_Sha]
+                UNIQUE ([Address_Sha]),
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_IPSpecs_Salt]
+                UNIQUE ([Salt])
+        )
+    END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_IPSpecByAddress STORED PROCEDURE ************************************************/
+/***                                                                                                   ***/
+/*** Create the stored procedure needed to retrieve IPSpecs from the database.                         ***/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]
+GO
+
+/*
+    This procedure provides a mechanism to easily retrieve an IPSpec by its
+    address.
+
+    As each IPSpec's address is stored as a salted and hased value in the
+    Address_Sha field it's more efficient to let the database perform the
+    required hashing and return only the applicable result. This works almost
+    identically to the Cantarus_PolyDeploy_APIUserByAPIKey stored procedure.
+
+    The basic procedure is as follows:
+    - Concatenate plain address with stored salt
+    - Produce hashed bytes of the concatenated value using SHA256
+    - Convert the hashed bytes to a string for comparison
+
+    Note: The third paramater passed to CONVERT removes the leading '0x' from
+    the returned value.
+    (https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql#binary-styles)
+*/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]
+    @Address [VARCHAR](15)
+AS
+    SELECT *
+        FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]
+        WHERE [Address_Sha] = CONVERT([VARCHAR](64), HASHBYTES('SHA2_256', CONCAT(@Address, [Salt])), 2)
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_PostUpgrade_00.09.01 STORED PROCEDURE *******************************************/
+/***                                                                                                   ***/
+/*** Create the stored procedure that will be called by the upgrade process after application restart. ***/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.01]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.01]
+GO
+
+/*
+    This procedure makes any neccesary database changes that are needed after
+    the post upgrade code has been run on application restart.
+
+    This procedure should be dropped by the upgrade code after it has been executed.
+*/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.01]
+AS
+    IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption]'))
+        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption]
+    GO
+GO

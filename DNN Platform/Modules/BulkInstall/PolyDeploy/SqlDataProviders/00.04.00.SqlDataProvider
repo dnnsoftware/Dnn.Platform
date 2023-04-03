@@ -1,0 +1,29 @@
+﻿/************************************************************/
+/***** SqlDataProvider                                  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/*** Cantarus_PolyDeploy v0.4.0                           ***/
+/************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_Sessions TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    IF NOT EXISTS(SELECT * FROM sys.columns WHERE name = 'Status' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]'))
+        BEGIN
+            ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD [Status] [INT]
+        END
+GO
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    IF NOT EXISTS(SELECT * FROM sys.columns WHERE name = 'Response' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]'))
+        BEGIN
+            ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD [Response] [VARCHAR](MAX)
+        END
+GO

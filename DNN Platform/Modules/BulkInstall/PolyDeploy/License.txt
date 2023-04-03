@@ -1,0 +1,8 @@
+﻿<div class="License">
+	<h3>License</h3>
+	<p class="Owner">
+		Cantarus  <a href=http://www.cantarus.com>http://www.cantarus.com</a></br>
+		Copyright (c) 2012</br>	
+		by Cantarus</br>
+	</p>
+ </div>
