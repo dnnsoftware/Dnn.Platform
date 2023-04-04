@@ -6,12 +6,14 @@
 		<Nullable>enable</Nullable>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<LangVersion>latest</LangVersion>
-    <Deterministic>true</Deterministic>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <PackAsTool>true</PackAsTool>
-		<ToolCommandName>polydeploy</ToolCommandName>
-    <DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
-    <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+		<Deterministic>true</Deterministic>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<ToolCommandName>dnn-bulkinstall</ToolCommandName>
+		<PackageId>DotNetNuke.BulkInstall</PackageId>
+		<PackageDescription>A tool for deploying extensions to a DNN Platform website.</PackageDescription>
+		<PackAsTool>true</PackAsTool>
+		<DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
+		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
