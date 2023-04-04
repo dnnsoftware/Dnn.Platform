@@ -1382,7 +1382,7 @@
           "xunit.extensibility.core": "[2.4.2]"
         }
       },
-      "dotnetnuke.bulkinstall.deployclient": {
+      "DotNetNuke.BulkInstall": {
         "type": "Project",
         "dependencies": {
           "DotNetNuke.BulkInstall.Encryption": "[1.0.0, )",
