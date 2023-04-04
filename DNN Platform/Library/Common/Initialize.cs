@@ -456,8 +456,6 @@ namespace DotNetNuke.Common
 
                     ModuleInjectionManager.RegisterInjectionFilters();
 
-                    ConnectionsManager.Instance.RegisterConnections();
-
                     // Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
 
@@ -468,7 +466,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                // NET Framework version is neeed by Upgrade
+                // NET Framework version is needed by Upgrade
                 Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                 Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                 Globals.OperatingSystemVersion = Environment.OSVersion.Version;
