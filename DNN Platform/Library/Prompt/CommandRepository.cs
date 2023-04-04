@@ -11,13 +11,31 @@ namespace DotNetNuke.Prompt
     using System.Web.Caching;
 
     using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
+        /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        public CommandRepository()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        public CommandRepository(IServiceScopeFactory serviceScopeFactory)
+        {
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.DependencyProvider.GetRequiredService<IServiceScopeFactory>();
+        }
+
         /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
@@ -25,13 +43,13 @@ namespace DotNetNuke.Prompt
         }
 
         /// <inheritdoc/>
-        public IConsoleCommand GetCommand(string commandName)
+        public IConsoleCommand GetCommand(IServiceProvider serviceProvider, string commandName)
         {
             commandName = commandName.ToUpper();
             var allCommands = this.CommandList();
             if (allCommands.ContainsKey(commandName))
             {
-                return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
+                return (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceProvider, Type.GetType(allCommands[commandName].TypeFullName));
             }
 
             return null;
@@ -49,10 +67,10 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
-            return () => new CommandRepository();
+            return Globals.DependencyProvider.GetRequiredService<ICommandRepository>;
         }
 
-        private static SortedDictionary<string, ICommand> GetCommandsInternal()
+        private SortedDictionary<string, ICommand> GetCommandsInternal()
         {
             var commands = new SortedDictionary<string, ICommand>();
             var typeLocator = new TypeLocator();
@@ -62,6 +80,8 @@ namespace DotNetNuke.Prompt
                      !t.IsAbstract &&
                      t.IsVisible &&
                      typeof(IConsoleCommand).IsAssignableFrom(t));
+
+            using var serviceScope = this.serviceScopeFactory.CreateScope();
             foreach (var cmd in allCommandTypes)
             {
                 var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
@@ -69,7 +89,10 @@ namespace DotNetNuke.Prompt
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
                 var key = commandAttribute.Name.ToUpper();
-                var localResourceFile = ((IConsoleCommand)Activator.CreateInstance(cmd))?.LocalResourceFile;
+
+                var command = (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, cmd);
+                var localResourceFile = command?.LocalResourceFile;
+
                 commands.Add(key, new Command
                 {
                     Category = LocalizeString(commandAttribute.CategoryKey, localResourceFile),
@@ -106,7 +129,7 @@ namespace DotNetNuke.Prompt
             return
                 DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
                     new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
-                    c => GetCommandsInternal());
+                    c => this.GetCommandsInternal());
         }
 
         private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
@@ -129,7 +152,7 @@ namespace DotNetNuke.Prompt
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         Description =
-                            LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
+                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
                     }).ToList();
                     commandHelp.Options = options;
                 }

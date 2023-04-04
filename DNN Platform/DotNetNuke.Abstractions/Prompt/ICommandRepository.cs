@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Prompt
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>The repository handles retrieving of commands from the entire DNN installation.</summary>
@@ -13,9 +14,10 @@ namespace DotNetNuke.Abstractions.Prompt
         IEnumerable<ICommand> GetCommands();
 
         /// <summary>Get the command. Returns null if no command found for the name.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
         /// <param name="commandName">Name of the command (commonly in verb-noun format).</param>
         /// <returns>An IConsoleCommand or null.</returns>
-        IConsoleCommand GetCommand(string commandName);
+        IConsoleCommand GetCommand(IServiceProvider serviceProvider, string commandName);
 
         /// <summary>Get help for the specified command.</summary>
         /// <param name="consoleCommand">Command to get help for.</param>
