@@ -12,9 +12,13 @@ namespace DotNetNuke.UI.Modules.Html5
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Module control factory for HTML modules.</summary>
     public class Html5ModuleControlFactory : BaseModuleControlFactory
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
+
+        /// <inheritdoc/>
+        public override int Priority => 100;
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -28,6 +32,13 @@ namespace DotNetNuke.UI.Modules.Html5
         public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        }
+
+        /// <inheritdoc/>
+        public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            return controlSrc.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
+                   controlSrc.EndsWith(".htm", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <inheritdoc/>

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Razor
 {
     using System;
@@ -13,6 +12,16 @@ namespace DotNetNuke.Web.Razor
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class RazorModuleControlFactory : BaseModuleControlFactory
     {
+        /// <inheritdoc/>
+        public override int Priority => 100;
+
+        /// <inheritdoc/>
+        public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            return controlSrc.EndsWith(".cshtml", StringComparison.OrdinalIgnoreCase) ||
+                   controlSrc.EndsWith(".vbhtml", StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
