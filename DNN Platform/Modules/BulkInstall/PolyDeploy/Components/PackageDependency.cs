@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
     internal class PackageDependency
     {

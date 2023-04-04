@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.XPath;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
     internal class PackageJob
     {

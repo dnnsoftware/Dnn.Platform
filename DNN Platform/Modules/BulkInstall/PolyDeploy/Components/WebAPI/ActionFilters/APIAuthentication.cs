@@ -1,13 +1,16 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using Cantarus.Modules.PolyDeploy.Components.Logging;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+using DotNetNuke.BulkInstall.Components.Logging;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
+namespace DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using DotNetNuke.BulkInstall.Components.Logging;
+
     internal class APIAuthentication : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)

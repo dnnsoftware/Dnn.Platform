@@ -1,12 +1,14 @@
 using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Controller class for PolyDeploy

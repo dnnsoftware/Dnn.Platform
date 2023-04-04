@@ -1,10 +1,12 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.Data;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
+namespace DotNetNuke.BulkInstall.Components.DataAccess.DataControllers
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+
     internal class SettingDataController
     {
         /// <summary>

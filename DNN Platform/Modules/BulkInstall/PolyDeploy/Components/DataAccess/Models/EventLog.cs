@@ -1,9 +1,11 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.Logging;
+﻿using DotNetNuke.BulkInstall.Components.Logging;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
 
-namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
+namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
 {
+    using DotNetNuke.BulkInstall.Components.Logging;
+
     [TableName("Cantarus_PolyDeploy_EventLogs")]
     [PrimaryKey("EventLogID")]
     public class EventLog

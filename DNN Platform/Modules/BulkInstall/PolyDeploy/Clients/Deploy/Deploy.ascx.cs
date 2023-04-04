@@ -5,11 +5,13 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Framework;
-using Cantarus.Modules.PolyDeploy.Components;
+using DotNetNuke.BulkInstall.Components;
 using DotNetNuke.Entities.Modules;
 
-namespace Cantarus.Modules.PolyDeploy
+namespace DotNetNuke.BulkInstall
 {
+    using DotNetNuke.BulkInstall.Components;
+
     public partial class Deploy : PolyDeployModuleBase, IActionable
     {
         protected override void OnInit(EventArgs e)

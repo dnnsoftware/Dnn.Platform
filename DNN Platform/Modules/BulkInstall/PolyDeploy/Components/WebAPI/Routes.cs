@@ -1,6 +1,6 @@
 ﻿using DotNetNuke.Web.Api;
 
-namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
+namespace DotNetNuke.BulkInstall.Components.WebAPI
 {
     public class Routes : IServiceRouteMapper
     {

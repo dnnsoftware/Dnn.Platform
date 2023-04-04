@@ -1,12 +1,16 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using Cantarus.Modules.PolyDeploy.Components.Exceptions;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+using DotNetNuke.BulkInstall.Components.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using DotNetNuke.BulkInstall.Components.Exceptions;
+
     internal static class IPSpecManager
     {
         private static IPSpecDataController IPSpecDC = new IPSpecDataController();

@@ -1,10 +1,13 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using System;
 using System.IO;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+
     internal static class SessionManager
     {
         private static SessionDataController SessionDC = new SessionDataController();

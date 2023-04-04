@@ -1,4 +1,4 @@
-﻿namespace Cantarus.Modules.PolyDeploy.Components.Logging
+﻿namespace DotNetNuke.BulkInstall.Components.Logging
 {
     public enum EventLogSeverity
     {

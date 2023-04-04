@@ -1,6 +1,6 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using Cantarus.Modules.PolyDeploy.Components.Exceptions;
-using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+using DotNetNuke.BulkInstall.Components.Exceptions;
+using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using System;
 using System.Collections.Generic;
@@ -9,8 +9,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
+namespace DotNetNuke.BulkInstall.Components.WebAPI
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using DotNetNuke.BulkInstall.Components.Exceptions;
+    using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
+
     [RequireHost]
     [ValidateAntiForgeryToken]
     [InWhitelist]

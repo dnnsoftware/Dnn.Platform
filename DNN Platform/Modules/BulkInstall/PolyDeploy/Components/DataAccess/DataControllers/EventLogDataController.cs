@@ -1,12 +1,15 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using Cantarus.Modules.PolyDeploy.Components.Logging;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+using DotNetNuke.BulkInstall.Components.Logging;
 using DotNetNuke.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
+namespace DotNetNuke.BulkInstall.Components.DataAccess.DataControllers
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using DotNetNuke.BulkInstall.Components.Logging;
+
     internal class EventLogDataController
     {
         #region Create

@@ -1,10 +1,13 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 
-namespace Cantarus.Modules.PolyDeploy.Components.Logging
+namespace DotNetNuke.BulkInstall.Components.Logging
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+
     internal static class EventLogManager
     {
         private static EventLogDataController LogDC = new EventLogDataController();

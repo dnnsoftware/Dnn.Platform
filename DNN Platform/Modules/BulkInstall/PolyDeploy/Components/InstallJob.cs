@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
     internal class InstallJob
     {

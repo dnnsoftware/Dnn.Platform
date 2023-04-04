@@ -1,10 +1,11 @@
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+
     internal static class APIUserManager
     {
         private static APIUserDataController APIUserDC = new APIUserDataController();

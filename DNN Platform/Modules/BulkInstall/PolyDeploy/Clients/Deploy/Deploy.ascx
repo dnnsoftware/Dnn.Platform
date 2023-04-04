@@ -1,4 +1,4 @@
-<%@ Control language="C#" Inherits="Cantarus.Modules.PolyDeploy.Deploy" AutoEventWireup="false"  Codebehind="Deploy.ascx.cs" %>
+<%@ Control language="C#" Inherits="DotNetNuke.BulkInstall.Deploy" AutoEventWireup="false"  Codebehind="Deploy.ascx.cs" %>
 
 <!-- App Wrapper -->
 <div class="container-fluid">

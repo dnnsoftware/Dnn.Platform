@@ -1,11 +1,15 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using Cantarus.Modules.PolyDeploy.Components.Exceptions;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+using DotNetNuke.BulkInstall.Components.Exceptions;
 using DotNetNuke.Common.Utilities;
 using System;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using DotNetNuke.BulkInstall.Components.Exceptions;
+
     internal class SettingManager
     {
         private const string SettingCacheKey = "Cantarus:PolyDeploy:Setting_";

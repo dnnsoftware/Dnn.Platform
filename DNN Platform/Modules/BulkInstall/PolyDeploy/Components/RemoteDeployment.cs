@@ -1,10 +1,12 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Collections.Generic;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
+    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+
     internal class RemoteDeployment : Deployment
     {
         private APIUser APIUser { get; set; }

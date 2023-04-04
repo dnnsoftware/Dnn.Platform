@@ -1,7 +1,7 @@
 ﻿using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
 
-namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
+namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
 {
     public enum SessionStatus
     {

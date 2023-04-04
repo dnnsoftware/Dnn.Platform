@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Cantarus.Modules.PolyDeploy.Components.Exceptions
+namespace DotNetNuke.BulkInstall.Components.Exceptions
 {
     [Serializable]
     public class IPSpecExistsException : Exception

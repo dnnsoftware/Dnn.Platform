@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cantarus.Modules.PolyDeploy {
+namespace DotNetNuke.BulkInstall {
     
     
     public partial class Deploy {

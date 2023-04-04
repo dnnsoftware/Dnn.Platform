@@ -1,6 +1,6 @@
 using DotNetNuke.Entities.Modules;
 
-namespace Cantarus.Modules.PolyDeploy.Components
+namespace DotNetNuke.BulkInstall.Components
 {
     public class PolyDeployModuleBase : PortalModuleBase
     {

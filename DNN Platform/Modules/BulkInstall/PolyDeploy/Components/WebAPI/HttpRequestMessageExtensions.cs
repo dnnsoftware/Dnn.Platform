@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 
-namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
+namespace DotNetNuke.BulkInstall.Components.WebAPI
 {
     internal static class HttpRequestMessageExtensions
     {

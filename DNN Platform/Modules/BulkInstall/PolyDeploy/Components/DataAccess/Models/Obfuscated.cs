@@ -1,6 +1,6 @@
 ﻿using Cantarus.Libraries.Encryption;
 
-namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
+namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
 {
     public class Obfuscated
     {
