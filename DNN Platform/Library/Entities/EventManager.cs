@@ -102,6 +102,10 @@ namespace DotNetNuke.Entities
                 this.RoleDeleted += handler.Value.RoleDeleted;
                 this.RoleJoined += handler.Value.RoleJoined;
                 this.RoleLeft += handler.Value.RoleLeft;
+                if (handler.Value is IRoleUpdateEventHandlers updateHandler)
+                {
+                    this.RoleUpdated += updateHandler.RoleUpdated;
+                }
             }
 
             foreach (var handler in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
@@ -182,6 +186,8 @@ namespace DotNetNuke.Entities
         private event EventHandler<ProfileEventArgs> ProfileUpdated;
 
         private event EventHandler<RoleEventArgs> RoleCreated;
+
+        private event EventHandler<RoleEventArgs> RoleUpdated;
 
         private event EventHandler<RoleEventArgs> RoleDeleted;
 
@@ -456,6 +462,12 @@ namespace DotNetNuke.Entities
             {
                 this.RoleCreated(this, args);
             }
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnRoleUpdated(RoleEventArgs args)
+        {
+            this.RoleUpdated?.Invoke(this, args);
         }
 
         /// <inheritdoc/>
