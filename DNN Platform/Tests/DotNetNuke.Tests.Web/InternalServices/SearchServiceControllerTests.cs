@@ -7,9 +7,11 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Web.Http;
     using System.Web.Http.Hosting;
 
@@ -99,6 +101,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         public void SetUp()
         {
             // Arrange
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(CultureEnUs);
+
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
