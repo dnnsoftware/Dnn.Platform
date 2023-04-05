@@ -14,6 +14,7 @@ namespace DotNetNuke.UI.Skins
 
     public class NavObjectBase : SkinObjectBase
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly List<CustomAttribute> objCustomAttributes = new List<CustomAttribute>();
         private bool blnPopulateNodesFromClient = true;
         private int intExpandDepth = -1;
@@ -97,6 +98,20 @@ namespace DotNetNuke.UI.Skins
         private string strStyleSelectionForeColor;
         private string strToolTip = string.Empty;
         private string strWorkImage;
+
+        /// <summary>Initializes a new instance of the <see cref="NavObjectBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public NavObjectBase()
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="NavObjectBase"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        public NavObjectBase(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         // JH - 2/5/07 - support for custom attributes
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -2401,7 +2416,7 @@ namespace DotNetNuke.UI.Skins
                 this.ProviderName = strDefaultProvider;
             }
 
-            this.objControl = NavigationProvider.Instance(this.ProviderName);
+            this.objControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
             this.Control.ControlID = "ctl" + this.ID;
             this.Control.Initialize();
             this.AssignControlProperties();

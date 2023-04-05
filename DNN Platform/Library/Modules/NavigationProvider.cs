@@ -3,9 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.NavigationProvider
 {
+    using System;
     using System.Collections.Generic;
     using System.Web.UI;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
@@ -979,9 +980,15 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static NavigationProvider Instance(string friendlyName)
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
+            return Instance(Globals.DependencyProvider, friendlyName);
+        }
+
+        public static NavigationProvider Instance(IServiceProvider serviceProvider, string friendlyName)
+        {
+            return (NavigationProvider)Reflection.CreateObject(serviceProvider, "navigationControl", friendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();
