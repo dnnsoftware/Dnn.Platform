@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Portals
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             var importer = new PortalTemplateImporter(templatePath, templateFile);
-            importer.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
+            importer.ParseTemplate(this.businessControllerProvider, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Portals
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
             var importer = new PortalTemplateImporter(templatePath, templateFile);
-            importer.ParseTemplateInternal(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal, out localeCollection);
+            importer.ParseTemplateInternal(this.businessControllerProvider, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal, out localeCollection);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

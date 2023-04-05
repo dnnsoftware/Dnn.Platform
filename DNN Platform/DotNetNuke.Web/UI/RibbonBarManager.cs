@@ -8,8 +8,9 @@ namespace DotNetNuke.Web.UI
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml;
-
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
 
     public enum DotNetNukeErrorCode
     {
@@ -215,7 +217,18 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
-        public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public static int SaveTabInfoObject(
+            TabInfo tab,
+            TabInfo relativeToTab,
+            TabRelativeLocation location,
+            string templateFileId)
+        {
+            using var scope = Globals.GetOrCreateServiceScope();
+            return SaveTabInfoObject(scope.ServiceProvider.GetRequiredService<IBusinessControllerProvider>(), tab, relativeToTab, location, templateFileId);
+        }
+
+        public static int SaveTabInfoObject(IBusinessControllerProvider businessControllerProvider, TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
         {
             // Validation:
             // Tab name is required
@@ -410,7 +423,7 @@ namespace DotNetNuke.Web.UI
                 {
                     var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
                     xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
-                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+                    TabController.DeserializePanes(businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
 
                     // save tab permissions
                     DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);

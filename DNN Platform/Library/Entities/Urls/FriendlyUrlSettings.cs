@@ -106,8 +106,16 @@ namespace DotNetNuke.Entities.Urls
         private Dictionary<string, string> replaceCharacterDictionary;
 
         /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public FriendlyUrlSettings(int portalId)
+            : this(PortalController.Instance, portalId)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public FriendlyUrlSettings(IPortalController portalController, int portalId)
         {
             this.PortalId = portalId < -1 ? -1 : portalId;
             this.IsDirty = false;
@@ -119,7 +127,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (portalId > -1)
             {
-                var portal = PortalController.Instance.GetPortal(portalId);
+                var portal = portalController.GetPortal(portalId);
                 this.TabId500 = this.TabId404 = portal.Custom404TabId;
 
                 if (this.TabId500 == -1)

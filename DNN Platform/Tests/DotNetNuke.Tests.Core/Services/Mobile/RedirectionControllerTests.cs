@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Tests.Core.Services.Mobile
 {
     using System;
@@ -12,6 +13,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -102,7 +105,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             HostController.RegisterInstance(this.mockHostController.Object);
             this.SetupContainer();
 
-            this.redirectionController = new RedirectionController();
+            this.redirectionController = new RedirectionController(new PortalController(Mock.Of<IBusinessControllerProvider>()), Mock.Of<IEventLogger>());
 
             this.SetupDataProvider();
             this.SetupClientCapabilityProvider();
