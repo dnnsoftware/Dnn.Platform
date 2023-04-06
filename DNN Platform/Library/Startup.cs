@@ -6,6 +6,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Prompt;
     using DotNetNuke.Application;
@@ -13,6 +14,7 @@ namespace DotNetNuke
     using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Prompt;
@@ -41,6 +43,7 @@ namespace DotNetNuke
 #pragma warning restore CS0618
 
             services.AddTransient(x => PortalController.Instance);
+            services.AddTransient<IBusinessControllerProvider, BusinessControllerProvider>();
             services.AddScoped<IHostSettingsService, HostController>();
             services.AddScoped<INavigationManager, NavigationManager>();
             services.AddScoped<ISerializationManager, SerializationManager>();
