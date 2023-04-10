@@ -25,12 +25,17 @@ namespace Dnn.ExportImport.Components.Engines
     using Dnn.ExportImport.Dto.Users;
     using Dnn.ExportImport.Interfaces;
     using Dnn.ExportImport.Repository;
+
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Scheduling;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     using PlatformDataProvider = DotNetNuke.Data.DataProvider;
@@ -53,7 +58,10 @@ namespace Dnn.ExportImport.Components.Engines
             new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
         };
 
+
         private readonly Stopwatch stopWatch = Stopwatch.StartNew();
+        private readonly List<BasePortableService> portableServices;
+        private readonly ExportController exportController;
         private int timeoutSeconds;
 
         static ExportImportEngine()
@@ -65,7 +73,24 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
-        private static string[] NotAllowedCategoriesinRequestArray => new[]
+        /// <summary>Initializes a new instance of the <see cref="ExportImportEngine"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IEnumerable<BasePortableService>. Scheduled removal in v12.0.0.")]
+        public ExportImportEngine()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ExportImportEngine"/> class.</summary>
+        /// <param name="portableServices">The portable services.</param>
+        /// <param name="exportController">The export controller.</param>
+        public ExportImportEngine(IEnumerable<BasePortableService> portableServices, ExportController exportController)
+        {
+            this.exportController = exportController ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ExportController>() ?? Globals.DependencyProvider.GetRequiredService<ExportController>();
+            portableServices ??= HttpContextSource.Current?.GetScope()?.ServiceProvider.GetServices<BasePortableService>() ?? Globals.DependencyProvider.GetServices<BasePortableService>();
+            this.portableServices = portableServices.ToList();
+        }
+
+        private static string[] NotAllowedCategoriesInRequestArray => new[]
         {
             Constants.Category_Content,
             Constants.Category_Pages,
@@ -84,21 +109,21 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static string[] CleanUpIgnoredClasses => new[]
         {
-            typeof(ExportFile).Name,
-            typeof(ExportFolder).Name,
-            typeof(ExportFolderMapping).Name,
-            typeof(ExportFolderPermission).Name,
-            typeof(ExportPageTemplate).Name,
-            typeof(ExportPortalSetting).Name,
-            typeof(ExportPortalLanguage).Name,
-            typeof(ExportProfileProperty).Name,
-            typeof(ExportUser).Name,
-            typeof(ExportAspnetUser).Name,
-            typeof(ExportAspnetMembership).Name,
-            typeof(ExportUserAuthentication).Name,
-            typeof(ExportUserPortal).Name,
-            typeof(ExportUserProfile).Name,
-            typeof(ExportUserRole).Name,
+            nameof(ExportFile),
+            nameof(ExportImport.Dto.Assets.ExportFolder),
+            nameof(ExportFolderMapping),
+            nameof(ExportFolderPermission),
+            nameof(ExportPageTemplate),
+            nameof(ExportPortalSetting),
+            nameof(ExportPortalLanguage),
+            nameof(ExportProfileProperty),
+            nameof(ExportUser),
+            nameof(ExportAspnetUser),
+            nameof(ExportAspnetMembership),
+            nameof(ExportUserAuthentication),
+            nameof(ExportUserPortal),
+            nameof(ExportUserProfile),
+            nameof(ExportUserRole),
         };
 
         private bool TimeIsUp => this.stopWatch.Elapsed.TotalSeconds > this.timeoutSeconds;
@@ -153,9 +178,8 @@ namespace Dnn.ExportImport.Components.Engines
             exportJob.JobStatus = JobStatus.InProgress;
 
             // there must be one parent implementor at least for this to work
-            var implementors = Util.GetPortableImplementors().ToList();
-            var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
-            implementors = implementors.Except(parentServices).ToList();
+            var parentServices = this.portableServices.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+            var implementors = this.portableServices.Except(parentServices).ToList();
             var nextLevelServices = new List<BasePortableService>();
             var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
 
@@ -270,7 +294,7 @@ namespace Dnn.ExportImport.Components.Engines
                 var summary = new ImportExportSummary();
                 using (var ctx = new ExportImportRepository(dbName))
                 {
-                    BaseController.BuildJobSummary(exportJob.Directory, ctx, summary);
+                    BaseController.BuildJobSummary(this.portableServices, exportJob.Directory, ctx, summary);
                 }
 
                 DoPacking(exportJob, dbName);
@@ -279,7 +303,6 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
 
-                var exportController = new ExportController();
                 var exportFileInfo = new ExportFileInfo
                 {
                     ExportPath = exportJob.Directory,
@@ -287,7 +310,7 @@ namespace Dnn.ExportImport.Components.Engines
                 };
 
                 summary.ExportFileInfo = exportFileInfo;
-                exportController.CreatePackageManifest(exportJob, exportFileInfo, summary);
+                this.exportController.CreatePackageManifest(exportJob, exportFileInfo, summary);
             }
         }
 
@@ -352,15 +375,14 @@ namespace Dnn.ExportImport.Components.Engines
                     result.AddSummary("Resuming Importing Repository", finfo.Name);
                 }
 
-                var implementors = Util.GetPortableImplementors().ToList();
-                var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                var parentServices = this.portableServices.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
 
                 importJob.Name = exportedDto.ExportName;
                 importJob.Description = exportedDto.ExportDescription;
                 importJob.JobStatus = JobStatus.InProgress;
 
                 // there must be one parent implementor at least for this to work
-                implementors = implementors.Except(parentServices).ToList();
+                var implementors = this.portableServices.Except(parentServices).ToList();
                 var nextLevelServices = new List<BasePortableService>();
                 var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
 
@@ -535,7 +557,7 @@ namespace Dnn.ExportImport.Components.Engines
                 foreach (
                     var name in
                         exportDto.ItemsToExport.Where(
-                            x => !NotAllowedCategoriesinRequestArray.Contains(x.ToUpperInvariant())))
+                            x => !NotAllowedCategoriesInRequestArray.Contains(x.ToUpperInvariant())))
                 {
                     includedItems.Add(name);
                 }
