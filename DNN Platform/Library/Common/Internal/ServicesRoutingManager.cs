@@ -8,6 +8,7 @@ namespace DotNetNuke.Common.Internal
 
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Manages http routes for services (WebAPI, MVC, etc).</summary>
     public static class ServicesRoutingManager
@@ -21,16 +22,10 @@ namespace DotNetNuke.Common.Internal
 
             try
             {
-                // new ServicesRoutingManager().RegisterRoutes();
-                var instance = Activator.CreateInstance("DotNetNuke.Web", "DotNetNuke.Web.Api.Internal.ServicesRoutingManager");
-
-                var method = instance.Unwrap().GetType().GetMethod("RegisterRoutes");
-                method.Invoke(instance.Unwrap(), new object[0]);
-
-                var instanceMvc = Activator.CreateInstance("DotNetNuke.Web.Mvc", "DotNetNuke.Web.Mvc.Routing.MvcRoutingManager");
-
-                var methodMvc = instanceMvc.Unwrap().GetType().GetMethod("RegisterRoutes");
-                methodMvc.Invoke(instanceMvc.Unwrap(), new object[0]);
+                foreach (IRoutingManager routingManager in Globals.DependencyProvider.GetServices(typeof(IRoutingManager)))
+                {
+                    routingManager.RegisterRoutes();
+                }
             }
             catch (Exception e)
             {

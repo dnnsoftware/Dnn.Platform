@@ -8,7 +8,6 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Web.Http.Filters;
     using System.Web.Routing;
 
@@ -16,7 +15,6 @@ namespace DotNetNuke.Tests.Web.Api
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Internal.Reflection;
     using DotNetNuke.Framework.Reflections;
@@ -37,7 +35,6 @@ namespace DotNetNuke.Tests.Web.Api
         // ReSharper restore UnusedMember.Local
         private Mock<IPortalController> mockPortalController;
         private IPortalController portalController;
-
         private Mock<IPortalAliasService> mockPortalAliasService;
 
         [SetUp]
@@ -111,7 +108,7 @@ namespace DotNetNuke.Tests.Web.Api
 
         public void NameSpaceRequiredOnMapRouteCalls([ValueSource(nameof(EmptyStringArrays))] string[] namespaces)
         {
-            var srm = new ServicesRoutingManager(new RouteCollection());
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection());
 
             Assert.Throws<ArgumentException>(() => srm.MapHttpRoute("usm", "default", "url", null, namespaces));
         }
@@ -131,7 +128,7 @@ namespace DotNetNuke.Tests.Web.Api
             var al = new Mock<IAssemblyLocator>();
             al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
             var tl = new TypeLocator { AssemblyLocator = al.Object };
-            var srm = new ServicesRoutingManager(new RouteCollection()) { TypeLocator = tl };
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection()) { TypeLocator = tl };
 
             srm.RegisterRoutes();
 
@@ -148,7 +145,7 @@ namespace DotNetNuke.Tests.Web.Api
             var al = new Mock<IAssemblyLocator>();
             al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
             var tl = new TypeLocator { AssemblyLocator = al.Object };
-            var srm = new ServicesRoutingManager(new RouteCollection()) { TypeLocator = tl };
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection()) { TypeLocator = tl };
 
             srm.RegisterRoutes();
 
@@ -161,7 +158,7 @@ namespace DotNetNuke.Tests.Web.Api
 
         public void UniqueNameRequiredOnMapRouteCalls(string uniqueName)
         {
-            var srm = new ServicesRoutingManager(new RouteCollection());
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection());
 
             Assert.Throws<ArgumentException>(() => srm.MapHttpRoute(uniqueName, "default", "url", null, new[] { "foo" }));
         }
@@ -174,7 +171,7 @@ namespace DotNetNuke.Tests.Web.Api
             this.mockPortalController.Setup(x => x.GetPortals()).Returns(new ArrayList());
 
             // Act
-            var srm = new ServicesRoutingManager(new RouteCollection());
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection());
 
             // Assert
             Assert.DoesNotThrow(() => srm.MapHttpRoute("name", "default", "/url", null, new[] { "foo" }));
@@ -192,7 +189,7 @@ namespace DotNetNuke.Tests.Web.Api
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
 
             var routeCollection = new RouteCollection();
-            var srm = new ServicesRoutingManager(routeCollection);
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
 
             // Act
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
@@ -214,7 +211,7 @@ namespace DotNetNuke.Tests.Web.Api
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
 
             var routeCollection = new RouteCollection();
-            var srm = new ServicesRoutingManager(routeCollection);
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
 
             // Act
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
@@ -239,7 +236,7 @@ namespace DotNetNuke.Tests.Web.Api
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
 
             var routeCollection = new RouteCollection();
-            var srm = new ServicesRoutingManager(routeCollection);
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
 
             // Act
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
