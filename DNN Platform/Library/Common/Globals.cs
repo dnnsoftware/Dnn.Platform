@@ -27,6 +27,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -484,9 +485,7 @@ namespace DotNetNuke.Common
         public static Version DatabaseEngineVersion { get; set; }
 
         /// <summary>Gets or sets the Dependency Service.</summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
+        /// <value>The Dependency Service.</value>
         internal static IServiceProvider DependencyProvider
         {
             get => dependencyProvider;
@@ -3486,6 +3485,13 @@ namespace DotNetNuke.Common
             AppStopwatch.Restart();
         }
 
+        internal static IServiceScope GetOrCreateServiceScope()
+        {
+            return new MaybeDisposableServiceScope(
+                HttpContextSource.Current.GetScope(),
+                DependencyProvider.CreateScope);
+        }
+
         /// <summary>Check whether the Filename matches extensions.</summary>
         /// <param name="filename">The filename.</param>
         /// <param name="strExtensions">The valid extensions.</param>
@@ -3525,6 +3531,28 @@ namespace DotNetNuke.Common
         {
             applicationStatusInfo = DependencyProvider?.GetRequiredService<IApplicationStatusInfo>();
             navigationManager = DependencyProvider?.GetRequiredService<INavigationManager>();
+        }
+
+        private class MaybeDisposableServiceScope : IServiceScope
+        {
+            private readonly bool disposeServiceScope;
+            private readonly IServiceScope serviceScope;
+
+            public MaybeDisposableServiceScope(IServiceScope doNotDisposeServiceScope, Func<IServiceScope> createDisposableServiceScope)
+            {
+                this.disposeServiceScope = doNotDisposeServiceScope is null;
+                this.serviceScope = doNotDisposeServiceScope ?? createDisposableServiceScope();
+            }
+
+            public IServiceProvider ServiceProvider => this.serviceScope.ServiceProvider;
+
+            public void Dispose()
+            {
+                if (this.disposeServiceScope)
+                {
+                    this.serviceScope.Dispose();
+                }
+            }
         }
     }
 }
