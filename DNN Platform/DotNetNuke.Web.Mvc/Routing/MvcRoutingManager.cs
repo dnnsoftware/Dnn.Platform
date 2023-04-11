@@ -9,13 +9,14 @@ namespace DotNetNuke.Web.Mvc.Routing
     using System.Web.Routing;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Mvc.Common;
 
-    public sealed class MvcRoutingManager : IMapRoute
+    public sealed class MvcRoutingManager : IMapRoute, IRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
         private readonly Dictionary<string, int> moduleUsage = new Dictionary<string, int>();

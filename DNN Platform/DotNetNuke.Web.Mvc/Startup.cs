@@ -7,8 +7,10 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.Mvc;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Web.Mvc.Extensions;
+    using DotNetNuke.Web.Mvc.Routing;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -19,6 +21,7 @@ namespace DotNetNuke.Web.Mvc
         {
             services.TryAddSingleton<IControllerFactory, DefaultControllerFactory>();
             services.AddSingleton<MvcModuleControlFactory>();
+            services.TryAddEnumerable(new ServiceDescriptor(typeof(IRoutingManager), typeof(MvcRoutingManager), ServiceLifetime.Singleton));
 
             services.AddMvcControllers();
 

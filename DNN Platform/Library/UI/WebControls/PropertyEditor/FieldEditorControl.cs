@@ -10,6 +10,8 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
 
@@ -56,6 +58,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:FieldEditorControl runat=server></{0}:FieldEditorControl>")]
     public class FieldEditorControl : WebControl, INamingContainer
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly List<IValidator> validators = new List<IValidator>();
         private IEditorInfoAdapter editorInfoAdapter;
         private bool isValid = true;
@@ -63,8 +66,17 @@ namespace DotNetNuke.UI.WebControls
         private bool validated;
 
         /// <summary>Initializes a new instance of the <see cref="FieldEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public FieldEditorControl()
+            : this(HttpContextSource.Current?.GetScope()?.ServiceProvider ?? Globals.DependencyProvider)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FieldEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public FieldEditorControl(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
             this.ValidationExpression = Null.NullString;
             this.ShowRequired = true;
             this.LabelMode = LabelMode.None;
@@ -537,7 +549,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="editInfo">The EditorInfo object for this control.</param>
         private EditControl BuildEditor(EditorInfo editInfo)
         {
-            EditControl propEditor = EditControlFactory.CreateEditControl(editInfo);
+            var propEditor = EditControlFactory.CreateEditControl(this.serviceProvider, editInfo);
             propEditor.ViewStateMode = ViewStateMode.Enabled;
             propEditor.ControlStyle.CopyFrom(this.EditControlStyle);
             propEditor.LocalResourceFile = this.LocalResourceFile;
@@ -550,9 +562,8 @@ namespace DotNetNuke.UI.WebControls
             propEditor.ItemAdded += this.CollectionItemAdded;
             propEditor.ItemDeleted += this.CollectionItemDeleted;
             propEditor.ValueChanged += this.ValueChanged;
-            if (propEditor is DNNListEditControl)
+            if (propEditor is DNNListEditControl listEditor)
             {
-                var listEditor = (DNNListEditControl)propEditor;
                 listEditor.ItemChanged += this.ListItemChanged;
             }
 
