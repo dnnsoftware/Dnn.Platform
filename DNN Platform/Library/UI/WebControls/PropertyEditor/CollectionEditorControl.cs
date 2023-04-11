@@ -10,12 +10,28 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
 
     /// <summary>The CollectionEditorControl control provides a Control to display Collection Properties.</summary>
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
     {
+        /// <summary>Initializes a new instance of the <see cref="CollectionEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public CollectionEditorControl()
+            : this(HttpContextSource.Current?.GetScope()?.ServiceProvider ?? Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CollectionEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public CollectionEditorControl(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        {
+        }
+
         /// <summary>Gets or sets the value of the Category.</summary>
         /// <value>A string representing the Category of the Field.</value>
         [Browsable(true)]
