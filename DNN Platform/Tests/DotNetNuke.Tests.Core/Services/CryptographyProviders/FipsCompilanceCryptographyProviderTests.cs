@@ -4,9 +4,14 @@
 
 namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
 {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Services.Cryptography;
+    using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -17,6 +22,11 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         [SetUp]
         public void Setup()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
 
             _provider = ComponentFactory.GetComponent<CryptographyProvider>("FipsCompilanceCryptographyProvider");

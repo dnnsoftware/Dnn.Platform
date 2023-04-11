@@ -7,10 +7,13 @@ namespace DotNetNuke.Framework
     using System.Reflection;
     using System.Web.Compilation;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Library responsible for reflection.</summary>
     public class Reflection
@@ -21,9 +24,19 @@ namespace DotNetNuke.Framework
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string objectProviderType)
         {
             return CreateObject(objectProviderType, true);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType)
+        {
+            return CreateObject(serviceProvider, objectProviderType, true);
         }
 
         /// <summary>Creates an object.</summary>
@@ -31,32 +44,68 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string objectProviderType, bool useCache)
         {
             return CreateObject(objectProviderType, string.Empty, string.Empty, string.Empty, useCache);
         }
 
         /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="useCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType, bool useCache)
+        {
+            return CreateObject(serviceProvider, objectProviderType, string.Empty, string.Empty, string.Empty, useCache);
+        }
+
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and AssemblyName ( this allows derived providers to share the same config ).</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName)
         {
             return CreateObject(objectProviderType, string.Empty, objectNamespace, objectAssemblyName, true);
         }
 
         /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="objectNamespace">The namespace of the object to create.</param>
+        /// <param name="objectAssemblyName">The assembly of the object to create.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType, string objectNamespace, string objectAssemblyName)
+        {
+            return CreateObject(serviceProvider, objectProviderType, string.Empty, objectNamespace, objectAssemblyName, true);
+        }
+
+        /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="objectNamespace">The namespace of the object to create.</param>
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and AssemblyName ( this allows derived providers to share the same config ).</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName, bool useCache)
         {
             return CreateObject(objectProviderType, string.Empty, objectNamespace, objectAssemblyName, useCache);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="objectNamespace">The namespace of the object to create.</param>
+        /// <param name="objectAssemblyName">The assembly of the object to create.</param>
+        /// <param name="useCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType, string objectNamespace, string objectAssemblyName, bool useCache)
+        {
+            return CreateObject(serviceProvider, objectProviderType, string.Empty, objectNamespace, objectAssemblyName, useCache);
         }
 
         /// <summary>Creates an object.</summary>
@@ -66,9 +115,22 @@ namespace DotNetNuke.Framework
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName)
         {
             return CreateObject(objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, true);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="objectProviderName">The name of the Provider.</param>
+        /// <param name="objectNamespace">The namespace of the object to create.</param>
+        /// <param name="objectAssemblyName">The assembly of the object to create.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName)
+        {
+            return CreateObject(serviceProvider, objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, true);
         }
 
         /// <summary>Creates an object.</summary>
@@ -79,9 +141,23 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache)
         {
             return CreateObject(objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, useCache, true);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="objectProviderName">The name of the Provider.</param>
+        /// <param name="objectNamespace">The namespace of the object to create.</param>
+        /// <param name="objectAssemblyName">The assembly of the object to create.</param>
+        /// <param name="useCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache)
+        {
+            return CreateObject(serviceProvider, objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, useCache, true);
         }
 
         /// <summary>Creates an object.</summary>
@@ -93,9 +169,38 @@ namespace DotNetNuke.Framework
         /// <param name="fixAssemblyName">Whether append provider name as part of the assembly name.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
-        public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache, bool fixAssemblyName)
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
+        public static object CreateObject(
+            string objectProviderType,
+            string objectProviderName,
+            string objectNamespace,
+            string objectAssemblyName,
+            bool useCache,
+            bool fixAssemblyName)
         {
-            string typeName = string.Empty;
+            return CreateObject(
+                Globals.DependencyProvider,
+                objectProviderType,
+                objectProviderName,
+                objectNamespace,
+                objectAssemblyName,
+                useCache,
+                fixAssemblyName);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="objectProviderName">The name of the Provider.</param>
+        /// <param name="objectNamespace">The namespace of the object to create.</param>
+        /// <param name="objectAssemblyName">The assembly of the object to create.</param>
+        /// <param name="useCache">Caching switch.</param>
+        /// <param name="fixAssemblyName">Whether append provider name as part of the assembly name.</param>
+        /// <returns>The created Object.</returns>
+        /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
+        public static object CreateObject(IServiceProvider serviceProvider, string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache, bool fixAssemblyName)
+        {
+            string typeName;
 
             // get the provider configuration based on the type
             ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration(objectProviderType);
@@ -145,7 +250,7 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            return CreateObject(typeName, typeName, useCache);
+            return CreateObject(serviceProvider, typeName, typeName, useCache);
         }
 
         /// <summary>Creates an object.</summary>
@@ -153,9 +258,20 @@ namespace DotNetNuke.Framework
         /// <param name="cacheKey">The Cache Key.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string typeName, string cacheKey)
         {
             return CreateObject(typeName, cacheKey, true);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="typeName">The fully qualified TypeName.</param>
+        /// <param name="cacheKey">The Cache Key.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string typeName, string cacheKey)
+        {
+            return CreateObject(serviceProvider, typeName, cacheKey, true);
         }
 
         /// <summary>Creates an object.</summary>
@@ -164,44 +280,110 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string typeName, string cacheKey, bool useCache)
         {
-            return Activator.CreateInstance(CreateType(typeName, cacheKey, useCache));
+            return CreateObject(Globals.DependencyProvider, typeName, cacheKey, useCache);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="typeName">The fully qualified TypeName.</param>
+        /// <param name="cacheKey">The Cache Key.</param>
+        /// <param name="useCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, string typeName, string cacheKey, bool useCache)
+        {
+            var type = CreateType(typeName, cacheKey, useCache);
+            return CreateObject(serviceProvider, type);
         }
 
         /// <summary>Creates an object.</summary>
         /// <typeparam name="T">The type of object to create.</typeparam>
         /// <returns>The created object.</returns>
         /// <remarks>Generic version.</remarks>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static T CreateObject<T>()
         {
-            // dynamically create the object
-            return Activator.CreateInstance<T>();
+            return CreateObject<T>(Globals.DependencyProvider);
+        }
+
+        /// <summary>Creates an object.</summary>
+        /// <typeparam name="T">The type of object to create.</typeparam>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <returns>The created object.</returns>
+        public static T CreateObject<T>(IServiceProvider serviceProvider)
+        {
+            try
+            {
+                return ActivatorUtilities.GetServiceOrCreateInstance<T>(serviceProvider);
+            }
+            catch (InvalidOperationException exception)
+            {
+                Logger.Warn($"Unable to create type via service provider: {typeof(T)}", exception);
+                return Activator.CreateInstance<T>();
+            }
         }
 
         /// <summary>Creates an object.</summary>
         /// <param name="type">The type of object to create.</param>
         /// <returns>The created object.</returns>
+        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(Type type)
         {
-            return Activator.CreateInstance(type);
+            return CreateObject(Globals.DependencyProvider, type);
         }
 
+        /// <summary>Creates an object.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="type">The type of object to create.</param>
+        /// <returns>The created object.</returns>
+        public static object CreateObject(IServiceProvider serviceProvider, Type type)
+        {
+            try
+            {
+                return ActivatorUtilities.GetServiceOrCreateInstance(serviceProvider, type);
+            }
+            catch (InvalidOperationException exception)
+            {
+                Logger.Warn($"Unable to create type via service provider: {type}", exception);
+                return Activator.CreateInstance(type);
+            }
+        }
+
+        /// <summary>Creates a type. Caches type creation for performance. Errors creating the type are logged.</summary>
+        /// <param name="typeName">The name of the type to create.</param>
+        /// <returns>The <see cref="Type"/> instance or <see langword="null"/>.</returns>
         public static Type CreateType(string typeName)
         {
             return CreateType(typeName, string.Empty, true, false);
         }
 
+        /// <summary>Creates a type. Caches type creation for performance.</summary>
+        /// <param name="typeName">The name of the type to create.</param>
+        /// <param name="ignoreErrors">Whether to log exceptions.</param>
+        /// <returns>The <see cref="Type"/> instance or <see langword="null"/>.</returns>
         public static Type CreateType(string typeName, bool ignoreErrors)
         {
             return CreateType(typeName, string.Empty, true, ignoreErrors);
         }
 
+        /// <summary>Creates a type. Errors creating the type are logged.</summary>
+        /// <param name="typeName">The name of the type to create.</param>
+        /// <param name="cacheKey">A custom cache key; otherwise <paramref name="typeName"/> is used as the key.</param>
+        /// <param name="useCache">Whether to store the type in the cache or bypass the cache.</param>
+        /// <returns>The <see cref="Type"/> instance or <see langword="null"/>.</returns>
         public static Type CreateType(string typeName, string cacheKey, bool useCache)
         {
             return CreateType(typeName, cacheKey, useCache, false);
         }
 
+        /// <summary>Creates a type.</summary>
+        /// <param name="typeName">The name of the type to create.</param>
+        /// <param name="cacheKey">A custom cache key; otherwise <paramref name="typeName"/> is used as the key.</param>
+        /// <param name="useCache">Whether to store the type in the cache or bypass the cache.</param>
+        /// <param name="ignoreErrors">Whether to log exceptions.</param>
+        /// <returns>The <see cref="Type"/> instance or <see langword="null"/>.</returns>
         public static Type CreateType(string typeName, string cacheKey, bool useCache, bool ignoreErrors)
         {
             if (string.IsNullOrEmpty(cacheKey))
@@ -242,11 +424,18 @@ namespace DotNetNuke.Framework
             return type;
         }
 
+        /// <summary>Dynamically call the empty constructor for a <paramref name="type"/>.</summary>
+        /// <param name="type">The type of object to create.</param>
+        /// <returns>An instance of the object, or <see langword="null"/> if <paramref name="type"/> is <see langword="null"/>.</returns>
         public static object CreateInstance(Type type)
         {
             return CreateInstance(type, null);
         }
 
+        /// <summary>Dynamically call a constructor for a <paramref name="type"/>.</summary>
+        /// <param name="type">The type of object to create.</param>
+        /// <param name="args">The constructor arguments.</param>
+        /// <returns>An instance of the object, or <see langword="null"/> if <paramref name="type"/> is <see langword="null"/>.</returns>
         public static object CreateInstance(Type type, object[] args)
         {
             if (type != null)
@@ -259,6 +448,11 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <summary>Dynamically get the value of a property.</summary>
+        /// <param name="type">The type of <paramref name="target"/>.</param>
+        /// <param name="propertyName">The name of the property to get.</param>
+        /// <param name="target">The object from which to read the property.</param>
+        /// <returns>The property's value, or <see langword="null"/> if <paramref name="type"/> is <see langword="null"/>.</returns>
         public static object GetProperty(Type type, string propertyName, object target)
         {
             if (type != null)
@@ -271,6 +465,11 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <summary>Dynamically set the value of a property.</summary>
+        /// <param name="type">The type of <paramref name="target"/>.</param>
+        /// <param name="propertyName">The name of the property to set.</param>
+        /// <param name="target">The object on which to set the property.</param>
+        /// <param name="args">The input to the property.</param>
         public static void SetProperty(Type type, string propertyName, object target, object[] args)
         {
             if (type != null)
@@ -279,6 +478,11 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <summary>Dynamically invoke a method on an object.</summary>
+        /// <param name="type">The type of <paramref name="target"/>.</param>
+        /// <param name="propertyName">The name of the method to invoke.</param>
+        /// <param name="target">The object on which to invoke the method.</param>
+        /// <param name="args">The input to the method.</param>
         public static void InvokeMethod(Type type, string propertyName, object target, object[] args)
         {
             if (type != null)
