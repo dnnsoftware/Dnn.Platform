@@ -25,9 +25,17 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
         /// <summary>Initializes a new instance of the <see cref="EditScript"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public EditScript()
+            : this(null)
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditScript"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public EditScript(INavigationManager navigationManager)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <summary>Gets the razor script file.</summary>

@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                var portalAliasSettingsService = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
+                var portalAliasSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
                 return portalAliasSettingsService is IPortalAliasController castedController ? castedController : new PortalAliasController();
             }
         }

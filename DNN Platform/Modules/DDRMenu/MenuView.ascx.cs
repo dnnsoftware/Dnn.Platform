@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         public MenuView(ILocaliser localiser)
         {
-            this.localiser = localiser ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ILocaliser>() ?? Globals.DependencyProvider.GetRequiredService<ILocaliser>();
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
         }
 
         /// <inheritdoc/>

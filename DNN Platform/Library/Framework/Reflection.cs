@@ -179,7 +179,7 @@ namespace DotNetNuke.Framework
             bool fixAssemblyName)
         {
             return CreateObject(
-                Globals.DependencyProvider,
+                Globals.GetCurrentServiceProvider(),
                 objectProviderType,
                 objectProviderName,
                 objectNamespace,
@@ -283,7 +283,7 @@ namespace DotNetNuke.Framework
         [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(string typeName, string cacheKey, bool useCache)
         {
-            return CreateObject(Globals.DependencyProvider, typeName, cacheKey, useCache);
+            return CreateObject(Globals.GetCurrentServiceProvider(), typeName, cacheKey, useCache);
         }
 
         /// <summary>Creates an object.</summary>
@@ -305,7 +305,7 @@ namespace DotNetNuke.Framework
         [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static T CreateObject<T>()
         {
-            return CreateObject<T>(Globals.DependencyProvider);
+            return CreateObject<T>(Globals.GetCurrentServiceProvider());
         }
 
         /// <summary>Creates an object.</summary>
@@ -331,7 +331,7 @@ namespace DotNetNuke.Framework
         [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
         public static object CreateObject(Type type)
         {
-            return CreateObject(Globals.DependencyProvider, type);
+            return CreateObject(Globals.GetCurrentServiceProvider(), type);
         }
 
         /// <summary>Creates an object.</summary>

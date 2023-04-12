@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.InternalServices
 {
     using System;
@@ -9,7 +8,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using System.Collections.Generic;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -28,9 +26,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
     [TestFixture]
     public class TabVersionControllerTests
     {
-        private const int UserID = 1;
-        private const int TabID = 99;
-        private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
+        private const int UserId = 1;
+        private const int TabId = 99;
+        private static readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
 
         private Mock<ICBO> mockCBO;
         private Mock<IUserController> mockUserController;
@@ -41,8 +39,15 @@ namespace DotNetNuke.Tests.Web.InternalServices
         public void Setup()
         {
             MockComponentProvider.ResetContainer();
+
+            this.mockCBO = new Mock<ICBO>();
+            this.mockUserController = new Mock<IUserController>();
+            this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<IHostSettingsService>();
+
             this.SetupCBO();
             this.SetupHostController();
+
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
@@ -69,8 +74,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             // Act
             var tabVersionController = new TabVersionControllerTestable();
-            var tabVersions = tabVersionController.GetTabVersions(TabID);
-            var tabVersion = tabVersions.FirstOrDefault();
+            var tabVersions = tabVersionController.GetTabVersions(TabId);
+            var tabVersion = tabVersions.First();
             var user = UserController.Instance.GetCurrentUserInfo();
             var userTimeZone = user.Profile.PreferredTimeZone;
 
@@ -82,7 +87,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupCBO()
         {
-            this.mockCBO = new Mock<ICBO>();
             this.mockCBO.Setup(c => c.GetCachedObject<List<TabVersion>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
                 .Returns(this.GetMockedTabVersions);
             CBO.SetTestableInstance(this.mockCBO.Object);
@@ -90,8 +94,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupUserController(string timeZoneId)
         {
-            this.mockUserController = new Mock<IUserController>();
-            this.mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(this.GetMockedUser(timeZoneId));
+            this.mockUserController.Setup(userController => userController.GetCurrentUserInfo()).Returns(this.GetMockedUser(timeZoneId));
             UserController.SetTestableInstance(this.mockUserController.Object);
         }
 
@@ -104,7 +107,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             profile.ProfileProperties.Add(new Entities.Profile.ProfilePropertyDefinition(99)
             {
-                CreatedByUserID = UserID,
+                CreatedByUserID = UserId,
                 PropertyDefinitionId = 20,
                 PropertyCategory = "Preferences",
                 PropertyName = "PreferredTimeZone",
@@ -113,7 +116,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var user = new UserInfo()
             {
                 Profile = profile,
-                UserID = UserID,
+                UserID = UserId,
                 PortalID = 99,
             };
 
@@ -130,12 +133,12 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var tabVersion = new TabVersion
             {
                 IsPublished = true,
-                TabId = TabID,
+                TabId = TabId,
                 TabVersionId = 1,
                 Version = 1,
-                CreatedByUserID = UserID,
+                CreatedByUserID = UserId,
             };
-            tabVersion.GetType().BaseType.GetProperty("CreatedOnDate").SetValue(tabVersion, this.ServerCreateOnDate, null);
+            tabVersion.GetType().BaseType.GetProperty("CreatedOnDate").SetValue(tabVersion, ServerCreateOnDate, null);
 
             return tabVersion;
         }
@@ -150,9 +153,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupHostController()
         {
-            this.mockHostController = new Mock<IHostController>();
             this.mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
-            this.mockHostController.As<IHostSettingsService>();
         }
 
         private class TabVersionControllerTestable : TabVersionController

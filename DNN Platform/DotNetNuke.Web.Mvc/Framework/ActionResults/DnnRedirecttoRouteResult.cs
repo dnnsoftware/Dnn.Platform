@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent)
             : base(routeName, routeValues, permanent)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.ActionName = actionName;
             this.ControllerName = controllerName;
         }

@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Html
 
         /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
         public HtmlTextController()
-            : this(Globals.DependencyProvider.GetRequiredService<INavigationManager>())
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>())
         {
         }
 

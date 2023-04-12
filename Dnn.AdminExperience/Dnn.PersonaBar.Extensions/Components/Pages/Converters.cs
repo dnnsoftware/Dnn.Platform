@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
@@ -27,7 +26,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public static class Converters
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs)
             where T : PageItem, new()

@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.WebControls
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static EditControl CreateEditControl(EditorInfo editorInfo)
         {
-            return CreateEditControl(Globals.DependencyProvider, editorInfo);
+            return CreateEditControl(Globals.GetCurrentServiceProvider(), editorInfo);
         }
 
         /// <summary>CreateEditControl creates the appropriate Control based on the EditorField or TypeDataField. </summary>

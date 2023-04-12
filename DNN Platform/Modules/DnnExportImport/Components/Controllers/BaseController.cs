@@ -56,7 +56,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="portableServices">The portable services.</param>
         public BaseController(IEnumerable<BasePortableService> portableServices)
         {
-            this.PortableServices = portableServices ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetServices<BasePortableService>() ?? Globals.DependencyProvider.GetServices<BasePortableService>();
+            this.PortableServices = portableServices ?? Globals.GetCurrentServiceProvider().GetServices<BasePortableService>();
         }
 
         protected IEnumerable<BasePortableService> PortableServices { get; }

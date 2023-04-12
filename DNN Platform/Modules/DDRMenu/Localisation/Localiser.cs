@@ -37,8 +37,8 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         /// <param name="portalController">The portal controller.</param>
         public Localiser(IEnumerable<ILocalisation> localizations, IPortalController portalController)
         {
-            this.localizations = localizations ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetServices<ILocalisation>() ?? Globals.DependencyProvider.GetServices<ILocalisation>();
-            this.portalController = portalController ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<IPortalController>() ?? Globals.DependencyProvider.GetRequiredService<IPortalController>();
+            this.localizations = localizations ?? Globals.GetCurrentServiceProvider().GetServices<ILocalisation>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
 
         private ILocalisation LocalisationApi

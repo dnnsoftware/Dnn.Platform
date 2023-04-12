@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     public partial class SerializationController
     {
         private static ISerializationManager SerializationManager =>
-            Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+            Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.ISerializationManager' instead. Scheduled for removal in v11.0.0.")]
         public static string SerializeProperty<T>(T myObject, PropertyInfo property) =>

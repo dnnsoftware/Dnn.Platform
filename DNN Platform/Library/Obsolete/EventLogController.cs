@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]
         public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId) =>
-            Globals.DependencyProvider.GetRequiredService<IEventLogger>()
+            Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>()
                 .AddSettingLog((Abstractions.Logging.EventLogType)logTypeKey, idFieldName, idValue, settingName, settingValue, userId);
 
         /// <inheritdoc/>

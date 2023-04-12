@@ -33,7 +33,7 @@ namespace DotNetNuke.Prompt
         /// <param name="serviceScopeFactory">The service scope factory.</param>
         public CommandRepository(IServiceScopeFactory serviceScopeFactory)
         {
-            this.serviceScopeFactory = serviceScopeFactory ?? Globals.DependencyProvider.GetRequiredService<IServiceScopeFactory>();
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
         }
 
         /// <inheritdoc/>

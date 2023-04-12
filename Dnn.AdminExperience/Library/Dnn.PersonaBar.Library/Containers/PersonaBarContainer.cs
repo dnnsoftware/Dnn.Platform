@@ -48,8 +48,8 @@ namespace Dnn.PersonaBar.Library.Containers
         /// <param name="personaBarController">The Persona Bar controller.</param>
         public PersonaBarContainer(INavigationManager navigationManager, IPersonaBarController personaBarController)
         {
-            this.NavigationManager = navigationManager ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<INavigationManager>() ?? Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-            this.personaBarController = personaBarController ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<IPersonaBarController>() ?? Globals.DependencyProvider.GetRequiredService<IPersonaBarController>();
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.personaBarController = personaBarController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarController>();
         }
 
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please resolve via dependency injection. Scheduled removal in v12.0.0.")]

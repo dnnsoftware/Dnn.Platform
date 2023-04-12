@@ -164,7 +164,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
         /// <returns>List of recommended servers for specified <paramref name="schedulerId"/>.</returns>
         public IEnumerable<string> GetRecommendedServers(int schedulerId)
         {
-            var hostSettingsService = Globals.DependencyProvider.GetRequiredService<IHostSettingsService>();
+            var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
 
             var schedulerIds = hostSettingsService.GetString(SchedulersToRunOnSameWebServerKey, string.Empty)
                 .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
