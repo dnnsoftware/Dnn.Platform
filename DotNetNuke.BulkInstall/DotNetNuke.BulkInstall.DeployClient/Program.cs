@@ -14,7 +14,7 @@ try
 {
     var services = new ServiceCollection();
     services.AddTransient(_ => AnsiConsole.Console);
-    services.AddHttpClient<IInstaller, Installer>();
+    services.AddHttpClient<IInstaller, Installer>(client => client.Timeout = Timeout.InfiniteTimeSpan);
     services.AddTransient<IFileSystem, FileSystem>();
     services.AddTransient<IRenderer, Renderer>();
     services.AddTransient<IPackageFileSource, PackageFileSource>();

@@ -125,7 +125,8 @@ public class Installer : IInstaller
 
             try
             {
-                return (await this.httpClient.SendAsync(request), null);
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(Math.Max(100, options.InstallationStatusTimeout)));
+                return (await this.httpClient.SendAsync(request, cts.Token), null);
             }
             catch (HttpRequestException requestException)
             {
