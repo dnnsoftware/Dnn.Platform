@@ -6,8 +6,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
     using System;
     using System.Collections.Generic;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Modules;
@@ -15,12 +13,31 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Tests.Utilities.Fakes;
     using Microsoft.Extensions.DependencyInjection;
-    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class BusinessControllerProviderTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>(0));
+                    ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
+                    services.AddSingleton<CachingProvider>(fakeCachingProvider);
+                });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [TestCase(typeof(PortableControllerClass), true)]
         [TestCase(typeof(SearchableControllerClass), false)]
         [TestCase(typeof(AllFeaturesControllerClass), true)]
@@ -123,12 +140,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
 
         private static BusinessControllerProvider CreateProvider()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
-            ComponentFactory.RegisterComponentInstance<CachingProvider>(new FakeCachingProvider(new Dictionary<string, object>(0)));
             return new BusinessControllerProvider(Globals.DependencyProvider);
         }
 

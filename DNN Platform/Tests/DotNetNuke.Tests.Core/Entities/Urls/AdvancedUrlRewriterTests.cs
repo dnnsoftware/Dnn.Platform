@@ -7,9 +7,6 @@
     using System.Reflection;
     using System.Web;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -19,8 +16,8 @@
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -67,11 +64,6 @@
             var simulator = new HttpSimulator(ApplicationPath, physicalAppPath);
             simulator.SimulateRequest(new Uri(SampleHttpsUrl));
             HttpContext.Current.Items.Add(UrlRewriteItemName, FullUrl);
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IPortalAliasService>());
             MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateNew<DataProvider>();
             MockComponentProvider.CreateNew<LoggingProvider>();
@@ -126,7 +118,9 @@
             dataProvider
                 .Setup(s => s.GetPortalAliases())
                 .Returns(() => portalAliasTable.CreateDataReader());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
+            using var serviceProvider = FakeServiceProvider.Setup();
+
             var urlRewriter = new AdvancedUrlRewriter();
             var checkForRedirectsMethod = typeof(AdvancedUrlRewriter)
                 .GetMethod(
