@@ -22,6 +22,9 @@ namespace Dnn.ExportImport.Components.Common
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     /// <summary>A collection of utilities for import/export.</summary>
@@ -33,51 +36,35 @@ namespace Dnn.ExportImport.Components.Common
         /// <summary>Checks if a string is either null or empty ("").</summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string is null or empty.</returns>
-        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrEmpty from System.String instead, scheduled removal in v11.")]
+        [Obsolete("Deprecated in v9.8.0, use string.IsNullOrEmpty from System.String instead, scheduled removal in v11.")]
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
 
         /// <summary>Checks if a string is either null or contains only whitespace (" ").</summary>
         /// <param name="s">The string to check.</param>
-        /// <returns>A value indicating whether the string is null or contains only whtespace.</returns>
-        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrWhiteSpace from System.String instead, scheduled removal in v11.")]
+        /// <returns>A value indicating whether the string is null or contains only whitespace.</returns>
+        [Obsolete("Deprecated in v9.8.0, use string.IsNullOrWhiteSpace from System.String instead, scheduled removal in v11.")]
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
 
         /// <summary>Check if a given string is not null or empty (contains any value).</summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string contains any value.</returns>
-        [Obsolete("Depracated in v9.8.0 use !string.IsNullOrEmpty from System.String instead, cheduled removal in v11.")]
+        [Obsolete("Deprecated in v9.8.0 use !string.IsNullOrEmpty from System.String instead, scheduled removal in v11.")]
         public static bool HasValue(this string s) => !string.IsNullOrEmpty(s);
 
-        /// <summary>Gets the types that implement BasePortableService.</summary>
-        /// <returns>An enumeration of the types that implement BasePortableService.</returns>
+        /// <summary>Gets instances of the types that <see cref="BasePortableService"/>.</summary>
+        /// <returns>A sequence of the <see cref="BasePortableService"/> implementations.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static IEnumerable<BasePortableService> GetPortableImplementors()
         {
-            var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(
-                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                     typeof(BasePortableService).IsAssignableFrom(t));
+            return GetPortableImplementors(Globals.DependencyProvider);
+        }
 
-            foreach (var type in types)
-            {
-                BasePortableService portable2Type;
-                try
-                {
-                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
-                }
-                catch (Exception e)
-                {
-                    Logger.ErrorFormat(
-                        "Unable to create {0} while calling BasePortableService implementors. {1}",
-                        type.FullName,
-                        e.Message);
-                    portable2Type = null;
-                }
-
-                if (portable2Type != null)
-                {
-                    yield return portable2Type;
-                }
-            }
+        /// <summary>Gets instances of the types that <see cref="BasePortableService"/>.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <returns>A sequence of the <see cref="BasePortableService"/> implementations.</returns>
+        public static IEnumerable<BasePortableService> GetPortableImplementors(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetServices<BasePortableService>();
         }
 
         /// <summary>Formats a size to a human readable format.</summary>
