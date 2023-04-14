@@ -129,6 +129,7 @@
     <Compile Include="Actions.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Common\DNNContext.cs" />
     <Compile Include="Common\PathResolver.cs" />
     <Compile Include="Common\Utilities.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Localisation\Ealo.cs" />
     <Compile Include="Localisation\Generic.cs" />
     <Compile Include="Localisation\ILocalisation.cs" />
+    <Compile Include="Localisation\ILocaliser.cs" />
     <Compile Include="Localisation\Localiser.cs" />
     <Compile Include="MenuBase.cs" />
     <Compile Include="MenuNode.cs" />
@@ -226,6 +228,10 @@
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0FCA217A-5F9A-4F5B-A31B-86D64AE65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>

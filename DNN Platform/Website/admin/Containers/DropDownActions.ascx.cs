@@ -12,10 +12,26 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.UI.WebControls;
 
+    using Globals = DotNetNuke.Common.Globals;
+
     public partial class DropDownActions : ActionBase
     {
+        private readonly IServiceProvider serviceProvider;
         private NavigationProvider objControl;
         private string strProviderName = "DNNDropDownNavigationProvider";
+
+        /// <summary>Initializes a new instance of the <see cref="DropDownActions"/> class.</summary>
+        public DropDownActions()
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DropDownActions"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public DropDownActions(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         public NavigationProvider Control
         {
@@ -72,7 +88,7 @@ namespace DotNetNuke.UI.Containers
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.objControl = NavigationProvider.Instance(this.ProviderName);
+            this.objControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
             this.Control.ControlID = "ctl" + this.ID;
             this.Control.Initialize();
             this.spActions.Controls.Add(this.Control.NavigationControl);

@@ -13,9 +13,6 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionsMenu
     /// <summary>ActionsMenu provides a menu for a collection of actions.</summary>
     /// <remarks>
     /// ActionsMenu inherits from CompositeControl, and implements the IActionControl
@@ -23,11 +20,26 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class ActionsMenu : Control, IActionControl
     {
+        private readonly IServiceProvider serviceProvider;
         private ActionManager actionManager;
         private ModuleAction actionRoot;
         private int expandDepth = -1;
         private NavigationProvider providerControl;
         private string providerName = "DNNMenuNavigationProvider";
+
+        /// <summary>Initializes a new instance of the <see cref="ActionsMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public ActionsMenu()
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ActionsMenu"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public ActionsMenu(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
@@ -137,7 +149,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>OnInit runs during the controls initialisation phase.</summary>
         protected override void OnInit(EventArgs e)
         {
-            this.providerControl = NavigationProvider.Instance(this.ProviderName);
+            this.providerControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
             this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
             base.OnInit(e);
             this.ProviderControl.ControlID = "ctl" + this.ID;

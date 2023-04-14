@@ -9,18 +9,27 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Web.DDRMenu.DNNCommon;
+    using DotNetNuke.Web.DDRMenu.Localisation;
 
     /// <summary>DDR Menu WebControl.</summary>
     internal class DDRMenuControl : WebControl, IPostBackEventHandler
     {
+        private readonly ILocaliser localiser;
         private MenuBase menu;
 
         /// <summary>Handles a click on the menu.</summary>
-        /// <param name="id">The id of the menu item beeing clicked.</param>
+        /// <param name="id">The id of the menu item being clicked.</param>
         public delegate void MenuClickEventHandler(string id);
 
         /// <summary>Handles a click on a node of the menu.</summary>
         public event MenuClickEventHandler NodeClick;
+
+        /// <summary>Initializes a new instance of the <see cref="DDRMenuControl"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        public DDRMenuControl(ILocaliser localiser)
+        {
+            this.localiser = localiser;
+        }
 
         /// <inheritdoc/>
         public override bool EnableViewState
@@ -58,7 +67,7 @@ namespace DotNetNuke.Web.DDRMenu
                 base.OnPreRender(e);
 
                 this.MenuSettings.MenuStyle = this.MenuSettings.MenuStyle ?? "DNNMenu";
-                this.menu = MenuBase.Instantiate(this.MenuSettings.MenuStyle);
+                this.menu = MenuBase.Instantiate(this.localiser, this.MenuSettings.MenuStyle);
                 this.menu.RootNode = this.RootNode ?? new MenuNode();
                 this.menu.SkipLocalisation = this.SkipLocalisation;
                 this.menu.ApplySettings(this.MenuSettings);

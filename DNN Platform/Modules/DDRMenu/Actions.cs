@@ -22,8 +22,23 @@ namespace DotNetNuke.Web.DDRMenu
     /// <summary>Represents DDR Menu Actions.</summary>
     public class Actions : ActionBase
     {
+        private readonly IServiceProvider serviceProvider;
         private DDRMenuNavigationProvider navProvider;
         private Dictionary<int, ModuleAction> actions;
+
+        /// <summary>Initializes a new instance of the <see cref="Actions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public Actions()
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Actions"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public Actions(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         /// <summary>Gets or sets the path system script.</summary>
         public string PathSystemScript { get; set; }
@@ -48,7 +63,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 base.OnInit(e);
 
-                this.navProvider = (DDRMenuNavigationProvider)NavigationProvider.Instance("DDRMenuNavigationProvider");
+                this.navProvider = (DDRMenuNavigationProvider)NavigationProvider.Instance(this.serviceProvider, "DDRMenuNavigationProvider");
                 this.navProvider.ControlID = "ctl" + this.ID;
                 this.navProvider.MenuStyle = this.MenuStyle;
                 this.navProvider.Initialize();
