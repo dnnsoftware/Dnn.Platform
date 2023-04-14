@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Library.Attributes
 {
     using System;
@@ -10,11 +9,14 @@ namespace Dnn.PersonaBar.Library.Attributes
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Repository;
+
     using DotNetNuke.Collections;
+    using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Api;
 
+    /// <summary>An attribute which allows specifying Persona Bar permissions on a Web API controller class or action method.</summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class MenuPermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
@@ -33,6 +35,9 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// If need set multiple roles, put semicolon(;) between role names.
         /// </summary>
         public string Exclude { get; set; }
+
+        [Dependency]
+        private IPersonaBarController PersonaBarController { get; set; }
 
         /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
@@ -88,7 +93,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                         var menuItem = this.GetMenuByIdentifier(menuName);
                         if (menuItem != null && portalSettings != null)
                         {
-                            hasPermission = PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                            hasPermission = this.PersonaBarController.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
                         }
                     }
                 });
@@ -105,7 +110,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                     if (portalSettings != null)
                     {
                         // if user have ability on any persona bar menus, then need allow to request api.
-                        return PersonaBarController.Instance.GetMenu(portalSettings, portalSettings.UserInfo).AllItems.Count > 0;
+                        return this.PersonaBarController.GetMenu(portalSettings, portalSettings.UserInfo).AllItems.Count > 0;
                     }
 
                     return isAdmin || isRegular;

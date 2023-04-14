@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Api
 
         /// <summary>Tests if the request passes the authorization requirements.</summary>
         /// <param name="context">The auth filter context.</param>
-        /// <returns>True when authorization is succesful.</returns>
+        /// <returns>True when authorization is successful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
         /// <summary>Called by framework at start of Auth process, check if auth should be skipped and handles auth failure.  Should rarely need to be overridden.</summary>
