@@ -1,14 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     using System;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
@@ -16,6 +13,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Services.Social.Subscriptions.Data;
     using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
     using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +31,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<IDataService> mockDataService;
         private Mock<CachingProvider> mockCacheProvider;
         private Mock<IHostController> mockHostController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void SetUp()
@@ -45,14 +44,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             DataService.SetTestableInstance(this.mockDataService.Object);
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             // Setup SUT
             this.subscriptionTypeController = new SubscriptionTypeController();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockDataService.Object);
+                    services.AddSingleton(this.mockCacheProvider.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                });
         }
 
         [Test]
@@ -191,7 +193,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             DataService.ClearInstance();
             MockComponentProvider.ResetContainer();
         }

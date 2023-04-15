@@ -526,7 +526,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private bool HasPermissionToViewDoc(Document document, SearchQuery searchQuery)
         {
-            // others LuceneResult fields are not impotrant at this moment
+            // others LuceneResult fields are not important at this moment
             var result = GetPartialSearchResult(document, searchQuery);
             var resultController = this.GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);

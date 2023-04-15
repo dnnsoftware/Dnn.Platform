@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,7 +62,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -115,6 +115,7 @@
     <Compile Include="EnumerableAssert.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="Fakes\FakeCachingProvider.cs" />
+    <Compile Include="Fakes\FakeServiceProvider.cs" />
     <Compile Include="FileAssert.cs" />
     <Compile Include="HttpContextHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />
