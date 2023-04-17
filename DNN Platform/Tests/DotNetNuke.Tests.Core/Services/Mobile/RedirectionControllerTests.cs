@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Services.Mobile
 {
     using System;
@@ -13,7 +12,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -26,6 +24,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Tests.Core.Services.ClientCapability;
     using DotNetNuke.Tests.Instance.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -79,29 +78,31 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         private const string DisableRedirectPresistCookieName = "disableredirectpresist";
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
-        private Mock<DataProvider> _dataProvider;
-        private RedirectionController _redirectionController;
-        private Mock<ClientCapabilityProvider> _clientCapabilityProvider;
-        private Mock<IHostController> _mockHostController;
+        private Mock<DataProvider> dataProvider;
+        private RedirectionController redirectionController;
+        private Mock<ClientCapabilityProvider> clientCapabilityProvider;
+        private Mock<IHostController> mockHostController;
+        private FakeServiceProvider serviceProvider;
 
-        private DataTable _dtRedirections;
-        private DataTable _dtRules;
+        private DataTable dtRedirections;
+        private DataTable dtRules;
 
         [SetUp]
 
         public void SetUp()
         {
-            this.SetupContianer();
             ComponentFactory.Container = new SimpleContainer();
             UnitTestHelper.ClearHttpContext();
-            this._dataProvider = MockComponentProvider.CreateDataProvider();
+            this.dataProvider = MockComponentProvider.CreateDataProvider();
             MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
-            this._clientCapabilityProvider = MockComponentProvider.CreateNew<ClientCapabilityProvider>();
-            this._mockHostController = new Mock<IHostController>();
-            HostController.RegisterInstance(this._mockHostController.Object);
+            this.clientCapabilityProvider = MockComponentProvider.CreateNew<ClientCapabilityProvider>();
+            this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<IHostSettingsService>();
+            HostController.RegisterInstance(this.mockHostController.Object);
+            this.SetupContainer();
 
-            this._redirectionController = new RedirectionController();
+            this.redirectionController = new RedirectionController();
 
             this.SetupDataProvider();
             this.SetupClientCapabilityProvider();
@@ -111,29 +112,29 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var dataProviderField = tabController.GetType().GetField("dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
             if (dataProviderField != null)
             {
-                dataProviderField.SetValue(tabController, this._dataProvider.Object);
+                dataProviderField.SetValue(tabController, this.dataProvider.Object);
             }
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             TestableGlobals.ClearInstance();
             PortalController.ClearInstance();
             CachingProvider.Instance().PurgeCache();
             MockComponentProvider.ResetContainer();
             UnitTestHelper.ClearHttpContext();
-            if (this._dtRedirections != null)
+            if (this.dtRedirections != null)
             {
-                this._dtRedirections.Dispose();
-                this._dtRedirections = null;
+                this.dtRedirections.Dispose();
+                this.dtRedirections = null;
             }
 
-            if (this._dtRules != null)
+            if (this.dtRules != null)
             {
-                this._dtRules.Dispose();
-                this._dtRules = null;
+                this.dtRules.Dispose();
+                this.dtRules = null;
             }
 
             ComponentFactory.Container = null;
@@ -144,9 +145,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_Save_Valid_Redirection()
         {
             var redirection = new Redirection { Name = "Test R", PortalId = Portal0, SortOrder = 1, SourceTabId = -1, Type = RedirectionType.MobilePhone, TargetType = TargetType.Portal, TargetValue = Portal1 };
-            this._redirectionController.Save(redirection);
+            this.redirectionController.Save(redirection);
 
-            var dataReader = this._dataProvider.Object.GetRedirections(Portal0);
+            var dataReader = this.dataProvider.Object.GetRedirections(Portal0);
             var affectedCount = 0;
             while (dataReader.Read())
             {
@@ -163,9 +164,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var redirection = new Redirection { Name = "Test R", PortalId = Portal0, SortOrder = 1, SourceTabId = -1, IncludeChildTabs = true, Type = RedirectionType.Other, TargetType = TargetType.Portal, TargetValue = Portal1 };
             redirection.MatchRules.Add(new MatchRule { Capability = "Platform", Expression = "IOS" });
             redirection.MatchRules.Add(new MatchRule { Capability = "Version", Expression = "5" });
-            this._redirectionController.Save(redirection);
+            this.redirectionController.Save(redirection);
 
-            var dataReader = this._dataProvider.Object.GetRedirections(Portal0);
+            var dataReader = this.dataProvider.Object.GetRedirections(Portal0);
             var affectedCount = 0;
             while (dataReader.Read())
             {
@@ -174,7 +175,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             Assert.AreEqual(1, affectedCount);
 
-            var getRe = this._redirectionController.GetRedirectionsByPortal(Portal0)[0];
+            var getRe = this.redirectionController.GetRedirectionsByPortal(Portal0)[0];
             Assert.AreEqual(2, getRe.MatchRules.Count);
         }
 
@@ -184,7 +185,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this.PrepareData();
 
-            IList<IRedirection> list = this._redirectionController.GetRedirectionsByPortal(Portal0);
+            IList<IRedirection> list = this.redirectionController.GetRedirectionsByPortal(Portal0);
 
             Assert.AreEqual(7, list.Count);
         }
@@ -194,9 +195,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_Delete_With_ValidID()
         {
             this.PrepareData();
-            this._redirectionController.Delete(Portal0, 1);
+            this.redirectionController.Delete(Portal0, 1);
 
-            IList<IRedirection> list = this._redirectionController.GetRedirectionsByPortal(Portal0);
+            IList<IRedirection> list = this.redirectionController.GetRedirectionsByPortal(Portal0);
 
             Assert.AreEqual(6, list.Count);
         }
@@ -205,50 +206,50 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         public void RedirectionController_PurgeInvalidRedirections_DoNotPurgeRuleForNonDeletetedSource()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, HomePageOnPortal0, IncludeChildTabsFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
-            this._redirectionController.PurgeInvalidRedirections(0);
-            Assert.AreEqual(1, this._redirectionController.GetRedirectionsByPortal(0).Count);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, HomePageOnPortal0, IncludeChildTabsFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
+            this.redirectionController.PurgeInvalidRedirections(0);
+            Assert.AreEqual(1, this.redirectionController.GetRedirectionsByPortal(0).Count);
         }
 
         [Test]
 
         public void RedirectionController_PurgeInvalidRedirections_DoPurgeRuleForDeletetedSource()
         {
-            this._dtRedirections.Rows.Add(new object[] { 1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, DeletedPageOnSamePortal2, IncludeChildTabsFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag });
-            this._redirectionController.PurgeInvalidRedirections(0);
-            Assert.AreEqual(0, this._redirectionController.GetRedirectionsByPortal(0).Count);
+            this.dtRedirections.Rows.Add(new object[] { 1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, DeletedPageOnSamePortal2, IncludeChildTabsFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag });
+            this.redirectionController.PurgeInvalidRedirections(0);
+            Assert.AreEqual(0, this.redirectionController.GetRedirectionsByPortal(0).Count);
         }
 
         [Test]
 
         public void RedirectionController_PurgeInvalidRedirections_DoPurgeRuleForDeletetedTargetPortal()
         {
-            this._dtRedirections.Rows.Add(new object[] { 1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, HomePageOnPortal0, IncludeChildTabsFlag, (int)TargetType.Portal, Portal2, EnabledFlag });
-            this._redirectionController.PurgeInvalidRedirections(0);
-            Assert.AreEqual(0, this._redirectionController.GetRedirectionsByPortal(0).Count);
+            this.dtRedirections.Rows.Add(new object[] { 1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, HomePageOnPortal0, IncludeChildTabsFlag, (int)TargetType.Portal, Portal2, EnabledFlag });
+            this.redirectionController.PurgeInvalidRedirections(0);
+            Assert.AreEqual(0, this.redirectionController.GetRedirectionsByPortal(0).Count);
         }
 
         [Test]
 
         public void RedirectionController_PurgeInvalidRedirections_DoPurgeRuleForDeletetedTargetTab()
         {
-            this._dtRedirections.Rows.Add(new object[] { 1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, HomePageOnPortal0, IncludeChildTabsFlag, (int)TargetType.Tab, DeletedPageOnSamePortal2, EnabledFlag });
-            this._redirectionController.PurgeInvalidRedirections(0);
-            Assert.AreEqual(0, this._redirectionController.GetRedirectionsByPortal(0).Count);
+            this.dtRedirections.Rows.Add(new object[] { 1, Portal0, "R1", (int)RedirectionType.MobilePhone, SortOrder1, HomePageOnPortal0, IncludeChildTabsFlag, (int)TargetType.Tab, DeletedPageOnSamePortal2, EnabledFlag });
+            this.redirectionController.PurgeInvalidRedirections(0);
+            Assert.AreEqual(0, this.redirectionController.GetRedirectionsByPortal(0).Count);
         }
 
         [Test]
 
         public void RedirectionController_GetRedirectionUrl_Throws_On_Null_UserAgent()
         {
-            Assert.Throws<ArgumentException>(() => this._redirectionController.GetRedirectUrl(null, Portal0, 0));
+            Assert.Throws<ArgumentException>(() => this.redirectionController.GetRedirectUrl(null, Portal0, 0));
         }
 
         [Test]
 
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_Redirection_IsNotSet()
         {
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, HomePageOnPortal0));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, HomePageOnPortal0));
         }
 
         [Test]
@@ -256,7 +257,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_Redirection_IsNotEnabled()
         {
             this.PrepareSingleDisabledRedirectionRule();
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, HomePageOnPortal0));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, HomePageOnPortal0));
         }
 
         [Test]
@@ -264,7 +265,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_UserAgent_Is_Desktop()
         {
             this.PrepareData();
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(msIE9UserAgent, Portal0, HomePageOnPortal0));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(msIE9UserAgent, Portal0, HomePageOnPortal0));
         }
 
         [Test]
@@ -272,7 +273,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_CurrentPage_IsSameAs_TargetPage_OnMobile()
         {
             this.PreparePortalToAnotherPageOnSamePortal();
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
         }
 
         [Test]
@@ -280,8 +281,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_TargetPage_IsDeleted()
         {
             // prepare rule to a deleted tab on the same portal
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, AnotherPageOnSamePortal, EnabledFlag, (int)TargetType.Tab, DeletedPageOnSamePortal, 1);
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, AnotherPageOnSamePortal, EnabledFlag, (int)TargetType.Tab, DeletedPageOnSamePortal, 1);
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
         }
 
         [Test]
@@ -289,7 +290,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_CurrentPortal_IsSameAs_TargetPortal_OnMobile()
         {
             this.PrepareSamePortalToSamePortalRedirectionRule();
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
         }
 
         [Test]
@@ -297,23 +298,23 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_TargetPageOnSamePortal_When_Surfing_HomePage_OnMobile()
         {
             this.PreparePortalToAnotherPageOnSamePortal();
-            Assert.AreEqual(this.NavigateUrl(AnotherPageOnSamePortal), this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+            Assert.AreEqual(this.NavigateUrl(AnotherPageOnSamePortal), this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         }
 
         // [Test]
         // public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
         // {
         //    PrepareHomePageToHomePageRedirectionRule();
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
+        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
         // }
         [Test]
 
         public void RedirectionController_GetRedirectionUrl_Returns_ExternalSite_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
         {
             this.PrepareExternalSiteRedirectionRule();
-            Assert.AreEqual(ExternalSite, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-            Assert.AreEqual(ExternalSite, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
+            Assert.AreEqual(ExternalSite, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+            Assert.AreEqual(ExternalSite, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
         }
 
         [Test]
@@ -321,8 +322,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_MobileLanding_ForMobile_And_TabletLanding_ForTablet()
         {
             this.PrepareMobileAndTabletRedirectionRuleWithMobileFirst();
-            Assert.AreEqual(this.NavigateUrl(MobileLandingPage), this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-            Assert.AreEqual(this.NavigateUrl(TabletLandingPage), this._redirectionController.GetRedirectUrl(iPadTabletUserAgent, Portal0, 1));
+            Assert.AreEqual(this.NavigateUrl(MobileLandingPage), this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+            Assert.AreEqual(this.NavigateUrl(TabletLandingPage), this.redirectionController.GetRedirectUrl(iPadTabletUserAgent, Portal0, 1));
         }
 
         [Test]
@@ -330,8 +331,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_TabletLanding_ForTablet_And_MobileLanding_ForMobile()
         {
             this.PrepareMobileAndTabletRedirectionRuleWithAndTabletRedirectionRuleTabletFirst();
-            Assert.AreEqual(this.NavigateUrl(MobileLandingPage), this._redirectionController.GetRedirectUrl(iphoneUserAgent, 0, 1));
-            Assert.AreEqual(this.NavigateUrl(TabletLandingPage), this._redirectionController.GetRedirectUrl(iPadTabletUserAgent, 0, 1));
+            Assert.AreEqual(this.NavigateUrl(MobileLandingPage), this.redirectionController.GetRedirectUrl(iphoneUserAgent, 0, 1));
+            Assert.AreEqual(this.NavigateUrl(TabletLandingPage), this.redirectionController.GetRedirectUrl(iPadTabletUserAgent, 0, 1));
         }
 
         [Test]
@@ -339,8 +340,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_SameLandingPage_For_AllMobile()
         {
             this.PrepareAllMobileRedirectionRule();
-            string mobileLandingPage = this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1);
-            string tabletLandingPage = this._redirectionController.GetRedirectUrl(iPadTabletUserAgent, Portal0, 1);
+            string mobileLandingPage = this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1);
+            string tabletLandingPage = this.redirectionController.GetRedirectUrl(iPadTabletUserAgent, Portal0, 1);
             Assert.AreEqual(this.NavigateUrl(AllMobileLandingPage), mobileLandingPage);
             Assert.AreEqual(this.NavigateUrl(AllMobileLandingPage), tabletLandingPage);
             Assert.AreEqual(mobileLandingPage, tabletLandingPage);
@@ -351,7 +352,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_Capability_DoesNot_Match()
         {
             this.PrepareOperaBrowserOnSymbianOSRedirectionRule();
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         }
 
         [Test]
@@ -359,7 +360,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_ValidUrl_When_Capability_Matches()
         {
             this.PrepareOperaBrowserOnSymbianOSRedirectionRule();
-            Assert.AreEqual(this.NavigateUrl(AnotherPageOnSamePortal), this._redirectionController.GetRedirectUrl(motorolaRIZRSymbianOSOpera865, Portal0, 1));
+            Assert.AreEqual(this.NavigateUrl(AnotherPageOnSamePortal), this.redirectionController.GetRedirectUrl(motorolaRIZRSymbianOSOpera865, Portal0, 1));
         }
 
         [Test]
@@ -367,14 +368,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_NotAll_Capability_Matches()
         {
             this.PrepareOperaBrowserOnIPhoneOSRedirectionRule();
-            Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+            Assert.AreEqual(string.Empty, this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         }
 
         [Test]
 
         public void RedirectionController_GetFullSiteUrl_With_NoRedirections()
         {
-            var url = this._redirectionController.GetFullSiteUrl(Portal0, HomePageOnPortal0);
+            var url = this.redirectionController.GetFullSiteUrl(Portal0, HomePageOnPortal0);
 
             Assert.AreEqual(string.Empty, url);
         }
@@ -382,9 +383,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         // [Test]
         // public void RedirectionController_GetFullSiteUrl_When_Redirect_Between_Different_Portals()
         // {
-        //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, "1", 1);
+        //    dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, "1", 1);
 
-        // var url = _redirectionController.GetFullSiteUrl(Portal1, HomePageOnPortal1);
+        // var url = redirectionController.GetFullSiteUrl(Portal1, HomePageOnPortal1);
 
         // Assert.AreEqual(Globals.AddHTTP(PortalAlias0), url);
         // }
@@ -392,9 +393,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         // [Test]
         // public void RedirectionController_GetFullSiteUrl_When_Redirect_In_Same_Portal()
         // {
-        //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, 1);
+        //    dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, 1);
 
-        // var url = _redirectionController.GetFullSiteUrl(Portal1, AnotherPageOnSamePortal);
+        // var url = redirectionController.GetFullSiteUrl(Portal1, AnotherPageOnSamePortal);
 
         // //Assert.AreEqual(string.Empty, url);
         // }
@@ -402,9 +403,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         public void RedirectionController_GetFullSiteUrl_When_Redirect_To_DifferentUrl()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Url, ExternalSite, 1);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Url, ExternalSite, 1);
 
-            var url = this._redirectionController.GetFullSiteUrl(Portal1, AnotherPageOnSamePortal);
+            var url = this.redirectionController.GetFullSiteUrl(Portal1, AnotherPageOnSamePortal);
 
             Assert.AreEqual(string.Empty, url);
         }
@@ -413,7 +414,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         public void RedirectionController_GetMobileSiteUrl_With_NoRedirections()
         {
-            var url = this._redirectionController.GetMobileSiteUrl(Portal0, HomePageOnPortal0);
+            var url = this.redirectionController.GetMobileSiteUrl(Portal0, HomePageOnPortal0);
 
             Assert.AreEqual(string.Empty, url);
         }
@@ -426,14 +427,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             string redirectUrlPage2 = "m.cnn.com";
 
             // first page goes to one url
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, Page1, EnabledFlag, (int)TargetType.Url, redirectUrlPage1, 1);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, Page1, EnabledFlag, (int)TargetType.Url, redirectUrlPage1, 1);
 
             // second page goes to another url (this is Tablet - it should not matter)
-            this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, Page2, EnabledFlag, (int)TargetType.Url, redirectUrlPage2, 1);
+            this.dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, Page2, EnabledFlag, (int)TargetType.Url, redirectUrlPage2, 1);
 
-            var mobileUrlForPage1 = this._redirectionController.GetMobileSiteUrl(Portal0, Page1);
-            var mobileUrlForPage2 = this._redirectionController.GetMobileSiteUrl(Portal0, Page2);
-            var mobileUrlForPage3 = this._redirectionController.GetMobileSiteUrl(Portal0, Page3);
+            var mobileUrlForPage1 = this.redirectionController.GetMobileSiteUrl(Portal0, Page1);
+            var mobileUrlForPage2 = this.redirectionController.GetMobileSiteUrl(Portal0, Page2);
+            var mobileUrlForPage3 = this.redirectionController.GetMobileSiteUrl(Portal0, Page3);
 
             // First Page returns link to first url
             Assert.AreEqual(string.Format("{0}?nomo=0", redirectUrlPage1), mobileUrlForPage1);
@@ -449,9 +450,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         // public void RedirectionController_GetMobileSiteUrl_Works_When_Page_Redirects_To_Another_Portal()
         // {
         //    //first page goes to one second portal
-        //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, Portal1, 1);
+        //    dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, Portal1, 1);
 
-        // var mobileUrlForPage1 = _redirectionController.GetMobileSiteUrl(Portal0, Page1);
+        // var mobileUrlForPage1 = redirectionController.GetMobileSiteUrl(Portal0, Page1);
 
         // //First Page returns link to home page of other portal
         //    Assert.AreEqual(Globals.AddHTTP(PortalAlias1), mobileUrlForPage1);
@@ -460,9 +461,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         public void RedirectionController_GetMobileSiteUrl_When_Redirect_To_DifferentUrl()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Url, ExternalSite, 1);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Url, ExternalSite, 1);
 
-            var url = this._redirectionController.GetMobileSiteUrl(Portal1, AnotherPageOnSamePortal);
+            var url = this.redirectionController.GetMobileSiteUrl(Portal1, AnotherPageOnSamePortal);
 
             Assert.AreEqual(string.Empty, url);
         }
@@ -472,7 +473,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             var app = this.GenerateApplication();
 
-            Assert.IsTrue(this._redirectionController.IsRedirectAllowedForTheSession(app));
+            Assert.IsTrue(this.redirectionController.IsRedirectAllowedForTheSession(app));
         }
 
         [Test]
@@ -481,7 +482,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var app = this.GenerateApplication();
             app.Context.Request.QueryString.Add(DisableMobileRedirectQueryStringName, "1");
 
-            Assert.IsFalse(this._redirectionController.IsRedirectAllowedForTheSession(app));
+            Assert.IsFalse(this.redirectionController.IsRedirectAllowedForTheSession(app));
             Assert.IsNotNull(app.Request.Cookies[DisableMobileRedirectCookieName]);
             Assert.IsNotNull(app.Request.Cookies[DisableRedirectPresistCookieName]);
         }
@@ -492,7 +493,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var app = this.GenerateApplication();
             app.Context.Request.QueryString.Add(DisableMobileRedirectQueryStringName, "0");
 
-            Assert.IsTrue(this._redirectionController.IsRedirectAllowedForTheSession(app));
+            Assert.IsTrue(this.redirectionController.IsRedirectAllowedForTheSession(app));
         }
 
         [Test]
@@ -500,56 +501,54 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             var app = this.GenerateApplication();
             app.Context.Request.QueryString.Add(DisableMobileRedirectQueryStringName, "1");
-            Assert.IsFalse(this._redirectionController.IsRedirectAllowedForTheSession(app));
+            Assert.IsFalse(this.redirectionController.IsRedirectAllowedForTheSession(app));
 
             app.Context.Request.QueryString.Add(DisableMobileRedirectQueryStringName, "0");
-            Assert.IsTrue(this._redirectionController.IsRedirectAllowedForTheSession(app));
+            Assert.IsTrue(this.redirectionController.IsRedirectAllowedForTheSession(app));
         }
 
-        private void SetupContianer()
+        private void SetupContainer()
         {
-            var serviceCollection = new ServiceCollection();
-
             var mockNavigationManager = new Mock<INavigationManager>();
             mockNavigationManager.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => this.NavigateUrl(x));
-
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-
-            serviceCollection.AddTransient<INavigationManager>(container => mockNavigationManager.Object);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(mockNavigationManager.Object);
+                    services.AddSingleton(this.dataProvider.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.clientCapabilityProvider.Object);
+                });
         }
 
         private void SetupDataProvider()
         {
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+            this.dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
-            this._dtRedirections = new DataTable("Redirections");
-            var pkCol = this._dtRedirections.Columns.Add("Id", typeof(int));
-            this._dtRedirections.Columns.Add("PortalId", typeof(int));
-            this._dtRedirections.Columns.Add("Name", typeof(string));
-            this._dtRedirections.Columns.Add("Type", typeof(int));
-            this._dtRedirections.Columns.Add("SortOrder", typeof(int));
-            this._dtRedirections.Columns.Add("SourceTabId", typeof(int));
-            this._dtRedirections.Columns.Add("IncludeChildTabs", typeof(bool));
-            this._dtRedirections.Columns.Add("TargetType", typeof(int));
-            this._dtRedirections.Columns.Add("TargetValue", typeof(object));
-            this._dtRedirections.Columns.Add("Enabled", typeof(bool));
+            this.dtRedirections = new DataTable("Redirections");
+            var pkCol = this.dtRedirections.Columns.Add("Id", typeof(int));
+            this.dtRedirections.Columns.Add("PortalId", typeof(int));
+            this.dtRedirections.Columns.Add("Name", typeof(string));
+            this.dtRedirections.Columns.Add("Type", typeof(int));
+            this.dtRedirections.Columns.Add("SortOrder", typeof(int));
+            this.dtRedirections.Columns.Add("SourceTabId", typeof(int));
+            this.dtRedirections.Columns.Add("IncludeChildTabs", typeof(bool));
+            this.dtRedirections.Columns.Add("TargetType", typeof(int));
+            this.dtRedirections.Columns.Add("TargetValue", typeof(object));
+            this.dtRedirections.Columns.Add("Enabled", typeof(bool));
 
-            this._dtRedirections.PrimaryKey = new[] { pkCol };
+            this.dtRedirections.PrimaryKey = new[] { pkCol };
 
-            this._dtRules = new DataTable("Rules");
-            var pkCol1 = this._dtRules.Columns.Add("Id", typeof(int));
-            this._dtRules.Columns.Add("RedirectionId", typeof(int));
-            this._dtRules.Columns.Add("Capability", typeof(string));
-            this._dtRules.Columns.Add("Expression", typeof(string));
+            this.dtRules = new DataTable("Rules");
+            var pkCol1 = this.dtRules.Columns.Add("Id", typeof(int));
+            this.dtRules.Columns.Add("RedirectionId", typeof(int));
+            this.dtRules.Columns.Add("Capability", typeof(string));
+            this.dtRules.Columns.Add("Expression", typeof(string));
 
-            this._dtRules.PrimaryKey = new[] { pkCol1 };
+            this.dtRules.PrimaryKey = new[] { pkCol1 };
 
-            this._dataProvider.Setup(d =>
+            this.dataProvider.Setup(d =>
                                 d.SaveRedirection(
                                     It.IsAny<int>(),
                                     It.IsAny<int>(),
@@ -566,16 +565,16 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                             {
                                                                 if (id == -1)
                                                                 {
-                                                                    if (this._dtRedirections.Rows.Count == 0)
+                                                                    if (this.dtRedirections.Rows.Count == 0)
                                                                     {
                                                                         id = 1;
                                                                     }
                                                                     else
                                                                     {
-                                                                        id = Convert.ToInt32(this._dtRedirections.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
+                                                                        id = Convert.ToInt32(this.dtRedirections.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
                                                                     }
 
-                                                                    var row = this._dtRedirections.NewRow();
+                                                                    var row = this.dtRedirections.NewRow();
                                                                     row["Id"] = id;
                                                                     row["PortalId"] = portalId;
                                                                     row["name"] = name;
@@ -587,11 +586,11 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                     row["targetValue"] = targetValue;
                                                                     row["enabled"] = enabled;
 
-                                                                    this._dtRedirections.Rows.Add(row);
+                                                                    this.dtRedirections.Rows.Add(row);
                                                                 }
                                                                 else
                                                                 {
-                                                                    var rows = this._dtRedirections.Select("Id = " + id);
+                                                                    var rows = this.dtRedirections.Select("Id = " + id);
                                                                     if (rows.Length == 1)
                                                                     {
                                                                         var row = rows[0];
@@ -610,17 +609,17 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                 return id;
                                                             });
 
-            this._dataProvider.Setup(d => d.GetRedirections(It.IsAny<int>())).Returns<int>(this.GetRedirectionsCallBack);
-            this._dataProvider.Setup(d => d.DeleteRedirection(It.IsAny<int>())).Callback<int>((id) =>
+            this.dataProvider.Setup(d => d.GetRedirections(It.IsAny<int>())).Returns<int>(this.GetRedirectionsCallBack);
+            this.dataProvider.Setup(d => d.DeleteRedirection(It.IsAny<int>())).Callback<int>((id) =>
             {
-                var rows = this._dtRedirections.Select("Id = " + id);
+                var rows = this.dtRedirections.Select("Id = " + id);
                 if (rows.Length == 1)
                 {
-                    this._dtRedirections.Rows.Remove(rows[0]);
+                    this.dtRedirections.Rows.Remove(rows[0]);
                 }
             });
 
-            this._dataProvider.Setup(d => d.SaveRedirectionRule(
+            this.dataProvider.Setup(d => d.SaveRedirectionRule(
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
@@ -628,26 +627,26 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 {
                     if (id == -1)
                     {
-                        if (this._dtRules.Rows.Count == 0)
+                        if (this.dtRules.Rows.Count == 0)
                         {
                             id = 1;
                         }
                         else
                         {
-                            id = Convert.ToInt32(this._dtRules.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
+                            id = Convert.ToInt32(this.dtRules.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
                         }
 
-                        var row = this._dtRules.NewRow();
+                        var row = this.dtRules.NewRow();
                         row["Id"] = id;
                         row["RedirectionId"] = rid;
                         row["capability"] = capbility;
                         row["expression"] = expression;
 
-                        this._dtRules.Rows.Add(row);
+                        this.dtRules.Rows.Add(row);
                     }
                     else
                     {
-                        var rows = this._dtRules.Select("Id = " + id);
+                        var rows = this.dtRules.Select("Id = " + id);
                         if (rows.Length == 1)
                         {
                             var row = rows[0];
@@ -658,22 +657,22 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                     }
                 });
 
-            this._dataProvider.Setup(d => d.GetRedirectionRules(It.IsAny<int>())).Returns<int>(this.GetRedirectionRulesCallBack);
-            this._dataProvider.Setup(d => d.DeleteRedirectionRule(It.IsAny<int>())).Callback<int>((id) =>
+            this.dataProvider.Setup(d => d.GetRedirectionRules(It.IsAny<int>())).Returns<int>(this.GetRedirectionRulesCallBack);
+            this.dataProvider.Setup(d => d.DeleteRedirectionRule(It.IsAny<int>())).Callback<int>((id) =>
             {
-                var rows = this._dtRules.Select("Id = " + id);
+                var rows = this.dtRules.Select("Id = " + id);
                 if (rows.Length == 1)
                 {
-                    this._dtRules.Rows.Remove(rows[0]);
+                    this.dtRules.Rows.Remove(rows[0]);
                 }
             });
 
-            this._dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
-            this._dataProvider.Setup(d => d.GetTabs(It.IsAny<int>())).Returns<int>(this.GetTabsCallBack);
-            this._dataProvider.Setup(d => d.GetTab(It.IsAny<int>())).Returns<int>(this.GetTabCallBack);
-            this._dataProvider.Setup(d => d.GetTabModules(It.IsAny<int>())).Returns<int>(this.GetTabModulesCallBack);
-            this._dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(this.GetPortalSettingsCallBack);
-            this._dataProvider.Setup(d => d.GetAllRedirections()).Returns(this.GetAllRedirectionsCallBack);
+            this.dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
+            this.dataProvider.Setup(d => d.GetTabs(It.IsAny<int>())).Returns<int>(this.GetTabsCallBack);
+            this.dataProvider.Setup(d => d.GetTab(It.IsAny<int>())).Returns<int>(this.GetTabCallBack);
+            this.dataProvider.Setup(d => d.GetTabModules(It.IsAny<int>())).Returns<int>(this.GetTabModulesCallBack);
+            this.dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(this.GetPortalSettingsCallBack);
+            this.dataProvider.Setup(d => d.GetAllRedirections()).Returns(this.GetAllRedirectionsCallBack);
 
             var portalDataService = MockComponentProvider.CreateNew<DotNetNuke.Entities.Portals.Data.IDataService>();
             portalDataService.Setup(p => p.GetPortalGroups()).Returns(this.GetPortalGroupsCallBack);
@@ -681,7 +680,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private void SetupClientCapabilityProvider()
         {
-            this._clientCapabilityProvider.Setup(p => p.GetClientCapability(It.IsAny<string>())).Returns<string>(this.GetClientCapabilityCallBack);
+            this.clientCapabilityProvider.Setup(p => p.GetClientCapability(It.IsAny<string>())).Returns<string>(this.GetClientCapabilityCallBack);
         }
 
         private void SetupRoleProvider()
@@ -691,8 +690,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private IDataReader GetRedirectionsCallBack(int portalId)
         {
-            var dtCheck = this._dtRedirections.Clone();
-            foreach (var row in this._dtRedirections.Select("PortalId = " + portalId))
+            var dtCheck = this.dtRedirections.Clone();
+            foreach (var row in this.dtRedirections.Select("PortalId = " + portalId))
             {
                 dtCheck.Rows.Add(row.ItemArray);
             }
@@ -702,8 +701,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private IDataReader GetRedirectionRulesCallBack(int rid)
         {
-            var dtCheck = this._dtRules.Clone();
-            foreach (var row in this._dtRules.Select("RedirectionId = " + rid))
+            var dtCheck = this.dtRules.Clone();
+            foreach (var row in this.dtRules.Select("RedirectionId = " + rid))
             {
                 dtCheck.Rows.Add(row.ItemArray);
             }
@@ -887,82 +886,82 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private IDataReader GetAllRedirectionsCallBack()
         {
-            return this._dtRedirections.CreateDataReader();
+            return this.dtRedirections.CreateDataReader();
         }
 
         private void PrepareData()
         {
             // id, portalId, name, type, sortOrder, sourceTabId, includeChildTabs, targetType, targetValue, enabled
-            this._dtRedirections.Rows.Add(1, Portal0, "R4", (int)RedirectionType.Other, 4, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
-            this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
-            this._dtRedirections.Rows.Add(3, Portal0, "R3", (int)RedirectionType.AllMobile, 3, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
-            this._dtRedirections.Rows.Add(4, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
-            this._dtRedirections.Rows.Add(5, Portal0, "R5", (int)RedirectionType.MobilePhone, 5, HomePageOnPortal0, EnabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
-            this._dtRedirections.Rows.Add(6, Portal0, "R6", (int)RedirectionType.MobilePhone, 6, -1, DisabledFlag, (int)TargetType.Tab, HomePageOnPortal0, EnabledFlag);
-            this._dtRedirections.Rows.Add(7, Portal0, "R7", (int)RedirectionType.MobilePhone, 7, -1, DisabledFlag, (int)TargetType.Url, ExternalSite, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R4", (int)RedirectionType.Other, 4, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
+            this.dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
+            this.dtRedirections.Rows.Add(3, Portal0, "R3", (int)RedirectionType.AllMobile, 3, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
+            this.dtRedirections.Rows.Add(4, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
+            this.dtRedirections.Rows.Add(5, Portal0, "R5", (int)RedirectionType.MobilePhone, 5, HomePageOnPortal0, EnabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
+            this.dtRedirections.Rows.Add(6, Portal0, "R6", (int)RedirectionType.MobilePhone, 6, -1, DisabledFlag, (int)TargetType.Tab, HomePageOnPortal0, EnabledFlag);
+            this.dtRedirections.Rows.Add(7, Portal0, "R7", (int)RedirectionType.MobilePhone, 7, -1, DisabledFlag, (int)TargetType.Url, ExternalSite, EnabledFlag);
 
             // id, redirectionId, capability, expression
-            this._dtRules.Rows.Add(1, 1, "mobile_browser", "Safari");
-            this._dtRules.Rows.Add(2, 1, "device_os_version", "4.0");
+            this.dtRules.Rows.Add(1, 1, "mobile_browser", "Safari");
+            this.dtRules.Rows.Add(2, 1, "device_os_version", "4.0");
 
-            this._dtRedirections.Rows.Add(8, Portal1, "R8", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, 2, true);
-            this._dtRedirections.Rows.Add(9, Portal1, "R9", (int)RedirectionType.Tablet, 1, -1, EnabledFlag, (int)TargetType.Portal, 2, true);
-            this._dtRedirections.Rows.Add(10, Portal1, "R10", (int)RedirectionType.AllMobile, 1, -1, EnabledFlag, (int)TargetType.Portal, 2, true);
+            this.dtRedirections.Rows.Add(8, Portal1, "R8", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, 2, true);
+            this.dtRedirections.Rows.Add(9, Portal1, "R9", (int)RedirectionType.Tablet, 1, -1, EnabledFlag, (int)TargetType.Portal, 2, true);
+            this.dtRedirections.Rows.Add(10, Portal1, "R10", (int)RedirectionType.AllMobile, 1, -1, EnabledFlag, (int)TargetType.Portal, 2, true);
         }
 
         private void PrepareOperaBrowserOnSymbianOSRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Other, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Other, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
 
             // id, redirectionId, capability, expression
-            this._dtRules.Rows.Add(1, 1, "mobile_browser", "Opera Mini");
-            this._dtRules.Rows.Add(2, 1, "device_os", "Symbian OS");
+            this.dtRules.Rows.Add(1, 1, "mobile_browser", "Opera Mini");
+            this.dtRules.Rows.Add(2, 1, "device_os", "Symbian OS");
         }
 
         private void PrepareOperaBrowserOnIPhoneOSRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Other, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Other, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
 
             // id, redirectionId, capability, expression
-            this._dtRules.Rows.Add(1, 1, "mobile_browser", "Opera Mini");
-            this._dtRules.Rows.Add(2, 1, "device_os", "iPhone OS");
+            this.dtRules.Rows.Add(1, 1, "mobile_browser", "Opera Mini");
+            this.dtRules.Rows.Add(2, 1, "device_os", "iPhone OS");
         }
 
         private void PreparePortalToAnotherPageOnSamePortal()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
         }
 
         private void PrepareSamePortalToSamePortalRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Portal, Portal0, 1);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Portal, Portal0, 1);
         }
 
         private void PrepareExternalSiteRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 7, -1, DisabledFlag, (int)TargetType.Url, ExternalSite, 1);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 7, -1, DisabledFlag, (int)TargetType.Url, ExternalSite, 1);
         }
 
         private void PrepareMobileAndTabletRedirectionRuleWithMobileFirst()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Tab, MobileLandingPage, EnabledFlag);
-            this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, -1, DisabledFlag, (int)TargetType.Tab, TabletLandingPage, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, DisabledFlag, (int)TargetType.Tab, MobileLandingPage, EnabledFlag);
+            this.dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, -1, DisabledFlag, (int)TargetType.Tab, TabletLandingPage, EnabledFlag);
         }
 
         private void PrepareMobileAndTabletRedirectionRuleWithAndTabletRedirectionRuleTabletFirst()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Tablet, 1, -1, DisabledFlag, (int)TargetType.Tab, TabletLandingPage, EnabledFlag);
-            this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.MobilePhone, 2, -1, DisabledFlag, (int)TargetType.Tab, MobileLandingPage, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Tablet, 1, -1, DisabledFlag, (int)TargetType.Tab, TabletLandingPage, EnabledFlag);
+            this.dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.MobilePhone, 2, -1, DisabledFlag, (int)TargetType.Tab, MobileLandingPage, EnabledFlag);
         }
 
         private void PrepareAllMobileRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.AllMobile, 1, -1, DisabledFlag, (int)TargetType.Tab, AllMobileLandingPage, EnabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.AllMobile, 1, -1, DisabledFlag, (int)TargetType.Tab, AllMobileLandingPage, EnabledFlag);
         }
 
         private void PrepareSingleDisabledRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.AllMobile, 1, -1, DisabledFlag, (int)TargetType.Tab, AllMobileLandingPage, DisabledFlag);
+            this.dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.AllMobile, 1, -1, DisabledFlag, (int)TargetType.Tab, AllMobileLandingPage, DisabledFlag);
         }
 
         private HttpApplication GenerateApplication()

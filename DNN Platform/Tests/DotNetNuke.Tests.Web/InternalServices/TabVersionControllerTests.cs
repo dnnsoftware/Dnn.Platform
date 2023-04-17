@@ -16,6 +16,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private Mock<ICBO> mockCBO;
         private Mock<IUserController> mockUserController;
         private Mock<IHostController> mockHostController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
@@ -41,12 +43,20 @@ namespace DotNetNuke.Tests.Web.InternalServices
             MockComponentProvider.ResetContainer();
             this.SetupCBO();
             this.SetupHostController();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockCBO.Object);
+                    services.AddSingleton(this.mockUserController.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                });
+        }
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
