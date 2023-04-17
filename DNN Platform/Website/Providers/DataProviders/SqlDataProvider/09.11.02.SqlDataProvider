@@ -151,6 +151,35 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
 	ORDER BY RowNumber ASC;
 GO
 
+/*    Add scheduled task for the web server health checks   */
+/************************************************************/
+
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
+	VALUES ('DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke', 5, 'm', 10, 'm', 10, '', 0, 1, '', NULL, -1, GETDATE(), NULL, GETDATE(), N'Monitor Web Servers')
+END
+GO
+
+/****************************************************************
+ * SPROC: ReplaceServerOnSchedules 
+ ****************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ReplaceServerOnSchedules]
+    @oldServerName nvarchar(50),
+    @newServerName nvarchar(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    UPDATE {databaseOwner}[{objectQualifier}Schedule] SET Servers = REPLACE(Servers, @oldServerName, @newServerName) WHERE Servers LIKE '%' + @oldServerName + '%'
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

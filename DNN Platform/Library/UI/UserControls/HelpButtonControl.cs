@@ -32,8 +32,6 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlHelp;
-        private string helpKey;
-        private string resourceKey;
 
         /// <summary>Gets or sets controlName is the Id of the control that is associated with the label.</summary>
         /// <value>A string representing the id of the associated control.</value>
@@ -41,18 +39,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// <summary>Gets or sets helpKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Help Text.</value>
-        public string HelpKey
-        {
-            get
-            {
-                return this.helpKey;
-            }
-
-            set
-            {
-                this.helpKey = value;
-            }
-        }
+        public string HelpKey { get; set; }
 
         /// <summary>Gets or sets helpText is value of the Help Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Text.</value>
@@ -78,18 +65,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// <summary>Gets or sets resourceKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Label Text.</value>
-        public string ResourceKey
-        {
-            get
-            {
-                return this.resourceKey;
-            }
-
-            set
-            {
-                this.resourceKey = value;
-            }
-        }
+        public string ResourceKey { get; set; }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
@@ -101,13 +77,13 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
-                if (string.IsNullOrEmpty(this.helpKey))
+                if (string.IsNullOrEmpty(this.HelpKey))
                 {
                     // Set Help Key to the Resource Key plus ".Help"
-                    this.helpKey = this.ResourceKey + ".Help";
+                    this.HelpKey = this.ResourceKey + ".Help";
                 }
 
-                string helpText = Localization.GetString(this.helpKey, this);
+                string helpText = Localization.GetString(this.HelpKey, this);
                 if (!string.IsNullOrEmpty(helpText))
                 {
                     this.HelpText = helpText;

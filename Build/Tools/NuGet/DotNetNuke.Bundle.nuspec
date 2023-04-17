@@ -20,7 +20,6 @@
       <dependency id="DotNetNuke.Providers.FolderProviders" version="$version$" />
       <dependency id="DotNetNuke.SiteExportImport" version="$version$" />
       <dependency id="DotNetNuke.Web.Client" version="$version$" />
-      <dependency id="DotNetNuke.Web.Deprecated" version="$version$" />
       <dependency id="DotNetNuke.Web.Mvc" version="$version$" />
       <dependency id="DotNetNuke.Web" version="$version$" />
       <dependency id="DotNetNuke.WebApi" version="$version$" />

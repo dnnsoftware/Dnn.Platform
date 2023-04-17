@@ -41,10 +41,14 @@ module.exports = (env, argv) => {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     enforce: "pre",
-                    loader: "eslint-loader",
-                    options: {
-                        fix: true,
-                    },
+                    use: [
+                        {
+                            loader: "eslint-loader",
+                            options: {
+                                fix: true,
+                            },
+                        },
+                    ],
                 },
                 {
                     test: /\.js$/,

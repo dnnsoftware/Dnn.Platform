@@ -88,13 +88,13 @@
                     </script>
                     <script type="Install">
                       <path>SqlDataProvider</path>
-                      <name>09.11.01.SqlDataProvider</name>
-                      <version>09.11.01</version>
+                      <name>09.11.02.SqlDataProvider</name>
+                      <version>09.11.02</version>
                     </script>
                     <script type="UnInstall">
                       <path>SqlDataProvider</path>
                       <name>Uninstall.SqlDataProvider</name>
-                      <version>09.11.00</version>
+                      <version>09.11.02</version>
                     </script>
                   </scripts>
                 </component>

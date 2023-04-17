@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Syndication
         private readonly Dictionary<string, string> attributes;
 
         /// <summary>Initializes a new instance of the <see cref="RssElementCustomTypeDescriptor"/> class.</summary>
-        /// <param name="attributes"></param>
+        /// <param name="attributes">The attributes.</param>
         public RssElementCustomTypeDescriptor(Dictionary<string, string> attributes)
         {
             this.attributes = attributes;
@@ -155,13 +155,9 @@ namespace DotNetNuke.Services.Syndication
 
             public override object GetValue(object o)
             {
-                var element = o as RssElementCustomTypeDescriptor;
-
-                if (element != null)
+                if (o is RssElementCustomTypeDescriptor element)
                 {
-                    string propertyValue;
-
-                    if (element.attributes.TryGetValue(this.Name, out propertyValue))
+                    if (element.attributes.TryGetValue(this.Name, out var propertyValue))
                     {
                         return propertyValue;
                     }

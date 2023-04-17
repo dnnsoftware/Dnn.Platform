@@ -6,7 +6,7 @@ namespace DotNetNuke.Services.Syndication
     using System.ComponentModel;
     using System.Web.UI;
 
-    /// <summary>  RSS data source control implementation, including the designer.</summary>
+    /// <summary>RSS data source control implementation, including the designer.</summary>
     [DefaultProperty("Url")]
     public class RssDataSource : DataSourceControl
     {
@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Syndication
         private RssDataSourceView itemsView;
         private string url;
 
+        /// <summary>Gets the channel.</summary>
         public GenericRssChannel Channel
         {
             get
@@ -34,8 +35,10 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        /// <summary>Gets or sets the maximum number of items.</summary>
         public int MaxItems { get; set; }
 
+        /// <summary>Gets or sets the URL.</summary>
         public string Url
         {
             get

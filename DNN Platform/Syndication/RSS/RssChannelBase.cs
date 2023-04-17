@@ -13,31 +13,24 @@ namespace DotNetNuke.Services.Syndication
         where TRssItemType : RssElementBase, new()
         where TRssImageType : RssElementBase, new()
     {
-        private readonly List<TRssItemType> items = new List<TRssItemType>();
         private TRssImageType image;
-        private string url;
 
-        public List<TRssItemType> Items
-        {
-            get
-            {
-                return this.items;
-            }
-        }
+        /// <summary>Gets the channel items.</summary>
+        public List<TRssItemType> Items { get; } = new List<TRssItemType>();
 
-        internal string Url
-        {
-            get
-            {
-                return this.url;
-            }
-        }
+        /// <summary>Gets the channel URL.</summary>
+        internal string Url { get; private set; }
 
+        /// <summary>Gets the channel as an XML document.</summary>
+        /// <returns>A new <see cref="XmlDocument"/> instance.</returns>
         public XmlDocument SaveAsXml()
         {
             return this.SaveAsXml(RssXmlHelper.CreateEmptyRssXml());
         }
 
+        /// <summary>Gets the channel as an XML document.</summary>
+        /// <param name="emptyRssXml">An empty <see cref="XmlDocument"/> to save the channel contents into.</param>
+        /// <returns>The <paramref name="emptyRssXml"/> passed in with the channel contents added.</returns>
         public XmlDocument SaveAsXml(XmlDocument emptyRssXml)
         {
             XmlDocument doc = emptyRssXml;
@@ -48,7 +41,7 @@ namespace DotNetNuke.Services.Syndication
                 RssXmlHelper.SaveRssElementAsXml(channelNode, this.image, "image");
             }
 
-            foreach (TRssItemType item in this.items)
+            foreach (TRssItemType item in this.Items)
             {
                 RssXmlHelper.SaveRssElementAsXml(channelNode, item, "item");
             }
@@ -56,6 +49,8 @@ namespace DotNetNuke.Services.Syndication
             return doc;
         }
 
+        /// <summary>Loads the contents from the <paramref name="dom"/> into this channel.</summary>
+        /// <param name="dom">The DOM to load from.</param>
         internal void LoadFromDom(RssChannelDom dom)
         {
             // channel attributes
@@ -74,10 +69,12 @@ namespace DotNetNuke.Services.Syndication
             {
                 var item = new TRssItemType();
                 item.SetAttributes(i);
-                this.items.Add(item);
+                this.Items.Add(item);
             }
         }
 
+        /// <summary>Loads a channel from a <paramref name="url"/> into this channel.</summary>
+        /// <param name="url">The URL to load the channel from.</param>
         protected void LoadFromUrl(string url)
         {
             // download the feed
@@ -87,9 +84,11 @@ namespace DotNetNuke.Services.Syndication
             this.LoadFromDom(dom);
 
             // remember the url
-            this.url = url;
+            this.Url = url;
         }
 
+        /// <summary>Loads a channel from a <paramref name="doc"/> into this channel.</summary>
+        /// <param name="doc">The XML to load the channel from.</param>
         protected void LoadFromXml(XmlDocument doc)
         {
             // parse XML
@@ -99,6 +98,8 @@ namespace DotNetNuke.Services.Syndication
             this.LoadFromDom(dom);
         }
 
+        /// <summary>Gets the channel image.</summary>
+        /// <returns>An <typeparamref name="TRssImageType"/> instance.</returns>
         protected TRssImageType GetImage()
         {
             if (this.image == null)
