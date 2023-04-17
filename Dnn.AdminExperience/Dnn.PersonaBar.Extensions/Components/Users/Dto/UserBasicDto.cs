@@ -38,6 +38,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
         }
 
+        public void PopulateAvatarUrl()
+        {
+            this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
+        }
+
         [DataMember(Name = "avatar")]
         public string AvatarUrl { get; set; }
 
