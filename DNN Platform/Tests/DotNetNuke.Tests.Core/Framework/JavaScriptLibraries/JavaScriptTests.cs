@@ -16,6 +16,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
     using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Tests.Instance.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -30,12 +31,12 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
 
         private int libraryIdCounter = 20;
 
-        private HttpContextBase _httpContext;
+        private HttpContextBase httpContext;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
         {
-            var serviceCollection = new ServiceCollection();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
             mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.None);
 
@@ -44,30 +45,28 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
 
             var dnnContext = new DotNetNukeContext(mockApplication.Object);
 
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<IApplicationInfo>(container => mockApplication.Object);
-            serviceCollection.AddTransient<IDnnContext>(container => dnnContext);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
-            var httpContextMock = new Mock<HttpContextBase> { DefaultValue = DefaultValue.Mock, };
-            httpContextMock.Setup(c => c.Items).Returns(new Dictionary<object, object>());
-            this._httpContext = httpContextMock.Object;
-            HttpContextSource.RegisterInstance(this._httpContext);
-
             MockComponentProvider.CreateLocalizationProvider();
             var dataProviderMock = MockComponentProvider.CreateDataProvider();
             dataProviderMock.Setup(dp => dp.GetProviderPath()).Returns(string.Empty);
-            dataProviderMock.Setup(dp => dp.GetVersion()).Returns(DotNetNukeContext.Current.Application.Version);
+            dataProviderMock.Setup(dp => dp.GetVersion()).Returns(dnnContext.Application.Version);
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(mockApplicationStatusInfo.Object);
+                    services.AddSingleton(mockApplication.Object);
+                    services.AddSingleton<IDnnContext>(dnnContext);
+                    services.AddSingleton(dataProviderMock.Object);
+                });
+
+            this.httpContext = HttpContextSource.Current;
         }
 
         [TearDown]
         public void TearDown()
         {
-            UnitTestHelper.ClearHttpContext();
             JavaScriptLibraryController.ClearInstance();
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -87,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test");
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -107,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("test");
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -127,7 +126,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2));
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -147,7 +146,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.Exact);
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -167,7 +166,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.Exact);
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -187,7 +186,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 0));
 
             // Assert
-            Assert.AreNotEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreNotEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -207,7 +206,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 0), SpecificVersion.Exact);
 
             // Assert
-            Assert.AreNotEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreNotEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -227,7 +226,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 0), SpecificVersion.LatestMinor);
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -247,7 +246,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("test", new Version(2, 2, 0), SpecificVersion.LatestMinor);
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -274,8 +273,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.LatestMinor);
 
             // Assert
-            Assert.AreNotEqual(true, this._httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
+            Assert.AreNotEqual(true, this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
         }
 
         [Test]
@@ -302,8 +301,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.LatestMinor);
 
             // Assert
-            Assert.AreNotEqual(true, this._httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
+            Assert.AreNotEqual(true, this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
         }
 
         [Test]
@@ -323,7 +322,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 1, 1), SpecificVersion.LatestMajor);
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -343,7 +342,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("test", new Version(2, 1, 1), SpecificVersion.LatestMajor);
 
             // Assert
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + JavaScriptLibraryID]);
         }
 
         [Test]
@@ -370,8 +369,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.LatestMajor);
 
             // Assert
-            Assert.AreNotEqual(true, this._httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
+            Assert.AreNotEqual(true, this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
         }
 
         [Test]
@@ -398,8 +397,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.LatestMajor);
 
             // Assert
-            Assert.AreNotEqual(true, this._httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
-            Assert.AreEqual(true, this._httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
+            Assert.AreNotEqual(true, this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId]);
+            Assert.AreEqual(true, this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId]);
         }
 
         private void SetupJavaScriptLibraryController(params JavaScriptLibrary[] libraries)
