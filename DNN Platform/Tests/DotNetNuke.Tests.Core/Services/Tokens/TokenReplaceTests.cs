@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Services.Tokens
 {
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
@@ -14,6 +12,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -30,20 +29,16 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         private Mock<IModuleController> moduleController;
         private Mock<IUserController> userController;
         private Mock<IHostController> mockHostController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
 
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());
             this.mockCache = MockComponentProvider.CreateDataCacheProvider();
             this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<IHostSettingsService>();
             this.portalController = new Mock<IPortalController>();
             this.moduleController = new Mock<IModuleController>();
             this.userController = new Mock<IUserController>();
@@ -54,12 +49,23 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             this.SetupPortalSettings();
             this.SetupModuleInfo();
             this.SetupUserInfo();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockCache.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton(this.portalController.Object);
+                    services.AddSingleton(this.moduleController.Object);
+                    services.AddSingleton(this.userController.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             PortalController.ClearInstance();
             ModuleController.ClearInstance();
             UserController.ClearInstance();

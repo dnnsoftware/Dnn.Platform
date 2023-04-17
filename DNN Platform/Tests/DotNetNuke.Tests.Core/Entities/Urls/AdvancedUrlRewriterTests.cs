@@ -6,7 +6,7 @@
     using System.IO;
     using System.Reflection;
     using System.Web;
-
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -56,6 +56,7 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
             Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
@@ -128,7 +129,7 @@
                     BindingFlags.Static | BindingFlags.NonPublic);
             var requestUri = new Uri(UriUrl);
             var queryStringCollection = new NameValueCollection();
-            var friendlyUrlSettings = new FriendlyUrlSettings(GenericPortalId);
+            var friendlyUrlSettings = new FriendlyUrlSettings(PortalController.Instance, GenericPortalId);
             var urlAction = new UrlAction(
                 HttpScheme,
                 string.Empty,

@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             DisableMvcResponseHeader = disableMvcResponseHeader;
-            this.ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
+            this.ControllerFactory = Globals.GetCurrentServiceProvider().GetRequiredService<IControllerFactory>();
             this.ViewEngines = new ViewEngineCollection();
 
             // ViewEngines.Add(new ModuleDelegatingViewEngine());

@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
 
         public CommandRepository(IServiceScopeFactory serviceScopeFactory)
         {
-            this.serviceScopeFactory = serviceScopeFactory ?? Globals.DependencyProvider.GetRequiredService<IServiceScopeFactory>();
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
         }
 
         /// <inheritdoc/>

@@ -41,7 +41,7 @@ namespace DotNetNuke.Common
         public static void Init(HttpApplication app)
         {
             string redirect;
-            var status = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
+            var status = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>().Status;
 
             // Check if app is initialised
             if (alreadyInitialized && status == UpgradeStatus.None)
@@ -180,7 +180,7 @@ namespace DotNetNuke.Common
                 Exceptions.LogException(exc);
             }
 
-            var status = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
+            var status = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>().Status;
             if (status != UpgradeStatus.Install)
             {
                 // purge log buffer
@@ -284,7 +284,7 @@ namespace DotNetNuke.Common
 
             // Determine the Upgrade status and redirect as neccessary to InstallWizard.aspx
             string retValue = Null.NullString;
-            var applicationStatusInfo = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            var applicationStatusInfo = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             switch (applicationStatusInfo.Status)
             {
                 case UpgradeStatus.Install:

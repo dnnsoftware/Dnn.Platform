@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities
         /// <param name="eventLogger">An event logger.</param>
         public EventManager(IEventLogger eventLogger)
         {
-            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
             foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
@@ -645,7 +645,7 @@ namespace DotNetNuke.Entities
         /// <inheritdoc/>
         protected override Func<IEventManager> GetFactory()
         {
-            return () => new EventManager(Globals.DependencyProvider.GetRequiredService<IEventLogger>());
+            return () => new EventManager(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>());
         }
 
         private void AddLog(IFileInfo fileInfo, int userId, EventLogType logType)

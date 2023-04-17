@@ -40,6 +40,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public const string PageTagsVocabulary = "PageTags";
 
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
+        private readonly IServiceProvider serviceProvider;
         private readonly ITabController tabController;
         private readonly IModuleController moduleController;
         private readonly IPageUrlsController pageUrlsController;
@@ -51,12 +52,13 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IContentVerifier contentVerifier;
         private readonly IPortalController portalController;
 
-        public PagesControllerImpl()
+        public PagesControllerImpl(IServiceProvider serviceProvider, ITemplateController templateController)
             : this(
+                  serviceProvider,
                   TabController.Instance,
                   ModuleController.Instance,
                   PageUrlsController.Instance,
-                  TemplateController.Instance,
+                  templateController,
                   DefaultPortalThemeController.Instance,
                   CloneModuleExecutionContext.Instance,
                   new UrlRewriterUtilsWrapper(),
@@ -67,6 +69,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         public PagesControllerImpl(
+            IServiceProvider serviceProvider,
             ITabController tabController,
             IModuleController moduleController,
             IPageUrlsController pageUrlsController,
@@ -78,6 +81,7 @@ namespace Dnn.PersonaBar.Pages.Components
             IContentVerifier contentVerifier,
             IPortalController portalController)
         {
+            this.serviceProvider = serviceProvider;
             this.tabController = tabController;
             this.moduleController = moduleController;
             this.pageUrlsController = pageUrlsController;

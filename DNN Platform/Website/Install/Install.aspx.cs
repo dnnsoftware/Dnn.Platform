@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Install
 
         private static ITelerikUtils CreateTelerikUtils()
         {
-            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
+            return Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>();
         }
 
         private void ExecuteScripts()
@@ -405,7 +405,7 @@ namespace DotNetNuke.Services.Install
                     }
 
                     HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Replacing Digital Assets Manager with the new Resource Manager: ");
-                    Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+                    Globals.GetCurrentServiceProvider().GetService<IDamUninstaller>().Execute();
                     HtmlUtils.WriteSuccessError(HttpContext.Current.Response, true);
 
                     this.Response.Write("<br>");

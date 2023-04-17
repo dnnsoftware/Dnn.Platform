@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public DnnImageHandler()
-            : this(HttpContextSource.Current.GetScope().ServiceProvider, null)
+            : this(Globals.GetCurrentServiceProvider(), null)
         {
         }
 

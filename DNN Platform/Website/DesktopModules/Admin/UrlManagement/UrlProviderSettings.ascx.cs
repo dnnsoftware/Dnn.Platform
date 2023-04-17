@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.UrlManagement
         /// <summary>Initializes a new instance of the <see cref="ProviderSettings"/> class.</summary>
         public ProviderSettings()
         {
-            this.navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetService<INavigationManager>();
         }
 
         private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();

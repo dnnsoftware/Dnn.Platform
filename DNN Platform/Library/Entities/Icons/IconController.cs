@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Icons
         public static string[] GetIconSets()
         {
             return GetIconSets(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         public static string[] GetIconSets(IApplicationStatusInfo appStatus)

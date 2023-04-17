@@ -72,7 +72,7 @@ namespace Dnn.ExportImport.Components.Services
         /// <param name="businessControllerProvider">The business controller provider.</param>
         public PagesExportService(IBusinessControllerProvider businessControllerProvider)
         {
-            this.businessControllerProvider = businessControllerProvider ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<IBusinessControllerProvider>() ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         }
 
         /// <inheritdoc/>

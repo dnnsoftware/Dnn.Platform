@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         public CoreLanguagePackageEditor()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }

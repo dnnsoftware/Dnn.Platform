@@ -3485,11 +3485,20 @@ namespace DotNetNuke.Common
             AppStopwatch.Restart();
         }
 
+        /// <summary>Gets an <see cref="IServiceScope"/> that should be disposed, trying to find the current request scope if possible.</summary>
+        /// <returns>An <see cref="IServiceScope"/> instance that should be disposed (but which can be disposed without prematurely disposing the current request scope).</returns>
         internal static IServiceScope GetOrCreateServiceScope()
         {
             return new MaybeDisposableServiceScope(
-                HttpContextSource.Current.GetScope(),
+                HttpContextSource.Current?.GetScope(),
                 DependencyProvider.CreateScope);
+        }
+
+        /// <summary>Gets an <see cref="IServiceProvider"/> for the current request, or the global provider if not available.</summary>
+        /// <returns>An <see cref="IServiceProvider"/> instance.</returns>
+        internal static IServiceProvider GetCurrentServiceProvider()
+        {
+            return HttpContextSource.Current?.GetScope()?.ServiceProvider ?? DependencyProvider;
         }
 
         /// <summary>Check whether the Filename matches extensions.</summary>

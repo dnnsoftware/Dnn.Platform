@@ -35,9 +35,6 @@ namespace DotNetNuke.UI.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Modules
-    /// Class    : ModuleHost
     /// <summary>ModuleHost hosts a Module Control (or its cached Content).</summary>
     public sealed class ModuleHost : Panel
     {
@@ -51,7 +48,7 @@ namespace DotNetNuke.UI.Modules
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly ModuleInfo moduleConfiguration;
-        private readonly IModuleControlPipeline moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
+        private readonly IModuleControlPipeline moduleControlPipeline = Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
         private Control control;
         private bool isCached;
 

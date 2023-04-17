@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         public ViewProfile()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>

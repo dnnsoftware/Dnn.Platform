@@ -4,43 +4,50 @@
 namespace DotNetNuke.Modules.Admin.Modules
 {
     using System;
-    using System.Collections;
     using System.IO;
-    using System.Linq;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Web.UI.WebControls;
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
+
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// </summary>
+    /// <summary>The view for the global export module action.</summary>
     public partial class Export : PortalModuleBase
     {
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
 
         private int moduleId = -1;
         private ModuleInfo module;
 
         /// <summary>Initializes a new instance of the <see cref="Export"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Export()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Export"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Export(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private ModuleInfo Module
@@ -164,13 +171,13 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     try
                     {
-                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
+                        var businessControllerType = Reflection.CreateType(this.Module.DesktopModule.BusinessControllerClass);
 
                         // Double-check
-                        if (objObject is IPortable)
+                        if (typeof(IPortable).IsAssignableFrom(businessControllerType))
                         {
                             XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
-                            XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, this.Module, true);
+                            XmlNode moduleNode = ModuleController.SerializeModule(this.businessControllerProvider, moduleXml, this.Module, true);
 
                             // add attributes to XML document
                             XmlAttribute typeAttribute = moduleXml.CreateAttribute("type");

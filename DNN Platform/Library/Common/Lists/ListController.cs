@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Lists
         /// <param name="eventLogger">An event logger.</param>
         public ListController(IEventLogger eventLogger)
         {
-            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets the lists that do not support localization.</summary>

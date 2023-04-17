@@ -19,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
 
     public class UrlUtils
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         public static string Combine(string baseUrl, string relativeUrl)
         {

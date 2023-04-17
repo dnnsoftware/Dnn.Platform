@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Controllers
         {
             get
             {
-                var newHostController = Globals.DependencyProvider.GetRequiredService<IHostSettingsService>();
+                var newHostController = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
                 return newHostController is IHostController castedController ? castedController : new HostController();
             }
         }

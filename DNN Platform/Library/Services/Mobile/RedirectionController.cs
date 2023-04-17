@@ -8,7 +8,10 @@ namespace DotNetNuke.Services.Mobile
     using System.Globalization;
     using System.Linq;
     using System.Web;
+    using System.Web.Services.Description;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -20,8 +23,12 @@ namespace DotNetNuke.Services.Mobile
     using DotNetNuke.Services.ClientCapability;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class RedirectionController : IRedirectionController
     {
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
         private const string DisableMobileRedirectCookieName = "disablemobileredirect";
         private const string DisableRedirectPresistCookieName = "disableredirectpresist";
         private const string DisableMobileRedirectQueryStringName = "nomo"; // google uses the same name nomo=1 means do not redirect to mobile
@@ -31,6 +38,22 @@ namespace DotNetNuke.Services.Mobile
         private const string FullSiteUrlCacheKey = "FullSiteUrl_{0}_{1}";
         private const string MobileSiteUrlCacheKey = "MobileSiteUrl_{0}_{1}";
         private const int UrlsCacheTimeout = 60;
+
+        /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public RedirectionController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public RedirectionController(IPortalController portalController, IEventLogger eventLogger)
+        {
+            this.portalController = portalController ?? Globals.DependencyProvider.GetRequiredService<IPortalController>();
+            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+        }
 
         private string AllRedirectionsCacheKey
         {
@@ -119,7 +142,7 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = this.portalController.GetCurrentPortalSettings();
             if (portalSettings != null && portalSettings.ActiveTab != null)
             {
                 string redirectUrl = this.GetRedirectUrl(userAgent, portalSettings.PortalId, portalSettings.ActiveTab.TabID);
@@ -225,7 +248,7 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetFullSiteUrl()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = this.portalController.GetCurrentPortalSettings();
             if (portalSettings != null && portalSettings.ActiveTab != null)
             {
                 string fullSiteUrl = this.GetFullSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
@@ -330,7 +353,7 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetMobileSiteUrl()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = this.portalController.GetCurrentPortalSettings();
             if (portalSettings != null && portalSettings.ActiveTab != null)
             {
                 string fullSiteUrl = this.GetMobileSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
@@ -459,7 +482,7 @@ namespace DotNetNuke.Services.Mobile
 
             // remove rules for deleted target portals
             redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above
-            var allPortals = PortalController.Instance.GetPortals();
+            var allPortals = this.portalController.GetPortals();
             foreach (var r in redirects.Where(r => r.TargetType == TargetType.Portal))
             {
                 bool found = false;
@@ -580,8 +603,8 @@ namespace DotNetNuke.Services.Mobile
                 // ensure it's not redirecting to itself
                 if (targetPortalId != portalId)
                 {
-                    // check whethter the target portal still exists
-                    if (PortalController.Instance.GetPortals().Cast<PortalInfo>().Any(p => p.PortalID == targetPortalId))
+                    // check whether the target portal still exists
+                    if (this.portalController.GetPortals().Cast<IPortalInfo>().Any(p => p.PortalId == targetPortalId))
                     {
                         var portalSettings = new PortalSettings(targetPortalId);
                         if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId)
@@ -661,7 +684,7 @@ namespace DotNetNuke.Services.Mobile
 
         private void AddLog(string logContent)
         {
-            EventLogController.Instance.AddLog("Site Redirection Rule", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
+            this.eventLogger.AddLog("Site Redirection Rule", logContent, this.portalController.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogType.ADMIN_ALERT);
         }
 
         private bool DoesCapabilityMatchWithRule(IClientCapability clientCapability, IRedirection redirection)

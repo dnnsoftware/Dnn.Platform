@@ -42,8 +42,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             }
         }
 
-        private static ISerializationManager SerializationManager =>
-    Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+        private static ISerializationManager SerializationManager => Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
         private IList<ParameterMapping> Mapping { get; }
 
@@ -111,7 +110,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private void SaveSettings(int portalId, ModuleInfo moduleContext, T settings)
         {
-            var hostSettingsService = Globals.DependencyProvider.GetRequiredService<Abstractions.Application.IHostSettingsService>();
+            var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettingsService>();
 
             this.Mapping.ForEach(mapping =>
             {
@@ -172,7 +171,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             var ctlModule = (ModuleInfo)args.ParamList[0];
             var portalId = ctlModule == null ? (int)args.ParamList[1] : ctlModule.PortalID;
             var settings = new T();
-            var hostSettings = Globals.DependencyProvider.GetRequiredService<Abstractions.Application.IHostSettingsService>().GetSettings();
+            var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettingsService>().GetSettings();
 
             this.Mapping.ForEach(mapping =>
             {

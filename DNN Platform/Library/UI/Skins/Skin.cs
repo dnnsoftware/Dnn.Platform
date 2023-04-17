@@ -71,10 +71,19 @@ namespace DotNetNuke.UI.Skins
         private Dictionary<string, Pane> panes;
 
         /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public Skin()
+            : this(null, null)
         {
-            this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager)
+        {
+            this.ModuleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <summary>Gets a Dictionary of Panes.</summary>

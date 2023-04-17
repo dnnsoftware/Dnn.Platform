@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         public MenuBase(ILocaliser localiser)
         {
-            this.localiser = localiser ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ILocaliser>() ?? Globals.DependencyProvider.GetRequiredService<ILocaliser>();
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
         }
 
         /// <summary>Gets or sets the template definition.</summary>
@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.DDRMenu
         public static MenuBase Instantiate(string menuStyle)
         {
             return Instantiate(
-                HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ILocaliser>() ?? Globals.DependencyProvider.GetRequiredService<ILocaliser>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>(),
                 menuStyle);
         }
 

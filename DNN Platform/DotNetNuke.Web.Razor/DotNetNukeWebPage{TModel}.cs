@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Razor
 
         public DotNetNukeWebPage()
         {
-            var model = Globals.DependencyProvider.GetService<TModel>();
+            var model = Globals.GetCurrentServiceProvider().GetService<TModel>();
             this.Model = model ?? Activator.CreateInstance<TModel>();
         }
 
