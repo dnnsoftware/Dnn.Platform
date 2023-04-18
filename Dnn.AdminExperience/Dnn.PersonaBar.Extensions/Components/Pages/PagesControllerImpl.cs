@@ -15,6 +15,8 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
+
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
@@ -33,6 +35,8 @@ namespace Dnn.PersonaBar.Pages.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using PermissionsNotMetException = DotNetNuke.Entities.Tabs.PermissionsNotMetException;
 
     public class PagesControllerImpl : IPagesController
@@ -40,7 +44,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public const string PageTagsVocabulary = "PageTags";
 
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
-        private readonly IServiceProvider serviceProvider;
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly ITabController tabController;
         private readonly IModuleController moduleController;
         private readonly IPageUrlsController pageUrlsController;
@@ -52,9 +56,9 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IContentVerifier contentVerifier;
         private readonly IPortalController portalController;
 
-        public PagesControllerImpl(IServiceProvider serviceProvider, ITemplateController templateController)
+        public PagesControllerImpl(IBusinessControllerProvider businessControllerProvider, ITemplateController templateController)
             : this(
-                  serviceProvider,
+                  businessControllerProvider,
                   TabController.Instance,
                   ModuleController.Instance,
                   PageUrlsController.Instance,
@@ -69,7 +73,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         public PagesControllerImpl(
-            IServiceProvider serviceProvider,
+            IBusinessControllerProvider businessControllerProvider,
             ITabController tabController,
             IModuleController moduleController,
             IPageUrlsController pageUrlsController,
@@ -81,7 +85,7 @@ namespace Dnn.PersonaBar.Pages.Components
             IContentVerifier contentVerifier,
             IPortalController portalController)
         {
-            this.serviceProvider = serviceProvider;
+            this.businessControllerProvider = businessControllerProvider;
             this.tabController = tabController;
             this.moduleController = moduleController;
             this.pageUrlsController = pageUrlsController;
@@ -1508,25 +1512,25 @@ namespace Dnn.PersonaBar.Pages.Components
 
                     if (copyType == ModuleCopyType.Copy)
                     {
-                        if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                        var controller = this.businessControllerProvider.GetInstance<IPortable>(newModule);
+                        if (controller is not null)
                         {
-                            var objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                            var o = objObject as IPortable;
-                            if (o != null)
+                            try
                             {
-                                try
+                                this.cloneModuleExecutionContext.SetCloneModuleContext(true);
+                                var content = controller.ExportModule(module.Id);
+                                if (!string.IsNullOrEmpty(content))
                                 {
-                                    this.cloneModuleExecutionContext.SetCloneModuleContext(true);
-                                    var content = Convert.ToString(o.ExportModule(module.Id));
-                                    if (!string.IsNullOrEmpty(content))
-                                    {
-                                        o.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
-                                    }
+                                    controller.ImportModule(
+                                        newModule.ModuleID,
+                                        content,
+                                        newModule.DesktopModule.Version,
+                                        UserController.Instance.GetCurrentUserInfo().UserID);
                                 }
-                                finally
-                                {
-                                    this.cloneModuleExecutionContext.SetCloneModuleContext(false);
-                                }
+                            }
+                            finally
+                            {
+                                this.cloneModuleExecutionContext.SetCloneModuleContext(false);
                             }
                         }
                     }

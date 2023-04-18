@@ -62,6 +62,23 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             return Globals.DependencyProvider.GetRequiredService<ICommandRepository>;
         }
 
+        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
+        {
+            var localizedText = Localization.GetString(key, resourcesFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
+        }
+
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
+        }
+
         private SortedDictionary<string, Command> GetCommandsInternal()
         {
             var commands = new SortedDictionary<string, Command>();
@@ -96,23 +113,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             }
 
             return commands;
-        }
-
-        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
-        {
-            var localizedText = Localization.GetString(key, resourcesFile);
-            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
-        }
-
-        private static string CreateCommandFromClass(string className)
-        {
-            var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
-        }
-
-        private static string[] SplitCamelCase(string source)
-        {
-            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
 
         private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)

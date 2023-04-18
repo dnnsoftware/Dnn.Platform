@@ -18,6 +18,7 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
@@ -2005,7 +2006,6 @@ namespace DotNetNuke.Entities.Modules
                 return;
             }
 
-            // ReSharper disable PossibleNullReferenceException
             string version = nodeModule.SelectSingleNode("content").Attributes["version"].Value;
             string content = nodeModule.SelectSingleNode("content").InnerXml;
             content = content.Substring(9, content.Length - 12);
@@ -2047,8 +2047,6 @@ namespace DotNetNuke.Entities.Modules
                     EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
                 }
             }
-
-            // ReSharper restore PossibleNullReferenceException
         }
 
         private static ModuleDefinitionInfo GetModuleDefinition(XmlNode nodeModule)
@@ -2345,7 +2343,11 @@ namespace DotNetNuke.Entities.Modules
                             string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
                             if (!string.IsNullOrEmpty(moduleContent))
                             {
-                                portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
+                                portableModule.ImportModule(
+                                    newModule.ModuleID,
+                                    moduleContent,
+                                    newModule.DesktopModule.Version,
+                                    currentUser.UserID);
                             }
                         }
                         finally

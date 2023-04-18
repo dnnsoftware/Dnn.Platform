@@ -27,6 +27,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -140,8 +141,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             provider.Setup(x => x.TryFindModuleInfo(request, out expectedModule)).Returns(true);
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
-            this.searchServiceController = new SearchServiceController(HtmlModDefId) { Request = request };
-
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
@@ -157,6 +156,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
                     services.AddSingleton(this.mockCBO.Object);
                     services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
                 });
+
+            this.searchServiceController = new SearchServiceController(new SearchControllerImpl(this.serviceProvider), HtmlModDefId) { Request = request };
 
             this.internalSearchController = InternalSearchController.Instance;
             this.CreateNewLuceneControllerInstance();
@@ -369,7 +370,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private void SetupUserController()
         {
             this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
-            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile { } });
+            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile(), });
             UserController.SetTestableInstance(this.mockUserController.Object);
         }
 
@@ -697,7 +698,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             DataTable table = new DataTable("Portal");
 
-            var cols = new string[]
+            var cols = new[]
                            {
                                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
                                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
@@ -737,16 +738,12 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 LocalizedName = UserSearchTypeName,
                 ModuleDefinitionId = 0,
             };
-            var results = this.searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
-            return results;
+            return this.searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
         }
 
         private IEnumerable<GroupedDetailView> GetGroupedDetailViewResults(SearchQuery searchQuery)
         {
-            bool more = false;
-            int totalHits = 0;
-            var results = this.searchServiceController.GetGroupedDetailViews(searchQuery, UserSearchTypeId, out totalHits, out more);
-            return results;
+            return this.searchServiceController.GetGroupedDetailViews(searchQuery, UserSearchTypeId, out _, out _);
         }
     }
 }

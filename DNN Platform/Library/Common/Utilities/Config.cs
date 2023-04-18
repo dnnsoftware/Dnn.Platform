@@ -1110,7 +1110,6 @@ namespace DotNetNuke.Common.Utilities
                 // save a copy of the web.config
                 strError += Save(appStatus, xmlConfig, GetTimestampedBackupPath(appStatus, "web_.config"));
 
-
                 // save the web.config
                 strError += Save(appStatus, xmlConfig);
             }

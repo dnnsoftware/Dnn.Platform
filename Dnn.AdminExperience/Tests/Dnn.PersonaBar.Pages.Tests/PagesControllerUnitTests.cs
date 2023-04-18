@@ -7,6 +7,8 @@ namespace Dnn.PersonaBar.Pages.Tests
     using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
+
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -20,6 +22,7 @@ namespace Dnn.PersonaBar.Pages.Tests
     [TestFixture]
     public class PagesControllerUnitTests
     {
+        private Mock<IBusinessControllerProvider> businessControllerProviderMock;
         private Mock<ITabController> tabControllerMock;
         private Mock<IModuleController> moduleControllerMock;
         private Mock<IPageUrlsController> pageUrlsControllerMock;
@@ -36,6 +39,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [SetUp]
         public void RunBeforeEachTest()
         {
+            this.businessControllerProviderMock = new Mock<IBusinessControllerProvider>();
             this.tabControllerMock = new Mock<ITabController>();
             this.moduleControllerMock = new Mock<IModuleController>();
             this.pageUrlsControllerMock = new Mock<IPageUrlsController>();
@@ -49,6 +53,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
+                    services.AddSingleton(this.businessControllerProviderMock.Object);
                     services.AddSingleton(this.tabControllerMock.Object);
                     services.AddSingleton(this.moduleControllerMock.Object);
                     services.AddSingleton(this.pageUrlsControllerMock.Object);
@@ -132,7 +137,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         private void InitializePageController()
         {
             this.pagesController = new PagesControllerImpl(
-                this.serviceProvider,
+                this.businessControllerProviderMock.Object,
                 this.tabControllerMock.Object,
                 this.moduleControllerMock.Object,
                 this.pageUrlsControllerMock.Object,
