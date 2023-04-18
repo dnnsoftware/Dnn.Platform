@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
         public Tags()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string AddImageUrl { get; set; } = IconController.IconURL("Add");

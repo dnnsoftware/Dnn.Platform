@@ -33,7 +33,7 @@ namespace DotNetNuke.Prompt
         /// <param name="serviceScopeFactory">The service scope factory.</param>
         public CommandRepository(IServiceScopeFactory serviceScopeFactory)
         {
-            this.serviceScopeFactory = serviceScopeFactory ?? Globals.DependencyProvider.GetRequiredService<IServiceScopeFactory>();
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
         }
 
         /// <inheritdoc/>
@@ -61,13 +61,65 @@ namespace DotNetNuke.Prompt
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
             return DataCache.GetCachedData<ICommandHelp>(
                 new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => this.GetCommandHelpInternal(consoleCommand));
+                c => GetCommandHelpInternal(consoleCommand));
         }
 
         /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ICommandRepository>;
+        }
+
+        private static string LocalizeString(string key, string resourcesFile = Constants.DefaultPromptResourceFile)
+        {
+            var localizedText = Localization.GetString(key, resourcesFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
+        }
+
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
+        }
+
+        private static ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
+        {
+            var commandHelp = new CommandHelp();
+            if (consoleCommand != null)
+            {
+                var cmd = consoleCommand.GetType();
+                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() as ConsoleCommandAttribute ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
+                commandHelp.Name = attr.Name;
+                commandHelp.Description = LocalizeString(attr.DescriptionKey, consoleCommand.LocalResourceFile);
+                var commandParameters = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
+                    .Select(x => x.GetCustomAttributes(typeof(ConsoleCommandParameterAttribute), false).FirstOrDefault())
+                    .Cast<ConsoleCommandParameterAttribute>().ToList();
+                if (commandParameters.Any())
+                {
+                    var options = commandParameters.Where(attribute => attribute != null).Select(attribute => new CommandOption
+                    {
+                        Name = attribute.Name,
+                        Required = attribute.Required,
+                        DefaultValue = attribute.DefaultValue,
+                        Description =
+                            LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
+                    }).ToList();
+                    commandHelp.Options = options;
+                }
+
+                commandHelp.ResultHtml = consoleCommand.ResultHtml;
+            }
+            else
+            {
+                commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
+            }
+
+            return commandHelp;
         }
 
         private SortedDictionary<string, ICommand> GetCommandsInternal()
@@ -107,64 +159,12 @@ namespace DotNetNuke.Prompt
             return commands;
         }
 
-        private static string LocalizeString(string key, string resourcesFile = Constants.DefaultPromptResourceFile)
-        {
-            var localizedText = Localization.GetString(key, resourcesFile);
-            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
-        }
-
-        private static string CreateCommandFromClass(string className)
-        {
-            var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
-        }
-
-        private static string[] SplitCamelCase(string source)
-        {
-            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
-        }
-
         private SortedDictionary<string, ICommand> CommandList()
         {
             return
                 DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
                     new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
                     c => this.GetCommandsInternal());
-        }
-
-        private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
-        {
-            var commandHelp = new CommandHelp();
-            if (consoleCommand != null)
-            {
-                var cmd = consoleCommand.GetType();
-                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() as ConsoleCommandAttribute ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
-                commandHelp.Name = attr.Name;
-                commandHelp.Description = LocalizeString(attr.DescriptionKey, consoleCommand.LocalResourceFile);
-                var commandParameters = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
-                    .Select(x => x.GetCustomAttributes(typeof(ConsoleCommandParameterAttribute), false).FirstOrDefault())
-                    .Cast<ConsoleCommandParameterAttribute>().ToList();
-                if (commandParameters.Any())
-                {
-                    var options = commandParameters.Where(attribute => attribute != null).Select(attribute => new CommandOption
-                    {
-                        Name = attribute.Name,
-                        Required = attribute.Required,
-                        DefaultValue = attribute.DefaultValue,
-                        Description =
-                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
-                    }).ToList();
-                    commandHelp.Options = options;
-                }
-
-                commandHelp.ResultHtml = consoleCommand.ResultHtml;
-            }
-            else
-            {
-                commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
-            }
-
-            return commandHelp;
         }
     }
 }

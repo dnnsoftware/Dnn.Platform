@@ -23,23 +23,23 @@ namespace DotNetNuke.Tests.Utilities
         /// <returns>HttpResponseBase.</returns>
         public static Mock<HttpContextBase> RegisterMockHttpContext()
         {
-            var mock = CrateMockHttpContext();
+            var mock = CreateMockHttpContext();
             HttpContextSource.RegisterInstance(mock.Object);
             return mock;
         }
 
-        private static Mock<HttpContextBase> CrateMockHttpContext()
+        private static Mock<HttpContextBase> CreateMockHttpContext()
         {
             var context = new Mock<HttpContextBase>();
             context.SetupGet(x => x.Items).Returns(new Hashtable());
             context.SetupGet(x => x.Request).Returns(GetMockRequestBase());
             context.SetupGet(x => x.Response).Returns(GetMockResponseBase());
             context.SetupGet(x => x.Session).Returns(GetMockSessionStateBase());
-            context.SetupGet(x => x.Server).Returns(GeMocktServerUtilityBase());
+            context.SetupGet(x => x.Server).Returns(GetMockServerUtilityBase());
             return context;
         }
 
-        private static HttpServerUtilityBase GeMocktServerUtilityBase()
+        private static HttpServerUtilityBase GetMockServerUtilityBase()
         {
             var mockServerUtility = new Mock<HttpServerUtilityBase>();
             mockServerUtility.SetupAllProperties();

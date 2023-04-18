@@ -85,9 +85,8 @@ namespace Dnn.ExportImport.Components.Engines
         /// <param name="exportController">The export controller.</param>
         public ExportImportEngine(IEnumerable<BasePortableService> portableServices, ExportController exportController)
         {
-            this.exportController = exportController ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ExportController>() ?? Globals.DependencyProvider.GetRequiredService<ExportController>();
-            portableServices ??= HttpContextSource.Current?.GetScope()?.ServiceProvider.GetServices<BasePortableService>() ?? Globals.DependencyProvider.GetServices<BasePortableService>();
-            this.portableServices = portableServices.ToList();
+            this.exportController = exportController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ExportController>();
+            this.portableServices = (portableServices ?? Globals.GetCurrentServiceProvider().GetServices<BasePortableService>()).ToList();
         }
 
         private static string[] NotAllowedCategoriesInRequestArray => new[]

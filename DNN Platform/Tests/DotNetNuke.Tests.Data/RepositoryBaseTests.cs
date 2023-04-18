@@ -7,10 +7,7 @@ namespace DotNetNuke.Tests.Data
     using System.Collections.Generic;
     using System.Web.Caching;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -18,20 +15,30 @@ namespace DotNetNuke.Tests.Data
     using DotNetNuke.Tests.Data.Fakes;
     using DotNetNuke.Tests.Data.Models;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using Moq.Protected;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class RepositoryBaseTests
     {
-        // ReSharper disable InconsistentNaming
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
         public void SetUp()
         {
             MockComponentProvider.ResetContainer();
+            this.serviceProvider = FakeServiceProvider.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -510,12 +517,6 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Get_Calls_GetAllInternal_If_Cacheable_And_Cache_Expired()
         {
             // Arrange
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -662,12 +663,6 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Get_Overload_Calls_GetAllByScopeInternal_If_Cacheable_And_Cache_Expired()
         {
             // Arrange
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -1041,12 +1036,6 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_GetPage_Overload_Calls_GetAllByScopeInternal_If_Cacheable_And_Cache_Expired()
         {
             // Arrange
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();

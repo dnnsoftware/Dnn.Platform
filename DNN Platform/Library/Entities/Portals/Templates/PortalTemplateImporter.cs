@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
-
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
@@ -90,18 +90,18 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         private XmlDocument Template { get; set; }
 
-        internal void ParseTemplate(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        internal void ParseTemplate(IBusinessControllerProvider businessControllerProvider, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            this.ParseTemplateInternal(portalId, administratorId, mergeTabs, isNewPortal);
+            this.ParseTemplateInternal(businessControllerProvider, portalId, administratorId, mergeTabs, isNewPortal);
         }
 
-        internal void ParseTemplateInternal(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        internal void ParseTemplateInternal(IBusinessControllerProvider businessControllerProvider, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             LocaleCollection localeCollection;
-            this.ParseTemplateInternal(portalId, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            this.ParseTemplateInternal(businessControllerProvider, portalId, administratorId, mergeTabs, isNewPortal, out localeCollection);
         }
 
-        internal void ParseTemplateInternal(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
+        internal void ParseTemplateInternal(IBusinessControllerProvider businessControllerProvider, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
             CachingProvider.DisableCacheExpiration();
 
@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     }
                 }
 
-                this.ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
+                this.ParseTabs(businessControllerProvider, node, portalId, false, mergeTabs, isNewPortal);
             }
 
             CachingProvider.EnableCacheExpiration();
@@ -1052,7 +1052,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.GetActivePortalLanguage(portalID));
         }
 
-        private void ParseTab(XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
+        private void ParseTab(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
         {
             TabInfo tab = null;
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
@@ -1076,7 +1076,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
                 if (tab == null || isNewPortal)
                 {
-                    tab = TabController.DeserializeTab(nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs.ToOldEnum(), hModules);
+                    tab = TabController.DeserializeTab(businessControllerProvider, nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs.ToOldEnum(), hModules);
                 }
 
                 // when processing the template we should try and identify the Admin tab
@@ -1153,7 +1153,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private void ParseTabs(XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        private void ParseTabs(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             // used to control if modules are true modules or instances
             // will hold module ID from template / new module ID so new instances can reference right moduleid
@@ -1197,7 +1197,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
-                this.ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
+                this.ParseTab(businessControllerProvider, nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
             }
 
             // Process tabs that are linked to tabs

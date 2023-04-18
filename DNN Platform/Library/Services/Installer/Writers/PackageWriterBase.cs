@@ -40,13 +40,13 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this.package = package;
             this.package.AttachInstallerInfo(new InstallerInfo());
-            this.applicationStatusInfo = Common.Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.applicationStatusInfo = Common.Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Initializes a new instance of the <see cref="PackageWriterBase"/> class.</summary>
         protected PackageWriterBase()
         {
-            this.applicationStatusInfo = Common.Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.applicationStatusInfo = Common.Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Gets a Dictionary of AppCodeFiles that should be included in the Package.</summary>

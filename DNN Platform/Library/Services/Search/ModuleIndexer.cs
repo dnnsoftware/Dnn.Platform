@@ -4,11 +4,11 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -20,6 +20,8 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>The ModuleIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
@@ -28,18 +30,30 @@ namespace DotNetNuke.Services.Search
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public ModuleIndexer()
-            : this(false)
+            : this(false, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
         /// <param name="needSearchModules"></param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public ModuleIndexer(bool needSearchModules)
+            : this(needSearchModules, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
+        /// <param name="needSearchModules"></param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public ModuleIndexer(bool needSearchModules, IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
 
             if (needSearchModules)
@@ -79,8 +93,8 @@ namespace DotNetNuke.Services.Search
                 {
                     try
                     {
-                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                        var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = (ModuleSearchBase)controller, ModInfo = module };
+                        var controller = this.businessControllerProvider.GetInstance<ModuleSearchBase>(module);
+                        var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = controller, ModInfo = module };
                         var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
                         if (searchItems != null && searchItems.Count > 0)
@@ -212,6 +226,27 @@ namespace DotNetNuke.Services.Search
                    select mii.ModuleInfo;
         }
 
+        private static void ThrowLogError(ModuleInfo module, Exception ex)
+        {
+            try
+            {
+                var message = string.Format(
+                        Localization.GetExceptionMessage(
+                            "ErrorCreatingBusinessControllerClass",
+                            "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
+                        module.DesktopModule.BusinessControllerClass,
+                        module.DesktopModule.ModuleName,
+                        module.ModuleID,
+                        module.TabID,
+                        module.PortalID);
+                throw new Exception(message, ex);
+            }
+            catch (Exception ex1)
+            {
+                Exceptions.Exceptions.LogException(ex1);
+            }
+        }
+
         private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
         {
             foreach (var searchItem in searchItems)
@@ -230,30 +265,9 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private static void ThrowLogError(ModuleInfo module, Exception ex)
-        {
-            try
-            {
-                var message = string.Format(
-                    Localization.GetExceptionMessage(
-                        "ErrorCreatingBusinessControllerClass",
-                        "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
-                    module.DesktopModule.BusinessControllerClass,
-                    module.DesktopModule.ModuleName,
-                    module.ModuleID,
-                    module.TabID,
-                    module.PortalID);
-                throw new Exception(message, ex);
-            }
-            catch (Exception ex1)
-            {
-                Exceptions.Exceptions.LogException(ex1);
-            }
-        }
-
         private IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
-            var businessControllers = new Hashtable();
+            var businessControllers = new Dictionary<string, bool>();
             var searchModuleIds = new HashSet<int>();
             var searchModules = new List<ModuleIndexInfo>();
 
@@ -270,19 +284,14 @@ namespace DotNetNuke.Services.Search
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
                         // Check if the business controller is in the Hashtable
-                        var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
-                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+                        if (!businessControllers.TryGetValue(module.DesktopModule.BusinessControllerClass, out var supportsSearch))
                         {
-                            // If nothing create a new instance
-                            if (controller == null)
-                            {
-                                // Add to hashtable
-                                controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                                businessControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-                            }
+                            var controllerType = Reflection.CreateType(module.DesktopModule.BusinessControllerClass);
+                            supportsSearch = typeof(ModuleSearchBase).IsAssignableFrom(controllerType);
+                            businessControllers.Add(module.DesktopModule.BusinessControllerClass, supportsSearch);
                         }
 
-                        searchModules.Add(new ModuleIndexInfo { ModuleInfo = module, SupportSearch = controller is ModuleSearchBase });
+                        searchModules.Add(new ModuleIndexInfo { ModuleInfo = module, SupportSearch = supportsSearch });
                     }
                 }
                 catch (Exception ex)

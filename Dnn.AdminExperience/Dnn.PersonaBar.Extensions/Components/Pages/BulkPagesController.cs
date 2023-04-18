@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
@@ -14,6 +13,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -23,12 +23,28 @@ namespace Dnn.PersonaBar.Pages.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.UI;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
 
     public class BulkPagesController : ServiceLocator<IBulkPagesController, BulkPagesController>, IBulkPagesController
     {
         private const string DefaultPageTemplate = "Default.page.template";
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
+        private readonly IBusinessControllerProvider businessControllerProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public BulkPagesController()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public BulkPagesController(IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider;
+        }
 
         /// <inheritdoc/>
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
@@ -129,13 +145,13 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         protected override Func<IBulkPagesController> GetFactory()
         {
-            return () => new BulkPagesController();
+            return Globals.DependencyProvider.GetRequiredService<IBulkPagesController>;
         }
 
         /// <summary>Checks whether there is a duplicate tab exists.</summary>
         /// <param name="pageIndex">Page index to check the duplicate for.</param>
         /// <param name="pages">Page list to check the duplicates from.</param>
-        /// <returns>True in case there is a tab with the same name and path and with the index of greater than the first occurence; false otherwise.</returns>
+        /// <returns>True in case there is a tab with the same name and path and with the index of greater than the first occurrence; false otherwise.</returns>
         private static bool DuplicateExists(int pageIndex, string[] pages)
         {
             var pageName = pages[pageIndex];
@@ -354,7 +370,7 @@ namespace Dnn.PersonaBar.Pages.Components
             try
             {
                 xmlDoc.Load(templateFile);
-                TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+                TabController.DeserializePanes(this.businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
             }
             catch (Exception ex)
             {

@@ -13,10 +13,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
@@ -145,21 +147,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
+            this.mockUserController = new Mock<IUserController>();
+            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
+            UserController.SetTestableInstance(this.mockUserController.Object);
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockLocaleController = MockComponentProvider.CreateLocaleController();
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
-
-            this.mockUserController = new Mock<IUserController>();
-            this.mockHostController = new Mock<IHostController>();
             this.mockSearchHelper = new Mock<ISearchHelper>();
-
-            this.SetupDataProvider();
-            this.SetupHostController();
             this.SetupSearchHelper();
+            this.SetupDataProvider();
             this.SetupLocaleController();
-
-            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
-            UserController.SetTestableInstance(this.mockUserController.Object);
+            this.mockHostController = new Mock<IHostController>();
+            this.SetupHostController();
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>

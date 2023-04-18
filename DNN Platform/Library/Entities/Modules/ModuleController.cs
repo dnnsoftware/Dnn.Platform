@@ -10,12 +10,15 @@ namespace DotNetNuke.Entities.Modules
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Threading;
     using System.Web;
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
@@ -38,6 +41,8 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.OutputCache;
     using DotNetNuke.Services.Search.Entities;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>ModuleController provides the Business Layer for Modules.</summary>
     public partial class ModuleController : ServiceLocator<IModuleController, ModuleController>, IModuleController
     {
@@ -58,11 +63,12 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Deserializes the module.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="nodeModule">The node module.</param>
         /// <param name="module">ModuleInfo of current module.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="tabId">The tab id.</param>
-        public static void DeserializeModule(XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
+        public static void DeserializeModule(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
         {
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
@@ -116,7 +122,7 @@ namespace DotNetNuke.Entities.Modules
             // deserialize Content (if included)
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")))
             {
-                GetModuleContent(nodeModule, module.ModuleID, tabId, portalId);
+                GetModuleContent(businessControllerProvider, nodeModule, module.ModuleID, tabId, portalId);
             }
 
             // deserialize Permissions
@@ -128,19 +134,20 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Deserializes the module.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="nodeModule">The node module.</param>
         /// <param name="nodePane">The node pane.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="tabId">The tab id.</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="hModules">The modules.</param>
-        public static void DeserializeModule(XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
+        public static void DeserializeModule(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
             // will be instance or module?
-            int templateModuleID = XmlUtils.GetNodeValueInt(nodeModule, "moduleID");
-            bool isInstance = CheckIsInstance(templateModuleID, hModules);
+            int templateModuleId = XmlUtils.GetNodeValueInt(nodeModule, "moduleID");
+            bool isInstance = CheckIsInstance(templateModuleId, hModules);
             if (moduleDefinition != null)
             {
                 // If Mode is Merge Check if Module exists
@@ -152,7 +159,7 @@ namespace DotNetNuke.Entities.Modules
                     // still marked as shown on all tabs, this action will make sure there is no duplicate modules created on new tab.
                     if (module.AllTabs)
                     {
-                        var existModule = Instance.GetModule(templateModuleID, Null.NullInteger, false);
+                        var existModule = Instance.GetModule(templateModuleId, Null.NullInteger, false);
                         if (existModule != null && !existModule.IsDeleted && existModule.AllTabs && existModule.PortalID == portalId)
                         {
                             return;
@@ -177,15 +184,15 @@ namespace DotNetNuke.Entities.Modules
                     {
                         // Add new module
                         intModuleId = Instance.AddModule(module);
-                        if (templateModuleID > 0)
+                        if (templateModuleId > 0)
                         {
-                            hModules.Add(templateModuleID, intModuleId);
+                            hModules.Add(templateModuleId, intModuleId);
                         }
                     }
                     else
                     {
                         // Add instance
-                        module.ModuleID = Convert.ToInt32(hModules[templateModuleID]);
+                        module.ModuleID = Convert.ToInt32(hModules[templateModuleId]);
                         intModuleId = Instance.AddModule(module);
                     }
 
@@ -198,7 +205,7 @@ namespace DotNetNuke.Entities.Modules
 
                     if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")) && !isInstance)
                     {
-                        GetModuleContent(nodeModule, intModuleId, tabId, portalId);
+                        GetModuleContent(businessControllerProvider, nodeModule, intModuleId, tabId, portalId);
                     }
 
                     // Process permissions only once
@@ -214,12 +221,13 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>SerializeModule.</summary>
-        /// <param name="xmlModule">The Xml Document to use for the Module.</param>
+        /// <summary>Serializes the metadata of a module (and optionally its contents) to an XML node.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="xmlModule">The XML Document to use for the Module.</param>
         /// <param name="module">The ModuleInfo object to serialize.</param>
-        /// <param name="includeContent">A flak that determines whether the content of the module is serialised.</param>
+        /// <param name="includeContent">A flag that determines whether the content of the module is serialized.</param>
         /// <returns>An <see cref="XmlNode"/> representing the module.</returns>
-        public static XmlNode SerializeModule(XmlDocument xmlModule, ModuleInfo module, bool includeContent)
+        public static XmlNode SerializeModule(IBusinessControllerProvider businessControllerProvider, XmlDocument xmlModule, ModuleInfo module, bool includeContent)
         {
             var serializer = new XmlSerializer(typeof(ModuleInfo));
             var sw = new StringWriter();
@@ -272,7 +280,7 @@ namespace DotNetNuke.Entities.Modules
 
                 if (includeContent)
                 {
-                    AddContent(moduleNode, module);
+                    AddContent(businessControllerProvider, moduleNode, module);
                 }
 
                 // serialize ModuleSettings and TabModuleSettings
@@ -1709,56 +1717,57 @@ namespace DotNetNuke.Entities.Modules
             return () => new ModuleController();
         }
 
-        private static void AddContent(XmlNode nodeModule, ModuleInfo module)
+        private static void AddContent(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, ModuleInfo module)
         {
-            if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+            if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) || !module.DesktopModule.IsPortable)
             {
-                try
+                return;
+            }
+
+            try
+            {
+                var controller = businessControllerProvider.GetInstance<IPortable>(module);
+                if (controller is null)
                 {
-                    object businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                    var controller = businessController as IPortable;
-                    if (controller != null)
-                    {
-                        string content = Convert.ToString(controller.ExportModule(module.ModuleID));
-                        if (!string.IsNullOrEmpty(content))
-                        {
-                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
-
-                            // add attributes to XML document
-                            if (nodeModule.OwnerDocument != null)
-                            {
-                                var existing = nodeModule.OwnerDocument.GetElementById("content");
-                                if (existing != null)
-                                {
-                                    nodeModule.OwnerDocument.RemoveChild(existing);
-                                }
-
-                                XmlNode newnode = nodeModule.OwnerDocument.CreateElement("content");
-                                XmlAttribute xmlattr = nodeModule.OwnerDocument.CreateAttribute("type");
-                                xmlattr.Value = Globals.CleanName(module.DesktopModule.ModuleName);
-                                if (newnode.Attributes != null)
-                                {
-                                    newnode.Attributes.Append(xmlattr);
-                                }
-
-                                xmlattr = nodeModule.OwnerDocument.CreateAttribute("version");
-                                xmlattr.Value = module.DesktopModule.Version;
-                                if (newnode.Attributes != null)
-                                {
-                                    newnode.Attributes.Append(xmlattr);
-                                }
-
-                                content = HttpContext.Current.Server.HtmlEncode(content);
-                                newnode.InnerXml = XmlUtils.XMLEncode(content);
-                                nodeModule.AppendChild(newnode);
-                            }
-                        }
-                    }
+                    return;
                 }
-                catch (Exception exc)
+
+                var content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                if (string.IsNullOrEmpty(content))
                 {
-                    Logger.Error(exc);
+                    return;
                 }
+
+                content = XmlUtils.RemoveInvalidXmlCharacters(content);
+
+                // add attributes to XML document
+                if (nodeModule.OwnerDocument == null)
+                {
+                    return;
+                }
+
+                var existing = nodeModule.OwnerDocument.GetElementById("content");
+                if (existing != null)
+                {
+                    nodeModule.OwnerDocument.RemoveChild(existing);
+                }
+
+                XmlNode newNode = nodeModule.OwnerDocument.CreateElement("content");
+                var xmlAttr = nodeModule.OwnerDocument.CreateAttribute("type");
+                xmlAttr.Value = Globals.CleanName(module.DesktopModule.ModuleName);
+                newNode.Attributes?.Append(xmlAttr);
+
+                xmlAttr = nodeModule.OwnerDocument.CreateAttribute("version");
+                xmlAttr.Value = module.DesktopModule.Version;
+                newNode.Attributes?.Append(xmlAttr);
+
+                content = HttpContext.Current.Server.HtmlEncode(content);
+                newNode.InnerXml = XmlUtils.XMLEncode(content);
+                nodeModule.AppendChild(newNode);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
             }
         }
 
@@ -1989,52 +1998,54 @@ namespace DotNetNuke.Entities.Modules
             return moduleFound;
         }
 
-        private static void GetModuleContent(XmlNode nodeModule, int moduleId, int tabId, int portalId)
+        private static void GetModuleContent(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, int moduleId, int tabId, int portalId)
         {
             ModuleInfo module = Instance.GetModule(moduleId, tabId, true);
-            if (nodeModule != null)
+            if (nodeModule == null)
             {
-                // ReSharper disable PossibleNullReferenceException
-                string version = nodeModule.SelectSingleNode("content").Attributes["version"].Value;
-                string content = nodeModule.SelectSingleNode("content").InnerXml;
-                content = content.Substring(9, content.Length - 12);
-                if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !string.IsNullOrEmpty(content))
-                {
-                    var portal = PortalController.Instance.GetPortal(portalId);
+                return;
+            }
 
-                    // Determine if the Module is copmpletely installed
-                    // (ie are we running in the same request that installed the module).
-                    if (module.DesktopModule.SupportedFeatures == Null.NullInteger)
-                    {
-                        // save content in eventqueue for processing after an app restart,
-                        // as modules Supported Features are not updated yet so we
-                        // cannot determine if the module supports IsPortable
-                        EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
-                    }
-                    else
-                    {
-                        if (module.DesktopModule.IsPortable)
-                        {
-                            try
-                            {
-                                object businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                                var controller = businessController as IPortable;
-                                if (controller != null)
-                                {
-                                    var decodedContent = HttpContext.Current.Server.HtmlDecode(content);
-                                    controller.ImportModule(module.ModuleID, decodedContent, version, portal.AdministratorId);
-                                }
-                            }
-                            catch
-                            {
-                                // if there is an error then the type cannot be loaded at this time, so add to EventQueue
-                                EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
-                            }
-                        }
-                    }
+            string version = nodeModule.SelectSingleNode("content").Attributes["version"].Value;
+            string content = nodeModule.SelectSingleNode("content").InnerXml;
+            content = content.Substring(9, content.Length - 12);
+            if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) || string.IsNullOrEmpty(content))
+            {
+                return;
+            }
+
+            var portal = PortalController.Instance.GetPortal(portalId);
+
+            // Determine if the Module is completely installed
+            // (ie are we running in the same request that installed the module).
+            if (module.DesktopModule.SupportedFeatures == Null.NullInteger)
+            {
+                // save content in eventqueue for processing after an app restart,
+                // as modules Supported Features are not updated yet so we
+                // cannot determine if the module supports IsPortable
+                EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
+            }
+            else
+            {
+                if (!module.DesktopModule.IsPortable)
+                {
+                    return;
                 }
 
-                // ReSharper restore PossibleNullReferenceException
+                try
+                {
+                    var controller = businessControllerProvider.GetInstance<IPortable>(module);
+                    if (controller is not null)
+                    {
+                        var decodedContent = WebUtility.HtmlDecode(content);
+                        controller.ImportModule(module.ModuleID, decodedContent, version, portal.AdministratorId);
+                    }
+                }
+                catch
+                {
+                    // if there is an error then the type cannot be loaded at this time, so add to EventQueue
+                    EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
+                }
             }
         }
 
@@ -2319,33 +2330,35 @@ namespace DotNetNuke.Entities.Modules
                     this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
                 }
 
-                if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                try
                 {
-                    try
+                    using var serviceScope = Globals.GetOrCreateServiceScope();
+                    var businessControllerProvider = serviceScope.ServiceProvider.GetRequiredService<IBusinessControllerProvider>();
+                    var portableModule = businessControllerProvider.GetInstance<IPortable>(newModule);
+                    if (portableModule is not null)
                     {
-                        object businessController = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                        var portableModule = businessController as IPortable;
-                        if (portableModule != null)
+                        try
                         {
-                            try
+                            SetCloneModuleContext(true);
+                            string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
+                            if (!string.IsNullOrEmpty(moduleContent))
                             {
-                                SetCloneModuleContext(true);
-                                string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
-                                if (!string.IsNullOrEmpty(moduleContent))
-                                {
-                                    portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
-                                }
-                            }
-                            finally
-                            {
-                                SetCloneModuleContext(false);
+                                portableModule.ImportModule(
+                                    newModule.ModuleID,
+                                    moduleContent,
+                                    newModule.DesktopModule.Version,
+                                    currentUser.UserID);
                             }
                         }
+                        finally
+                        {
+                            SetCloneModuleContext(false);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Exceptions.LogException(ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
                 }
 
                 moduleId = newModule.ModuleID;

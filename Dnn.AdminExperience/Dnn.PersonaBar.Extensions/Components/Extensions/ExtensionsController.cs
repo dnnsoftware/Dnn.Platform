@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         public ExtensionsController()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }

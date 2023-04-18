@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Modules
         /// <summary>Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.</summary>
         public ProfileModuleUserControlBase()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>

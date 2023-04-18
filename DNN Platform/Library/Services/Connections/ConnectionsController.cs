@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Connections
         /// <summary>Initializes a new instance of the <see cref="ConnectionsController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IConnectionsManager. Scheduled removal in v12.0.0.")]
         public ConnectionsController()
-            : this(Globals.DependencyProvider, null)
+            : this(Globals.GetCurrentServiceProvider(), null)
         {
         }
 

@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The localizer.</param>
         public DDRMenuNavigationProvider(ILocaliser localiser)
         {
-            this.localiser = localiser ?? HttpContextSource.Current?.GetScope()?.ServiceProvider.GetRequiredService<ILocaliser>() ?? Globals.DependencyProvider.GetRequiredService<ILocaliser>();
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
         }
 
         /// <inheritdoc/>

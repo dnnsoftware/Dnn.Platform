@@ -2,13 +2,14 @@
 {
     using System;
     using System.Linq;
+
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
 
     /// <summary>
-    /// When run on each server it updates the last activity date for the server and removes any servers that havent been seen in 24 hours.
+    /// When run on each server it updates the last activity date for the server and removes any servers that haven't been seen in 24 hours.
     /// </summary>
     public class WebServerMonitor : SchedulerClient
     {
@@ -18,7 +19,7 @@
         /// Initializes a new instance of the <see cref="WebServerMonitor"/> class.
         /// Constructs a WebServerMonitor SchedulerClient.
         /// </summary>
-        /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem.</param>
+        /// <param name="objScheduleHistoryItem">A SchedulerHistoryItem.</param>
         /// <remarks>
         /// This must be run on all servers.
         /// </remarks>

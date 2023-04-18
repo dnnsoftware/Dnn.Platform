@@ -16,9 +16,27 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>An HTTP handler for serving an RSS feed.</summary>
     public class RssHandler : SyndicationHandlerBase
     {
+        private readonly ISearchController searchController;
+
+        /// <summary>Initializes a new instance of the <see cref="RssHandler"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ISearchController. Scheduled removal in v12.0.0.")]
+        public RssHandler()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RssHandler"/> class.</summary>
+        /// <param name="searchController">The search controller.</param>
+        public RssHandler(ISearchController searchController)
+        {
+            this.searchController = searchController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ISearchController>();
+        }
+
         /// <inheritdoc />
         protected override void PopulateChannel(string channelName, string userName)
         {
@@ -52,7 +70,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                searchResults = SearchController.Instance.ModuleSearch(query).Results;
+                searchResults = this.searchController.ModuleSearch(query).Results;
             }
             catch (Exception ex)
             {

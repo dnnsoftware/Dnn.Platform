@@ -8,12 +8,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.Data;
     using System.IO;
     using System.Threading;
-
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
@@ -73,7 +73,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const string SearchIndexFolder = @"App_Data\InternalSearchTests";
         private readonly double readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
-
         private Mock<IHostController> mockHostController;
         private Mock<CachingProvider> mockCachingProvider;
         private Mock<DataProvider> mockDataProvider;

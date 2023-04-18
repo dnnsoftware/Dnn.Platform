@@ -22,7 +22,7 @@ namespace DotNetNuke.Common.Internal
 
             try
             {
-                foreach (IRoutingManager routingManager in Globals.DependencyProvider.GetServices(typeof(IRoutingManager)))
+                foreach (IRoutingManager routingManager in Globals.GetCurrentServiceProvider().GetServices(typeof(IRoutingManager)))
                 {
                     routingManager.RegisterRoutes();
                 }

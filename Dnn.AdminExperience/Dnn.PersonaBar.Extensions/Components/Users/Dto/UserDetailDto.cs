@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         public UserDetailDto()
         {

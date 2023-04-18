@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Mvp
         /// <summary>Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.</summary>
         public ProfileModuleViewBase()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>
