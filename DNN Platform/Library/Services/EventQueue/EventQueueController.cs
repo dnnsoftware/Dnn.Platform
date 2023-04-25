@@ -6,11 +6,15 @@ namespace DotNetNuke.Services.EventQueue
     using System;
     using System.Data;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework;
     using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+    using Reflection = DotNetNuke.Framework.Reflection;
 
     /// <summary>EventQueueController provides business layer of event queue.</summary>
     /// <remarks>
@@ -61,39 +65,71 @@ namespace DotNetNuke.Services.EventQueue
         /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static bool ProcessMessages(string eventName)
         {
-            return ProcessMessages(GetMessages(eventName));
+            using var scope = Globals.GetOrCreateServiceScope();
+            return ProcessMessages(scope.ServiceProvider, eventName);
+        }
+
+        /// <summary>Processes the messages.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        public static bool ProcessMessages(IServiceProvider serviceProvider, string eventName)
+        {
+            return ProcessMessages(serviceProvider, GetMessages(eventName));
         }
 
         /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
         /// <param name="subscriberId">The subscriber ID.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static bool ProcessMessages(string eventName, string subscriberId)
         {
             return ProcessMessages(GetMessages(eventName, subscriberId));
         }
 
         /// <summary>Processes the messages.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventName">Name of the event.</param>
+        /// <param name="subscriberId">The subscriber ID.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        public static bool ProcessMessages(IServiceProvider serviceProvider, string eventName, string subscriberId)
+        {
+            return ProcessMessages(serviceProvider, GetMessages(eventName, subscriberId));
+        }
+
+        /// <summary>Processes the messages.</summary>
         /// <param name="eventMessages">The event messages.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static bool ProcessMessages(EventMessageCollection eventMessages)
         {
+            using var scope = Globals.GetOrCreateServiceScope();
+            return ProcessMessages(scope.ServiceProvider, eventMessages);
+        }
+
+        /// <summary>Processes the messages.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventMessages">The event messages.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        public static bool ProcessMessages(IServiceProvider serviceProvider, EventMessageCollection eventMessages)
+        {
             bool success = Null.NullBoolean;
-            EventMessage message;
             for (int messageNo = 0; messageNo <= eventMessages.Count - 1; messageNo++)
             {
-                message = eventMessages[messageNo];
+                var message = eventMessages[messageNo];
                 try
                 {
-                    object oMessageProcessor = Reflection.CreateObject(message.ProcessorType, message.ProcessorType);
-                    if (!((EventMessageProcessorBase)oMessageProcessor).ProcessMessage(message))
+                    var messageProcessor = (EventMessageProcessorBase)Reflection.CreateObject(serviceProvider, message.ProcessorType, message.ProcessorType);
+                    if (!messageProcessor.ProcessMessage(message))
                     {
                         throw new Exception();
                     }
 
-                    // Set Message comlete so it is not run a second time
+                    // Set Message complete so it is not run a second time
                     DataProvider.Instance().SetEventMessageComplete(message.EventMessageID);
 
                     success = true;
@@ -101,7 +137,8 @@ namespace DotNetNuke.Services.EventQueue
                 catch
                 {
                     // log if message could not be processed
-                    var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                    var eventLogger = serviceProvider.GetRequiredService<IEventLogger>();
+                    var log = new LogInfo { LogTypeKey = EventLogType.HOST_ALERT.ToString() };
                     log.AddProperty("EventQueue.ProcessMessage", "Message Processing Failed");
                     log.AddProperty("ProcessorType", message.ProcessorType);
                     log.AddProperty("Body", message.Body);
@@ -116,10 +153,10 @@ namespace DotNetNuke.Services.EventQueue
                         log.AddProperty("ExceptionMessage", message.ExceptionMessage);
                     }
 
-                    LogController.Instance.AddLog(log);
+                    eventLogger.AddLog(log);
                     if (message.ExpirationDate < DateTime.Now)
                     {
-                        // Set Message comlete so it is not run a second time
+                        // Set Message complete so it is not run a second time
                         DataProvider.Instance().SetEventMessageComplete(message.EventMessageID);
                     }
                 }

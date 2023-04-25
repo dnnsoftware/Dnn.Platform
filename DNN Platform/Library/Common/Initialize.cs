@@ -18,7 +18,6 @@ namespace DotNetNuke.Common
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Connections;
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Blocker;
@@ -282,7 +281,7 @@ namespace DotNetNuke.Common
             bool autoUpgrade = Config.GetSetting("AutoUpgrade") == null || bool.Parse(Config.GetSetting("AutoUpgrade"));
             bool useWizard = Config.GetSetting("UseInstallWizard") == null || bool.Parse(Config.GetSetting("UseInstallWizard"));
 
-            // Determine the Upgrade status and redirect as neccessary to InstallWizard.aspx
+            // Determine the Upgrade status and redirect as necessary to InstallWizard.aspx
             string retValue = Null.NullString;
             var applicationStatusInfo = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             switch (applicationStatusInfo.Status)
@@ -419,17 +418,27 @@ namespace DotNetNuke.Common
         private static string InitializeApp(HttpApplication app, ref bool initialized)
         {
             var request = app.Request;
-            var redirect = Null.NullString;
 
             Logger.Trace("Request " + request.Url.LocalPath);
 
             // Don't process some of the AppStart methods if we are installing
-            if (!IsUpgradeOrInstallRequest(app.Request))
+            if (IsUpgradeOrInstallRequest(app.Request))
             {
+                // NET Framework version is needed by Upgrade
+                Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+                Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
+                Globals.OperatingSystemVersion = Environment.OSVersion.Version;
+
+                return Null.NullString;
+            }
+
                 // Check whether the current App Version is the same as the DB Version
-                redirect = CheckVersion(app);
-                if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
+            var redirect = CheckVersion(app);
+            if (!string.IsNullOrEmpty(redirect) || InstallBlocker.Instance.IsInstallInProgress())
                 {
+                return redirect;
+            }
+
                     Logger.Info("Application Initializing");
 
                     // Set globals
@@ -450,11 +459,12 @@ namespace DotNetNuke.Common
                     LogStart();
 
                     // Process any messages in the EventQueue for the Application_Start event
-                    EventQueueController.ProcessMessages("Application_Start");
+            using (var scope = Globals.DependencyProvider.CreateScope())
+            {
+                EventQueueController.ProcessMessages(scope.ServiceProvider, "Application_Start");
+            }
 
                     ServicesRoutingManager.RegisterServiceRoutes();
-
-                    ModuleInjectionManager.RegisterInjectionFilters();
 
                     // Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
@@ -462,15 +472,6 @@ namespace DotNetNuke.Common
                     Logger.Info("Application Initialized");
 
                     initialized = true;
-                }
-            }
-            else
-            {
-                // NET Framework version is needed by Upgrade
-                Globals.NETFrameworkVersion = GetNETFrameworkVersion();
-                Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
-                Globals.OperatingSystemVersion = Environment.OSVersion.Version;
-            }
 
             return redirect;
         }
