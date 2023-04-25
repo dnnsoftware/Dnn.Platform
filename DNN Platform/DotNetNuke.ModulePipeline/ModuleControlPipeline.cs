@@ -6,6 +6,7 @@ namespace DotNetNuke.ModulePipeline
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 #if NET472
     using System.Web.UI;
 #endif
@@ -35,31 +36,13 @@ namespace DotNetNuke.ModulePipeline
 #endif
     {
         private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private Dictionary<string, IModuleControlFactory> controlFactories;
+        private readonly IModuleControlFactory[] factories;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleControlPipeline"/> class.</summary>
-        /// <param name="webforms">The <see cref="WebFormsModuleControlFactory"/>.</param>
-        /// <param name="html5">The <see cref="Html5ModuleControlFactory"/>.</param>
-        /// <param name="razor3">The <see cref="RazorModuleControlFactory"/>.</param>
-        /// <param name="mvc">The <see cref="MvcModuleControlFactory"/>.</param>
-        /// <param name="fallthrough">The <see cref="ReflectedModuleControlFactory"/>.</param>
-        public ModuleControlPipeline(
-            WebFormsModuleControlFactory webforms,
-            Html5ModuleControlFactory html5,
-#pragma warning disable CS0618 // Obsolete
-            RazorModuleControlFactory razor3,
-#pragma warning restore CS0618 // Obsolete
-            MvcModuleControlFactory mvc,
-            ReflectedModuleControlFactory fallthrough)
+        /// <param name="factories">The control factories.</param>
+        public ModuleControlPipeline(IEnumerable<IModuleControlFactory> factories)
         {
-            this.controlFactories = new Dictionary<string, IModuleControlFactory>(StringComparer.OrdinalIgnoreCase);
-            this.controlFactories.Add(".ascx", webforms);
-            this.controlFactories.Add(".htm", html5);
-            this.controlFactories.Add(".html", html5);
-            this.controlFactories.Add(".cshtml", razor3);
-            this.controlFactories.Add(".vbhtml", razor3);
-            this.controlFactories.Add(".mvc", mvc);
-            this.controlFactories.Add("default", fallthrough);
+            this.factories = factories.OrderByDescending(f => f.Priority).ToArray();
         }
 
 #if NET472
@@ -72,7 +55,7 @@ namespace DotNetNuke.ModulePipeline
             }
 
             Control control = null;
-            IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
+            IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration, controlSrc);
 
             if (controlFactory != null)
             {
@@ -110,7 +93,7 @@ namespace DotNetNuke.ModulePipeline
             }
 
             Control control = null;
-            IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
+            IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration, moduleConfiguration.ModuleControl.ControlSrc);
 
             if (controlFactory != null)
             {
@@ -148,7 +131,7 @@ namespace DotNetNuke.ModulePipeline
             }
 
             Control control = null;
-            IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
+            IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration, controlSrc);
 
             if (controlFactory != null)
             {
@@ -192,16 +175,26 @@ namespace DotNetNuke.ModulePipeline
         /// <inheritdoc />
         public Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
-            IModuleControlFactory factory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
+            IModuleControlFactory factory = this.GetModuleControlFactory(moduleConfiguration, moduleConfiguration.ModuleControl.ControlSrc);
             return factory.CreateModuleControl(moduleConfiguration);
         }
 
-        private IModuleControlFactory GetModuleControlFactory(string controlSrc)
+        private IModuleControlFactory GetModuleControlFactory(ModuleInfo moduleConfiguration, string controlSrc)
         {
-            string extension = Path.GetExtension(controlSrc);
-            this.controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
+            var length = this.factories.Length;
 
-            return factory ?? this.controlFactories["default"];
+            for (var i = 0; i < length; i++)
+            {
+                var factory = this.factories[i];
+
+                if (factory.SupportsControl(moduleConfiguration, controlSrc))
+                {
+                    return factory;
+                }
+            }
+
+            // The following exception should never be thrown, as the default factory should always be able to create a control
+            throw new NotSupportedException($"No module control factory found for module {moduleConfiguration.ModuleID} with control source {controlSrc}");
         }
 #endif
     }

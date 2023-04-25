@@ -40,9 +40,10 @@ namespace DotNetNuke
         /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<WebFormsModuleControlFactory>();
-            services.AddSingleton<Html5ModuleControlFactory>();
-            services.AddSingleton<ReflectedModuleControlFactory>();
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, WebFormsModuleControlFactory>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
+
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
 #pragma warning disable CS0618
