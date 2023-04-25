@@ -3,6 +3,9 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke
 {
+    using System;
+    using System.Linq;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
@@ -20,6 +23,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Prompt;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
@@ -28,6 +32,7 @@ namespace DotNetNuke
     using DotNetNuke.UI.Modules.Html5;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <inheritdoc />
     public class Startup : IDnnStartup
@@ -63,6 +68,20 @@ namespace DotNetNuke
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
             services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
+
+            services.AddTransient<ModuleInjectionManager>();
+            RegisterModuleInjectionFilters(services);
+        }
+
+        private static void RegisterModuleInjectionFilters(IServiceCollection services)
+        {
+            var filterTypes = new TypeLocator().GetAllMatchingTypes(IsValidModuleInjectionFilter);
+            services.TryAddEnumerable(filterTypes.Select(t => new ServiceDescriptor(typeof(IModuleInjectionFilter), t, ServiceLifetime.Scoped)));
+        }
+
+        private static bool IsValidModuleInjectionFilter(Type t)
+        {
+            return t is { IsClass: true, IsAbstract: false, IsVisible: true } && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
         }
     }
 }
