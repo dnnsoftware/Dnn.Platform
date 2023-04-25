@@ -193,6 +193,13 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT";
                     body = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_BODY";
                     break;
+                case MessageType.PasswordReminderUserIsNotApprovedAdmin:
+                    subject = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_ADMINISTRATOR_SUBJECT";
+                    body = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_ADMINISTRATOR_BODY";
+                    toUser = settings.AdministratorId;
+                    admin = UserController.GetUserById(settings.PortalId, settings.AdministratorId);
+                    locale = admin.Profile.PreferredLocale;
+                    break;
                 case MessageType.UserAuthorized:
                     subject = "EMAIL_USER_AUTHORIZED_SUBJECT";
                     body = "EMAIL_USER_AUTHORIZED_BODY";
