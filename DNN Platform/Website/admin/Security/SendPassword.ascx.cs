@@ -243,6 +243,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             if (this.user.Membership.Approved == false)
                             {
                                 Mail.SendMail(this.user, MessageType.PasswordReminderUserIsNotApproved, this.PortalSettings);
+                                Mail.SendMail(this.user, MessageType.PasswordReminderUserIsNotApprovedAdmin, this.PortalSettings);
                                 canSend = false;
                             }
 
