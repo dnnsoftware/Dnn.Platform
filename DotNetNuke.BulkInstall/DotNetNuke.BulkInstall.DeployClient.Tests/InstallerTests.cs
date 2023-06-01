@@ -284,7 +284,7 @@ public class InstallerTests
         var userAgent = request.Headers.UserAgent.ShouldHaveSingleItem();
         var product = userAgent.Product.ShouldNotBeNull();
         product.Name.ShouldBe("PolyDeploy");
-        product.Version.ShouldBe(Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion);
+        product.Version.ShouldBe(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion.Replace(" ", "_"));
 
         sessionId.ShouldBe(expectedSessionId);
     }

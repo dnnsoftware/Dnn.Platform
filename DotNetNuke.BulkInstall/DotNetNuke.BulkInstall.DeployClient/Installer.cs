@@ -13,7 +13,7 @@ using System.Text.Json;
 /// <summary>The <see cref="IInstaller"/> implementation, using <see cref="HttpClient"/>, with retries based on <see cref="DeployInput.InstallationStatusTimeout"/>.</summary>
 public class Installer : IInstaller
 {
-    private static readonly string DeployClientVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
+    private static readonly string DeployClientVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
     private readonly HttpClient httpClient;
     private readonly IStopwatch stopwatch;
 
@@ -121,7 +121,7 @@ public class Installer : IInstaller
             };
 
             request.Headers.Add("x-api-key", options.ApiKey);
-            request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", DeployClientVersion));
+            request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", DeployClientVersion.Replace(" ", "_")));
 
             try
             {
