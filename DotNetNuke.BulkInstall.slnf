@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "DNN_Platform.sln",
+    "projects": [
+      "DotNetNuke.BulkInstall\\DotNetNuke.BulkInstall.DeployClient\\DotNetNuke.BulkInstall.DeployClient.csproj",
+      "DotNetNuke.BulkInstall\\DotNetNuke.BulkInstall.DeployClient.Tests\\DotNetNuke.Tests.BulkInstall.DeployClient.csproj",
+      "DotNetNuke.BulkInstall\\DotNetNuke.BulkInstall.Encryption\\DotNetNuke.BulkInstall.Encryption.csproj"
+    ]
+  }
+}
