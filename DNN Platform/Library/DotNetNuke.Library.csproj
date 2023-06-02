@@ -202,6 +202,7 @@
     <Compile Include="Common\Utilities\JsonExtensionsWeb.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Common\Utilities\ValidationUtils.cs" />
+    <Compile Include="ComponentModel\ContainerWithServiceProviderFallback.cs" />
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Data\DatabaseConnectionProvider.cs" />
     <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
