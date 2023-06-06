@@ -22,10 +22,14 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Templates;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.UI.Modules;
@@ -69,6 +73,13 @@ namespace DotNetNuke
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
             services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
+
+            // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
+            services.AddTransient<ILocalizationProvider, LocalizationProvider>();
+            services.AddTransient<ILoggerSource, LoggerSourceImpl>();
+            services.AddTransient<IModuleController, ModuleController>();
+            services.AddTransient<IPackageController, PackageController>();
+            services.AddTransient<ITabController, TabController>();
 
             services.AddTransient<ModuleInjectionManager>();
             RegisterModuleInjectionFilters(services);
