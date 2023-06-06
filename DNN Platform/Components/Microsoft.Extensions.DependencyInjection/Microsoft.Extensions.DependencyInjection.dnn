@@ -1,0 +1,33 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Microsoft.Extensions.DependencyInjection" type="Library" version="2.1.1">
+      <friendlyName>Microsoft.Extensions.DependencyInjection</friendlyName>
+      <description>Base library for dependency injection in .NET.</description>
+      <dependencies/>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>https://github.com/dotnet/core/tree/main/release-notes</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Extensions.DependencyInjection.dll</name>
+              <version>2.1.1</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Extensions.DependencyInjection.Abstractions.dll</name>
+              <version>2.1.1</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
