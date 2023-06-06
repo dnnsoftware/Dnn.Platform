@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke
 {
+    using System;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
@@ -26,6 +27,8 @@ namespace DotNetNuke
         /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(typeof(Lazy<>), typeof(LazyWrapper<>));
+
             services.AddSingleton<WebFormsModuleControlFactory>();
             services.AddSingleton<Html5ModuleControlFactory>();
             services.AddSingleton<ReflectedModuleControlFactory>();
