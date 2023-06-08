@@ -791,7 +791,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.currentSettings,
                 settingsDictionary,
                 "DNNCKP#-1#",
-                portalRoles);
+                null);
 
             switch (this.currentSettings.SettingMode)
             {
@@ -809,7 +809,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         this.currentSettings,
                         settingsDictionary,
                         "DNNCKH#",
-                        portalRoles);
+                        null);
                     break;
                 case SettingsMode.Portal:
                     this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(

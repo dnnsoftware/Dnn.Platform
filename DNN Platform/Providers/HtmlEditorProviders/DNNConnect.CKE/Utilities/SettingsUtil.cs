@@ -268,134 +268,156 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
-            List<ToolbarRoles> listToolbarRoles = (from RoleInfo objRole in portalRoles
-                                                   where
-                                                       filteredSettings.Any(
-                                                           setting =>
-                                                           setting.Name.Equals(
-                                                               string.Format(
-                                                                   "{0}{2}#{1}",
-                                                                   key,
-                                                                   objRole.RoleID,
-                                                                   SettingConstants.TOOLB)))
-                                                   where
-                                                       !string.IsNullOrEmpty(
-                                                           filteredSettings.FirstOrDefault(
-                                                               s =>
-                                                               s.Name.Equals(
-                                                                   string.Format(
-                                                                       "{0}{2}#{1}",
-                                                                       key,
-                                                                       objRole.RoleID,
-                                                                       SettingConstants.TOOLB))).Value)
-                                                   let sToolbar =
-                                                       filteredSettings.FirstOrDefault(
-                                                           s =>
-                                                           s.Name.Equals(
-                                                               string.Format(
-                                                                   "{0}{2}#{1}",
-                                                                   key,
-                                                                   objRole.RoleID,
-                                                                   SettingConstants.TOOLB))).Value
-                                                   select
-                                                       new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = sToolbar })
-                .ToList();
-
-            if (
-                filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))))
+            // if we don't have portalRoles, we're in host/allPortals mode
+            // so we can't filter for the roles, since they're not available
+            if ((portalRoles?.Count ?? 0) > 0)
             {
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))).Value;
+                List<ToolbarRoles> listToolbarRoles = (from RoleInfo objRole in portalRoles
+                        where
+                            filteredSettings.Any(
+                                setting =>
+                                    setting.Name.Equals(
+                                        string.Format(
+                                            "{0}{2}#{1}",
+                                            key,
+                                            objRole.RoleID,
+                                            SettingConstants.TOOLB)))
+                        where
+                            !string.IsNullOrEmpty(
+                                filteredSettings.FirstOrDefault(
+                                        s =>
+                                            s.Name.Equals(
+                                                string.Format(
+                                                    "{0}{2}#{1}",
+                                                    key,
+                                                    objRole.RoleID,
+                                                    SettingConstants.TOOLB)))
+                                    .Value)
+                        let sToolbar =
+                            filteredSettings.FirstOrDefault(
+                                    s =>
+                                        s.Name.Equals(
+                                            string.Format(
+                                                "{0}{2}#{1}",
+                                                key,
+                                                objRole.RoleID,
+                                                SettingConstants.TOOLB)))
+                                .Value
+                        select
+                            new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = sToolbar })
+                    .ToList();
 
-                if (!string.IsNullOrEmpty(settingValue))
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))))
                 {
-                    listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = settingValue });
-                }
-            }
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                                s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB)))
+                            .Value;
 
-            currentSettings.ToolBarRoles = listToolbarRoles;
-
-            var listUploadSizeRoles = (from RoleInfo objRole in portalRoles
-                                       where
-                                           filteredSettings.Any(
-                                               setting =>
-                                               setting.Name.Equals(
-                                                   string.Format(
-                                                       "{0}{1}#{2}",
-                                                       key,
-                                                       objRole.RoleID,
-                                                       SettingConstants.UPLOADFILELIMITS)))
-                                       where
-                                           !string.IsNullOrEmpty(
-                                               filteredSettings.FirstOrDefault(
-                                                   s =>
-                                                   s.Name.Equals(
-                                                       string.Format(
-                                                           "{0}{1}#{2}",
-                                                           key,
-                                                           objRole.RoleID,
-                                                           SettingConstants.UPLOADFILELIMITS))).Value)
-                                       let uploadFileLimit =
-                                           filteredSettings.FirstOrDefault(
-                                               s =>
-                                               s.Name.Equals(
-                                                   string.Format(
-                                                       "{0}{1}#{2}",
-                                                       key,
-                                                       objRole.RoleID,
-                                                       SettingConstants.UPLOADFILELIMITS))).Value
-                                       select
-                                           new UploadSizeRoles { RoleId = objRole.RoleID, RoleName = objRole.RoleName, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
-                .ToList();
-
-            if (
-                filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
-            {
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))).Value;
-
-                if (!string.IsNullOrEmpty(settingValue))
-                {
-                    listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(settingValue) });
-                }
-            }
-
-            currentSettings.UploadSizeRoles = listUploadSizeRoles;
-
-            if (
-                filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))))
-            {
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))).Value;
-
-                if (!string.IsNullOrEmpty(settingValue))
-                {
-                    string sRoles = settingValue;
-
-                    currentSettings.BrowserRoles = sRoles;
-
-                    string[] rolesA = sRoles.Split(';');
-
-                    foreach (string sRoleName in rolesA)
+                    if (!string.IsNullOrEmpty(settingValue))
                     {
-                        if (Utility.IsNumeric(sRoleName))
-                        {
-                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings.PortalId, int.Parse(sRoleName));
+                        listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = settingValue });
+                    }
+                }
 
-                            if (roleInfo != null)
+                currentSettings.ToolBarRoles = listToolbarRoles;
+
+                var listUploadSizeRoles = (from RoleInfo objRole in portalRoles
+                        where
+                            filteredSettings.Any(
+                                setting =>
+                                    setting.Name.Equals(
+                                        string.Format(
+                                            "{0}{1}#{2}",
+                                            key,
+                                            objRole.RoleID,
+                                            SettingConstants.UPLOADFILELIMITS)))
+                        where
+                            !string.IsNullOrEmpty(
+                                filteredSettings.FirstOrDefault(
+                                        s =>
+                                            s.Name.Equals(
+                                                string.Format(
+                                                    "{0}{1}#{2}",
+                                                    key,
+                                                    objRole.RoleID,
+                                                    SettingConstants.UPLOADFILELIMITS)))
+                                    .Value)
+                        let uploadFileLimit =
+                            filteredSettings.FirstOrDefault(
+                                    s =>
+                                        s.Name.Equals(
+                                            string.Format(
+                                                "{0}{1}#{2}",
+                                                key,
+                                                objRole.RoleID,
+                                                SettingConstants.UPLOADFILELIMITS)))
+                                .Value
+                        select
+                            new UploadSizeRoles
                             {
-                                roles.Add(roleInfo.RoleName);
-                            }
-                        }
-                        else
+                                RoleId = objRole.RoleID,
+                                RoleName = objRole.RoleName,
+                                UploadFileLimit = Convert.ToInt32(uploadFileLimit)
+                            })
+                    .ToList();
+
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals(
+                            string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
+                {
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                                s => s.Name.Equals(
+                                    string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS)))
+                            .Value;
+
+                    if (!string.IsNullOrEmpty(settingValue))
+                    {
+                        listUploadSizeRoles.Add(
+                            new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(settingValue) });
+                    }
+                }
+
+                currentSettings.UploadSizeRoles = listUploadSizeRoles;
+
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))))
+                {
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                                s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES)))
+                            .Value;
+
+                    if (!string.IsNullOrEmpty(settingValue))
+                    {
+                        string sRoles = settingValue;
+
+                        currentSettings.BrowserRoles = sRoles;
+
+                        string[] rolesA = sRoles.Split(';');
+
+                        foreach (string sRoleName in rolesA)
                         {
-                            roles.Add(sRoleName);
+                            if (Utility.IsNumeric(sRoleName))
+                            {
+                                RoleInfo roleInfo = RoleController.Instance.GetRoleById(
+                                    portalSettings.PortalId,
+                                    int.Parse(sRoleName));
+
+                                if (roleInfo != null)
+                                {
+                                    roles.Add(roleInfo.RoleName);
+                                }
+                            }
+                            else
+                            {
+                                roles.Add(sRoleName);
+                            }
                         }
                     }
                 }
