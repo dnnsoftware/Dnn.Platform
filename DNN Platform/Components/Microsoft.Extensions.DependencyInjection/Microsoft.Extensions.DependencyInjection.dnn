@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Microsoft.Extensions.DependencyInjection" type="Library" version="2.1.1">
+    <package name="DotNetNuke.Microsoft.Extensions.DependencyInjection" type="Library" version="3.0.0">
       <friendlyName>Microsoft.Extensions.DependencyInjection</friendlyName>
       <description>Base library for dependency injection in .NET.</description>
       <dependencies/>
@@ -18,12 +18,27 @@
             <assembly>
               <path>bin</path>
               <name>Microsoft.Extensions.DependencyInjection.dll</name>
-              <version>2.1.1</version>
+              <version>3.0.0</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>Microsoft.Extensions.DependencyInjection.Abstractions.dll</name>
-              <version>2.1.1</version>
+              <version>3.0.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
+              <version>1.0.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+              <version>4.5.4</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+              <version>6.0.0</version>
             </assembly>
           </assemblies>
         </component>
