@@ -51,10 +51,6 @@ table#connectionstbl span.socialnetwork-favicon div {
     right: -4px;
 }
 
-table#connectionstbl span.socialnetwork-favicon.connected {
-    background-position: 0 -37px;
-}
-
 table#connectionstbl span.socialnetwork-name {
     text-transform: uppercase;
 }

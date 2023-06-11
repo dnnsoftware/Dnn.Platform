@@ -707,6 +707,7 @@
     <Compile Include="Security\Roles\SecurityMode.cs" />
     <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
+    <Compile Include="Services\Analytics\GoogleAnalytics4Engine.cs" />
     <Compile Include="Services\Assets\AssetManagerException.cs" />
     <Compile Include="Services\Assets\FolderPathComparer.cs" />
     <Compile Include="Services\Assets\ContentPage.cs" />
