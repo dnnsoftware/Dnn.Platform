@@ -6,7 +6,7 @@ The goal of this document is to set standards for the review, processing, and ap
 The following items must all be true prior to a pull request being submitted to the DNN_Platform, if any of the following items are not true the pull request will be returned for edits referencing the specific missing item(s).
 
 * Change should represent an entire solution for the issue at hand.  Partial requests will NOT be processed.
-* Change should have a supporting issue logged on the DNN_Platform GitHub account, documenting the issue resolved, following the procedures outlined on the [Contribute Page](CONTRIBUTING.md)
+* Change should have a supporting issue logged on the DNN_Platform GitHub account, documenting the issue resolved, following the procedures outlined on the [Contribute Page](/CONTRIBUTING.md)
 * If your change was to an area that already was covered by tests those tests must be updated.  New tests for areas currently un-tested are appreciated
 * **Exception**: Security items can be addressed individually, and should be initially communicated to the security@dnnsoftware.com email address for coordination
 * Pull request comment should contain at a minimum the following details (When creating, a default template will also prompt you for the proper information)
