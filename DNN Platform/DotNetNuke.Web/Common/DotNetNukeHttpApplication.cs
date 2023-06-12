@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.Common.Internal
             ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
             HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
 
-            ComponentFactory.Container = new SimpleContainer();
+            ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(), Globals.DependencyProvider);
 
             ComponentFactory.InstallComponents(new ProviderInstaller("databaseConnection", typeof(DatabaseConnectionProvider), typeof(SqlDatabaseConnectionProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));

@@ -30,9 +30,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
     var onSave = function (conn) {
 
         // Convert boolean to string as the API requires a dictionary of string values
-        conn.configurations[2].value(conn.configurations[2].value() || 'false');
-        conn.configurations[3].value(conn.configurations[3].value() || 'false');
-        conn.configurations[4].value(conn.configurations[4].value() || 'false');
+        conn.configurations[1].value(conn.configurations[1].value() || 'false');
     };
 
     var onSaveComplete = function (conn, id) {
@@ -71,7 +69,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
                     // Set the isDeactivating flag to true to override the default save behaviour
                     // Temporary workaround until delete functionality on connectors is improved
-                    conn.configurations[6].value("true");
+                    conn.configurations[2].value("true");
                     wasDeactivated = true;
                     conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
                 }
@@ -102,7 +100,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
                         // Set the isDeactivating flag to true to override the default save behaviour
                         // Temporary workaround until delete functionality on connectors is improved
-                        conn.configurations[6].value("true");
+                        conn.configurations[2].value("true");
                         wasDeactivated = true;
                         conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
                     }

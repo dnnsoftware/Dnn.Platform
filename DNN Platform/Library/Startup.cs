@@ -4,35 +4,37 @@
 namespace DotNetNuke
 {
     using System;
-    using System.Linq;
-
     using DotNetNuke.Abstractions;
+    using System.Linq;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Application;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Prompt;
-    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Settings;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Entities.Portals.Templates;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
+    using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.UI.Modules.Html5;
 
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <inheritdoc />
     public class Startup : IDnnStartup
@@ -40,10 +42,11 @@ namespace DotNetNuke
         /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(typeof(Lazy<>), typeof(LazyWrapper<>));
+
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, WebFormsModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
-
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
 
 #pragma warning disable CS0618
@@ -70,6 +73,13 @@ namespace DotNetNuke
             services.AddTransient<ISearchController, SearchControllerImpl>();
             services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
 
+            // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
+            services.AddTransient<ILocalizationProvider, LocalizationProvider>();
+            services.AddTransient<ILoggerSource, LoggerSourceImpl>();
+            services.AddTransient<IModuleController, ModuleController>();
+            services.AddTransient<IPackageController, PackageController>();
+            services.AddTransient<ITabController, TabController>();
+
             services.AddTransient<ModuleInjectionManager>();
             RegisterModuleInjectionFilters(services);
         }
@@ -85,4 +95,5 @@ namespace DotNetNuke
             return t is { IsClass: true, IsAbstract: false, IsVisible: true } && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
         }
     }
+    using Microsoft.Extensions.DependencyInjection.Extensions;
 }
