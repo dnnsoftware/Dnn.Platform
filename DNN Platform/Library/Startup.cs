@@ -4,23 +4,23 @@
 namespace DotNetNuke
 {
     using System;
-    using DotNetNuke.Abstractions;
     using System.Linq;
+
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Modules;
-    using DotNetNuke.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
@@ -30,11 +30,13 @@ namespace DotNetNuke
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <inheritdoc />
     public class Startup : IDnnStartup
@@ -95,5 +97,4 @@ namespace DotNetNuke
             return t is { IsClass: true, IsAbstract: false, IsVisible: true } && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
         }
     }
-    using Microsoft.Extensions.DependencyInjection.Extensions;
 }
