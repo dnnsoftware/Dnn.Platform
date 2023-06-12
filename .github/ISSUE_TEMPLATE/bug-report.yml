@@ -1,7 +1,9 @@
 name: Bug Report
 description: Report a bug
 title: "[Bug]: "
-labels: ["bug", "triage"]
+labels: ["Status: New"]
+assignees:
+  - dnnsoftware/triage
 body:
   - type: markdown
     attributes:
@@ -28,7 +30,7 @@ body:
     attributes:
       label: Steps to reproduce?
       description: List the precise steps to reproduce the bug.
-      placeholder:  |
+      placeholder: | 
         1. Go to '...'
         2. Click on '...'
         3. Scroll to '...'
@@ -57,7 +59,7 @@ body:
     id: anything-else
     attributes:
       label: Anything else?
-      description: |
+      description: | 
         Links? References? Anything that will give us more context about the issue you are encountering!
 
         Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
