@@ -54,7 +54,7 @@ body:
       label: Do you be plan to contribute code for this enhancement?
       description: We would like to know if you are willing to take ownership of this enhancement.
       options:
-        - label: Yes
+        - label: "Yes"
           required: false
   - type: checkboxes
     id: sponsorship-interest
@@ -62,7 +62,7 @@ body:
       label: Would you be interested in sponsoring this enhancement?
       description: There are many developers in this community that may be willing to work on this.
       options:
-        - label: Yes
+        - label: "Yes"
           required: false
   - type: checkboxes
     id: terms
