@@ -55,8 +55,6 @@ body:
       description: We would like to know if you are willing to take ownership of this enhancement.
       options:
       - label: Yes
-      - label: No
-        required: true
   - type: checkboxes
     id: sponsorship-interest
     attributes:
@@ -64,8 +62,6 @@ body:
       description: There are many developers in this community that may be willing to work on this.
       options:
       - label: Yes
-      - label: No
-        required: true
   - type: checkboxes
     id: terms
     attributes:
