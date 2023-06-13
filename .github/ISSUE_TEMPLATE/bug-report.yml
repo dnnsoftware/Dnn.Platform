@@ -21,8 +21,7 @@ body:
     attributes:
       label: What happened?
       description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened, but I was expecting this!"
+      placeholder: Tell us what you see! "A bug happened, but I was expecting this!"
     validations:
       required: true
   - type: textarea
@@ -66,10 +65,11 @@ body:
     validations:
       required: false
   - type: dropdown
-    id: affected-version
+    id: affected-versions
     attributes:
-      label: Affected Version
-      description: What version of DNN are you running?
+      label: Affected Versions
+      description: What versions of DNN are you running?
+      multiple: true
       options:
         - 10.0.0 (alpha)
         - 9.11.2 (latest release)
