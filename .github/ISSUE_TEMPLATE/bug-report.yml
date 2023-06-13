@@ -21,8 +21,7 @@ body:
     attributes:
       label: What happened?
       description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened, but I was expecting this!"
+      placeholder: Tell us what you see! "A bug happened, but I was expecting this!"
     validations:
       required: true
   - type: textarea
