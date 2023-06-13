@@ -15,7 +15,7 @@
     </description>
     <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
-      <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="7.0.0" />
       <dependency id="DotNetNuke.Instrumentation" version="$version$" />
     </dependencies>
   </metadata>

@@ -13,15 +13,21 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 namespace DotNetNuke.HttpModules.DependencyInjection
 {
+    using System.Threading.Tasks;
+
+    /// <summary>An HTTP module which creates dependency injection scopes for each request.</summary>
     public class ServiceRequestScopeModule : IHttpModule
     {
         private static IServiceProvider serviceProvider;
 
+        /// <summary>Initializes this HTTP module before the application starts.</summary>
         public static void InitModule()
         {
             DynamicModuleUtility.RegisterModule(typeof(ServiceRequestScopeModule));
         }
 
+        /// <summary>For internal use only. Allows setting the service provider used to create request scopes.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
         public static void SetServiceProvider(IServiceProvider serviceProvider)
         {
             ServiceRequestScopeModule.serviceProvider = serviceProvider;
@@ -30,8 +36,10 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         /// <inheritdoc/>
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += this.Context_BeginRequest;
-            context.EndRequest += this.Context_EndRequest;
+            context.BeginRequest += Context_BeginRequest;
+
+            var asyncHandler = new EventHandlerTaskAsyncHelper(Context_EndRequest);
+            context.AddOnEndRequestAsync(asyncHandler.BeginEventHandler, asyncHandler.EndEventHandler);
         }
 
         /// <summary>
@@ -55,16 +63,25 @@ namespace DotNetNuke.HttpModules.DependencyInjection
             // left empty by design
         }
 
-        private void Context_BeginRequest(object sender, EventArgs e)
+        private static void Context_BeginRequest(object sender, EventArgs e)
         {
             var context = ((HttpApplication)sender).Context;
             context.SetScope(serviceProvider.CreateScope());
         }
 
-        private void Context_EndRequest(object sender, EventArgs e)
+        private static async Task Context_EndRequest(object sender, EventArgs e)
         {
             var context = ((HttpApplication)sender).Context;
-            context.GetScope()?.Dispose();
+            switch (context.GetScope())
+            {
+                case IAsyncDisposable asyncDisposable:
+                    await asyncDisposable.DisposeAsync();
+                    break;
+                case IDisposable disposable:
+                    disposable.Dispose();
+                    break;
+            }
+
             context.ClearScope();
         }
     }
