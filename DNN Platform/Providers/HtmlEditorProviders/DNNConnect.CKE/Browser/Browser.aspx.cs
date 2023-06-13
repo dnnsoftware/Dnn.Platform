@@ -2420,7 +2420,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 else
                 {
                     // querystring parameter responseType equals "json" when the request comes from drag/drop
-                    if (this.Request.QueryString["responseType"]?.Equals("json", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                    if (this.Request.QueryString["responseType"]?.Equals("json", StringComparison.InvariantCultureIgnoreCase) == true)
                     {
                         var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                         this.Response.ClearContent();
