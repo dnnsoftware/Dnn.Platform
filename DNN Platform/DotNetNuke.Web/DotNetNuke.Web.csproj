@@ -171,9 +171,18 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Api\ApiTokenAuthorizeAttribute.cs" />
     <Compile Include="Api\AuthFilterBase.cs" />
     <Compile Include="Api\AuthFilterContext.cs" />
     <Compile Include="Api\AuthorizeAttributeBase.cs" />
+    <Compile Include="Api\Auth\ApiTokenAuthMessageHandler.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenController.cs" />
+    <Compile Include="Api\Auth\ApiTokens\IApiTokenController.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiToken.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenKey.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenScope.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Repositories\ApiTokenRepository.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Repositories\IApiTokenRepository.cs" />
     <Compile Include="Api\DnnAuthorizeAttribute.cs" />
     <Compile Include="Api\DnnExceptionFilterAttribute.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
