@@ -68,11 +68,12 @@ body:
     id: affected-versions
     attributes:
       label: Affected Versions
-      description: What versions of DNN are you running?
+      description: If your issue affects versions not listed, we highly suggest upgrading to the lastest version and to test your issue again on it. If you cannot upgrade for some reason, please open a discussion instead of an issue.
       multiple: true
       options:
-        - 10.0.0 (alpha)
         - 9.11.2 (latest release)
+        - 9.12.0-rc1 (release candidate)
+        - 10.0.0 (alpha)
     validations:
       required: true
   - type: dropdown
