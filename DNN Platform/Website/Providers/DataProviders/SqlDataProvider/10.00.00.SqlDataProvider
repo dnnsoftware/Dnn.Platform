@@ -366,3 +366,46 @@ IF OBJECT_ID('{databaseOwner}[DF_abModules_IsWebSlice]', 'D') IS NOT NULL
 
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
 DROP COLUMN [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL]
+
+
+/*****************************/
+/* Add tables for API Tokens */
+/*****************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}ApiTokens') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}ApiTokens (
+	[ApiTokenId] [int] IDENTITY(1,1) NOT NULL,
+	[TokenHash] [varchar](96) NOT NULL,
+	[ExpiresOn] [datetime] NOT NULL,
+	[Scope] [int] NOT NULL,
+	[PortalId] [int] NOT NULL,
+	[IsRevoked] [bit] NOT NULL,
+	[RevokedOnDate] [datetime] NULL,
+	[CreatedByUserId] [int] NOT NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_{objectQualifier}ApiTokens] PRIMARY KEY CLUSTERED 
+(
+	[ApiTokenId] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}ApiTokenKeys') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}{objectQualifier}ApiTokenKeys (
+	[ApiTokenId] [int] NOT NULL,
+	[TokenKey] [nvarchar](200) NOT NULL,
+ CONSTRAINT [PK_{objectQualifier}ApiTokenKeys] PRIMARY KEY CLUSTERED 
+(
+	[ApiTokenId] ASC,
+	[TokenKey] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}ApiTokenKeys ADD CONSTRAINT [FK_{objectQualifier}ApiTokenKeys_ApiTokens] FOREIGN KEY ([ApiTokenId]) REFERENCES {databaseOwner}{objectQualifier}ApiTokens ([ApiTokenId]) ON DELETE CASCADE
+GO
+
