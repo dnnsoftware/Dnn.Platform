@@ -60,8 +60,7 @@ body:
       label: Anything else?
       description: | 
         Links? References? Anything that will give us more context about the issue you are encountering!
-
-        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+        _Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in._
     validations:
       required: false
   - type: dropdown
@@ -70,7 +69,6 @@ body:
       label: Affected Versions
       description: | 
         What version of DNN are you running?
-        
         **NOTE:** _If your version is not listed, please upgrade to the latest version. If you cannot upgrade at this time, please open a [Discussion](https://github.com/dnnsoftware/Dnn.Platform/discussions) instead._
       multiple: true
       options:
