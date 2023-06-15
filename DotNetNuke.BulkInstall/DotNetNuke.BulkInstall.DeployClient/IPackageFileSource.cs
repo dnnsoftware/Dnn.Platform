@@ -11,8 +11,9 @@ public interface IPackageFileSource
 {
     /// <summary>Gets a listing of files at the given <paramref name="path"/>.</summary>
     /// <param name="path">The path to the root folder in which to look for packages.</param>
+    /// <param name="searchOption">Whether to search only the directory at <paramref name="path"/> or also subdirectories.</param>
     /// <returns>A collection of paths.</returns>
-    IReadOnlyCollection<string> GetPackageFiles(string path);
+    IReadOnlyCollection<string> GetPackageFiles(string path, SearchOption searchOption);
 
     /// <summary>Gets the contents of a file.</summary>
     /// <param name="fileName">The path to the file.</param>

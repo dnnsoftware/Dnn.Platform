@@ -93,7 +93,7 @@ public class Installer : IInstaller
     {
         try
         {
-            var fileName = Path.GetRelativePath(options.PackagesDirectoryPath, packageName);
+            var fileName = Path.GetFileName(packageName);
             var form = new MultipartFormDataContent
             {
                 { new StreamContent(encryptedPackage), "none", fileName },

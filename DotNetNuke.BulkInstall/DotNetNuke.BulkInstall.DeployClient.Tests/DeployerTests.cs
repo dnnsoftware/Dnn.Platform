@@ -26,7 +26,7 @@ public class DeployerTests
     {
         var renderer = A.Fake<IRenderer>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(Array.Empty<string>());
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(Array.Empty<string>());
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -44,7 +44,7 @@ public class DeployerTests
         A.CallTo(() => renderer.RenderListOfFiles(A<LogLevel>._, A<IEnumerable<string>>._))
             .Invokes((LogLevel _, IEnumerable<string> files) => actualFiles.AddRange(files));
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -71,7 +71,7 @@ public class DeployerTests
     {
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
         var package1Stream = new MemoryStream(Encoding.UTF8.GetBytes("This is a zip file"));
         A.CallTo(() => packageFileSource.GetFileStream("Package 1.zip")).Returns(package1Stream);
         var anotherPackageStream = new MemoryStream(Encoding.UTF8.GetBytes("This is another zip file"));
@@ -111,7 +111,7 @@ public class DeployerTests
         A.CallTo(() => renderer.RenderFileUploadsAsync(A<LogLevel>._, A<IEnumerable<(string, Task)>>._))
             .Invokes((LogLevel _, IEnumerable<(string, Task)> theUploads) => uploads = theUploads);
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Install.zip", });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Install.zip", });
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.GetSessionAsync(options, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -129,7 +129,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
@@ -148,7 +148,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
@@ -166,7 +166,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options))
@@ -193,7 +193,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options))
@@ -223,7 +223,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options))
@@ -247,7 +247,7 @@ public class DeployerTests
     {
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         var innerException = A.Dummy<HttpRequestException>();
@@ -269,7 +269,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options))
@@ -293,7 +293,7 @@ public class DeployerTests
         var sessionId = Guid.NewGuid().ToString();
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options))
@@ -316,7 +316,7 @@ public class DeployerTests
     {
         var options = A.Dummy<DeployInput>();
         var packageFileSource = A.Fake<IPackageFileSource>();
-        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+        A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options))
@@ -343,7 +343,7 @@ public class DeployerTests
         var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
         await deployer.StartAsync(options);
 
-        A.CallTo(() => packageFileSource.GetPackageFiles("path/to/packages")).MustHaveHappened();
+        A.CallTo(() => packageFileSource.GetPackageFiles("path/to/packages", A<SearchOption>._)).MustHaveHappened();
     }
 
     private static void SimulateResponses(IInstaller fakeInstaller, DeployInput options, string sessionId, params SessionResponse?[] responses)

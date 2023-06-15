@@ -20,9 +20,9 @@ public class PackageFileSource : IPackageFileSource
     }
 
     /// <inheritdoc/>
-    public IReadOnlyCollection<string> GetPackageFiles(string path)
+    public IReadOnlyCollection<string> GetPackageFiles(string path, SearchOption searchOption)
     {
-        return this.fileSystem.Directory.GetFiles(path, "*.zip");
+        return this.fileSystem.Directory.GetFiles(path, "*.zip", searchOption);
     }
 
     /// <inheritdoc/>

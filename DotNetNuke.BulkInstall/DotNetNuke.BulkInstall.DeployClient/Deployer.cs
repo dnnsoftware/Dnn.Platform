@@ -34,7 +34,7 @@ public class Deployer : IDeployer
         {
             this.renderer.Welcome(options.LogLevel);
 
-            var packageFiles = this.packageFileSource.GetPackageFiles(options.PackagesDirectoryPath);
+            var packageFiles = this.packageFileSource.GetPackageFiles(options.PackagesDirectoryPath, options.Recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
             this.renderer.RenderListOfFiles(options.LogLevel, packageFiles);
 
             var sessionId = await this.installer.StartSessionAsync(options);

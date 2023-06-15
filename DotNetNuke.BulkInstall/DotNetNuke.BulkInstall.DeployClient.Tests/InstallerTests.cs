@@ -50,7 +50,7 @@ public class InstallerTests
     }
 
     [Fact]
-    public async Task UploadPackageAsync_CallsAddPackagesPostApiWithUsesCorrectSessionId()
+    public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectSessionId()
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
@@ -68,7 +68,29 @@ public class InstallerTests
         handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
         var formContent = handler.Request.Content.ShouldBeOfType<MultipartFormDataContent>();
         var innerContent = formContent.ShouldHaveSingleItem();
+        var disposition = innerContent.Headers.ContentDisposition.ShouldNotBeNull();
+        disposition.FileName.ShouldBe("Jamestown_install_5.5.7.zip");
         (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
+    }
+
+    [Fact]
+    public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectFileName()
+    {
+        var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var targetUri = new Uri("https://polydeploy.example.com/");
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+
+        var handler = new FakeMessageHandler(
+            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            null);
+        var installer = CreateInstaller(handler);
+
+        await installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), @"modules\Jamestown_install_5.5.7.zip");
+
+        var formContent = handler.Request.ShouldNotBeNull().Content.ShouldBeOfType<MultipartFormDataContent>();
+        var innerContent = formContent.ShouldHaveSingleItem();
+        var disposition = innerContent.Headers.ContentDisposition.ShouldNotBeNull();
+        disposition.FileName.ShouldBe("Jamestown_install_5.5.7.zip");
     }
 
     [Fact]
@@ -351,7 +373,7 @@ public class InstallerTests
                     httpRequestMessageClone.Content = contentClone;
                     foreach (var content in formContent)
                     {
-                        contentClone.Add(await CloneContent(content));
+                        contentClone.Add(await CloneContent(content), content.Headers.ContentDisposition?.Name ?? string.Empty, content.Headers.ContentDisposition?.FileName ?? string.Empty);
                     }
                 }
                 else

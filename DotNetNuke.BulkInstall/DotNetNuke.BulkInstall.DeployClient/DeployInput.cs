@@ -42,6 +42,12 @@ public class DeployInput : CommandSettings
         set => this.packagesDirectoryPath = ValidOrCurrentDirectory(value);
     }
 
+    /// <summary>Gets or sets a value indicating whether to search the <see cref="PackagesDirectoryPath"/> recursively.</summary>
+    [CommandOption("-r|--recurse")]
+    [Description("Whether to search the packages directory recursively.")]
+    [DefaultValue(true)]
+    public bool Recurse { get; set; }
+
     /// <summary>Gets or sets the level of logging.</summary>
     [CommandOption("-l|--log-level")]
     [Description("Defines the amount of logging.")]

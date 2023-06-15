@@ -59,6 +59,13 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--packages-directory must be a valid path");
     }
 
+    [Fact]
+    public void CanSearchRecursively()
+    {
+        var input = new DeployInput { Recurse = true };
+        input.Recurse.ShouldBeTrue();
+    }
+
     [InlineData(LogLevel.Trace, true)]
     [InlineData(LogLevel.Error, true)]
     [InlineData((LogLevel)7, false)]

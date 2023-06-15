@@ -175,8 +175,8 @@ public class Renderer : IRenderer
                 return (joinedPath, groupedParts);
             }
 
-            joinedPath = string.Concat(firstFile.Take(minParts));
-            groupedParts = Enumerable.Empty<IEnumerable<string[]>>();
+            joinedPath = string.Concat(firstFile.Take(minParts - 1));
+            groupedParts = new[] { new[] { new[] { firstFile.Last() } } };
             return (joinedPath, groupedParts);
         }
 

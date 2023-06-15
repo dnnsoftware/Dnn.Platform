@@ -101,14 +101,24 @@ public class RendererTests
 
         console.Output.ShouldContainStringsInOrder(
             onlyOnce: true,
+            "Packages",
+            "\n",
             @"E:\",
+            "\n",
             "my-top-level.zip",
+            "\n",
             "foo",
+            "\n",
             "Modules",
+            "\n",
             "the-module.zip",
+            "\n",
             "the-templates.zip",
+            "\n",
             "Skins",
-            "themezilla.zip");
+            "\n",
+            "themezilla.zip",
+            "\n");
     }
 
     [Fact]

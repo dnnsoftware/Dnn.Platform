@@ -16,12 +16,28 @@ public class PackageFileSourceTests
     {
         var fileSystem = A.Fake<IFileSystem>();
 
-        A.CallTo(() => fileSystem.Directory.GetFiles(path, "*.zip")).Returns(new[] { "package1.zip", "package2.zip" });
+        A.CallTo(() => fileSystem.Directory.GetFiles(path, "*.zip", SearchOption.TopDirectoryOnly)).Returns(new[] { "package1.zip", "package2.zip" });
 
         var fileSource = new PackageFileSource(fileSystem);
-        var files = fileSource.GetPackageFiles(path);
+        var files = fileSource.GetPackageFiles(path, SearchOption.TopDirectoryOnly);
 
         files.ShouldBe(new[] { "package1.zip", "package2.zip" }, ignoreOrder: true);
+    }
+
+    [InlineData("")]
+    [InlineData("path/to/packages")]
+    [Theory]
+    public void GetPackageFiles_GetsTheZipFilesInTheGivenDirectoryRecursively(string path)
+    {
+        var fileSystem = A.Fake<IFileSystem>();
+
+        var expected = new[] { Path.Combine(path, "a", "package1.zip"), Path.Combine(path, "b", "package2.zip"), };
+        A.CallTo(() => fileSystem.Directory.GetFiles(path, "*.zip", SearchOption.AllDirectories)).Returns(expected);
+
+        var fileSource = new PackageFileSource(fileSystem);
+        var files = fileSource.GetPackageFiles(path, SearchOption.AllDirectories);
+
+        files.ShouldBe(expected, ignoreOrder: true);
     }
 
     [Fact]
