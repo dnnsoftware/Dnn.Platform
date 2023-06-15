@@ -16,11 +16,11 @@ namespace DotNetNuke.ModulePipeline
             // MULTI-TARGETTING PIPELINE
             // -------------------------
             // This file multi-targets .NET Framework and .NET Standard,
-            // which is needed as DNN migrates to .NET Core. The 'NET472'
+            // which is needed as DNN migrates to .NET Core. The 'NETFRAMEWORK'
             // pre-processor directives are to fully support Legacy DNN.
             // As the Pipeline is upgraded to be more complaint with
-            // .NET Standard 2.0 use the apprioprate pre-processor directives.
-#if NET472
+            // .NET Standard 2.0 use the appropriate pre-processor directives.
+#if NETFRAMEWORK
             services.AddSingleton<IModuleControlPipeline, ModuleControlPipeline>();
 #endif
         }

@@ -15,7 +15,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
     <Reference Include="System.Web" />
   </ItemGroup>
 
@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\net472\DotNetNuke.ModulePipeline.*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\net48\DotNetNuke.ModulePipeline.*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
   </Target>
 
 </Project>
