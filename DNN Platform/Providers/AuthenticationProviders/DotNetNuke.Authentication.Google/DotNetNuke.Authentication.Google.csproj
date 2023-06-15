@@ -121,8 +121,8 @@
     </AdditionalFiles>
     <None Include="Google_Auth.dnn" />
     <Content Include="Provider.build" />
-    <None Include="packages.config" />
     <Content Include="web.config" />
+    <None Include="packages.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
