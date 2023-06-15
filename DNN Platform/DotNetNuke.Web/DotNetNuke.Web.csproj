@@ -19,7 +19,7 @@
     <AssemblyName>DotNetNuke.Web</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WebControl</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <Nonshipping>true</Nonshipping>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
