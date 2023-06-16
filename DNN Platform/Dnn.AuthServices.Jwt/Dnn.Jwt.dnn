@@ -29,6 +29,10 @@
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>Microsoft.IdentityModel.Abstractions.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>Microsoft.IdentityModel.Tokens.dll</name>
             </assembly>
             <assembly>
@@ -38,6 +42,42 @@
             <assembly>
               <path>bin</path>
               <name>Microsoft.IdentityModel.Logging.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Json.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Encodings.Web.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Memory.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Buffers.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Numerics.Vectors.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.ValueTuple.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
             </assembly>
           </assemblies>
         </component>
