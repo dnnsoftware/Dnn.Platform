@@ -42,7 +42,8 @@
     "/bin/WebMatrix.Data.dll",
     "/bin/WebMatrix.WebData.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
-    "/bin/WebFormsMvp.dll"
+    "/bin/WebFormsMvp.dll",
+    "/bin/Microsoft.Web.Infrastructure.dll"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],
   "upgradeExclude": [
