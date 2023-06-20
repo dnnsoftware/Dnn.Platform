@@ -21,7 +21,7 @@
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.9" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.9" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.9" />
-      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Microsoft.Web.Infrastructure" version="2.0.0" />
     </dependencies>
   </metadata>
   <files>
