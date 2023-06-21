@@ -133,18 +133,26 @@ class DetailsRow extends Component {
         userColumns = userColumns.concat([
             {
                 index: 5,
-                content: <GridCell key={`gc-username-${user.userId}`} columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
-                    <h6>
-                        <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
-                    </h6>
-                    {user.displayName !== "-" && <p title={`${Localization.get("UserId")} ${user.userId}`}>{user.userName}</p> }
+                content:
+                <GridCell key={`gc-username-${user.userId}`} columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
+                    <div className="user-name">
+                        {user.avatar !== "-" &&
+                            <img src={user.avatar} alt={user.userName} />
+                        }
+                        <div>
+                            <h6>
+                                <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
+                            </h6>
+                            {user.displayName !== "-" && <p title={`${Localization.get("UserId")} ${user.userId}`}>{user.userName}</p> }
+                        </div>
+                    </div>
                 </GridCell>
             },
             {
                 index: 10,
                 content: <GridCell key={`gc-email-link-${user.userId}`} columnSize={columnSizes.find(x=>x.index===10).size}  className={"user-emails" + (user.isDeleted ? " deleted" : "") } >
                     <TextOverflowWrapper className="email-link" isAnchor={true} href={"mailto:" + user.email} text={user.email} maxWidth={125}/>
-                </GridCell >
+                </GridCell>
             },
             {
                 index: 15,
@@ -185,7 +193,8 @@ class DetailsRow extends Component {
             <GridCell className={"collapsible-component-users"} id={uniqueId} ref={(node) => this.rootElement = node}>
                 <GridCell className={"collapsible-header-users " + !opened}>
                     <GridCell className={styles.extensionDetailRow + " " + props.addIsOpened} columnSize={100}>
-                        {(!props.addIsOpened || props.addIsOpened === "add-opened") && <GridCell>
+                        {(!props.addIsOpened || props.addIsOpened === "add-opened") &&
+                        <GridCell>
                             {userColumns}
                         </GridCell>}
                         <Collapsible accordion={true} isOpened={opened} className="user-detail-row">

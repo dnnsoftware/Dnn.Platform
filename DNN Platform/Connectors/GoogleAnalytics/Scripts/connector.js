@@ -30,9 +30,9 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
     var onSave = function (conn) {
 
         // Convert boolean to string as the API requires a dictionary of string values
-        conn.configurations[2].value(conn.configurations[2].value().toString());
-        conn.configurations[3].value(conn.configurations[3].value().toString());
-        conn.configurations[4].value(conn.configurations[4].value().toString());
+        conn.configurations[2].value(conn.configurations[2].value() || 'false');
+        conn.configurations[3].value(conn.configurations[3].value() || 'false');
+        conn.configurations[4].value(conn.configurations[4].value() || 'false');
     };
 
     var onSaveComplete = function (conn, id) {

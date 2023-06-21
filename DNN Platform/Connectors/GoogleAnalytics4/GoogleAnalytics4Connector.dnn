@@ -1,0 +1,39 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="DNN.Connectors.GoogleAnalytics4" type="Connector" isSystem="false" version="09.12.00">
+            <friendlyName>Google Analytics 4 Connector</friendlyName>
+            <description>Configure your sites Google Analytics 4 settings.</description>
+            <iconFile>~/DesktopModules/Connectors/GoogleAnalytics4/Images/GoogleAnalytics4_32X32_Standard.png</iconFile>
+          <dependencies>
+            <dependency type="CoreVersion">09.02.00</dependency>
+          </dependencies>
+          <owner>
+              <name>.NET Foundation and Contributors</name>
+            <organization>DNN Community</organization>
+            <url>https://dnncommunity.org</url>
+            <email>info@dnncommunity.org</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+            <azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DNN.Connectors.GoogleAnalytics4.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules\Connectors\GoogleAnalytics4</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

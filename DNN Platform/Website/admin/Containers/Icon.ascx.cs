@@ -11,17 +11,16 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.UI.Skins;
 
-    /// Project  : DotNetNuke
-    /// Class    : DotNetNuke.UI.Containers.Icon
-    ///
     /// <summary>
     /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
     /// </summary>
     public partial class Icon : SkinObjectBase
     {
+        /// <summary>Gets or sets the border width of the icon.</summary>
         public string BorderWidth { get; set; }
 
+        /// <summary>Gets or sets the CSS class on the <c>img</c> element.</summary>
         public string CssClass { get; set; }
 
         /// <inheritdoc/>
@@ -42,21 +41,25 @@ namespace DotNetNuke.UI.Containers
                 }
 
                 this.Visible = false;
-                if ((this.ModuleControl != null) && (this.ModuleControl.ModuleContext.Configuration != null))
+                if (this.ModuleControl?.ModuleContext.Configuration == null)
                 {
-                    var iconFile = this.GetIconFileUrl();
-                    if (!string.IsNullOrEmpty(iconFile))
-                    {
-                        if (Globals.IsAdminControl())
-                        {
-                            iconFile = $"~/DesktopModules/{this.ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
-                        }
-
-                        this.imgIcon.ImageUrl = iconFile;
-                        this.imgIcon.AlternateText = this.ModuleControl.ModuleContext.Configuration.ModuleTitle;
-                        this.Visible = true;
-                    }
+                    return;
                 }
+
+                var iconFile = this.GetIconFileUrl();
+                if (string.IsNullOrEmpty(iconFile))
+                {
+                    return;
+                }
+
+                if (!iconFile.StartsWith("~", StringComparison.Ordinal) && Globals.IsAdminControl())
+                {
+                    iconFile = $"~/DesktopModules/{this.ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
+                }
+
+                this.imgIcon.ImageUrl = iconFile;
+                this.imgIcon.AlternateText = this.ModuleControl.ModuleContext.Configuration.ModuleTitle;
+                this.Visible = true;
             }
             catch (Exception exc)
             {
@@ -67,7 +70,7 @@ namespace DotNetNuke.UI.Containers
         private string GetIconFileUrl()
         {
             var iconFile = this.ModuleControl.ModuleContext.Configuration.IconFile;
-            if (string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~"))
+            if (string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~", StringComparison.Ordinal))
             {
                 return iconFile;
             }

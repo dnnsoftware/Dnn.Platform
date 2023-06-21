@@ -740,8 +740,8 @@ span.dnnFormError:after {
     width: 80px;
     height: 103px;
     background: var(--dnn-pb-menu-brand-background);
-    -ms-background-size: 32px auto;
-    background-size: 32px auto;
+    -ms-background-size: var(--dnn-pb-menu-brand-background-size);
+    background-size: var(--dnn-pb-menu-brand-background-size);
     position: relative;
     border-bottom: 1px solid var(--dnn-color-pb-menu-divider);
     text-align: center;

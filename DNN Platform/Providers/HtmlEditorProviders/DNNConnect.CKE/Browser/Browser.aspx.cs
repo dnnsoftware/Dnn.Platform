@@ -791,7 +791,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.currentSettings,
                 settingsDictionary,
                 "DNNCKP#-1#",
-                portalRoles);
+                null);
 
             switch (this.currentSettings.SettingMode)
             {
@@ -809,7 +809,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         this.currentSettings,
                         settingsDictionary,
                         "DNNCKH#",
-                        portalRoles);
+                        null);
                     break;
                 case SettingsMode.Portal:
                     this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
@@ -2419,10 +2419,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
                 else
                 {
-                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
-                    this.Response.ClearContent();
-                    this.Response.ContentType = "application/json";
-                    this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");
+                    // querystring parameter responseType equals "json" when the request comes from drag/drop
+                    if (this.Request.QueryString["responseType"]?.Equals("json", StringComparison.InvariantCultureIgnoreCase) == true)
+                    {
+                        var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                        this.Response.ClearContent();
+                        this.Response.ContentType = "application/json";
+                        this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");
+                    }
+                    else
+                    {
+                        this.Response.Write("<script type=\"text/javascript\">");
+                        this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
+                        this.Response.Write("</script>");
+                    }
                 }
 
                 this.Response.End();

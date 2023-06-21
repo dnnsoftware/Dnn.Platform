@@ -1323,6 +1323,9 @@
   <data name="Host.Text" xml:space="preserve">
     <value>Host</value>
   </data>
+  <data name="Portal.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
   <data name="plTermsTabId.Help" xml:space="preserve">
     <value>The page where you show the terms of use for this site. If left unselected a default text will be shown when a user clicks on the terms of use link.</value>
   </data>
