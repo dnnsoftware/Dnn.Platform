@@ -13,6 +13,7 @@ import SecurityBulletins from "../securityBulletins";
 import SuperuserActivity from "../superuserActivity";
 import AuditCheck from "../auditCheck";
 import ScannerCheck from "../scannerCheck";
+import ApiTokens from "../apiTokens";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -21,6 +22,7 @@ let isHost = false;
 let isAdmin = false;
 let canViewBasicLoginSettings = false;
 let canViewRegistrationSettings = false;
+let canManageApiTokens = false;
 export class Body extends Component {
     constructor() {
         super();
@@ -29,6 +31,7 @@ export class Body extends Component {
         isAdmin = isHost || util.settings.isAdmin;
         canViewBasicLoginSettings = isHost || isAdmin || util.settings.permissions.BASIC_LOGIN_SETTINGS_VIEW;
         canViewRegistrationSettings = isHost || isAdmin || util.settings.permissions.REGISTRATION_SETTINGS_VIEW;
+        canManageApiTokens = isHost || isAdmin || util.settings.permissions.MANAGE_API_TOKENS;
     }
 
     handleSelect(index) {
@@ -44,8 +47,8 @@ export class Body extends Component {
         let moreTabHeaders = [];
         let moreTabs = [];
         let memberAccountsTabs = [];
-        if (canViewBasicLoginSettings || isHost) {
-            tabHeaders.push([resx.get("TabLoginSettings")]);
+        if (canManageApiTokens || canViewBasicLoginSettings || isHost) {
+            tabHeaders.push([resx.get("TabAuthenticationSettings")]);
             if (canViewBasicLoginSettings)
                 loginSettingTabHeaders.push(resx.get("TabBasicLoginSettings"));
             if (isHost) {
@@ -61,6 +64,9 @@ export class Body extends Component {
                             textTransform: "none"
                         }} />
                 </div>);
+            }
+            if (canManageApiTokens) {
+                loginSettingTabHeaders.push(resx.get("TabApiTokens"));
             }
         }
         if (isHost || canViewRegistrationSettings) {
@@ -118,12 +124,13 @@ export class Body extends Component {
         if (isAdmin) {
             tabHeaders.push(resx.get("TabMore"));
         }
-        if (canViewBasicLoginSettings || isHost) {
+        if (canManageApiTokens || canViewBasicLoginSettings || isHost) {
             securityTabs.push(<Tabs key="loginSettingsTab" onSelect={this.handleSelect.bind(this) }
                 tabHeaders={loginSettingTabHeaders}
                 type="secondary">
                 {canViewBasicLoginSettings && <BasicSettings cultureCode={this.props.cultureCode} />}
                 {isHost && <IpFilters />}
+                {canManageApiTokens && <ApiTokens />}
             </Tabs>);
         }
         if (isHost || canViewRegistrationSettings) {

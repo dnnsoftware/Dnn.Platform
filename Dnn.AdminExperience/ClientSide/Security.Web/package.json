@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
-    "debug": "set NODE_ENV=debug&&webpack --mode production",
-    "watch": "set NODE_ENV=debug & webpack --mode=development --progress --watch",
+    "debug": "set NODE_ENV=debug&&webpack --mode development",
+    "watch": "set NODE_ENV=debug && webpack --mode=development --progress --watch",
     "analyze": "set NODE_ENV=production&&webpack --mode production --json | webpack-bundle-size-analyzer",
     "lint": "eslint --fix"
   },

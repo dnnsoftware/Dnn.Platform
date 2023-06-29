@@ -19,25 +19,25 @@ class ApplicationService {
     }
 
     getIpFilters(callback) {
-        const sf = this.getServiceFramework("Security");        
+        const sf = this.getServiceFramework("Security");
         sf.get("GetIpFilters", {}, callback);
     }
-    
+
     getIpFilter(searchParameters, callback) {
-        const sf = this.getServiceFramework("Security");        
+        const sf = this.getServiceFramework("Security");
         searchParameters = Object.assign({}, searchParameters, {
-            
+
         });
         sf.get("GetIpFilter?" + serializeQueryStringParameters(searchParameters), {}, callback);
-    } 
+    }
 
     deleteIpFilter(filterId, callback, failureCallback) {
         const sf = this.getServiceFramework("Security");
         sf.post("DeleteIpFilter?filterId=" + filterId, {}, callback, failureCallback);
-    }    
+    }
 
     getBasicLoginSettings(cultureCode, callback) {
-        const sf = this.getServiceFramework("Security");        
+        const sf = this.getServiceFramework("Security");
         sf.get("GetBasicLoginSettings?cultureCode=" + cultureCode, {}, callback);
     }
 
@@ -62,7 +62,7 @@ class ApplicationService {
     }
 
     getRegistrationSettings(callback) {
-        const sf = this.getServiceFramework("Security");        
+        const sf = this.getServiceFramework("Security");
         sf.get("GetRegistrationSettings", {}, callback);
     }
 
@@ -72,7 +72,7 @@ class ApplicationService {
     }
 
     getSslSettings(callback) {
-        const sf = this.getServiceFramework("Security");        
+        const sf = this.getServiceFramework("Security");
         sf.get("GetSslSettings", {}, callback);
     }
 
@@ -113,13 +113,13 @@ class ApplicationService {
 
     getAuditCheckResult(id, callback) {
         const sf = this.getServiceFramework("Security");
-        sf.get("GetAuditCheckResult", {id: id}, callback);
+        sf.get("GetAuditCheckResult", { id: id }, callback);
     }
 
     searchFileSystemAndDatabase(searchParameters, callback) {
-        const sf = this.getServiceFramework("Security");        
+        const sf = this.getServiceFramework("Security");
         searchParameters = Object.assign({}, searchParameters, {
-            
+
         });
 
         if (this.searchRequest && this.searchRequest.readyState !== 4) {
@@ -130,7 +130,7 @@ class ApplicationService {
         }
 
         this.searchRequest = sf.get("SearchFileSystemAndDatabase?" + serializeQueryStringParameters(searchParameters), {}, callback);
-    } 
+    }
 
     getLastModifiedSettings(callback) {
         const sf = this.getServiceFramework("Security");
@@ -140,6 +140,21 @@ class ApplicationService {
     getLastModifiedFiles(callback) {
         const sf = this.getServiceFramework("Security");
         sf.get("GetLastModifiedFiles", {}, callback);
+    }
+
+    getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.get("GetApiTokens", { portalId, filter, apiKey, scope, pageIndex, pageSize }, callback);
+    }
+
+    getApiTokenKeys(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.get("GetApiTokenKeys", {}, callback);
+    }
+
+    getPortalList(addAll, callback) {
+        const sf = this.getServiceFramework("Portals");
+        sf.get("GetPortals?addAll=" + addAll, {}, callback);
     }
 }
 const applicationService = new ApplicationService();

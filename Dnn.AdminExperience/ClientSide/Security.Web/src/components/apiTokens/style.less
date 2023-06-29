@@ -1,0 +1,105 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+
+#security-container {
+    .dnn-persona-bar-page-body {
+        border-bottom: 0;
+
+        .react-tabs {
+            * {
+                box-sizing: border-box;
+            }
+
+            .logHeader-wrapper {
+                &:not(:last-child) {
+                    border-bottom: 1px solid @alto;
+                }
+                width: 100%;
+                float: left;
+                padding: 15px;
+                text-transform: uppercase;
+            }
+
+            .logContainer {
+                width: 100%;
+                padding: 20px 0;
+                float: left;
+            }
+
+            .logContainerBox {
+                width: 100%;
+                border: solid 1px @alto;
+                float: left;
+            }
+
+            .logHeader {
+                float: left;
+                font-weight: bolder;
+            }
+
+            .toolbar {
+                border-bottom: solid 1px @alto;
+                display: block;
+                float: left;
+                width: 100%;
+                padding: 7px 0;
+
+                .security-filter-container {
+                    width: 20%;
+                    height: 32px;
+                    margin-top: 10px;
+                    border-right: 1px solid @alto;
+                    float: left;
+
+                    .dnn-dropdown {
+                        .collapsible-toggle {
+                            width: auto;
+                        }
+                    }
+                }
+
+                .toolbar-button {
+                    float: right;
+                    border-left: solid 1px @alto;
+                    text-align: center;
+                    cursor: pointer;
+                    height: 32px;
+                    width: 100%;
+
+                    &:hover {
+                        color: #0087C6;
+
+                        .collapsible-content {
+                            color: #000;
+                        }
+                    }
+
+                    .collapsible-content {
+                        -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                        -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                        box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                        margin-top: 13px;
+                        z-index: 1000;
+                        background-color: #fff;
+                        position: absolute;
+                        width: 400px;
+                        margin-left: -288px;
+                        text-align: left;
+                    }
+                }
+
+                .toolbar-button-actions {
+                    margin-top: 10px;
+                    padding-top: 8px;
+                    font-weight: bold;
+                    color: @thunder;
+                }
+            }
+
+            .logPager {
+                margin: 0 0 20px 0;
+                float: left;
+                width: 100%;
+            }
+        }
+    }
+}
