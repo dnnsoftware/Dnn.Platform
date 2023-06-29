@@ -206,6 +206,7 @@
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Application\ApplicationStatusInfo.cs" />
     <Compile Include="Collections\PageSelector{T}.cs" />
+    <Compile Include="Collections\SerializablePagedList.cs" />
     <Compile Include="Common\Controls\Form.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\Internal\FileSystemUtilsProvider.cs" />
