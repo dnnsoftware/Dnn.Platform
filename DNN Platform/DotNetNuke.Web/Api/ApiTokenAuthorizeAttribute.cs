@@ -17,14 +17,6 @@
             Scope = scope;
         }
 
-        public string Purpose
-        {
-            get
-            {
-                return DotNetNuke.Services.Localization.Localization.GetString(Key + ".Text", ResourceFile);
-            }
-        }
-
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var token = ApiTokenController.Instance.GetCurrentThreadApiToken();
