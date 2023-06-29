@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
     /// Class that represents an Api Token Key which tells us for which bits of API this key is valid.
     /// </summary>
     [TableName("ApiTokenKeys")]
-    internal class ApiTokenKey
+    public class ApiTokenKey
     {
         /// <summary>
         /// Gets or sets the ID of the ApiToken.

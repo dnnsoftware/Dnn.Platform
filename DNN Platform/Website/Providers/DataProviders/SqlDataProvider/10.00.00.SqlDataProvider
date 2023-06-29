@@ -369,7 +369,7 @@ DROP COLUMN [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL]
 
 
 /*****************************/
-/* Add tables for API Tokens */
+/* Add schema for API Tokens */
 /*****************************/
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}ApiTokens') AND type in (N'U'))
@@ -381,6 +381,7 @@ CREATE TABLE {databaseOwner}{objectQualifier}ApiTokens (
 	[Scope] [int] NOT NULL,
 	[PortalId] [int] NOT NULL,
 	[IsRevoked] [bit] NOT NULL,
+	[RevokedByUserId] [int] NULL,
 	[RevokedOnDate] [datetime] NULL,
 	[CreatedByUserId] [int] NOT NULL,
 	[CreatedOnDate] [datetime] NOT NULL,
@@ -408,4 +409,52 @@ GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}ApiTokenKeys ADD CONSTRAINT [FK_{objectQualifier}ApiTokenKeys_ApiTokens] FOREIGN KEY ([ApiTokenId]) REFERENCES {databaseOwner}{objectQualifier}ApiTokens ([ApiTokenId]) ON DELETE CASCADE
 GO
+
+DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_ApiTokens]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ApiTokens]
+AS
+SELECT
+ a.*,
+ uc.DisplayName CreatedByUser,
+ uc.Username CreatedByUsername,
+ ur.DisplayName RevokedByUser,
+ ur.Username RevokedByUsername,
+ (SELECT STUFF((SELECT ',' + atk.TokenKey
+   FROM {databaseOwner}[{objectQualifier}ApiTokenKeys] atk WHERE atk.ApiTokenId=a.ApiTokenId
+   FOR XML PATH ('')), 1, 1, '')) Keys
+FROM {databaseOwner}[{objectQualifier}ApiTokens] a
+LEFT JOIN {databaseOwner}[{objectQualifier}Users] uc ON uc.UserID=a.CreatedByUserId
+LEFT JOIN {databaseOwner}[{objectQualifier}Users] ur ON ur.UserID=a.RevokedByUserId
+GO
+
+/*****************************************/
+/* Add PB menu permission for API Tokens */
+/*****************************************/
+
+
+INSERT INTO {databaseOwner}.[{objectQualifier}PersonaBarPermission]
+           ([MenuId]
+           ,[PermissionKey]
+           ,[PermissionName]
+           ,[ViewOrder]
+           ,[CreatedByUserID]
+           ,[CreatedOnDate]
+           ,[LastModifiedByUserID]
+           ,[LastModifiedOnDate])
+SELECT
+ pbm.MenuId,
+ 'MANAGE_API_TOKENS',
+ 'Manage API Tokens',
+ 9999,
+ -1,
+ GETDATE(),
+ -1,
+ GETDATE()
+FROM {databaseOwner}.[{objectQualifier}PersonaBarMenu] pbm 
+WHERE pbm.Identifier='Dnn.Security'
+AND NOT EXISTS (SELECT * FROM {databaseOwner}.[{objectQualifier}PersonaBarPermission] x WHERE x.MenuId=pbm.MenuId AND x.PermissionKey='MANAGE_API_TOKENS')
+GO
+
 

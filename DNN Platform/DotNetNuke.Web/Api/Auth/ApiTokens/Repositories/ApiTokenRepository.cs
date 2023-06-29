@@ -7,8 +7,9 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Framework;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
@@ -17,11 +18,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     internal class ApiTokenRepository : ServiceLocator<IApiTokenRepository, ApiTokenRepository>, IApiTokenRepository
     {
         /// <inheritdoc />
-        public ApiToken GetApiToken(int portalId, string tokenHash)
+        public ApiTokenBase GetApiToken(int portalId, string tokenHash)
         {
             using (var context = DataContext.Instance())
             {
-                var rep = context.GetRepository<ApiToken>();
+                var rep = context.GetRepository<ApiTokenBase>();
                 return rep.Find("WHERE (PortalId=@0 OR PortalId=-1) AND TokenHash=@1", portalId, tokenHash).FirstOrDefault();
             }
         }
@@ -37,27 +38,84 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         }
 
         /// <inheritdoc />
-        public ApiToken AddApiToken(ApiToken apiToken)
+        public ApiTokenBase AddApiToken(ApiTokenBase apiToken)
         {
             Requires.NotNull(apiToken);
             using (var context = DataContext.Instance())
             {
-                var rep = context.GetRepository<ApiToken>();
+                var rep = context.GetRepository<ApiTokenBase>();
                 rep.Insert(apiToken);
             }
             return apiToken;
         }
 
         /// <inheritdoc />
-        public void RevokeApiToken(ApiToken apiToken)
+        public void RevokeApiToken(ApiTokenBase apiToken)
         {
             Requires.NotNull(apiToken);
             apiToken.IsRevoked = true;
             apiToken.RevokedOnDate = DateTime.UtcNow;
             using (var context = DataContext.Instance())
             {
-                var rep = context.GetRepository<ApiToken>();
+                var rep = context.GetRepository<ApiTokenBase>();
                 rep.Update(apiToken);
+            }
+        }
+
+        /// <inheritdoc />
+        public IPagedList<ApiToken> GetApiTokens(ApiTokenScope scope, bool includeNarrowerScopes, int portalId, int userId, ApiTokenFilter filter, string apiKey, int pageIndex, int pageSize)
+        {
+            using (var context = DataContext.Instance())
+            {
+                var wheres = new List<string>();
+                if (includeNarrowerScopes)
+                {
+                    wheres.Add("Scope<=@2");
+                }
+                else
+                {
+                    wheres.Add("Scope=@2");
+                }
+
+                if (portalId > Null.NullInteger)
+                {
+                    wheres.Add("PortalId=@0");
+                }
+
+                if (userId > Null.NullInteger)
+                {
+                    wheres.Add("CreatedByUserId=@1");
+                }
+
+                switch (filter)
+                {
+                    case ApiTokenFilter.All:
+                        break;
+                    case ApiTokenFilter.Active:
+                        wheres.Add("IsRevoked=0 AND ExpiresOn > GETDATE()");
+                        break;
+                    case ApiTokenFilter.Revoked:
+                        wheres.Add("IsRevoked=1");
+                        break;
+                    case ApiTokenFilter.Expired:
+                        wheres.Add("ExpiresOn <= GETDATE()");
+                        break;
+                    case ApiTokenFilter.RevokedOrExpired:
+                        wheres.Add("(IsRevoked=1 OR ExpiresOn <= GETDATE())");
+                        break;
+                }
+
+                var sql = string.Empty;
+                if (!string.IsNullOrEmpty(apiKey))
+                {
+                    sql = "INNER JOIN {databaseOwner}[{objectQualifier}ApiTokenKeys] atk ON atk.ApiTokenId = {objectQualifier}vw_ApiTokens.ApiTokenId ";
+                    wheres.Add("atk.TokenKey=@3");
+                }
+
+                sql += $"WHERE {string.Join(" AND ", wheres)} ORDER BY CreatedOnDate DESC";
+
+                var rep = context.GetRepository<ApiToken>();
+                return rep.Find(pageIndex, pageSize, sql, portalId, userId, (int)scope, apiKey);
             }
         }
 

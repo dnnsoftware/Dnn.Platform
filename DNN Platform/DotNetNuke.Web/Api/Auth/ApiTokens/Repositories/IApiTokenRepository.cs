@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
 {
     using System.Collections.Generic;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     /// <summary>
@@ -19,7 +20,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         /// <param name="portalId">The identifier of the portal where the token was generated.</param>
         /// <param name="tokenHash">The hash code of the API token.</param>
         /// <returns>An instance of the `ApiToken` class if it exists.</returns>
-        ApiToken GetApiToken(int portalId, string tokenHash);
+        ApiTokenBase GetApiToken(int portalId, string tokenHash);
 
         /// <summary>
         /// Retrieves a list of token keys generated for the provided API token ID.
@@ -33,12 +34,26 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         /// </summary>
         /// <param name="apiToken">An `ApiToken` instance to add.</param>
         /// <returns>The same instance.</returns>
-        ApiToken AddApiToken(ApiToken apiToken);
+        ApiTokenBase AddApiToken(ApiTokenBase apiToken);
 
         /// <summary>
         /// Revokes an API token instance.
         /// </summary>
         /// <param name="apiToken">The `ApiToken` instance to revoke.</param>
-        void RevokeApiToken(ApiToken apiToken);
+        void RevokeApiToken(ApiTokenBase apiToken);
+
+        /// <summary>
+        /// Retrieves a paged list of API tokens in the database.
+        /// </summary>
+        /// <param name="scope">The scope of the API tokens to retrieve.</param>
+        /// <param name="includeNarrowerScopes">Include scopes narrower than the supplied scope.</param>
+        /// <param name="portalId">The identifier of the portal where the API token was generated.</param>
+        /// <param name="userId">The unique identifier of the user that generated the token.</param>
+        /// <param name="filter">Value indicating which tokens to return based on status.</param>
+        /// <param name="apiKey">API key to filter the results by.</param>
+        /// <param name="pageIndex">The index of the starting page.</param>
+        /// <param name="pageSize">The maximum number of records to return in a single page.</param>
+        /// <returns>A paged list of `ApiToken` objects.</returns>
+        public IPagedList<ApiToken> GetApiTokens(ApiTokenScope scope, bool includeNarrowerScopes, int portalId, int userId, ApiTokenFilter filter, string apiKey, int pageIndex, int pageSize);
     }
 }

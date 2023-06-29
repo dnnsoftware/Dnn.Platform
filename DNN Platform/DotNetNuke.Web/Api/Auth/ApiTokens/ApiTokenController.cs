@@ -5,21 +5,25 @@
 namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Cryptography;
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Collections;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Repositories;
 
     /// <inheritdoc />
-    internal class ApiTokenController : ServiceLocator<IApiTokenController, ApiTokenController>, IApiTokenController
+    public class ApiTokenController : ServiceLocator<IApiTokenController, ApiTokenController>, IApiTokenController
     {
         private const string AuthScheme = "Bearer";
 
@@ -33,7 +37,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         public string SchemeType => "ApiToken";
 
         /// <inheritdoc />
-        public (ApiToken, UserInfo) ValidateToken(HttpRequestMessage request)
+        public (ApiTokenBase, UserInfo) ValidateToken(HttpRequestMessage request)
         {
             if (!ApiTokenAuthMessageHandler.IsEnabled)
             {
@@ -46,20 +50,56 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
-        public void SetCurrentThreadApiToken(ApiToken token)
+        public void SetCurrentThreadApiToken(ApiTokenBase token)
         {
             HttpContext.Current.Items["ApiToken"] = token;
         }
 
         /// <inheritdoc />
-        public ApiToken GetCurrentThreadApiToken()
+        public ApiTokenBase GetCurrentThreadApiToken()
         {
-            if (HttpContext.Current != null && HttpContext.Current.Items["ApiToken"] is ApiToken token)
+            if (HttpContext.Current != null && HttpContext.Current.Items["ApiToken"] is ApiTokenBase token)
             {
                 return token;
             }
 
             return null;
+        }
+
+        /// <inheritdoc />
+        public SortedDictionary<string, ApiTokenAttribute> ApiTokenKeyList(ApiTokenScope scope, string locale)
+        {
+            var res = new SortedDictionary<string, ApiTokenAttribute>();
+            var typeLocator = new TypeLocator();
+            var attributes = typeLocator.GetAllMatchingTypes(
+                t => t != null &&
+                     t.IsClass &&
+                     !t.IsAbstract &&
+                     t.IsVisible)
+                .SelectMany(x => x.GetMethods())
+                .SelectMany(m => m.GetCustomAttributes(typeof(ApiTokenAuthorizeAttribute), false))
+                .Cast<ApiTokenAuthorizeAttribute>()
+                .Where(a => a.Scope <= scope);
+
+            foreach (var attr in attributes)
+            {
+                var key = attr.Key.ToLowerInvariant();
+                var k = attr.Scope.ToString() + key;
+                if (!res.ContainsKey(k))
+                {
+                    var name = DotNetNuke.Services.Localization.Localization.GetString(attr.Key + ".Text", attr.ResourceFile, locale);
+                    var description = DotNetNuke.Services.Localization.Localization.GetString(attr.Key + ".Help", attr.ResourceFile, locale);
+                    res.Add(k, new ApiTokenAttribute((int)attr.Scope, key, name, description));
+                }
+            }
+
+            return res;
+        }
+
+        /// <inheritdoc />
+        public IPagedList<ApiToken> GetApiTokens(ApiTokenScope scope, bool includeNarrowerScopes, int portalId, int userId, ApiTokenFilter filter, string apiKey, int pageIndex, int pageSize)
+        {
+            return ApiTokenRepository.Instance.GetApiTokens(scope, includeNarrowerScopes, portalId, userId, filter, apiKey, pageIndex, pageSize);
         }
 
         /// <inheritdoc />
@@ -99,7 +139,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             return authorization;
         }
 
-        private (ApiToken, UserInfo) ValidateAuthorizationValue(string authorization)
+        private (ApiTokenBase, UserInfo) ValidateAuthorizationValue(string authorization)
         {
             var tokenAndHostGuid = authorization + Entities.Host.Host.GUID;
             var hashedToken = this.GetHashedStr(tokenAndHostGuid);
@@ -121,7 +161,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 switch (apiToken.Scope)
                 {
                     case ApiTokenScope.User:
-                        var userInfo = UserController.GetUserById(this.portalSettings.PortalId, apiToken.CreatedByUserID);
+                        var userInfo = UserController.GetUserById(this.portalSettings.PortalId, apiToken.CreatedByUserId);
                         if (userInfo == null)
                         {
                             if (Logger.IsTraceEnabled)
