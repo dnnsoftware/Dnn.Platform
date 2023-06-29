@@ -13,12 +13,14 @@ namespace Dnn.PersonaBar.Security.Services
     using System.Net;
     using System.Net.Http;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Xml;
 
     using Dnn.PersonaBar.Extensions.Components.Security.Ssl;
+    using Dnn.PersonaBar.Extensions.Services.Dto;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Pages.Components;
@@ -27,6 +29,7 @@ namespace Dnn.PersonaBar.Security.Services
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
@@ -40,7 +43,8 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
-
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
     using Constants = Dnn.PersonaBar.Library.Constants;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -1021,6 +1025,104 @@ namespace Dnn.PersonaBar.Security.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        /// <summary>
+        /// Retrieves a paged list of API tokens for the specified portal and page, with the specified page size.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal for which to retrieve API tokens. Use -2 for all portals.</param>
+        /// <param name="filter">Value indicating which tokens to return based on status.</param>
+        /// <param name="apiKey">API key to filter the results by.</param>
+        /// <param name="scope">Filter the results by scope or use -2 for no scope.</param>
+        /// <param name="pageIndex">The page index (starting from 0) of the API token list to retrieve.</param>
+        /// <param name="pageSize">The number of API tokens per page to retrieve.</param>
+        /// <returns>A paged list of `ApiToken` objects for the specified portal and page.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage GetApiTokens(int portalId, int filter, string apiKey, int scope, int pageIndex, int pageSize)
+        {
+            if (portalId < 0)
+            {
+                portalId = -1;
+            }
+
+            var noScopeDefined = scope == -2;
+            var requestedScope = ApiTokenScope.User;
+            var user = this.UserInfo;
+
+            if (user.IsSuperUser)
+            {
+                if (noScopeDefined)
+                {
+                    requestedScope = ApiTokenScope.Host;
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)scope;
+                }
+            }
+            else if (user.IsAdmin)
+            {
+                portalId = PortalSettings.Current.PortalId;
+                if (noScopeDefined)
+                {
+                    requestedScope = ApiTokenScope.Portal;
+                }
+                else if (scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)scope;
+                }
+            }
+            else
+            {
+                portalId = PortalSettings.Current.PortalId;
+                if (scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+            }
+
+            var response = ApiTokenController.Instance.GetApiTokens(requestedScope, noScopeDefined, portalId, -1, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response.Serialize());
+        }
+
+        /// <summary>
+        /// Retrieves a dictionary with the API token keyword and its corresponding attribute based on the user scope.
+        /// </summary>
+        /// <returns>A dictionary with the API token keyword and its corresponding attribute.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokenKeys()
+        {
+            // The response.
+            var response = new SortedDictionary<string, ApiTokenAttribute>();
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+
+            if (user.IsSuperUser)
+            {
+                // If the user is a superuser, sets the API token scope to host.
+                response = ApiTokenController.Instance.ApiTokenKeyList(ApiTokenScope.Host, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else if (user.IsAdmin)
+            {
+                // If the user is an admin, sets the API token scope to portal.
+                response = ApiTokenController.Instance.ApiTokenKeyList(ApiTokenScope.Portal, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else
+            {
+                // If the user is regular, set the API token scope to user.
+                response = ApiTokenController.Instance.ApiTokenKeyList(ApiTokenScope.User, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+
+            // Returns the response.
+            return this.Request.CreateResponse(HttpStatusCode.OK, response.Values);
         }
 
         internal string AddPortalAlias(string portalAlias, int portalId)

@@ -446,6 +446,54 @@ const securityActions = {
                 }
             });
         };
+    },
+    getPortalList(addAll, callback) {
+        return (dispatch) => {
+            ApplicationService.getPortalList(addAll, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PORTAL_LIST,
+                    data: {
+                        portalList: data.Results,
+                        totalCount: data.TotalResults
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getApiTokenKeys(callback) {
+        return (dispatch) => {
+            ApplicationService.getApiTokenKeys(data => {
+                // dispatch({
+                //     type: ActionTypes.RETRIEVED_API_TOKEN_KEY_LIST,
+                //     data: {
+                //         portalList: data.Results,
+                //         totalCount: data.TotalResults
+                //     }
+                // });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, callback) {
+        return (dispatch) => {
+            ApplicationService.getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, data => {
+                // dispatch({
+                //     type: ActionTypes.RETRIEVED_API_TOKEN_KEY_LIST,
+                //     data: {
+                //         portalList: data.Results,
+                //         totalCount: data.TotalResults
+                //     }
+                // });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

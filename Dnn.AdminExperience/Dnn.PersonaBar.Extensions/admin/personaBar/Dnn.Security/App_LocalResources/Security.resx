@@ -150,9 +150,6 @@
   <data name="CannotDelete.Text" xml:space="preserve">
     <value>You cannot delete that rule, as it would cause the current IP address to be locked out.</value>
   </data>
-  <data name="TabLoginSettings.Text" xml:space="preserve">
-    <value>Login Settings</value>
-  </data>
   <data name="TabMoreSecuritySettings.Text" xml:space="preserve">
     <value>MORE SECURITY SETTINGS</value>
   </data>
@@ -1206,5 +1203,110 @@
   </data>
   <data name="SslSetAllPagesSecure.Confirm" xml:space="preserve">
     <value>Do you wish to set all pages of this site to be only accessible through https?</value>
+  </data>
+  <data name="TabApiTokens.Text" xml:space="preserve">
+    <value>API Tokens</value>
+  </data>
+  <data name="CreatedBy.Header" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="CreatedOn.Header" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="ExpiresOn.Header" xml:space="preserve">
+    <value>Expires</value>
+  </data>
+  <data name="Revoke.Confirm" xml:space="preserve">
+    <value>Do you wish to revoke this token? Note this cannot be undone.</value>
+  </data>
+  <data name="Revoke.Text" xml:space="preserve">
+    <value>Revoke</value>
+  </data>
+  <data name="RevokedBy.Header" xml:space="preserve">
+    <value>Revoked By</value>
+  </data>
+  <data name="RevokedOn.Header" xml:space="preserve">
+    <value>Revoked On</value>
+  </data>
+  <data name="Scope.Header" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="TabAuthenticationSettings.Text" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="Active.Text" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Expired.Text" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Portal.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Revoked.Text" xml:space="preserve">
+    <value>Revoked</value>
+  </data>
+  <data name="RevokedOrExpired.Text" xml:space="preserve">
+    <value>Revoked or expired</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Portal.Header" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="ApiKeys.Help" xml:space="preserve">
+    <value>This sets what parts of the available API the token can access.</value>
+  </data>
+  <data name="ApiKeys.Text" xml:space="preserve">
+    <value>APIs</value>
+  </data>
+  <data name="ApiTokenStatus.Header" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ApiTokenStatus.Text" xml:space="preserve">
+    <value>Token Status</value>
+  </data>
+  <data name="CreatedBy.Help" xml:space="preserve">
+    <value>Displayname and username of the user that created the token</value>
+  </data>
+  <data name="CreatedBy.Text" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="CreatedOnDate.Text" xml:space="preserve">
+    <value>Created On</value>
+  </data>
+  <data name="DeleteApiKey.Confirm" xml:space="preserve">
+    <value>Do you wish to delete this API token? Note this cannot be undone.</value>
+  </data>
+  <data name="DeleteApiKey.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ExpiresOn.Help" xml:space="preserve">
+    <value>After this date and time the token will no longer work</value>
+  </data>
+  <data name="ExpiresOn.Text" xml:space="preserve">
+    <value>Expires On</value>
+  </data>
+  <data name="RevokedBy.Help" xml:space="preserve">
+    <value>Displayname and username of the user that revoked the token.</value>
+  </data>
+  <data name="RevokedBy.Text" xml:space="preserve">
+    <value>Revoked By</value>
+  </data>
+  <data name="RevokedOn.Text" xml:space="preserve">
+    <value>Revoked On</value>
+  </data>
+  <data name="Scope.Help" xml:space="preserve">
+    <value>Scope defines at what level the token can operate. There are three levels: User, Site and Host. User scope allows the token to access a user's data. Site scope allows the token to access site level data and Host scope allows the token to access system level data.</value>
+  </data>
+  <data name="Scope.Text" xml:space="preserve">
+    <value>Scope</value>
   </data>
 </root>
