@@ -11,15 +11,10 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : TabPermissionInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// TabPermissionInfo provides the Entity Layer for Tab Permissions.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>TabPermissionInfo provides the Entity Layer for Tab Permissions.</summary>
     [Serializable]
     [XmlRoot("permission")]
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
@@ -29,25 +24,21 @@ namespace DotNetNuke.Security.Permissions
         // local property declarations
         private int tabPermissionID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
         /// Constructs a new TabPermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public TabPermissionInfo()
         {
             this.tabPermissionID = Null.NullInteger;
             this.tabID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
         /// Constructs a new TabPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public TabPermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -58,12 +49,8 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Tab Permission ID.
-        /// </summary>
+        /// <summary>Gets or sets the Tab Permission ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("tabpermissionid")]
         public int TabPermissionID
         {
@@ -78,12 +65,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Tab ID.
-        /// </summary>
+        /// <summary>Gets or sets the Tab ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("tabid")]
         public int TabID
         {
@@ -98,12 +81,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -119,12 +98,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a TabPermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a TabPermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class properties

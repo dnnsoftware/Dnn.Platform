@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Test if an <see cref="LoggingEvent"/> triggers an action
-    /// </summary>
+    /// <summary>Test if an <see cref="LoggingEvent"/> triggers an action</summary>
     /// <remarks>
     /// <para>
     /// Implementations of this interface allow certain appenders to decide
@@ -37,9 +35,7 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public interface ITriggeringEventEvaluator
     {
-        /// <summary>
-        /// Test if this event triggers the action
-        /// </summary>
+        /// <summary>Test if this event triggers the action</summary>
         /// <param name="loggingEvent">The event to check</param>
         /// <returns><c>true</c> if this event triggers the action, otherwise <c>false</c></returns>
         /// <remarks>

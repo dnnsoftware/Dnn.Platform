@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Collections;
     using System.Drawing;
 
-    /// <summary>
-    /// Summary description for PaletteQuantizer.
-    /// </summary>
+    /// <summary>Summary description for PaletteQuantizer.</summary>
     [CLSCompliant(false)]
     public class GrayscaleQuantizer : PaletteQuantizer
     {
@@ -52,9 +50,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
         }
 
-        /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm.
-        /// </summary>
+        /// <summary>Override this to process the pixel in the second pass of the algorithm.</summary>
         /// <param name="pixel">The pixel to quantize.</param>
         /// <returns>The quantized value.</returns>
         protected override byte QuantizePixel(Color32 pixel)

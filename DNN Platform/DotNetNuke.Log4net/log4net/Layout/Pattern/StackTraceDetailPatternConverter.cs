@@ -28,9 +28,7 @@ using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Write the caller stack frames to the output
-    /// </summary>
+    /// <summary>Write the caller stack frames to the output</summary>
     /// <remarks>
     /// <para>
     /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer, using format:
@@ -73,9 +71,7 @@ namespace log4net.Layout.Pattern
             return returnValue;
         }
 
-        /// <summary>
-        /// The fully qualified type of the StackTraceDetailPatternConverter class.
-        /// </summary>
+        /// <summary>The fully qualified type of the StackTraceDetailPatternConverter class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

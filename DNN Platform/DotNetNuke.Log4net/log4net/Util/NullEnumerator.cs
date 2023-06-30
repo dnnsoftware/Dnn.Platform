@@ -23,9 +23,7 @@ using System.Collections;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// An always empty <see cref="IEnumerator"/>.
-    /// </summary>
+    /// <summary>An always empty <see cref="IEnumerator"/>.</summary>
     /// <remarks>
     /// <para>
     /// A singleton implementation of the <see cref="IEnumerator"/> over a collection
@@ -36,9 +34,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class NullEnumerator : IEnumerator
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NullEnumerator" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NullEnumerator" /> class. </summary>
         /// <remarks>
         /// <para>
         /// Uses a private access modifier to enforce the singleton pattern.
@@ -48,9 +44,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Get the singleton instance of the <see cref="NullEnumerator" />.
-        /// </summary>
+        /// <summary>Get the singleton instance of the <see cref="NullEnumerator" />.</summary>
         /// <returns>The singleton instance of the <see cref="NullEnumerator" />.</returns>
         /// <remarks>
         /// <para>
@@ -62,9 +56,7 @@ namespace log4net.Util
             get { return s_instance; }
         }
 
-        /// <summary>
-        /// Gets the current object from the enumerator.
-        /// </summary>
+        /// <summary>Gets the current object from the enumerator.</summary>
         /// <remarks>
         /// Throws an <see cref="InvalidOperationException" /> because the 
         /// <see cref="NullDictionaryEnumerator" /> never has a current value.
@@ -83,9 +75,7 @@ namespace log4net.Util
             get	{ throw new InvalidOperationException(); }
         }
   
-        /// <summary>
-        /// Test if the enumerator can advance, if so advance
-        /// </summary>
+        /// <summary>Test if the enumerator can advance, if so advance</summary>
         /// <returns><c>false</c> as the <see cref="NullEnumerator" /> cannot advance.</returns>
         /// <remarks>
         /// <para>
@@ -99,9 +89,7 @@ namespace log4net.Util
             return false;
         }
   
-        /// <summary>
-        /// Resets the enumerator back to the start.
-        /// </summary>
+        /// <summary>Resets the enumerator back to the start.</summary>
         /// <remarks>
         /// <para>
         /// As the enumerator is over an empty collection <see cref="Reset"/> does nothing.
@@ -111,9 +99,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// The singleton instance of the <see cref="NullEnumerator" />.
-        /// </summary>
+        /// <summary>The singleton instance of the <see cref="NullEnumerator" />.</summary>
         private static readonly NullEnumerator s_instance = new NullEnumerator();
     }
 }

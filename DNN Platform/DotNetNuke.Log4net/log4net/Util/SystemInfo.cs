@@ -30,9 +30,7 @@ using System.Collections;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Utility class for system specific information.
-    /// </summary>
+    /// <summary>Utility class for system specific information.</summary>
     /// <remarks>
     /// <para>
     /// Utility class of static methods for system specific information.
@@ -46,9 +44,7 @@ namespace log4net.Util
         private const string DEFAULT_NULL_TEXT = "(null)";
         private const string DEFAULT_NOT_AVAILABLE_TEXT = "NOT AVAILABLE";
 
-        /// <summary>
-        /// Private constructor to prevent instances.
-        /// </summary>
+        /// <summary>Private constructor to prevent instances.</summary>
         /// <remarks>
         /// <para>
         /// Only static methods are exposed from this type.
@@ -58,9 +54,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Initialize default values for private static fields.
-        /// </summary>
+        /// <summary>Initialize default values for private static fields.</summary>
         /// <remarks>
         /// <para>
         /// Only static methods are exposed from this type.
@@ -92,9 +86,7 @@ namespace log4net.Util
             s_nullText = nullText;
         }
 
-        /// <summary>
-        /// Gets the system dependent line terminator.
-        /// </summary>
+        /// <summary>Gets the system dependent line terminator.</summary>
         /// <value>
         /// The system dependent line terminator.
         /// </value>
@@ -115,9 +107,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Gets the base directory for this <see cref="AppDomain"/>.
-        /// </summary>
+        /// <summary>Gets the base directory for this <see cref="AppDomain"/>.</summary>
         /// <value>The base directory path for the current <see cref="AppDomain"/>.</value>
         /// <remarks>
         /// <para>
@@ -141,9 +131,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Gets the path to the configuration file for the current <see cref="AppDomain"/>.
-        /// </summary>
+        /// <summary>Gets the path to the configuration file for the current <see cref="AppDomain"/>.</summary>
         /// <value>The path to the configuration file for the current <see cref="AppDomain"/>.</value>
         /// <remarks>
         /// <para>
@@ -167,9 +155,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Gets the path to the file that first executed in the current <see cref="AppDomain"/>.
-        /// </summary>
+        /// <summary>Gets the path to the file that first executed in the current <see cref="AppDomain"/>.</summary>
         /// <value>The path to the entry assembly.</value>
         /// <remarks>
         /// <para>
@@ -190,9 +176,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Gets the ID of the current thread.
-        /// </summary>
+        /// <summary>Gets the ID of the current thread.</summary>
         /// <value>The ID of the current thread.</value>
         /// <remarks>
         /// <para>
@@ -226,9 +210,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Get the host name or machine name for the current machine
-        /// </summary>
+        /// <summary>Get the host name or machine name for the current machine</summary>
         /// <value>
         /// The hostname or machine name
         /// </value>
@@ -303,9 +285,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Get this application's friendly name
-        /// </summary>
+        /// <summary>Get this application's friendly name</summary>
         /// <value>
         /// The friendly name of this application as a string
         /// </value>
@@ -359,9 +339,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Get the start time for the current process.
-        /// </summary>
+        /// <summary>Get the start time for the current process.</summary>
         /// <remarks>
         /// <para>
         /// This is the time at which the log4net library was loaded into the
@@ -385,9 +363,7 @@ namespace log4net.Util
             get { return s_processStartTimeUtc.ToLocalTime(); }
         }
 
-        /// <summary>
-        /// Get the UTC start time for the current process.
-        /// </summary>
+        /// <summary>Get the UTC start time for the current process.</summary>
         /// <remarks>
         /// <para>
         /// This is the UTC time at which the log4net library was loaded into the
@@ -410,9 +386,7 @@ namespace log4net.Util
             get { return s_processStartTimeUtc; }
         }
 
-        /// <summary>
-        /// Text to output when a <c>null</c> is encountered.
-        /// </summary>
+        /// <summary>Text to output when a <c>null</c> is encountered.</summary>
         /// <remarks>
         /// <para>
         /// Use this value to indicate a <c>null</c> has been encountered while
@@ -430,9 +404,7 @@ namespace log4net.Util
             set { s_nullText = value; }
         }
 
-        /// <summary>
-        /// Text to output when an unsupported feature is requested.
-        /// </summary>
+        /// <summary>Text to output when an unsupported feature is requested.</summary>
         /// <remarks>
         /// <para>
         /// Use this value when an unsupported feature is requested.
@@ -449,9 +421,7 @@ namespace log4net.Util
             set { s_notAvailableText = value; }
         }
 
-        /// <summary>
-        /// Gets the assembly location path for the specified assembly.
-        /// </summary>
+        /// <summary>Gets the assembly location path for the specified assembly.</summary>
         /// <param name="myAssembly">The assembly to get the location for.</param>
         /// <returns>The location of the assembly.</returns>
         /// <remarks>
@@ -548,9 +518,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Gets the short name of the <see cref="Assembly" />.
-        /// </summary>
+        /// <summary>Gets the short name of the <see cref="Assembly" />.</summary>
         /// <param name="myAssembly">The <see cref="Assembly" /> to get the name for.</param>
         /// <returns>The short name of the <see cref="Assembly" />.</returns>
         /// <remarks>
@@ -585,9 +553,7 @@ namespace log4net.Util
             // done by the string loader?
         }
 
-        /// <summary>
-        /// Gets the file name portion of the <see cref="Assembly" />, including the extension.
-        /// </summary>
+        /// <summary>Gets the file name portion of the <see cref="Assembly" />, including the extension.</summary>
         /// <param name="myAssembly">The <see cref="Assembly" /> to get the file name for.</param>
         /// <returns>The file name of the assembly.</returns>
         /// <remarks>
@@ -620,9 +586,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Loads the type specified in the type string.
-        /// </summary>
+        /// <summary>Loads the type specified in the type string.</summary>
         /// <param name="relativeType">A sibling type to use to load the type.</param>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
@@ -650,9 +614,7 @@ namespace log4net.Util
         }
         
 #if !NETSTANDARD1_3
-        /// <summary>
-        /// Loads the type specified in the type string.
-        /// </summary>
+        /// <summary>Loads the type specified in the type string.</summary>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
         /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
@@ -675,9 +637,7 @@ namespace log4net.Util
         }
 #endif
 
-        /// <summary>
-        /// Loads the type specified in the type string.
-        /// </summary>
+        /// <summary>Loads the type specified in the type string.</summary>
         /// <param name="relativeAssembly">An assembly to load the type from.</param>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
@@ -776,9 +736,7 @@ namespace log4net.Util
         }
 
 
-        /// <summary>
-        /// Generate a new guid
-        /// </summary>
+        /// <summary>Generate a new guid</summary>
         /// <returns>A new Guid</returns>
         /// <remarks>
         /// <para>
@@ -794,9 +752,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Create an <see cref="ArgumentOutOfRangeException"/>
-        /// </summary>
+        /// <summary>Create an <see cref="ArgumentOutOfRangeException"/></summary>
         /// <param name="parameterName">The name of the parameter that caused the exception</param>
         /// <param name="actualValue">The value of the argument that causes this exception</param>
         /// <param name="message">The message that describes the error</param>
@@ -825,9 +781,7 @@ namespace log4net.Util
         }
 
 
-        /// <summary>
-        /// Parse a string into an <see cref="Int32"/> value
-        /// </summary>
+        /// <summary>Parse a string into an <see cref="Int32"/> value</summary>
         /// <param name="s">the string to parse</param>
         /// <param name="val">out param where the parsed value is placed</param>
         /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
@@ -873,9 +827,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Parse a string into an <see cref="Int64"/> value
-        /// </summary>
+        /// <summary>Parse a string into an <see cref="Int64"/> value</summary>
         /// <param name="s">the string to parse</param>
         /// <param name="val">out param where the parsed value is placed</param>
         /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
@@ -921,9 +873,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Parse a string into an <see cref="Int16"/> value
-        /// </summary>
+        /// <summary>Parse a string into an <see cref="Int16"/> value</summary>
         /// <param name="s">the string to parse</param>
         /// <param name="val">out param where the parsed value is placed</param>
         /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
@@ -969,9 +919,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Lookup an application setting
-        /// </summary>
+        /// <summary>Lookup an application setting</summary>
         /// <param name="key">the application settings key to lookup</param>
         /// <returns>the value for the key, or <c>null</c></returns>
         /// <remarks>
@@ -999,9 +947,7 @@ namespace log4net.Util
             return null;
         }
 
-        /// <summary>
-        /// Convert a path into a fully qualified local file path.
-        /// </summary>
+        /// <summary>Convert a path into a fully qualified local file path.</summary>
         /// <param name="path">The path to convert.</param>
         /// <returns>The fully qualified path.</returns>
         /// <remarks>
@@ -1049,9 +995,7 @@ namespace log4net.Util
             return Path.GetFullPath(path);
         }
 
-        /// <summary>
-        /// Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity. 
-        /// </summary>
+        /// <summary>Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity. </summary>
         /// <returns>A new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity</returns>
         /// <remarks>
         /// <para>
@@ -1069,9 +1013,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Tests two strings for equality, the ignoring case.
-        /// </summary>
+        /// <summary>Tests two strings for equality, the ignoring case.</summary>
         /// <remarks>
         /// If the platform permits, culture information is ignored completely (ordinal comparison).
         /// The aim of this method is to provide a fast comparison that deals with <c>null</c> and ignores different casing.
@@ -1129,9 +1071,7 @@ namespace log4net.Util
 
 #endif
 
-        /// <summary>
-        /// Gets an empty array of types.
-        /// </summary>
+        /// <summary>Gets an empty array of types.</summary>
         /// <remarks>
         /// <para>
         /// The <c>Type.EmptyTypes</c> field is not available on
@@ -1140,44 +1080,30 @@ namespace log4net.Util
         /// </remarks>
         public static readonly Type[] EmptyTypes = new Type[0];
 
-        /// <summary>
-        /// The fully qualified type of the SystemInfo class.
-        /// </summary>
+        /// <summary>The fully qualified type of the SystemInfo class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(SystemInfo);
 
-        /// <summary>
-        /// Cache the host name for the current machine
-        /// </summary>
+        /// <summary>Cache the host name for the current machine</summary>
         private static string s_hostName;
 
-        /// <summary>
-        /// Cache the application friendly name
-        /// </summary>
+        /// <summary>Cache the application friendly name</summary>
         private static string s_appFriendlyName;
 
-        /// <summary>
-        /// Text to output when a <c>null</c> is encountered.
-        /// </summary>
+        /// <summary>Text to output when a <c>null</c> is encountered.</summary>
         private static string s_nullText;
 
-        /// <summary>
-        /// Text to output when an unsupported feature is requested.
-        /// </summary>
+        /// <summary>Text to output when an unsupported feature is requested.</summary>
         private static string s_notAvailableText;
 
-        /// <summary>
-        /// Start time for the current process.
-        /// </summary>
+        /// <summary>Start time for the current process.</summary>
         private static DateTime s_processStartTimeUtc = DateTime.UtcNow;
 
 #if NETCF_1_0
-        /// <summary>
-        /// Generate GUIDs on the .NET Compact Framework.
-        /// </summary>
+        /// <summary>Generate GUIDs on the .NET Compact Framework.</summary>
         public class PocketGuid
         {
             // guid variant types
@@ -1240,9 +1166,7 @@ namespace log4net.Util
             {
             }
 
-            /// <summary>
-            /// Return a new System.Guid object.
-            /// </summary>
+            /// <summary>Return a new System.Guid object.</summary>
             public static Guid NewGuid()
             {
                 IntPtr hCryptProv = IntPtr.Zero;

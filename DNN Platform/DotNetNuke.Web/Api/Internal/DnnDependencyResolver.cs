@@ -31,9 +31,7 @@ namespace DotNetNuke.Web.Api.Internal
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        /// <summary>
-        /// Starts a new resolution scope.
-        /// </summary>
+        /// <summary>Starts a new resolution scope.</summary>
         /// <returns>
         /// The dependency scope.
         /// </returns>
@@ -44,9 +42,7 @@ namespace DotNetNuke.Web.Api.Internal
             return new DnnDependencyResolver(scope.ServiceProvider);
         }
 
-        /// <summary>
-        /// Returns the specified service from the scope.
-        /// </summary>
+        /// <summary>Returns the specified service from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>
@@ -58,9 +54,7 @@ namespace DotNetNuke.Web.Api.Internal
             return this.serviceProvider.GetService(serviceType);
         }
 
-        /// <summary>
-        /// Returns the specified services from the scope.
-        /// </summary>
+        /// <summary>Returns the specified services from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>

@@ -7,10 +7,7 @@ namespace DotNetNuke.Services.Tokens
 
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Returns an Empty String for all Properties.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Returns an Empty String for all Properties.</summary>
     public class EmptyPropertyAccess : IPropertyAccess
     {
         /// <inheritdoc/>

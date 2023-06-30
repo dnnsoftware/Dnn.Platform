@@ -15,89 +15,67 @@ namespace DotNetNuke.Modules.RazorHost {
     
     
     public partial class EditScript {
-        /// <summary>
-        /// scriptsLabel control.
-        /// </summary>
+        /// <summary>scriptsLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl scriptsLabel;
-        /// <summary>
-        /// scriptList control.
-        /// </summary>
+        /// <summary>scriptList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList scriptList;
-        /// <summary>
-        /// cmdAdd control.
-        /// </summary>
+        /// <summary>cmdAdd control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAdd;
-        /// <summary>
-        /// lblSourceFile control.
-        /// </summary>
+        /// <summary>lblSourceFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSourceFile;
-        /// <summary>
-        /// plSource control.
-        /// </summary>
+        /// <summary>plSource control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plSource;
-        /// <summary>
-        /// txtSource control.
-        /// </summary>
+        /// <summary>txtSource control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSource;
-        /// <summary>
-        /// currentScriptLabel control.
-        /// </summary>
+        /// <summary>currentScriptLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl currentScriptLabel;
-        /// <summary>
-        /// isCurrentScript control.
-        /// </summary>
+        /// <summary>isCurrentScript control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox isCurrentScript;
-        /// <summary>
-        /// cmdSave control.
-        /// </summary>
+        /// <summary>cmdSave control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSave;
-        /// <summary>
-        /// cmdSaveClose control.
-        /// </summary>
+        /// <summary>cmdSaveClose control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSaveClose;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

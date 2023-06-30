@@ -7,18 +7,14 @@ namespace DotNetNuke.Prompt
 
     public class ConsoleErrorResultModel : ConsoleResultModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>
         public ConsoleErrorResultModel()
         {
             this.IsError = true;
             this.Output = Localization.GetString("Prompt_InvalidSyntax", Constants.DefaultPromptResourceFile, true);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>
         /// <param name="errMessage"></param>
         public ConsoleErrorResultModel(string errMessage)
         {

@@ -13,9 +13,7 @@ namespace DotNetNuke.Entities.Users
 
     public class UserRegistrationEmailNotifier
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRegistrationEmailNotifier"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRegistrationEmailNotifier"/> class.</summary>
         public UserRegistrationEmailNotifier()
         {
         }

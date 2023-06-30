@@ -6,9 +6,7 @@ namespace DotNetNuke.Framework
 {
     using System;
 
-    /// <summary>
-    /// Provides a readily testable way to manage a Singleton.
-    /// </summary>
+    /// <summary>Provides a readily testable way to manage a Singleton.</summary>
     /// <typeparam name="TContract">The interface that the controller provides.</typeparam>
     /// <typeparam name="TSelf">The type of the controller itself, used to call the GetFactory override.</typeparam>
     public abstract class ServiceLocator<TContract, TSelf>
@@ -18,9 +16,7 @@ namespace DotNetNuke.Framework
         private static TContract testableInstance;
         private static bool useTestable;
 
-        /// <summary>
-        /// Gets a singleton of T.
-        /// </summary>
+        /// <summary>Gets a singleton of T.</summary>
         public static TContract Instance
         {
             get
@@ -34,14 +30,10 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets or sets the service locator factory.
-        /// </summary>
+        /// <summary>Gets or sets the service locator factory.</summary>
         protected static Func<TContract> Factory { get; set; }
 
-        /// <summary>
-        /// Registers an instance to use for the Singleton.
-        /// </summary>
+        /// <summary>Registers an instance to use for the Singleton.</summary>
         /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         /// <param name="instance">The instance to set.</param>
         public static void SetTestableInstance(TContract instance)
@@ -50,9 +42,7 @@ namespace DotNetNuke.Framework
             useTestable = true;
         }
 
-        /// <summary>
-        /// Clears the current instance, a new instance will be initialized when next requested.
-        /// </summary>
+        /// <summary>Clears the current instance, a new instance will be initialized when next requested.</summary>
         /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         public static void ClearInstance()
         {
@@ -61,9 +51,7 @@ namespace DotNetNuke.Framework
             instance = new Lazy<TContract>(InitInstance, true);
         }
 
-        /// <summary>
-        /// Gets the service locator factory.
-        /// </summary>
+        /// <summary>Gets the service locator factory.</summary>
         /// <returns>A factory function.</returns>
         protected abstract Func<TContract> GetFactory();
 

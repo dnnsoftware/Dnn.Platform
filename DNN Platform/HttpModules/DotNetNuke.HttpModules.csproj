@@ -91,6 +91,7 @@
     <Compile Include="Personalization\PersonalizationModule.cs" />
     <Compile Include="Services\ServicesModule.cs" />
     <Compile Include="UrlRewrite\BasicUrlRewriter.cs" />
+    <Compile Include="UrlRewrite\DNNFriendlyUrlProvider.cs" />
     <Compile Include="Users Online\UsersOnlineModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -119,7 +120,6 @@
     <Compile Include="RequestFilter\RequestFilterRule.cs" />
     <Compile Include="RequestFilter\Config\Enums.cs" />
     <Compile Include="RequestFilter\Config\RequestFilterSettings.cs" />
-    <Compile Include="UrlRewrite\FriendlyUrlProvider.cs" />
     <Compile Include="UrlRewrite\UrlRewriteModule.cs" />
   </ItemGroup>
   <ItemGroup>

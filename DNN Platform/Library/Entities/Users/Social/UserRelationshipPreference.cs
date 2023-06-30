@@ -10,54 +10,39 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserRelationshipPreference
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserRelationshipPreference class defines the relationship preference per user
     /// The user initiating the relationship is UserId.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserRelationshipPreference : BaseEntityInfo, IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipPreference"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipPreference"/> class.</summary>
         public UserRelationshipPreference()
         {
             this.PreferenceId = -1;
         }
 
-        /// <summary>
-        /// Gets or sets preferenceId - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets preferenceId - The primary key.</summary>
         [XmlAttribute]
         public int PreferenceId { get; set; }
 
-        /// <summary>
-        /// Gets or sets userId of the User that owns the relationship.
-        /// </summary>
+        /// <summary>Gets or sets userId of the User that owns the relationship.</summary>
         [XmlAttribute]
         public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).
-        /// </summary>
+        /// <summary>Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).</summary>
         [XmlAttribute]
         public int RelationshipId { get; set; }
 
-        /// <summary>
-        /// Gets or sets default Relationship Status to be provided to any new Relationship Request.
-        /// </summary>
+        /// <summary>Gets or sets default Relationship Status to be provided to any new Relationship Request.</summary>
         [XmlAttribute]
         public RelationshipStatus DefaultResponse { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -73,9 +58,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

@@ -9,9 +9,7 @@ namespace Dnn.Modules.ResourceManager.Services.Attributes
 
     using Dnn.Modules.ResourceManager.Exceptions;
 
-    /// <summary>
-    /// A custom <see cref="ExceptionFilterAttribute"/> for the resource manager.
-    /// </summary>
+    /// <summary>A custom <see cref="ExceptionFilterAttribute"/> for the resource manager.</summary>
     public class ResourceManagerExceptionFilter : ExceptionFilterAttribute
     {
         /// <inheritdoc/>

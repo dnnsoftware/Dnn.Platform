@@ -6,9 +6,7 @@ namespace DNN.Integration.Test.Framework.Helpers
 {
     public static class PortalSettingsHelper
     {
-        /// <summary>
-        /// Gets a portal setting value.
-        /// </summary>
+        /// <summary>Gets a portal setting value.</summary>
         /// <param name="settingName">The name of the setting.</param>
         /// <param name="portalId">The optional PortalId, default to 0.</param>
         /// <returns>The string value of the setting.</returns>
@@ -23,9 +21,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return DatabaseHelper.ExecuteScalar<string>(query);
         }
 
-        /// <summary>
-        /// Sets a portal setting value, adding or updating the setting as required.
-        /// </summary>
+        /// <summary>Sets a portal setting value, adding or updating the setting as required.</summary>
         /// <param name="settingName">The name of the setting.</param>
         /// <param name="settingValue">The value of the setting.</param>
         /// <param name="portalId">The optional PortalId, default to 0.</param>

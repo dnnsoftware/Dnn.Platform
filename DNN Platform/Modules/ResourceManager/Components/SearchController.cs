@@ -14,16 +14,12 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Provides search functionality.
-    /// </summary>
+    /// <summary>Provides search functionality.</summary>
     public class SearchController : ComponentBase<ISearchController, SearchController>, ISearchController
     {
         private readonly IPermissionsManager permissionsManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchController"/> class.</summary>
         public SearchController()
         {
             this.permissionsManager = PermissionsManager.Instance;

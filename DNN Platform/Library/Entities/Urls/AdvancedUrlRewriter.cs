@@ -154,12 +154,10 @@ namespace DotNetNuke.Entities.Urls
             return isChildPortalRootUrl;
         }
 
-        /// <summary>
-        /// Make sure any redirect to the site root doesn't append the nasty /default.aspx on the end.
-        /// </summary>
+        /// <summary>Make sure any redirect to the site root doesn't append the nasty /default.aspx on the end.</summary>
         /// <param name="alias"></param>
         /// <param name="destUrl"></param>
-        /// <returns></returns>
+        /// <returns><paramref name="destUrl"/> without <see cref="Globals.glbDefaultPage"/> at the end.</returns>
         internal static string CheckForSiteRootRedirect(string alias, string destUrl)
         {
             // 540 - don't append /default.aspx onto the end of a site root redirect.
@@ -1173,13 +1171,11 @@ namespace DotNetNuke.Entities.Urls
             return finished;
         }
 
-        /// <summary>
-        /// Redirects an alias if that is allowed by the settings.
-        /// </summary>
+        /// <summary>Redirects an alias if that is allowed by the settings.</summary>
         /// <param name="httpAlias"></param>
         /// <param name="result"></param>
         /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the <paramref name="result"/> is a redirect, otherwise <see langword="false"/>.</returns>
         private static bool RedirectPortalAlias(string httpAlias, ref UrlAction result, FriendlyUrlSettings settings)
         {
             bool redirected = false;
@@ -1219,13 +1215,11 @@ namespace DotNetNuke.Entities.Urls
                 settings);
         }
 
-        /// <summary>
-        /// Checks to see whether the specified alias is a customTabAlias.
-        /// </summary>
+        /// <summary>Checks to see whether the specified alias is a customTabAlias.</summary>
         /// <param name="result"></param>
         /// <param name="httpAlias"></param>
         /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the alias is a custom tab alias, otherwise <see langword="false"/>.</returns>
         private static bool CheckIfAliasIsCustomTabAlias(ref UrlAction result, string httpAlias, FriendlyUrlSettings settings)
         {
             List<string> customAliasesForTabs = TabIndexController.GetCustomPortalAliases(settings);
@@ -1247,12 +1241,10 @@ namespace DotNetNuke.Entities.Urls
             return isACustomTabAlias;
         }
 
-        /// <summary>
-        /// Checks to see whether the specified alias is a customTabAlias for the TabId in result.
-        /// </summary>
+        /// <summary>Checks to see whether the specified alias is a customTabAlias for the TabId in result.</summary>
         /// <param name="result"></param>
         /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the the current alias is a custom tab alias, otherwise <see langword="false"/>.</returns>
         private static bool CheckIfAliasIsCurrentTabCustomTabAlias(ref UrlAction result, FriendlyUrlSettings settings)
         {
             var customAliasesForTab = TabController.Instance.GetCustomAliases(result.TabId, result.PortalId);
@@ -1282,10 +1274,7 @@ namespace DotNetNuke.Entities.Urls
             return isCurrentTabCustomTabAlias;
         }
 
-        /// <summary>
-        /// Configures the result object to set the correct Alias redirect
-        /// parameters and destination URL.
-        /// </summary>
+        /// <summary>Configures the result object to set the correct Alias redirect parameters and destination URL.</summary>
         /// <param name="result"></param>
         /// <param name="wrongAlias"></param>
         /// <param name="rightAlias"></param>
@@ -1293,7 +1282,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="redirectReason"></param>
         /// <param name="internalAliases"></param>
         /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the <paramref name="result"/> is a redirect, otherwise <see langword="false"/>.</returns>
         private static bool ConfigurePortalAliasRedirect(
             ref UrlAction result,
             string wrongAlias,
@@ -1393,14 +1382,12 @@ namespace DotNetNuke.Entities.Urls
             return MakeUrlWithAlias(requestUri, alias.HTTPAlias);
         }
 
-        /// <summary>
-        /// Determines if this is a request from an install / upgrade url.
-        /// </summary>
+        /// <summary>Determines if this is a request from an install / upgrade url.</summary>
         /// <param name="physicalPath"></param>
         /// <param name="refererPath"></param>
         /// <param name="requestedDomain"></param>
         /// <param name="refererDomain"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the request is for an install URL, otherwise <see langword="false"/>.</returns>
         /// <remarks>
         /// //875 : cater for the upgradewizard.aspx Url that is new to DNN 6.1.
         /// </remarks>

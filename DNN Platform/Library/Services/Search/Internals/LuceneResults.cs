@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     internal class LuceneResults
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LuceneResults"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LuceneResults"/> class.</summary>
         public LuceneResults()
         {
             this.Results = new List<LuceneResult>();

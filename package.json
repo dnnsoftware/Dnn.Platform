@@ -1,6 +1,6 @@
 {
   "name": "dnn-platform",
-  "version": "9.11.0",
+  "version": "9.11.2",
   "private": true,
   "workspaces": [
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
@@ -27,7 +27,7 @@
     "DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   ],
   "devDependencies": {
-    "lerna": "^6.0.3"
+    "lerna": "^6.5.1"
   },
   "scripts": {
     "build": "lerna run build --stream",
@@ -38,5 +38,5 @@
     "lint": "lerna run lint",
     "test": "lerna run test"
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.4.1"
 }

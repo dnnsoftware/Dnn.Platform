@@ -10,21 +10,13 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The SkinPackageWriter class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The SkinPackageWriter class.</summary>
     public class SkinPackageWriter : PackageWriterBase
     {
         private readonly SkinPackageInfo skinPackage;
         private readonly string subFolder;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="package"></param>
         public SkinPackageWriter(PackageInfo package)
             : base(package)
@@ -33,9 +25,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.SetBasePath();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="skinPackage"></param>
         /// <param name="package"></param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
@@ -45,9 +35,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.SetBasePath();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="skinPackage"></param>
         /// <param name="package"></param>
         /// <param name="basePath"></param>
@@ -58,9 +46,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = basePath;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
         /// <param name="skinPackage"></param>
         /// <param name="package"></param>
         /// <param name="basePath"></param>

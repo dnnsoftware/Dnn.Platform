@@ -4,14 +4,10 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Removes items in the specified section of the Web.config file that match a search term.
-    /// </summary>
+    /// <summary>Removes items in the specified section of the Web.config file that match a search term.</summary>
     internal interface IRemoveItemFromCollectionStep : IXmlStep
     {
-        /// <summary>
-        /// Gets or sets the XPath expression of the target collection.
-        /// </summary>
+        /// <summary>Gets or sets the XPath expression of the target collection.</summary>
         string CollectionPath { get; set; }
 
         /// <summary>
@@ -20,9 +16,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         /// </summary>
         string SearchTerm { get; set; }
 
-        /// <summary>
-        /// Gets or sets the attribute names to include in the search.
-        /// </summary>
+        /// <summary>Gets or sets the attribute names to include in the search.</summary>
         string AttributeNamesToIncludeInSearch { get; set; }
     }
 }

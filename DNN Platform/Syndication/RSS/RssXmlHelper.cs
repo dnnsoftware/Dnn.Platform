@@ -8,13 +8,12 @@ namespace DotNetNuke.Services.Syndication
     using System.Web;
     using System.Xml;
 
+    /// <summary>A helper class for handling RSS XML.</summary>
     internal class RssXmlHelper
     {
-        /// <summary>
-        ///   Internal helper class for XML to RSS conversion (and for generating XML from RSS).
-        /// </summary>
-        /// <param name = "doc"></param>
-        /// <returns></returns>
+        /// <summary>Internal helper class for XML to RSS conversion (and for generating XML from RSS).</summary>
+        /// <param name="doc">The XML document.</param>
+        /// <returns>A new <see cref="RssChannelDom"/> instance.</returns>
         internal static RssChannelDom ParseChannelXml(XmlDocument doc)
         {
             Dictionary<string, string> channelAttributes = null;
@@ -93,6 +92,8 @@ namespace DotNetNuke.Services.Syndication
             return new RssChannelDom(channelAttributes, imageAttributes, itemsAttributesList);
         }
 
+        /// <summary>Creates an empty RSS XML document.</summary>
+        /// <returns>A new <see cref="XmlDocument"/>.</returns>
         internal static XmlDocument CreateEmptyRssXml()
         {
             var doc = new XmlDocument { XmlResolver = null };
@@ -102,6 +103,11 @@ namespace DotNetNuke.Services.Syndication
             return doc;
         }
 
+        /// <summary>Copies the <paramref name="element"/> into the <paramref name="parentNode"/>.</summary>
+        /// <param name="parentNode">The node to which the new element will be added.</param>
+        /// <param name="element">The element to copy.</param>
+        /// <param name="elementName">The name of the new element to copy into.</param>
+        /// <returns>The new XML element.</returns>
         internal static XmlNode SaveRssElementAsXml(XmlNode parentNode, RssElementBase element, string elementName)
         {
             XmlDocument doc = parentNode.OwnerDocument;

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Extensions.Services
 {
     using System;
@@ -56,12 +55,9 @@ namespace Dnn.PersonaBar.Extensions.Services
         private readonly Components.ExtensionsController controller = new Components.ExtensionsController();
 
         /// GET: api/Extensions/GetPackageTypes
-        /// <summary>
-        /// Get installed package types.
-        /// </summary>
+        /// <summary>Get installed package types.</summary>
         /// <returns>List of package types.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetPackageTypes()
         {
             try
@@ -95,9 +91,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// GET: api/Extensions/GetAllPackagesListExceptLangPacks
-        /// <summary>
-        /// Get installed packages list except language packs.
-        /// </summary>
+        /// <summary>Get installed packages list except language packs.</summary>
         /// <returns>List of [Id,Name] pairs of all system packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetAllPackagesListExceptLangPacks()
@@ -115,13 +109,10 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// GET: api/Extensions/GetInstalledPackages
-        /// <summary>
-        /// Gets installed packages.
-        /// </summary>
-        /// <param name="packageType"></param>
+        /// <summary>Gets installed packages.</summary>
+        /// <param name="packageType">The package type.</param>
         /// <returns>List of installed packages.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetInstalledPackages(string packageType)
         {
             try
@@ -143,14 +134,11 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// GET: api/Extensions/GetAvailablePackages
-        /// <summary>
-        /// Gets available packages.
-        /// </summary>
-        /// <param name="packageType"></param>
+        /// <summary>Gets available packages.</summary>
+        /// <param name="packageType">The package type.</param>
         /// <returns>List of available packages.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetAvailablePackages(string packageType)
         {
             try
@@ -171,40 +159,40 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        // /// GET: api/Extensions/GetPackageUsage
-        //        /// <summary>
-        //        /// Gets package usage
-        //        /// </summary>
-        //        /// <param name="portalId"></param>
-        //        /// <param name="packageId"></param>
-        //        /// <returns>List of tabs using a specific package</returns>
-        //        [HttpGet]
-        //        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
-        //        {
-        //            try
-        //            {
-        //                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
-        //                {
-        //                    TabLink = _controller.GetFormattedTabLink(portalId, t)
-        //                }).ToList();
-        //
-        //                var response = new
-        //                {
-        //                    Success = true,
-        //                    Results = packages,
-        //                    TotalResults = packages.Count
-        //                };
-        //                return Request.CreateResponse(HttpStatusCode.OK, response);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Logger.Error(ex);
-        //                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-        //            }
-        //        }
+        //// /// GET: api/Extensions/GetPackageUsage
+        ////        /// <summary>
+        ////        /// Gets package usage
+        ////        /// </summary>
+        ////        /// <param name="portalId"></param>
+        ////        /// <param name="packageId"></param>
+        ////        /// <returns>List of tabs using a specific package</returns>
+        ////        [HttpGet]
+        ////        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
+        ////        {
+        ////            try
+        ////            {
+        ////                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
+        ////                {
+        ////                    TabLink = _controller.GetFormattedTabLink(portalId, t)
+        ////                }).ToList();
+        ////
+        ////                var response = new
+        ////                {
+        ////                    Success = true,
+        ////                    Results = packages,
+        ////                    TotalResults = packages.Count
+        ////                };
+        ////                return Request.CreateResponse(HttpStatusCode.OK, response);
+        ////            }
+        ////            catch (Exception ex)
+        ////            {
+        ////                Logger.Error(ex);
+        ////                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+        ////            }
+        ////        }
+
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetSourceFolders(/*int moduleControlId*/)
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "DesktopModules");
@@ -237,7 +225,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetSourceFiles(string root)
         {
             var response = new List<KeyValuePair<string, string>>
@@ -263,7 +250,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage LoadIcons(string controlPath)
         {
             var response = new List<KeyValuePair<string, string>>
@@ -311,7 +297,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetModuleCategories()
         {
             var termController = Util.GetTermController();
@@ -321,7 +306,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetPackageSettings(int siteId, int packageId)
         {
             var portalId = siteId;
@@ -351,7 +335,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage SavePackageSettings(PackageSettingsDto packageSettings)
         {
             try
@@ -424,7 +407,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetAvailableControls(int packageId)
         {
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageId);
@@ -453,7 +435,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage DeletePackage(DeletePackageDto deletePackage)
         {
             try
@@ -479,7 +460,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [RequireHost]
-
         public Task<HttpResponseMessage> InstallPackage([FromUri] string legacySkin = null, [FromUri] bool isPortalPackage = false)
         {
             try
@@ -498,7 +478,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [RequireHost]
-
         public Task<HttpResponseMessage> ParsePackage()
         {
             try
@@ -517,7 +496,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ParsePackageFile(DownloadPackageDto package)
         {
             try
@@ -547,7 +525,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ParseLanguagePackage([FromUri] string cultureCode)
         {
             try
@@ -565,14 +542,11 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// <summary>
-        /// Inatall a package that is already included under one of the installation folders.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Install a package that is already included under one of the installation folders.</summary>
+        /// <returns>An <see cref="InstallResultDto"/> response.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage InstallAvailablePackage(DownloadPackageDto package)
         {
             try
@@ -599,13 +573,10 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// <summary>
-        /// Download install package.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Download install package.</summary>
+        /// <returns>A response that streams the package zip file.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage DownloadPackage(string packageType, string fileName)
         {
             try
@@ -644,7 +615,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage DownloadLanguagePackage([FromUri] string cultureCode)
         {
             try
@@ -672,7 +642,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetPackageUsageFilter()
         {
             try
@@ -712,7 +681,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
         {
             try
@@ -754,7 +722,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreateExtension(PackageSettingsDto packageSettings)
         {
             try
@@ -881,7 +848,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetOwnerFolders()
         {
             try
@@ -910,7 +876,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetModuleFolders(string ownerFolder)
         {
             if (!string.IsNullOrEmpty(ownerFolder) &&
@@ -940,7 +905,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetModuleFiles(string ownerFolder, string moduleFolder, FileType type)
         {
             if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith("."))) || string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith("."))
@@ -981,7 +945,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreateFolder([FromUri] string ownerFolder, [FromUri] string moduleFolder)
         {
             if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith(".")))
@@ -1025,7 +988,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreateModule(CreateModuleDto createModuleDto)
         {
             try
@@ -1057,7 +1019,6 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetPackageManifest(int packageId)
         {
             try
@@ -1165,7 +1126,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreateManifest(PackageManifestDto packageManifestDto)
         {
             try
@@ -1189,7 +1149,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreateNewManifest(PackageManifestDto packageManifestDto)
         {
             try
@@ -1207,7 +1166,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreatePackage(PackageManifestDto packageManifestDto)
         {
             try
@@ -1299,7 +1257,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage RefreshPackageFiles(PackageFilesQueryDto packageData)
         {
             var baseFolder = Path.Combine(Globals.ApplicationMapPath, packageData.PackageFolder.Replace('/', '\\'));

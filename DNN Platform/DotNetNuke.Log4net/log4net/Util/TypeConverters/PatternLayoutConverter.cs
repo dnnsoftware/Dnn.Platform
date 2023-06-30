@@ -25,9 +25,7 @@ using log4net.Layout;
 
 namespace log4net.Util.TypeConverters
 {
-    /// <summary>
-    /// Supports conversion from string to <see cref="PatternLayout"/> type.
-    /// </summary>
+    /// <summary>Supports conversion from string to <see cref="PatternLayout"/> type.</summary>
     /// <remarks>
     /// <para>
     /// Supports conversion from string to <see cref="PatternLayout"/> type.
@@ -43,9 +41,7 @@ namespace log4net.Util.TypeConverters
     /// <author>Nicko Cadell</author>
     internal class PatternLayoutConverter : IConvertFrom
     {
-        /// <summary>
-        /// Can the source type be converted to the type supported by this object
-        /// </summary>
+        /// <summary>Can the source type be converted to the type supported by this object</summary>
         /// <param name="sourceType">the type to convert</param>
         /// <returns>true if the conversion is possible</returns>
         /// <remarks>
@@ -59,9 +55,7 @@ namespace log4net.Util.TypeConverters
             return (sourceType == typeof(string));
         }
 
-        /// <summary>
-        /// Overrides the ConvertFrom method of IConvertFrom.
-        /// </summary>
+        /// <summary>Overrides the ConvertFrom method of IConvertFrom.</summary>
         /// <param name="source">the object to convert to a PatternLayout</param>
         /// <returns>the PatternLayout</returns>
         /// <remarks>

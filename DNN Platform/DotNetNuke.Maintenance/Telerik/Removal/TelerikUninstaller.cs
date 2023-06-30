@@ -9,9 +9,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
     /// <inheritdoc />
     internal class TelerikUninstaller : UnInstaller, ITelerikUninstaller
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TelerikUninstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TelerikUninstaller"/> class.</summary>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         public TelerikUninstaller(IServiceProvider serviceProvider, ILocalizer localizer)

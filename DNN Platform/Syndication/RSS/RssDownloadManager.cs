@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds.
-    /// </summary>
+    /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
     internal class RssDownloadManager
     {
         private const string RSSDir = "/RSS/";
@@ -36,6 +34,9 @@ namespace DotNetNuke.Services.Syndication
             this.directoryOnDisk = PrepareTempDir();
         }
 
+        /// <summary>Gets the RSS channel at the given <paramref name="url"/>.</summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>The RSS feed, or an empty RSS feed if there's an error loading it.</returns>
         public static RssChannelDom GetChannel(string url)
         {
             return TheManager.GetChannelDom(url);

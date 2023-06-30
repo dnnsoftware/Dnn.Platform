@@ -14,9 +14,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
     {
         private readonly IWorkflowActionRepository workflowActionRepository;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowActionManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowActionManager"/> class.</summary>
         public WorkflowActionManager()
         {
             this.workflowActionRepository = WorkflowActionRepository.Instance;

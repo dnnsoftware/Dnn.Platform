@@ -107,25 +107,6 @@ class BasicSettingsPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {state} = this;
-        const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
-        const RedirectAfterLogoutParameters = {
-            portalId: -2,
-            cultureCode: "",
-            isMultiLanguage: false,
-            excludeAdminTabs: false,
-            disabledNotSelectable: false,
-            roles: "-1",
-            sortOrder: 0
-        };
-        const RedirectAfterLoginParameters = {
-            portalId: -2,
-            cultureCode: "",
-            isMultiLanguage: false,
-            excludeAdminTabs: false,
-            disabledNotSelectable: false,
-            roles: "1;-1",
-            sortOrder: 0
-        };
 
         if (state.basicLoginSettings) {
             return (

@@ -15,9 +15,7 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         private readonly ModuleListeners moduleListeners = new ModuleListeners();
 
-        /// <summary>
-        /// Gets the module communicators.
-        /// </summary>
+        /// <summary>Gets the module communicators.</summary>
         /// <value>
         /// The module communicators.
         /// </value>
@@ -29,9 +27,7 @@ namespace DotNetNuke.Entities.Modules.Communications
             }
         }
 
-        /// <summary>
-        /// Gets the module listeners.
-        /// </summary>
+        /// <summary>Gets the module listeners.</summary>
         /// <value>
         /// The module listeners.
         /// </value>
@@ -43,9 +39,7 @@ namespace DotNetNuke.Entities.Modules.Communications
             }
         }
 
-        /// <summary>
-        /// Loads the communicator.
-        /// </summary>
+        /// <summary>Loads the communicator.</summary>
         /// <param name="ctrl">The control.</param>
         public void LoadCommunicator(Control ctrl)
         {

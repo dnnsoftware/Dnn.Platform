@@ -1,83 +1,93 @@
 ﻿/* eslint-disable no-undef */
-/* eslint-disable spellcheck/spell-checker */
 const webpack = require("webpack");
 const path = require("path");
 const packageJson = require("./package.json");
 const settings = require("../../../settings.local.json");
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === "production";
-  return {
-    entry: "./src/main.jsx",
-    optimization: {
-      minimize: isProduction,
-    },
-    output: {
-      path:
-        isProduction || settings.WebsitePath == ""
-          ? path.resolve(
-              "../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/"
+    const isProduction = argv.mode === "production";
+    return {
+        entry: "./src/main.jsx",
+        optimization: {
+            minimize: isProduction,
+        },
+        output: {
+            path:
+        isProduction || settings.WebsitePath === ""
+            ? path.resolve(
+                "../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/"
             )
-          : path.join(
-              settings.WebsitePath,
-              "DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\"
+            : path.join(
+                settings.WebsitePath,
+                "DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\"
             ),
-      filename: "export-bundle.js",
-      publicPath: isProduction ? "" : "http://localhost:8070/dist/",
-    },
-    devServer: {
-      disableHostCheck: !isProduction,
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          enforce: "pre",
-          exclude: /node_modules/,
-          loader: "eslint-loader",
-          options: { fix: true },
+            filename: "export-bundle.js",
+            publicPath: isProduction ? "" : "http://localhost:8070/dist/",
         },
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loader: "babel-loader",
+        devServer: {
+            disableHostCheck: !isProduction,
         },
-        {
-          test: /\.(less|css)$/,
-          loader: "style-loader!css-loader!less-loader",
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    enforce: "pre",
+                    exclude: /node_modules/,
+                    use:[
+                        {
+                            loader: "eslint-loader",
+                            options: { fix: true },
+                        }
+                    ]
+                },
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    use: ["babel-loader"],
+                },
+                {
+                    test: /\.(less|css)$/,
+                    use: ["style-loader", "css-loader", "less-loader"],
+                },
+                {
+                    test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
+                    use: ["url-loader?mimetype=application/font-woff"],
+                },
+                {
+                    test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
+                    use: ["file-loader?name=[name].[ext]"],
+                },
+                {
+                    test: /\.(gif|png)$/,
+                    use: ["url-loader?mimetype=image/png"],
+                },
+            ],
         },
-        {
-          test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
-          loader: "url-loader?mimetype=application/font-woff",
+        resolve: {
+            extensions: [".js", ".json", ".jsx"],
+            modules: [
+                path.resolve("./node_modules"), // Try local node_modules
+                path.resolve("../../../node_modules"),
+                path.resolve(__dirname, "src"),
+            ],
         },
-        {
-          test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-          loader: "file-loader?name=[name].[ext]",
-        },
-        { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
-      ],
-    },
-    resolve: {
-      extensions: [".js", ".json", ".jsx"],
-      modules: [
-        path.resolve("./node_modules"), // Try local node_modules
-        path.resolve("../../../node_modules"),
-        path.resolve(__dirname, "src"),
-      ],
-    },
-    plugins: isProduction
-      ? [
-          new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version),
-            "process.env": {
-              NODE_ENV: JSON.stringify("production"),
-            },
-          }),
-        ]
-      : [
-          new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version),
-          }),
-        ],
-  };
+        plugins:
+            [
+                isProduction
+                    ? new webpack.DefinePlugin({
+                        VERSION: JSON.stringify(packageJson.version),
+                        "process.env": {
+                            NODE_ENV: JSON.stringify("production"),
+                        },
+                    })
+                    : new webpack.DefinePlugin({
+                        VERSION: JSON.stringify(packageJson.version),
+                    }),
+                new webpack.SourceMapDevToolPlugin({
+                    filename: "export-bundle.js.map",
+                    append: "\n//# sourceMappingURL=export-bundle.js.map"
+                }),
+            ],
+        devtool: false,
+    };
 };

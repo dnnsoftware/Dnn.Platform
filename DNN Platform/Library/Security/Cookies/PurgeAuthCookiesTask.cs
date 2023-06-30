@@ -8,14 +8,10 @@ namespace DotNetNuke.Security.Cookies
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
 
-    /// <summary>
-    /// Scheduled task to remove old cookies.
-    /// </summary>
+    /// <summary>Scheduled task to remove old cookies.</summary>
     public class PurgeAuthCookiesTask : SchedulerClient
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PurgeAuthCookiesTask"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PurgeAuthCookiesTask"/> class.</summary>
         /// <param name="objScheduleHistoryItem">Object that will get added to the database as a record of this run.</param>
         public PurgeAuthCookiesTask(ScheduleHistoryItem objScheduleHistoryItem)
         {

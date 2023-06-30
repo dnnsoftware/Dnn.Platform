@@ -7,10 +7,8 @@ namespace DotNetNuke.Web.UI.WebControls
     using System;
     using System.Web.UI;
 
-    /// <summary>
-    /// Restricts the client to add only controls of specific type into the control collection.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Restricts the client to add only controls of specific type into the control collection.</summary>
+    /// <typeparam name="T">The type of control.</typeparam>
     public sealed class TypedControlCollection<T> : ControlCollection
         where T : Control
     {

@@ -38,9 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiskImageStore"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DiskImageStore"/> class.</summary>
         internal DiskImageStore()
         {
             if (CachePath != null && !Directory.Exists(CachePath))

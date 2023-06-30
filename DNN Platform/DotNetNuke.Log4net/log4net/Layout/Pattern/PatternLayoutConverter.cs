@@ -41,16 +41,12 @@ namespace log4net.Layout.Pattern
     /// <author>Nicko Cadell</author>
     public abstract class PatternLayoutConverter : PatternConverter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PatternLayoutConverter" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PatternLayoutConverter" /> class.</summary>
         protected PatternLayoutConverter() 
         {  
         }
 
-        /// <summary>
-        /// Flag indicating if this converter handles the logging event exception
-        /// </summary>
+        /// <summary>Flag indicating if this converter handles the logging event exception</summary>
         /// <value><c>false</c> if this converter handles the logging event exception</value>
         /// <remarks>
         /// <para>
@@ -97,9 +93,7 @@ namespace log4net.Layout.Pattern
             }
         }
 
-        /// <summary>
-        /// Flag indicating if this converter handles exceptions
-        /// </summary>
+        /// <summary>Flag indicating if this converter handles exceptions</summary>
         /// <remarks>
         /// <c>false</c> if this converter handles exceptions
         /// </remarks>

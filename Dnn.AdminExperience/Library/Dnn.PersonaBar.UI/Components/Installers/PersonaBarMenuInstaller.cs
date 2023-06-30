@@ -17,9 +17,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Installers;
 
-    /// <summary>
-    /// Installer for persona bar menus.
-    /// </summary>
+    /// <summary>Installer for persona bar menus.</summary>
     public class PersonaBarMenuInstaller : ComponentInstallerBase
     {
         private readonly IList<MenuItem> menuItems = new List<MenuItem>();

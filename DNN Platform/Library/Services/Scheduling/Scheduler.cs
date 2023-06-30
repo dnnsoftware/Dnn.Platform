@@ -81,9 +81,7 @@ namespace DotNetNuke.Services.Scheduling
 
             private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
 
-            /// <summary>
-            /// Gets tracks how many threads we have free to work with at any given time.
-            /// </summary>
+            /// <summary>Gets tracks how many threads we have free to work with at any given time.</summary>
             public static int FreeThreads
             {
                 get
@@ -108,8 +106,46 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>
-            /// Adds an item to the collection of schedule items in queue.
+            /// Checks the scheduled item if it has servers specified to run on. If it does, then it checks to see if the server is active.
             /// </summary>
+            /// <param name="scheduleItem">The schedule to check</param>
+            /// <returns>True if nothing happens to the scheduled item. Returns false if the scheduled item was updated.</returns>
+            /// <remarks>
+            /// If the server specified is not active then the scheduled item will be assigned to the most recent active server.
+            /// This assumes that all schedules will run on a single server if none of the servers specified are active.
+            /// </remarks>
+            public static bool ValidateServersAreActiveForScheduledItem(ScheduleItem scheduleItem)
+            {
+                // If this scheduled items runs on all servers, continue.
+                if (string.IsNullOrEmpty(scheduleItem.Servers))
+                {
+                    return true;
+                }
+
+                // Get the individual server names from the scheduled item
+                var servers = scheduleItem.Servers.ToLowerInvariant().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Get the enabled servers with recent activity.
+                var enabledServers = ServerController.GetEnabledServersWithActivity();
+
+                // Validate that any server in the scheduled item is in the enabled server list with activity in the last 10 minutes.
+                bool serverHasRecentActivity = enabledServers.Any(i => servers.Contains(i.ServerName.ToLowerInvariant()));
+
+                // If no servers in the scheduled item had recent activity, assign this scheduled item to the server with the most recent activity
+                if (!serverHasRecentActivity)
+                {
+                    // Assign a new server to this task then run it
+                    scheduleItem.Servers = $",{enabledServers.First().ServerName.ToLowerInvariant()},";
+
+                    // Save the scheduled item back to the database.
+                    SchedulingController.UpdateSchedule(scheduleItem);
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>Adds an item to the collection of schedule items in queue.</summary>
             /// <param name="scheduleHistoryItem"></param>
             /// <remarks>Thread Safe.</remarks>
             public static void AddToScheduleQueue(ScheduleHistoryItem scheduleHistoryItem)
@@ -123,7 +159,8 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             // Do a second check just in case
                             if (!ScheduleQueueContains(scheduleHistoryItem) &&
-                                !IsInProgress(scheduleHistoryItem))
+                                !IsInProgress(scheduleHistoryItem) &&
+                                ValidateServersAreActiveForScheduledItem(scheduleHistoryItem))
                             {
                                 // It is safe for this thread to read or write
                                 // from the shared resource.
@@ -228,9 +265,7 @@ namespace DotNetNuke.Services.Scheduling
                 return maxThreadCount;
             }
 
-            /// <summary>
-            /// Gets a copy of the collection of schedule items in progress.
-            /// </summary>
+            /// <summary>Gets a copy of the collection of schedule items in progress.</summary>
             /// <returns>Copy of the schedule items currently in progress.</returns>
             /// <remarks>This is a snapshot of the collection scheduled items could start or complete at any time.</remarks>
             public static Collection GetScheduleInProgress()
@@ -256,9 +291,7 @@ namespace DotNetNuke.Services.Scheduling
                 return c;
             }
 
-            /// <summary>
-            /// Gets the number of items in the collection of schedule items in progress.
-            /// </summary>
+            /// <summary>Gets the number of items in the collection of schedule items in progress.</summary>
             /// <returns>Number of items in progress.</returns>
             /// <remarks>Thread Safe
             /// This count is a snapshot and may change at any time.
@@ -285,9 +318,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            /// <summary>
-            /// Gets a copy of collection of all schedule items in queue.
-            /// </summary>
+            /// <summary>Gets a copy of collection of all schedule items in queue.</summary>
             /// <returns>A copy of the ScheduleQueue.</returns>
             /// <remarks>Thread Safe
             /// The returned collection is a snapshot in time the real ScheduleQueue may change at any time.
@@ -316,9 +347,7 @@ namespace DotNetNuke.Services.Scheduling
                 return c;
             }
 
-            /// <summary>
-            /// Gets the number of items in the collection of schedule items in progress.
-            /// </summary>
+            /// <summary>Gets the number of items in the collection of schedule items in progress.</summary>
             /// <returns>Number of items in progress.</returns>
             /// <remarks>Thread Safe
             /// This count is a snapshot and may change at any time.
@@ -366,9 +395,7 @@ namespace DotNetNuke.Services.Scheduling
                 return ScheduleStatus.NOT_SET;
             }
 
-            /// <summary>
-            /// Halt the Scheduler.
-            /// </summary>
+            /// <summary>Halt the Scheduler.</summary>
             /// <param name="sourceOfHalt">Initiator of Halt.</param>
             public static void Halt(string sourceOfHalt)
             {
@@ -531,9 +558,7 @@ namespace DotNetNuke.Services.Scheduling
                 forceReloadSchedule = true;
             }
 
-            /// <summary>
-            /// Removes an item from the collection of schedule items in queue.
-            /// </summary>
+            /// <summary>Removes an item from the collection of schedule items in queue.</summary>
             /// <param name="scheduleItem">Item to remove.</param>
             public static void RemoveFromScheduleQueue(ScheduleItem scheduleItem)
             {
@@ -1286,9 +1311,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            /// <summary>
-            /// adds an item to the collection of schedule items in progress.
-            /// </summary>
+            /// <summary>adds an item to the collection of schedule items in progress.</summary>
             /// <param name="scheduleHistoryItem">Item to add.</param>
             /// <remarks>Thread Safe.</remarks>
             private static void AddToScheduleInProgress(ScheduleHistoryItem scheduleHistoryItem)
@@ -1343,9 +1366,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            /// <summary>
-            /// Removes an item from the collection of schedule items in progress.
-            /// </summary>
+            /// <summary>Removes an item from the collection of schedule items in progress.</summary>
             /// <param name="scheduleItem"></param>
             /// <remarks>Thread Safe.</remarks>
             private static void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
@@ -1369,9 +1390,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            /// <summary>
-            /// Gets a schedulehistory item from the collection of schedule items in progress.
-            /// </summary>
+            /// <summary>Gets a schedulehistory item from the collection of schedule items in progress.</summary>
             /// <param name="scheduleItem"></param>
             /// <remarks>Thread Safe.</remarks>
             private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)

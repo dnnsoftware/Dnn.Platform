@@ -19,6 +19,11 @@ namespace DotNetNuke.Web.Api
             this.supportedModules = supportedModules.Split(new[] { ',' });
         }
 
+        public SupportedModulesAttribute(params string[] supportedModules)
+        {
+            this.supportedModules = supportedModules;
+        }
+
         /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {

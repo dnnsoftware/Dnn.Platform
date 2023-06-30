@@ -12,26 +12,20 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// VocabularyController provides the business layer of Vocabulary and VocabularyType.
-    /// </summary>
+    /// <summary>VocabularyController provides the business layer of Vocabulary and VocabularyType.</summary>
     /// <seealso cref="TermController"/>
     public class VocabularyController : IVocabularyController
     {
         private const int CacheTimeOut = 20;
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VocabularyController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="VocabularyController"/> class.</summary>
         public VocabularyController()
             : this(Util.GetDataService())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VocabularyController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="VocabularyController"/> class.</summary>
         /// <param name="dataService"></param>
         public VocabularyController(IDataService dataService)
         {

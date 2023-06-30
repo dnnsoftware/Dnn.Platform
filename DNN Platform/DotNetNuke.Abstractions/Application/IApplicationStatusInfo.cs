@@ -11,27 +11,19 @@ namespace DotNetNuke.Abstractions.Application
     /// </summary>
     public interface IApplicationStatusInfo
     {
-        /// <summary>
-        /// Gets the status of application.
-        /// </summary>
+        /// <summary>Gets the status of application.</summary>
         UpgradeStatus Status { get; }
 
-        /// <summary>
-        /// Gets the application map path.
-        /// </summary>
+        /// <summary>Gets the application map path.</summary>
         /// <value>
         /// The application map path.
         /// </value>
         string ApplicationMapPath { get; }
 
-        /// <summary>
-        /// Gets the database version.
-        /// </summary>
+        /// <summary>Gets the database version.</summary>
         Version DatabaseVersion { get; }
 
-        /// <summary>
-        /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
-        /// </summary>
+        /// <summary>IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.</summary>
         /// <returns>true if installed else false.</returns>
         /// <remarks>
         /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
@@ -41,36 +33,26 @@ namespace DotNetNuke.Abstractions.Application
         /// </remarks>
         bool IsInstalled();
 
-        /// <summary>
-        /// Sets the status.
-        /// </summary>
+        /// <summary>Sets the status.</summary>
         /// <param name="status">The status.</param>
         void SetStatus(UpgradeStatus status);
 
-        /// <summary>
-        /// Updates the database version.
-        /// </summary>
+        /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
         void UpdateDatabaseVersion(Version version);
 
-        /// <summary>
-        /// Updates the database version.
-        /// </summary>
+        /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
         void UpdateDatabaseVersionIncrement(Version version, int increment);
 
-        /// <summary>
-        /// Checks if incremental sqlDataProvider files exist.
-        /// </summary>
+        /// <summary>Checks if incremental sqlDataProvider files exist.</summary>
         /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
         /// <returns>A value indicating whether any incremental sql script file exists.</returns>
         bool IncrementalVersionExists(Version version);
 
-        /// <summary>
-        /// Get the last applied iteration (revision) for a given version.
-        /// </summary>
+        /// <summary>Get the last applied iteration (revision) for a given version.</summary>
         /// <param name="version">The version to check.</param>
         /// <returns>The last applied iteration (revision).</returns>
         int GetLastAppliedIteration(Version version);

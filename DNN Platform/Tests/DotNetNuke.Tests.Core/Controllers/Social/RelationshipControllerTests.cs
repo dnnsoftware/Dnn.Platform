@@ -30,9 +30,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of RelationshipController.
-    /// </summary>
+    /// <summary> Testing various aspects of RelationshipController.</summary>
     [TestFixture]
     public class RelationshipControllerTests
     {

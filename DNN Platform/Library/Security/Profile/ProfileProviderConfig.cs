@@ -5,28 +5,12 @@ namespace DotNetNuke.Security.Profile
 {
     using System.ComponentModel;
 
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Profile
-    /// Class:      ProfileProviderConfig
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ProfileProviderConfig class provides a wrapper to the Profile providers
-    /// configuration.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ProfileProviderConfig class provides a wrapper to the Profile providers configuration.</summary>
     public class ProfileProviderConfig
     {
         private static readonly ProfileProvider ProfileProvider = ProfileProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Provider Properties can be edited.
-        /// </summary>
-        /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the Provider Properties can be edited.</summary>
         [Browsable(false)]
         public static bool CanEditProviderProperties
         {

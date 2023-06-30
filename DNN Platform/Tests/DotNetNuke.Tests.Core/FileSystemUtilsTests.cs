@@ -21,9 +21,7 @@ namespace DotNetNuke.Tests.Core
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   FileSystemUtilsTests.
-    /// </summary>
+    /// <summary>  FileSystemUtilsTests.</summary>
     [TestFixture]
     public class FileSystemUtilsTests
     {

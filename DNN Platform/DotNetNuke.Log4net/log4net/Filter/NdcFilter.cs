@@ -27,9 +27,7 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// Simple filter to match a string in the <see cref="NDC"/>
-    /// </summary>
+    /// <summary>Simple filter to match a string in the <see cref="NDC"/></summary>
     /// <remarks>
     /// <para>
     /// Simple filter to match a string in the <see cref="NDC"/>
@@ -45,9 +43,7 @@ namespace log4net.Filter
     /*[Obsolete("NdcFilter has been replaced by PropertyFilter")]*/
     public class NdcFilter : PropertyFilter
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Sets the <see cref="PropertyFilter.Key"/> to <c>"NDC"</c>.

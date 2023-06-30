@@ -13,10 +13,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
@@ -94,9 +91,7 @@ namespace DotNetNuke.UI.Skins.Controls
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).</summary>
         public bool CleanerMarkup { get; set; }
 
         /// <inheritdoc/>

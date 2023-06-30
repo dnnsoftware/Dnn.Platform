@@ -8,11 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class DnnLink : SkinObjectBase
     {
         private const string MyFileName = "DnnLink.ascx";

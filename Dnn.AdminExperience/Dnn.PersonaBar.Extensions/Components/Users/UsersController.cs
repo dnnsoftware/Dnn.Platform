@@ -581,6 +581,11 @@ namespace Dnn.PersonaBar.Users.Components
                     hasAgreedToTerms,
                     requestsRemoval));
 
+            foreach (var user in records)
+            {
+                user.PopulateAvatarUrl();
+            }
+
             totalRecords = records.Count == 0 ? 0 : records[0].TotalCount;
             return records;
         }

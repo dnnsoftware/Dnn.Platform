@@ -101,9 +101,7 @@ namespace log4net.Appender
     /// <author>Pavlos Touboulidis</author>
     public class ManagedColoredConsoleAppender: AppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ManagedColoredConsoleAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ManagedColoredConsoleAppender" /> class.</summary>
         /// <remarks>
         /// The instance of the <see cref="ManagedColoredConsoleAppender" /> class is set up to write 
         /// to the standard output stream.
@@ -144,9 +142,7 @@ namespace log4net.Appender
             }
         }
 
-        /// <summary>
-        /// Add a mapping of level to color - done by the config file
-        /// </summary>
+        /// <summary>Add a mapping of level to color - done by the config file</summary>
         /// <param name="mapping">The mapping to add</param>
         /// <remarks>
         /// <para>
@@ -160,9 +156,7 @@ namespace log4net.Appender
             this.m_levelMapping.Add(mapping);
         }
 
-        /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(log4net.Core.LoggingEvent)"/> method.
-        /// </summary>
+        /// <summary>This method is called by the <see cref="M:AppenderSkeleton.DoAppend(log4net.Core.LoggingEvent)"/> method.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
@@ -214,9 +208,7 @@ namespace log4net.Appender
             Console.ResetColor();
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -228,9 +220,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Initialize the options for this appender
-        /// </summary>
+        /// <summary>Initialize the options for this appender</summary>
         /// <remarks>
         /// <para>
         /// Initialize the level to color mappings set on this appender.
@@ -266,14 +256,10 @@ namespace log4net.Appender
         /// </remarks>
         public const string ConsoleError = "Console.Error";
 
-        /// <summary>
-        /// Flag to write output to the error stream rather than the standard output stream
-        /// </summary>
+        /// <summary>Flag to write output to the error stream rather than the standard output stream</summary>
         private bool m_writeToErrorStream = false;
 
-        /// <summary>
-        /// Mapping from level object to color value
-        /// </summary>
+        /// <summary>Mapping from level object to color value</summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
         /// <summary>
@@ -287,9 +273,7 @@ namespace log4net.Appender
         /// </remarks>
         public class LevelColors : LevelMappingEntry
         {
-            /// <summary>
-            /// The mapped foreground color for the specified level
-            /// </summary>
+            /// <summary>The mapped foreground color for the specified level</summary>
             /// <remarks>
             /// <para>
             /// Required property.
@@ -317,9 +301,7 @@ namespace log4net.Appender
                 }
             }
 
-            /// <summary>
-            /// The mapped background color for the specified level
-            /// </summary>
+            /// <summary>The mapped background color for the specified level</summary>
             /// <remarks>
             /// <para>
             /// Required property.

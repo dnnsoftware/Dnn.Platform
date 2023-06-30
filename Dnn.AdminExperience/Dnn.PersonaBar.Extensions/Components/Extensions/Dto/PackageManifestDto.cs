@@ -11,16 +11,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     [JsonObject]
     public class PackageManifestDto : PackageInfoDto
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageManifestDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PackageManifestDto"/> class.</summary>
         public PackageManifestDto()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageManifestDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PackageManifestDto"/> class.</summary>
         /// <param name="portalId"></param>
         /// <param name="package"></param>
         public PackageManifestDto(int portalId, PackageInfo package)

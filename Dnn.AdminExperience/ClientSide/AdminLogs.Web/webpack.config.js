@@ -1,91 +1,88 @@
 ﻿const webpack = require("webpack");
 const packageJson = require("./package.json");
 const path = require("path");
-const languages = {
-  en: null,
-  // TODO: create locallizaton files per language
-  // "de": require("./localizations/de.json"),
-  // "es": require("./localizations/es.json"),
-  // "fr": require("./localizations/fr.json"),
-  // "it": require("./localizations/it.json"),
-  // "nl": require("./localizations/nl.json")
-};
 const settings = require("../../../settings.local.json");
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === "production";
-  return {
-    entry: "./src/main.jsx",
-    optimization: {
-      minimize: isProduction,
-    },
-    output: {
-      path:
-        isProduction || settings.WebsitePath == ""
-          ? path.resolve(
-              "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.AdminLogs/scripts/bundles/"
+    const isProduction = argv.mode === "production";
+    return {
+        entry: "./src/main.jsx",
+        optimization: {
+            minimize: isProduction,
+        },
+        output: {
+            path:
+        isProduction || settings.WebsitePath === ""
+            ? path.resolve(
+                "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.AdminLogs/scripts/bundles/"
             )
-          : path.join(
-              settings.WebsitePath,
-              "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.AdminLogs\\scripts\\bundles\\"
+            : path.join(
+                settings.WebsitePath,
+                "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.AdminLogs\\scripts\\bundles\\"
             ),
-      filename: "adminLogs-bundle.js",
-      publicPath: isProduction ? "" : "http://localhost:8080/dist/",
-    },
-    devServer: {
-      disableHostCheck: !isProduction,
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          enforce: "pre",
-          exclude: /node_modules/,
-          loader: "eslint-loader",
-          options: { fix: true },
+            filename: "adminLogs-bundle.js",
+            publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         },
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loader: "babel-loader",
+        devServer: {
+            disableHostCheck: !isProduction,
         },
-        {
-          test: /\.(less|css)$/,
-          use: [
-            { loader: "style-loader" },
-            { loader: "css-loader", options: { modules: "global" } },
-            { loader: "less-loader" },
-          ],
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    enforce: "pre",
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: "eslint-loader",
+                            options: { fix: true },
+                        },
+                    ],
+                },
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    use: ["babel-loader"],
+                },
+                {
+                    test: /\.(less|css)$/,
+                    use: [
+                        { loader: "style-loader" },
+                        { loader: "css-loader", options: { modules: "global" } },
+                        { loader: "less-loader" },
+                    ],
+                },
+                { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
+            ],
         },
-        { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
-      ],
-    },
 
-    resolve: {
-      extensions: [".js", ".json", ".jsx"],
-      modules: [
-        path.resolve("./src"), // Look in src first
-        path.resolve("./node_modules"), // Try local node_modules
-        path.resolve("../../../node_modules"), // Last fallback to workspaces node_modules
-      ],
-    },
+        resolve: {
+            extensions: [".js", ".json", ".jsx"],
+            modules: [
+                path.resolve("./src"), // Look in src first
+                path.resolve("./node_modules"), // Try local node_modules
+                path.resolve("../../../node_modules"), // Last fallback to workspaces node_modules
+            ],
+        },
 
-    externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
+        externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
 
-    plugins: isProduction
-      ? [
-          new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version),
-            "process.env": {
-              NODE_ENV: JSON.stringify("production"),
-            },
-          }),
-        ]
-      : [
-          new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version),
-          }),
-        ],
-    devtool: "source-map",
-  };
+        plugins:
+            [ isProduction
+                ? new webpack.DefinePlugin({
+                    VERSION: JSON.stringify(packageJson.version),
+                    "process.env": {
+                        NODE_ENV: JSON.stringify("production"),
+                    },
+                })
+                : new webpack.DefinePlugin({
+                    VERSION: JSON.stringify(packageJson.version),
+                }),
+            new webpack.SourceMapDevToolPlugin({
+                filename: "adminLogs-bundle.js.map",
+                append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.AdminLogs/scripts/bundles/adminLogs-bundle.js.map"
+            })
+            ],
+        devtool: false,
+    };
 };

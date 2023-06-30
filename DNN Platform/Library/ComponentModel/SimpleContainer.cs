@@ -20,18 +20,14 @@ namespace DotNetNuke.ComponentModel
 
         private readonly SharedDictionary<Type, string> registeredComponents = new SharedDictionary<Type, string>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
         public SimpleContainer()
             : this(string.Format("Container_{0}", Guid.NewGuid()))
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
-        /// </summary>
-        /// <param name = "name"></param>
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        /// <param name="name"></param>
         public SimpleContainer(string name)
         {
             this.name = name;

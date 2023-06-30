@@ -25,9 +25,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for VocabularyTests.
-    /// </summary>
+    /// <summary>  Summary description for VocabularyTests.</summary>
     [TestFixture]
     public class VocabularyControllerTests
     {

@@ -52,9 +52,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public abstract object GetSingleLog(LogInfo logInfo, ReturnType returnType);
 
-        /// <summary>
-        /// Retrieves a single event log via the Log Guid.
-        /// </summary>
+        /// <summary>Retrieves a single event log via the Log Guid.</summary>
         /// <param name="logGuid">A string reprenstation of the log Guid.</param>
         /// <returns>The <see cref="ILogInfo"/>.</returns>
         public abstract ILogInfo GetLog(string logGuid);

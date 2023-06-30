@@ -274,6 +274,8 @@ namespace DotNetNuke.Data
             return path;
         }
 
+        /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>), or <see cref="Null.NullString"/> if <paramref name="sqlBuilder"/> is <see langword="null"/>.</returns>
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string owner, string qualifier)
         {
             var sqlBuilder = builder as SqlConnectionStringBuilder;
@@ -497,9 +499,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPortalSpaceUsed", this.GetNull(portalId));
         }
 
-        /// <summary>
-        /// Updates the portal information.Saving basic portal settings at Admin - Site settings / Host - Portals - Edit Portal.
-        /// </summary>
+        /// <summary>Updates the portal information.Saving basic portal settings at Admin - Site settings / Host - Portals - Edit Portal.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="portalGroupId">The portal group identifier.</param>
         /// <param name="portalName">Name of the portal.</param>
@@ -2206,6 +2206,11 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("RemoveUser", userId, this.GetNull(portalId));
         }
 
+        public virtual void ReplaceServerOnSchedules(string oldServername, string newServerName)
+        {
+            this.ExecuteNonQuery("ReplaceServerOnSchedules", oldServername, newServerName);
+        }
+        
         public virtual void ResetTermsAgreement(int portalId)
         {
             this.ExecuteNonQuery("ResetTermsAgreement", portalId);
@@ -2818,9 +2823,7 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-        /// <summary>
-        /// Get a User Authentication record from slq database. DNN-4016.
-        /// </summary>
+        /// <summary>Get a User Authentication record from slq database. DNN-4016.</summary>
         /// <param name="userID"></param>
         /// <returns>UserAuthentication record.</returns>
         public virtual IDataReader GetUserAuthentication(int userID)
@@ -3637,9 +3640,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetIPFilters");
         }
 
-        /// <summary>
-        /// Adds a new IP filter.
-        /// </summary>
+        /// <summary>Adds a new IP filter.</summary>
         /// <param name="ipAddress">The IP address.</param>
         /// <param name="subnetMask">The subnet mask if the filter is for a range.</param>
         /// <param name="ruleType">The type of rule (1 for Allow, 2 for Deny).</param>
@@ -3651,9 +3652,7 @@ namespace DotNetNuke.Data
             return this.AddIPFilter(ipAddress, subnetMask, ruleType, createdByUserId, null);
         }
 
-        /// <summary>
-        /// Adds a new IP filter.
-        /// </summary>
+        /// <summary>Adds a new IP filter.</summary>
         /// <param name="ipAddress">The IP address.</param>
         /// <param name="subnetMask">The subnet mask if the filter is for a range.</param>
         /// <param name="ruleType">The type of rule (1 for Allow, 2 for Deny).</param>
@@ -3670,9 +3669,7 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("DeleteIPFilter", ipFilterid);
         }
 
-        /// <summary>
-        /// Updates an existing IP filter.
-        /// </summary>
+        /// <summary>Updates an existing IP filter.</summary>
         /// <param name="ipFilterid">The ID of the IP Filter to update.</param>
         /// <param name="ipAddress">The IP address for the filter.</param>
         /// <param name="subnetMask">The IP mask to use for an IP range.</param>
@@ -3684,9 +3681,7 @@ namespace DotNetNuke.Data
             this.UpdateIPFilter(ipFilterid, ipAddress, subnetMask, ruleType, lastModifiedByUserId, null);
         }
 
-        /// <summary>
-        /// Updates an existing IP filter.
-        /// </summary>
+        /// <summary>Updates an existing IP filter.</summary>
         /// <param name="ipFilterid">The ID of the IP Filter to update.</param>
         /// <param name="ipAddress">The IP address for the filter.</param>
         /// <param name="subnetMask">The IP mask to use for an IP range.</param>
@@ -4135,9 +4130,7 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
         }
 
-        /// <summary>
-        /// Sets all tabs of the portal to the specified secure value.
-        /// </summary>
+        /// <summary>Sets all tabs of the portal to the specified secure value.</summary>
         /// <param name="portalId">The portal to update.</param>
         /// <param name="secure">True to set all pages to secure, false to set them all to non secure.</param>
         public virtual void SetAllPortalTabsSecure(int portalId, bool secure)

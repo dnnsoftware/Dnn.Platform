@@ -16,9 +16,7 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly ModuleActionCollection moduleActions;
         private readonly ModuleInstanceContext moduleContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleActionsPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleActionsPropertyAccess"/> class.</summary>
         /// <param name="moduleContext"></param>
         /// <param name="moduleActions"></param>
         public ModuleActionsPropertyAccess(ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)

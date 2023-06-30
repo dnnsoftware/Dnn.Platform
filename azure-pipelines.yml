@@ -52,7 +52,7 @@ steps:
     key: 'yarn | "$(Agent.OS)" | yarn.lock'
     restoreKeys: 'yarn | "$(Agent.OS)"'
     path: $(YARN_CACHE_FOLDER)
-
+  
 - task: UseDotNet@2
   displayName: 'Use .NET 6.x SDK'
   inputs:

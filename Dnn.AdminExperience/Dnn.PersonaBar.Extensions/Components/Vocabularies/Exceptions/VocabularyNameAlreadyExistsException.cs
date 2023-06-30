@@ -8,9 +8,7 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
 
     public class VocabularyNameAlreadyExistsException : VocabulariesException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VocabularyNameAlreadyExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="VocabularyNameAlreadyExistsException"/> class.</summary>
         public VocabularyNameAlreadyExistsException()
             : base(Constants.VocabularyExistsError)
         {

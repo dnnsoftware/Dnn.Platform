@@ -12,12 +12,10 @@ namespace DotNetNuke.Services.EventQueue
     using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// EventQueueController provides business layer of event queue.
-    /// </summary>
+    /// <summary>EventQueueController provides business layer of event queue.</summary>
     /// <remarks>
-    /// Sometimes when your module running in DotNetNuke,and contains some operats didn't want to execute immediately.
-    /// e.g: after your module installed into system, and some component you want to registed when the application restart,
+    /// Sometimes when your module running in DotNetNuke,and contains some operations didn't want to execute immediately.
+    /// e.g: after your module installed into system, and some component you want to registered when the application restart,
     /// you can send an 'Application_Start' message, so your specific operation will be executed when application has been restart.
     /// </remarks>
     /// <example>
@@ -43,9 +41,7 @@ namespace DotNetNuke.Services.EventQueue
     /// </example>
     public class EventQueueController
     {
-        /// <summary>
-        /// Gets the messages.
-        /// </summary>
+        /// <summary>Gets the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
         /// <returns>event message collection.</returns>
         public static EventMessageCollection GetMessages(string eventName)
@@ -53,43 +49,35 @@ namespace DotNetNuke.Services.EventQueue
             return FillMessageCollection(DataProvider.Instance().GetEventMessages(eventName));
         }
 
-        /// <summary>
-        /// Gets the messages.
-        /// </summary>
+        /// <summary>Gets the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
-        /// <param name="subscriberId">The subscriber id.</param>
-        /// <returns></returns>
+        /// <param name="subscriberId">The subscriber ID.</param>
+        /// <returns>An <see cref="EventMessageCollection"/>.</returns>
         public static EventMessageCollection GetMessages(string eventName, string subscriberId)
         {
             return FillMessageCollection(DataProvider.Instance().GetEventMessagesBySubscriber(eventName, subscriberId));
         }
 
-        /// <summary>
-        /// Processes the messages.
-        /// </summary>
+        /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
         public static bool ProcessMessages(string eventName)
         {
             return ProcessMessages(GetMessages(eventName));
         }
 
-        /// <summary>
-        /// Processes the messages.
-        /// </summary>
+        /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
-        /// <param name="subscriberId">The subscriber id.</param>
-        /// <returns></returns>
+        /// <param name="subscriberId">The subscriber ID.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
         public static bool ProcessMessages(string eventName, string subscriberId)
         {
             return ProcessMessages(GetMessages(eventName, subscriberId));
         }
 
-        /// <summary>
-        /// Processes the messages.
-        /// </summary>
+        /// <summary>Processes the messages.</summary>
         /// <param name="eventMessages">The event messages.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
         public static bool ProcessMessages(EventMessageCollection eventMessages)
         {
             bool success = Null.NullBoolean;
@@ -140,12 +128,10 @@ namespace DotNetNuke.Services.EventQueue
             return success;
         }
 
-        /// <summary>
-        /// Sends the message.
-        /// </summary>
+        /// <summary>Sends the message.</summary>
         /// <param name="message">The message.</param>
         /// <param name="eventName">Name of the event.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the message was successfully sent to all subscribers, otherwise <see langword="false"/>.</returns>
         public static bool SendMessage(EventMessage message, string eventName)
         {
             // set the sent date if it wasn't set by the sender

@@ -34,9 +34,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string NonExistingFlagIconFileName = "none.gif";
         private readonly PortalSettings objPortal;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguagePropertyAccess"/> class.</summary>
         /// <param name="parent"></param>
         /// <param name="settings"></param>
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
@@ -91,7 +89,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         /// <param name="newLanguage">Language to switch into.</param>
         /// <param name="isLocalized"></param>
-        /// <returns></returns>
+        /// <returns>A collection of query string segments, in <c>"key=value"</c> format.</returns>
         private string[] GetQsParams(string newLanguage, bool isLocalized)
         {
             string returnValue = string.Empty;

@@ -16,9 +16,7 @@ namespace DotNetNuke.Data.PetaPoco
     {
         private readonly string tablePrefix;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentMapper{TModel}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FluentMapper{TModel}"/> class.</summary>
         /// <param name="tablePrefix"></param>
         public FluentMapper(string tablePrefix)
         {

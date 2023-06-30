@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Mobile
     {
         private int id = -1;
 
-        /// <summary>
-        /// Gets or sets match rule's primary key.
-        /// </summary>
+        /// <summary>Gets or sets match rule's primary key.</summary>
         [XmlAttribute]
         public int Id
         {
@@ -30,9 +28,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// Gets or sets capability's name.
-        /// </summary>
+        /// <summary>Gets or sets capability's name.</summary>
         [XmlAttribute]
         public string Capability
         {
@@ -40,9 +36,7 @@ namespace DotNetNuke.Services.Mobile
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the value to match the capability from request.
-        /// </summary>
+        /// <summary>Gets or sets the value to match the capability from request.</summary>
         [XmlAttribute]
         public string Expression
         {
@@ -50,9 +44,7 @@ namespace DotNetNuke.Services.Mobile
             set;
         }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlAttribute]
         public int KeyID
         {
@@ -67,9 +59,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(System.Data.IDataReader dr)
         {

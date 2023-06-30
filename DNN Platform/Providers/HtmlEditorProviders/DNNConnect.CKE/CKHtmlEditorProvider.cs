@@ -11,29 +11,19 @@ namespace DNNConnect.CKEditorProvider
     using DotNetNuke.Common;
     using DotNetNuke.Modules.HTMLEditorProvider;
 
-    /// <summary>
-    /// The CKEditor Provider.
-    /// </summary>
+    /// <summary>The CKEditor Provider.</summary>
     public class CKHtmlEditorProvider : HtmlEditorProvider
     {
-        /// <summary>
-        /// The _additional toolbars.
-        /// </summary>
+        /// <summary>The _additional toolbars.</summary>
         private ArrayList additionalToolbars = new ArrayList();
 
-        /// <summary>
-        /// The _html editor control.
-        /// </summary>
+        /// <summary>The _html editor control.</summary>
         private EditorControl htmlEditorControl;
 
-        /// <summary>
-        /// The _root image directory.
-        /// </summary>
+        /// <summary>The _root image directory.</summary>
         private string rootImageDirectory;
 
-        /// <summary>
-        /// Gets or sets AdditionalToolbars.
-        /// </summary>
+        /// <summary>Gets or sets AdditionalToolbars.</summary>
         public override ArrayList AdditionalToolbars
         {
             get
@@ -47,14 +37,10 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets or sets ControlID.
-        /// </summary>
+        /// <summary>Gets or sets ControlID.</summary>
         public override string ControlID { get; set; }
 
-        /// <summary>
-        /// Gets or sets Height.
-        /// </summary>
+        /// <summary>Gets or sets Height.</summary>
         public override Unit Height
         {
             get
@@ -68,9 +54,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets HtmlEditorControl.
-        /// </summary>
+        /// <summary>Gets HtmlEditorControl.</summary>
         public override Control HtmlEditorControl
         {
             get
@@ -79,9 +63,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets or sets RootImageDirectory.
-        /// </summary>
+        /// <summary>Gets or sets RootImageDirectory.</summary>
         public override string RootImageDirectory
         {
             get
@@ -103,9 +85,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets or sets Text.
-        /// </summary>
+        /// <summary>Gets or sets Text.</summary>
         public override string Text
         {
             get
@@ -119,9 +99,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets or sets Width.
-        /// </summary>
+        /// <summary>Gets or sets Width.</summary>
         public override Unit Width
         {
             get
@@ -135,17 +113,13 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// The add toolbar.
-        /// </summary>
+        /// <summary>The add toolbar.</summary>
         public override void AddToolbar()
         {
             // Must exist because it exists at the base class
         }
 
-        /// <summary>
-        /// The initialize.
-        /// </summary>
+        /// <summary>The initialize.</summary>
         public override void Initialize()
         {
             this.htmlEditorControl = new EditorControl { ID = this.ControlID };

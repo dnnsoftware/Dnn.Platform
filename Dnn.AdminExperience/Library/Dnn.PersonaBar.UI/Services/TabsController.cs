@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.DTO.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
@@ -24,9 +25,7 @@ namespace Dnn.PersonaBar.UI.Services
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         /// GET: api/Tabs/GetPortalTabs
-        /// <summary>
-        /// Gets list of portal tabs.
-        /// </summary>
+        /// <summary>Gets list of portal tabs.</summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
         /// <param name="isMultiLanguage"></param>
@@ -94,7 +93,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="includeHostPages"></param>
         /// <param name="includeDisabled"></param>
         /// <param name="includeDeleted"></param>
-        /// <returns></returns>
+        /// <returns>A response with a <see cref="TabDto"/> <c>Results</c> field.</returns>
         [HttpGet]
 
         public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
@@ -118,9 +117,7 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// GET: api/Tabs/GetPortalTab
-        /// <summary>
-        /// Gets list of portal tabs.
-        /// </summary>
+        /// <summary>Gets list of portal tabs.</summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
         /// <param name="cultureCode"></param>
@@ -160,9 +157,8 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="includeHostPages"></param>
         /// <param name="includeDisabled"></param>
         /// <param name="includeDeletedChildren"></param>
-        /// <returns></returns>
+        /// <returns>A response with <see cref="TabDto"/> <c>Results</c> collection.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage = false, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeletedChildren = true)
         {
             try

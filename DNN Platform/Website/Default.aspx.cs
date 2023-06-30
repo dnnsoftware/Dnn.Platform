@@ -40,17 +40,6 @@ namespace DotNetNuke.Framework
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Class    : CDefault
-    ///
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
@@ -72,16 +61,10 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
-        /// </summary>
+        /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
         /// <value>
         /// Property to allow the programmatic assigning of ScrollTop position.
         /// </value>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public int PageScrollTop
         {
             get
@@ -171,10 +154,7 @@ namespace DotNetNuke.Framework
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Contains the functionality to populate the Root aspx page with controls.
-        /// </summary>
+        /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
         /// <param name="e"></param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
@@ -182,7 +162,6 @@ namespace DotNetNuke.Framework
         /// - initialise reference paths to load the cascading style sheets
         /// - add skin control placeholder.  This holds all the modules and content of the page.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -311,14 +290,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
-        /// </summary>
+        /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
         /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -395,7 +368,6 @@ namespace DotNetNuke.Framework
             base.Render(writer);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///
         /// </summary>
@@ -408,7 +380,6 @@ namespace DotNetNuke.Framework
         /// - set the background image if there is one selected
         /// - set META tags, copyright, keywords and description.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
             // There could be a pending installation/upgrade process
@@ -674,14 +645,11 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         private void SetSkinDoctype()
         {
             string strLang = CultureInfo.CurrentCulture.ToString();

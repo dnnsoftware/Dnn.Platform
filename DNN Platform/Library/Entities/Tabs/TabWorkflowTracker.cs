@@ -23,9 +23,7 @@ namespace DotNetNuke.Entities.Tabs
         private readonly IWorkflowManager workflowManager;
         private readonly ITabWorkflowSettings tabWorkflowSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabWorkflowTracker"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabWorkflowTracker"/> class.</summary>
         public TabWorkflowTracker()
         {
             this.tabController = TabController.Instance;
@@ -34,9 +32,7 @@ namespace DotNetNuke.Entities.Tabs
             this.tabWorkflowSettings = TabWorkflowSettings.Instance;
         }
 
-        /// <summary>
-        /// Tracks a workflow instance when a module is added to a page.
-        /// </summary>
+        /// <summary>Tracks a workflow instance when a module is added to a page.</summary>
         /// <param name="module">Module which tracks the workflow instance.</param>
         /// <param name="moduleVersion">Version number corresponding to the module.</param>
         /// <param name="userId">User Id related with the workflow instance.</param>
@@ -45,9 +41,7 @@ namespace DotNetNuke.Entities.Tabs
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
-        /// <summary>
-        /// Tracks a workflow instance when a module is modified on a page.
-        /// </summary>
+        /// <summary>Tracks a workflow instance when a module is modified on a page.</summary>
         /// <param name="module">Module which tracks the workflow instance.</param>
         /// <param name="moduleVersion">Version number corresponding to the module.</param>
         /// <param name="userId">User Id related with the workflow instance.</param>
@@ -56,9 +50,7 @@ namespace DotNetNuke.Entities.Tabs
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
-        /// <summary>
-        /// Tracks a workflow instance when a module is deleted from a page.
-        /// </summary>
+        /// <summary>Tracks a workflow instance when a module is deleted from a page.</summary>
         /// <param name="module">Module which tracks the workflow instance.</param>
         /// <param name="moduleVersion">Version number corresponding to the module.</param>
         /// <param name="userId">User Id related with the workflow instance.</param>
@@ -67,9 +59,7 @@ namespace DotNetNuke.Entities.Tabs
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
-        /// <summary>
-        /// Tracks a workflow instance when a module is copied from an exisitng page.
-        /// </summary>
+        /// <summary>Tracks a workflow instance when a module is copied from an exisitng page.</summary>
         /// <param name="module">Module which tracks the workflow instance.</param>
         /// <param name="moduleVersion">Version number corresponding to the module.</param>
         /// <param name="originalTabId">Tab Id where the module originally is.</param>
@@ -79,9 +69,7 @@ namespace DotNetNuke.Entities.Tabs
             this.TrackModuleAddition(module, moduleVersion, userId);
         }
 
-        /// <summary>
-        /// Tracks a workflow instance when a copied module is deleted from an exisitng page.
-        /// </summary>
+        /// <summary>Tracks a workflow instance when a copied module is deleted from an exisitng page.</summary>
         /// <param name="module">Module which tracks the workflow instance.</param>
         /// <param name="moduleVersion">Version number corresponding to the module.</param>
         /// <param name="originalTabId">Tab Id where the module originally is.</param>

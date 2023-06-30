@@ -4,14 +4,12 @@
 namespace DotNetNuke.Modules.Html
 {
     using System;
-    using System.Collections;
     using System.Linq;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -24,11 +22,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    ///   The EditHtml PortalModuleBase is used to manage Html.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The EditHtml PortalModuleBase is used to manage Html.</summary>
     public partial class EditHtml : HtmlModuleBase
     {
         private readonly INavigationManager navigationManager;
@@ -456,10 +450,8 @@ namespace DotNetNuke.Modules.Html
             this.DisplayVersions();
         }
 
-        /// <summary>
-        ///   Displays the history of an html content item in a grid in the preview section.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
+        /// <summary>Displays the history of an html content item in a grid in the preview section.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
         private void DisplayHistory(HtmlTextInfo htmlContent)
         {
             this.dnnSitePanelEditHTMLHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
@@ -478,9 +470,7 @@ namespace DotNetNuke.Modules.Html
             this.fsEditHtmlHistory.Visible = htmlLogging.Count != 0;
         }
 
-        /// <summary>
-        ///   Displays the versions of the html content in the versions section.
-        /// </summary>
+        /// <summary>Displays the versions of the html content in the versions section.</summary>
         private void DisplayVersions()
         {
             var versions = this.htmlTextController.GetAllHtmlText(this.ModuleId);
@@ -503,9 +493,7 @@ namespace DotNetNuke.Modules.Html
             this.ddlRender.Visible = false;
         }
 
-        /// <summary>
-        ///   Displays the content of the master language if localized content is enabled.
-        /// </summary>
+        /// <summary>Displays the content of the master language if localized content is enabled.</summary>
         private void DisplayMasterLanguageContent()
         {
             // Get master language
@@ -520,10 +508,8 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   Displays the html content in the preview section.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
+        /// <summary>Displays the html content in the preview section.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
         private void DisplayContent(HtmlTextInfo htmlContent)
         {
             this.lblCurrentWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
@@ -556,10 +542,8 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   Displays the content preview in the preview section.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
+        /// <summary>Displays the content preview in the preview section.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
         private void DisplayPreview(HtmlTextInfo htmlContent)
         {
             this.lblPreviewVersion.Text = htmlContent.Version.ToString();
@@ -577,10 +561,8 @@ namespace DotNetNuke.Modules.Html
             this.ddlRender.Visible = false;
         }
 
-        /// <summary>
-        ///   Displays the preview in the preview section.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
+        /// <summary>Displays the preview in the preview section.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
         private void DisplayPreview(string htmlContent)
         {
             this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent, this.Settings, this.PortalSettings, this.Page);
@@ -613,11 +595,9 @@ namespace DotNetNuke.Modules.Html
             this.ddlRender.Visible = true;
         }
 
-        /// <summary>
-        ///   Displays the content but hide the editor if editing is locked from the current user.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
-        /// <param name = "lastPublishedContent">Last content of the published.</param>
+        /// <summary>Displays the content but hide the editor if editing is locked from the current user.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
+        /// <param name="lastPublishedContent">Last content of the published.</param>
         private void DisplayLockedContent(HtmlTextInfo htmlContent, HtmlTextInfo lastPublishedContent)
         {
             this.txtContent.Visible = false;
@@ -649,10 +629,8 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   Displays the initial content when a module is first added to the page.
-        /// </summary>
-        /// <param name = "firstState">The first state.</param>
+        /// <summary>Displays the initial content when a module is first added to the page.</summary>
+        /// <param name="firstState">The first state.</param>
         private void DisplayInitialContent(WorkflowStateInfo firstState)
         {
             this.cmdHistory.Enabled = false;
@@ -673,11 +651,9 @@ namespace DotNetNuke.Modules.Html
             this.lblPreviewWorkflowState.Text = firstState.StateName;
         }
 
-        /// <summary>
-        ///   Formats the content to make it html safe.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
-        /// <returns></returns>
+        /// <summary>Formats the content to make it HTML safe.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
+        /// <returns>The <paramref name="htmlContent"/> with relative paths updated and encoding issues resolved.</returns>
         private string FormatContent(string htmlContent)
         {
             var strContent = HttpUtility.HtmlDecode(htmlContent);
@@ -686,21 +662,17 @@ namespace DotNetNuke.Modules.Html
             return HttpUtility.HtmlEncode(strContent);
         }
 
-        /// <summary>
-        ///   Gets the localized string from a resource file if it exists.
-        /// </summary>
-        /// <param name = "str">The STR.</param>
-        /// <returns></returns>
+        /// <summary>Gets the localized string from a resource file if it exists.</summary>
+        /// <param name="str">The resource key.</param>
+        /// <returns>The localized text or <paramref name="str"/>.</returns>
         private string GetLocalizedString(string str)
         {
             var localizedString = Localization.GetString(str, this.LocalResourceFile);
             return string.IsNullOrEmpty(localizedString) ? str : localizedString;
         }
 
-        /// <summary>
-        ///   Gets the latest html content of the module.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets the latest html content of the module.</summary>
+        /// <returns>An <see cref="HtmlTextInfo"/> instance (with <see cref="HtmlTextInfo.ItemID"/> set to <c>-1</c> if there's no existing content).</returns>
         private HtmlTextInfo GetLatestHTMLContent()
         {
             var htmlContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
@@ -716,21 +688,17 @@ namespace DotNetNuke.Modules.Html
             return htmlContent;
         }
 
-        /// <summary>
-        ///   Returns whether or not the user has review permissions to this module.
-        /// </summary>
-        /// <param name = "htmlContent">Content of the HTML.</param>
-        /// <returns></returns>
+        /// <summary>Returns whether or not the user has review permissions to this module.</summary>
+        /// <param name="htmlContent">Content of the HTML.</param>
+        /// <returns><see langword="true"/> if the user has review permission for the given <paramref name="htmlContent"/>, otherwise <see langword="false"/>.</returns>
         private bool UserCanReview(HtmlTextInfo htmlContent)
         {
             return (htmlContent != null) && WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(htmlContent.StateID), "REVIEW");
         }
 
-        /// <summary>
-        ///   Gets the last published version of this module.
-        /// </summary>
-        /// <param name = "publishedStateID">The published state ID.</param>
-        /// <returns></returns>
+        /// <summary>Gets the last published version of this module.</summary>
+        /// <param name="publishedStateID">The published state ID.</param>
+        /// <returns>An <see cref="HtmlTextInfo"/> instance.</returns>
         private HtmlTextInfo GetLastPublishedVersion(int publishedStateID)
         {
             return (from version in this.htmlTextController.GetAllHtmlText(this.ModuleId) where version.StateID == publishedStateID orderby version.Version descending select version).ToList()[0];

@@ -8,9 +8,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
 
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Standard response object sent to client.
-    /// </summary>
+    /// <summary>Standard response object sent to client.</summary>
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class ConsoleResultModel
     {
@@ -52,16 +50,12 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string NextPageCommand;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
         public ConsoleResultModel()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
         /// <param name="output"></param>
         public ConsoleResultModel(string output)
         {

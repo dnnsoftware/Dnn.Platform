@@ -7,14 +7,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     using System;
     using System.Reflection;
 
-    /// <summary>
-    /// Helper class to simplify common reflection tasks.
-    /// </summary>
+    /// <summary>Helper class to simplify common reflection tasks.</summary>
     public static class ReflectionHelper
     {
-        /// <summary>
-        /// Returns the value of the private member specified.
-        /// </summary>
+        /// <summary>Returns the value of the private member specified.</summary>
         /// <param name="fieldName">Name of the member.</param>
         /// <param name="type">Type of the member.</param>
         /// <returns></returns>
@@ -29,9 +25,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return default(T);
         }
 
-        /// <summary>
-        /// Returns the value of the private member specified.
-        /// </summary>
+        /// <summary>Returns the value of the private member specified.</summary>
         /// <param name="fieldName">Name of the member.</param>
         /// <param name="typeName"></param>
         /// <returns></returns>
@@ -47,9 +41,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return default(T);
         }
 
-        /// <summary>
-        /// Sets the value of the private static member.
-        /// </summary>
+        /// <summary>Sets the value of the private static member.</summary>
         /// <param name="fieldName"></param>
         /// <param name="type"></param>
         /// <param name="value"></param>
@@ -64,9 +56,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             field.SetValue(null, value);
         }
 
-        /// <summary>
-        /// Sets the value of the private static member.
-        /// </summary>
+        /// <summary>Sets the value of the private static member.</summary>
         /// <param name="fieldName"></param>
         /// <param name="typeName"></param>
         /// <param name="value"></param>
@@ -82,9 +72,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             field.SetValue(null, value);
         }
 
-        /// <summary>
-        /// Returns the value of the private member specified.
-        /// </summary>
+        /// <summary>Returns the value of the private member specified.</summary>
         /// <param name="fieldName">Name of the member.</param>
         /// <param name="source">The object that contains the member.</param>
         /// <returns></returns>
@@ -99,9 +87,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return default(T);
         }
 
-        /// <summary>
-        /// Returns the value of the private member specified.
-        /// </summary>
+        /// <summary>Returns the value of the private member specified.</summary>
         /// <param name="memberName">Name of the member.</param>
         /// <param name="source">The object that contains the member.</param>
         /// <param name="value">The value to set the member to.</param>
@@ -132,9 +118,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return constructor.Invoke(constructorParameterValues);
         }
 
-        /// <summary>
-        /// Invokes a non-public static method.
-        /// </summary>
+        /// <summary>Invokes a non-public static method.</summary>
         /// <typeparam name="TReturn"></typeparam>
         /// <param name="type"></param>
         /// <param name="methodName"></param>

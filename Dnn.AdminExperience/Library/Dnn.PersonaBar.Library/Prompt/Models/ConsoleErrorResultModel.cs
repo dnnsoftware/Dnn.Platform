@@ -15,18 +15,14 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class ConsoleErrorResultModel : ConsoleResultModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>
         public ConsoleErrorResultModel()
         {
             this.IsError = true;
             this.Output = Localization.GetString("Prompt_InvalidSyntax", LocalResourcesFile, true);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>
         /// <param name="errMessage"></param>
         public ConsoleErrorResultModel(string errMessage)
         {

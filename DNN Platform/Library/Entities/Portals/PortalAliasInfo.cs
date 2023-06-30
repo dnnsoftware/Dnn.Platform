@@ -21,25 +21,19 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPortalAliasInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
         public PortalAliasInfo()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
         /// <param name="alias"></param>
         public PortalAliasInfo(PortalAliasInfo alias)
             : this((IPortalAliasInfo)alias)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
         /// <param name="alias"></param>
         public PortalAliasInfo(IPortalAliasInfo alias)
         {
@@ -89,9 +83,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool Redirect { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Browser Type.
-        /// </summary>
+        /// <summary>Gets or sets the Browser Type.</summary>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead.")]
         public BrowserTypes BrowserType
         {

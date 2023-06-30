@@ -25,9 +25,7 @@ using log4net.Core;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Appends log events to the <see cref="System.Diagnostics.Trace"/> system.
-    /// </summary>
+    /// <summary>Appends log events to the <see cref="System.Diagnostics.Trace"/> system.</summary>
     /// <remarks>
     /// <para>
     /// The application configuration file can be used to control what listeners 
@@ -54,9 +52,7 @@ namespace log4net.Appender
     /// <author>Ron Grabowski</author>
     public class TraceAppender : AppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TraceAppender" />.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TraceAppender" />.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -106,9 +102,7 @@ namespace log4net.Appender
             set { this.m_immediateFlush = value; }
         }
 
-        /// <summary>
-        /// The category parameter sent to the Trace method.
-        /// </summary>
+        /// <summary>The category parameter sent to the Trace method.</summary>
         /// <remarks>
         /// <para>
         /// Defaults to %logger which will use the logger name of the current 
@@ -123,9 +117,7 @@ namespace log4net.Appender
             set { this.m_category = value; }
         }
 
-        /// <summary>
-        /// Writes the logging event to the <see cref="System.Diagnostics.Trace"/> system.
-        /// </summary>
+        /// <summary>Writes the logging event to the <see cref="System.Diagnostics.Trace"/> system.</summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
@@ -156,9 +148,7 @@ namespace log4net.Appender
             } 
         }
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -187,14 +177,10 @@ namespace log4net.Appender
         /// </remarks>
         private bool m_immediateFlush = true;
 
-        /// <summary>
-        /// Defaults to %logger
-        /// </summary>
+        /// <summary>Defaults to %logger</summary>
         private PatternLayout m_category = new PatternLayout("%logger");
 
-        /// <summary>
-        /// Flushes any buffered log data.
-        /// </summary>
+        /// <summary>Flushes any buffered log data.</summary>
         /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public override bool Flush(int millisecondsTimeout)

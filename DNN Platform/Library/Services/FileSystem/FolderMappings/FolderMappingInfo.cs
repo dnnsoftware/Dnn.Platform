@@ -12,9 +12,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.FileSystem.Internal;
 
-    /// <summary>
-    ///   Represents the FolderMapping object and holds the Properties of that object.
-    /// </summary>
+    /// <summary>  Represents the FolderMapping object and holds the Properties of that object.</summary>
     [Serializable]
     public class FolderMappingInfo : IHydratable
     {
@@ -22,18 +20,14 @@ namespace DotNetNuke.Services.FileSystem
 
         private string imageUrl;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderMappingInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
         public FolderMappingInfo()
         {
             this.FolderMappingID = Null.NullInteger;
             this.PortalID = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderMappingInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
         /// <param name="portalID"></param>
         /// <param name="mappingName"></param>
         /// <param name="folderProviderType"></param>
@@ -114,9 +108,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        ///   Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>  Gets or sets and sets the Key ID.</summary>
         public int KeyID
         {
             get
@@ -130,10 +122,8 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        ///   Fills a FolderInfo from a Data Reader.
-        /// </summary>
-        /// <param name = "dr">The Data Reader to use.</param>
+        /// <summary>  Fills a FolderInfo from a Data Reader.</summary>
+        /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
             this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);

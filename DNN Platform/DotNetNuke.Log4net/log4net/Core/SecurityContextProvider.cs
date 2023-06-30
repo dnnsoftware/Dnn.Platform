@@ -24,9 +24,7 @@ using log4net.Util;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// The <see cref="SecurityContextProvider"/> providers default <see cref="SecurityContext"/> instances.
-    /// </summary>
+    /// <summary>The <see cref="SecurityContextProvider"/> providers default <see cref="SecurityContext"/> instances.</summary>
     /// <remarks>
     /// <para>
     /// A configured component that interacts with potentially protected system
@@ -58,14 +56,10 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public class SecurityContextProvider
     {
-        /// <summary>
-        /// The default provider
-        /// </summary>
+        /// <summary>The default provider</summary>
         private static SecurityContextProvider s_defaultProvider = new SecurityContextProvider();
 
-        /// <summary>
-        /// Gets or sets the default SecurityContextProvider
-        /// </summary>
+        /// <summary>Gets or sets the default SecurityContextProvider</summary>
         /// <value>
         /// The default SecurityContextProvider
         /// </value>
@@ -91,9 +85,7 @@ namespace log4net.Core
             set { s_defaultProvider = value; }
         }
 
-        /// <summary>
-        /// Protected default constructor to allow subclassing
-        /// </summary>
+        /// <summary>Protected default constructor to allow subclassing</summary>
         /// <remarks>
         /// <para>
         /// Protected default constructor to allow subclassing
@@ -103,9 +95,7 @@ namespace log4net.Core
         {
         }
 
-        /// <summary>
-        /// Create a SecurityContext for a consumer
-        /// </summary>
+        /// <summary>Create a SecurityContext for a consumer</summary>
         /// <param name="consumer">The consumer requesting the SecurityContext</param>
         /// <returns>An impersonation context</returns>
         /// <remarks>

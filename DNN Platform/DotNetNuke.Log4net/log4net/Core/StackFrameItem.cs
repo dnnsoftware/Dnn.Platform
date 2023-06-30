@@ -34,9 +34,7 @@ namespace log4net.Core
     [Serializable]
     public class StackFrameItem
     {
-        /// <summary>
-        /// returns a stack frame item from a stack frame. This 
-        /// </summary>
+        /// <summary>returns a stack frame item from a stack frame. This </summary>
         /// <param name="frame"></param>
         /// <returns></returns>
         public StackFrameItem(StackFrame frame)
@@ -92,9 +90,7 @@ namespace log4net.Core
             get { return this.m_className; }
         }
 
-        /// <summary>
-        /// Gets the file name of the caller.
-        /// </summary>
+        /// <summary>Gets the file name of the caller.</summary>
         /// <value>
         /// The file name of the caller.
         /// </value>
@@ -108,9 +104,7 @@ namespace log4net.Core
             get { return this.m_fileName; }
         }
 
-        /// <summary>
-        /// Gets the line number of the caller.
-        /// </summary>
+        /// <summary>Gets the line number of the caller.</summary>
         /// <value>
         /// The line number of the caller.
         /// </value>
@@ -124,9 +118,7 @@ namespace log4net.Core
             get { return this.m_lineNumber; }
         }
 
-        /// <summary>
-        /// Gets the method name of the caller.
-        /// </summary>
+        /// <summary>Gets the method name of the caller.</summary>
         /// <value>
         /// The method name of the caller.
         /// </value>
@@ -140,9 +132,7 @@ namespace log4net.Core
             get { return this.m_method; }
         }
 
-        /// <summary>
-        /// Gets all available caller information
-        /// </summary>
+        /// <summary>Gets all available caller information</summary>
         /// <value>
         /// All available caller information, in the format
         /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
@@ -164,9 +154,7 @@ namespace log4net.Core
         private readonly string m_fullInfo;
         private readonly MethodItem m_method;
 
-        /// <summary>
-        /// The fully qualified type of the StackFrameItem class.
-        /// </summary>
+        /// <summary>The fully qualified type of the StackFrameItem class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

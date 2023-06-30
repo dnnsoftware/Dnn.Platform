@@ -16,14 +16,10 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
 
-    /// <summary>
-    /// Helper methods for permissions.
-    /// </summary>
+    /// <summary>Helper methods for permissions.</summary>
     public static class PermissionHelper
     {
-        /// <summary>
-        /// Adds user permissions to the <see cref="Permissions"/> dto.
-        /// </summary>
+        /// <summary>Adds user permissions to the <see cref="Permissions"/> dto.</summary>
         /// <param name="dto"><see cref="Permissions"/> data transfer object to extend.</param>
         /// <param name="permissionInfo">Permission to add.</param>
         public static void AddUserPermission(this Permissions dto, PermissionInfoBase permissionInfo)
@@ -50,9 +46,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <summary>
-        /// Adds role permissions to the <see cref="Permissions"/> dto.
-        /// </summary>
+        /// <summary>Adds role permissions to the <see cref="Permissions"/> dto.</summary>
         /// <param name="dto"><see cref="Permissions"/> dto to extend.</param>
         /// <param name="permissionInfo">Permission to add.</param>
         public static void AddRolePermission(this Permissions dto, PermissionInfoBase permissionInfo)
@@ -79,9 +73,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <summary>
-        /// Ensures the <see cref="Permissions"/> dto has the default roles.
-        /// </summary>
+        /// <summary>Ensures the <see cref="Permissions"/> dto has the default roles.</summary>
         /// <param name="dto"><see cref="Permissions"/> dto to extend.</param>
         public static void EnsureDefaultRoles(this Permissions dto)
         {
@@ -93,9 +85,7 @@ namespace Dnn.Modules.ResourceManager.Components
             dto.EnsureRole(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName }, false, true);
         }
 
-        /// <summary>
-        /// Ensures the <see cref="Permissions"/> dto has the given role.
-        /// </summary>
+        /// <summary>Ensures the <see cref="Permissions"/> dto has the given role.</summary>
         /// <param name="dto"><see cref="Permissions"/> data transfer object to extend.</param>
         /// <param name="role">The role to ensure is include, <see cref="RoleInfo"/>.</param>
         public static void EnsureRole(this Permissions dto, RoleInfo role)
@@ -103,9 +93,7 @@ namespace Dnn.Modules.ResourceManager.Components
             dto.EnsureRole(role, false);
         }
 
-        /// <summary>
-        /// Ensures the <see cref="Permissions"/> dto has the given role.
-        /// </summary>
+        /// <summary>Ensures the <see cref="Permissions"/> dto has the given role.</summary>
         /// <param name="dto">The <see cref="Permissions"/> dto to extend.</param>
         /// <param name="role">The <see cref="RoleInfo"/> role ensure is included.</param>
         /// <param name="locked">A value indicating whether that role is locked.</param>
@@ -114,9 +102,7 @@ namespace Dnn.Modules.ResourceManager.Components
             dto.EnsureRole(role, locked, false);
         }
 
-        /// <summary>
-        /// Ensures the <see cref="Permissions"/> dto has a specific role.
-        /// </summary>
+        /// <summary>Ensures the <see cref="Permissions"/> dto has a specific role.</summary>
         /// <param name="dto">The <see cref="Permissions"/> dto to extend.</param>
         /// <param name="role">The <see cref="RoleInfo"/> role to ensure is included.</param>
         /// <param name="locked">A value indicating whether the role is locked.</param>
@@ -135,9 +121,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <summary>
-        /// Check if the permission is for full control.
-        /// </summary>
+        /// <summary>Check if the permission is for full control.</summary>
         /// <param name="permissionInfo">The <see cref="PermissionInfo"/> to check.</param>
         /// <returns>A value indicating whether this permission is for full control.</returns>
         public static bool IsFullControl(PermissionInfo permissionInfo)
@@ -145,9 +129,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
         }
 
-        /// <summary>
-        /// Checks if the permission is for view.
-        /// </summary>
+        /// <summary>Checks if the permission is for view.</summary>
         /// <param name="permissionInfo">The <see cref="PermissionInfo"/> to check.</param>
         /// <returns>A value indicating whether the permission is for view.</returns>
         public static bool IsViewPermission(PermissionInfo permissionInfo)
@@ -155,9 +137,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return permissionInfo.PermissionKey == "VIEW";
         }
 
-        /// <summary>
-        /// Gets roles for the portal.
-        /// </summary>
+        /// <summary>Gets roles for the portal.</summary>
         /// <param name="portalId">The id of the portal.</param>
         /// <returns>An objected containing the roles.</returns>
         public static object GetRoles(int portalId)
@@ -184,9 +164,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return data;
         }
 
-        /// <summary>
-        /// Converts roles permissions into permission info collection.
-        /// </summary>
+        /// <summary>Converts roles permissions into permission info collection.</summary>
         /// <param name="permissions">The list of <see cref="RolePermission"/> to convert.</param>
         /// <param name="folderId">The folder id.</param>
         /// <returns>An ArrayList of <see cref="FolderPermissionInfo"/>.</returns>
@@ -211,9 +189,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return newPermissions;
         }
 
-        /// <summary>
-        /// Converts a list of <see cref="UserPermission"/> into a collection of <see cref="FolderPermissionInfo"/>.
-        /// </summary>
+        /// <summary>Converts a list of <see cref="UserPermission"/> into a collection of <see cref="FolderPermissionInfo"/>.</summary>
         /// <param name="permissions">The list of <see cref="UserPermission"/> to extend.</param>
         /// <param name="folderId">The id of the folder.</param>
         /// <returns>An ArrayList of <see cref="FolderPermissionInfo"/>.</returns>

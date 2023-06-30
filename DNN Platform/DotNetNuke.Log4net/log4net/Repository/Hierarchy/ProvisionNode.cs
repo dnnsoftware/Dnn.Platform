@@ -23,9 +23,7 @@ using System.Collections;
 
 namespace log4net.Repository.Hierarchy
 {
-    /// <summary>
-    /// Provision nodes are used where no logger instance has been specified
-    /// </summary>
+    /// <summary>Provision nodes are used where no logger instance has been specified</summary>
     /// <remarks>
     /// <para>
     /// <see cref="ProvisionNode"/> instances are used in the 
@@ -41,9 +39,7 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     internal sealed class ProvisionNode : ArrayList
     {
-        /// <summary>
-        /// Create a new provision node with child node
-        /// </summary>
+        /// <summary>Create a new provision node with child node</summary>
         /// <param name="log">A child logger to add to this node.</param>
         /// <remarks>
         /// <para>

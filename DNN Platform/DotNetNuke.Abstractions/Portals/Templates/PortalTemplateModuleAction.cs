@@ -4,24 +4,16 @@
 
 namespace DotNetNuke.Abstractions.Portals.Templates
 {
-    /// <summary>
-    /// Specify what should happen during the application of a portal template when modules collide with existing modules.
-    /// </summary>
+    /// <summary>Specify what should happen during the application of a portal template when modules collide with existing modules.</summary>
     public enum PortalTemplateModuleAction
     {
-        /// <summary>
-        /// Ignore
-        /// </summary>
+        /// <summary>Ignore</summary>
         Ignore = 0,
 
-        /// <summary>
-        /// Add the module to the page next to the old module
-        /// </summary>
+        /// <summary>Add the module to the page next to the old module</summary>
         Merge = 1,
 
-        /// <summary>
-        /// Replace the old module
-        /// </summary>
+        /// <summary>Replace the old module</summary>
         Replace = 2,
     }
 }

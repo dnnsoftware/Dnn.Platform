@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class PermissionsNotMetException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.</summary>
         public PermissionsNotMetException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.</summary>
         /// <param name="message"></param>
         public PermissionsNotMetException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public PermissionsNotMetException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionsNotMetException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public PermissionsNotMetException(SerializationInfo info, StreamingContext context)

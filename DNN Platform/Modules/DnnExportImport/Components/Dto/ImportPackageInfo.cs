@@ -14,49 +14,31 @@ namespace Dnn.ExportImport.Components.Dto
     [JsonObject]
     public class ImportPackageInfo : IDateTimeConverter
     {
-        /// <summary>
-        /// Gets package file name. It is just fake name for UI representation.
-        /// </summary>
+        /// <summary>Gets package file name. It is just fake name for UI representation.</summary>
         public string FileName => this.PackageId;
 
-        /// <summary>
-        /// Gets formatted DateTime when the package was exported.
-        /// </summary>
+        /// <summary>Gets formatted DateTime when the package was exported.</summary>
         public string ExporTimeString => Util.GetDateTimeString(this.ExporTime);
 
-        /// <summary>
-        /// Gets path to the thumbnail image for the package.
-        /// </summary>
+        /// <summary>Gets path to the thumbnail image for the package.</summary>
         public string Thumb => this.PackageId + ".jpg";
 
-        /// <summary>
-        /// Gets or sets package Id. Used to identify the package and path.
-        /// </summary>
+        /// <summary>Gets or sets package Id. Used to identify the package and path.</summary>
         public string PackageId { get; set; }
 
-        /// <summary>
-        /// Gets or sets name of the package.
-        /// </summary>
+        /// <summary>Gets or sets name of the package.</summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets dateTime when the package was exported.
-        /// </summary>
+        /// <summary>Gets or sets dateTime when the package was exported.</summary>
         public DateTime ExporTime { get; set; }
 
-        /// <summary>
-        /// Gets or sets the portal from which the exported package was created.
-        /// </summary>
+        /// <summary>Gets or sets the portal from which the exported package was created.</summary>
         public string PortalName { get; set; }
 
-        /// <summary>
-        /// Gets or sets package description.
-        /// </summary>
+        /// <summary>Gets or sets package description.</summary>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets complete summary of import package.
-        /// </summary>
+        /// <summary>Gets or sets complete summary of import package.</summary>
         public ImportExportSummary Summary { get; set; }
 
         /// <inheritdoc/>

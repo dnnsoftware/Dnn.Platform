@@ -7,10 +7,7 @@ namespace DotNetNuke.Services.Authentication
 
     using DotNetNuke.Common.Internal;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The LogOffHandler class provides a replacement for the LogOff page.
-    /// </summary>
+    /// <summary>The LogOffHandler class provides a replacement for the LogOff page.</summary>
     public class LogOffHandler : IHttpHandler
     {
         /// <inheritdoc/>

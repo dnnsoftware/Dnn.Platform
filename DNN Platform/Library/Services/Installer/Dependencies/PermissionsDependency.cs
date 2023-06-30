@@ -10,14 +10,10 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PermissionsDependency determines whether the DotNetNuke site has the
     /// corretc permissions.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class PermissionsDependency : DependencyBase
     {
         private string permission = Null.NullString;

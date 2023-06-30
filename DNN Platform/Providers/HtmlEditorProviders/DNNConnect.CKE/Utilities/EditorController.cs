@@ -14,27 +14,21 @@ namespace DNNConnect.CKEditorProvider.Utilities
     /// <summary>Editor controller.</summary>
     public static class EditorController
     {
-        /// <summary>
-        /// Deletes all module settings of the Editor, for the specified <paramref name="tabId"/>.
-        /// </summary>
+        /// <summary>Deletes all module settings of the Editor, for the specified <paramref name="tabId"/>.</summary>
         /// <param name="tabId">The tab id.</param>
         public static void DeleteAllModuleSettingsById(int tabId)
         {
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllModuleSettingsByTab", tabId);
         }
 
-        /// <summary>
-        /// Deletes all module settings of the Editor, for the Current Portal.
-        /// </summary>
+        /// <summary>Deletes all module settings of the Editor, for the Current Portal.</summary>
         /// <param name="portalId">The portal id.</param>
         public static void DeleteAllModuleSettings(int portalId)
         {
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllModuleSettings", portalId.ToString());
         }
 
-        /// <summary>
-        /// Deletes all page settings of the Editor, for the Current Portal.
-        /// </summary>
+        /// <summary>Deletes all page settings of the Editor, for the Current Portal.</summary>
         /// <param name="portalId">The portal id.</param>
         public static void DeleteAllPageSettings(int portalId)
         {
@@ -44,9 +38,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             ClearEditorCache();
         }
 
-        /// <summary>
-        /// Deletes current page settings of the Editor, for the Current Portal.
-        /// </summary>
+        /// <summary>Deletes current page settings of the Editor, for the Current Portal.</summary>
         /// <param name="tabId">The tab id.</param>
         public static void DeleteCurrentPageSettings(int tabId)
         {
@@ -56,9 +48,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             ClearEditorCache();
         }
 
-        /// <summary>
-        /// Deletes all page settings of the Editor, for the specified child tabs from the specified <paramref name="tabId"/>.
-        /// </summary>
+        /// <summary>Deletes all page settings of the Editor, for the specified child tabs from the specified <paramref name="tabId"/>.</summary>
         /// <param name="tabId">
         /// The tab Id.
         /// </param>
@@ -70,9 +60,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             ClearEditorCache();
         }
 
-        /// <summary>
-        /// Deletes all portal settings of the Editor, for the Current Portal.
-        /// </summary>
+        /// <summary>Deletes all portal settings of the Editor, for the Current Portal.</summary>
         /// <param name="portalId">The portal id.</param>
         public static void DeleteAllPortalSettings(int portalId)
         {
@@ -82,9 +70,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             ClearEditorCache();
         }
 
-        /// <summary>
-        /// Deletes all Host settings of the Editor.
-        /// </summary>
+        /// <summary>Deletes all Host settings of the Editor.</summary>
         public static void DeleteAllHostSettings()
         {
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllHostSettings");
@@ -93,9 +79,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             ClearEditorCache();
         }
 
-        /// <summary>
-        /// Gets the editor host settings.
-        /// </summary>
+        /// <summary>Gets the editor host settings.</summary>
         /// <returns>Returns the list of all Editor Host Settings.</returns>
         public static List<EditorHostSetting> GetEditorHostSettings()
         {
@@ -129,9 +113,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return editorHostSettings;
         }
 
-        /// <summary>
-        /// Adds or updates the editor host setting.
-        /// </summary>
+        /// <summary>Adds or updates the editor host setting.</summary>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         public static void AddOrUpdateEditorHostSetting(string settingName, string settingValue)

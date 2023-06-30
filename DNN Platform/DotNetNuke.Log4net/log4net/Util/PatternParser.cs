@@ -41,9 +41,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class PatternParser
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="pattern">The pattern to parse.</param>
         /// <remarks>
         /// <para>
@@ -56,9 +54,7 @@ namespace log4net.Util
             this.m_pattern = pattern;
         }
 
-        /// <summary>
-        /// Parses the pattern into a chain of pattern converters.
-        /// </summary>
+        /// <summary>Parses the pattern into a chain of pattern converters.</summary>
         /// <returns>The head of a chain of pattern converters.</returns>
         /// <remarks>
         /// <para>
@@ -74,9 +70,7 @@ namespace log4net.Util
             return this.m_head;
         }
 
-        /// <summary>
-        /// Get the converter registry used by this parser
-        /// </summary>
+        /// <summary>Get the converter registry used by this parser</summary>
         /// <value>
         /// The converter registry used by this parser
         /// </value>
@@ -90,9 +84,7 @@ namespace log4net.Util
             get { return this.m_patternConverters; }
         }
 
-        /// <summary>
-        /// Build the unified cache of converters from the static and instance maps
-        /// </summary>
+        /// <summary>Build the unified cache of converters from the static and instance maps</summary>
         /// <returns>the list of all the converter names</returns>
         /// <remarks>
         /// <para>
@@ -110,9 +102,7 @@ namespace log4net.Util
             return converterNamesCache;
         }
 
-        /// <summary>
-        /// Sort strings by length
-        /// </summary>
+        /// <summary>Sort strings by length</summary>
         /// <remarks>
         /// <para>
         /// <see cref="IComparer" /> that orders strings by string length.
@@ -149,9 +139,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Internal method to parse the specified pattern to find specified matches
-        /// </summary>
+        /// <summary>Internal method to parse the specified pattern to find specified matches</summary>
         /// <param name="pattern">the pattern to parse</param>
         /// <param name="matches">the converter names to match in the pattern</param>
         /// <remarks>
@@ -280,9 +268,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Process a parsed literal
-        /// </summary>
+        /// <summary>Process a parsed literal</summary>
         /// <param name="text">the literal text</param>
         private void ProcessLiteral(string text)
         {
@@ -293,9 +279,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Process a parsed converter pattern
-        /// </summary>
+        /// <summary>Process a parsed converter pattern</summary>
         /// <param name="converterName">the name of the converter</param>
         /// <param name="option">the optional option for the converter</param>
         /// <param name="formattingInfo">the formatting info for the converter</param>
@@ -363,24 +347,16 @@ namespace log4net.Util
 
         private const char ESCAPE_CHAR = '%';
 
-        /// <summary>
-        /// The first pattern converter in the chain
-        /// </summary>
+        /// <summary>The first pattern converter in the chain</summary>
         private PatternConverter m_head;
 
-        /// <summary>
-        ///  the last pattern converter in the chain
-        /// </summary>
+        /// <summary> the last pattern converter in the chain</summary>
         private PatternConverter m_tail;
 
-        /// <summary>
-        /// The pattern
-        /// </summary>
+        /// <summary>The pattern</summary>
         private string m_pattern;
 
-        /// <summary>
-        /// Internal map of converter identifiers to converter types
-        /// </summary>
+        /// <summary>Internal map of converter identifiers to converter types</summary>
         /// <remarks>
         /// <para>
         /// This map overrides the static s_globalRulesRegistry map.
@@ -388,9 +364,7 @@ namespace log4net.Util
         /// </remarks>
         private Hashtable m_patternConverters = new Hashtable();
 
-        /// <summary>
-        /// The fully qualified type of the PatternParser class.
-        /// </summary>
+        /// <summary>The fully qualified type of the PatternParser class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

@@ -1248,6 +1248,9 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.26.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.28.SqlDataProvider" />
     <Content Include="web.config" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.11.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.11.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.12.01.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -3376,7 +3379,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.09.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.10.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.00.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\09.10.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.10.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />

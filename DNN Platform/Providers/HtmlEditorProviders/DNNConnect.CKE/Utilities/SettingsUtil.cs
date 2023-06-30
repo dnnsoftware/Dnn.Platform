@@ -25,14 +25,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
 
-    /// <summary>
-    /// Settings Base Helper Class.
-    /// </summary>
+    /// <summary>Settings Base Helper Class.</summary>
     public class SettingsUtil
     {
-        /// <summary>
-        /// Checks the exists portal or page settings.
-        /// </summary>
+        /// <summary>Checks the exists portal or page settings.</summary>
         /// <param name="editorHostSettings">The editor host settings.</param>
         /// <param name="key">The key.</param>
         /// <returns>
@@ -54,9 +50,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks there are any Module Settings.
-        /// </summary>
+        /// <summary>Checks there are any Module Settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -72,9 +66,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks the exists of the module instance settings.
-        /// </summary>
+        /// <summary>Checks the exists of the module instance settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -91,9 +83,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Loads the portal or page settings.
-        /// </summary>
+        /// <summary>Loads the portal or page settings.</summary>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>
@@ -186,7 +176,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             typeof(CodeMirror).GetProperties()
                                 .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))).Value;
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name)))?.Value;
                             switch (codeMirrorInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -217,7 +207,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     case "WordCount":
                         foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))).Value;
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name)))?.Value;
                             switch (wordCountInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -278,134 +268,156 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
-            List<ToolbarRoles> listToolbarRoles = (from RoleInfo objRole in portalRoles
-                                                   where
-                                                       filteredSettings.Any(
-                                                           setting =>
-                                                           setting.Name.Equals(
-                                                               string.Format(
-                                                                   "{0}{2}#{1}",
-                                                                   key,
-                                                                   objRole.RoleID,
-                                                                   SettingConstants.TOOLB)))
-                                                   where
-                                                       !string.IsNullOrEmpty(
-                                                           filteredSettings.FirstOrDefault(
-                                                               s =>
-                                                               s.Name.Equals(
-                                                                   string.Format(
-                                                                       "{0}{2}#{1}",
-                                                                       key,
-                                                                       objRole.RoleID,
-                                                                       SettingConstants.TOOLB))).Value)
-                                                   let sToolbar =
-                                                       filteredSettings.FirstOrDefault(
-                                                           s =>
-                                                           s.Name.Equals(
-                                                               string.Format(
-                                                                   "{0}{2}#{1}",
-                                                                   key,
-                                                                   objRole.RoleID,
-                                                                   SettingConstants.TOOLB))).Value
-                                                   select
-                                                       new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = sToolbar })
-                .ToList();
-
-            if (
-                filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))))
+            // if we don't have portalRoles, we're in host/allPortals mode
+            // so we can't filter for the roles, since they're not available
+            if ((portalRoles?.Count ?? 0) > 0)
             {
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))).Value;
+                List<ToolbarRoles> listToolbarRoles = (from RoleInfo objRole in portalRoles
+                        where
+                            filteredSettings.Any(
+                                setting =>
+                                    setting.Name.Equals(
+                                        string.Format(
+                                            "{0}{2}#{1}",
+                                            key,
+                                            objRole.RoleID,
+                                            SettingConstants.TOOLB)))
+                        where
+                            !string.IsNullOrEmpty(
+                                filteredSettings.FirstOrDefault(
+                                        s =>
+                                            s.Name.Equals(
+                                                string.Format(
+                                                    "{0}{2}#{1}",
+                                                    key,
+                                                    objRole.RoleID,
+                                                    SettingConstants.TOOLB)))
+                                    .Value)
+                        let sToolbar =
+                            filteredSettings.FirstOrDefault(
+                                    s =>
+                                        s.Name.Equals(
+                                            string.Format(
+                                                "{0}{2}#{1}",
+                                                key,
+                                                objRole.RoleID,
+                                                SettingConstants.TOOLB)))
+                                .Value
+                        select
+                            new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = sToolbar })
+                    .ToList();
 
-                if (!string.IsNullOrEmpty(settingValue))
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))))
                 {
-                    listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = settingValue });
-                }
-            }
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                                s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB)))
+                            .Value;
 
-            currentSettings.ToolBarRoles = listToolbarRoles;
-
-            var listUploadSizeRoles = (from RoleInfo objRole in portalRoles
-                                       where
-                                           filteredSettings.Any(
-                                               setting =>
-                                               setting.Name.Equals(
-                                                   string.Format(
-                                                       "{0}{1}#{2}",
-                                                       key,
-                                                       objRole.RoleID,
-                                                       SettingConstants.UPLOADFILELIMITS)))
-                                       where
-                                           !string.IsNullOrEmpty(
-                                               filteredSettings.FirstOrDefault(
-                                                   s =>
-                                                   s.Name.Equals(
-                                                       string.Format(
-                                                           "{0}{1}#{2}",
-                                                           key,
-                                                           objRole.RoleID,
-                                                           SettingConstants.UPLOADFILELIMITS))).Value)
-                                       let uploadFileLimit =
-                                           filteredSettings.FirstOrDefault(
-                                               s =>
-                                               s.Name.Equals(
-                                                   string.Format(
-                                                       "{0}{1}#{2}",
-                                                       key,
-                                                       objRole.RoleID,
-                                                       SettingConstants.UPLOADFILELIMITS))).Value
-                                       select
-                                           new UploadSizeRoles { RoleId = objRole.RoleID, RoleName = objRole.RoleName, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
-                .ToList();
-
-            if (
-                filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
-            {
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))).Value;
-
-                if (!string.IsNullOrEmpty(settingValue))
-                {
-                    listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(settingValue) });
-                }
-            }
-
-            currentSettings.UploadSizeRoles = listUploadSizeRoles;
-
-            if (
-                filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))))
-            {
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))).Value;
-
-                if (!string.IsNullOrEmpty(settingValue))
-                {
-                    string sRoles = settingValue;
-
-                    currentSettings.BrowserRoles = sRoles;
-
-                    string[] rolesA = sRoles.Split(';');
-
-                    foreach (string sRoleName in rolesA)
+                    if (!string.IsNullOrEmpty(settingValue))
                     {
-                        if (Utility.IsNumeric(sRoleName))
-                        {
-                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings.PortalId, int.Parse(sRoleName));
+                        listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = settingValue });
+                    }
+                }
 
-                            if (roleInfo != null)
+                currentSettings.ToolBarRoles = listToolbarRoles;
+
+                var listUploadSizeRoles = (from RoleInfo objRole in portalRoles
+                        where
+                            filteredSettings.Any(
+                                setting =>
+                                    setting.Name.Equals(
+                                        string.Format(
+                                            "{0}{1}#{2}",
+                                            key,
+                                            objRole.RoleID,
+                                            SettingConstants.UPLOADFILELIMITS)))
+                        where
+                            !string.IsNullOrEmpty(
+                                filteredSettings.FirstOrDefault(
+                                        s =>
+                                            s.Name.Equals(
+                                                string.Format(
+                                                    "{0}{1}#{2}",
+                                                    key,
+                                                    objRole.RoleID,
+                                                    SettingConstants.UPLOADFILELIMITS)))
+                                    .Value)
+                        let uploadFileLimit =
+                            filteredSettings.FirstOrDefault(
+                                    s =>
+                                        s.Name.Equals(
+                                            string.Format(
+                                                "{0}{1}#{2}",
+                                                key,
+                                                objRole.RoleID,
+                                                SettingConstants.UPLOADFILELIMITS)))
+                                .Value
+                        select
+                            new UploadSizeRoles
                             {
-                                roles.Add(roleInfo.RoleName);
-                            }
-                        }
-                        else
+                                RoleId = objRole.RoleID,
+                                RoleName = objRole.RoleName,
+                                UploadFileLimit = Convert.ToInt32(uploadFileLimit)
+                            })
+                    .ToList();
+
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals(
+                            string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
+                {
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                                s => s.Name.Equals(
+                                    string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS)))
+                            .Value;
+
+                    if (!string.IsNullOrEmpty(settingValue))
+                    {
+                        listUploadSizeRoles.Add(
+                            new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(settingValue) });
+                    }
+                }
+
+                currentSettings.UploadSizeRoles = listUploadSizeRoles;
+
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))))
+                {
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                                s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES)))
+                            .Value;
+
+                    if (!string.IsNullOrEmpty(settingValue))
+                    {
+                        string sRoles = settingValue;
+
+                        currentSettings.BrowserRoles = sRoles;
+
+                        string[] rolesA = sRoles.Split(';');
+
+                        foreach (string sRoleName in rolesA)
                         {
-                            roles.Add(sRoleName);
+                            if (Utility.IsNumeric(sRoleName))
+                            {
+                                RoleInfo roleInfo = RoleController.Instance.GetRoleById(
+                                    portalSettings.PortalId,
+                                    int.Parse(sRoleName));
+
+                                if (roleInfo != null)
+                                {
+                                    roles.Add(roleInfo.RoleName);
+                                }
+                            }
+                            else
+                            {
+                                roles.Add(sRoleName);
+                            }
                         }
                     }
                 }
@@ -947,9 +959,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Loads the module settings.
-        /// </summary>
+        /// <summary>Loads the module settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="key">The module key.</param>
@@ -1445,9 +1455,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
+        /// <summary>Gets the default settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="alternateSubFolder">The alternate Sub Folder.</param>
@@ -1601,9 +1609,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return settings;
         }
 
-        /// <summary>
-        /// Creates the default settings file.
-        /// </summary>
+        /// <summary>Creates the default settings file.</summary>
         internal static void CreateDefaultSettingsFile()
         {
             var newSettings = new EditorProviderSettings();
@@ -1623,9 +1629,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             textWriter.Close();
         }
 
-        /// <summary>
-        /// Gets the editor config properties.
-        /// </summary>
+        /// <summary>Gets the editor config properties.</summary>
         /// <returns>Returns the EditorConfig Properties.</returns>
         internal static IEnumerable<PropertyInfo> GetEditorConfigProperties()
         {
@@ -1650,9 +1654,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
-        /// <summary>
-        /// Imports the old SettingsBase Xml File.
-        /// </summary>
+        /// <summary>Imports the old SettingsBase Xml File.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="isDefaultXmlFile">if set to <c>true</c> [is default XML file].</param>
         internal static void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile = false)
@@ -1773,9 +1775,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets the size of the current user upload.
-        /// </summary>
+        /// <summary>Gets the size of the current user upload.</summary>
         /// <param name="settings">The settings.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="httpRequest">The HTTP request.</param>

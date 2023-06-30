@@ -13,9 +13,7 @@ namespace DotNetNuke.Common.Utilities
         private const string DoubleEscapseSequence = @"\\";
         private const char DefaultSeperator = ',';
 
-        /// <summary>
-        /// Combine the string values of the enumerable into an escaped string.
-        /// </summary>
+        /// <summary>Combine the string values of the enumerable into an escaped string.</summary>
         /// <param name="enumerable">An IEnumerable of values to combine.</param>
         /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
         /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
@@ -25,9 +23,7 @@ namespace DotNetNuke.Common.Utilities
             return Combine(enumerable, DefaultSeperator);
         }
 
-        /// <summary>
-        /// Combine the string values of the enumerable into an escaped string.
-        /// </summary>
+        /// <summary>Combine the string values of the enumerable into an escaped string.</summary>
         /// <param name="enumerable">An IEnumerable of values to combine.</param>
         /// <param name="seperator">The character to use as a seperator.</param>
         /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
@@ -47,9 +43,7 @@ namespace DotNetNuke.Common.Utilities
             return string.IsNullOrEmpty(result) ? string.Empty : result.Substring(0, result.Length - 1);
         }
 
-        /// <summary>
-        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
-        /// </summary>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
         /// <param name="combinedString">The string to seperate.</param>
         /// <returns>IEnumerable of all the seperated strings.</returns>
         /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
@@ -58,9 +52,7 @@ namespace DotNetNuke.Common.Utilities
             return Seperate(combinedString, DefaultSeperator);
         }
 
-        /// <summary>
-        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
-        /// </summary>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
         /// <param name="combinedString">The string to seperate.</param>
         /// <param name="trimWhitespaces">Trims whitespaces.</param>
         /// <returns>IEnumerable of all the seperated strings.</returns>
@@ -70,9 +62,7 @@ namespace DotNetNuke.Common.Utilities
             return Seperate(combinedString, DefaultSeperator, trimWhitespaces);
         }
 
-        /// <summary>
-        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
-        /// </summary>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
         /// <param name="combinedString">The string to seperate.</param>
         /// <param name="separator">The character on which to split.</param>
         /// <returns>IEnumerable of all the seperated strings.</returns>
@@ -82,9 +72,7 @@ namespace DotNetNuke.Common.Utilities
             return Seperate(combinedString, separator, false);
         }
 
-        /// <summary>
-        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
-        /// </summary>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
         /// <param name="combinedString">The string to seperate.</param>
         /// <param name="seperator">The character on which to split.</param>
         /// <param name="trimWhitespaces">Trims whitespaces.</param>

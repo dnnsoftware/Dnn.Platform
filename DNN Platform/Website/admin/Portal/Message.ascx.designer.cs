@@ -15,9 +15,7 @@ namespace DotNetNuke.Common.Controls {
     
     
     public partial class Message {
-        /// <summary>
-        /// lblMessage control.
-        /// </summary>
+        /// <summary>lblMessage control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

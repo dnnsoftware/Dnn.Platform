@@ -13,9 +13,7 @@ namespace DotNetNuke.Framework.Reflections
     {
         private readonly Assembly assembly;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyWrapper"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AssemblyWrapper"/> class.</summary>
         /// <param name="assembly"></param>
         public AssemblyWrapper(Assembly assembly)
         {

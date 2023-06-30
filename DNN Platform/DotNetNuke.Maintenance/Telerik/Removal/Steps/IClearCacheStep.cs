@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Clears the cache.
-    /// </summary>
+    /// <summary>Clears the cache.</summary>
     internal interface IClearCacheStep : IStep
     {
     }

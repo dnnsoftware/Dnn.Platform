@@ -18,14 +18,10 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// Controller to manage IP Filters.
-    /// </summary>
+    /// <summary>Controller to manage IP Filters.</summary>
     public class IPFilterController : ComponentBase<IIPFilterController, IPFilterController>, IIPFilterController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPFilterController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="IPFilterController"/> class.</summary>
         internal IPFilterController()
         {
         }

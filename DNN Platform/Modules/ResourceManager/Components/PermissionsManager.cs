@@ -6,7 +6,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using System;
 
     using Dnn.Modules.ResourceManager.Components.Common;
-
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -14,18 +14,14 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Provides permissions checks.
-    /// </summary>
+    /// <summary>Provides permissions checks.</summary>
     public class PermissionsManager : ServiceLocator<IPermissionsManager, PermissionsManager>, IPermissionsManager
     {
         private readonly IFolderManager folderManager;
         private readonly IRoleController roleController;
         private readonly IUserController userController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionsManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionsManager"/> class.</summary>
         public PermissionsManager()
         {
             this.folderManager = FolderManager.Instance;
@@ -59,7 +55,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsInUserFolder(folderId))
             {
                 return false;
             }
@@ -93,7 +89,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsInUserFolder(folderId))
             {
                 return false;
             }
@@ -110,7 +106,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsInUserFolder(folderId))
             {
                 return false;
             }
@@ -119,9 +115,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return FolderPermissionController.CanManageFolder((FolderInfo)folder);
         }
 
-        /// <summary>
-        /// Checks if the current user has permission on a group folder.
-        /// </summary>
+        /// <summary>Checks if the current user has permission on a group folder.</summary>
         /// <param name="folderId">The id of the folder.</param>
         /// <returns>A value indicating whether the user has permission on the group folder.</returns>
         public bool HasGroupFolderMemberPermission(int folderId)
@@ -141,9 +135,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return () => new PermissionsManager();
         }
 
-        /// <summary>
-        /// Check if a user has a specific permission key on a folder.
-        /// </summary>
+        /// <summary>Check if a user has a specific permission key on a folder.</summary>
         /// <param name="folder">The id of the folder to check.</param>
         /// <param name="permissionKey">The permission key.</param>
         /// <returns>A value indicating whether the user has the permission key for the folder.</returns>
@@ -195,10 +187,27 @@ namespace Dnn.Modules.ResourceManager.Components
             return userRole != null && userRole.IsOwner;
         }
 
-        private bool IsUserFolder(int folderId)
+        private bool IsInUserFolder(int folderId)
         {
             var user = this.userController.GetCurrentUserInfo();
-            return this.folderManager.GetUserFolder(user).FolderID == folderId;
+            var userFolder = this.folderManager.GetUserFolder(user);
+            return this.IsUserFolder(folderId, userFolder);
+        }
+
+        private bool IsUserFolder(int folderId, IFolderInfo userFolder)
+        {
+            if (userFolder.FolderID == folderId)
+            {
+                return true;
+            }
+
+            if (userFolder.ParentID != Null.NullInteger)
+            {
+                var parent = this.folderManager.GetFolder(userFolder.ParentID);
+                return this.IsUserFolder(folderId, parent);
+            }
+
+            return false;
         }
 
         private UserRoleInfo GetUserRoleInfo(int groupId)

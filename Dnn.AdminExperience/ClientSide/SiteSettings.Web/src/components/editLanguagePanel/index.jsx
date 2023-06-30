@@ -134,7 +134,7 @@ class EditLanguagePanel extends Component {
                 value: "Host"
             },
             {
-                label: props.portalName,
+                label: resx.get("Portal"),
                 value: "Portal"
             }
         ];

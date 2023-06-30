@@ -25,9 +25,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// A SchedulerClient instance that handles all the offline messaging actions.
-    /// </summary>
+    /// <summary>A SchedulerClient instance that handles all the offline messaging actions.</summary>
     public class CoreMessagingScheduler : SchedulerClient
     {
         /// <summary>The setting name for number hours since last hourly digest run.</summary>

@@ -66,6 +66,8 @@ graph TD;
   dnn-rm-move-items --> dnn-rm-folder-list
   dnn-rm-move-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-button
+  dnn-rm-folder-list --> dnn-collapsible
+  dnn-rm-folder-list --> dnn-rm-folder-context-menu
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-collapsible
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu

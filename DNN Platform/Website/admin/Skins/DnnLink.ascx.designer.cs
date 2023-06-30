@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class DnnLink {
-        /// <summary>
-        /// aDnnLink control.
-        /// </summary>
+        /// <summary>aDnnLink control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

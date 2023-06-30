@@ -6,9 +6,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Handles Digital Asset Manager uninstall process.
-    /// </summary>
+    /// <summary>Handles Digital Asset Manager uninstall process.</summary>
     public interface IDamUninstaller
     {
         /// <summary>
@@ -17,9 +15,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         /// </summary>
         IEnumerable<UninstallSummaryItem> Progress { get; }
 
-        /// <summary>
-        /// Executes the Telerik uninstall process.
-        /// </summary>
+        /// <summary>Executes the Telerik uninstall process.</summary>
         void Execute();
     }
 }

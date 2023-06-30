@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
     using System;
@@ -23,6 +22,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -51,9 +51,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Constants = Dnn.PersonaBar.Library.Constants;
     using FileInfo = System.IO.FileInfo;
 
-    /// <summary>
-    /// Provides Web API methods for the Site Settings module to use.
-    /// </summary>
+    /// <summary>Provides Web API methods for the Site Settings module to use.</summary>
     [MenuPermission(MenuName = Components.Constants.Constants.MenuName)]
     public class SiteSettingsController : PersonaBarApiController
     {
@@ -65,7 +63,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const int DefaultSearchDescriptionBoost = 20;
         private const int DefaultSearchAuthorBoost = 15;
 
-        // Field Bosst Setting Names
+        // Field Boost Setting Names
         private const string SearchTitleBoostSetting = "Search_Title_Boost";
         private const string SearchTagBoostSetting = "Search_Tag_Boost";
         private const string SearchContentBoostSetting = "Search_Content_Boost";
@@ -76,32 +74,28 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController controller = new Components.SiteSettingsController();
         private readonly INavigationManager navigationManager;
+        private readonly IApplicationStatusInfo applicationStatusInfo;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SiteSettingsController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
         /// <param name="navigationManager">A manager to provide navigation services.</param>
-        public SiteSettingsController(INavigationManager navigationManager)
+        /// <param name="applicatiohnStatusInfo">The application status info.</param>
+        public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo)
         {
             this.navigationManager = navigationManager;
+            this.applicationStatusInfo = applicationStatusInfo;
         }
 
-        /// <summary>
-        /// Gets provides navigation services.
-        /// </summary>
+        /// <summary>Gets provides navigation services.</summary>
         [Obsolete("Deprecated in v9.10.2, please use DI to register your own navigation manager. Schedule for removal in v11")]
         protected INavigationManager NavigationManager => this.navigationManager;
 
         /// GET: api/SiteSettings/GetPortalSettings
-        /// <summary>
-        /// Gets site settings.
-        /// </summary>
+        /// <summary>Gets site settings.</summary>
         /// <param name="portalId">The ID of the portal to get the settings for.</param>
         /// <param name="cultureCode">The culture in which to get the settings in.</param>
         /// <returns>Localized site settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView)]
-
         public HttpResponseMessage GetPortalSettings(int? portalId, string cultureCode)
         {
             try
@@ -167,7 +161,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         z.Id,
                         z.DisplayName,
                     }),
-                    IconSets = IconController.GetIconSets(),
+                    IconSets = IconController.GetIconSets(this.applicationStatusInfo),
                 });
             }
             catch (Exception exc)
@@ -178,14 +172,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetCultureList
-        /// <summary>
-        /// Gets culture list.
-        /// </summary>
+        /// <summary>Gets culture list.</summary>
         /// <param name="portalId">The ID of the portal for which to get the list of cultures.</param>
         /// <returns>Culture List.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView)]
-
         public HttpResponseMessage GetCultureList(int? portalId)
         {
             try
@@ -226,15 +217,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdatePortalSettings
-        /// <summary>
-        /// Updates site settings.
-        /// </summary>
+        /// <summary>Updates site settings.</summary>
         /// <param name="request"><see cref="UpdateSiteSettingsRequest"/>.</param>
         /// <returns>A success or error message.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView + "&" + Components.Constants.Constants.SiteInfoEdit)]
-
         public HttpResponseMessage UpdatePortalSettings(UpdateSiteSettingsRequest request)
         {
             try
@@ -291,15 +279,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetDefaultPagesSettings
-        /// <summary>
-        /// Gets default pages settings.
-        /// </summary>
+        /// <summary>Gets default pages settings.</summary>
         /// <param name="portalId">The ID of the portal for which to getting the settings for.</param>
         /// <param name="cultureCode">The culture code for which to get the page settings in.</param>
         /// <returns>default pages settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetDefaultPagesSettings(int? portalId, string cultureCode)
         {
             try
@@ -373,15 +358,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateDefaultPagesSettings
-        /// <summary>
-        /// Updates default pages settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates default pages settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateDefaultPagesSettings(UpdateDefaultPagesSettingsRequest request)
         {
             try
@@ -429,14 +411,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetMessagingSettings
-        /// <summary>
-        /// Gets messaging settings.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets messaging settings.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>messaging settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetMessagingSettings(int? portalId)
         {
             try
@@ -474,15 +453,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateMessagingSettings
-        /// <summary>
-        /// Updates messaging settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates messaging settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateMessagingSettings(UpdateMessagingSettingsRequest request)
         {
             try
@@ -514,10 +490,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetProfileSettings
-        /// <summary>
-        /// Gets profile settings.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets profile settings.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>profile settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -561,15 +535,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateProfileSettings
-        /// <summary>
-        /// Updates profile settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates profile settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateProfileSettings(UpdateProfileSettingsRequest request)
         {
             try
@@ -601,14 +572,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetProfileProperties
-        /// <summary>
-        /// Gets profile properties.
-        /// </summary>
+        /// <summary>Gets profile properties.</summary>
         /// <param name="portalId"></param>
         /// <returns>profile properties.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetProfileProperties(int? portalId)
         {
             try
@@ -645,15 +613,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetProfileProperty
-        /// <summary>
-        /// Gets profile property by id.
-        /// </summary>
-        /// <param name="propertyId"></param>
-        /// <param name="portalId"></param>
+        /// <summary>Gets profile property by ID.</summary>
+        /// <param name="propertyId">The property ID.</param>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>profile property.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetProfileProperty(int? propertyId, int? portalId)
         {
             try
@@ -720,9 +685,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetProfilePropertyLocalization
-        /// <summary>
-        /// Gets profile property localization.
-        /// </summary>
+        /// <summary>Gets profile property localization.</summary>
         /// <param name="portalId">The ID of the portal for which to get the profile properties for.</param>
         /// <param name="propertyName">The name of the property to get.</param>
         /// <param name="propertyCategory">The category of the property to get.</param>
@@ -730,7 +693,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns>Profile property.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetProfilePropertyLocalization(int? portalId, string cultureCode, string propertyName, string propertyCategory)
         {
             try
@@ -775,15 +737,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateProfilePropertyLocalization
-        /// <summary>
-        /// Updates profile property localization.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates profile property localization.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateProfilePropertyLocalization(UpdateProfilePropertyLocalizationRequest request)
         {
             try
@@ -824,15 +783,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/AddProfileProperty
-        /// <summary>
-        /// Creates profile property.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Creates profile property.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage AddProfileProperty(UpdateProfilePropertyRequest request)
         {
             try
@@ -888,15 +844,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateProfileProperty
-        /// <summary>
-        /// Updates profile property.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates profile property.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateProfileProperty(UpdateProfilePropertyRequest request)
         {
             try
@@ -953,15 +906,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/SwapProfilePropertyOrders
-        /// <summary>
-        /// Moves profile property.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Moves profile property.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateProfilePropertyOrders(UpdateProfilePropertyOrdersRequest request)
         {
             try
@@ -993,16 +943,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/DeleteProfileProperty
-        /// <summary>
-        /// Deletes profile property.
-        /// </summary>
-        /// <param name="propertyId"></param>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
+        /// <summary>Deletes profile property.</summary>
+        /// <param name="propertyId">The property ID.</param>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage DeleteProfileProperty(int propertyId, int? portalId)
         {
             try
@@ -1032,14 +979,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetUrlMappingSettings
-        /// <summary>
-        /// Gets Url mapping settings.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets URL mapping settings.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>Url mapping settings.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetUrlMappingSettings(int? portalId)
         {
             try
@@ -1095,15 +1039,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateUrlMappingSettings
-        /// <summary>
-        /// Updates Url mapping settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates URL mapping settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateUrlMappingSettings(UpdateUrlMappingSettingsRequest request)
         {
             try
@@ -1129,14 +1070,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/getSiteAliases
-        /// <summary>
-        /// Gets site aliases.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets site aliases.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>site aliases.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetSiteAliases(int? portalId)
         {
             try
@@ -1183,14 +1121,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetSiteAlias
-        /// <summary>
-        /// Gets site alias by id.
-        /// </summary>
-        /// <param name="portalAliasId"></param>
+        /// <summary>Gets site alias by id.</summary>
+        /// <param name="portalAliasId">The portal alias ID.</param>
         /// <returns>site alias.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetSiteAlias(int portalAliasId)
         {
             try
@@ -1225,15 +1160,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/AddSiteAlias
-        /// <summary>
-        /// Adds site alias.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Adds site alias.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage AddSiteAlias(UpdateSiteAliasRequest request)
         {
             try
@@ -1291,15 +1223,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateSiteAlias
-        /// <summary>
-        /// Updates site alias.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates site alias.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSiteAlias(UpdateSiteAliasRequest request)
         {
             try
@@ -1359,15 +1288,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/DeleteSiteAlias
-        /// <summary>
-        /// Deletes site alias.
-        /// </summary>
-        /// <param name="portalAliasId"></param>
-        /// <returns></returns>
+        /// <summary>Deletes site alias.</summary>
+        /// <param name="portalAliasId">The portal alias ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteSiteAlias(int portalAliasId)
         {
             try
@@ -1390,15 +1316,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/SetPrimarySiteAlias
-        /// <summary>
-        /// Sets primary site alias.
-        /// </summary>
-        /// <param name="portalAliasId"></param>
-        /// <returns></returns>
+        /// <summary>Sets primary site alias.</summary>
+        /// <param name="portalAliasId">The portal alias ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage SetPrimarySiteAlias(int portalAliasId)
         {
             try
@@ -1428,15 +1351,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetListInfo
-        /// <summary>
-        /// Gets list info.
-        /// </summary>
-        /// <param name="listName"></param>
-        /// <param name="portalId"></param>
+        /// <summary>Gets list info.</summary>
+        /// <param name="listName">The list name.</param>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>list entries.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetListInfo(string listName, int? portalId)
         {
             try
@@ -1471,15 +1391,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateListEntry
-        /// <summary>
-        /// Adds/Updates list entry.
-        /// </summary>
+        /// <summary>Adds/Updates list entry.</summary>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateListEntry(UpdateListEntryRequest request)
         {
             try
@@ -1521,16 +1438,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/DeleteListEntry
-        /// <summary>
-        /// Deletes list entry.
-        /// </summary>
-        /// <param name="entryId"></param>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
+        /// <summary>Deletes list entry.</summary>
+        /// <param name="entryId">The entry ID.</param>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage DeleteListEntry([FromUri] int entryId, [FromUri] int? portalId)
         {
             try
@@ -1554,15 +1468,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateListEntryOrders
-        /// <summary>
-        /// Updates list entry sort order.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates list entry sort order.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateListEntryOrders(UpdateListEntryOrdersRequest request)
         {
             try
@@ -1616,14 +1527,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetPrivacySettings
-        /// <summary>
-        /// Gets messaging settings.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets messaging settings.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>privacy settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetPrivacySettings(int? portalId)
         {
             try
@@ -1664,15 +1572,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdatePrivacySettings
-        /// <summary>
-        /// Updates privacy settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates privacy settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdatePrivacySettings(UpdatePrivacySettingsRequest request)
         {
             try
@@ -1707,15 +1612,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/ResetTermsAgreement
-        /// <summary>
-        /// Resets terms and conditions agreements.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Resets terms and conditions agreements.</summary>
+        /// <param name="request">The reset request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage ResetTermsAgreement(ResetTermsAgreementRequest request)
         {
             try
@@ -1738,13 +1640,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetBasicSearchSettings
-        /// <summary>
-        /// Gets basic search settings.
-        /// </summary>
+        /// <summary>Gets basic search settings.</summary>
         /// <returns>basic search settings.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetBasicSearchSettings()
         {
             try
@@ -1786,15 +1685,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateBasicSearchSettings
-        /// <summary>
-        /// Updates basic search settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates basic search settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateBasicSearchSettings(UpdateBasicSearchSettingsRequest request)
         {
             try
@@ -1857,10 +1753,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/CompactSearchIndex
-        /// <summary>
-        /// Compacts search index.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Compacts search index.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
@@ -1879,10 +1773,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/HostSearchReindex
-        /// <summary>
-        /// Re-index host search.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Re-index host search.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
@@ -1901,15 +1793,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/PortalSearchReindex
-        /// <summary>
-        /// Re-index portal search.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
+        /// <summary>Re-index portal search.</summary>
+        /// <param name="portalId">The portal ID (default: the current portal ID).</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage PortalSearchReindex(int? portalId)
         {
             try
@@ -1931,13 +1820,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetPortals
-        /// <summary>
-        /// Gets portals.
-        /// </summary>
+        /// <summary>Gets portals.</summary>
         /// <returns>List of portals.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetPortals()
         {
             try
@@ -1967,15 +1853,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetSynonymsGroups
-        /// <summary>
-        /// Gets Synonyms Groups.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
+        /// <summary>Gets Synonyms Groups.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>Synonyms Groups.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetSynonymsGroups(int? portalId, string cultureCode)
         {
             try
@@ -2016,15 +1899,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/AddSynonymsGroup
-        /// <summary>
-        /// Adds Synonyms Group.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Adds Synonyms Group.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success and the synonyms group ID.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage AddSynonymsGroup(UpdateSynonymsGroupRequest request)
         {
             try
@@ -2070,15 +1950,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateSynonymsGroup
-        /// <summary>
-        /// Updates Synonyms Group.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates Synonyms Group.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateSynonymsGroup(UpdateSynonymsGroupRequest request)
         {
             try
@@ -2134,15 +2011,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/DeleteSynonymsGroup
-        /// <summary>
-        /// Deletes Synonyms Group.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Deletes Synonyms Group.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage DeleteSynonymsGroup(UpdateSynonymsGroupRequest request)
         {
             try
@@ -2171,15 +2045,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetIgnoreWords
-        /// <summary>
-        /// Gets ignore words.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
+        /// <summary>Gets ignore words.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>ignore words.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetIgnoreWords(int? portalId, string cultureCode)
         {
             try
@@ -2217,11 +2088,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/AddIgnoreWords
-        /// <summary>
-        /// Adds ignore words.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Adds ignore words.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success and the stop words ID.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -2259,15 +2128,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateIgnoreWords
-        /// <summary>
-        /// Updates ignore words.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates ignore words.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateIgnoreWords(UpdateIgnoreWordsRequest request)
         {
             try
@@ -2301,15 +2167,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/DeleteSynonymsGroup
-        /// <summary>
-        /// Deletes Synonyms Group.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Deletes Synonyms Group.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage DeleteIgnoreWords(UpdateIgnoreWordsRequest request)
         {
             try
@@ -2334,10 +2197,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetLanguageSettings
-        /// <summary>
-        /// Gets language settings.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets language settings.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>language settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -2403,15 +2264,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateLanguageSettings
-        /// <summary>
-        /// Updates language settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates language settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateLanguageSettings(UpdateLanguageSettingsRequest request)
         {
             try
@@ -2480,14 +2338,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetLanguages
-        /// <summary>
-        /// Gets languages.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets languages.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
         /// <returns>languages.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetLanguages(int? portalId)
         {
             try
@@ -2555,15 +2410,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetLanguage
-        /// <summary>
-        /// Gets language.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="languageId"></param>
+        /// <summary>Gets language.</summary>
+        /// <param name="portalId">The portal ID (default: current portal ID).</param>
+        /// <param name="languageId">The language ID or <see langword="null" />.</param>
         /// <returns>language.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetLanguage(int? portalId, int? languageId)
         {
             try
@@ -2648,9 +2500,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetAllLanguages
-        /// <summary>
-        /// Gets language.
-        /// </summary>
+        /// <summary>Gets language.</summary>
         /// <returns>all languages.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -2693,15 +2543,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/AddLanguage
-        /// <summary>
-        /// Adds language.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Adds language.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage AddLanguage(UpdateLanguageRequest request)
         {
             try
@@ -2736,15 +2583,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateLanguageRoles
-        /// <summary>
-        /// Updates language security.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates language security.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateLanguageRoles(UpdateLanguageRequest request)
         {
             try
@@ -2767,15 +2611,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateLanguage
-        /// <summary>
-        /// Updates language.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates language.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success with an optional redirect URL.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage UpdateLanguage(UpdateLanguageRequest request)
         {
             try
@@ -2870,13 +2711,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/VerifyLanguageResourceFiles
-        /// <summary>
-        /// Verifies language resource files.
-        /// </summary>
+        /// <summary>Verifies language resource files.</summary>
         /// <returns>verification results.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage VerifyLanguageResourceFiles()
         {
             try
@@ -3022,14 +2860,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetModuleList
-        /// <summary>
-        /// Gets module list by type.
-        /// </summary>
+        /// <summary>Gets module list by type.</summary>
         /// <param name="type">The type of extension to get such as Module, Provider or AuthSystem.</param>
         /// <returns>list of modules.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetModuleList(string type)
         {
             try
@@ -3080,15 +2915,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/CreateLanguagePack
-        /// <summary>
-        /// Creates language.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Creates language.</summary>
+        /// <param name="request">The creation request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreateLanguagePack(CreateLanguagePackRequest request)
         {
             try
@@ -3150,16 +2982,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetTranslatorRoles
-        /// <summary>
-        /// Gets roles.
-        /// </summary>
+        /// <summary>Gets roles.</summary>
         /// <param name="portalId">The Id of the portal for which to get the translator roles for.</param>
         /// <param name="groupId">The Id of the role group to filter the results.</param>
         /// <param name="cultureCode">The culture code for which to get the translators for.</param>
         /// <returns>list of translator roles.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetTranslatorRoles(int? portalId, int groupId, string cultureCode)
         {
             try
@@ -3204,14 +3033,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetTranslatorRoleGroups
-        /// <summary>
-        /// Gets role groups.
-        /// </summary>
+        /// <summary>Gets role groups.</summary>
         /// <param name="portalId">The ID of the portal for which to get the translator role groups for.</param>
         /// <returns>list of translator role groups.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetTranslatorRoleGroups(int? portalId)
         {
             try
@@ -3243,14 +3069,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// GET: api/SiteSettings/GetOtherSettings
-        /// <summary>
-        /// Gets other settings.
-        /// </summary>
+        /// <summary>Gets other settings.</summary>
         /// <param name="portalId">The ID of the portal for which to get the other settings for.</param>
         /// <returns>other settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetOtherSettings(int? portalId)
         {
             try
@@ -3286,15 +3109,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// POST: api/SiteSettings/UpdateOtherSettings
-        /// <summary>
-        /// Updates other settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates other settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateOtherSettings(UpdateOtherSettingsRequest request)
         {
             try

@@ -24,9 +24,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
     {
         private readonly ITabController tabController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityService"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SecurityService"/> class.</summary>
         public SecurityService()
         {
             this.tabController = TabController.Instance;

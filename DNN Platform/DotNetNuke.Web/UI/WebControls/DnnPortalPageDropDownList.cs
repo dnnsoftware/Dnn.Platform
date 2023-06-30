@@ -21,9 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private readonly Lazy<int> portalId = new Lazy<int>(() => PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId);
 
-        /// <summary>
-        /// Gets or sets the selected Page in the control, or selects the Page in the control.
-        /// </summary>
+        /// <summary>Gets or sets the selected Page in the control, or selects the Page in the control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TabInfo SelectedPage

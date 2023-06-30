@@ -8,10 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Application;
     using DotNetNuke.Entities.Host;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class DotNetNukeControl : SkinObjectBase
     {
         public string CssClass { get; set; }

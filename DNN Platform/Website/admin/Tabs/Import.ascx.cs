@@ -30,9 +30,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private TabInfo tab;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Import"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
         public Import()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

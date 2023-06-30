@@ -14,16 +14,12 @@ namespace DotNetNuke.Services.Exceptions
 
         // default constructor
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchException"/> class.</summary>
         public SearchException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         /// <param name="searchItem"></param>

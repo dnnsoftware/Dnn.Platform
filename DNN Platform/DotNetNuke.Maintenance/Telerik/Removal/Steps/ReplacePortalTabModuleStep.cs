@@ -23,9 +23,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IDesktopModuleController desktopModuleController;
         private readonly IModuleDefinitionController moduleDefinitionController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplacePortalTabModuleStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ReplacePortalTabModuleStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="moduleController">An instance of <see cref="IModuleController"/>.</param>

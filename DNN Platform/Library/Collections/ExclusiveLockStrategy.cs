@@ -6,9 +6,7 @@ namespace DotNetNuke.Collections.Internal
     using System;
     using System.Threading;
 
-    /// <summary>
-    /// Represents an exclusive locking strategy.
-    /// </summary>
+    /// <summary>Represents an exclusive locking strategy.</summary>
     public class ExclusiveLockStrategy : ILockStrategy
     {
         private readonly object @lock = new object();
@@ -77,9 +75,7 @@ namespace DotNetNuke.Collections.Internal
             // todo remove disposable from interface?
         }
 
-        /// <summary>
-        /// Releases the exclusive lock.
-        /// </summary>
+        /// <summary>Releases the exclusive lock.</summary>
         public void Exit()
         {
             this.EnsureNotDisposed();

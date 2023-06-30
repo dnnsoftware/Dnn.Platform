@@ -129,9 +129,7 @@ namespace DotNetNuke.Tests.Integration.Executers
             return this.Responses.Last();
         }
 
-        /// <summary>
-        /// Return the last executer's response deserialized.
-        /// </summary>
+        /// <summary>Return the last executer's response deserialized.</summary>
         /// <exception cref="InvalidOperationException">Thrown when the executer does not have any response.</exception>
         /// <returns></returns>
         public JContainer GetLastDeserializeResponseMessage()
@@ -150,9 +148,7 @@ namespace DotNetNuke.Tests.Integration.Executers
             return this.Responses.ToArray();
         }
 
-        /// <summary>
-        /// Return the list of the executer's responses deserialized.
-        /// </summary>
+        /// <summary>Return the list of the executer's responses deserialized.</summary>
         /// <exception cref="InvalidOperationException">Thrown when the executer does not have any response.</exception>
         /// <returns></returns>
         public IEnumerable<JContainer> GetDeserializeResponseMessages()

@@ -10,21 +10,16 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LanguageComponentWriter class handles creating the manifest for Language
     /// Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class LanguageComponentWriter : FileComponentWriter
     {
         private readonly int dependentPackageID;
         private readonly Locale language;
         private readonly LanguagePackType packageType;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageComponentWriter"/> class.
         /// Constructs the LanguageComponentWriter.
@@ -33,7 +28,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">Base Path.</param>
         /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
-        /// -----------------------------------------------------------------------------
         public LanguageComponentWriter(Locale language, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {
@@ -41,7 +35,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this.packageType = LanguagePackType.Core;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageComponentWriter"/> class.
         /// Constructs the LanguageComponentWriter.
@@ -50,7 +43,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">Base Path.</param>
         /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
-        /// -----------------------------------------------------------------------------
         public LanguageComponentWriter(LanguagePackInfo languagePack, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {
@@ -59,12 +51,8 @@ namespace DotNetNuke.Services.Installer.Writers
             this.dependentPackageID = languagePack.DependentPackageID;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("languageFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("languageFiles").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -73,12 +61,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("CoreLanguage/ExtensionLanguage").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("CoreLanguage/ExtensionLanguage").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get
@@ -94,12 +78,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("languageFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("languageFile").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -108,12 +88,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The WriteCustomManifest method writes the custom manifest items.
-        /// </summary>
+        /// <summary>The WriteCustomManifest method writes the custom manifest items.</summary>
         /// <param name="writer">The Xmlwriter to use.</param>
-        /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {
             // Write language Elements

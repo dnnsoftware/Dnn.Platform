@@ -7,14 +7,10 @@ namespace DNNConnect.CKEditorProvider.Extensions
     using System;
     using System.Reflection;
 
-    /// <summary>
-    /// Custom Attribute Extensions.
-    /// </summary>
+    /// <summary>Custom Attribute Extensions.</summary>
     public static class CustomAttributeExtensions
     {
-        /// <summary>
-        /// Gets the custom attribute of <typeparamref name="T"/>.
-        /// </summary>
+        /// <summary>Gets the custom attribute of <typeparamref name="T"/>.</summary>
         /// <typeparam name="T">The Type.</typeparam>
         /// <param name="propertyInfo">The property info.</param>
         /// <param name="inherit">The inherit.</param>

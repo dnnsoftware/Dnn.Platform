@@ -16,18 +16,14 @@ namespace DotNetNuke.Entities.Profile
     [Serializable]
     public class ProfileVisibility
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfileVisibility"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
         public ProfileVisibility()
         {
             this.RoleVisibilities = new List<RoleInfo>();
             this.RelationshipVisibilities = new List<Relationship>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfileVisibility"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
         /// <param name="portalId"></param>
         /// <param name="extendedVisibility"></param>
         public ProfileVisibility(int portalId, string extendedVisibility)

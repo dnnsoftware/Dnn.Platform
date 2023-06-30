@@ -27,11 +27,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Impl Controller class for Lucene.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>  The Impl Controller class for Lucene.</summary>
     internal class LuceneControllerImpl : ILuceneController, IDisposable
     {
         internal const int DefaultRereadTimeSpan = 30; // in seconds
@@ -61,9 +57,7 @@ namespace DotNetNuke.Services.Search.Internals
         private DateTime lastReadTimeUtc;
         private DateTime lastDirModifyTimeUtc;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LuceneControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LuceneControllerImpl"/> class.</summary>
         public LuceneControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -525,9 +519,7 @@ namespace DotNetNuke.Services.Search.Internals
             return s;
         }
 
-        /// <summary>
-        /// Extract the Score portion of the match.ToString().
-        /// </summary>
+        /// <summary>Extract the Score portion of the match.ToString().</summary>
         private string GetDisplayScoreFromMatch(string match)
         {
             var displayScore = string.Empty;

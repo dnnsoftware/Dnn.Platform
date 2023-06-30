@@ -13,18 +13,12 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// FilePermissionCheck - Step that performs file permission checks prior to installation.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>FilePermissionCheck - Step that performs file permission checks prior to installation.</summary>
     public class FilePermissionCheckStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FilePermissionCheckStep));
 
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
             this.Percentage = 0;

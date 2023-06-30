@@ -9,61 +9,41 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     using System.IO;
     using System.Web;
 
-    /// <summary>
-    /// Used to resolved paths.
-    /// </summary>
+    /// <summary>Used to resolved paths.</summary>
     public class PathResolver
     {
         private readonly string manifestFolder;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PathResolver"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PathResolver"/> class.</summary>
         /// <param name="manifestFolder">The folder where the manifest is located.</param>
         public PathResolver(string manifestFolder)
         {
             this.manifestFolder = manifestFolder;
         }
 
-        /// <summary>
-        /// To which folder is the path relative to.
-        /// </summary>
+        /// <summary>To which folder is the path relative to.</summary>
         public enum RelativeTo
         {
-            /// <summary>
-            /// Relative to the container.
-            /// </summary>
+            /// <summary>Relative to the container.</summary>
             Container = 0,
 
-            /// <summary>
-            /// Relative to the Dnn application.
-            /// </summary>
+            /// <summary>Relative to the Dnn application.</summary>
             Dnn = 1,
 
-            /// <summary>
-            /// Relative to the manifest.
-            /// </summary>
+            /// <summary>Relative to the manifest.</summary>
             Manifest = 2,
 
-            /// <summary>
-            /// Relative to the module.
-            /// </summary>
+            /// <summary>Relative to the module.</summary>
             Module = 3,
 
-            /// <summary>
-            /// Relative to the portal (site).
-            /// </summary>
+            /// <summary>Relative to the portal (site).</summary>
             Portal = 4,
 
-            /// <summary>
-            /// Relative to the skin (theme).
-            /// </summary>
+            /// <summary>Relative to the skin (theme).</summary>
             Skin = 5,
         }
 
-        /// <summary>
-        /// Resolves a relative path.
-        /// </summary>
+        /// <summary>Resolves a relative path.</summary>
         /// <param name="path">The path to resolve.</param>
         /// <param name="roots">To which folder this path is relative to.</param>
         /// <returns>A resolved path.</returns>

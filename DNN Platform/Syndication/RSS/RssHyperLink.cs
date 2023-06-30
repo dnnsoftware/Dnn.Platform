@@ -7,56 +7,27 @@ namespace DotNetNuke.Services.Syndication
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>
-    ///   RssHyperLink control - works with RssHttpHandler.
-    /// </summary>
+    /// <summary>RssHyperLink control - works with <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}"/>.</summary>
     public class RssHyperLink : HyperLink
     {
-        private string channelName;
-        private bool includeUserName;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RssHyperLink"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RssHyperLink"/> class.</summary>
         public RssHyperLink()
         {
             this.Text = "RSS";
         }
 
-        // passed to RssHttpHandler
-        public string ChannelName
-        {
-            get
-            {
-                return this.channelName;
-            }
+        /// <summary>Gets or sets the channel name.</summary>
+        public string ChannelName { get; set; }
 
-            set
-            {
-                this.channelName = value;
-            }
-        }
-
-        // when flag is set, the current user'd name is passed to RssHttpHandler
-        public bool IncludeUserName
-        {
-            get
-            {
-                return this.includeUserName;
-            }
-
-            set
-            {
-                this.includeUserName = value;
-            }
-        }
+        /// <summary>Gets or sets a value indicating whether the current user's name is passed to RssHttpHandler.</summary>
+        public bool IncludeUserName { get; set; }
 
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             // modify the NavigateUrl to include optional user name and channel name
-            string channel = this.channelName != null ? this.channelName : string.Empty;
-            string user = this.includeUserName ? this.Context.User.Identity.Name : string.Empty;
+            string channel = this.ChannelName ?? string.Empty;
+            string user = this.IncludeUserName ? this.Context.User.Identity.Name : string.Empty;
             this.NavigateUrl = RssHttpHandlerHelper.GenerateChannelLink(this.NavigateUrl, channel, user);
 
             // add <link> to <head> tag (if <head runat=server> is present)
@@ -64,7 +35,8 @@ namespace DotNetNuke.Services.Syndication
             {
                 string title = string.IsNullOrEmpty(channel) ? this.Text : channel;
 
-                this.Page.Header.Controls.Add(new LiteralControl(string.Format("\r\n<link rel=\"alternate\" type=\"application/rss+xml\" title=\"{0}\" href=\"{1}\" />", title, this.NavigateUrl)));
+                this.Page.Header.Controls.Add(new LiteralControl(
+                    $"\r\n<link rel=\"alternate\" type=\"application/rss+xml\" title=\"{title}\" href=\"{this.NavigateUrl}\" />"));
             }
 
             base.OnPreRender(e);

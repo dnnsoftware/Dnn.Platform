@@ -25,18 +25,14 @@ namespace DotNetNuke.Entities.Modules.Settings
     {
         private readonly IModuleController moduleController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.</summary>
         protected SettingsRepository()
         {
             this.Mapping = this.LoadMapping();
             this.moduleController = ModuleController.Instance;
         }
 
-        /// <summary>
-        /// Gets cache key for this class. Used for parameter mapping storage as well as entire class persistence.
-        /// </summary>
+        /// <summary>Gets cache key for this class. Used for parameter mapping storage as well as entire class persistence.</summary>
         protected virtual string MappingCacheKey
         {
             get
@@ -78,9 +74,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             this.SaveSettings(portalId, null, settings);
         }
 
-        /// <summary>
-        /// Retrieves the parameter mapping from cache if still there, otherwise recreates it.
-        /// </summary>
+        /// <summary>Retrieves the parameter mapping from cache if still there, otherwise recreates it.</summary>
         /// <returns>List of parameters.</returns>
         protected IList<ParameterMapping> LoadMapping()
         {
@@ -98,9 +92,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             return mapping;
         }
 
-        /// <summary>
-        /// Rebuilds parameter mapping of the class.
-        /// </summary>
+        /// <summary>Rebuilds parameter mapping of the class.</summary>
         /// <returns>List of parameters.</returns>
         protected virtual IList<ParameterMapping> CreateMapping()
         {
@@ -230,9 +222,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private string CacheKey(int id) => $"Settings{this.MappingCacheKey}_{id}";
 
-        /// <summary>
-        /// Deserializes the property.
-        /// </summary>
+        /// <summary>Deserializes the property.</summary>
         /// <param name="settings">The settings.</param>
         /// <param name="property">The property.</param>
         /// <param name="propertyValue">The property value.</param>

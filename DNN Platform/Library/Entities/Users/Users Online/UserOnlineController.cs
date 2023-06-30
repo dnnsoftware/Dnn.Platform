@@ -14,17 +14,7 @@ namespace DotNetNuke.Entities.Users
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserOnlineController
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The UserOnlineController class provides Business Layer methods for Users Online.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The UserOnlineController class provides Business Layer methods for Users Online.</summary>
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public class UserOnlineController
     {
@@ -33,11 +23,7 @@ namespace DotNetNuke.Entities.Users
         private static readonly object Locker = new object();
         private static readonly string CacheKey = "OnlineUserList";
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Clears the cached Users Online Information.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Clears the cached Users Online Information.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void ClearUserList()
         {
@@ -45,24 +31,16 @@ namespace DotNetNuke.Entities.Users
             DataCache.RemoveCache(key);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Online time window.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the Online time window.</summary>
+        /// <returns>The window to use in minutes when determining if the user is online.</returns>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int GetOnlineTimeWindow()
         {
             return Host.Host.UsersOnlineTimeWindow;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the cached Users Online Information.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the cached Users Online Information.</summary>
+        /// <returns>A <see cref="Hashtable"/> with <see cref="string"/> keys for the user ID (a GUID for anonymous users) and <see cref="BaseUserInfo"/> instances for the values.</returns>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public Hashtable GetUserList()
         {
@@ -83,24 +61,16 @@ namespace DotNetNuke.Entities.Users
             return userList;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether the Users Online functionality is enabled.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets whether the Users Online functionality is enabled.</summary>
+        /// <returns><see langword="true"/> if the Users Online functionality is enabled, otherwise <see langword="false"/>.</returns>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public bool IsEnabled()
         {
             return Host.Host.EnableUsersOnline;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Determines whether a User is online.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Determines whether a User is online.</summary>
+        /// <returns><see langword="true"/> if the user is online, otherwise <see langword="false"/>.</returns>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public bool IsUserOnline(UserInfo user)
         {
@@ -113,22 +83,14 @@ namespace DotNetNuke.Entities.Users
             return isOnline;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets the cached Users Online Information.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Sets the cached Users Online Information.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void SetUserList(Hashtable userList)
         {
             DataCache.SetCache(CacheKey, userList);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tracks an online User.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Tracks an online User.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void TrackUsers()
         {
@@ -154,11 +116,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Update the Users Online information.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Update the Users Online information.</summary>
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void UpdateUsersOnline()
         {
@@ -185,12 +143,8 @@ namespace DotNetNuke.Entities.Users
             MemberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tracks an Anonymous User.
-        /// </summary>
+        /// <summary>Tracks an Anonymous User.</summary>
         /// <param name="context">An HttpContext Object.</param>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAnonymousUser(HttpContext context)
         {
@@ -275,12 +229,8 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tracks an Authenticated User.
-        /// </summary>
+        /// <summary>Tracks an Authenticated User.</summary>
         /// <param name="context">An HttpContext Object.</param>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAuthenticatedUser(HttpContext context)
         {

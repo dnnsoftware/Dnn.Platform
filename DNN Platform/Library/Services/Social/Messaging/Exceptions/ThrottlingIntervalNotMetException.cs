@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.Social.Messaging.Exceptions
     [Serializable]
     public class ThrottlingIntervalNotMetException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.</summary>
         public ThrottlingIntervalNotMetException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.</summary>
         /// <param name="message"></param>
         public ThrottlingIntervalNotMetException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public ThrottlingIntervalNotMetException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.Social.Messaging.Exceptions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ThrottlingIntervalNotMetException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public ThrottlingIntervalNotMetException(SerializationInfo info, StreamingContext context)

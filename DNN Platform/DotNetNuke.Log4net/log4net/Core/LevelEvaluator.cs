@@ -24,9 +24,7 @@ using log4net;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// An evaluator that triggers at a threshold level
-    /// </summary>
+    /// <summary>An evaluator that triggers at a threshold level</summary>
     /// <remarks>
     /// <para>
     /// This evaluator will trigger if the level of the event
@@ -38,14 +36,10 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public class LevelEvaluator : ITriggeringEventEvaluator 
     {
-        /// <summary>
-        /// The threshold for triggering
-        /// </summary>
+        /// <summary>The threshold for triggering</summary>
         private Level m_threshold;
 
-        /// <summary>
-        /// Create a new evaluator using the <see cref="Level.Off"/> threshold.
-        /// </summary>
+        /// <summary>Create a new evaluator using the <see cref="Level.Off"/> threshold.</summary>
         /// <remarks>
         /// <para>
         /// Create a new evaluator using the <see cref="Level.Off"/> threshold.
@@ -61,9 +55,7 @@ namespace log4net.Core
         {
         }
 
-        /// <summary>
-        /// Create a new evaluator using the specified <see cref="Level"/> threshold.
-        /// </summary>
+        /// <summary>Create a new evaluator using the specified <see cref="Level"/> threshold.</summary>
         /// <param name="threshold">the threshold to trigger at</param>
         /// <remarks>
         /// <para>
@@ -86,9 +78,7 @@ namespace log4net.Core
             this.m_threshold = threshold;
         }
 
-        /// <summary>
-        /// the threshold to trigger at
-        /// </summary>
+        /// <summary>the threshold to trigger at</summary>
         /// <value>
         /// The <see cref="Level"/> that will cause this evaluator to trigger
         /// </value>
@@ -106,9 +96,7 @@ namespace log4net.Core
             set { this.m_threshold = value; }
         }
 
-        /// <summary>
-        /// Is this <paramref name="loggingEvent"/> the triggering event?
-        /// </summary>
+        /// <summary>Is this <paramref name="loggingEvent"/> the triggering event?</summary>
         /// <param name="loggingEvent">The event to check</param>
         /// <returns>This method returns <c>true</c>, if the event level
         /// is equal or higher than the <see cref="Threshold"/>. 

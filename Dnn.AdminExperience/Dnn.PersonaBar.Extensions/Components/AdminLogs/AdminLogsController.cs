@@ -281,7 +281,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                     xmlDoc.LoadXml(logInfo.Serialize());
                 }
 
-                var objNode = objXml.ImportNode(xmlDoc, true);
+                var objNode = objXml.ImportNode(xmlDoc.DocumentElement, true);
                 if (objXml.DocumentElement != null)
                 {
                     objXml.DocumentElement.AppendChild(objNode);

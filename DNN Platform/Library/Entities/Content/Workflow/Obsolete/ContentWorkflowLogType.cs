@@ -9,9 +9,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     using System;
 
-    /// <summary>
-    /// This enum represents the possible list of WorkflowLogType.
-    /// </summary>
+    /// <summary>This enum represents the possible list of WorkflowLogType.</summary>
     [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
     public enum ContentWorkflowLogType
     {

@@ -32,9 +32,7 @@ using System.Threading;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Implementation of Properties collection for the <see cref="log4net.LogicalThreadContext"/>
-    /// </summary>
+    /// <summary>Implementation of Properties collection for the <see cref="log4net.LogicalThreadContext"/></summary>
     /// <remarks>
     /// <para>
     /// Class implements a collection of properties that is specific to each thread.
@@ -66,14 +64,10 @@ namespace log4net.Util
         private const string c_SlotName = "log4net.Util.LogicalThreadContextProperties";
 #endif
         
-        /// <summary>
-        /// Flag used to disable this context if we don't have permission to access the CallContext.
-        /// </summary>
+        /// <summary>Flag used to disable this context if we don't have permission to access the CallContext.</summary>
         private bool m_disabled = false;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="LogicalThreadContextProperties" /> class.
@@ -83,9 +77,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Gets or sets the value of a property
-        /// </summary>
+        /// <summary>Gets or sets the value of a property</summary>
         /// <value>
         /// The value for the property with the specified key
         /// </value>
@@ -118,9 +110,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Remove a property
-        /// </summary>
+        /// <summary>Remove a property</summary>
         /// <param name="key">the key for the entry to remove</param>
         /// <remarks>
         /// <para>
@@ -138,9 +128,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Clear all the context properties
-        /// </summary>
+        /// <summary>Clear all the context properties</summary>
         /// <remarks>
         /// <para>
         /// Clear all the context properties
@@ -156,9 +144,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Get the PropertiesDictionary stored in the LocalDataStoreSlot for this thread.
-        /// </summary>
+        /// <summary>Get the PropertiesDictionary stored in the LocalDataStoreSlot for this thread.</summary>
         /// <param name="create">create the dictionary if it does not exist, otherwise return null if is does not exist</param>
         /// <returns>the properties for this thread</returns>
         /// <remarks>
@@ -199,9 +185,7 @@ namespace log4net.Util
             return null;
         }
 
-        /// <summary>
-        /// Gets the call context get data.
-        /// </summary>
+        /// <summary>Gets the call context get data.</summary>
         /// <returns>The peroperties dictionary stored in the call context</returns>
         /// <remarks>
         /// The <see cref="CallContext"/> method <see cref="CallContext.GetData"/> has a
@@ -222,9 +206,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// Sets the call context data.
-        /// </summary>
+        /// <summary>Sets the call context data.</summary>
         /// <param name="properties">The properties.</param>
         /// <remarks>
         /// The <see cref="CallContext"/> method <see cref="CallContext.SetData"/> has a
@@ -245,9 +227,7 @@ namespace log4net.Util
 #endif
         }
 
-        /// <summary>
-        /// The fully qualified type of the LogicalThreadContextProperties class.
-        /// </summary>
+        /// <summary>The fully qualified type of the LogicalThreadContextProperties class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.Api
 
     public class DnnModuleAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnModuleAuthorizeAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnModuleAuthorizeAttribute"/> class.</summary>
         public DnnModuleAuthorizeAttribute()
         {
             this.AccessLevel = SecurityAccessLevel.Host;

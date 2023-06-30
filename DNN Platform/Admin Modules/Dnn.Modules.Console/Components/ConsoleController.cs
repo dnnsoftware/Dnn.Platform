@@ -5,14 +5,10 @@ namespace Dnn.Modules.Console.Components
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Controls the Console.
-    /// </summary>
+    /// <summary>Controls the Console.</summary>
     public class ConsoleController
     {
-        /// <summary>
-        /// Gets the size values.
-        /// </summary>
+        /// <summary>Gets the size values.</summary>
         /// <returns>A list with different icon types.</returns>
         public static IList<string> GetSizeValues()
         {
@@ -23,9 +19,7 @@ namespace Dnn.Modules.Console.Components
             return returnValue;
         }
 
-        /// <summary>
-        /// Gets the view values.
-        /// </summary>
+        /// <summary>Gets the view values.</summary>
         /// <returns>Show or Hide.</returns>
         public static IList<string> GetViewValues()
         {

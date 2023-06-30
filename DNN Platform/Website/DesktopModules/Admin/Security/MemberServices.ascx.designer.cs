@@ -15,73 +15,55 @@ namespace DotNetNuke.Modules.Admin.Security {
     
     
     public partial class MemberServices {
-        /// <summary>
-        /// lblServicesHelp control.
-        /// </summary>
+        /// <summary>lblServicesHelp control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServicesHelp;
-        /// <summary>
-        /// ServicesRow control.
-        /// </summary>
+        /// <summary>ServicesRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ServicesRow;
-        /// <summary>
-        /// grdServices control.
-        /// </summary>
+        /// <summary>grdServices control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataGrid grdServices;
-        /// <summary>
-        /// lblServices control.
-        /// </summary>
+        /// <summary>lblServices control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServices;
-        /// <summary>
-        /// lblRSVPHelp control.
-        /// </summary>
+        /// <summary>lblRSVPHelp control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblRSVPHelp;
-        /// <summary>
-        /// plRSVPCode control.
-        /// </summary>
+        /// <summary>plRSVPCode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plRSVPCode;
-        /// <summary>
-        /// txtRSVPCode control.
-        /// </summary>
+        /// <summary>txtRSVPCode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRSVPCode;
-        /// <summary>
-        /// cmdRSVP control.
-        /// </summary>
+        /// <summary>cmdRSVP control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdRSVP;
-        /// <summary>
-        /// lblRSVP control.
-        /// </summary>
+        /// <summary>lblRSVP control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

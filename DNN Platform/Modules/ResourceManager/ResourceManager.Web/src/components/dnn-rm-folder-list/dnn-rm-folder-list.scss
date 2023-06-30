@@ -10,3 +10,12 @@ button{
   border: none;
   cursor: pointer;
 }
+
+dnn-collapsible{
+  position: fixed;
+  display: none;
+  border: 1px solid lightgray;
+  box-shadow: 2px 2px 4px -2px;
+  background-color: white;
+  z-index: 1;
+}

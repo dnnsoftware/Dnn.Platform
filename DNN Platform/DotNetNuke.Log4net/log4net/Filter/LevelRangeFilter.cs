@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// This is a simple filter based on <see cref="Level"/> matching.
-    /// </summary>
+    /// <summary>This is a simple filter based on <see cref="Level"/> matching.</summary>
     /// <remarks>
     /// <para>
     /// The filter admits three options <see cref="LevelMin"/> and <see cref="LevelMax"/>
@@ -44,31 +42,21 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class LevelRangeFilter : FilterSkeleton
     {
-        /// <summary>
-        /// Flag to indicate the behavior when matching a <see cref="Level"/>
-        /// </summary>
+        /// <summary>Flag to indicate the behavior when matching a <see cref="Level"/></summary>
         private bool m_acceptOnMatch = true;
 
-        /// <summary>
-        /// the minimum <see cref="Level"/> value to match
-        /// </summary>
+        /// <summary>the minimum <see cref="Level"/> value to match</summary>
         private Level m_levelMin;
 
-        /// <summary>
-        /// the maximum <see cref="Level"/> value to match
-        /// </summary>
+        /// <summary>the maximum <see cref="Level"/> value to match</summary>
         private Level m_levelMax;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         public LevelRangeFilter()
         {
         }
 
-        /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelMin"/> and <see cref="LevelMax"/>
-        /// </summary>
+        /// <summary><see cref="FilterDecision.Accept"/> when matching <see cref="LevelMin"/> and <see cref="LevelMax"/></summary>
         /// <remarks>
         /// <para>
         /// The <see cref="AcceptOnMatch"/> property is a flag that determines
@@ -86,9 +74,7 @@ namespace log4net.Filter
             set { this.m_acceptOnMatch = value; }
         }
 
-        /// <summary>
-        /// Set the minimum matched <see cref="Level"/>
-        /// </summary>
+        /// <summary>Set the minimum matched <see cref="Level"/></summary>
         /// <remarks>
         /// <para>
         /// The minimum level that this filter will attempt to match against the 
@@ -102,9 +88,7 @@ namespace log4net.Filter
             set { this.m_levelMin = value; }
         }
 
-        /// <summary>
-        /// Sets the maximum matched <see cref="Level"/>
-        /// </summary>
+        /// <summary>Sets the maximum matched <see cref="Level"/></summary>
         /// <remarks>
         /// <para>
         /// The maximum level that this filter will attempt to match against the 
@@ -118,9 +102,7 @@ namespace log4net.Filter
             set { this.m_levelMax = value; }
         }
 
-        /// <summary>
-        /// Check if the event should be logged.
-        /// </summary>
+        /// <summary>Check if the event should be logged.</summary>
         /// <param name="loggingEvent">the logging event to check</param>
         /// <returns>see remarks</returns>
         /// <remarks>

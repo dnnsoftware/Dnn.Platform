@@ -5,16 +5,13 @@ namespace DotNetNuke.Security.Permissions
 {
     using System.Collections;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : ComparePortalPermissions
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ComparePortalPermissions provides the a custom IComparer implementation for
     /// PortalPermissionInfo objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     internal class ComparePortalPermissions : IComparer
     {
         /// <inheritdoc/>

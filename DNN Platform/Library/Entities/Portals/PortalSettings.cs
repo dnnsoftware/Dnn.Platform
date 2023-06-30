@@ -17,36 +17,28 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Tokens;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PortalSettings class encapsulates all of the settings for the Portal,
     /// as well as the configuration settings required to execute the current tab
     /// view within the portal.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
         public PortalSettings()
         {
             this.Registration = new RegistrationSettings();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
         /// <param name="portalId"></param>
         public PortalSettings(int portalId)
             : this(Null.NullInteger, portalId)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
         /// <param name="tabId"></param>
         /// <param name="portalId"></param>
         public PortalSettings(int tabId, int portalId)
@@ -56,18 +48,14 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalSettings"/> class.
         /// The PortalSettings Constructor encapsulates all of the logic
         /// necessary to obtain configuration settings necessary to render
         /// a Portal Tab view for a given request.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="tabId">The current tab.</param>
         /// <param name="portalAliasInfo">The current portal.</param>
-        /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
             this.PortalId = portalAliasInfo.PortalID;
@@ -79,18 +67,14 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
         /// <param name="portal"></param>
         public PortalSettings(PortalInfo portal)
             : this(Null.NullInteger, portal)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
         /// <param name="tabId"></param>
         /// <param name="portal"></param>
         public PortalSettings(int tabId, PortalInfo portal)
@@ -105,24 +89,16 @@ namespace DotNetNuke.Entities.Portals
             ModuleEditor = 1,
         }
 
-        /// <summary>
-        /// Enumerates the possible view modes of a page.
-        /// </summary>
+        /// <summary>Enumerates the possible view modes of a page.</summary>
         public enum Mode
         {
-            /// <summary>
-            /// The user is viewing the page in normal mode like a visitor.
-            /// </summary>
+            /// <summary>The user is viewing the page in normal mode like a visitor.</summary>
             View = 0,
 
-            /// <summary>
-            /// The user is editing the page.
-            /// </summary>
+            /// <summary>The user is editing the page.</summary>
             Edit = 1,
 
-            /// <summary>
-            /// The user is viewing the page in layout mode.
-            /// </summary>
+            /// <summary>The user is viewing the page in layout mode.</summary>
             Layout = 2,
         }
 
@@ -190,8 +166,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>Gets the currently logged in user identifier.</summary>
-        /// <value>The user identifier.</value>
+        /// <inheritdoc />
         public int UserId
         {
             get
@@ -215,26 +190,20 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Gets the mode the user is viewing the page in.
-        /// </summary>
+        /// <summary>Gets the mode the user is viewing the page in.</summary>
         [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v11.")]
         public Mode UserMode
         {
             get => Personalization.GetUserMode();
         }
 
-        /// <summary>
-        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsLocked
         {
             get { return this.IsThisPortalLocked || Host.Host.IsLocked; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsThisPortalLocked
         {
             get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
@@ -298,9 +267,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.
-        /// </summary>
+        /// <inheritdoc />
         public bool AddCachebusterToResourceUris
         {
             get
@@ -309,9 +276,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.
-        /// </summary>
+        /// <inheritdoc />
         public bool DisablePrivateMessage
         {
             get
@@ -445,14 +410,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public int PrivacyTabId { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether allows users to select their own UI culture.
-        /// When set to false (default) framework will allways same culture for both
-        /// CurrentCulture (content) and CurrentUICulture (interface).
-        /// </summary>
-        /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool AllowUserUICulture { get; internal set; }
 
         /// <inheritdoc/>
@@ -480,12 +438,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public string DefaultIconLocation { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Default Module Id.
-        /// </summary>
-        /// <remarks>Defaults to Null.NullInteger.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public int DefaultModuleId { get; internal set; }
 
         /// <inheritdoc/>
@@ -497,77 +450,38 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public string DefaultPortalSkin { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Default Tab Id.
-        /// </summary>
-        /// <remarks>Defaults to Null.NullInteger.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public int DefaultTabId { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether Browser Language Detection is Enabled.
-        /// </summary>
-        /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool EnableBrowserLanguage { get; internal set; }
 
         /// <inheritdoc/>
         public bool EnableCompositeFiles { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to use the module effect in edit mode.
-        /// </summary>
+        /// <summary>Gets a value indicating whether gets whether to use the module effect in edit mode.</summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to use the popup.
-        /// </summary>
-        /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool EnablePopUps { get; internal set; }
 
-        /// <summary>
-        /// Gets a value indicating whether website Administrator whether receive the notification email when new user register.
-        /// </summary>
+        /// <inheritdoc />
         public bool EnableRegisterNotification { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported.
-        /// </summary>
-        /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0.")]
 
         public bool EnableSkinWidgets { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether a cookie consent popup should be shown.
-        /// </summary>
-        /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool ShowCookieConsent { get; internal set; }
 
-        /// <summary>
-        /// Gets link for the user to find out more about cookies. If not specified the link
-        /// shown will point to cookiesandyou.com.
-        /// </summary>
+        /// <inheritdoc />
         public string CookieMoreLink { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether enable url language.
-        /// </summary>
-        /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool EnableUrlLanguage { get; internal set; }
 
         /// <inheritdoc/>
@@ -576,23 +490,10 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public int ErrorPage500 { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets a value indicating whether gets whether folders which are hidden or whose name begins with underscore
-        ///   are included in folder synchronization.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to True.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool HideFoldersEnabled { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether hide the login link.
-        /// </summary>
-        /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool HideLoginControl { get; internal set; }
 
         /// <inheritdoc/>
@@ -601,54 +502,22 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public string HomeSystemDirectoryMapPath { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Inline Editor is enabled.
-        /// </summary>
-        /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool InlineEditorEnabled { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
-        /// </summary>
-        /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool SearchIncludeCommon { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
-        /// </summary>
-        /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public bool SearchIncludeNumeric { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets the filter used for inclusion of tag info.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to "".
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public string SearchIncludedTagInfoFilter { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the maximum Search Word length to index.
-        /// </summary>
-        /// <remarks>Defaults to 3.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public int SearchMaxWordlLength { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the minum Search Word length to index.
-        /// </summary>
-        /// <remarks>Defaults to 3.</remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public int SearchMinWordlLength { get; internal set; }
 
         /// <inheritdoc/>
@@ -675,22 +544,13 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
 
-        /// <summary>
-        /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow.
-        /// </summary>
+        /// <inheritdoc />
         public bool DataConsentActive { get; internal set; }
 
-        /// <summary>
-        /// Gets last time the terms and conditions have been changed. This will determine if the user needs to
-        /// reconsent or not. Legally once the terms have changed, users need to sign again. This value is set
-        /// by the "reset consent" button on the UI.
-        /// </summary>
+        /// <inheritdoc />
         public DateTime DataConsentTermsLastChange { get; internal set; }
 
-        /// <summary>
-        /// Gets if set this is a tab id of a page where the user will be redirected to for consent. If not set then
-        /// the platform's default logic is used.
-        /// </summary>
+        /// <inheritdoc />
         public int DataConsentConsentRedirect { get; internal set; }
 
         /// <summary>
@@ -700,19 +560,13 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public UserDeleteAction DataConsentUserDeleteAction { get; internal set; }
 
-        /// <summary>
-        /// Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction.
-        /// </summary>
+        /// <inheritdoc />
         public int DataConsentDelay { get; internal set; }
 
-        /// <summary>
-        /// Gets units for DataConsentDelay.
-        /// </summary>
+        /// <inheritdoc />
         public string DataConsentDelayMeasurement { get; internal set; }
 
-        /// <summary>
-        /// Gets whitelist of file extensions for end users.
-        /// </summary>
+        /// <summary>Gets whitelist of file extensions for end users.</summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 
         /// <inheritdoc/>

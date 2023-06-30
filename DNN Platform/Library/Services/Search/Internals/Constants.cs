@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Version = Lucene.Net.Util.Version;
 
-    /// <summary>
-    /// Constants.
-    /// </summary>
+    /// <summary>Constants.</summary>
     internal static class Constants
     {
         internal const string UniqueKeyTag = "key";

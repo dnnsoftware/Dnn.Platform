@@ -22,14 +22,7 @@ namespace DotNetNuke.UI.ControlPanels
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ControlPanel class defines a custom base class inherited by all
-    /// ControlPanel controls.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ControlPanel class defines a custom base class inherited by all ControlPanel controls.</summary>
     public class ControlPanelBase : UserControl
     {
         private string localResourceFile;
@@ -45,12 +38,8 @@ namespace DotNetNuke.UI.ControlPanels
             get { return true; }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Local ResourceFile for the Control Panel.
-        /// </summary>
+        /// <summary>Gets or sets the Local ResourceFile for the Control Panel.</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
             get
@@ -80,12 +69,7 @@ namespace DotNetNuke.UI.ControlPanels
             set { }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the ControlPanel is Visible.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets a value indicating whether the ControlPanel is Visible.</summary>
         protected bool IsVisible
         {
             get
@@ -94,11 +78,7 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the current Portal Settings.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the current Portal Settings.</summary>
         protected PortalSettings PortalSettings
         {
             get
@@ -107,12 +87,8 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the User mode of the Control Panel.
-        /// </summary>
+        /// <summary>Gets the User mode of the Control Panel.</summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         protected PortalSettings.Mode UserMode
         {
             get
@@ -162,16 +138,12 @@ namespace DotNetNuke.UI.ControlPanels
             return IsPageAdminInternal();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds an Existing Module to a Pane.
-        /// </summary>
-        /// <param name="align">The alignment for the Modue.</param>
+        /// <summary>Adds an Existing Module to a Pane.</summary>
         /// <param name="moduleId">The Id of the existing module.</param>
         /// <param name="tabId">The id of the tab.</param>
         /// <param name="paneName">The pane to add the module to.</param>
         /// <param name="position">The relative position within the pane for the module.</param>
-        /// -----------------------------------------------------------------------------
+        /// <param name="align">The alignment for the Module.</param>
         protected void AddExistingModule(int moduleId, int tabId, string paneName, int position, string align)
         {
             ModuleInfo objModule;
@@ -197,17 +169,13 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a New Module to a Pane.
-        /// </summary>
-        /// <param name="align">The alignment for the Modue.</param>
-        /// <param name="desktopModuleId">The Id of the DesktopModule.</param>
-        /// <param name="permissionType">The View Permission Type for the Module.</param>
+        /// <summary>Adds a New Module to a Pane. </summary>
         /// <param name="title">The Title for the resulting module.</param>
+        /// <param name="desktopModuleId">The Id of the DesktopModule.</param>
         /// <param name="paneName">The pane to add the module to.</param>
         /// <param name="position">The relative position within the pane for the module.</param>
-        /// -----------------------------------------------------------------------------
+        /// <param name="permissionType">The View Permission Type for the Module.</param>
+        /// <param name="align">The alignment for the Module.</param>
         protected void AddNewModule(string title, int desktopModuleId, string paneName, int position, ViewPermissionType permissionType, string align)
         {
             TabPermissionCollection objTabPermissions = this.PortalSettings.ActiveTab.TabPermissions;
@@ -356,14 +324,10 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Builds a URL.
-        /// </summary>
-        /// <param name="friendlyName">The friendly name of the Module.</param>
+        /// <summary>Builds a URL to a page with a module matching the given definition <paramref name="friendlyName"/>.</summary>
         /// <param name="portalID">The ID of the portal.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="friendlyName">The friendly name of the Module.</param>
+        /// <returns>A formatted URL.</returns>
         protected string BuildURL(int portalID, string friendlyName)
         {
             string strURL = "~/" + Globals.glbDefaultPage;
@@ -395,23 +359,15 @@ namespace DotNetNuke.UI.ControlPanels
             return allowAccess;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets the UserMode.
-        /// </summary>
+        /// <summary>Sets the UserMode.</summary>
         /// <param name="userMode">The userMode to set.</param>
-        /// -----------------------------------------------------------------------------
         protected void SetUserMode(string userMode)
         {
             Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpper());
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Sets the current Visible Mode.
-        /// </summary>
+        /// <summary>Sets the current Visible Mode.</summary>
         /// <param name="isVisible">A flag indicating whether the Control Panel should be visible.</param>
-        /// -----------------------------------------------------------------------------
         protected void SetVisibleMode(bool isVisible)
         {
             Personalization.SetProfile("Usability", "ControlPanelVisible" + this.PortalSettings.PortalId, isVisible.ToString());
@@ -431,16 +387,12 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a Module Permission.
-        /// </summary>
+        /// <summary>Adds a Module Permission.</summary>
         /// <param name="objModule">Module Info.</param>
         /// <param name="permission">The permission to add.</param>
         /// <param name="roleId">The Id of the role to add the permission for.</param>
         /// <param name="userId">Operator.</param>
         /// <param name="allowAccess">Whether allow to access the module.</param>
-        /// -----------------------------------------------------------------------------
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
             var objModulePermission = new ModulePermissionInfo();

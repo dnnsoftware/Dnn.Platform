@@ -21,14 +21,11 @@ namespace DotNetNuke.Services.Installer
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerBase class is a Base Class for all Installer
     ///     classes that need to use Localized Strings.  It provides these strings
     ///     as localized Constants.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class Util
     {
         // ReSharper disable InconsistentNaming
@@ -436,10 +433,7 @@ namespace DotNetNuke.Services.Installer
 
         // ReSharper restore InconsistentNaming
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteFile method deletes a file.
-        /// </summary>
+        /// <summary>The DeleteFile method deletes a file.</summary>
         /// <param name="installFile">The file to delete.</param>
         /// <param name="basePath">The basePath to the file.</param>
         /// <param name="log">A Logger to log the result.</param>
@@ -448,10 +442,7 @@ namespace DotNetNuke.Services.Installer
             DeleteFile(installFile.FullName, basePath, log);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteFile method deletes a file.
-        /// </summary>
+        /// <summary>The DeleteFile method deletes a file.</summary>
         /// <param name="fileName">The file to delete.</param>
         /// <param name="basePath">The basePath to the file.</param>
         /// <param name="log">A Logger to log the result.</param>
@@ -471,7 +462,6 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetLocalizedString method provides a conveniencewrapper around the
         /// Localization of Strings.
@@ -500,7 +490,6 @@ namespace DotNetNuke.Services.Installer
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The InstallURL method provides a utility method to build the correct url
         /// to install a package (and return to where you came from).
@@ -572,7 +561,6 @@ namespace DotNetNuke.Services.Installer
             return context.NavigateUrl(tabId, "UnInstall", true, parameters);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The PackageWriterURL method provides a utility method to build the correct url
         /// to create a package (and return to where you came from).
@@ -675,10 +663,7 @@ namespace DotNetNuke.Services.Installer
             return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), isRequired, log, logmessage, defaultValue);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The RestoreFile method restores a file from the backup folder.
-        /// </summary>
+        /// <summary>The RestoreFile method restores a file from the backup folder.</summary>
         /// <param name="installFile">The file to restore.</param>
         /// <param name="basePath">The basePath to the file.</param>
         /// <param name="log">A Logger to log the result.</param>
@@ -693,7 +678,6 @@ namespace DotNetNuke.Services.Installer
             log.AddInfo(string.Format(FILE_RestoreBackup, installFile.FullName));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UnInstallURL method provides a utility method to build the correct url
         /// to uninstall a package (and return to where you came from).
@@ -710,10 +694,7 @@ namespace DotNetNuke.Services.Installer
             return context.NavigateUrl(tabId, "UnInstall", true, parameters);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The WriteStream reads a source stream and writes it to a destination file.
-        /// </summary>
+        /// <summary>The WriteStream reads a source stream and writes it to a destination file.</summary>
         /// <param name="sourceStream">The Source Stream.</param>
         /// <param name="destFileName">The Destination file.</param>
         public static void WriteStream(Stream sourceStream, string destFileName)
@@ -728,9 +709,7 @@ namespace DotNetNuke.Services.Installer
             TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 3500);
         }
 
-        /// <summary>
-        /// Try to create file and perform an action on a file until a specific amount of time.
-        /// </summary>
+        /// <summary>Try to create file and perform an action on a file until a specific amount of time.</summary>
         /// <param name="path">Path of the file.</param>
         /// <param name="action">Action to execute on file.</param>
         /// <param name="milliSecondMax">Maimum amount of time to try to do the action.</param>
@@ -940,10 +919,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The BackupFile method backs up a file to the backup folder.
-        /// </summary>
+        /// <summary>The BackupFile method backs up a file to the backup folder.</summary>
         /// <param name="installFile">The file to backup.</param>
         /// <param name="basePath">The basePath to the file.</param>
         /// <param name="log">A Logger to log the result.</param>
@@ -963,10 +939,7 @@ namespace DotNetNuke.Services.Installer
             log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CopyFile method copies a file from the temporary extract location.
-        /// </summary>
+        /// <summary>The CopyFile method copies a file from the temporary extract location.</summary>
         /// <param name="installFile">The file to copy.</param>
         /// <param name="basePath">The basePath to the file.</param>
         /// <param name="log">A Logger to log the result.</param>
@@ -988,10 +961,7 @@ namespace DotNetNuke.Services.Installer
             log.AddInfo(string.Format(FILE_Created, installFile.FullName));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The StreamToStream method reads a source stream and wrtites it to a destination stream.
-        /// </summary>
+        /// <summary>The StreamToStream method reads a source stream and wrtites it to a destination stream.</summary>
         /// <param name="sourceStream">The Source Stream.</param>
         /// <param name="destStream">The Destination Stream.</param>
         private static void StreamToStream(Stream sourceStream, Stream destStream)

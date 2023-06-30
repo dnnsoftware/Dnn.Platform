@@ -11,19 +11,13 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ScriptComponentWriter class handles creating the manifest for Script
     /// Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ScriptComponentWriter : FileComponentWriter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScriptComponentWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScriptComponentWriter"/> class.</summary>
         /// <param name="basePath"></param>
         /// <param name="scripts"></param>
         /// <param name="package"></param>
@@ -32,12 +26,8 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Collection Node ("scripts").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("scripts").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -46,12 +36,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Component Type ("Script").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Script").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get
@@ -60,12 +46,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the name of the Item Node ("script").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("script").</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get

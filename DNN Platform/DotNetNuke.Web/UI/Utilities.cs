@@ -21,9 +21,7 @@ namespace DotNetNuke.Web.UI
 
     public class Utilities
     {
-        /// <summary>
-        /// Applies a custom CSS file for a control using a consistent naming pattern.
-        /// </summary>
+        /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>
         /// <param name="targetControl">The control that should have a skin injected.</param>
         /// <param name="controlSubSkinName">An optional sub-skin.</param>
         /// <param name="controlName">An optional control name that might differ from the type.</param>

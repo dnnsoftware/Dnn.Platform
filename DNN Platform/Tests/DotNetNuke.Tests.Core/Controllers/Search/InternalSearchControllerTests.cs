@@ -28,9 +28,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///  Testing various aspects of SearchController.
-    /// </summary>
+    /// <summary> Testing various aspects of SearchController.</summary>
     [TestFixture]
     public class InternalSearchControllerTests
     {

@@ -27,9 +27,7 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// Provides the APIs for SMTP settings management.
-    /// </summary>
+    /// <summary>Provides the APIs for SMTP settings management.</summary>
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class ServerSettingsSmtpAdminController : PersonaBarApiController
     {
@@ -37,9 +35,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
         private readonly IHostSettingsService hostSettingsService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerSettingsSmtpAdminController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ServerSettingsSmtpAdminController"/> class.</summary>
         /// <param name="hostSettingsService">A service to manage host settings.</param>
         public ServerSettingsSmtpAdminController(
             IHostSettingsService hostSettingsService)
@@ -47,9 +43,7 @@ namespace Dnn.PersonaBar.Servers.Services
             this.hostSettingsService = hostSettingsService;
         }
 
-        /// <summary>
-        /// Gets the SMTP settings.
-        /// </summary>
+        /// <summary>Gets the SMTP settings.</summary>
         /// <returns>An object representing the SMTP settings for the current portal.</returns>
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()
@@ -85,9 +79,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        /// <summary>
-        /// Updates the SMTP settings for the current portal.
-        /// </summary>
+        /// <summary>Updates the SMTP settings for the current portal.</summary>
         /// <param name="request"><see cref="UpdateSmtpSettingsRequest"/>.</param>
         /// <returns>A value indicating whether the operation succeeded.</returns>
         [HttpPost]
@@ -159,9 +151,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        /// <summary>
-        /// Sends a test email to validate the settings work.
-        /// </summary>
+        /// <summary>Sends a test email to validate the settings work.</summary>
         /// <param name="request"><see cref="SendTestEmailRequest"/>.</param>
         /// <returns>A localized test result message.</returns>
         [HttpPost]

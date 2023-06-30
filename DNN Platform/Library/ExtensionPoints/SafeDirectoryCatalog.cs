@@ -15,9 +15,7 @@ namespace DotNetNuke.ExtensionPoints
     {
         private readonly AggregateCatalog catalog;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.</summary>
         /// <param name="directory"></param>
         public SafeDirectoryCatalog(string directory)
         {

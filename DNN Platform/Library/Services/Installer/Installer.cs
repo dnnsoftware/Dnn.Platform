@@ -22,9 +22,7 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// The Installer class provides a single entrypoint for Package Installation.
-    /// </summary>
+    /// <summary>The Installer class provides a single entrypoint for Package Installation.</summary>
     public class Installer
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
@@ -105,9 +103,7 @@ namespace DotNetNuke.Services.Installer
             this.Packages.Add(this.Packages.Count, new PackageInstaller(package));
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Installer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Installer"/> class.</summary>
         /// <param name="manifest">The install package manifest.</param>
         /// <param name="physicalSitePath">The physical path to the site.</param>
         /// <param name="loadManifest">A value indicating whether to load the manifest.</param>
@@ -121,9 +117,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the associated InstallerInfo is valid.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the associated InstallerInfo is valid.</summary>
         /// <value>True - if valid, False if not.</value>
         public bool IsValid
         {
@@ -133,9 +127,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the installation temporary folder path.
-        /// </summary>
+        /// <summary>Gets the installation temporary folder path.</summary>
         /// <value>The installation temporory folder path.</value>
         public string TempInstallFolder
         {
@@ -145,21 +137,15 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the associated InstallerInfo object.
-        /// </summary>
+        /// <summary>Gets the associated InstallerInfo object.</summary>
         /// <value>An InstallerInfo.</value>
         public InstallerInfo InstallerInfo { get; private set; }
 
-        /// <summary>
-        /// Gets a SortedList of Packages that are included in the Package Zip.
-        /// </summary>
+        /// <summary>Gets a SortedList of Packages that are included in the Package Zip.</summary>
         /// <value>A SortedList(Of Integer, PackageInstaller).</value>
         public SortedList<int, PackageInstaller> Packages { get; private set; }
 
-        /// <summary>
-        /// Converts legacy manifest navigation to support old manifest format.
-        /// </summary>
+        /// <summary>Converts legacy manifest navigation to support old manifest format.</summary>
         /// <param name="rootNav">The root xml navigation path.</param>
         /// <param name="info"><see cref="InstallerInfo"/>.</param>
         /// <returns>A new converted <see cref="XPathNavigator"/> that works with current manifest schema.</returns>
@@ -236,9 +222,7 @@ namespace DotNetNuke.Services.Installer
             return nav;
         }
 
-        /// <summary>
-        /// Deletes the package temporary folder.
-        /// </summary>
+        /// <summary>Deletes the package temporary folder.</summary>
         public void DeleteTempFolder()
         {
             try
@@ -255,9 +239,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// The Install method installs the feature.
-        /// </summary>
+        /// <summary>The Install method installs the feature.</summary>
         /// <returns>A value indicating whether the install succeeded.</returns>
         public bool Install()
         {
@@ -323,9 +305,7 @@ namespace DotNetNuke.Services.Installer
             return succeeded;
         }
 
-        /// <summary>
-        /// The ReadManifest method reads the manifest file and parses it into packages.
-        /// </summary>
+        /// <summary>The ReadManifest method reads the manifest file and parses it into packages.</summary>
         /// <param name="deleteTemp">A value indicating whether to delete the temporary folder.</param>
         public void ReadManifest(bool deleteTemp)
         {
@@ -345,9 +325,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// The UnInstall method uninstalls the feature.
-        /// </summary>
+        /// <summary>The UnInstall method uninstalls the feature.</summary>
         /// <param name="deleteFiles">A flag that indicates whether the files should be deleted.</param>
         /// <returns>A value indicating whether the uninstall succeeded.</returns>
         public bool UnInstall(bool deleteFiles)
@@ -377,9 +355,7 @@ namespace DotNetNuke.Services.Installer
             return true;
         }
 
-        /// <summary>
-        /// The InstallPackages method installs the packages.
-        /// </summary>
+        /// <summary>The InstallPackages method installs the packages.</summary>
         private void InstallPackages(ref bool clearClientCache)
         {
             for (int index = 0; index <= this.Packages.Count - 1; index++)
@@ -411,9 +387,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Logs the Install event to the Event Log.
-        /// </summary>
+        /// <summary>Logs the Install event to the Event Log.</summary>
         /// <param name="package">The name of the package.</param>
         /// <param name="eventType">Event Type.</param>
         private void LogInstallEvent(string package, string eventType)
@@ -440,9 +414,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// The ProcessPackages method processes the packages nodes in the manifest.
-        /// </summary>
+        /// <summary>The ProcessPackages method processes the packages nodes in the manifest.</summary>
         private void ProcessPackages(XPathNavigator rootNav)
         {
             // Parse the package nodes

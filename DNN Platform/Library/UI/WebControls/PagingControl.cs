@@ -276,11 +276,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// GetLink returns the page number links for paging.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetLink returns the page number links for paging.</summary>
         private string GetLink(int pageNum)
         {
             if (pageNum == this.CurrentPage)
@@ -293,11 +289,7 @@ namespace DotNetNuke.UI.WebControls
                        : "<a href=\"" + this.CreateURL(pageNum.ToString()) + "\">" + pageNum + "</a>";
         }
 
-        /// <summary>
-        /// GetPreviousLink returns the link for the Previous page for paging.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetPreviousLink returns the link for the Previous page for paging.</summary>
         private string GetPreviousLink()
         {
             return this.CurrentPage > 1 && this.totalPages > 0
@@ -310,11 +302,7 @@ namespace DotNetNuke.UI.WebControls
                               : "<span>" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</span>");
         }
 
-        /// <summary>
-        /// GetNextLink returns the link for the Next Page for paging.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetNextLink returns the link for the Next Page for paging.</summary>
         private string GetNextLink()
         {
             return this.CurrentPage != this.totalPages && this.totalPages > 0
@@ -327,11 +315,7 @@ namespace DotNetNuke.UI.WebControls
                               : "<span>" + Localization.GetString("Next", Localization.SharedResourceFile) + "</span>");
         }
 
-        /// <summary>
-        /// GetFirstLink returns the First Page link for paging.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetFirstLink returns the First Page link for paging.</summary>
         private string GetFirstLink()
         {
             if (this.CurrentPage > 1 && this.totalPages > 0)
@@ -346,11 +330,7 @@ namespace DotNetNuke.UI.WebControls
                        : "<span>" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>";
         }
 
-        /// <summary>
-        /// GetLastLink returns the Last Page link for paging.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>GetLastLink returns the Last Page link for paging.</summary>
         private string GetLastLink()
         {
             if (this.CurrentPage != this.totalPages && this.totalPages > 0)
@@ -369,9 +349,7 @@ namespace DotNetNuke.UI.WebControls
         {
             private readonly PagingControl pagingControl;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="PageNumberLinkTemplate"/> class.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="PageNumberLinkTemplate"/> class.</summary>
             /// <param name="ctlPagingControl"></param>
             public PageNumberLinkTemplate(PagingControl ctlPagingControl)
             {

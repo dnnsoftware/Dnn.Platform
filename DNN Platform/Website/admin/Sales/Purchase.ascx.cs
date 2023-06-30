@@ -26,9 +26,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         private readonly INavigationManager navigationManager;
         private int roleID = -1;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Purchase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Purchase"/> class.</summary>
         public Purchase()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

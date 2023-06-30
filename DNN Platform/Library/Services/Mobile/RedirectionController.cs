@@ -114,9 +114,7 @@ namespace DotNetNuke.Services.Mobile
             return allowed;
         }
 
-        /// <summary>
-        /// Get Redirection Url based on UserAgent.
-        /// </summary>
+        /// <summary>Get Redirection Url based on UserAgent.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
@@ -134,9 +132,7 @@ namespace DotNetNuke.Services.Mobile
             return string.Empty;
         }
 
-        /// <summary>
-        /// Get Redirection Url based on Http Context and Portal Id.
-        /// </summary>
+        /// <summary>Get Redirection Url based on Http Context and Portal Id.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
@@ -225,9 +221,7 @@ namespace DotNetNuke.Services.Mobile
             return redirectUrl;
         }
 
-        /// <summary>
-        /// Get Url for the equivalent full site based on the current page of the mobile site.
-        /// </summary>
+        /// <summary>Get Url for the equivalent full site based on the current page of the mobile site.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetFullSiteUrl()
         {
@@ -244,9 +238,7 @@ namespace DotNetNuke.Services.Mobile
             return string.Empty;
         }
 
-        /// <summary>
-        /// Get Url for the equivalent full site based on the current page of the mobile site.
-        /// </summary>
+        /// <summary>Get Url for the equivalent full site based on the current page of the mobile site.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
@@ -334,9 +326,7 @@ namespace DotNetNuke.Services.Mobile
             return fullSiteUrl;
         }
 
-        /// <summary>
-        /// Get Url for the equivalent mobile site based on the current page of the full site.
-        /// </summary>
+        /// <summary>Get Url for the equivalent mobile site based on the current page of the full site.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetMobileSiteUrl()
         {
@@ -353,9 +343,7 @@ namespace DotNetNuke.Services.Mobile
             return string.Empty;
         }
 
-        /// <summary>
-        /// Get Url for the equivalent mobile site based on the current page of the full site.
-        /// </summary>
+        /// <summary>Get Url for the equivalent mobile site based on the current page of the full site.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
@@ -449,9 +437,7 @@ namespace DotNetNuke.Services.Mobile
             this.ClearCache(redirection.PortalId);
         }
 
-        /// <summary>
-        /// Deletes all redirection rules that were set for pages that have been soft or hard deleted.
-        /// </summary>
+        /// <summary>Deletes all redirection rules that were set for pages that have been soft or hard deleted.</summary>
         /// <param name="portalId"></param>
         public void PurgeInvalidRedirections(int portalId)
         {
@@ -493,9 +479,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// delete a redirection.
-        /// </summary>
+        /// <summary>delete a redirection.</summary>
         /// <param name="portalId">Portal's id.</param>
         /// <param name="id">the redirection's id.</param>
         public void Delete(int portalId, int id)
@@ -518,9 +502,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// delete a redirection's match rule.
-        /// </summary>
+        /// <summary>delete a redirection's match rule.</summary>
         /// <param name="portalId">Portal's id.</param>
         /// <param name="redirectionId">the redirection's id.</param>
         /// <param name="ruleId">the rule's id.</param>
@@ -534,9 +516,7 @@ namespace DotNetNuke.Services.Mobile
             this.ClearCache(portalId);
         }
 
-        /// <summary>
-        /// get all redirections defined in system.
-        /// </summary>
+        /// <summary>get all redirections defined in system.</summary>
         /// <returns>List of redirection.</returns>
         public IList<IRedirection> GetAllRedirections()
         {
@@ -544,9 +524,7 @@ namespace DotNetNuke.Services.Mobile
             return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, this.GetAllRedirectionsCallBack);
         }
 
-        /// <summary>
-        /// get a redirection list for portal.
-        /// </summary>
+        /// <summary>get a redirection list for portal.</summary>
         /// <param name="portalId">redirection id.</param>
         /// <returns>List of redirection.</returns>
         public IList<IRedirection> GetRedirectionsByPortal(int portalId)
@@ -556,24 +534,20 @@ namespace DotNetNuke.Services.Mobile
             return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, this.GetRedirectionsByPortalCallBack);
         }
 
-        /// <summary>
-        /// get a specific redirection by id.
-        /// </summary>
-        /// <param name="portalId">the redirection belong's portal.</param>
-        /// <param name="id">redirection's id.</param>
+        /// <summary>get a specific redirection by id.</summary>
+        /// <param name="portalId">the ID of the portal to which the redirection belongs.</param>
+        /// <param name="id">The redirection ID.</param>
         /// <returns>redirection object.</returns>
         public IRedirection GetRedirectionById(int portalId, int id)
         {
             return this.GetRedirectionsByPortal(portalId).Where(r => r.Id == id).FirstOrDefault();
         }
 
-        /// <summary>
-        /// returns a target URL for the specific redirection.
-        /// </summary>
+        /// <summary>returns a target URL for the specific redirection.</summary>
         /// <param name="redirection"></param>
         /// <param name="portalId"></param>
         /// <param name="currentTabId"></param>
-        /// <returns></returns>
+        /// <returns>The URL (or <see cref="string.Empty"/> if there's no redirect).</returns>
         public string GetRedirectUrlFromRule(IRedirection redirection, int portalId, int currentTabId)
         {
             string redirectUrl = string.Empty;

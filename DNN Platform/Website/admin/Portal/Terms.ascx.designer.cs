@@ -15,9 +15,7 @@ namespace DotNetNuke.Common.Controls {
     
     
     public partial class Terms {
-        /// <summary>
-        /// lblTerms control.
-        /// </summary>
+        /// <summary>lblTerms control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

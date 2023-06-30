@@ -64,9 +64,7 @@ namespace DotNetNuke.Entities.Urls
             return rewritePath;
         }
 
-        /// <summary>
-        /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.
-        /// </summary>
+        /// <summary>Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.</summary>
         /// <param name="portalId"></param>
         /// <param name="minTabPathDepth">ByRef parameter to return the minimum tab path depth (the number of '/' in the tab path).</param>
         /// <param name="maxTabPathDepth">ByRef parameter to return the maximum tab path depth (the number of '/' in the tab path).</param>
@@ -79,7 +77,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>Dictionary (string, string) of Tab paths in tab key, with the rewrite path as the value.</returns>
         /// <remarks>
         /// Changes
-        /// Task 608 : Incrementally build tab dictionary instead of building entire dicitionary all at once
+        /// Task 608 : Incrementally build tab dictionary instead of building entire dictionary all at once
         /// Task 609 : If usePortalAlias is specified, only build dictionary with specific portal alias : ignore others
         /// Task 791 : allow for specification of true/false for using thread locking to prevent multiple rebuilds on threads.
         /// </remarks>
@@ -193,7 +191,7 @@ namespace DotNetNuke.Entities.Urls
             }
             else
             {
-                // fallback values, should never get here: mainly for compiler wranings
+                // fallback values, should never get here: mainly for compiler warnings
                 minTabPathDepth = 1;
                 maxTabPathDepth = 10;
                 minAliasPathDepth = 1;
@@ -203,11 +201,9 @@ namespace DotNetNuke.Entities.Urls
             return dict;
         }
 
-        /// <summary>
-        /// Returns a list of aliases that are used in custom tab/alias association.
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <returns></returns>
+        /// <summary>Returns a list of aliases that are used in custom tab/alias association.</summary>
+        /// <param name="settings">The settings.</param>
+        /// <returns>A <see cref="List{T}"/> of alias strings.</returns>
         internal static List<string> GetCustomPortalAliases(FriendlyUrlSettings settings)
         {
             List<string> aliases = CacheController.GetCustomAliasesFromCache();
@@ -220,9 +216,7 @@ namespace DotNetNuke.Entities.Urls
             return aliases;
         }
 
-        /// <summary>
-        /// Gets the portal alias by portal.
-        /// </summary>
+        /// <summary>Gets the portal alias by portal.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns>Portal alias.</returns>
@@ -289,10 +283,8 @@ namespace DotNetNuke.Entities.Urls
             return retValue;
         }
 
-        /// <summary>
-        /// Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.</summary>
+        /// <returns>An <see cref="OrderedDictionary"/> where the keys are <see cref="string"/> aliases and the values are <see cref="PortalAliasInfo"/> instances.</returns>
         internal static OrderedDictionary GetPortalAliases(FriendlyUrlSettings settings)
         {
             // object to return
@@ -306,14 +298,12 @@ namespace DotNetNuke.Entities.Urls
             return aliasList;
         }
 
-        /// <summary>
-        /// Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage.
-        /// </summary>
+        /// <summary>Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage.</summary>
         /// <param name="tab"></param>
         /// <param name="options"></param>
         /// <param name="parentTraceId"></param>
         /// <remarks>Will remove // from the tabPath as stored in the Tabs object/table.</remarks>
-        /// <returns></returns>
+        /// <returns>The friendly URL path.</returns>
         internal static string GetTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
             string tabPath = null;
@@ -1788,12 +1778,10 @@ namespace DotNetNuke.Entities.Urls
             return customHttpAlias;
         }
 
-        /// <summary>
-        /// Returns whether the portal specified exists in the Tab index or not.
-        /// </summary>
+        /// <summary>Returns whether the portal specified exists in the Tab index or not.</summary>
         /// <param name="portalDepths">The current portalDepths dictionary.</param>
         /// <param name="portalId">The id of the portal to search for.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the portal exists in the index, otherwise <see langword="false"/>.</returns>
         private static bool PortalExistsInIndex(SharedDictionary<int, PathSizes> portalDepths, int portalId)
         {
             bool result = false;

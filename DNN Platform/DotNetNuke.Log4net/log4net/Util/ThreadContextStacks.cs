@@ -23,9 +23,7 @@ using System.Collections;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Implementation of Stacks collection for the <see cref="log4net.ThreadContext"/>
-    /// </summary>
+    /// <summary>Implementation of Stacks collection for the <see cref="log4net.ThreadContext"/></summary>
     /// <remarks>
     /// <para>
     /// Implementation of Stacks collection for the <see cref="log4net.ThreadContext"/>
@@ -36,9 +34,7 @@ namespace log4net.Util
     {
         private readonly ContextPropertiesBase m_properties;
 
-        /// <summary>
-        /// Internal constructor
-        /// </summary>
+        /// <summary>Internal constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="ThreadContextStacks" /> class.
@@ -49,9 +45,7 @@ namespace log4net.Util
             this.m_properties = properties;
         }
 
-        /// <summary>
-        /// Gets the named thread context stack
-        /// </summary>
+        /// <summary>Gets the named thread context stack</summary>
         /// <value>
         /// The named stack
         /// </value>
@@ -100,9 +94,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// The fully qualified type of the ThreadContextStacks class.
-        /// </summary>
+        /// <summary>The fully qualified type of the ThreadContextStacks class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

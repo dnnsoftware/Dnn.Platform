@@ -31,10 +31,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ManageUsers UserModuleBase is used to manage Users.
-    /// </summary>
+    /// <summary>The ManageUsers UserModuleBase is used to manage Users.</summary>
     public partial class EditUser : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
@@ -45,10 +42,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the current Page No.
-        /// </summary>
+        /// <summary>Gets or sets the current Page No.</summary>
         public int PageNo
         {
             get
@@ -70,10 +64,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public bool ShowVanityUrl { get; private set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether to display the Manage Services tab.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to display the Manage Services tab.</summary>
         protected bool DisplayServices
         {
             get
@@ -83,10 +74,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Redirect URL (after successful registration).
-        /// </summary>
+        /// <summary>Gets the Redirect URL (after successful registration).</summary>
         protected string RedirectURL
         {
             get
@@ -128,10 +116,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Return Url for the page.
-        /// </summary>
+        /// <summary>Gets the Return Url for the page.</summary>
         protected string ReturnUrl
         {
             get
@@ -140,10 +125,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Filter to use.
-        /// </summary>
+        /// <summary>Gets and sets the Filter to use.</summary>
         protected string UserFilter
         {
             get
@@ -171,12 +153,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Init runs when the control is initialised.</summary>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -222,12 +199,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -539,12 +511,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.</summary>
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -563,12 +530,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// PasswordUpdated runs when the Password has been updated or reset.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>PasswordUpdated runs when the Password has been updated or reset.</summary>
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -610,12 +572,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ProfileUpdateCompleted runs when the Profile has been updated.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>ProfileUpdateCompleted runs when the Profile has been updated.</summary>
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)

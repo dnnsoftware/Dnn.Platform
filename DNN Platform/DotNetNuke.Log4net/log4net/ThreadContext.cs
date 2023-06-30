@@ -25,9 +25,7 @@ using log4net.Util;
 
 namespace log4net
 {
-    /// <summary>
-    /// The log4net Thread Context.
-    /// </summary>
+    /// <summary>The log4net Thread Context.</summary>
     /// <remarks>
     /// <para>
     /// The <c>ThreadContext</c> provides a location for thread specific debugging 
@@ -70,9 +68,7 @@ namespace log4net
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContext
     {
-        /// <summary>
-        /// Private Constructor. 
-        /// </summary>
+        /// <summary>Private Constructor. </summary>
         /// <remarks>
         /// <para>
         /// Uses a private access modifier to prevent instantiation of this class.
@@ -82,9 +78,7 @@ namespace log4net
         {
         }
 
-        /// <summary>
-        /// The thread properties map
-        /// </summary>
+        /// <summary>The thread properties map</summary>
         /// <value>
         /// The thread properties map
         /// </value>
@@ -99,9 +93,7 @@ namespace log4net
             get { return s_properties; }
         }
 
-        /// <summary>
-        /// The thread stacks
-        /// </summary>
+        /// <summary>The thread stacks</summary>
         /// <value>
         /// stack map
         /// </value>
@@ -115,14 +107,10 @@ namespace log4net
             get { return s_stacks; }
         }
 
-        /// <summary>
-        /// The thread context properties instance
-        /// </summary>
+        /// <summary>The thread context properties instance</summary>
         private static readonly ThreadContextProperties s_properties = new ThreadContextProperties();
 
-        /// <summary>
-        /// The thread context stacks instance
-        /// </summary>
+        /// <summary>The thread context stacks instance</summary>
         private static readonly ThreadContextStacks s_stacks = new ThreadContextStacks(s_properties);
     }
 }

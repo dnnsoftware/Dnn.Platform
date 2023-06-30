@@ -11,9 +11,7 @@ namespace DotNetNuke.Common.Utilities
     {
         private readonly List<string> extensions;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileExtensionWhitelist"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileExtensionWhitelist"/> class.</summary>
         /// <param name="extensionList">a comma seperated list of file extensions with no '.'.</param>
         /// <remarks><paramref name="extensionList"/>should match the format used in the FileExtensions Host setting specifically it
         /// should not have an '.' in the extensions (e.g. txt,jpg,png,doc).</remarks>
@@ -22,9 +20,7 @@ namespace DotNetNuke.Common.Utilities
             this.extensions = EscapedString.Seperate(extensionList.ToLowerInvariant(), true).Select(item => "." + item).ToList();
         }
 
-        /// <summary>
-        /// Gets the list of extensions in the whitelist.
-        /// </summary>
+        /// <summary>Gets the list of extensions in the whitelist.</summary>
         /// <remarks>All extensions are lowercase and prefixed with a '.'.</remarks>
         public IEnumerable<string> AllowedExtensions
         {
@@ -34,18 +30,14 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Returns a string suitale for display to an end user.
-        /// </summary>
+        /// <summary>Returns a string suitale for display to an end user.</summary>
         /// <returns>A String of the whitelist extensions formatted for display to an end user.</returns>
         public string ToDisplayString()
         {
             return this.ToDisplayString(null);
         }
 
-        /// <summary>
-        /// Formats the extension whitelist appropriate for display to an end user.
-        /// </summary>
+        /// <summary>Formats the extension whitelist appropriate for display to an end user.</summary>
         /// <param name="additionalExtensions">A list of additionalExtensions to add to the current extensions.</param>
         /// <remarks><paramref name="additionalExtensions"/>case and '.' prefix will be corrected, and duplicates will be excluded from the string.</remarks>
         /// <returns>A String of the whitelist extensions formatted for storage display to an end user.</returns>
@@ -55,9 +47,7 @@ namespace DotNetNuke.Common.Utilities
             return "*" + string.Join(", *", allExtensions.ToArray());
         }
 
-        /// <summary>
-        /// Indicates if the file extension is permitted by the Host Whitelist.
-        /// </summary>
+        /// <summary>Indicates if the file extension is permitted by the Host Whitelist.</summary>
         /// <param name="extension">The file extension with or without preceding '.'.</param>
         /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
         public bool IsAllowedExtension(string extension)
@@ -65,9 +55,7 @@ namespace DotNetNuke.Common.Utilities
             return this.IsAllowedExtension(extension, null);
         }
 
-        /// <summary>
-        /// Indicates if the file extension is permitted by the Host Whitelist.
-        /// </summary>
+        /// <summary>Indicates if the file extension is permitted by the Host Whitelist.</summary>
         /// <param name="extension">The file extension with or without preceding '.'.</param>
         /// <param name="additionalExtensions"></param>
         /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
@@ -97,18 +85,14 @@ namespace DotNetNuke.Common.Utilities
             return this.ToDisplayString();
         }
 
-        /// <summary>
-        /// Formats the extension whitelist appropriate for storage in the Host setting.
-        /// </summary>
+        /// <summary>Formats the extension whitelist appropriate for storage in the Host setting.</summary>
         /// <returns>A String of the whitelist extensions formatted for storage as a Host setting.</returns>
         public string ToStorageString()
         {
             return this.ToStorageString(null);
         }
 
-        /// <summary>
-        /// Formats the extension whitelist appropriate for storage in the Host setting.
-        /// </summary>
+        /// <summary>Formats the extension whitelist appropriate for storage in the Host setting.</summary>
         /// <param name="additionalExtensions">A list of additionalExtensions to add to the current extensions.</param>
         /// <remarks><paramref name="additionalExtensions"/>case and '.' prefix will be corrected, and duplicates will be excluded from the string.</remarks>
         /// <returns>A String of the whitelist extensions formatted for storage as a Host setting.</returns>

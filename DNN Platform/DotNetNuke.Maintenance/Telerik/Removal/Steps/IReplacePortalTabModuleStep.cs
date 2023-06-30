@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Replaces a given module in a page with another module, for a specific portal.
-    /// </summary>
+    /// <summary>Replaces a given module in a page with another module, for a specific portal.</summary>
     internal interface IReplacePortalTabModuleStep : IStep
     {
         /// <summary>
@@ -15,9 +13,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         /// </summary>
         IReplaceTabModuleStep ParentStep { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Portal Id.
-        /// </summary>
+        /// <summary>Gets or sets the Portal Id.</summary>
         int PortalId { get; set; }
     }
 }

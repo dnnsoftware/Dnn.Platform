@@ -12,47 +12,33 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
 
     using DotNetNuke.Security.Roles;
 
-    /// <summary>
-    /// A data-transfer-object for role groups.
-    /// </summary>
+    /// <summary>A data-transfer-object for role groups.</summary>
     [DataContract]
     public class RoleGroupDto
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleGroupDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RoleGroupDto"/> class.</summary>
         public RoleGroupDto()
         {
             this.Id = -2;
         }
 
-        /// <summary>
-        /// Gets or sets the ID for this role group.
-        /// </summary>
+        /// <summary>Gets or sets the ID for this role group.</summary>
         [DataMember(Name = "id")]
         public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the role group.
-        /// </summary>
+        /// <summary>Gets or sets the name of the role group.</summary>
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating how many roles are associated with this group.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating how many roles are associated with this group.</summary>
         [DataMember(Name = "rolesCount")]
         public int RolesCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets the description for this role group.
-        /// </summary>
+        /// <summary>Gets or sets the description for this role group.</summary>
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
-        /// <summary>
-        /// Converts a <see cref="RoleGroupInfo"/> into a <see cref="RoleGroupDto"/>.
-        /// </summary>
+        /// <summary>Converts a <see cref="RoleGroupInfo"/> into a <see cref="RoleGroupDto"/>.</summary>
         /// <param name="roleGroup">The role group to convert from.</param>
         /// <returns><see cref="RoleGroupDto"/>.</returns>
         public static RoleGroupDto FromRoleGroupInfo(RoleGroupInfo roleGroup)
@@ -66,9 +52,7 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
             };
         }
 
-        /// <summary>
-        /// Converts this <see cref="RoleGroupDto"/> into a <see cref="RoleGroupInfo"/>.
-        /// </summary>
+        /// <summary>Converts this <see cref="RoleGroupDto"/> into a <see cref="RoleGroupInfo"/>.</summary>
         /// <returns><see cref="RoleGroupInfo"/>.</returns>
         public RoleGroupInfo ToRoleGroupInfo()
         {

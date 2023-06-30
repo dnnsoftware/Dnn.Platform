@@ -62,9 +62,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return HttpUtility.UrlEncode(url);
         }
 
-        /// <summary>
-        /// Converts a virtual (relative) path to an application absolute path.
-        /// </summary>
+        /// <summary>Converts a virtual (relative) path to an application absolute path.</summary>
         ///
         /// <returns>
         /// The application absolute path.
@@ -75,9 +73,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return this.UrlHelper.Content(contentPath);
         }
 
-        /// <summary>
-        /// Returns a value that indicates whether the URL is local.
-        /// </summary>
+        /// <summary>Returns a value that indicates whether the URL is local.</summary>
         ///
         /// <returns>
         /// true if the URL is local; otherwise, false.

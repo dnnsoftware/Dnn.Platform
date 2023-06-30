@@ -10,47 +10,36 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : WorkflowStatePermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   DesktopModulePermissionCollection provides the a custom collection for WorkflowStatePermissionInfo
     ///   objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class WorkflowStatePermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.</summary>
         public WorkflowStatePermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.</summary>
         /// <param name="workflowStatePermissions"></param>
         public WorkflowStatePermissionCollection(ArrayList workflowStatePermissions)
         {
             this.AddRange(workflowStatePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.</summary>
         /// <param name="workflowStatePermissions"></param>
         public WorkflowStatePermissionCollection(WorkflowStatePermissionCollection workflowStatePermissions)
         {
             this.AddRange(workflowStatePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStatePermissionCollection"/> class.</summary>
         /// <param name="workflowStatePermissions"></param>
         /// <param name="workflowStatePermissionID"></param>
         public WorkflowStatePermissionCollection(ArrayList workflowStatePermissions, int workflowStatePermissionID)

@@ -17,9 +17,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// PortalAliasController provides method to manage portal alias.
-    /// </summary>
+    /// <summary>PortalAliasController provides method to manage portal alias.</summary>
     /// <remarks>
     /// For DotNetNuke to know what site a request should load, it uses a system of portal aliases.
     /// When a request is received by DotNetNuke from IIS, it extracts the domain name portion and does a comparison against

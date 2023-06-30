@@ -8,14 +8,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using ClientDependency.Core.Controls;
 
-    /// <summary>
-    /// Registers a CSS resource.
-    /// </summary>
+    /// <summary>Registers a CSS resource.</summary>
     public class DnnCssInclude : CssInclude
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCssInclude"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCssInclude"/> class.</summary>
         public DnnCssInclude()
         {
             this.ForceProvider = ClientResourceManager.DefaultCssProvider;

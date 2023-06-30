@@ -26,9 +26,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateModuleController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CreateModuleController"/> class.</summary>
         public CreateModuleController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -36,9 +34,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         protected INavigationManager NavigationManager { get; }
 
-        /// <summary>
-        /// create new module.
-        /// </summary>
+        /// <summary>create new module.</summary>
         /// <param name="createModuleDto"></param>
         /// <param name="newPageUrl"></param>
         /// <param name="errorMessage"></param>

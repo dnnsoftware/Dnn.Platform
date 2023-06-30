@@ -5,6 +5,8 @@
 // ReSharper disable InconsistentNaming
 namespace DotNetNuke.Tests.Utilities
 {
+    using System.IO;
+    using System.IO.Compression;
     using System.Web.Caching;
 
     using DotNetNuke.Entities.Content.Taxonomy;
@@ -413,5 +415,26 @@ namespace DotNetNuke.Tests.Utilities
         public const int TAB_InValidId = -1;
         public const int MODULE_ValidId = 100;
         public const int MODULE_InValidId = -1;
+
+        public static Stream ValidZipFileContent
+        {
+            get
+            {
+                var stream = new MemoryStream();
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+                {
+                    var file = archive.CreateEntry("foo.txt");
+                    using (var entryStream = file.Open())
+                    {
+                        using (var streamWriter = new StreamWriter(entryStream))
+                        {
+                            streamWriter.Write("Bar!");
+                        }
+                    }
+                }
+                return stream;
+            }
+        }
     }
 }
+

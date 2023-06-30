@@ -15,9 +15,7 @@ namespace DotNetNuke.Services.Mobile
     {
         private int id = -1;
 
-        /// <summary>
-        /// Gets or sets primary key.
-        /// </summary>
+        /// <summary>Gets or sets primary key.</summary>
         [XmlAttribute]
         public int Id
         {
@@ -32,9 +30,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// Gets or sets the profiles' effected portal.
-        /// </summary>
+        /// <summary>Gets or sets the profiles' effected portal.</summary>
         [XmlAttribute]
         public int PortalId
         {
@@ -42,9 +38,7 @@ namespace DotNetNuke.Services.Mobile
             set;
         }
 
-        /// <summary>
-        /// Gets or sets profile's name.
-        /// </summary>
+        /// <summary>Gets or sets profile's name.</summary>
         [XmlAttribute]
         public string Name
         {
@@ -52,33 +46,23 @@ namespace DotNetNuke.Services.Mobile
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the preview device's width.
-        /// </summary>
+        /// <summary>Gets or sets the preview device's width.</summary>
         [XmlAttribute]
         public int Width { get; set; }
 
-        /// <summary>
-        /// Gets or sets the preview device's height.
-        /// </summary>
+        /// <summary>Gets or sets the preview device's height.</summary>
         [XmlAttribute]
         public int Height { get; set; }
 
-        /// <summary>
-        /// Gets or sets the preview device's user agent.
-        /// </summary>
+        /// <summary>Gets or sets the preview device's user agent.</summary>
         [XmlAttribute]
         public string UserAgent { get; set; }
 
-        /// <summary>
-        /// Gets or sets profile's sort order.
-        /// </summary>
+        /// <summary>Gets or sets profile's sort order.</summary>
         [XmlAttribute]
         public int SortOrder { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -94,9 +78,7 @@ namespace DotNetNuke.Services.Mobile
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

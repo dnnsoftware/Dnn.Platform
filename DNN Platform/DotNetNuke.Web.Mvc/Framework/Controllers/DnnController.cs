@@ -23,9 +23,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
     public abstract class DnnController : Controller, IDnnController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnController"/> class.</summary>
         protected DnnController()
         {
             this.ActionInvoker = new ResultCapturingActionInvoker();

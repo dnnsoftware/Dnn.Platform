@@ -8,16 +8,10 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Entities;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   Defines an instance of an HtmlText object.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  Defines an instance of an HtmlText object.</summary>
     [Serializable]
     public class HtmlTextInfo : BaseEntityInfo
     {

@@ -9,9 +9,7 @@ namespace DotNetNuke.Maintenance.Shims
 
     using DotNetNuke.Common;
 
-    /// <summary>
-    /// Abstraction on file system utilities to enable unit testing.
-    /// </summary>
+    /// <summary>Abstraction on file system utilities to enable unit testing.</summary>
     internal class FileSystemProviderShim : IFileSystemProvider
     {
         /// <inheritdoc />

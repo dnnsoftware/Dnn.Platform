@@ -15,33 +15,25 @@ namespace DotNetNuke.Authentication.Google {
     
     
     public partial class Login {
-        /// <summary>
-        /// loginItem control.
-        /// </summary>
+        /// <summary>loginItem control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl loginItem;
-        /// <summary>
-        /// loginButton control.
-        /// </summary>
+        /// <summary>loginButton control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton loginButton;
-        /// <summary>
-        /// registerItem control.
-        /// </summary>
+        /// <summary>registerItem control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerItem;
-        /// <summary>
-        /// registerButton control.
-        /// </summary>
+        /// <summary>registerButton control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

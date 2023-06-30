@@ -4,14 +4,10 @@
 
 namespace DotNetNuke.Entities.Urls
 {
-    /// <summary>
-    /// Class used as a utility to help manage paging in database queries.
-    /// </summary>
+    /// <summary>Class used as a utility to help manage paging in database queries.</summary>
     public class PagingInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PagingInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PagingInfo"/> class.</summary>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         public PagingInfo(int pageNumber, int pageSize)

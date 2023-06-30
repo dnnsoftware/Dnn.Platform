@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Prompt.Services
 {
     using System;
@@ -11,10 +10,9 @@ namespace Dnn.PersonaBar.Prompt.Services
     using System.Text;
     using System.Web.Http;
 
-    // Copyright (c) .NET Foundation. All rights reserved.
-    // Licensed under the MIT License. See LICENSE file in the project root for full license information.
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Prompt.Common;
     using Dnn.PersonaBar.Prompt.Components;
     using Dnn.PersonaBar.Prompt.Components.Models;
@@ -74,7 +72,6 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-
         public HttpResponseMessage Cmd(int portalId, [FromBody] CommandInputModel command)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
@@ -94,7 +91,6 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-
         public HttpResponseMessage Cmd([FromBody] CommandInputModel command)
         {
             var startTime = DateTime.Now;
@@ -316,15 +312,13 @@ namespace Dnn.PersonaBar.Prompt.Services
             return message;
         }
 
-        /// <summary>
-        /// Log every command run by a users.
-        /// </summary>
+        /// <summary>Log every command run by a users.</summary>
         /// <param name="consoleCommand"></param>
         /// <param name="cmdTypeToRun"></param>
         /// <param name="command"></param>
         /// <param name="startTime"></param>
         /// <param name="error"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="ConsoleResultModel"/> response.</returns>
         private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;

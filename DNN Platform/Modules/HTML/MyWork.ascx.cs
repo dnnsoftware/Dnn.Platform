@@ -11,18 +11,12 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Services.Exceptions;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    ///   MyWork allows a user to view any outstanding workflow items.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  MyWork allows a user to view any outstanding workflow items.</summary>
     public partial class MyWork : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MyWork"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MyWork"/> class.</summary>
         public MyWork()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -34,11 +28,7 @@ namespace DotNetNuke.Modules.Html
             return "<a href=\"" + this.navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
-        /// <summary>
-        ///   Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <summary>  Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -15,33 +15,25 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Language {
-        /// <summary>
-        /// litCommonHeaderTemplate control.
-        /// </summary>
+        /// <summary>litCommonHeaderTemplate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litCommonHeaderTemplate;
-        /// <summary>
-        /// selectCulture control.
-        /// </summary>
+        /// <summary>selectCulture control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList selectCulture;
-        /// <summary>
-        /// rptLanguages control.
-        /// </summary>
+        /// <summary>rptLanguages control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptLanguages;
-        /// <summary>
-        /// litCommonFooterTemplate control.
-        /// </summary>
+        /// <summary>litCommonFooterTemplate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

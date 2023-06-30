@@ -27,15 +27,10 @@ namespace DotNetNuke.Common.Utilities
         Tab = 3,
     }
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Common.Utilities
     /// Class:      DataCache
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The DataCache class is a facade class for the CachingProvider Instance's.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The DataCache class is a facade class for the CachingProvider Instance's.</summary>
     public class DataCache
     {
         // Host keys

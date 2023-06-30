@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Library.Common
 {
     using System;
@@ -20,24 +19,20 @@ namespace Dnn.PersonaBar.Library.Common
         private static readonly Regex HtmlEntitiesPatternRegex =
             new Regex(HtmlEntitiesPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2));
 
-        /// <summary>
-        /// Returns a relative URL for the user profile image while removing that of the deleted and super users.
-        /// </summary>
+        /// <summary>Returns a relative URL for the user profile image while removing that of the deleted and super users.</summary>
         /// <param name="user">user info.</param>
         /// <param name="width">width in pixel.</param>
         /// <param name="height">height in pixel.</param>
         /// <param name="showSuperUsers">true if want show super users user profile picture, false otherwise.</param>
         /// <returns>relative user profile picture url.</returns>
-        /// <returns></returns>
+        /// <returns>An image URL.</returns>
         public static string GetProfileAvatar(UserInfo user, int width = Constants.AvatarWidth, int height = Constants.AvatarHeight, bool showSuperUsers = true)
         {
             var userId = user != null && user.UserID > 0 && !user.IsDeleted && (showSuperUsers || !user.IsSuperUser) ? user.UserID : 0;
             return UserController.Instance.GetUserProfilePictureUrl(userId, width, height);
         }
 
-        /// <summary>
-        /// Get User's standard Profile avatar. The Url is resolved to current portal.
-        /// </summary>
+        /// <summary>Get User's standard Profile avatar. The URL is resolved to current portal.</summary>
         /// <param name="userId">user Id.</param>
         /// <returns>user profile picture url.</returns>
         public static string GetProfileAvatar(int userId)

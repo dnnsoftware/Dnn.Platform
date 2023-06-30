@@ -76,16 +76,12 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the CSS class for the option buttons and search button.
-        /// </summary>
+        /// <summary>Gets or sets the CSS class for the option buttons and search button.</summary>
         /// <remarks>If you are using the DropDownList option then you can style the search
         /// elements without requiring a custom CssClass.</remarks>
         public string CssClass { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to site based searchs.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to site based searchs.</summary>
         /// <remarks>Set this value to false to hide the "Site" radio button.  This setting has no effect
         /// if UseDropDownList is true.</remarks>
         public bool ShowSite
@@ -101,9 +97,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to web based searchs.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to web based searchs.</summary>
         /// <remarks>Set this value to false to hide the "Web" radio button.  This setting has no effect
         /// if UseDropDownList is true.</remarks>
         public bool ShowWeb
@@ -119,9 +113,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the site icon URL.
-        /// </summary>
+        /// <summary>Gets or sets the site icon URL.</summary>
         /// <value>The site icon URL.</value>
         /// <remarks>If the SiteIconURL is not set or is an empty string then this will return a site relative URL for the
         /// DnnSearch_16X16_Standard.png image in the images/search subfolder.  SiteIconURL supports using
@@ -144,9 +136,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the text for the "site" radio button or option list item.
-        /// </summary>
+        /// <summary>Gets or sets the text for the "site" radio button or option list item.</summary>
         /// <value>The site text.</value>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.</remarks>
@@ -168,9 +158,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the tooltip text for the "site" radio button.
-        /// </summary>
+        /// <summary>Gets or sets the tooltip text for the "site" radio button.</summary>
         /// <value>The site tool tip.</value>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.</remarks>
@@ -192,9 +180,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the URL for doing web based site searches.
-        /// </summary>
+        /// <summary>Gets or sets the URL for doing web based site searches.</summary>
         /// <value>The site URL.</value>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.
@@ -218,32 +204,24 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the html for the submit button.
-        /// </summary>
+        /// <summary>Gets or sets the html for the submit button.</summary>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.
         /// <para>If you set the value to an hmtl img tag, then the src attribute will be made relative
         /// to the current skinpath.</para></remarks>
         public string Submit { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to use the web search engine for site searches.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to use the web search engine for site searches.</summary>
         /// <remarks>Set this value to true to perform a domain limited search using the search engine defined by <see cref="SiteURL">SiteURL</see>.</remarks>
         public bool UseWebForSite { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to display the site/web options using a drop down list.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to display the site/web options using a drop down list.</summary>
         /// <remarks>If true, then the site and web options are displayed in a drop down list.  If the
         /// drop down list is used, then the <see cref="ShowWeb">ShowWeb</see> and <see cref="ShowSite">ShowSite</see>
         /// properties are not used.</remarks>
         public bool UseDropDownList { get; set; }
 
-        /// <summary>
-        /// Gets or sets the web icon URL.
-        /// </summary>
+        /// <summary>Gets or sets the web icon URL.</summary>
         /// <value>The web icon URL.</value>
         /// <remarks>If the WebIconURL is not set or is an empty string then this will return a site relative URL for the
         /// google-icon.gif image in the images/search subfolder.  WebIconURL supports using
@@ -266,9 +244,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the text for the "web" radio button or option list item.
-        /// </summary>
+        /// <summary>Gets or sets the text for the "web" radio button or option list item.</summary>
         /// <value>The web text.</value>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.</remarks>
@@ -290,9 +266,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the tooltip text for the "web" radio button.
-        /// </summary>
+        /// <summary>Gets or sets the tooltip text for the "web" radio button.</summary>
         /// <value>The web tool tip.</value>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.</remarks>
@@ -314,9 +288,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the URL for doing web based searches.
-        /// </summary>
+        /// <summary>Gets or sets the URL for doing web based searches.</summary>
         /// <value>The web URL.</value>
         /// <remarks>If the value is not set or is an empty string, then the localized value from
         /// /admin/skins/app_localresources/Search.ascx.resx localresource file is used.
@@ -341,19 +313,13 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets minium chars required to trigger auto search.
-        /// </summary>
+        /// <summary>Gets or sets minium chars required to trigger auto search.</summary>
         public int MinCharRequired { get; set; }
 
-        /// <summary>
-        /// Gets or sets the millisecond to delay trigger auto search.
-        /// </summary>
+        /// <summary>Gets or sets the millisecond to delay trigger auto search.</summary>
         public int AutoSearchDelayInMilliSecond { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether disable the wild search.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether disable the wild search.</summary>
         public bool EnableWildSearch
         {
             get { return this.enableWildSearch; }
@@ -366,11 +332,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         protected string CultureCode { get; set; }
 
-        /// <summary>
-        ///   Executes the search.
-        /// </summary>
-        /// <param name = "searchText">The text which will be used to perform the search.</param>
-        /// <param name = "searchType">The type of the search. Use "S" for a site search, and "W" for a web search.</param>
+        /// <summary>  Executes the search.</summary>
+        /// <param name="searchText">The text which will be used to perform the search.</param>
+        /// <param name="searchType">The type of the search. Use "S" for a site search, and "W" for a web search.</param>
         /// <remarks>
         ///   All web based searches will open in a new window, while site searches will open in the current window.  A site search uses the built
         ///   in search engine to perform the search, while both web based search variants will use an external search engine to perform a search.
@@ -440,9 +404,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
+        /// <summary>Handles the Load event of the Page control.</summary>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
@@ -491,9 +453,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Handles the Click event of the cmdSearchNew control.
-        /// </summary>
+        /// <summary>Handles the Click event of the cmdSearchNew control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         /// <remarks>This event is only used when <see cref="UseDropDownList">UseDropDownList</see> is true.</remarks>
@@ -503,9 +463,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.ExecuteSearch(this.txtSearchNew.Text.Trim(), this.SearchType);
         }
 
-        /// <summary>
-        /// Handles the PreRender event of the Page control.
-        /// </summary>
+        /// <summary>Handles the PreRender event of the Page control.</summary>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         /// <remarks>This event performs final initialization tasks for the search object UI.</remarks>
         protected override void OnPreRender(EventArgs e)
@@ -588,9 +546,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return searchTabId;
         }
 
-        /// <summary>
-        /// Handles the Click event of the cmdSearch control.
-        /// </summary>
+        /// <summary>Handles the Click event of the cmdSearch control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         /// <remarks>This event is only used when <see cref="UseDropDownList">UseDropDownList</see> is false.</remarks>

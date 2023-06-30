@@ -8,23 +8,17 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
 
     using Dnn.Modules.ResourceManager.Components;
 
-    /// <summary>
-    /// Represents a permissions set.
-    /// </summary>
+    /// <summary>Represents a permissions set.</summary>
     [DataContract]
     public abstract class Permissions
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Permissions"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Permissions"/> class.</summary>
         protected Permissions()
             : this(false)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Permissions"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Permissions"/> class.</summary>
         /// <param name="needDefinitions">A value indicating whether the permissions need to be loaded.</param>
         protected Permissions(bool needDefinitions)
         {
@@ -39,27 +33,19 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
             }
         }
 
-        /// <summary>
-        /// Gets or sets the list of permissions definitions.
-        /// </summary>
+        /// <summary>Gets or sets the list of permissions definitions.</summary>
         [DataMember(Name = "permissionDefinitions")]
         public IList<Permission> PermissionDefinitions { get; set; }
 
-        /// <summary>
-        /// Gets or sets a list of role based permissions.
-        /// </summary>
+        /// <summary>Gets or sets a list of role based permissions.</summary>
         [DataMember(Name = "rolePermissions")]
         public IList<RolePermission> RolePermissions { get; set; }
 
-        /// <summary>
-        /// Gets or sets a list of user based permissions.
-        /// </summary>
+        /// <summary>Gets or sets a list of user based permissions.</summary>
         [DataMember(Name = "userPermissions")]
         public IList<UserPermission> UserPermissions { get; set; }
 
-        /// <summary>
-        /// Loads the permissions definitions.
-        /// </summary>
+        /// <summary>Loads the permissions definitions.</summary>
         protected abstract void LoadPermissionDefinitions();
     }
 }

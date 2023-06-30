@@ -15,9 +15,7 @@ namespace DotNetNuke.Common.Controls {
     
     
     public partial class Privacy {
-        /// <summary>
-        /// lblPrivacy control.
-        /// </summary>
+        /// <summary>lblPrivacy control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

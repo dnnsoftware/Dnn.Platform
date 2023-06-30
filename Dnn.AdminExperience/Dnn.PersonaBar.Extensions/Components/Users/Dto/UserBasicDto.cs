@@ -15,16 +15,12 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserBasicDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
         public UserBasicDto()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserBasicDto"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
         /// <param name="user"></param>
         public UserBasicDto(UserInfo user)
         {
@@ -39,6 +35,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.RequestsRemoval = user.RequestsRemoval;
             this.IsSuperUser = user.IsSuperUser;
             this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
+            this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
+        }
+
+        public void PopulateAvatarUrl()
+        {
             this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
         }
 

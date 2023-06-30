@@ -8,9 +8,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
     {
         private readonly bool isAuthenticated;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FilterByUnauthenticated"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FilterByUnauthenticated"/> class.</summary>
         /// <param name="isAuthenticated"></param>
         public FilterByUnauthenticated(bool isAuthenticated)
         {

@@ -8,9 +8,7 @@ namespace Dnn.PersonaBar.Pages.Components.Exceptions
 
     public class TemplateException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TemplateException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TemplateException"/> class.</summary>
         /// <param name="message"></param>
         public TemplateException(string message)
             : base(message)
