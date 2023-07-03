@@ -17,7 +17,7 @@
     <dependencies>
       <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.9" />
       <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.9" />
-      <dependency id="NewtonSoft.Json" version="10.0.3" />
+      <dependency id="NewtonSoft.Json" version="13.0.2" />
       <dependency id="DotNetNuke.Web" version="$version$" />
     </dependencies>
   </metadata>
