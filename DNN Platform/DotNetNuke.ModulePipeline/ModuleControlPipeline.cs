@@ -7,7 +7,7 @@ namespace DotNetNuke.ModulePipeline
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-#if NET472
+#if NETFRAMEWORK
     using System.Web.UI;
 #endif
 
@@ -27,11 +27,11 @@ namespace DotNetNuke.ModulePipeline
     // MULTI-TARGETTING PIPELINE
     // -------------------------
     // This file multi-targets .NET Framework and .NET Standard,
-    // which is needed as DNN migrates to .NET Core. The 'NET472'
+    // which is needed as DNN migrates to .NET Core. The 'NETFRAMEWORK'
     // pre-processor directives are to fully support Legacy DNN.
     // As the Pipeline is upgraded to be more complaint with
     // .NET Standard 2.0 use the appropriate pre-processor directives.
-#if NET472
+#if NETFRAMEWORK
         : IModuleControlPipeline
 #endif
     {
@@ -45,7 +45,7 @@ namespace DotNetNuke.ModulePipeline
             this.factories = factories.OrderByDescending(f => f.Priority).ToArray();
         }
 
-#if NET472
+#if NETFRAMEWORK
         /// <inheritdoc />
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
