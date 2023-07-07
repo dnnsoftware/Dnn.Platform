@@ -510,6 +510,31 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.IsTrue(this.redirectionController.IsRedirectAllowedForTheSession(app));
         }
 
+        private static IClientCapability GetClientCapabilityCallBack(string userAgent)
+        {
+            var clientCapability = new TestClientCapability();
+            switch (userAgent)
+            {
+                case iphoneUserAgent:
+                    clientCapability.IsMobile = true;
+                    clientCapability.Properties.Add("mobile_browser", "Safari");
+                    clientCapability.Properties.Add("device_os", "iPhone OS");
+                    break;
+                case iPadTabletUserAgent:
+                    clientCapability.IsTablet = true;
+                    clientCapability.Properties.Add("mobile_browser", "Safari");
+                    clientCapability.Properties.Add("device_os", "iPhone OS");
+                    break;
+                case motorolaRIZRSymbianOSOpera865:
+                    clientCapability.IsMobile = true;
+                    clientCapability.Properties.Add("mobile_browser", "Opera Mini");
+                    clientCapability.Properties.Add("device_os", "Symbian OS");
+                    break;
+            }
+
+            return clientCapability;
+        }
+
         private void SetupContainer()
         {
             var mockNavigationManager = new Mock<INavigationManager>();
@@ -683,7 +708,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private void SetupClientCapabilityProvider()
         {
-            this.clientCapabilityProvider.Setup(p => p.GetClientCapability(It.IsAny<string>())).Returns<string>(this.GetClientCapabilityCallBack);
+            this.clientCapabilityProvider.Setup(p => p.GetClientCapability(It.IsAny<string>())).Returns<string>(GetClientCapabilityCallBack);
         }
 
         private void SetupRoleProvider()
@@ -860,25 +885,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             table.Rows.Add(1, 0, "Portal Group", string.Empty, string.Empty, -1, DateTime.Now, -1, DateTime.Now);
 
             return table.CreateDataReader();
-        }
-
-        private IClientCapability GetClientCapabilityCallBack(string userAgent)
-        {
-            IClientCapability clientCapability = new TestClientCapability();
-            if (userAgent == iphoneUserAgent)
-            {
-                clientCapability.IsMobile = true;
-            }
-            else if (userAgent == iPadTabletUserAgent)
-            {
-                clientCapability.IsTablet = true;
-            }
-            else if (userAgent == motorolaRIZRSymbianOSOpera865)
-            {
-                clientCapability.IsMobile = true;
-            }
-
-            return clientCapability;
         }
 
         private IDataReader GetAllRedirectionsCallBack()

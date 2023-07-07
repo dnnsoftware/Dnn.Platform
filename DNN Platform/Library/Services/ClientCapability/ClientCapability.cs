@@ -4,19 +4,10 @@
 namespace DotNetNuke.Services.ClientCapability
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>Default Implementation of IClientCapability.</summary>
     public class ClientCapability : IClientCapability
     {
-        private IDictionary<string, string> capabilities;
-
-        /// <summary>Initializes a new instance of the <see cref="ClientCapability"/> class.</summary>
-        public ClientCapability()
-        {
-            this.capabilities = new Dictionary<string, string>();
-        }
-
         /// <inheritdoc />
         public string ID { get; set; }
 
