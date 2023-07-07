@@ -1,0 +1,40 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="jQuery.Fileupload" type="JavaScript_Library" version="10.07.00" isSystem="true">
+      <friendlyName>jQuery File Upload Plugin</friendlyName>
+      <description>File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for jQuery.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="LICENSE.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+          <dependency type="managedPackage" version="10.07.00">jQuery.iframe-transport</dependency>
+          <dependency type="managedPackage" version="01.13.02">jQuery-UI</dependency>
+      </dependencies>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>jQuery.Fileupload</libraryName>
+            <fileName>jquery.fileupload.js</fileName>
+            <objectName>jQuery.fn.fileupload</objectName>
+            <CDNPath>https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.7.0/js/jquery.fileupload.min.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>jQuery.Fileupload</libraryFolderName>
+            <jsfile>
+              <name>jquery.fileupload.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>        
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

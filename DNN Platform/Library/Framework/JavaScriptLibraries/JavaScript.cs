@@ -80,15 +80,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 case CommonJs.jQuery:
                     RequestRegistration(CommonJs.jQueryMigrate);
                     break;
-                case CommonJs.DnnPlugins:
-                    RequestRegistration(CommonJs.jQueryUI);
-                    RequestRegistration(CommonJs.HoverIntent);
-                    AddPreInstallorLegacyItemRequest(jsname);
-                    return;
-                case CommonJs.HoverIntent:
-                case CommonJs.jQueryFileUpload:
-                    AddPreInstallorLegacyItemRequest(jsname);
-                    return;
             }
 
             RequestRegistration(jsname, null, SpecificVersion.Latest);
@@ -442,14 +433,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
             ClientResourceManager.RegisterScript(page, GetScriptPath(jsl, page), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
 
-            // workaround to support IE specific script until we move to IE version that no longer requires this
-            if (jsl.LibraryName == CommonJs.jQueryFileUpload)
-            {
-                ClientResourceManager.RegisterScript(
-                    page,
-                    "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-            }
-
             if (Host.CdnEnabled && !string.IsNullOrEmpty(jsl.ObjectName))
             {
                 string pagePortion;
@@ -556,71 +539,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                 jQuery.GetJQueryUIScriptReference(),
                                 FileOrder.Js.jQueryUI,
                                 "DnnPageHeaderProvider");
-                        }
-
-                        break;
-                    case CommonJs.DnnPlugins:
-                        // This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
-                        // such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
-                        if (page.Form != null)
-                        {
-                        }
-
-                        // register dependency
-                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        // actual jqueryui
-                        if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryUIScriptReference(),
-                                FileOrder.Js.jQueryUI,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js",
-                                FileOrder.Js.HoverIntent);
-                        }
-
-                        // no package for this - CRM will deduplicate
-                        ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
-                        break;
-                    case CommonJs.jQueryFileUpload:
-                        ClientResourceManager.RegisterScript(
-                            page,
-                            "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-                        ClientResourceManager.RegisterScript(
-                            page,
-                            "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
-                        break;
-                    case CommonJs.HoverIntent:
-                        if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js",
-                                FileOrder.Js.HoverIntent);
                         }
 
                         break;
