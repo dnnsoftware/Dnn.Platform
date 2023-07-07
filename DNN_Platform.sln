@@ -597,6 +597,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HoverIntent", "HoverIntent"
 		DNN Platform\JavaScript Libraries\HoverIntent\releaseNotes.txt = DNN Platform\JavaScript Libraries\HoverIntent\releaseNotes.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DnnPlugins", "DnnPlugins", "{CF68C3E8-5CF4-47A8-867B-9C6CE9852AA4}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\DnnPlugins\dnn.jquery.js = DNN Platform\JavaScript Libraries\DnnPlugins\dnn.jquery.js
+		DNN Platform\JavaScript Libraries\DnnPlugins\DnnPlugins.dnn = DNN Platform\JavaScript Libraries\DnnPlugins\DnnPlugins.dnn
+		DNN Platform\JavaScript Libraries\DnnPlugins\LICENSE.txt = DNN Platform\JavaScript Libraries\DnnPlugins\LICENSE.txt
+		DNN Platform\JavaScript Libraries\DnnPlugins\releaseNotes.txt = DNN Platform\JavaScript Libraries\DnnPlugins\releaseNotes.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -2259,6 +2267,7 @@ Global
 		{60AD263B-C26A-4ED3-B63F-F508230B1B55} = {886DB964-63D4-4841-81D1-5A7360C98230}
 		{F614CC1C-C719-467A-8CDF-3625B06E654C} = {886DB964-63D4-4841-81D1-5A7360C98230}
 		{DA5217C3-CF28-4BBB-B7CC-9523F514ED89} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{CF68C3E8-5CF4-47A8-867B-9C6CE9852AA4} = {886DB964-63D4-4841-81D1-5A7360C98230}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}
