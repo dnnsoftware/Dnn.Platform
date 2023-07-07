@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Services.Search
     /// <summary>The SearchEngine manages the Indexing of the Portal content.</summary>
     internal class SearchEngine
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngine));
         private readonly IBusinessControllerProvider businessControllerProvider;
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngine"/> class.</summary>
@@ -154,10 +156,8 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Gets all the Search Documents for the given timeframe.</summary>
-        /// <param name="indexer"></param>
         private int GetAndStoreSearchDocuments(IndexingProviderBase indexer)
         {
-            IList<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
             DateTime indexSince;
             var indexedCount = 0;
@@ -170,9 +170,9 @@ namespace DotNetNuke.Services.Search
                     indexedCount += indexer.IndexSearchDocuments(
                         portal.PortalID, this.SchedulerItem, indexSince, StoreSearchDocuments);
                 }
-                catch (NotImplementedException)
+                catch (NotImplementedException exc)
                 {
-                    //No longer supporting fallback, but don't want to cause an exception
+                    Logger.Warn("Indexer not implemented", exc);
                 }
             }
 
@@ -183,9 +183,9 @@ namespace DotNetNuke.Services.Search
                 indexedCount += indexer.IndexSearchDocuments(
                     Null.NullInteger, this.SchedulerItem, indexSince, StoreSearchDocuments);
             }
-            catch (NotImplementedException)
+            catch (NotImplementedException exc)
             {
-                //No longer supporting fallback, but don't want to cause an exception
+                Logger.Warn("Indexer not implemented", exc);
             }
 
             return indexedCount;
