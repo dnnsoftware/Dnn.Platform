@@ -1,5 +1,10 @@
 [
   {
+    "name": "HoverIntent",
+    "folder": "DNN Platform/JavaScript Libraries/HoverIntent/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
     "name": "jQuery",
     "folder": "DNN Platform/JavaScript Libraries/jQuery/",
     "destination": "Install/JavaScriptLibrary"

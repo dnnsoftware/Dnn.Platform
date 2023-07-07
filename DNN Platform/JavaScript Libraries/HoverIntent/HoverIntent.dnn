@@ -1,0 +1,39 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="HoverIntent" type="JavaScript_Library" version="01.10.01" isSystem="true">
+      <friendlyName>hoverIntent jQuery Plugin</friendlyName>
+      <description>hoverIntent is a plug-in that attempts to determine the user's intent… like a crystal ball, only with mouse movement!</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="LICENSE.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+          <dependency type="managedPackage" version="01.07.00">jQuery</dependency>
+      </dependencies>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>HoverIntent</libraryName>
+            <fileName>jquery.hoverIntent.min.js</fileName>
+            <objectName>jQuery.fn.hoverIntent</objectName>
+            <CDNPath>https://cdnjs.cloudflare.com/ajax/libs/jquery.hoverintent/1.10.1/jquery.hoverIntent.min.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>HoverIntent</libraryFolderName>
+            <jsfile>
+              <name>jquery.hoverIntent.min.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>        
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

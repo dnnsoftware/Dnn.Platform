@@ -85,9 +85,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     RequestRegistration(CommonJs.HoverIntent);
                     AddPreInstallorLegacyItemRequest(jsname);
                     return;
-                case CommonJs.HoverIntent:
-                    AddPreInstallorLegacyItemRequest(jsname);
-                    return;
             }
 
             RequestRegistration(jsname, null, SpecificVersion.Latest);
@@ -596,16 +593,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
                         // no package for this - CRM will deduplicate
                         ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
-                        break;
-                    case CommonJs.HoverIntent:
-                        if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js",
-                                FileOrder.Js.HoverIntent);
-                        }
-
                         break;
                 }
             }
