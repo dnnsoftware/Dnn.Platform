@@ -25,28 +25,21 @@ namespace DotNetNuke.Services.Exceptions
         private string source;
         private string stackTrace;
 
-        // default constructor
-
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
         public BasePortalException()
         {
         }
 
-        // constructor with exception message
-
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <inheritdoc cref="Exception(string)"/>
         public BasePortalException(string message)
             : base(message)
         {
             this.InitializePrivateVariables();
         }
 
-        // constructor with message and inner exception
-
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <inheritdoc cref="Exception(string, Exception)"/>
         public BasePortalException(string message, Exception inner)
             : base(message, inner)
         {
@@ -54,8 +47,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
+        /// <inheritdoc cref="Exception(SerializationInfo, StreamingContext)"/>
         protected BasePortalException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

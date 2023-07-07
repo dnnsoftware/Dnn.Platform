@@ -4,24 +4,20 @@
 namespace DotNetNuke.Services.Exceptions
 {
     using System;
-    
+
+    /// <summary>An exception related to search indexing.</summary>
     public class SearchException : BasePortalException
     {
-        // default constructor
-
         /// <summary>Initializes a new instance of the <see cref="SearchException"/> class.</summary>
         public SearchException()
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SearchException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
-        /// <param name="searchItem"></param>
+        /// <inheritdoc cref="BasePortalException(string, Exception)"/>
         public SearchException(string message, Exception inner)
             : base(message, inner)
         {
-
         }
     }
 }
