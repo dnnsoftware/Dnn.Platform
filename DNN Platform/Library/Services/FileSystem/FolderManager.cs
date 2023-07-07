@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.FileSystem
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -410,7 +409,7 @@ namespace DotNetNuke.Services.FileSystem
             // always use _default portal for a super user
             int portalId = userInfo.IsSuperUser ? -1 : userInfo.PortalID;
 
-            string userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(userInfo);
+            string userFolderPath = PathUtils.GetUserFolderPathInternal(userInfo);
             return this.GetFolder(portalId, userFolderPath) ?? this.AddUserFolder(userInfo);
         }
 
@@ -823,23 +822,15 @@ namespace DotNetNuke.Services.FileSystem
                 this.AddFolder(folderMapping, DefaultUsersFoldersPath);
             }
 
-            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
-#pragma warning disable 612,618
-            var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
-#pragma warning restore 612,618
-
-            var folderPath = PathUtils.Instance.FormatFolderPath(string.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+            var rootFolder = PathUtils.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
+            var folderPath = PathUtils.Instance.FormatFolderPath($"{DefaultUsersFoldersPath}/{rootFolder}");
 
             if (!this.FolderExists(portalId, folderPath))
             {
                 this.AddFolder(folderMapping, folderPath);
             }
 
-            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
-#pragma warning disable 612,618
-            folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
-#pragma warning restore 612,618
-
+            folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
             if (!this.FolderExists(portalId, folderPath))
             {
                 this.AddFolder(folderMapping, folderPath);
