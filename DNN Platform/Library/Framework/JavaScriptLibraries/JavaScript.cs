@@ -86,7 +86,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     AddPreInstallorLegacyItemRequest(jsname);
                     return;
                 case CommonJs.HoverIntent:
-                case CommonJs.jQueryFileUpload:
                     AddPreInstallorLegacyItemRequest(jsname);
                     return;
             }
@@ -442,14 +441,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
             ClientResourceManager.RegisterScript(page, GetScriptPath(jsl, page), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
 
-            // workaround to support IE specific script until we move to IE version that no longer requires this
-            if (jsl.LibraryName == CommonJs.jQueryFileUpload)
-            {
-                ClientResourceManager.RegisterScript(
-                    page,
-                    "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-            }
-
             if (Host.CdnEnabled && !string.IsNullOrEmpty(jsl.ObjectName))
             {
                 string pagePortion;
@@ -605,14 +596,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
                         // no package for this - CRM will deduplicate
                         ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
-                        break;
-                    case CommonJs.jQueryFileUpload:
-                        ClientResourceManager.RegisterScript(
-                            page,
-                            "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-                        ClientResourceManager.RegisterScript(
-                            page,
-                            "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
                         break;
                     case CommonJs.HoverIntent:
                         if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)

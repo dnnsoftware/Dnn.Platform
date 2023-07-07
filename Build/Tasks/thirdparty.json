@@ -5,6 +5,16 @@
     "destination": "Install/JavaScriptLibrary"
   },
   {
+    "name": "jQuery.Fileupload",
+    "folder": "DNN Platform/JavaScript Libraries/jQuery.Fileupload/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "jQuery.iframe-transport",
+    "folder": "DNN Platform/JavaScript Libraries/jQuery.iframe-transport/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
     "name": "jQueryMigrate",
     "folder": "DNN Platform/JavaScript Libraries/jQueryMigrate/",
     "destination": "Install/JavaScriptLibrary"

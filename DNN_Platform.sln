@@ -573,6 +573,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Maintenance", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.GoogleAnalytics4Connector", "DNN Platform\Connectors\GoogleAnalytics4\Dnn.GoogleAnalytics4Connector.csproj", "{94E12995-181A-4114-90C7-3F9557F28DE7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery.Fileupload", "jQuery.Fileupload", "{60AD263B-C26A-4ED3-B63F-F508230B1B55}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn = DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\jquery.fileupload.js = DNN Platform\JavaScript Libraries\jQuery.Fileupload\jquery.fileupload.js
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\LICENSE.txt = DNN Platform\JavaScript Libraries\jQuery.Fileupload\LICENSE.txt
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQuery.Fileupload\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery.iframe-transport", "jQuery.iframe-transport", "{F614CC1C-C719-467A-8CDF-3625B06E654C}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jQuery.iframe-transport.dnn = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jQuery.iframe-transport.dnn
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jquery.iframe-transport.js = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jquery.iframe-transport.js
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\LICENSE.txt = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\LICENSE.txt
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\releaseNotes.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -2232,6 +2248,8 @@ Global
 		{EEFFEA77-4FA5-4498-9A9C-1BDBD6436E43} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{1D5A98BD-F8E0-45F7-B26D-270D9023629D} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{94E12995-181A-4114-90C7-3F9557F28DE7} = {9A986091-4238-4804-8C86-6A9A005F72C2}
+		{60AD263B-C26A-4ED3-B63F-F508230B1B55} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{F614CC1C-C719-467A-8CDF-3625B06E654C} = {886DB964-63D4-4841-81D1-5A7360C98230}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}
