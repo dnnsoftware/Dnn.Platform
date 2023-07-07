@@ -403,15 +403,6 @@ namespace DotNetNuke.Services.Exceptions
             objExceptionLog.AddLog(exc, ExceptionLogController.ExceptionLogType.SCHEDULER_EXCEPTION);
         }
 
-        /// <summary>Logs the search exception.</summary>
-        /// <param name="exc">The exception.</param>
-        public static void LogSearchException(SearchException exc)
-        {
-            Logger.Error(exc);
-            var objExceptionLog = new ExceptionLogController();
-            objExceptionLog.AddLog(exc, ExceptionLogController.ExceptionLogType.SEARCH_INDEXER_EXCEPTION);
-        }
-
         /// <summary>Resets a thread abort if the exception is a <see cref="ThreadAbortException"/>.</summary>
         /// <param name="exc">The exception.</param>
         /// <returns><see langword="true"/> if <paramref name="exc"/> is a <see cref="ThreadAbortException"/> instance, otherwise <see langword="false"/>.</returns>

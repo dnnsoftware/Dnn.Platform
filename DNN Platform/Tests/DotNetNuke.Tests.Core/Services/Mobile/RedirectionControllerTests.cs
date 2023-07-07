@@ -868,20 +868,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             if (userAgent == iphoneUserAgent)
             {
                 clientCapability.IsMobile = true;
-                clientCapability.Capabilities.Add("mobile_browser", "Safari");
-                clientCapability.Capabilities.Add("device_os", "iPhone OS");
             }
             else if (userAgent == iPadTabletUserAgent)
             {
                 clientCapability.IsTablet = true;
-                clientCapability.Capabilities.Add("mobile_browser", "Safari");
-                clientCapability.Capabilities.Add("device_os", "iPhone OS");
             }
             else if (userAgent == motorolaRIZRSymbianOSOpera865)
             {
                 clientCapability.IsMobile = true;
-                clientCapability.Capabilities.Add("mobile_browser", "Opera Mini");
-                clientCapability.Capabilities.Add("device_os", "Symbian OS");
             }
 
             return clientCapability;

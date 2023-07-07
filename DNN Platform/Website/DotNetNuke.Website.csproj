@@ -437,13 +437,6 @@
     <Compile Include="admin\Skins\Login.ascx.designer.cs">
       <DependentUpon>login.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\Logo.ascx.cs">
       <DependentUpon>logo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -457,13 +450,6 @@
     </Compile>
     <Compile Include="admin\Skins\Meta.ascx.designer.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\Skins\Nav.ascx.cs">
-      <DependentUpon>nav.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\Nav.ascx.designer.cs">
-      <DependentUpon>nav.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Privacy.ascx.cs">
       <DependentUpon>privacy.ascx</DependentUpon>
@@ -809,7 +795,6 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
-    <Content Include="admin\Skins\LeftMenu.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="DesktopModules\Admin\Security\DataConsent.ascx" />
@@ -1351,8 +1336,6 @@
     <Content Include="admin\Skins\Logo.xml" />
     <Content Include="admin\Skins\Meta.ascx" />
     <Content Include="admin\Skins\modulemessage.ascx" />
-    <Content Include="admin\Skins\nav.ascx" />
-    <Content Include="admin\Skins\nav.xml" />
     <Content Include="admin\Skins\privacy.ascx" />
     <Content Include="admin\Skins\Privacy.xml" />
     <Content Include="admin\Skins\search.ascx" />

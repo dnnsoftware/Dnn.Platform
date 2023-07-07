@@ -31,12 +31,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private DnnTextLink dnnLink;
         private DnnTextButton dnnLinkButton;
 
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
-        public DnnRibbonBarTool()
-            : this(null)
-        {
-        }
-
         public DnnRibbonBarTool(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();

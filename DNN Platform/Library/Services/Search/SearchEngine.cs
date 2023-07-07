@@ -57,15 +57,9 @@ namespace DotNetNuke.Services.Search
             searchDocsCount = this.GetAndStoreSearchDocuments(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
 
-            // Index all Defunct ISearchable module content
-#pragma warning disable 0618
-            var searchItems = this.GetContent(moduleIndexer);
-            SearchDataStoreProvider.Instance().StoreSearchItems(searchItems);
-#pragma warning restore 0618
-            indexedSearchDocumentCount += searchItems.Count;
 
             // Both ModuleSearchBase and ISearchable module content count
-            this.AddIdexingResults("Modules (Content) Indexed", searchDocsCount + searchItems.Count);
+            this.AddIdexingResults("Modules (Content) Indexed", searchDocsCount);
 
             if (!HostController.Instance.GetBoolean("DisableUserCrawling", false))
             {
@@ -139,45 +133,6 @@ namespace DotNetNuke.Services.Search
             InternalSearchController.Instance.Commit();
         }
 
-        /// <summary>
-        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable)
-        ///
-        /// GetContent gets all the content and passes it to the Indexer.
-        /// </summary>
-        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
-        /// <returns>A new <see cref="SearchItemInfoCollection"/> instance.</returns>
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
-        {
-            var searchItems = new SearchItemInfoCollection();
-            var portals = PortalController.Instance.GetPortals();
-            for (var index = 0; index <= portals.Count - 1; index++)
-            {
-                var portal = (PortalInfo)portals[index];
-                searchItems.AddRange(indexer.GetSearchIndexItems(portal.PortalID));
-            }
-
-            return searchItems;
-        }
-
-        /// <summary>
-        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable)
-        ///
-        /// GetContent gets the Portal's content and passes it to the Indexer.
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
-        /// <returns>A new <see cref="SearchItemInfoCollection"/> instance.</returns>
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
-        {
-            var searchItems = new SearchItemInfoCollection();
-            searchItems.AddRange(indexer.GetSearchIndexItems(portalId));
-            return searchItems;
-        }
-
         /// <summary>Ensures all SearchDocuments have a SearchTypeId.</summary>
         /// <param name="searchDocs"></param>
         private static void StoreSearchDocuments(IEnumerable<SearchDocument> searchDocs)
@@ -217,11 +172,7 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (NotImplementedException)
                 {
-#pragma warning disable 618
-                    searchDocs = indexer.GetSearchDocuments(portal.PortalID, indexSince).ToList();
-#pragma warning restore 618
-                    StoreSearchDocuments(searchDocs);
-                    indexedCount += searchDocs.Count();
+                    //No longer supporting fallback, but don't want to cause an exception
                 }
             }
 
@@ -234,11 +185,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (NotImplementedException)
             {
-#pragma warning disable 618
-                searchDocs = indexer.GetSearchDocuments(-1, indexSince).ToList();
-#pragma warning restore 618
-                StoreSearchDocuments(searchDocs);
-                indexedCount += searchDocs.Count();
+                //No longer supporting fallback, but don't want to cause an exception
             }
 
             return indexedCount;

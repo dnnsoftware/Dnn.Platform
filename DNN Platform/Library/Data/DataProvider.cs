@@ -403,24 +403,6 @@ namespace DotNetNuke.Data
             return this.ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount, enabled);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode. Scheduled removal in v10.0.0.")]
-        public virtual int CreatePortal(string portalname, string currency, DateTime expiryDate, double hostFee, double hostSpace, int pageQuota, int userQuota, int siteLogHistory, string homeDirectory, int createdByUserID)
-        {
-            return
-                this.CreatePortal(
-                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
-                                            currency,
-                                            expiryDate,
-                                            hostFee,
-                                            hostSpace,
-                                            pageQuota,
-                                            userQuota,
-                                            siteLogHistory,
-                                            homeDirectory,
-                                            "en-US",
-                                            createdByUserID);
-        }
-
         public virtual int CreatePortal(string portalname, string currency, DateTime expiryDate, double hostFee, double hostSpace, int pageQuota, int userQuota, int siteLogHistory, string homeDirectory, string cultureCode, int createdByUserID)
         {
             return

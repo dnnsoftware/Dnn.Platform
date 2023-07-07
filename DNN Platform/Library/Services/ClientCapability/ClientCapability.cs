@@ -45,21 +45,6 @@ namespace DotNetNuke.Services.ClientCapability
         public bool SupportsFlash { get; set; }
 
         /// <inheritdoc />
-        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled removal in v10.0.0.")]
-        public IDictionary<string, string> Capabilities
-        {
-            get
-            {
-                return this.capabilities;
-            }
-
-            set
-            {
-                this.capabilities = value;
-            }
-        }
-
-        /// <inheritdoc />
         public string BrowserName { get; set; }
 
         /// <inheritdoc />

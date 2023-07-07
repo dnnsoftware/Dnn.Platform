@@ -2091,19 +2091,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    _mockFolderManager.Verify(mfm => mfm.DeleteFolder(It.IsAny<int>(), It.IsAny<string>()), Times.Never());
         //    _directory.Verify(d => d.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
         // }
-        [Test]
-        public void MoveFolder_Throws_On_Null_Folder()
-        {
-            Assert.Throws<ArgumentNullException>(() => this.folderManager.MoveFolder(null, It.IsAny<string>()));
-        }
 
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        public void MoveFolder_Throws_On_Null_Or_Emtpy_NewFolderPath(string newFolderPath)
-        {
-            Assert.Throws<ArgumentException>(() => this.folderManager.MoveFolder(this.folderInfo.Object, newFolderPath));
-        }
 
         [Test]
 

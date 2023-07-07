@@ -16,11 +16,6 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         {
             get
             {
-                if (this.Capabilities.ContainsKey(name))
-                {
-                    return this.Capabilities[name];
-                }
-
                 return string.Empty;
             }
         }

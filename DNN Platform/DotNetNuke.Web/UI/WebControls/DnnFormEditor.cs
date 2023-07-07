@@ -117,12 +117,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
-        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
-        {
-            SetUpItems(items, parentControl, localResourceFile, false);
-        }
-
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
         {
             foreach (DnnFormItemBase item in items)

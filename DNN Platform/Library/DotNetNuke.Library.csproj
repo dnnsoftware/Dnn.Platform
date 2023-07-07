@@ -211,7 +211,6 @@
     <Compile Include="Common\Internal\FileSystemUtilsProvider.cs" />
     <Compile Include="Common\Internal\IFileSystemUtils.cs" />
     <Compile Include="Common\Internal\IRoutingManager.cs" />
-    <Compile Include="Common\Lists\ListEntryInfoCollection.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
@@ -226,7 +225,6 @@
     <Compile Include="Data\PetaPoco\FluentMapper.cs" />
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
-    <Compile Include="Entities\Content\ContentExtensions.cs" />
     <Compile Include="Entities\Content\Taxonomy\ScopeTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProvider.cs" />
@@ -293,7 +291,6 @@
     <Compile Include="Obsolete\LogInfo.cs" />
     <Compile Include="Obsolete\LogTypeConfigInfo.cs" />
     <Compile Include="Obsolete\LogTypeInfo.cs" />
-    <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Obsolete\SerializationController.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
@@ -506,27 +503,15 @@
     <Compile Include="Common\Internal\EventHandlersContainer.cs" />
     <Compile Include="Entities\Users\UserEventArgs.cs" />
     <Compile Include="Entities\Users\UserEventHandlers.cs" />
-    <Compile Include="Obsolete\IPortalSettings.cs" />
-    <Compile Include="Obsolete\IUserController.cs" />
-    <Compile Include="Obsolete\IModuleController.cs" />
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
     <Compile Include="Entities\Modules\ModuleController.cs" />
-    <Compile Include="Obsolete\IPortalAliasController.cs" />
-    <Compile Include="Obsolete\PortalTemplateIOImpl.cs" />
-    <Compile Include="Obsolete\TestablePortalAliasController.cs" />
-    <Compile Include="Obsolete\ITabController.cs" />
-    <Compile Include="Obsolete\CBO.cs" />
-    <Compile Include="Obsolete\LogController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
-    <Compile Include="Obsolete\PortalController.cs" />
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
     <Compile Include="Entities\Portals\Templates\IPortalTemplateIO.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateIO.cs" />
-    <Compile Include="Obsolete\RoleController.cs" />
     <Compile Include="Obsolete\TabController.cs" />
-    <Compile Include="Obsolete\TestablePortalController.cs" />
     <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
     <Compile Include="Entities\Tabs\TabAliasSkinInfo.cs" />
     <Compile Include="Entities\Tabs\TabException.cs" />
@@ -589,8 +574,6 @@
     <Compile Include="Entities\Users\Exceptions\UserAlreadyVerifiedException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserDoesNotExistException.cs" />
     <Compile Include="Entities\Users\IUserController.cs" />
-    <Compile Include="Obsolete\TestablePortalSettings.cs" />
-    <Compile Include="Obsolete\TestableUserController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordSettings.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPropertyAccess.cs" />
@@ -700,14 +683,11 @@
     <Compile Include="Entities\Host\ServerInfo.cs" />
     <Compile Include="Entities\Icons\IconController.cs" />
     <Compile Include="Entities\Modules\IModuleController.cs" />
-    <Compile Include="Obsolete\TestableModuleController.cs" />
     <Compile Include="Entities\Tabs\ITabController.cs" />
-    <Compile Include="Obsolete\TestableTabController.cs" />
     <Compile Include="Framework\IServicesFramework.cs" />
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
-    <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\Cookies\AuthCookieController.cs" />
     <Compile Include="Security\Cookies\IAuthCookieController.cs" />
     <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />
@@ -723,12 +703,10 @@
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
     <Compile Include="Security\RegistrationSettings.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
-    <Compile Include="Obsolete\TestableRoleController.cs" />
     <Compile Include="Security\Roles\IRoleController.cs" />
     <Compile Include="Security\Roles\IRoleEventHandlers.cs" />
     <Compile Include="Security\Roles\RoleEventArgs.cs" />
     <Compile Include="Security\Roles\SecurityMode.cs" />
-    <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
     <Compile Include="Services\Analytics\GoogleAnalytics4Engine.cs" />
     <Compile Include="Services\Assets\AssetManagerException.cs" />
@@ -775,6 +753,7 @@
     <Compile Include="Services\DependencyInjection\IScopeAccessor.cs" />
     <Compile Include="Services\EventQueue\EventMessageProcessorBase.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
+    <Compile Include="Services\Exceptions\SearchException.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
@@ -999,10 +978,6 @@
     <Compile Include="Services\Search\ModuleIndexer.cs" />
     <Compile Include="Services\Search\SearchContentModuleInfo.cs" />
     <Compile Include="Services\Search\SearchContentModuleInfoCollection.cs" />
-    <Compile Include="Services\Search\SearchCriteria.cs" />
-    <Compile Include="Services\Search\SearchCriteriaCollection.cs" />
-    <Compile Include="Services\Search\SearchDataStore.cs" />
-    <Compile Include="Services\Search\SearchDataStoreController.cs" />
     <Compile Include="Services\Sitemap\CoreSitemapProvider.cs" />
     <Compile Include="Services\Social\Messaging\Internal\IInternalMessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Internal\InternalMessagingController.cs" />
@@ -1065,9 +1040,6 @@
     </Compile>
     <Compile Include="Entities\Modules\IHydratable.cs" />
     <Compile Include="Entities\Modules\IPortable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Entities\Modules\ISearchable.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Modules\IUpgradeable.cs">
@@ -1317,7 +1289,6 @@
     <Compile Include="Services\Social\Notifications\INotificationsController.cs" />
     <Compile Include="Services\Social\Notifications\NotificationsController.cs" />
     <Compile Include="Services\Social\Notifications\NotificationType.cs" />
-    <Compile Include="Services\SystemDateTime\SystemDateTime.cs" />
     <Compile Include="Services\EventQueue\Config\EventQueueConfiguration.cs" />
     <Compile Include="Services\EventQueue\Config\PublishedEvent.cs" />
     <Compile Include="Services\EventQueue\Config\SubscriberInfo.cs" />
@@ -1332,7 +1303,6 @@
     <Compile Include="Services\Exceptions\ObjectHydrationException.cs" />
     <Compile Include="Services\Exceptions\PageLoadException.cs" />
     <Compile Include="Services\Exceptions\SchedulerException.cs" />
-    <Compile Include="Services\Exceptions\SearchException.cs" />
     <Compile Include="Services\Exceptions\SecurityException.cs" />
     <Compile Include="Services\FileSystem\ContentDisposition.cs" />
     <Compile Include="Services\FileSystem\Exceptions\PermissionsNotMetException.cs" />
@@ -1525,29 +1495,10 @@
     <Compile Include="Services\Scheduling\SchedulingProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Search\IndexingProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchConfig.cs" />
-    <Compile Include="Services\Search\SearchDataStoreProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Search\SearchEngine.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Search\SearchEngineScheduler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchItemInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchItemInfoCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchResultsInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchResultsInfoCollection.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Sitemap\SitemapBuilder.cs" />

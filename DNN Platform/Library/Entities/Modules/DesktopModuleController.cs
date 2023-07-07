@@ -616,7 +616,7 @@ namespace DotNetNuke.Entities.Modules
             var businessControllerType = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
 
             desktopModuleInfo.IsPortable = typeof(IPortable).IsAssignableFrom(businessControllerType);
-            desktopModuleInfo.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(businessControllerType) || typeof(ISearchable).IsAssignableFrom(businessControllerType);
+            desktopModuleInfo.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(businessControllerType);
             desktopModuleInfo.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(businessControllerType);
         }
     }

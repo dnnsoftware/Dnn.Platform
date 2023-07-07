@@ -59,16 +59,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
                 this.IsTouchScreen = false;
                 this.BrowserName = browserCaps.Browser;
-                if (browserCaps.Capabilities != null)
-                {
-                    this.Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
-                        .ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value));
-                }
-                else
-                {
-                    this.Capabilities = new Dictionary<string, string>();
-                }
-
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 
@@ -80,15 +70,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 var lowerAgent = this.UserAgent.ToLowerInvariant();
                 this.IsMobile = browserCaps.IsMobileDevice || GetIfMobile(lowerAgent);
                 this.IsTablet = GetIfTablet(lowerAgent);
-
-                try
-                {
-                    DetectOperatingSystem(lowerAgent, this.Capabilities);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
             }
         }
 
@@ -123,7 +104,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.IsTablet = GetBoolValue(this.properties, "IsTablet");
                 this.IsTouchScreen = GetBoolValue(this.properties, "HasTouchScreen");
                 this.BrowserName = GetStringValue(this.properties, "BrowserName");
-                this.Capabilities = GetCapabilities(this.properties);
 
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
@@ -146,20 +126,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     return this.properties[name];
                 }
 
-                return (this.Capabilities != null && this.Capabilities.ContainsKey(name)) ? this.Capabilities[name] : string.Empty;
+                return string.Empty;
             }
-        }
-
-        /// <summary>
-        /// Returns a dictionary of capability names and values as strings based on the object
-        /// keys and values held in the browser capabilities provided. The value string may
-        /// contains pipe (|) separated lists of values.
-        /// </summary>
-        /// <param name="properties">A collection of device related capabilities.</param>
-        /// <returns>Device related capabilities with property names and values converted to strings.</returns>
-        private static IDictionary<string, string> GetCapabilities(IDictionary<string, string> properties)
-        {
-            return properties.Keys.ToDictionary(key => key, key => string.Join(Constants.ValueSeperator, properties[key].ToArray()));
         }
 
         /// <summary>

@@ -131,7 +131,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="page">reference to the current page.</param>
         public static void Register(Page page)
         {
-            HandlePreInstallorLegacyItemRequests(page);
             IEnumerable<string> scripts = GetScriptVersions();
             IEnumerable<JavaScriptLibrary> finalScripts = ResolveVersionConflicts(scripts);
             foreach (JavaScriptLibrary jsl in finalScripts)
@@ -149,19 +148,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
 
             return jfile;
-        }
-
-        public static string GetJQueryScriptReference()
-        {
-#pragma warning disable 618
-            string scriptsrc = jQuery.HostedUrl;
-            if (!jQuery.UseHostedScript)
-            {
-                scriptsrc = jQuery.JQueryFile(!jQuery.UseDebugScript);
-            }
-
-            return scriptsrc;
-#pragma warning restore 618
         }
 
         public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
@@ -481,70 +467,5 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static void HandlePreInstallorLegacyItemRequests(Page page)
-        {
-            List<string> legacyScripts = (from object item in HttpContextSource.Current.Items.Keys
-                                          where item.ToString().StartsWith(LegacyPrefix)
-                                          select item.ToString().Substring(7)).ToList();
-#pragma warning disable 618
-            foreach (string legacyScript in legacyScripts)
-            {
-                switch (legacyScript)
-                {
-                    case CommonJs.jQuery:
-                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        break;
-                    case CommonJs.jQueryUI:
-                        // register dependency
-                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        // actual jqueryui
-                        if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
-                        {
-                            ClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryUIScriptReference(),
-                                FileOrder.Js.jQueryUI,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        break;
-                }
-            }
-#pragma warning restore 618
-        }
     }
 }
