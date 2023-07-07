@@ -16,11 +16,6 @@ namespace DotNetNuke.Web.DDRMenu
         {
             services.AddScoped<ILocaliser, Localiser>();
             services.TryAddEnumerable(ServiceDescriptor.Scoped<ILocalisation, Generic>());
-
-#pragma warning disable CS0618 // Type or member is obsolete, Ealo and Apollo can be removed from here when those classes are removed in v10.
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ILocalisation, Ealo>());
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ILocalisation, Apollo>());
-#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
