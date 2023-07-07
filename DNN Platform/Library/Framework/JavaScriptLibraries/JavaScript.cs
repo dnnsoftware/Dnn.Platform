@@ -32,9 +32,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
 
-        private const string JQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
-        private const string JQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
-
         /// <summary>Initializes a new instance of the <see cref="JavaScript"/> class.</summary>
         protected JavaScript()
         {
@@ -141,13 +138,23 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         public static string JQueryUIFile(bool getMinFile)
         {
-            string jfile = JQueryUIDebugFile;
-            if (getMinFile)
+            return GetScriptPath(CommonJs.jQueryUI);
+        }
+
+        public static string GetJQueryScriptReference()
+        {
+            return GetScriptPath(CommonJs.jQuery);
+        }
+
+        public static string GetScriptPath(string libraryName)
+        {
+            var library = JavaScriptLibraryController.Instance.GetLibrary(jsl => jsl.LibraryName.Equals(libraryName, StringComparison.OrdinalIgnoreCase));
+            if (library == null)
             {
-                jfile = JQueryUIMinFile;
+                return null;
             }
 
-            return jfile;
+            return GetScriptPath(library, HttpContextSource.Current?.Request);
         }
 
         public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
@@ -308,7 +315,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static string GetScriptPath(JavaScriptLibrary js, Page page)
+        private static string GetScriptPath(JavaScriptLibrary js, HttpRequestBase request)
         {
             if (Host.CdnEnabled)
             {
@@ -325,7 +332,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     var cdnPath = js.CDNPath;
                     if (cdnPath.StartsWith("//"))
                     {
-                        cdnPath = $"{(UrlUtils.IsSecureConnectionOrSslOffload(page.Request) ? "https" : "http")}:{cdnPath}";
+                        var useSecurePath = request == null || UrlUtils.IsSecureConnectionOrSslOffload(request);
+                        cdnPath = $"{(useSecurePath ? "https" : "http")}:{cdnPath}";
                     }
 
                     return cdnPath;
@@ -403,8 +411,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.SCRIPT_COLLISION);
             string strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
-            var page = HttpContextSource.Current.Handler as Page;
-            if (page != null)
+            if (HttpContextSource.Current.Handler is Page page)
             {
                 Skin.AddPageMessage(page, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
             }
@@ -417,7 +424,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 return;
             }
 
-            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl, page), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
+            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl, new HttpRequestWrapper(page.Request)), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
 
             if (Host.CdnEnabled && !string.IsNullOrEmpty(jsl.ObjectName))
             {
