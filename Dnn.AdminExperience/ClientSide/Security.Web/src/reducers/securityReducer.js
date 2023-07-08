@@ -174,6 +174,12 @@ export default function securitySettings(state = {
                 ...state,
                 portalList: action.data.portalList
             };
+        case ActionTypes.RETRIEVED_APITOKEN_SETTINGS:
+            return {
+                ...state,
+                apiTokenSettings: action.data.apiTokenSettings,
+                apiTokenSettingsClientModified: false
+            };
         default:
             return {
                 ...state

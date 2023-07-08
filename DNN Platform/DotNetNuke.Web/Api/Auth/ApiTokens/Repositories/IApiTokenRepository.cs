@@ -23,6 +23,13 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         ApiTokenBase GetApiToken(int portalId, string tokenHash);
 
         /// <summary>
+        /// Retrieves an existing API token instance using its hash and portal identifier.
+        /// </summary>
+        /// <param name="apiTokenId">The identifier of the token.</param>
+        /// <returns>An instance of the `ApiToken` class if it exists.</returns>
+        ApiToken GetApiToken(int apiTokenId);
+
+        /// <summary>
         /// Retrieves a list of token keys generated for the provided API token ID.
         /// </summary>
         /// <param name="apiTokenId">The unique ID of an API token instance.</param>
@@ -33,8 +40,10 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         /// Adds a new API token instance to the database.
         /// </summary>
         /// <param name="apiToken">An `ApiToken` instance to add.</param>
+        /// <param name="apiKeys">Comma separated list of API keys for this token.</param>
+        /// <param name="userId">User ID of the user creating the token.</param>
         /// <returns>The same instance.</returns>
-        ApiTokenBase AddApiToken(ApiTokenBase apiToken);
+        ApiTokenBase AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId);
 
         /// <summary>
         /// Revokes an API token instance.

@@ -1309,4 +1309,7 @@
   <data name="Scope.Text" xml:space="preserve">
     <value>Scope</value>
   </data>
+  <data name="ApiTokenCreated.Text" xml:space="preserve">
+    <value>This is the API token. Make sure to copy this to a safe place. It will not be shown again.</value>
+  </data>
 </root>

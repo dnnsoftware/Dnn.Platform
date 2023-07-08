@@ -142,6 +142,16 @@ class ApplicationService {
         sf.get("GetLastModifiedFiles", {}, callback);
     }
 
+    getApiTokenSettings(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.get("GetApiTokenSettings", {}, callback);
+    }
+
+    updateApiTokenSettings(payload, callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("UpdateApiTokenSettings", payload, callback);
+    }
+
     getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, callback) {
         const sf = this.getServiceFramework("Security");
         sf.get("GetApiTokens", { portalId, filter, apiKey, scope, pageIndex, pageSize }, callback);
@@ -150,6 +160,11 @@ class ApplicationService {
     getApiTokenKeys(callback) {
         const sf = this.getServiceFramework("Security");
         sf.get("GetApiTokenKeys", {}, callback);
+    }
+
+    createApiToken(payload, callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("CreateApiToken", payload, callback);
     }
 
     getPortalList(addAll, callback) {

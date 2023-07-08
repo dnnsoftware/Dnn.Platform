@@ -730,6 +730,7 @@ namespace Dnn.PersonaBar.Security.Services
                             RangeUploadSize = Config.GetRequestFilterSize(),
                             AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
                             DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
+                            ApiTokenSettings = ApiTokenSettings.GetSettings()
                         },
                     },
                 };
@@ -954,7 +955,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        /// GET: api/Security/GetRecentlyModifiedSettings
+        /// GET: api/Security/GetLastModifiedSettings
         /// <summary>Gets last modified settings.</summary>
         /// <returns>last modified settings.</returns>
         [HttpGet]
@@ -1019,6 +1020,59 @@ namespace Dnn.PersonaBar.Security.Services
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/Security/GetApiTokenSettings
+        /// <summary>Gets settings for API tokens.</summary>
+        /// <returns>API token settings.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokenSettings()
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    Results = new
+                    {
+                        ApiTokenSettings = ApiTokenSettings.GetSettings(),
+                    },
+                };
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/Security/UpdateApiTokenSettings
+        /// <summary>Updates API Token settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateApiTokenSettings(UpdateApiTokenSettingsRequest request)
+        {
+            try
+            {
+                var settings = ApiTokenSettings.GetSettings();
+                settings.MaximumTimespan = request.MaximumTimespan;
+                settings.MaximumTimespanMeasure = request.MaximumTimespanMeasure;
+                settings.SaveSettings();
+                DataCache.ClearCache();
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
@@ -1123,6 +1177,70 @@ namespace Dnn.PersonaBar.Security.Services
 
             // Returns the response.
             return this.Request.CreateResponse(HttpStatusCode.OK, response.Values);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ApiToken"/> object with the specified parameters and returns it.
+        /// </summary>
+        /// <param name="data">The parameters for the creation of this token.</param>
+        /// <returns>A new <see cref="ApiToken"/> object.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+            var requestedScope = ApiTokenScope.User;
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+            if (user.IsSuperUser)
+            {
+                requestedScope = (ApiTokenScope)data.Scope;
+            }
+            else if (user.IsAdmin)
+            {
+                if (data.Scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)data.Scope;
+                }
+            }
+            else
+            {
+                if (data.Scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+            }
+
+            // Check the expiration time
+            var requestedExpiration = DateTime.Parse(data.ExpiresOn);
+            var settings = ApiTokenSettings.GetSettings();
+            var maxExpirationTime = DateTime.Now;
+            switch (settings.MaximumTimespanMeasure)
+            {
+                case "y":
+                    maxExpirationTime = maxExpirationTime.AddYears(settings.MaximumTimespan);
+                    break;
+                case "m":
+                    maxExpirationTime = maxExpirationTime.AddMonths(settings.MaximumTimespan);
+                    break;
+                case "d":
+                    maxExpirationTime = maxExpirationTime.AddDays(settings.MaximumTimespan);
+                    break;
+            }
+
+            if (requestedExpiration > maxExpirationTime || requestedExpiration < DateTime.UtcNow)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid expiration date");
+            }
+
+            var token = ApiTokenController.Instance.CreateApiToken(portalId, requestedScope, requestedExpiration, data.ApiKeys, this.UserInfo.UserID);
+            return this.Request.CreateResponse(HttpStatusCode.OK, token);
         }
 
         internal string AddPortalAlias(string portalAlias, int portalId)

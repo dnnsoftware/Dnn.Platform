@@ -103,6 +103,29 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
+        public string CreateApiToken(int portalId, ApiTokenScope scope, DateTime expiresOn, string apiKeys, int userId)
+        {
+            if (scope == ApiTokenScope.Host)
+            {
+                portalId = DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+
+            var newToken = Guid.NewGuid().ToString();
+            var tokenAndHostGuid = newToken + Entities.Host.Host.GUID;
+            var hashedToken = this.GetHashedStr(tokenAndHostGuid);
+
+            var token = new ApiTokenBase()
+            {
+                PortalId = portalId,
+                Scope = scope,
+                ExpiresOn = expiresOn,
+                TokenHash = hashedToken,
+            };
+            token = ApiTokenRepository.Instance.AddApiToken(token, apiKeys, userId);
+            return newToken;
+        }
+
+        /// <inheritdoc />
         protected override Func<IApiTokenController> GetFactory()
         {
             return () => new ApiTokenController();

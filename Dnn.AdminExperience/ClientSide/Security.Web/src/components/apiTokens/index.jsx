@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
-import { InputGroup, Dropdown, Switch, Label, Pager } from "@dnnsoftware/dnn-react-common";
+import { Dropdown, Button, Pager } from "@dnnsoftware/dnn-react-common";
 import { GridCell } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
@@ -10,6 +10,7 @@ import resx from "../../resources";
 import styles from "./style.less";
 import ApiTokenRow from "./ApiTokenRow";
 import ApiTokenDetails from "./ApiTokenDetails";
+import CreateApiToken from "./CreateApiToken";
 
 
 let pageSizeOptions = [];
@@ -31,7 +32,8 @@ class ApiTokensPanelBody extends Component {
             currentFilter: 0,
             pageIndex: 0,
             pageSize: 10,
-            totalCount: 0
+            totalCount: 0,
+            showNewApiToken: false,
         };
     }
 
@@ -54,6 +56,18 @@ class ApiTokensPanelBody extends Component {
                 this.resetApiFilterList();
             });
         }));
+        if (props.apiTokenSettings) {
+            this.setState({
+                apiTokenSettings: props.apiTokenSettings
+            });
+        } else {
+            props.dispatch(SecurityActions.getApiTokenSettings((data) => {
+                let apiTokenSettings = Object.assign({}, data.Results.Settings);
+                this.setState({
+                    apiTokenSettings
+                });
+            }));
+        }
 
         pageSizeOptions = [];
         pageSizeOptions.push({ "value": 10, "label": "10 entries per page" });
@@ -175,80 +189,109 @@ class ApiTokensPanelBody extends Component {
         const { state } = this;
         return (
             <div style={{ float: "left", width: "100%" }}>
-                <div className="toolbar">
-                    {state.portalList.length > 0 &&
+                <div className="tokenCommandBox">
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            this.setState({
+                                showAddApiToken: true
+                            });
+                        }}>
+                        {resx.get("Add")}
+                    </Button>
+                </div>
+                <div className="logContainer">
+                    <div className="toolbar">
+                        {state.portalList.length > 0 &&
+                            <div className="security-filter-container">
+                                <Dropdown
+                                    value={state.currentPortalId}
+                                    style={{ width: "100%" }}
+                                    options={state.portalList.map((item) => {
+                                        return { label: item.PortalName, value: item.PortalID };
+                                    })}
+                                    withBorder={false}
+                                    onSelect={(value) => {
+                                        let currentPortal = state.portalList.filter((item) => {
+                                            return item.PortalID === value.value;
+                                        })[0].PortalName;
+                                        this.setState({
+                                            currentPortalId: value.value,
+                                            currentPortal
+                                        }, () => {
+                                            this.getData();
+                                        });
+                                    }}
+                                />
+                            </div>
+                        }
+                        {scopeOptions.length > 2 &&
+                            <div className="security-filter-container">
+                                <Dropdown
+                                    value={state.currentScope}
+                                    style={{ width: "100%" }}
+                                    options={scopeOptions}
+                                    withBorder={false}
+                                    onSelect={(value) => {
+                                        this.setState({
+                                            currentScope: value.value
+                                        }, () => {
+                                            this.resetApiFilterList();
+                                        });
+                                    }}
+                                />
+                            </div>
+                        }
                         <div className="security-filter-container">
                             <Dropdown
-                                value={state.currentPortalId}
+                                value={state.currentFilter}
                                 style={{ width: "100%" }}
-                                options={state.portalList.map((item) => {
-                                    return { label: item.PortalName, value: item.PortalID };
-                                })}
+                                options={filterOptions}
                                 withBorder={false}
                                 onSelect={(value) => {
-                                    let currentPortal = state.portalList.filter((item) => {
-                                        return item.PortalID === value.value;
-                                    })[0].PortalName;
                                     this.setState({
-                                        currentPortalId: value.value,
-                                        currentPortal
+                                        currentFilter: value.value
                                     }, () => {
                                         this.getData();
                                     });
                                 }}
                             />
                         </div>
-                    }
-                    {scopeOptions.length > 2 &&
                         <div className="security-filter-container">
                             <Dropdown
-                                value={state.currentScope}
+                                value={state.filterByApiTokenKey}
                                 style={{ width: "100%" }}
-                                options={scopeOptions}
+                                options={this.state.apiTokenKeysFiltered}
                                 withBorder={false}
                                 onSelect={(value) => {
                                     this.setState({
-                                        currentScope: value.value
+                                        filterByApiTokenKey: value.value
                                     }, () => {
-                                        this.resetApiFilterList();
+                                        this.getData();
                                     });
                                 }}
                             />
                         </div>
-                    }
-                    <div className="security-filter-container">
-                        <Dropdown
-                            value={state.currentFilter}
-                            style={{ width: "100%" }}
-                            options={filterOptions}
-                            withBorder={false}
-                            onSelect={(value) => {
-                                this.setState({
-                                    currentFilter: value.value
-                                }, () => {
-                                    this.getData();
-                                });
-                            }}
-                        />
                     </div>
-                    <div className="security-filter-container">
-                        <Dropdown
-                            value={state.filterByApiTokenKey}
-                            style={{ width: "100%" }}
-                            options={this.state.apiTokenKeysFiltered}
-                            withBorder={false}
-                            onSelect={(value) => {
-                                this.setState({
-                                    filterByApiTokenKey: value.value
-                                }, () => {
-                                    this.getData();
-                                });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="logContainer">
                     <div className="logContainerBox">
+                        {this.state.showAddApiToken && <CreateApiToken
+                            apiTokenKeys={this.state.apiTokenKeys}
+                            scopeOptions={scopeOptions.slice(1)}
+                            onCancel={() => {
+                                this.setState({
+                                    showAddApiToken: false
+                                });
+                            }}
+                            onCreateApiToken={(scope, expiresOn, apiKeys) => {
+                                this.setState({
+                                    showAddApiToken: false
+                                });
+                                this.props.dispatch(SecurityActions.createApiToken(scope, expiresOn, apiKeys, (data) => {
+                                    prompt(resx.get("ApiTokenCreated"), data);
+                                    this.getData();
+                                }));
+                            }}
+                        />}
                         {this.renderHeader()}
                         {this.renderList()}
                     </div>
