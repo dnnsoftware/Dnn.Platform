@@ -178,6 +178,8 @@
     <Compile Include="Api\Auth\ApiTokenAuthMessageHandler.cs" />
     <Compile Include="Api\Auth\ApiTokens\ApiTokenController.cs" />
     <Compile Include="Api\Auth\ApiTokens\ApiTokenFilter.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenSettings.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenSettingsRepository.cs" />
     <Compile Include="Api\Auth\ApiTokens\IApiTokenController.cs" />
     <Compile Include="Api\Auth\ApiTokens\Models\ApiToken.cs" />
     <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenBase.cs" />
