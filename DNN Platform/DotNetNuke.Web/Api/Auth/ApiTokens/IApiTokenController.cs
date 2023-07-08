@@ -4,7 +4,8 @@
 
 namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
-    using System.Collections.Generic;
+  using System;
+  using System.Collections.Generic;
     using System.Net.Http;
   using DotNetNuke.Collections;
   using DotNetNuke.Entities.Users;
@@ -60,5 +61,16 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <param name="pageSize">Page size of data to retrieve.</param>
         /// <returns>An IPagedList of type ApiToken.</returns>
         IPagedList<ApiToken> GetApiTokens(ApiTokenScope scope, bool includeNarrowerScopes, int portalId, int userId, ApiTokenFilter filter, string apiKey, int pageIndex, int pageSize);
+
+        /// <summary>
+        /// Creates a new <see cref="ApiToken"/> object and returns it.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal to create the token for.</param>
+        /// <param name="scope">The scope of the token.</param>
+        /// <param name="expiresOn">The date and time the token should expire.</param>
+        /// <param name="apiKeys">The API keys associated with the token.</param>
+        /// <param name="userId">The ID of the user that the token belongs to.</param>
+        /// <returns>The string token to use for authentication.</returns>
+        string CreateApiToken(int portalId, ApiTokenScope scope, DateTime expiresOn, string apiKeys, int userId);
     }
 }

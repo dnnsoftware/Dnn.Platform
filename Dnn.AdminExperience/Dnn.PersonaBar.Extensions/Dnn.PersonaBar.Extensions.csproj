@@ -366,6 +366,7 @@
     <Compile Include="Services\Dto\ConfigFileDto.cs" />
     <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
+    <Compile Include="Services\Dto\CreateApiTokenRequest.cs" />
     <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
@@ -434,6 +435,7 @@
     <Compile Include="Services\Dto\UpdateIpFilterRequest.cs" />
     <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateMemberSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateApiTokenSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdatePerfSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateRegexSettingsRequest.cs" />

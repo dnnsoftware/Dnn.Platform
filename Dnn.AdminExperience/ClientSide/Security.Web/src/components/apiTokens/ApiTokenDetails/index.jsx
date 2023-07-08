@@ -97,13 +97,17 @@ class ApiTokenDetails extends Component {
                             {this.props.apiToken.Keys.split(",").map((item) => {
                                 let k = this.props.apiTokenKeys.filter((key) => {
                                     return key.Scope == this.props.apiToken.Scope && key.Key == item;
-                                })[0];
-                                return (
-                                    <Label
-                                        label={k.Name}
-                                        tooltipMessage={k.Description}
-                                        tooltipPlace={"top"} />
-                                );
+                                });
+                                if (k.length > 0) {
+                                    return (
+                                        <Label
+                                            label={k[0].Name}
+                                            tooltipMessage={k[0].Description}
+                                            tooltipPlace={"top"} />
+                                    );
+                                } else {
+                                    return null;
+                                }
                             })}
                         </div>
                     </div>

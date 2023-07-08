@@ -463,16 +463,40 @@ const securityActions = {
             });
         };
     },
+    getApiTokenSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getApiTokenSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_APITOKEN_SETTINGS,
+                    data: {
+                        apiTokenSettings: data.Results.ApiTokenSettings,
+                        apiTokenSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateApiTokenSettings(payload, callback) {
+        return (dispatch) => {
+            ApplicationService.updateOtherSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SECURITY_APITOKEN_SETTINGS,
+                    data: {
+                        apiTokenSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
     getApiTokenKeys(callback) {
         return (dispatch) => {
             ApplicationService.getApiTokenKeys(data => {
-                // dispatch({
-                //     type: ActionTypes.RETRIEVED_API_TOKEN_KEY_LIST,
-                //     data: {
-                //         portalList: data.Results,
-                //         totalCount: data.TotalResults
-                //     }
-                // });
                 if (callback) {
                     callback(data);
                 }
@@ -482,13 +506,19 @@ const securityActions = {
     getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, callback) {
         return (dispatch) => {
             ApplicationService.getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, data => {
-                // dispatch({
-                //     type: ActionTypes.RETRIEVED_API_TOKEN_KEY_LIST,
-                //     data: {
-                //         portalList: data.Results,
-                //         totalCount: data.TotalResults
-                //     }
-                // });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    createApiToken(scope, expiresOn, apiKeys, callback) {
+        return (dispatch) => {
+            ApplicationService.createApiToken({
+                Scope: scope,
+                ExpiresOn: expiresOn,
+                ApiKeys: apiKeys
+            }, data => {
                 if (callback) {
                     callback(data);
                 }

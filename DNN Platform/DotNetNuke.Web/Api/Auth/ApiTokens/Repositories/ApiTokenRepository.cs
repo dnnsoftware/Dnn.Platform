@@ -28,6 +28,16 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         }
 
         /// <inheritdoc />
+        public ApiToken GetApiToken(int apiTokenId)
+        {
+            using (var context = DataContext.Instance())
+            {
+                var rep = context.GetRepository<ApiToken>();
+                return rep.GetById(apiTokenId);
+            }
+        }
+
+        /// <inheritdoc />
         public List<string> GetApiTokenKeys(int apiTokenId)
         {
             using (var context = DataContext.Instance())
@@ -38,14 +48,24 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         }
 
         /// <inheritdoc />
-        public ApiTokenBase AddApiToken(ApiTokenBase apiToken)
+        public ApiTokenBase AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId)
         {
             Requires.NotNull(apiToken);
+            apiToken.CreatedByUserId = userId;
+            apiToken.CreatedOnDate = DateTime.UtcNow;
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<ApiTokenBase>();
                 rep.Insert(apiToken);
+
+                var repKeys = context.GetRepository<ApiTokenKey>();
+                foreach (var key in apiKeys.Split(','))
+                {
+                    var newKey = new ApiTokenKey { ApiTokenId = apiToken.ApiTokenId, TokenKey = key };
+                    repKeys.Insert(newKey);
+                }
             }
+
             return apiToken;
         }
 
