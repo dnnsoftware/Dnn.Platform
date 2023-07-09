@@ -587,6 +587,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.Web.Infrastructur
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Components\Microsoft.Web.Infrastructure\License.txt = DNN Platform\Components\Microsoft.Web.Infrastructure\License.txt
 		DNN Platform\Components\Microsoft.Web.Infrastructure\Microsoft.Web.Infrastructure.dnn = DNN Platform\Components\Microsoft.Web.Infrastructure\Microsoft.Web.Infrastructure.dnn
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery.Fileupload", "jQuery.Fileupload", "{60AD263B-C26A-4ED3-B63F-F508230B1B55}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn = DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\jquery.fileupload.js = DNN Platform\JavaScript Libraries\jQuery.Fileupload\jquery.fileupload.js
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\LICENSE.txt = DNN Platform\JavaScript Libraries\jQuery.Fileupload\LICENSE.txt
+		DNN Platform\JavaScript Libraries\jQuery.Fileupload\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQuery.Fileupload\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery.iframe-transport", "jQuery.iframe-transport", "{F614CC1C-C719-467A-8CDF-3625B06E654C}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jQuery.iframe-transport.dnn = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jQuery.iframe-transport.dnn
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jquery.iframe-transport.js = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\jquery.iframe-transport.js
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\LICENSE.txt = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\LICENSE.txt
+		DNN Platform\JavaScript Libraries\jQuery.iframe-transport\releaseNotes.txt = DNN Platform\JavaScript Libraries\jQuery.iframe-transport\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HoverIntent", "HoverIntent", "{DA5217C3-CF28-4BBB-B7CC-9523F514ED89}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\HoverIntent\HoverIntent.dnn = DNN Platform\JavaScript Libraries\HoverIntent\HoverIntent.dnn
+		DNN Platform\JavaScript Libraries\HoverIntent\jquery.hoverIntent.min.js = DNN Platform\JavaScript Libraries\HoverIntent\jquery.hoverIntent.min.js
+		DNN Platform\JavaScript Libraries\HoverIntent\LICENSE.txt = DNN Platform\JavaScript Libraries\HoverIntent\LICENSE.txt
+		DNN Platform\JavaScript Libraries\HoverIntent\releaseNotes.txt = DNN Platform\JavaScript Libraries\HoverIntent\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DnnPlugins", "DnnPlugins", "{CF68C3E8-5CF4-47A8-867B-9C6CE9852AA4}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\DnnPlugins\dnn.jquery.js = DNN Platform\JavaScript Libraries\DnnPlugins\dnn.jquery.js
+		DNN Platform\JavaScript Libraries\DnnPlugins\DnnPlugins.dnn = DNN Platform\JavaScript Libraries\DnnPlugins\DnnPlugins.dnn
+		DNN Platform\JavaScript Libraries\DnnPlugins\LICENSE.txt = DNN Platform\JavaScript Libraries\DnnPlugins\LICENSE.txt
+		DNN Platform\JavaScript Libraries\DnnPlugins\releaseNotes.txt = DNN Platform\JavaScript Libraries\DnnPlugins\releaseNotes.txt
 	EndProjectSection
 EndProject
 Global
@@ -2279,6 +2309,10 @@ Global
 		{0F64275A-8107-4A9D-99E0-6B75AFD0BB0B} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{9A5B3ED8-C38E-4C0D-BA73-4250140A9566} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{2D4DE515-22A1-4EFF-9E65-1443965F6E35} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{60AD263B-C26A-4ED3-B63F-F508230B1B55} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{F614CC1C-C719-467A-8CDF-3625B06E654C} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{DA5217C3-CF28-4BBB-B7CC-9523F514ED89} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{CF68C3E8-5CF4-47A8-867B-9C6CE9852AA4} = {886DB964-63D4-4841-81D1-5A7360C98230}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}

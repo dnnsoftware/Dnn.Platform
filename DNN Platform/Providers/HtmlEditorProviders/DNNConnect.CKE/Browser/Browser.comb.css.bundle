@@ -3,7 +3,7 @@
   <settings>
     <!--Determines if the bundle file should be automatically optimized after creation/update.-->
     <minify>true</minify>
-    <!--Determin whether to generate/re-generate this bundle on building the solution.-->
+    <!--Determine whether to generate/re-generate this bundle on building the solution.-->
     <runOnBuild>false</runOnBuild>
     <!--Use absolute path in the generated CSS files. By default, the URLs are relative to generated bundled CSS file.-->
     <adjustRelativePaths>true</adjustRelativePaths>

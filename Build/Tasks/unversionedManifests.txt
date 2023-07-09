@@ -3,5 +3,8 @@ DNN Platform/Components/Microsoft.*/**/*.dnn
 DNN Platform/Components/Newtonsoft/*.dnn
 DNN Platform/Components/WebFormsMvp/*.dnn
 DNN Platform/Components/SharpZipLib/*.dnn
-DNN Platform/JavaScript Libraries/**/*.dnn
+DNN Platform/JavaScript Libraries/HoverIntent/*.dnn
+DNN Platform/JavaScript Libraries/jQuery*/*.dnn
+DNN Platform/JavaScript Libraries/Knockout*/*.dnn
+DNN Platform/JavaScript Libraries/Selectize/*.dnn
 Temp/**/*.dnn
