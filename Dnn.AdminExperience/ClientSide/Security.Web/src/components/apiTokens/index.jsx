@@ -155,6 +155,7 @@ class ApiTokensPanelBody extends Component {
             return <ApiTokenRow
                 key={index}
                 apiToken={item}
+                onClose={() => { this.getData(); }}
                 scopes={scopeOptions}>
                 <ApiTokenDetails
                     apiToken={item}

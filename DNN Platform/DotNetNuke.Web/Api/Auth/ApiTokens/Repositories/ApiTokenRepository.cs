@@ -61,8 +61,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
                 var repKeys = context.GetRepository<ApiTokenKey>();
                 foreach (var key in apiKeys.Split(','))
                 {
-                    var newKey = new ApiTokenKey { ApiTokenId = apiToken.ApiTokenId, TokenKey = key };
-                    repKeys.Insert(newKey);
+                    repKeys.Insert(new ApiTokenKey { ApiTokenId = apiToken.ApiTokenId, TokenKey = key });
                 }
             }
 
@@ -70,15 +69,27 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         }
 
         /// <inheritdoc />
-        public void RevokeApiToken(ApiTokenBase apiToken)
+        public void RevokeApiToken(ApiTokenBase apiToken, int userId)
         {
             Requires.NotNull(apiToken);
             apiToken.IsRevoked = true;
             apiToken.RevokedOnDate = DateTime.UtcNow;
+            apiToken.RevokedByUserId = userId;
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<ApiTokenBase>();
                 rep.Update(apiToken);
+            }
+        }
+
+        /// <inheritdoc />
+        public void DeleteApiToken(ApiTokenBase apiToken)
+        {
+            Requires.NotNull(apiToken);
+            using (var context = DataContext.Instance())
+            {
+                var rep = context.GetRepository<ApiTokenBase>();
+                rep.Delete(apiToken);
             }
         }
 

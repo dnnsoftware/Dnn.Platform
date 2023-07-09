@@ -4,6 +4,7 @@ import "./style.less";
 import { Dropdown as Select, GridSystem as Grid, Switch, Button, SingleLineInputWithError, MultiLineInput, Label } from "@dnnsoftware/dnn-react-common";
 import resx from "../../../resources";
 import utils from "../../../utils";
+import { security as SecurityActions } from "../../../actions";
 
 class ApiTokenDetails extends Component {
     constructor(props) {
@@ -112,28 +113,6 @@ class ApiTokenDetails extends Component {
                         </div>
                     </div>
                 </Grid>
-                <div className="buttons-box">
-                    <Button
-                        type="secondary"
-                        onClick={() => {
-                            utils.utilities.confirm(resx.get("DeleteApiKey.Confirm"), resx.get("Yes"), resx.get("No"), () => {
-                                alert("delete");
-                            });
-                        }}>
-                        {resx.get("DeleteApiKey")}
-                    </Button>
-                    {statusClass == "active" && (
-                        <Button
-                            type="secondary"
-                            onClick={() => {
-                                utils.utilities.confirm(resx.get("Revoke.Confirm"), resx.get("Yes"), resx.get("No"), () => {
-                                    alert("revoke");
-                                });
-                            }}>
-                            {resx.get("Revoke")}
-                        </Button>
-                    )}
-                </div>
             </div>);
     }
 
