@@ -4,11 +4,12 @@
 
 namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
-  using System;
-  using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
     using System.Net.Http;
-  using DotNetNuke.Collections;
-  using DotNetNuke.Entities.Users;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     /// <summary>
@@ -72,5 +73,20 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <param name="userId">The ID of the user that the token belongs to.</param>
         /// <returns>The string token to use for authentication.</returns>
         string CreateApiToken(int portalId, ApiTokenScope scope, DateTime expiresOn, string apiKeys, int userId);
+
+        /// <summary>
+        /// Retrieves an API token by its ID.
+        /// </summary>
+        /// <param name="apiTokenId">The ID of the API token to retrieve.</param>
+        /// <returns>The specified API token.</returns>
+        ApiToken GetApiToken(int apiTokenId);
+
+        /// <summary>
+        /// Revokes or deletes the specified API token of the user.
+        /// </summary>
+        /// <param name="token">The `ApiTokenBase` object to revoke or delete.</param>
+        /// <param name="delete">A boolean value indicating whether to delete or revoke the token.</param>
+        /// <param name="userId">The id of the user that revokes the token if being revoked.</param>
+        void RevokeOrDeleteApiToken(ApiTokenBase token, bool delete, int userId);
     }
 }

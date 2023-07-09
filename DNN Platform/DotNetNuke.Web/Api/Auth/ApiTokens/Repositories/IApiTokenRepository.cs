@@ -46,10 +46,17 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         ApiTokenBase AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId);
 
         /// <summary>
-        /// Revokes an API token instance.
+        /// Revokes an API token.
         /// </summary>
         /// <param name="apiToken">The `ApiToken` instance to revoke.</param>
-        void RevokeApiToken(ApiTokenBase apiToken);
+        /// <param name="userId">User ID of the user revoking the token.</param>
+        void RevokeApiToken(ApiTokenBase apiToken, int userId);
+
+        /// <summary>
+        /// Deletes an API token.
+        /// </summary>
+        /// <param name="apiToken">The `ApiToken` instance to be deleted.</param>
+        void DeleteApiToken(ApiTokenBase apiToken);
 
         /// <summary>
         /// Retrieves a paged list of API tokens in the database.

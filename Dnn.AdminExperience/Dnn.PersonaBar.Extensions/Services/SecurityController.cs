@@ -1243,6 +1243,56 @@ namespace Dnn.PersonaBar.Security.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, token);
         }
 
+        /// <summary>
+        /// Revokes or deletes the specified API token of the user.
+        /// </summary>
+        /// <param name="data">The `RevokeDeleteApiTokenRequest` object which contains the ID of the API token to revoke or delete.</param>
+        /// <returns>An HTTP response message with a boolean value indicating whether the token was successfully revoked or deleted.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
+        {
+            var token = ApiTokenController.Instance.GetApiToken(data.ApiTokenId);
+            if (token == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid token");
+            }
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+            var canManage = false;
+            if (user.IsSuperUser)
+            {
+                canManage = true;
+            }
+            else if (user.IsAdmin)
+            {
+                if (token.PortalId != PortalSettings.Current.PortalId)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
+                }
+                else
+                {
+                    canManage = true;
+                }
+            }
+            else
+            {
+                if (token.PortalId != PortalSettings.Current.PortalId || token.CreatedByUserId != user.UserID)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
+                }
+            }
+
+            if (canManage)
+            {
+                ApiTokenController.Instance.RevokeOrDeleteApiToken(token.ToBase(), data.Delete, user.UserID);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
         internal string AddPortalAlias(string portalAlias, int portalId)
         {
             if (!string.IsNullOrEmpty(portalAlias))

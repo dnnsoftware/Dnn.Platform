@@ -46,5 +46,26 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
         /// Gets or sets a comma-separated list of API keys for this token.
         /// </summary>
         public string Keys { get; set; }
+
+        /// <summary>
+        /// Converts this instance to a base instance.
+        /// </summary>
+        /// <returns>An ApiTokenBase instance.</returns>
+        public ApiTokenBase ToBase()
+        {
+            return new ApiTokenBase()
+            {
+                ApiTokenId = this.ApiTokenId,
+                TokenHash = this.TokenHash,
+                ExpiresOn = this.ExpiresOn,
+                Scope = this.Scope,
+                PortalId = this.PortalId,
+                IsRevoked = this.IsRevoked,
+                RevokedByUserId = this.RevokedByUserId,
+                RevokedOnDate = this.RevokedOnDate,
+                CreatedByUserId = this.CreatedByUserId,
+                CreatedOnDate = this.CreatedOnDate,
+            };
+        }
     }
 }

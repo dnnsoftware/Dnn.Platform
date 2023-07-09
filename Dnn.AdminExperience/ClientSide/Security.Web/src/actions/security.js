@@ -524,6 +524,27 @@ const securityActions = {
                 }
             });
         };
+    },
+    revokeOrDeleteApiToken(apiTokenId, isDelete, callback) {
+        return (dispatch) => {
+            ApplicationService.revokeOrDeleteApiToken({
+                ApiTokenId: apiTokenId,
+                Delete: isDelete
+            }, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    deleteExpiredApiTokens(callback) {
+        return (dispatch) => {
+            ApplicationService.deleteExpiredApiTokens(data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

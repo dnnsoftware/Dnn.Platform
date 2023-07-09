@@ -126,6 +126,25 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
+        public ApiToken GetApiToken(int apiTokenId)
+        {
+            return ApiTokenRepository.Instance.GetApiToken(apiTokenId);
+        }
+
+        /// <inheritdoc />
+        public void RevokeOrDeleteApiToken(ApiTokenBase token, bool delete, int userId)
+        {
+            if (delete)
+            {
+                ApiTokenRepository.Instance.DeleteApiToken(token);
+            }
+            else
+            {
+                ApiTokenRepository.Instance.RevokeApiToken(token, userId);
+            }
+        }
+
+        /// <inheritdoc />
         protected override Func<IApiTokenController> GetFactory()
         {
             return () => new ApiTokenController();

@@ -366,6 +366,7 @@
     <Compile Include="Services\Dto\ConfigFileDto.cs" />
     <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
+    <Compile Include="Services\Dto\RevokeDeleteApiTokenRequest.cs" />
     <Compile Include="Services\Dto\CreateApiTokenRequest.cs" />
     <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Collapsible as Collapse, IconButton } from "@dnnsoftware/dnn-react-common";
+import { Collapsible as Collapse, IconButton, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../../resources";
 import utils from "../../../utils";
+import { security as SecurityActions } from "../../../actions";
 
 class ApiTokenRow extends Component {
     constructor(props) {
@@ -129,7 +130,35 @@ class ApiTokenRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse className="logitem-collapsible" isOpened={!this.state.collapsed}>{!state.collapsed && props.children}</Collapse>
+                <Collapse className="logitem-collapsible" isOpened={!this.state.collapsed}>{!state.collapsed && props.children}
+                    {!state.collapsed && <div className="buttons-box">
+                        <Button
+                            type="secondary"
+                            onClick={() => {
+                                utils.utilities.confirm(resx.get("DeleteApiKey.Confirm"), resx.get("Yes"), resx.get("No"), () => {
+                                    this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, true, (data) => {
+                                        this.collapse();
+                                        this.props.onClose();
+                                    }));
+                                });
+                            }}>
+                            {resx.get("DeleteApiKey")}
+                        </Button>
+                        {statusClass == "active" && (
+                            <Button
+                                type="secondary"
+                                onClick={() => {
+                                    utils.utilities.confirm(resx.get("Revoke.Confirm"), resx.get("Yes"), resx.get("No"), () => {
+                                        this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, false, (data) => {
+                                            this.props.onClose();
+                                        }));
+                                    });
+                                }}>
+                                {resx.get("Revoke")}
+                            </Button>
+                        )}
+                    </div>}
+                </Collapse>
             </div>
         );
     }

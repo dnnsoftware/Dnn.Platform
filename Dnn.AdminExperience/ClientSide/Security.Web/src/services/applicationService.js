@@ -167,6 +167,16 @@ class ApplicationService {
         sf.post("CreateApiToken", payload, callback);
     }
 
+    revokeOrDeleteApiToken(payload, callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("RevokeOrDeleteApiToken", payload, callback);
+    }
+
+    deleteExpiredApiTokens(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("DeleteExpiredApiTokens", {}, callback);
+    }
+
     getPortalList(addAll, callback) {
         const sf = this.getServiceFramework("Portals");
         sf.get("GetPortals?addAll=" + addAll, {}, callback);
