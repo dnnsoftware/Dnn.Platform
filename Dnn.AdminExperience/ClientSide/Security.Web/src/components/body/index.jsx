@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { pagination as PaginationActions } from "../../actions";
 import BasicSettings from "../basicSettings";
 import SslSettings from "../sslSettings";
+import ApiTokenSettings from "../apiTokenSettings";
 import OtherSettings from "../otherSettings";
 import IpFilters from "../ipFilters";
 import MemberManagement from "../memberManagement";
@@ -23,6 +24,7 @@ let isAdmin = false;
 let canViewBasicLoginSettings = false;
 let canViewRegistrationSettings = false;
 let canManageApiTokens = false;
+
 export class Body extends Component {
     constructor() {
         super();
@@ -104,6 +106,8 @@ export class Body extends Component {
         if (isAdmin) {
             moreTabHeaders.push(resx.get("TabSslSettings"));
             moreTabs.push(<SslSettings key="sslSettings" />);
+            moreTabHeaders.push(resx.get("TabApiTokenSettings"));
+            moreTabs.push(<ApiTokenSettings key="apiTokenSettings" />);
         }
         if (isHost) {
             tabHeaders.push(resx.get("TabSecurityAnalyzer"));

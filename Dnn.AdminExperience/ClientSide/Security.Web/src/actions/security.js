@@ -481,7 +481,7 @@ const securityActions = {
     },
     updateApiTokenSettings(payload, callback) {
         return (dispatch) => {
-            ApplicationService.updateOtherSettings(payload, data => {
+            ApplicationService.updateApiTokenSettings(payload, data => {
                 dispatch({
                     type: ActionTypes.UPDATED_SECURITY_APITOKEN_SETTINGS,
                     data: {
@@ -490,6 +490,17 @@ const securityActions = {
                 });
                 if (callback) {
                     callback(data);
+                }
+            });
+        };
+    },
+    apiTokenSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SECURITY_APITOKEN_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    apiTokenSettings: parameter,
+                    apiTokenSettingsClientModified: true
                 }
             });
         };
