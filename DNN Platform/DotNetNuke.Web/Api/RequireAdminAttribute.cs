@@ -8,7 +8,7 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Entities.Users;
 
-    public class RequireHostAttribute : AuthorizeAttributeBase
+    public class RequireAdminAttribute : AuthorizeAttributeBase
     {
         /// <summary>Tests if the request passes the authorization requirements.</summary>
         /// <param name="context">The auth filter context.</param>
@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Api
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return currentUser.IsSuperUser;
+            return currentUser.IsSuperUser || currentUser.IsAdmin;
         }
     }
 }

@@ -212,6 +212,7 @@
     <Compile Include="Api\IPortalAliasRouteManager.cs" />
     <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
     <Compile Include="Api\PortalAliasRouteManager.cs" />
+    <Compile Include="Api\RequireAdminAttribute.cs" />
     <Compile Include="Api\RouteExtensions.cs" />
     <Compile Include="Api\RequireHostAttribute.cs" />
     <Compile Include="Api\StandardTabAndModuleInfoProvider.cs" />
