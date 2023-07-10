@@ -1312,4 +1312,46 @@
   <data name="ApiTokenCreated.Text" xml:space="preserve">
     <value>This is the API token. Make sure to copy this to a safe place. It will not be shown again.</value>
   </data>
+  <data name="ApiTokensDisabled.Help" xml:space="preserve">
+    <value>API tokens are disabled on this installation. The system administrator will need to enable this in the web.config.</value>
+  </data>
+  <data name="ApiTokenSettingsError.Text" xml:space="preserve">
+    <value>An error has occurred. The API token settings could not be updated. Please consult the admin log to determine the cause of this error.</value>
+  </data>
+  <data name="ApiTokenSettingsRestoreWarning.Text" xml:space="preserve">
+    <value>The changes to the API token settings will be discarded. Do you wish to continue?</value>
+  </data>
+  <data name="ApiTokenSettingsUpdateSuccess.Text" xml:space="preserve">
+    <value>API token settings updated</value>
+  </data>
+  <data name="MaxApiTokenDuration.Error" xml:space="preserve">
+    <value>This must be a positive integer value</value>
+  </data>
+  <data name="OptDays.Text" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="OptMonths.Text" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="OptWeeks.Text" xml:space="preserve">
+    <value>Weeks</value>
+  </data>
+  <data name="OptYears.Text" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="plAllowApiTokens.Help" xml:space="preserve">
+    <value>Allow API tokens on this site</value>
+  </data>
+  <data name="plAllowApiTokens.Text" xml:space="preserve">
+    <value>Allow API Tokens</value>
+  </data>
+  <data name="plMaxApiTokenDuration.Help" xml:space="preserve">
+    <value>Specify the maximum time an API token can remain active</value>
+  </data>
+  <data name="plMaxApiTokenDuration.Text" xml:space="preserve">
+    <value>Max API Token Duration</value>
+  </data>
+  <data name="TabApiTokenSettings.Text" xml:space="preserve">
+    <value>API TOKEN SETTINGS</value>
+  </data>
 </root>

@@ -180,6 +180,12 @@ export default function securitySettings(state = {
                 apiTokenSettings: action.data.apiTokenSettings,
                 apiTokenSettingsClientModified: false
             };
+        case ActionTypes.SECURITY_APITOKEN_SETTINS_CLIENT_MODIFIED:
+            return {
+                ...state,
+                apiTokenSettings: action.data.apiTokenSettings,
+                apiTokenSettingsClientModified: action.data.apiTokenSettingsClientModified
+            };
         default:
             return {
                 ...state
