@@ -3,10 +3,12 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Security.Services.Dto
 {
-  public class UpdateApiTokenSettingsRequest
-  {
-    public int MaximumTimespan { get; set; }
+    public class UpdateApiTokenSettingsRequest
+    {
+        public int MaximumTimespan { get; set; }
 
-    public string MaximumTimespanMeasure { get; set; }
-  }
+        public string MaximumTimespanMeasure { get; set; }
+
+        public bool AllowApiTokens { get; set; }
+    }
 }

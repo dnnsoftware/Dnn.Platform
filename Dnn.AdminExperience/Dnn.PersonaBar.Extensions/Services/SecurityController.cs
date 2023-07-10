@@ -730,7 +730,6 @@ namespace Dnn.PersonaBar.Security.Services
                             RangeUploadSize = Config.GetRequestFilterSize(),
                             AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
                             DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
-                            ApiTokenSettings = ApiTokenSettings.GetSettings()
                         },
                     },
                 };
@@ -1042,7 +1041,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Success = true,
                     Results = new
                     {
-                        ApiTokenSettings = ApiTokenSettings.GetSettings(),
+                        ApiTokenSettings = ApiTokenSettings.GetSettings(this.PortalId),
                     },
                 };
 
@@ -1060,16 +1059,21 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request">The update request.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
-        [RequireHost]
+        [RequireAdmin]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateApiTokenSettings(UpdateApiTokenSettingsRequest request)
         {
             try
             {
-                var settings = ApiTokenSettings.GetSettings();
-                settings.MaximumTimespan = request.MaximumTimespan;
-                settings.MaximumTimespanMeasure = request.MaximumTimespanMeasure;
-                settings.SaveSettings();
+                var settings = ApiTokenSettings.GetSettings(this.PortalId);
+                if (this.UserInfo.IsSuperUser)
+                {
+                    settings.MaximumTimespan = request.MaximumTimespan;
+                    settings.MaximumTimespanMeasure = request.MaximumTimespanMeasure;
+                }
+
+                settings.AllowApiTokens = request.AllowApiTokens;
+                settings.SaveSettings(this.PortalId);
                 DataCache.ClearCache();
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -1189,7 +1193,12 @@ namespace Dnn.PersonaBar.Security.Services
 
         public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
         {
-            var portalId = PortalSettings.Current.PortalId;
+            var settings = ApiTokenSettings.GetSettings(this.PortalId);
+            if (!settings.ApiTokensEnabled || (!settings.AllowApiTokens && data.Scope != (int)ApiTokenScope.Host))
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API tokens are disabled");
+            }
+
             var requestedScope = ApiTokenScope.User;
 
             // Checks if the user is authorized.
@@ -1219,7 +1228,6 @@ namespace Dnn.PersonaBar.Security.Services
 
             // Check the expiration time
             var requestedExpiration = DateTime.Parse(data.ExpiresOn);
-            var settings = ApiTokenSettings.GetSettings();
             var maxExpirationTime = DateTime.Now;
             switch (settings.MaximumTimespanMeasure)
             {
@@ -1239,7 +1247,7 @@ namespace Dnn.PersonaBar.Security.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid expiration date");
             }
 
-            var token = ApiTokenController.Instance.CreateApiToken(portalId, requestedScope, requestedExpiration, data.ApiKeys, this.UserInfo.UserID);
+            var token = ApiTokenController.Instance.CreateApiToken(this.PortalId, requestedScope, requestedExpiration, data.ApiKeys, this.UserInfo.UserID);
             return this.Request.CreateResponse(HttpStatusCode.OK, token);
         }
 
