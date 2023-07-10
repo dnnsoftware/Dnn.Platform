@@ -36,7 +36,6 @@ class ApiTokenSettingsPanelBody extends Component {
     }
 
     onSettingChange(key, event) {
-        console.log(event);
         const { state, props } = this;
         let apiTokenSettings = Object.assign({}, state.apiTokenSettings);
         apiTokenSettings[key] = typeof event === "object" ? event.target.value : event;
@@ -98,7 +97,6 @@ class ApiTokenSettingsPanelBody extends Component {
         const isAdmin = isHost || util.settings.isAdmin;
 
         if (state.apiTokenSettings) {
-            console.log(state.apiTokenSettings);
             let warningBox = <div />;
             if (!state.apiTokenSettings.ApiTokensEnabled) {
                 warningBox = (

@@ -13,6 +13,7 @@
                 &:not(:last-child) {
                     border-bottom: 1px solid @alto;
                 }
+
                 width: 100%;
                 float: left;
                 padding: 15px;
@@ -104,6 +105,19 @@
                 margin: 0 0 20px 0;
                 float: left;
                 width: 100%;
+            }
+        }
+
+        .warningBox {
+            border: 1px solid @alto;
+            background-color: @gallery;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+
+            .warningText {
+                font-weight: bolder;
+                color: @thunder;
             }
         }
     }

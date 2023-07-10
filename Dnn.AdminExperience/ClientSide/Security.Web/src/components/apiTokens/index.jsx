@@ -62,7 +62,7 @@ class ApiTokensPanelBody extends Component {
             });
         } else {
             props.dispatch(SecurityActions.getApiTokenSettings((data) => {
-                let apiTokenSettings = Object.assign({}, data.Results.Settings);
+                let apiTokenSettings = Object.assign({}, data.Results.ApiTokenSettings);
                 this.setState({
                     apiTokenSettings
                 });
@@ -125,7 +125,6 @@ class ApiTokensPanelBody extends Component {
     }
 
     onPageChange(currentPage, pageSize) {
-        console.log("onPageChange", currentPage, pageSize);
         this.setState({
         });
     }
@@ -188,6 +187,16 @@ class ApiTokensPanelBody extends Component {
 
     render() {
         const { state } = this;
+        if (state.apiTokenSettings && !state.apiTokenSettings.ApiTokensEnabled) {
+            return (<div style={{ float: "left", width: "100%" }}>
+                <div className="logContainer">
+                    <div className="warningBox">
+                        <div className="warningText">{resx.get("ApiTokensDisabled.Help")}</div>
+                    </div>
+                </div>
+            </div>
+            );
+        }
         return (
             <div style={{ float: "left", width: "100%" }}>
                 <div className="tokenCommandBox">
@@ -307,13 +316,17 @@ ApiTokensPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     apiTokens: PropTypes.array,
-    cultureCode: PropTypes.string
+    cultureCode: PropTypes.string,
+    apiTokenSettings: PropTypes.object,
+    apiTokenSettingsClientModified: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        apiTokens: state.security.apiTokens
+        apiTokens: state.security.apiTokens,
+        apiTokenSettings: state.security.apiTokenSettings,
+        apiTokenSettingsClientModified: state.security.apiTokenSettingsClientModified,
     };
 }
 
