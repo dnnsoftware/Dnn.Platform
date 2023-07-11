@@ -16,6 +16,7 @@ import CreateApiToken from "./CreateApiToken";
 let pageSizeOptions = [];
 let scopeOptions = [];
 let filterOptions = [];
+let isHost = false;
 
 class ApiTokensPanelBody extends Component {
     constructor() {
@@ -35,20 +36,23 @@ class ApiTokensPanelBody extends Component {
             totalCount: 0,
             showNewApiToken: false,
         };
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
         const { props } = this;
-        props.dispatch(SecurityActions.getPortalList(util.settings.isHost, (dataPortal) => {
-            let portalList = Object.assign([], dataPortal.Results);
-            let currentPortalId = portalList[0].PortalID;
-            let currentPortal = portalList[0].PortalName;
-            this.setState({
-                portalList,
-                currentPortalId,
-                currentPortal
-            });
-        }));
+        if (isHost) {
+            props.dispatch(SecurityActions.getPortalList(util.settings.isHost, (dataPortal) => {
+                let portalList = Object.assign([], dataPortal.Results);
+                let currentPortalId = portalList[0].PortalID;
+                let currentPortal = portalList[0].PortalName;
+                this.setState({
+                    portalList,
+                    currentPortalId,
+                    currentPortal
+                });
+            }));
+        }
         props.dispatch(SecurityActions.getApiTokenKeys((data) => {
             this.setState({
                 apiTokenKeys: data
@@ -212,7 +216,7 @@ class ApiTokensPanelBody extends Component {
                 </div>
                 <div className="logContainer">
                     <div className="toolbar">
-                        {state.portalList.length > 0 &&
+                        {isHost && state.portalList.length > 0 &&
                             <div className="security-filter-container">
                                 <Dropdown
                                     value={state.currentPortalId}

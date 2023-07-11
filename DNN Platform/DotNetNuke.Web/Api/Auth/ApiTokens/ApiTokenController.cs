@@ -31,10 +31,10 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
-        private readonly Abstractions.Portals.IPortalSettings portalSettings = PortalController.Instance.GetCurrentSettings();
-
         /// <inheritdoc />
         public string SchemeType => "ApiToken";
+
+        private Abstractions.Portals.IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc />
         public (ApiTokenBase, UserInfo) ValidateToken(HttpRequestMessage request)
@@ -185,7 +185,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         {
             var tokenAndHostGuid = authorization + Entities.Host.Host.GUID;
             var hashedToken = this.GetHashedStr(tokenAndHostGuid);
-            var apiToken = ApiTokenRepository.Instance.GetApiToken(this.portalSettings.PortalId, hashedToken);
+            var apiToken = ApiTokenRepository.Instance.GetApiToken(this.PortalSettings.PortalId, hashedToken);
             if (apiToken != null)
             {
                 if (apiToken.ExpiresOn < DateTime.UtcNow || apiToken.IsRevoked)
@@ -203,7 +203,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 switch (apiToken.Scope)
                 {
                     case ApiTokenScope.User:
-                        var userInfo = UserController.GetUserById(this.portalSettings.PortalId, apiToken.CreatedByUserId);
+                        var userInfo = UserController.GetUserById(this.PortalSettings.PortalId, apiToken.CreatedByUserId);
                         if (userInfo == null)
                         {
                             if (Logger.IsTraceEnabled)
@@ -217,7 +217,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                         return (apiToken, userInfo);
 
                     case ApiTokenScope.Portal:
-                        if (apiToken.PortalId == this.portalSettings.PortalId)
+                        if (apiToken.PortalId == this.PortalSettings.PortalId)
                         {
                             return (apiToken, null);
                         }
