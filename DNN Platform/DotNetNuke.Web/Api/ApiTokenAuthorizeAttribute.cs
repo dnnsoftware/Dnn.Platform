@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.Api
             if (token.Scope != ApiTokenScope.Host)
             {
                 var settings = ApiTokenSettings.GetSettings(PortalController.Instance.GetCurrentSettings().PortalId);
-                if (!settings.ApiTokensEnabled)
+                if (!settings.AllowApiTokens)
                 {
                     return false;
                 }
