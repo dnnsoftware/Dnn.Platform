@@ -1102,15 +1102,17 @@ namespace Dnn.PersonaBar.Security.Services
         {
             if (portalId < 0)
             {
-                portalId = -1;
+                portalId = Null.NullInteger;
             }
 
             var noScopeDefined = scope == -2;
             var requestedScope = ApiTokenScope.User;
             var user = this.UserInfo;
+            var requestingUser = user.UserID;
 
             if (user.IsSuperUser)
             {
+                requestingUser = Null.NullInteger;
                 if (noScopeDefined)
                 {
                     requestedScope = ApiTokenScope.Host;
@@ -1122,6 +1124,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             else if (user.IsAdmin)
             {
+                requestingUser = Null.NullInteger;
                 portalId = PortalSettings.Current.PortalId;
                 if (noScopeDefined)
                 {
@@ -1145,7 +1148,7 @@ namespace Dnn.PersonaBar.Security.Services
                 }
             }
 
-            var response = ApiTokenController.Instance.GetApiTokens(requestedScope, noScopeDefined, portalId, -1, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
+            var response = ApiTokenController.Instance.GetApiTokens(requestedScope, noScopeDefined, portalId, requestingUser, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
             return this.Request.CreateResponse(HttpStatusCode.OK, response.Serialize());
         }
 

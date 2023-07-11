@@ -37,7 +37,7 @@ export class Body extends Component {
     }
 
     handleSelect(index) {
-        const {props} = this;
+        const { props } = this;
         props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
     }
 
@@ -55,7 +55,7 @@ export class Body extends Component {
                 loginSettingTabHeaders.push(resx.get("TabBasicLoginSettings"));
             if (isHost) {
                 loginSettingTabHeaders.push(<div style={{ fontSize: "9pt" }}>
-                    {resx.get("TabIpFilters") }
+                    {resx.get("TabIpFilters")}
                     <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
                         type="global"
@@ -75,7 +75,7 @@ export class Body extends Component {
             tabHeaders.push([resx.get("TabMemberAccounts")]);
             if (isHost) {
                 memberAccountsTabHeaders.push(<div style={{ fontSize: "9pt" }}>
-                    {resx.get("TabMemberSettings") }
+                    {resx.get("TabMemberSettings")}
                     <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
                         type="global"
@@ -98,7 +98,7 @@ export class Body extends Component {
                         bottom: -3,
                         backgroundColor: "white"
                     }}></div>
-                    {resx.get("TabRegistrationSettings") }
+                    {resx.get("TabRegistrationSettings")}
                 </div>);
                 memberAccountsTabs.push(<RegistrationSettings key="registrationSettings" />);
             }
@@ -113,7 +113,7 @@ export class Body extends Component {
             tabHeaders.push(resx.get("TabSecurityAnalyzer"));
             tabHeaders.push(resx.get("TabSecurityBulletins"));
             moreTabHeaders.push(<div style={{ fontSize: "9pt" }}>
-                {resx.get("TabMoreSecuritySettings") }
+                {resx.get("TabMoreSecuritySettings")}
                 <Tooltip
                     messages={[resx.get("GlobalSettingsTab")]}
                     type="global"
@@ -128,24 +128,32 @@ export class Body extends Component {
         if (isAdmin) {
             tabHeaders.push(resx.get("TabMore"));
         }
+        let loginSettingsTabs = [];
+        if (canViewBasicLoginSettings) {
+            loginSettingsTabs.push(<BasicSettings cultureCode={this.props.cultureCode} />);
+        }
+        if (isHost) {
+            loginSettingsTabs.push(<IpFilters />);
+        }
+        if (canManageApiTokens) {
+            loginSettingsTabs.push(<ApiTokens />);
+        }
         if (canManageApiTokens || canViewBasicLoginSettings || isHost) {
-            securityTabs.push(<Tabs key="loginSettingsTab" onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="loginSettingsTab" onSelect={this.handleSelect.bind(this)}
                 tabHeaders={loginSettingTabHeaders}
                 type="secondary">
-                {canViewBasicLoginSettings && <BasicSettings cultureCode={this.props.cultureCode} />}
-                {isHost && <IpFilters />}
-                {canManageApiTokens && <ApiTokens />}
+                {loginSettingsTabs}
             </Tabs>);
         }
         if (isHost || canViewRegistrationSettings) {
-            securityTabs.push(<Tabs key="memberAccountsTab" onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="memberAccountsTab" onSelect={this.handleSelect.bind(this)}
                 tabHeaders={memberAccountsTabHeaders}
                 type="secondary">
                 {memberAccountsTabs}
             </Tabs>);
         }
         if (isHost) {
-            securityTabs.push(<Tabs key="auditChecksTab" onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="auditChecksTab" onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("TabAuditChecks"), resx.get("TabScannerCheck"), resx.get("TabSuperuserActivity")]}
                 type="secondary">
                 <AuditCheck />
@@ -155,13 +163,13 @@ export class Body extends Component {
             securityTabs.push(<SecurityBulletins key="securityBulletinsTab" />);
         }
         if (isAdmin) {
-            securityTabs.push(<Tabs key="moreTab" onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="moreTab" onSelect={this.handleSelect.bind(this)}
                 tabHeaders={moreTabHeaders}
                 type="secondary">
                 {moreTabs}
             </Tabs>);
         }
-        return <Tabs onSelect={this.handleSelect.bind(this) }
+        return <Tabs onSelect={this.handleSelect.bind(this)}
             tabHeaders={tabHeaders}
             type="primary">
             {securityTabs}
@@ -172,7 +180,7 @@ export class Body extends Component {
     render() {
         return (
             <PersonaBarPageBody>
-                {this.renderTabs() }
+                {this.renderTabs()}
             </PersonaBarPageBody>
         );
     }
