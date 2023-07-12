@@ -59,6 +59,13 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         void DeleteApiToken(ApiTokenBase apiToken);
 
         /// <summary>
+        /// Deletes expired and revoked API tokens.
+        /// </summary>
+        /// <param name="portalId">The identifier of the portal. Use -1 for all portals.</param>
+        /// <param name="userId">The identifier of the user who's tokens should be deleted. Use -1 for admin and host.</param>
+        void DeleteExpiredAndRevokedApiTokens(int portalId, int userId);
+
+        /// <summary>
         /// Retrieves a paged list of API tokens in the database.
         /// </summary>
         /// <param name="scope">The scope of the API tokens to retrieve.</param>

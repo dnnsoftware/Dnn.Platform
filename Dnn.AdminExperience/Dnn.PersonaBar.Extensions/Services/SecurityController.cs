@@ -1336,6 +1336,33 @@ namespace Dnn.PersonaBar.Security.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, true);
         }
 
+        /// <summary>
+        /// Deletes expired and revoked tokens.
+        /// </summary>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage DeleteExpiredTokens()
+        {
+            var portalId = this.PortalId;
+            var user = this.UserInfo;
+            var userId = user.UserID;
+
+            if (user.IsSuperUser)
+            {
+                portalId = -1;
+                userId = -1;
+            }
+            else if (user.IsAdmin)
+            {
+                userId = -1;
+            }
+
+            ApiTokenController.Instance.DeleteExpiredAndRevokedApiTokens(portalId, userId);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
         internal string AddPortalAlias(string portalAlias, int portalId)
         {
             if (!string.IsNullOrEmpty(portalAlias))

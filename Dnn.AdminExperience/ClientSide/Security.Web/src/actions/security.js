@@ -557,6 +557,15 @@ const securityActions = {
                 }
             });
         };
+    },
+    deleteExpiredAndRevokedApiTokens(callback) {
+        return (dispatch) => {
+            ApplicationService.deleteExpiredAndRevokedApiTokens(data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

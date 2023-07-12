@@ -146,6 +146,12 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
+        public void DeleteExpiredAndRevokedApiTokens(int portalId, int userId)
+        {
+            ApiTokenRepository.Instance.DeleteExpiredAndRevokedApiTokens(portalId, userId);
+        }
+
+        /// <inheritdoc />
         protected override Func<IApiTokenController> GetFactory()
         {
             return () => new ApiTokenController();

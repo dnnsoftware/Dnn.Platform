@@ -96,6 +96,22 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         }
 
         /// <inheritdoc />
+        public void DeleteExpiredAndRevokedApiTokens(int portalId, int userId)
+        {
+            using (var context = DataContext.Instance())
+            {
+                var now = DateTime.UtcNow;
+                var sql = @"UPDATE {databaseOwner}{objectQualifier}ApiTokens
+SET IsDeleted=1
+WHERE (IsRevoked=1 OR ExpiresOn<@0)
+AND (PortalId=@1 OR @1=-1)
+AND (CreatedByUserId=@2 OR @2=-1)
+";
+                context.Execute(System.Data.CommandType.Text, sql, now, portalId, userId);
+            }
+        }
+
+        /// <inheritdoc />
         public IPagedList<ApiToken> GetApiTokens(ApiTokenScope scope, bool includeNarrowerScopes, int portalId, int userId, ApiTokenFilter filter, string apiKey, int pageIndex, int pageSize)
         {
             using (var context = DataContext.Instance())

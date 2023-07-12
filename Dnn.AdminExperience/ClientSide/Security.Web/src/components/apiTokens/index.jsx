@@ -223,6 +223,17 @@ class ApiTokensPanelBody extends Component {
             <div style={{ float: "left", width: "100%" }}>
                 <div className="tokenCommandBox">
                     <Button
+                        type="secondary"
+                        onClick={() => {
+                            util.utilities.confirm(resx.get("DeleteExpired.Confirm"), resx.get("Yes"), resx.get("No"), () => {
+                                this.props.dispatch(SecurityActions.deleteExpiredAndRevokedApiTokens((data) => {
+                                    this.getData();
+                                }));
+                            });
+                        }}>
+                        {resx.get("DeleteExpired")}
+                    </Button>
+                    <Button
                         type="primary"
                         onClick={() => {
                             this.setState({

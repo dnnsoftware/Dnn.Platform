@@ -177,6 +177,11 @@ class ApplicationService {
         sf.post("DeleteExpiredApiTokens", {}, callback);
     }
 
+    deleteExpiredAndRevokedApiTokens(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("DeleteExpiredTokens", {}, callback);
+    }
+
     getPortalList(addAll, callback) {
         const sf = this.getServiceFramework("Portals");
         sf.get("GetPortals?addAll=" + addAll, {}, callback);

@@ -1399,4 +1399,10 @@
   <data name="PageSummary.Text" xml:space="preserve">
     <value>Showing {0}-{1} of {2} results</value>
   </data>
+  <data name="DeleteExpired.Confirm" xml:space="preserve">
+    <value>This will delete all expired and revoked tokens. Do you wish to continue?</value>
+  </data>
+  <data name="DeleteExpired.Text" xml:space="preserve">
+    <value>Delete Expired</value>
+  </data>
 </root>

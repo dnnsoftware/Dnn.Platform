@@ -89,5 +89,12 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <param name="delete">A boolean value indicating whether to delete or revoke the token.</param>
         /// <param name="userId">The id of the user that revokes the token if being revoked.</param>
         void RevokeOrDeleteApiToken(ApiTokenBase token, bool delete, int userId);
+
+        /// <summary>
+        /// Deletes expired and revoked API tokens.
+        /// </summary>
+        /// <param name="portalId">The identifier of the portal. Use -1 for all portals.</param>
+        /// <param name="userId">The identifier of the user who's tokens should be deleted. Use -1 for admin and host.</param>
+        void DeleteExpiredAndRevokedApiTokens(int portalId, int userId);
     }
 }
