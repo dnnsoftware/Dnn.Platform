@@ -1393,4 +1393,10 @@
   <data name="Years2.Text" xml:space="preserve">
     <value>2 Years</value>
   </data>
+  <data name="PageSizeOptions.Text" xml:space="preserve">
+    <value>{0} results per page</value>
+  </data>
+  <data name="PageSummary.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} results</value>
+  </data>
 </root>

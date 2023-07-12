@@ -198,8 +198,8 @@ class ApiTokensPanelBody extends Component {
                         totalRecords={state.totalCount}
                         onPageChanged={this.onPageChange.bind(this)}
                         pageSizeDropDownWithoutBorder={true}
-                        pageSizeOptionText={"{0} results per page"}
-                        summaryText={"Showing {0}-{1} of {2} results"}
+                        pageSizeOptionText={resx.get("PageSizeOptions")}
+                        summaryText={resx.get("PageSummary")}
                         culture={util.utilities.getCulture()}
                     />
                 </div>
