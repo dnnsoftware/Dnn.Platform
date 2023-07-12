@@ -6,11 +6,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
     public enum ApiTokenTimespan
     {
-        Years1 = 1,
-        Years2 = 2,
-        Days30 = 30,
-        Days60 = 60,
-        Days90 = 90,
-        Days180 = 180,
+        Days30,
+        Days60,
+        Days90,
+        Days180,
+        Years1,
+        Years2,
     }
 }

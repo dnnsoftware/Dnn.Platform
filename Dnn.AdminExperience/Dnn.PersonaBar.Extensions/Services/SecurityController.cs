@@ -1073,15 +1073,7 @@ namespace Dnn.PersonaBar.Security.Services
                 }
 
                 var newMax = (int)settings.MaximumSiteTimespan;
-                var maxHasBeenReduced = false;
-                if (newMax < 10)
-                {
-                    maxHasBeenReduced = oldMax < 10 && oldMax > newMax;
-                }
-                else
-                {
-                    maxHasBeenReduced = oldMax < 10 || oldMax > newMax;
-                }
+                var maxHasBeenReduced = newMax < oldMax;
 
                 settings.UserTokenTimespan = (ApiTokenTimespan)request.UserTokenTimespan;
                 settings.AllowApiTokens = request.AllowApiTokens;
@@ -1093,21 +1085,10 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         var tokenSettings = ApiTokenSettings.GetSettings(p.PortalId);
                         var oldValue = (int)tokenSettings.UserTokenTimespan;
-                        if (newMax < 10)
+                        if (oldValue > newMax)
                         {
-                            if (oldValue < 10 && oldValue > newMax)
-                            {
-                                tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
-                                tokenSettings.SaveSettings(p.PortalId);
-                            }
-                        }
-                        else
-                        {
-                            if (oldValue < 10 || oldValue > newMax)
-                            {
-                                tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
-                                tokenSettings.SaveSettings(p.PortalId);
-                            }
+                            tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
+                            tokenSettings.SaveSettings(p.PortalId);
                         }
                     }
                 }
@@ -1274,13 +1255,27 @@ namespace Dnn.PersonaBar.Security.Services
 
             // Check the expiration time
             var expirationTime = DateTime.Now;
-            if (requestedTimespan < 10)
+            var setTimespan = (ApiTokenTimespan)requestedTimespan;
+            switch (setTimespan)
             {
-                expirationTime = expirationTime.AddYears(requestedTimespan);
-            }
-            else
-            {
-                expirationTime = expirationTime.AddDays(requestedTimespan);
+                case ApiTokenTimespan.Days30:
+                    expirationTime = expirationTime.AddDays(30);
+                    break;
+                case ApiTokenTimespan.Days60:
+                    expirationTime = expirationTime.AddDays(60);
+                    break;
+                case ApiTokenTimespan.Days90:
+                    expirationTime = expirationTime.AddDays(90);
+                    break;
+                case ApiTokenTimespan.Days180:
+                    expirationTime = expirationTime.AddDays(180);
+                    break;
+                case ApiTokenTimespan.Years1:
+                    expirationTime = expirationTime.AddYears(1);
+                    break;
+                case ApiTokenTimespan.Years2:
+                    expirationTime = expirationTime.AddYears(2);
+                    break;
             }
 
             var token = ApiTokenController.Instance.CreateApiToken(this.PortalId, data.TokenName.Trim(), requestedScope, expirationTime, data.ApiKeys, this.UserInfo.UserID);

@@ -14,13 +14,13 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <summary>
         /// Gets or sets the timespan of a token for end users.
         /// </summary>
-        [PortalSetting(Prefix = "ApiTokens_", Serializer = "DotNetNuke.Web.Api.Auth.ApiTokens.ApiTokenTimespanSerializer,DOTNETNUKE.WEB")]
+        [PortalSetting(Prefix = "ApiTokens_")]
         public ApiTokenTimespan UserTokenTimespan { get; set; } = ApiTokenTimespan.Days30;
 
         /// <summary>
         /// Gets or sets the maximum timespan of a token for site admins.
         /// </summary>
-        [HostSetting(Prefix = "ApiTokens_", Serializer = "DotNetNuke.Web.Api.Auth.ApiTokens.ApiTokenTimespanSerializer,DOTNETNUKE.WEB")]
+        [HostSetting(Prefix = "ApiTokens_")]
         public ApiTokenTimespan MaximumSiteTimespan { get; set; } = ApiTokenTimespan.Years1;
 
         /// <summary>

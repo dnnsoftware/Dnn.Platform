@@ -105,23 +105,17 @@ class ApiTokensPanelBody extends Component {
 
     getTimespanOptions() {
         if (timespanOptions.length == 0) {
-            timespanOptions.push({ "value": 30, "label": resx.get("Days30") });
-            timespanOptions.push({ "value": 60, "label": resx.get("Days60") });
-            timespanOptions.push({ "value": 90, "label": resx.get("Days90") });
-            timespanOptions.push({ "value": 180, "label": resx.get("Days180") });
-            timespanOptions.push({ "value": 1, "label": resx.get("Years1") });
-            timespanOptions.push({ "value": 2, "label": resx.get("Years2") });
+            timespanOptions.push({ "value": 0, "label": resx.get("Days30") });
+            timespanOptions.push({ "value": 1, "label": resx.get("Days60") });
+            timespanOptions.push({ "value": 2, "label": resx.get("Days90") });
+            timespanOptions.push({ "value": 3, "label": resx.get("Days180") });
+            timespanOptions.push({ "value": 4, "label": resx.get("Years1") });
+            timespanOptions.push({ "value": 5, "label": resx.get("Years2") });
             if (!isHost) {
                 const max = this.state.apiTokenSettings.MaximumSiteTimespan;
-                if (max < 10) {
-                    timespanOptions = timespanOptions.filter((item) => {
-                        return item.value <= max || item.value > 10;
-                    });
-                } else {
-                    timespanOptions = timespanOptions.filter((item) => {
-                        return item.value <= max && item.value > 10;
-                    });
-                }
+                timespanOptions = timespanOptions.filter((item) => {
+                    return item.value <= max;
+                });
             }
         }
         return timespanOptions;

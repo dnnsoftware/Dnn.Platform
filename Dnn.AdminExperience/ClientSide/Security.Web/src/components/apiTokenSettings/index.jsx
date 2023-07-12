@@ -25,12 +25,12 @@ class ApiTokenSettingsPanelBody extends Component {
         this.state = {
             apiTokenSettings: undefined,
         };
-        timespanSiteOptions.push({ "value": 30, "label": resx.get("Days30") });
-        timespanSiteOptions.push({ "value": 60, "label": resx.get("Days60") });
-        timespanSiteOptions.push({ "value": 90, "label": resx.get("Days90") });
-        timespanSiteOptions.push({ "value": 180, "label": resx.get("Days180") });
-        timespanSiteOptions.push({ "value": 1, "label": resx.get("Years1") });
-        timespanSiteOptions.push({ "value": 2, "label": resx.get("Years2") });
+        timespanSiteOptions.push({ "value": 0, "label": resx.get("Days30") });
+        timespanSiteOptions.push({ "value": 1, "label": resx.get("Days60") });
+        timespanSiteOptions.push({ "value": 2, "label": resx.get("Days90") });
+        timespanSiteOptions.push({ "value": 3, "label": resx.get("Days180") });
+        timespanSiteOptions.push({ "value": 4, "label": resx.get("Years1") });
+        timespanSiteOptions.push({ "value": 5, "label": resx.get("Years2") });
     }
 
     UNSAFE_componentWillMount() {
@@ -47,15 +47,9 @@ class ApiTokenSettingsPanelBody extends Component {
     getUserTimespanOptions() {
         if (timespanUserOptions.length == 0) {
             const max = this.state.apiTokenSettings.MaximumSiteTimespan;
-            if (max < 10) {
-                timespanUserOptions = timespanSiteOptions.filter((item) => {
-                    return item.value <= max || item.value > 10;
-                });
-            } else {
-                timespanUserOptions = timespanSiteOptions.filter((item) => {
-                    return item.value <= max && item.value > 10;
-                });
-            }
+            timespanUserOptions = timespanSiteOptions.filter((item) => {
+                return item.value <= max;
+            });
         }
         return timespanUserOptions;
     }
