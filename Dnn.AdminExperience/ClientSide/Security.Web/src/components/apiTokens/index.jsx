@@ -141,6 +141,10 @@ class ApiTokensPanelBody extends Component {
 
     onPageChange(currentPage, pageSize) {
         this.setState({
+            pageIndex: currentPage,
+            pageSize: pageSize
+        }, () => {
+            this.getData();
         });
     }
 
@@ -183,20 +187,22 @@ class ApiTokensPanelBody extends Component {
     renderPager() {
         const { state } = this;
         return (
-            <div className="logPager">
-                <Pager
-                    showStartEndButtons={false}
-                    showPageSizeOptions={true}
-                    showPageInfo={false}
-                    numericCounters={4}
-                    pageSize={state.pageSize}
-                    totalRecords={state.totalCount}
-                    onPageChanged={this.onPageChange.bind(this)}
-                    pageSizeDropDownWithoutBorder={true}
-                    pageSizeOptionText={"{0} results per page"}
-                    summaryText={"Showing {0}-{1} of {2} results"}
-                    culture={util.utilities.getCulture()}
-                />
+            <div className="logContainer">
+                <div className="logPager">
+                    <Pager
+                        showStartEndButtons={false}
+                        showPageSizeOptions={true}
+                        showPageInfo={false}
+                        numericCounters={4}
+                        pageSize={state.pageSize}
+                        totalRecords={state.totalCount}
+                        onPageChanged={this.onPageChange.bind(this)}
+                        pageSizeDropDownWithoutBorder={true}
+                        pageSizeOptionText={"{0} results per page"}
+                        summaryText={"Showing {0}-{1} of {2} results"}
+                        culture={util.utilities.getCulture()}
+                    />
+                </div>
             </div>
         );
     }
