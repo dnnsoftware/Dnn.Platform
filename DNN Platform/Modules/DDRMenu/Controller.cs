@@ -18,22 +18,6 @@ namespace DotNetNuke.Web.DDRMenu
     /// <summary>Implements the Dnn interfaces for the module.</summary>
     public class Controller : IUpgradeable, IPortable
     {
-        /// <summary>Regex for replacement of DNNDoneRight.DDRMenu.</summary>
-        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
-        public static readonly Regex AscxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        /// <summary>Regex for replacement of DNNGarden.TemplateEngine.</summary>
-        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
-        public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        /// <summary>Regex for replacement of DNNDoneRight.DDRMenu.</summary>
-        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
-        public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        /// <summary>Regex for replacement of DNNGarden.DDRMenu.</summary>
-        [Obsolete("Deprecated in v9.8.1, this should have not be public, scheduled removal in v10.")]
-        public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private const string DdrMenuModuleName = "DDRMenu";
         private const string DdrMenuMmoduleDefinitionName = "DDR Menu";
 
