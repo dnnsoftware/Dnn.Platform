@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -23,7 +24,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<ApiTokenBase>();
-                return rep.Find("WHERE (PortalId=@0 OR PortalId=-1) AND TokenHash=@1", portalId, tokenHash).FirstOrDefault();
+                return rep.Find("WHERE (PortalId=@0 OR PortalId=-1) AND TokenHash=@1 AND IsDeleted=0", portalId, tokenHash).FirstOrDefault();
             }
         }
 
@@ -89,7 +90,8 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<ApiTokenBase>();
-                rep.Delete(apiToken);
+                apiToken.IsDeleted = true;
+                rep.Update(apiToken);
             }
         }
 
@@ -98,7 +100,10 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         {
             using (var context = DataContext.Instance())
             {
-                var wheres = new List<string>();
+                var wheres = new List<string>
+                    {
+                      "IsDeleted=0",
+                    };
                 if (includeNarrowerScopes)
                 {
                     wheres.Add("Scope<=@2");

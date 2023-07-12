@@ -61,6 +61,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
         public bool IsRevoked { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the token has been deleted.
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
         /// Gets or sets the user ID who revoked the API token.
         /// </summary>
         public int RevokedByUserId { get; set; }

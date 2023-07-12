@@ -62,6 +62,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
                 PortalId = this.PortalId,
                 TokenName = this.TokenName,
                 IsRevoked = this.IsRevoked,
+                IsDeleted = this.IsDeleted,
                 RevokedByUserId = this.RevokedByUserId,
                 RevokedOnDate = this.RevokedOnDate,
                 CreatedByUserId = this.CreatedByUserId,
