@@ -12,16 +12,16 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     public class ApiTokenSettings
     {
         /// <summary>
-        /// Gets or sets the maximum timespan of a token.
+        /// Gets or sets the timespan of a token for end users.
         /// </summary>
-        [HostSetting(Prefix = "ApiTokens_")]
-        public int MaximumTimespan { get; set; } = 1;
+        [PortalSetting(Prefix = "ApiTokens_", Serializer = "DotNetNuke.Web.Api.Auth.ApiTokens.ApiTokenTimespanSerializer,DOTNETNUKE.WEB")]
+        public ApiTokenTimespan UserTokenTimespan { get; set; } = ApiTokenTimespan.Days30;
 
         /// <summary>
-        /// Gets or sets the maximum timespan measure of a token. Can be one of the following: y, M, w, d.
+        /// Gets or sets the maximum timespan of a token for site admins.
         /// </summary>
-        [HostSetting(Prefix = "ApiTokens_")]
-        public string MaximumTimespanMeasure { get; set; } = "y";
+        [HostSetting(Prefix = "ApiTokens_", Serializer = "DotNetNuke.Web.Api.Auth.ApiTokens.ApiTokenTimespanSerializer,DOTNETNUKE.WEB")]
+        public ApiTokenTimespan MaximumSiteTimespan { get; set; } = ApiTokenTimespan.Years1;
 
         /// <summary>
         /// Gets or sets a value indicating whether API tokens are allowed.

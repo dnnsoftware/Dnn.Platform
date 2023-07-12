@@ -60,6 +60,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
                 ExpiresOn = this.ExpiresOn,
                 Scope = this.Scope,
                 PortalId = this.PortalId,
+                TokenName = this.TokenName,
                 IsRevoked = this.IsRevoked,
                 RevokedByUserId = this.RevokedByUserId,
                 RevokedOnDate = this.RevokedOnDate,

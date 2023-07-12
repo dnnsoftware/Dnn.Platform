@@ -376,6 +376,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}ApiTokens (
 	[ApiTokenId] [int] IDENTITY(1,1) NOT NULL,
+	[TokenName] [nvarchar](100) NULL,
 	[TokenHash] [varchar](96) NOT NULL,
 	[ExpiresOn] [datetime] NOT NULL,
 	[Scope] [int] NOT NULL,

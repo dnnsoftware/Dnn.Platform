@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
-        public string CreateApiToken(int portalId, ApiTokenScope scope, DateTime expiresOn, string apiKeys, int userId)
+        public string CreateApiToken(int portalId, string tokenName, ApiTokenScope scope, DateTime expiresOn, string apiKeys, int userId)
         {
             if (scope == ApiTokenScope.Host)
             {
@@ -117,6 +117,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             var token = new ApiTokenBase()
             {
                 PortalId = portalId,
+                TokenName = tokenName,
                 Scope = scope,
                 ExpiresOn = expiresOn,
                 TokenHash = hashedToken,

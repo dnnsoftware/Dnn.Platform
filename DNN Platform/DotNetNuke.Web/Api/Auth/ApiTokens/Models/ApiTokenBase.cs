@@ -27,6 +27,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
         public int ApiTokenId { get; set; } = -1;
 
         /// <summary>
+        /// Gets or sets a name for the API token.
+        /// </summary>
+        public string TokenName { get; set; }
+
+        /// <summary>
         /// Gets or sets the hash of the API token. This is used to validate the API token.
         /// </summary>
         [JsonIgnore]

@@ -16,12 +16,21 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+let timespanSiteOptions = [];
+let timespanUserOptions = [];
+
 class ApiTokenSettingsPanelBody extends Component {
     constructor() {
         super();
         this.state = {
             apiTokenSettings: undefined,
         };
+        timespanSiteOptions.push({ "value": 30, "label": resx.get("Days30") });
+        timespanSiteOptions.push({ "value": 60, "label": resx.get("Days60") });
+        timespanSiteOptions.push({ "value": 90, "label": resx.get("Days90") });
+        timespanSiteOptions.push({ "value": 180, "label": resx.get("Days180") });
+        timespanSiteOptions.push({ "value": 1, "label": resx.get("Years1") });
+        timespanSiteOptions.push({ "value": 2, "label": resx.get("Years2") });
     }
 
     UNSAFE_componentWillMount() {
@@ -35,12 +44,30 @@ class ApiTokenSettingsPanelBody extends Component {
         this.getSettings();
     }
 
+    getUserTimespanOptions() {
+        if (timespanUserOptions.length == 0) {
+            const max = this.state.apiTokenSettings.MaximumSiteTimespan;
+            if (max < 10) {
+                timespanUserOptions = timespanSiteOptions.filter((item) => {
+                    return item.value <= max || item.value > 10;
+                });
+            } else {
+                timespanUserOptions = timespanSiteOptions.filter((item) => {
+                    return item.value <= max && item.value > 10;
+                });
+            }
+        }
+        return timespanUserOptions;
+    }
+
     onSettingChange(key, event) {
         const { state, props } = this;
         let apiTokenSettings = Object.assign({}, state.apiTokenSettings);
         apiTokenSettings[key] = typeof event === "object" ? event.target.value : event;
         this.setState({
             apiTokenSettings: apiTokenSettings,
+        }, () => {
+            timespanUserOptions = [];
         });
         props.dispatch(SecurityActions.apiTokenSettingsClientModified(apiTokenSettings));
     }
@@ -126,39 +153,38 @@ class ApiTokenSettingsPanelBody extends Component {
                     {isHost && (
                         <InputGroup>
                             <Label
-                                tooltipMessage={resx.get("plMaxApiTokenDuration.Help")}
-                                label={resx.get("plMaxApiTokenDuration")}
+                                tooltipMessage={resx.get("plMaximumSiteTimespan.Help")}
+                                label={resx.get("plMaximumSiteTimespan")}
                                 extra={
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
                                         style={{ float: "left", position: "static" }} />
                                 } />
-                            <div className="half-input-left">
-                                <SingleLineInputWithError
-                                    withLabel={false}
-                                    error={!this.testPositiveInt(state.apiTokenSettings.MaximumTimespan)}
-                                    errorMessage={resx.get("MaxApiTokenDuration.Error")}
-                                    value={state.apiTokenSettings.MaximumTimespan}
-                                    onChange={(e) => this.onSettingChange("MaximumTimespan", e)} />
-                            </div>
-                            <div className="half-input-right">
-                                <Dropdown
-                                    options={[
-                                        { label: resx.get("OptDays"), value: "d" },
-                                        { label: resx.get("OptWeeks"), value: "w" },
-                                        { label: resx.get("OptMonths"), value: "M" },
-                                        { label: resx.get("OptYears"), value: "y" },
-                                    ]}
-                                    value={state.apiTokenSettings.MaximumTimespanMeasure}
-                                    onSelect={(newVal) => {
-                                        this.onSettingChange("MaximumTimespanMeasure", newVal.value);
-                                    }}
-                                    enabled={true}
-                                />
-                            </div>
+                            <Dropdown
+                                options={timespanSiteOptions}
+                                value={state.apiTokenSettings.MaximumSiteTimespan}
+                                onSelect={(newVal) => {
+                                    this.onSettingChange("MaximumSiteTimespan", newVal.value);
+                                }}
+                                enabled={true}
+                            />
                         </InputGroup>
                     )}
+                    <InputGroup>
+                        <Label
+                            tooltipMessage={resx.get("plUserTokenTimespan.Help")}
+                            label={resx.get("plUserTokenTimespan")}
+                        />
+                        <Dropdown
+                            options={this.getUserTimespanOptions()}
+                            value={state.apiTokenSettings.UserTokenTimespan}
+                            onSelect={(newVal) => {
+                                this.onSettingChange("UserTokenTimespan", newVal.value);
+                            }}
+                            enabled={state.apiTokenSettings.AllowApiTokens}
+                        />
+                    </InputGroup>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.apiTokenSettingsClientModified}

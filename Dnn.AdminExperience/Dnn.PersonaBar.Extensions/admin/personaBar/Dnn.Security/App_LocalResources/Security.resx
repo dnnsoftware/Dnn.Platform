@@ -1345,13 +1345,52 @@
   <data name="plAllowApiTokens.Text" xml:space="preserve">
     <value>Allow API Tokens</value>
   </data>
-  <data name="plMaxApiTokenDuration.Help" xml:space="preserve">
-    <value>Specify the maximum time an API token can remain active</value>
-  </data>
-  <data name="plMaxApiTokenDuration.Text" xml:space="preserve">
-    <value>Max API Token Duration</value>
-  </data>
   <data name="TabApiTokenSettings.Text" xml:space="preserve">
     <value>API TOKEN SETTINGS</value>
+  </data>
+  <data name="TokenName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TokenName.Help" xml:space="preserve">
+    <value>A descriptive name for the token. You can leave this blank.</value>
+  </data>
+  <data name="TokenName.Text" xml:space="preserve">
+    <value>Token Name</value>
+  </data>
+  <data name="Days180.Text" xml:space="preserve">
+    <value>180 Days</value>
+  </data>
+  <data name="Days30.Text" xml:space="preserve">
+    <value>30 Days</value>
+  </data>
+  <data name="Days60.Text" xml:space="preserve">
+    <value>60 Days</value>
+  </data>
+  <data name="Days90.Text" xml:space="preserve">
+    <value>90 Days</value>
+  </data>
+  <data name="ExpiresIn.Help" xml:space="preserve">
+    <value>Select how long this token will be valid.</value>
+  </data>
+  <data name="ExpiresIn.Text" xml:space="preserve">
+    <value>Expires In</value>
+  </data>
+  <data name="plMaximumSiteTimespan.Help" xml:space="preserve">
+    <value>Set the maximum timespan tor API tokens for any site on this DNN instance</value>
+  </data>
+  <data name="plMaximumSiteTimespan.Text" xml:space="preserve">
+    <value>Maximum Site Timespan</value>
+  </data>
+  <data name="plUserTokenTimespan.Help" xml:space="preserve">
+    <value>Set the timespan for user generated API tokens on this site</value>
+  </data>
+  <data name="plUserTokenTimespan.Text" xml:space="preserve">
+    <value>User API Token Timespan</value>
+  </data>
+  <data name="Years1.Text" xml:space="preserve">
+    <value>1 Year</value>
+  </data>
+  <data name="Years2.Text" xml:space="preserve">
+    <value>2 Years</value>
   </data>
 </root>

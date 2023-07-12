@@ -13,9 +13,9 @@ import ApiTokenDetails from "./ApiTokenDetails";
 import CreateApiToken from "./CreateApiToken";
 
 
-let pageSizeOptions = [];
 let scopeOptions = [];
 let filterOptions = [];
+let timespanOptions = [];
 let isHost = false;
 
 class ApiTokensPanelBody extends Component {
@@ -73,13 +73,6 @@ class ApiTokensPanelBody extends Component {
             }));
         }
 
-        pageSizeOptions = [];
-        pageSizeOptions.push({ "value": 10, "label": "10 entries per page" });
-        pageSizeOptions.push({ "value": 25, "label": "25 entries per page" });
-        pageSizeOptions.push({ "value": 50, "label": "50 entries per page" });
-        pageSizeOptions.push({ "value": 100, "label": "100 entries per page" });
-        pageSizeOptions.push({ "value": 250, "label": "250 entries per page" });
-
         scopeOptions = [];
         scopeOptions.push({ "value": -2, "label": resx.get("All") });
         scopeOptions.push({ "value": 0, "label": resx.get("User") });
@@ -110,6 +103,30 @@ class ApiTokensPanelBody extends Component {
         }));
     }
 
+    getTimespanOptions() {
+        if (timespanOptions.length == 0) {
+            timespanOptions.push({ "value": 30, "label": resx.get("Days30") });
+            timespanOptions.push({ "value": 60, "label": resx.get("Days60") });
+            timespanOptions.push({ "value": 90, "label": resx.get("Days90") });
+            timespanOptions.push({ "value": 180, "label": resx.get("Days180") });
+            timespanOptions.push({ "value": 1, "label": resx.get("Years1") });
+            timespanOptions.push({ "value": 2, "label": resx.get("Years2") });
+            if (!isHost) {
+                const max = this.state.apiTokenSettings.MaximumSiteTimespan;
+                if (max < 10) {
+                    timespanOptions = timespanOptions.filter((item) => {
+                        return item.value <= max || item.value > 10;
+                    });
+                } else {
+                    timespanOptions = timespanOptions.filter((item) => {
+                        return item.value <= max && item.value > 10;
+                    });
+                }
+            }
+        }
+        return timespanOptions;
+    }
+
     resetApiFilterList() {
         let newOptions = [];
         newOptions.push({ "value": "", "label": resx.get("All") });
@@ -135,12 +152,13 @@ class ApiTokensPanelBody extends Component {
 
     renderHeader() {
         const tableFields = [
-            { name: "Portal", width: 20 },
-            { name: "Scope", width: 15 },
+            { name: "TokenName", width: 17 },
+            { name: "Portal", width: 18 },
+            { name: "Scope", width: 8 },
             { name: "CreatedOn", width: 10 },
             { name: "CreatedBy", width: 20 },
             { name: "ExpiresOn", width: 10 },
-            { name: "ApiTokenStatus", width: 20 }
+            { name: "ApiTokenStatus", width: 12 }
         ];
 
         let tableHeaders = tableFields.map((field, index) => {
@@ -291,16 +309,17 @@ class ApiTokensPanelBody extends Component {
                         {this.state.showAddApiToken && <CreateApiToken
                             apiTokenKeys={this.state.apiTokenKeys}
                             scopeOptions={scopeOptions.slice(1)}
+                            timespanOptions={this.getTimespanOptions()}
                             onCancel={() => {
                                 this.setState({
                                     showAddApiToken: false
                                 });
                             }}
-                            onCreateApiToken={(scope, expiresOn, apiKeys) => {
+                            onCreateApiToken={(name, scope, tokenTimespan, apiKeys) => {
                                 this.setState({
                                     showAddApiToken: false
                                 });
-                                this.props.dispatch(SecurityActions.createApiToken(scope, expiresOn, apiKeys, (data) => {
+                                this.props.dispatch(SecurityActions.createApiToken(name, scope, tokenTimespan, apiKeys, (data) => {
                                     prompt(resx.get("ApiTokenCreated"), data);
                                     this.getData();
                                 }));

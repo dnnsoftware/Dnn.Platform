@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Extensions.Services.Dto
 {
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     /// <summary>
@@ -12,14 +13,19 @@ namespace Dnn.PersonaBar.Extensions.Services.Dto
     public class CreateApiTokenRequest
     {
         /// <summary>
+        /// Gets or sets the name of the token.
+        /// </summary>
+        public string TokenName { get; set; }
+
+        /// <summary>
         /// Gets or sets the scope of the token.
         /// </summary>
         public int Scope { get; set; }
 
         /// <summary>
-        /// Gets or sets the expiration date and time of the token.
+        /// Gets or sets the expiration timespan of the token. See <see cref="ApiTokenTimespan"/> for more information.
         /// </summary>
-        public string ExpiresOn { get; set; }
+        public int TokenTimespan { get; set; }
 
         /// <summary>
         /// Gets or sets the API keys associated with the token.

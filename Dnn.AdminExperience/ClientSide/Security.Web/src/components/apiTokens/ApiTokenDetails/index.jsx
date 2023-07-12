@@ -42,6 +42,13 @@ class ApiTokenDetails extends Component {
                 <Grid numberOfColumns={2}>
                     <div key="editor-container-columnOne" className="editor-container">
                         <Label
+                            label={resx.get("TokenName")}
+                            tooltipMessage={resx.get("TokenName.Help")}
+                            tooltipPlace={"top"} />
+                        <div>
+                            {this.props.apiToken.TokenName}
+                        </div>
+                        <Label
                             label={resx.get("CreatedBy")}
                             tooltipMessage={resx.get("CreatedBy.Help")}
                             tooltipPlace={"top"} />

@@ -1066,14 +1066,52 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 var settings = ApiTokenSettings.GetSettings(this.PortalId);
+                var oldMax = (int)settings.MaximumSiteTimespan;
                 if (this.UserInfo.IsSuperUser)
                 {
-                    settings.MaximumTimespan = request.MaximumTimespan;
-                    settings.MaximumTimespanMeasure = request.MaximumTimespanMeasure;
+                    settings.MaximumSiteTimespan = (ApiTokenTimespan)request.MaximumSiteTimespan;
                 }
 
+                var newMax = (int)settings.MaximumSiteTimespan;
+                var maxHasBeenReduced = false;
+                if (newMax < 10)
+                {
+                    maxHasBeenReduced = oldMax < 10 && oldMax > newMax;
+                }
+                else
+                {
+                    maxHasBeenReduced = oldMax < 10 || oldMax > newMax;
+                }
+
+                settings.UserTokenTimespan = (ApiTokenTimespan)request.UserTokenTimespan;
                 settings.AllowApiTokens = request.AllowApiTokens;
                 settings.SaveSettings(this.PortalId);
+
+                if (maxHasBeenReduced)
+                {
+                    foreach (IPortalInfo p in PortalController.Instance.GetPortalList(Null.NullString))
+                    {
+                        var tokenSettings = ApiTokenSettings.GetSettings(p.PortalId);
+                        var oldValue = (int)tokenSettings.UserTokenTimespan;
+                        if (newMax < 10)
+                        {
+                            if (oldValue < 10 && oldValue > newMax)
+                            {
+                                tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
+                                tokenSettings.SaveSettings(p.PortalId);
+                            }
+                        }
+                        else
+                        {
+                            if (oldValue < 10 || oldValue > newMax)
+                            {
+                                tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
+                                tokenSettings.SaveSettings(p.PortalId);
+                            }
+                        }
+                    }
+                }
+
                 DataCache.ClearCache();
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -1203,6 +1241,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
 
             var requestedScope = ApiTokenScope.User;
+            var requestedTimespan = data.TokenTimespan;
 
             // Checks if the user is authorized.
             var user = this.UserInfo;
@@ -1220,6 +1259,8 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     requestedScope = (ApiTokenScope)data.Scope;
                 }
+
+                requestedTimespan = Math.Min(requestedTimespan, (int)settings.MaximumSiteTimespan);
             }
             else
             {
@@ -1227,30 +1268,22 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
                 }
+
+                requestedTimespan = (int)settings.UserTokenTimespan;
             }
 
             // Check the expiration time
-            var requestedExpiration = DateTime.Parse(data.ExpiresOn);
-            var maxExpirationTime = DateTime.Now;
-            switch (settings.MaximumTimespanMeasure)
+            var expirationTime = DateTime.Now;
+            if (requestedTimespan < 10)
             {
-                case "y":
-                    maxExpirationTime = maxExpirationTime.AddYears(settings.MaximumTimespan);
-                    break;
-                case "m":
-                    maxExpirationTime = maxExpirationTime.AddMonths(settings.MaximumTimespan);
-                    break;
-                case "d":
-                    maxExpirationTime = maxExpirationTime.AddDays(settings.MaximumTimespan);
-                    break;
+                expirationTime = expirationTime.AddYears(requestedTimespan);
+            }
+            else
+            {
+                expirationTime = expirationTime.AddDays(requestedTimespan);
             }
 
-            if (requestedExpiration > maxExpirationTime || requestedExpiration < DateTime.UtcNow)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid expiration date");
-            }
-
-            var token = ApiTokenController.Instance.CreateApiToken(this.PortalId, requestedScope, requestedExpiration, data.ApiKeys, this.UserInfo.UserID);
+            var token = ApiTokenController.Instance.CreateApiToken(this.PortalId, data.TokenName.Trim(), requestedScope, expirationTime, data.ApiKeys, this.UserInfo.UserID);
             return this.Request.CreateResponse(HttpStatusCode.OK, token);
         }
 

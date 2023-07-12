@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import { Dropdown, GridSystem as Grid, Checkbox, Button, DatePicker, Label } from "@dnnsoftware/dnn-react-common";
+import { Dropdown, GridSystem as Grid, Checkbox, Button, Label, SingleLineInput } from "@dnnsoftware/dnn-react-common";
 import resx from "../../../resources";
-import * as dayjs from "dayjs";
+import util from "../../../utils";
+
+let isHost = false;
+let isAdmin = false;
 
 class CreateApiToken extends Component {
     constructor(props) {
@@ -12,8 +15,11 @@ class CreateApiToken extends Component {
             currentScope: 0,
             apiTokenKeysFiltered: [],
             selectedKeys: [],
-            selectedDate: dayjs().add(props.apiTokenSettings.MaximumTimespan, this.props.apiTokenSettings.MaximumTimespanMeasure).toDate()
+            selectedTimespan: props.timespanOptions.length > 0 ? props.timespanOptions[0].value : 0,
+            tokenName: "",
         };
+        isHost = util.settings.isHost;
+        isAdmin = util.settings.isAdmin;
     }
 
     componentDidMount() {
@@ -31,11 +37,26 @@ class CreateApiToken extends Component {
     }
 
     render() {
-        const lastDate = dayjs().add(this.props.apiTokenSettings.MaximumTimespan, this.props.apiTokenSettings.MaximumTimespanMeasure).toDate();
         return (
             <div className="apitokens-details">
                 <Grid numberOfColumns={2}>
                     <div key="editor-container-columnOne" className="editor-container">
+                        <Label
+                            label={resx.get("TokenName")}
+                            tooltipMessage={resx.get("TokenName.Help")}
+                            tooltipPlace={"top"} />
+                        <div>
+                            <SingleLineInput
+                                style={{ marginBottom: "0px", width: "100%" }}
+                                value={this.state.tokenName}
+                                onChange={(event) => {
+                                    this.setState({
+                                        tokenName: event.target.value
+                                    });
+                                }}
+                                maxLength={100}
+                            />
+                        </div>
                         <Label
                             label={resx.get("Scope")}
                             tooltipMessage={resx.get("Scope.Help")}
@@ -55,22 +76,27 @@ class CreateApiToken extends Component {
                                 }}
                             />
                         </div>
-                        <Label
-                            label={resx.get("ExpiresOn")}
-                            tooltipMessage={resx.get("ExpiresOn.Help")}
-                            tooltipPlace={"top"} />
-                        <DatePicker
-                            date={this.state.selectedDate}
-                            updateDate={(date) => {
-                                this.setState({
-                                    selectedDate: date
-                                });
-                            }}
-                            isDateRange={false}
-                            hasTimePicker={true}
-                            minDate={new Date()}
-                            maxDate={lastDate}
-                            showClearDateButton={false} />
+                        {(isHost || isAdmin) && (
+                            <>
+                                <Label
+                                    label={resx.get("ExpiresIn")}
+                                    tooltipMessage={resx.get("ExpiresIn.Help")}
+                                    tooltipPlace={"top"} />
+                                <div>
+                                    <Dropdown
+                                        value={this.state.selectedTimespan}
+                                        style={{ width: "100%" }}
+                                        options={this.props.timespanOptions}
+                                        withBorder={false}
+                                        onSelect={(value) => {
+                                            this.setState({
+                                                selectedTimespan: value.value
+                                            });
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                     <div key="editor-container-columnTwo" className="editor-container right-column">
                         <Label
@@ -116,7 +142,11 @@ class CreateApiToken extends Component {
                         type="primary"
                         disabled={this.state.selectedKeys.length === 0}
                         onClick={() => {
-                            this.props.onCreateApiToken(this.state.currentScope, this.state.selectedDate.toISOString(), this.state.selectedKeys.join(","));
+                            this.props.onCreateApiToken(
+                                this.state.tokenName,
+                                this.state.currentScope,
+                                this.state.selectedTimespan,
+                                this.state.selectedKeys.join(","));
                         }}>
                         {resx.get("Add")}
                     </Button>

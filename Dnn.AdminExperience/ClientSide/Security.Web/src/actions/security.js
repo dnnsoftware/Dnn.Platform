@@ -523,11 +523,12 @@ const securityActions = {
             });
         };
     },
-    createApiToken(scope, expiresOn, apiKeys, callback) {
+    createApiToken(name, scope, tokenTimespan, apiKeys, callback) {
         return (dispatch) => {
             ApplicationService.createApiToken({
+                TokenName: name,
                 Scope: scope,
-                ExpiresOn: expiresOn,
+                TokenTimespan: tokenTimespan,
                 ApiKeys: apiKeys
             }, data => {
                 if (callback) {

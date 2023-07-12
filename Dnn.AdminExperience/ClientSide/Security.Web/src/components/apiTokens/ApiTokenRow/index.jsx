@@ -90,12 +90,17 @@ class ApiTokenRow extends Component {
             <div ref={node => this.node = node} className={"collapsible-logitemdetail " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-logitemdetail-header " + state.collapsed}>
                     <div className="term-header">
-                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "20%" }}>
+                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "17%" }}>
+                            <div className="term-label-wrapper">
+                                <span>{props.apiToken.TokenName}&nbsp;</span>
+                            </div>
+                        </div>
+                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "18%" }}>
                             <div className="term-label-wrapper">
                                 <span>{props.apiToken.PortalName}&nbsp;</span>
                             </div>
                         </div>
-                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "15%" }}>
+                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "8%" }}>
                             <div className="term-label-wrapper">
                                 <span>{props.scopes.filter((item) => item.value == this.props.apiToken.Scope)[0].label}</span>
                             </div>
@@ -115,7 +120,7 @@ class ApiTokenRow extends Component {
                                 <span>{utils.formatDate(props.apiToken.ExpiresOn)}&nbsp;</span>
                             </div>
                         </div>
-                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "20%" }}>
+                        <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "12%" }}>
                             <div className="term-label-wrapper">
                                 <span className={statusClass}>{status}&nbsp;</span>
                             </div>
