@@ -1322,6 +1322,10 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
                 }
+                else
+                {
+                    canManage = true;
+                }
             }
 
             if (canManage)
