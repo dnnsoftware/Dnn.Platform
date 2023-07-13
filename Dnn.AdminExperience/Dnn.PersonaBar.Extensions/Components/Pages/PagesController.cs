@@ -5,10 +5,12 @@
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    public class PagesController : ServiceLocator<IPagesController, PagesController>
+    [DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
+    public partial class PagesController : ServiceLocator<IPagesController, PagesController>
     {
         /// <inheritdoc/>
         protected override Func<IPagesController> GetFactory()
