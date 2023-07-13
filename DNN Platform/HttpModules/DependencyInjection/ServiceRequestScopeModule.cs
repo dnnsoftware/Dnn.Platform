@@ -1,30 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Web;
-
-using DotNetNuke.Common.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-[assembly: PreApplicationStartMethod(typeof(DotNetNuke.HttpModules.DependencyInjection.ServiceRequestScopeModule), nameof(DotNetNuke.HttpModules.DependencyInjection.ServiceRequestScopeModule.InitModule))]
-
 namespace DotNetNuke.HttpModules.DependencyInjection
 {
+    using System;
     using System.Threading.Tasks;
+    using System.Web;
+
+    using DotNetNuke.Common.Extensions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>An HTTP module which creates dependency injection scopes for each request.</summary>
     public class ServiceRequestScopeModule : IHttpModule
     {
         private static IServiceProvider serviceProvider;
-
-        /// <summary>Initializes this HTTP module before the application starts.</summary>
-        public static void InitModule()
-        {
-            DynamicModuleUtility.RegisterModule(typeof(ServiceRequestScopeModule));
-        }
 
         /// <summary>For internal use only. Allows setting the service provider used to create request scopes.</summary>
         /// <param name="serviceProvider">The service provider.</param>
