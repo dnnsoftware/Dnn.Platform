@@ -10,7 +10,6 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Web.Http.Hosting;
 
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Internal;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Web.Api;
     using Moq;

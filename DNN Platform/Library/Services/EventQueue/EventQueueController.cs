@@ -211,12 +211,6 @@ namespace DotNetNuke.Services.EventQueue
             return success;
         }
 
-        [Obsolete("This method is obsolete. Use Sendmessage(message, eventName) instead. Scheduled removal in v10.0.0.")]
-        public bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
-        {
-            return SendMessage(message, eventName);
-        }
-
         private static EventMessage FillMessage(IDataReader dr, bool checkForOpenDataReader)
         {
             EventMessage message;

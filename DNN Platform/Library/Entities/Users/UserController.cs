@@ -2038,7 +2038,7 @@ namespace DotNetNuke.Entities.Users
         private static void RestoreUserPermissions(UserInfo user)
         {
             // restore user's folder permission
-            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var userFolderPath = PathUtils.GetUserFolderPathInternal(user);
             var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
             var userFolder = FolderManager.Instance.GetFolder(portalId, userFolderPath);
 
@@ -2254,7 +2254,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="portalId">The portal id that contains the user folder to delete.</param>
         private static void DeleteUserFolder(UserInfo user, int portalId)
         {
-            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var userFolderPath = PathUtils.GetUserFolderPathInternal(user);
             var folderPortalId = user.IsSuperUser ? Null.NullInteger : portalId;
             var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
             if (userFolder != null)

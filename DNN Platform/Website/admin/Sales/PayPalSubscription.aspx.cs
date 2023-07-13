@@ -14,7 +14,6 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
 
     public partial class PayPalSubscription : PageBase

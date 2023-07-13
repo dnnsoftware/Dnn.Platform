@@ -420,28 +420,6 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
-        [Browsable(false)]
-        [XmlIgnore]
-        [JsonIgnore]
-        public UserVisibilityMode Visibility
-        {
-            get
-            {
-                return this.ProfileVisibility.VisibilityMode;
-            }
-
-            set
-            {
-                if (this.ProfileVisibility.VisibilityMode != value)
-                {
-                    this.IsDirty = true;
-                }
-
-                this.ProfileVisibility.VisibilityMode = value;
-            }
-        }
-
         /// <summary>Clears the IsDirty Flag.</summary>
         public void ClearIsDirty()
         {

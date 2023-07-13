@@ -90,20 +90,17 @@ namespace DotNetNuke.Services.Search.Internals
                             {
                                 try
                                 {
-                                    // if we successd in deleting the file, move on and create a new writer; otherwise,
-                                    // the writer is locked by another instance (e.g., another server in a webfarm).
+                                    // if we succeed in deleting the file, move on and create a new writer; otherwise,
+                                    // the writer is locked by another instance (e.g., another server in a web farm).
                                     File.Delete(lockFile);
                                 }
                                 catch (IOException e)
                                 {
-#pragma warning disable 0618
                                     throw new SearchException(
                                         Localization.GetExceptionMessage(
                                             "UnableToCreateLuceneWriter",
                                             "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
-                                        e,
-                                        new SearchItemInfo());
-#pragma warning restore 0618
+                                        e);
                                 }
                             }
 
