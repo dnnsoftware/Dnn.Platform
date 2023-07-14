@@ -72,7 +72,7 @@ class ApiTokenRow extends Component {
 
     render() {
         const { props, state } = this;
-        let dateFormatter = new Intl.DateTimeFormat(dnn.utility.getCulture(), { dateStyle: "short" });
+        let dateFormatter = new Intl.DateTimeFormat(window.dnn.utility.getCulture(), { dateStyle: "short" });
         let status = "";
         let statusClass = "inactive";
         if (utils.dateInPast(new Date(props.apiToken.ExpiresOn), new Date())) {
@@ -168,6 +168,14 @@ class ApiTokenRow extends Component {
         );
     }
 }
+
+ApiTokenRow.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    apiToken: PropTypes.object.isRequired,
+    scopes: PropTypes.array.isRequired,
+    onClose: PropTypes.func.isRequired,
+    className: PropTypes.string
+};
 
 function mapStateToProps(state) {
     return {};

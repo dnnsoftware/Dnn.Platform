@@ -1,5 +1,5 @@
-const dateFormatter = new Intl.DateTimeFormat(dnn.utility.getCulture(), { dateStyle: "short" });
-const dateTimeFormatter = new Intl.DateTimeFormat(dnn.utility.getCulture(), { dateStyle: "full", timeStyle: "long" });
+const dateFormatter = new Intl.DateTimeFormat(window.dnn.utility.getCulture(), { dateStyle: "short" });
+const dateTimeFormatter = new Intl.DateTimeFormat(window.dnn.utility.getCulture(), { dateStyle: "full", timeStyle: "long" });
 
 const utils = {
     init(utilities) {

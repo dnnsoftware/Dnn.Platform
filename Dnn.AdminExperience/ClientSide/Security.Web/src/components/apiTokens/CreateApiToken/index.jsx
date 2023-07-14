@@ -106,7 +106,7 @@ class CreateApiToken extends Component {
                         <div className="apitokenkeys">
                             {this.state.apiTokenKeysFiltered.map((item) => {
                                 return (
-                                    <div>
+                                    <div key={item.Key}>
                                         <Checkbox
                                             label={item.Name}
                                             value={this.state.selectedKeys.indexOf(item.Key) > -1}
@@ -154,6 +154,16 @@ class CreateApiToken extends Component {
             </div>);
     }
 }
+
+CreateApiToken.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
+    onCreateApiToken: PropTypes.func,
+    apiTokenKeys: PropTypes.array,
+    scopeOptions: PropTypes.array,
+    timespanOptions: PropTypes.array,
+    apiTokenSettings: PropTypes.object
+};
 
 function mapStateToProps(state) {
     return {

@@ -125,6 +125,12 @@ class ApiTokenDetails extends Component {
 
 }
 
+ApiTokenDetails.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    apiToken: PropTypes.object,
+    apiTokenKeys: PropTypes.array
+};
+
 function mapStateToProps(state) {
     return {};
 }
