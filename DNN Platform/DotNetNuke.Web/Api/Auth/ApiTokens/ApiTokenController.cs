@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
-        public void SetCurrentThreadApiToken(ApiTokenBase token)
+        public void SetApiTokenForRequest(ApiTokenBase token)
         {
             HttpContext.Current.Items["ApiToken"] = token;
         }
@@ -110,7 +110,14 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 portalId = DotNetNuke.Common.Utilities.Null.NullInteger;
             }
 
-            var newToken = Guid.NewGuid().ToString();
+            string newToken;
+            using (var generator = RandomNumberGenerator.Create())
+            {
+                var tokenBytes = new byte[32];
+                generator.GetBytes(tokenBytes);
+                newToken = Convert.ToBase64String(tokenBytes);
+            }
+
             var tokenAndHostGuid = newToken + Entities.Host.Host.GUID;
             var hashedToken = this.GetHashedStr(tokenAndHostGuid);
 
@@ -168,7 +175,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             {
                 if (Logger.IsTraceEnabled)
                 {
-                    Logger.Trace("Authorization header scheme in the request is not equal to " + this.SchemeType);
+                    Logger.Trace("Authorization header scheme in the request is not equal to " + AuthScheme);
                 }
 
                 return null;

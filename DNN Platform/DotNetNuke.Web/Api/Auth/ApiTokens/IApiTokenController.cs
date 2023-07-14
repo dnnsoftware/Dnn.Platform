@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// Sets the API token of the current thread.
         /// </summary>
         /// <param name="token">The `ApiToken` instance to set.</param>
-        void SetCurrentThreadApiToken(ApiTokenBase token);
+        void SetApiTokenForRequest(ApiTokenBase token);
 
         /// <summary>
         /// Gets the API token of the current thread.

@@ -144,16 +144,16 @@ AND (CreatedByUserId=@2 OR @2=-1)
                     case ApiTokenFilter.All:
                         break;
                     case ApiTokenFilter.Active:
-                        wheres.Add("IsRevoked=0 AND ExpiresOn > GETDATE()");
+                        wheres.Add("IsRevoked=0 AND ExpiresOn > GETUTCDATE()");
                         break;
                     case ApiTokenFilter.Revoked:
                         wheres.Add("IsRevoked=1");
                         break;
                     case ApiTokenFilter.Expired:
-                        wheres.Add("ExpiresOn <= GETDATE()");
+                        wheres.Add("ExpiresOn <= GETUTCDATE()");
                         break;
                     case ApiTokenFilter.RevokedOrExpired:
-                        wheres.Add("(IsRevoked=1 OR ExpiresOn <= GETDATE())");
+                        wheres.Add("(IsRevoked=1 OR ExpiresOn <= GETUTCDATE())");
                         break;
                 }
 

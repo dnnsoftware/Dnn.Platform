@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.Api.Auth
                         Logger.Trace($"Authenticated using API token {token.ApiTokenId}");
                     }
 
-                    this.apiTokenController.SetCurrentThreadApiToken(token);
+                    this.apiTokenController.SetApiTokenForRequest(token);
 
                     if (user != null)
                     {
