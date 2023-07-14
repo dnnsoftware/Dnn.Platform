@@ -58,7 +58,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             }
 
             var semanticModel = compilation.GetSemanticModel(memberDeclaration.SyntaxTree);
-            var symbol = ModelExtensions.GetDeclaredSymbol(semanticModel, memberDeclaration);
+            var symbol = semanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
             if (symbol is null)
             {
                 continue;
@@ -96,11 +96,16 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             writer.WriteLine($"""
 [global::System.Obsolete("Deprecated in DotNetNuke {deprecation.MajorVersion}.{deprecation.MinorVersion}.{deprecation.PatchVersion}. {deprecation.Replacement.TrimEnd('.')}. Scheduled for removal in v{deprecation.RemovalVersion}.0.0.")]
 """);
-            if (memberDeclaration is TypeDeclarationSyntax typeDeclaration)
+            switch (memberDeclaration)
             {
-                writer.WriteLine($"partial {typeDeclaration.Keyword} {typeSymbol.Name}");
+                case TypeDeclarationSyntax typeDeclaration:
+                    writer.WriteLine($"partial {typeDeclaration.Keyword} {typeDeclaration.Identifier}");
                     writer.WriteLine("{");
                     writer.WriteLine("}");
+                    break;
+                case MethodDeclarationSyntax methodDeclaration:
+                    WritePartialMethod(writer, semanticModel, methodDeclaration, context.CancellationToken);
+                    break;
             }
 
             foreach (var unused in containingTypes)
@@ -115,13 +120,79 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         }
     }
 
+    private static void WritePartialMethod(
+        IndentedTextWriter writer,
+        SemanticModel semanticModel,
+        BaseMethodDeclarationSyntax methodDeclaration,
+        CancellationToken cancellationToken)
+    {
+        var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+        if (methodSymbol is null)
+        {
+            writer.WriteLine("COULD NOT GET METHOD SYMBOL FOR " + methodDeclaration);
+            return;
+        }
+
+        var returnType = methodSymbol.ReturnsVoid ? "void" : methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        writer.Write($"partial {returnType} {methodSymbol.Name}(");
+        if (!methodSymbol.Parameters.IsDefaultOrEmpty)
+        {
+            writer.WriteLine();
+            writer.Indent++;
+
+            var isFirst = true;
+            foreach (var parameter in methodSymbol.Parameters)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    writer.WriteLine(',');
+                }
+
+                writer.Write($"{parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameter.Name}");
+            }
+
+            writer.Indent--;
+        }
+
+        writer.WriteLine(");");
+    }
+
     private static string GetHintName(string namespaceName, IEnumerable<TypeDeclarationSyntax> containingTypes, ISymbol symbol)
     {
         var hintNameBuilder = new StringBuilder(namespaceName);
-        hintNameBuilder = containingTypes.Aggregate(
-            hintNameBuilder,
-            (builder, type) => builder.Append($".{type.Identifier}"));
+        foreach (var type in containingTypes)
+        {
+            hintNameBuilder.Append($".{type.Identifier}");
+        }
+
         hintNameBuilder.Append($".{symbol.Name}");
+        if (symbol is not IMethodSymbol method)
+        {
+            return hintNameBuilder.ToString();
+        }
+
+        var isFirst = true;
+        hintNameBuilder.Append('(');
+        foreach (var parameter in method.Parameters)
+        {
+            if (isFirst)
+            {
+                isFirst = false;
+            }
+            else
+            {
+                hintNameBuilder.Append(',');
+            }
+
+            hintNameBuilder.Append(parameter.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat).Replace("?", "_NULLABLE_"));
+        }
+
+        hintNameBuilder.Append(')');
+
         return hintNameBuilder.ToString();
     }
 

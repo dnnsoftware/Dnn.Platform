@@ -1,3 +1,6 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.SourceGenerators;
 
 [TestFixture]
@@ -111,6 +114,51 @@ public partial class Page
     [DnnDeprecated(9, 1, 2, "Please use InnerPageInfo.")]
     public partial record InnerPage
     {
+    }
+}
+
+""");
+    }
+
+    [Test]
+    public async Task DeprecatedMethods_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using System;
+using DotNetNuke.Internal.SourceGenerators;
+
+internal partial class Page
+{
+    internal partial static class StaticWrapper
+    {
+        [DnnDeprecated(8, 4, 4, "Use overload taking IServiceProvider.")]
+        public static partial void DoAThing(string i)
+        {
+            return i;
+        }
+
+        [DnnDeprecated(9, 4, 4, "Use overload taking IApplicationStatusInfo.")]
+        public static partial int?[] GetTheseThings(int? a, int b)
+        {
+            return new[] { a, b, };
+        }
+    }
+
+    internal partial class Wrapper
+    {
+        [DnnDeprecated(8, 4, 4, "Use overload taking IApplicationStatusInfo.")]
+        public partial (decimal, Int32) GetThemBoth(decimal x)
+        {
+            return (x + 1, 1);
+        }
+
+        [DnnDeprecated(9, 4, 4, "Use overload taking IServiceProvider.")]
+        public static partial System.Text.StringBuilder CombineThings(string y, String z)
+        {
+            return new StringBuilder(y + z);
+        }
     }
 }
 
