@@ -275,7 +275,7 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Tests the Database Connection using the database connection config.</summary>
-        /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>), or <see cref="Null.NullString"/> if <paramref name="sqlBuilder"/> is <see langword="null"/>.</returns>
+        /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>), or <see cref="Null.NullString"/> if <paramref name="builder"/> is <see langword="null"/>.</returns>
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string owner, string qualifier)
         {
             var sqlBuilder = builder as SqlConnectionStringBuilder;
@@ -2210,7 +2210,7 @@ namespace DotNetNuke.Data
         {
             this.ExecuteNonQuery("ReplaceServerOnSchedules", oldServername, newServerName);
         }
-        
+
         public virtual void ResetTermsAgreement(int portalId)
         {
             this.ExecuteNonQuery("ResetTermsAgreement", portalId);

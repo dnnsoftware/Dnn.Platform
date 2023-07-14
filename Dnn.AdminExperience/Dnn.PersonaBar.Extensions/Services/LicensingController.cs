@@ -21,7 +21,6 @@ namespace Dnn.PersonaBar.Licensing.Services
 
         /// GET: api/Licensing/GetProduct
         /// <summary>Gets product info.</summary>
-        /// <param></param>
         /// <returns>product info.</returns>
         [HttpGet]
         public HttpResponseMessage GetProduct()

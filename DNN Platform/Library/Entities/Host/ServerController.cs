@@ -61,8 +61,8 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Gets the servers, order by last activity date in descending order.
         /// </summary>
-        /// <param name="lastMinutes">The number of recent minutes activity had to occur</param>
-        /// <returns>A list of servers with activity within the specified minutes</returns>
+        /// <param name="lastMinutes">The number of recent minutes activity had to occur.</param>
+        /// <returns>A list of servers with activity within the specified minutes.</returns>
         public static List<ServerInfo> GetEnabledServersWithActivity(int lastMinutes = 10)
         {
             return GetServersNoCache()
@@ -74,8 +74,8 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Gets the servers, that have no activtiy in the specified time frame.
         /// </summary>
-        /// <param name="lastMinutes">The number of recent minutes activity had to occur</param>
-        /// <returns>A list of servers with no activity for the specified minutes. Defaults to 24 hours</returns>
+        /// <param name="lastMinutes">The number of recent minutes activity had to occur.</param>
+        /// <returns>A list of servers with no activity for the specified minutes. Defaults to 24 hours.</returns>
         public static List<ServerInfo> GetInActiveServers(int lastMinutes = 1440)
         {
             return GetServersNoCache()

@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Icons
     using System;
     using System.IO;
     using System.Web.Hosting;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
