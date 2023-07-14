@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Collapsible as Collapse, IconButton, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";

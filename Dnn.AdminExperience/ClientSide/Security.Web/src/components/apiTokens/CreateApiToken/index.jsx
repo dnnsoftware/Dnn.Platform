@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import { Dropdown, GridSystem as Grid, Checkbox, Button, Label, SingleLineInput } from "@dnnsoftware/dnn-react-common";
