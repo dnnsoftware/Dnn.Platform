@@ -1,5 +1,10 @@
 [
   {
+    "name": "DnnPlugins",
+    "folder": "DNN Platform/JavaScript Libraries/DnnPlugins/",
+    "destination":  "Install/JavaScriptLibrary"
+  },
+  {
     "name": "HoverIntent",
     "folder": "DNN Platform/JavaScript Libraries/HoverIntent/",
     "destination": "Install/JavaScriptLibrary"
