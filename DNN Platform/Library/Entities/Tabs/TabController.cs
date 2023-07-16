@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -36,7 +37,9 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
 
-    /// <summary>TabController provides all operation to tabinfo.</summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>TabController provides all operation to <see cref="TabInfo"/>.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
     /// Tabs will be a sitemap for a portal, and every request at first need to check whether there is valid tab information
@@ -169,12 +172,13 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Processes all panes and modules in the template file.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="nodePanes">Template file node for the panes is current tab.</param>
         /// <param name="portalId">PortalId of the new portal.</param>
         /// <param name="tabId">Tab being processed.</param>
         /// <param name="mergeTabs">Tabs need to merge.</param>
         /// <param name="hModules">Modules Hashtable.</param>
-        public static void DeserializePanes(XmlNode nodePanes, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
+        public static void DeserializePanes(IBusinessControllerProvider businessControllerProvider, XmlNode nodePanes, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
             Dictionary<int, ModuleInfo> dicModules = ModuleController.Instance.GetTabModules(tabId);
 
@@ -204,7 +208,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         foreach (XmlNode nodeModule in selectSingleNode)
                         {
-                            ModuleController.DeserializeModule(nodeModule, nodePane, portalId, tabId, mergeTabs, hModules);
+                            ModuleController.DeserializeModule(businessControllerProvider, nodeModule, nodePane, portalId, tabId, mergeTabs, hModules);
                         }
                     }
                 }
@@ -222,17 +226,19 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Deserializes the tab.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="tabNode">The node tab.</param>
         /// <param name="tab">The obj tab.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo DeserializeTab(XmlNode tabNode, TabInfo tab, int portalId, PortalTemplateModuleAction mergeTabs)
+        public static TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, XmlNode tabNode, TabInfo tab, int portalId, PortalTemplateModuleAction mergeTabs)
         {
-            return DeserializeTab(tabNode, tab, new Hashtable(), portalId, false, mergeTabs, new Hashtable());
+            return DeserializeTab(businessControllerProvider, tabNode, tab, new Hashtable(), portalId, false, mergeTabs, new Hashtable());
         }
 
         /// <summary>Deserializes the tab.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="tabNode">The node tab.</param>
         /// <param name="tab">The obj tab.</param>
         /// <param name="tabs">The h tabs.</param>
@@ -241,7 +247,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="modules">The h modules.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo DeserializeTab(XmlNode tabNode, TabInfo tab, Hashtable tabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, Hashtable modules)
+        public static TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, XmlNode tabNode, TabInfo tab, Hashtable tabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, Hashtable modules)
         {
             string tabName = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "name");
             if (!string.IsNullOrEmpty(tabName))
@@ -378,7 +384,7 @@ namespace DotNetNuke.Entities.Tabs
             // Parse Panes
             if (tabNode.SelectSingleNode("panes") != null)
             {
-                DeserializePanes(tabNode.SelectSingleNode("panes"), portalId, tab.TabID, mergeTabs, modules);
+                DeserializePanes(businessControllerProvider, tabNode.SelectSingleNode("panes"), portalId, tab.TabID, mergeTabs, modules);
             }
 
             // Finally add "tabid" to node
@@ -645,24 +651,26 @@ namespace DotNetNuke.Entities.Tabs
                    tabId == portalSettings.AdminTabId || tabId == portalSettings.SuperTabId;
         }
 
-        /// <summary>SerializeTab.</summary>
+        /// <summary>Serializes the metadata of a page and its modules (and optionally the modules' contents) to an XML node.</summary>
+        /// <param name="businessControllerProvider">The DI container.</param>
         /// <param name="tabXml">The Xml Document to use for the Tab.</param>
         /// <param name="objTab">The TabInfo object to serialize.</param>
         /// <param name="includeContent">A flag used to determine if the Module content is included.</param>
         /// <returns>An <see cref="XmlNode"/> representing the page's data.</returns>
-        public static XmlNode SerializeTab(XmlDocument tabXml, TabInfo objTab, bool includeContent)
+        public static XmlNode SerializeTab(IBusinessControllerProvider businessControllerProvider, XmlDocument tabXml, TabInfo objTab, bool includeContent)
         {
-            return SerializeTab(tabXml, null, objTab, null, includeContent);
+            return SerializeTab(businessControllerProvider, tabXml, null, objTab, null, includeContent);
         }
 
-        /// <summary>SerializeTab.</summary>
+        /// <summary>Serializes the metadata of a page and its modules (and optionally the modules' contents) to an XML node.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="tabXml">The Xml Document to use for the Tab.</param>
         /// <param name="tabs">A Hashtable used to store the names of the tabs.</param>
         /// <param name="tab">The TabInfo object to serialize.</param>
         /// <param name="portal">The Portal object to which the tab belongs.</param>
         /// <param name="includeContent">A flag used to determine if the Module content is included.</param>
         /// <returns>An <see cref="XmlNode"/> representing the page's data.</returns>
-        public static XmlNode SerializeTab(XmlDocument tabXml, Hashtable tabs, TabInfo tab, PortalInfo portal, bool includeContent)
+        public static XmlNode SerializeTab(IBusinessControllerProvider businessControllerProvider, XmlDocument tabXml, Hashtable tabs, TabInfo tab, PortalInfo portal, bool includeContent)
         {
             XmlNode newnode;
             CBO.SerializeObject(tab, tabXml);
@@ -873,7 +881,7 @@ namespace DotNetNuke.Entities.Tabs
                 if (!module.IsDeleted)
                 {
                     moduleXml = new XmlDocument { XmlResolver = null };
-                    moduleNode = ModuleController.SerializeModule(moduleXml, module, includeContent);
+                    moduleNode = ModuleController.SerializeModule(businessControllerProvider, moduleXml, module, includeContent);
                     if (panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']") == null)
                     {
                         // new pane found
@@ -964,15 +972,6 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return true;
-        }
-
-        /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        [Obsolete("This has been deprecated in favor of AddMissingLanguagesWithWarnings. Scheduled for removal in v11.0.0")]
-        public void AddMissingLanguages(int portalId, int tabId)
-        {
-            this.AddMissingLanguagesWithWarnings(portalId, tabId);
         }
 
         /// <summary>Adds localized copies of the page in all missing languages.</summary>

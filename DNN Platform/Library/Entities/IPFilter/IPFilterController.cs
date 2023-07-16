@@ -76,16 +76,6 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <inheritdoc/>
-        [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
-        public void IsIPAddressBanned(string ipAddress)
-        {
-            if (this.CheckIfBannedIPAddress(ipAddress))
-            {// should throw 403.6
-                throw new HttpException(403, string.Empty);
-            }
-        }
-
-        /// <inheritdoc/>
         public bool IsIPBanned(string ipAddress)
         {
             return this.CheckIfBannedIPAddress(ipAddress);

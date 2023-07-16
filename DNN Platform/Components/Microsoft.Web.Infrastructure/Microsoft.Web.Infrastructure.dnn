@@ -1,0 +1,28 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Microsoft.Web.Infrastructure" type="Library" version="2.0.0">
+      <friendlyName>Microsoft.Web.Infrastructure</friendlyName>
+      <description>Library for dynamically registering HTTP modules at run time.</description>
+      <dependencies/>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes />
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Web.Infrastructure.dll</name>
+              <version>2.0.0</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

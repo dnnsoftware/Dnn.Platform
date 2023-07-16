@@ -19,25 +19,6 @@ namespace DotNetNuke.Services.Scheduling
 
     public class SchedulingController
     {
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
-        public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName)
-        {
-            return AddSchedule(
-                typeFullName,
-                timeLapse,
-                timeLapseMeasurement,
-                retryTimeLapse,
-                retryTimeLapseMeasurement,
-                retainHistoryNum,
-                attachToEvent,
-                catchUpEnabled,
-                enabled,
-                objectDependencies,
-                servers,
-                friendlyName,
-                DateTime.Now);
-        }
-
         public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
             EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
@@ -189,28 +170,6 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning restore 618
         }
 
-        public static void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName)
-        {
-#pragma warning disable 618
-            UpdateSchedule(
-                scheduleID,
-                typeFullName,
-                timeLapse,
-                timeLapseMeasurement,
-                retryTimeLapse,
-                retryTimeLapseMeasurement,
-                retainHistoryNum,
-                attachToEvent,
-                catchUpEnabled,
-                enabled,
-                objectDependencies,
-                servers,
-                friendlyName,
-                DateTime.Now);
-#pragma warning restore 618
-        }
-
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
         public static void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
             DataProvider.Instance().UpdateSchedule(

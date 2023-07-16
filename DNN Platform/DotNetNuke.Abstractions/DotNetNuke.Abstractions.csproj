@@ -9,6 +9,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

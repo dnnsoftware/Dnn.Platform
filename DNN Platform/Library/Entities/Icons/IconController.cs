@@ -6,18 +6,20 @@ namespace DotNetNuke.Entities.Icons
     using System;
     using System.IO;
     using System.Web.Hosting;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>IconController provides all operation to icons.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
-    /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
+    /// Tabs will be a sitemap for a portal, and every request at first need to check whether there is valid tab information
     /// include in the url, if not it will use default tab to display information.
     /// </remarks>
     public class IconController
@@ -94,7 +96,7 @@ namespace DotNetNuke.Entities.Icons
         public static string[] GetIconSets()
         {
             return GetIconSets(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         public static string[] GetIconSets(IApplicationStatusInfo appStatus)

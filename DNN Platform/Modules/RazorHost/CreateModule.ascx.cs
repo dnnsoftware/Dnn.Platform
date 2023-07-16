@@ -34,9 +34,17 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
         /// <summary>Initializes a new instance of the <see cref="CreateModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public CreateModule()
+            : this(null)
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CreateModule"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public CreateModule(INavigationManager navigationManager)
+        {
+            this.navigationManager = navigationManager ?? Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// <summary>Gets the module control file name without it's extension.</summary>

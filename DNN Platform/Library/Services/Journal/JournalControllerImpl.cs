@@ -536,20 +536,6 @@ namespace DotNetNuke.Services.Journal
                                             c => CBO.FillCollection<JournalTypeInfo>(this.dataService.Journal_Types_List(portalId)));
         }
 
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
-        public void SaveJournalItem(JournalItem journalItem, int tabId)
-        {
-            this.SaveJournalItem(journalItem, tabId, Null.NullInteger);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
-        public void UpdateJournalItem(JournalItem journalItem, int tabId)
-        {
-            this.UpdateJournalItem(journalItem, tabId, Null.NullInteger);
-        }
-
         private XmlElement CreateElement(XmlDocument xDoc, string name, string value)
         {
             XmlElement xnode = xDoc.CreateElement(name);

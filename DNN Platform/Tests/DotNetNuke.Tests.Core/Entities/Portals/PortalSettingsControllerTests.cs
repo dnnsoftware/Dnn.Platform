@@ -1,13 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -15,6 +13,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.UI.Skins;
 
@@ -45,23 +44,22 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         private const string GlobalTabContainer = "[g]TabContainer";
 
         private Mock<IHostController> mockHostController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void SetUp()
         {
             MockComponentProvider.ResetContainer();
 
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
-
             this.mockHostController = new Mock<IHostController>();
             this.mockHostController.As<IHostSettingsService>();
 
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                });
         }
 
         [TearDown]
@@ -69,8 +67,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             PortalController.ClearInstance();
             TabController.ClearInstance();
-            Globals.DependencyProvider = null;
-
+            this.serviceProvider.Dispose();
         }
 
         [Test]

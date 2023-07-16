@@ -7,11 +7,12 @@ namespace DotNetNuke.Services.Scheduling
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+
     using Microsoft.VisualBasic;
 
     using Globals = DotNetNuke.Common.Globals;

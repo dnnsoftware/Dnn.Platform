@@ -45,10 +45,6 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>Gets or sets a value indicating whether does requester support Flash.</summary>
         bool SupportsFlash { get; set; }
 
-        /// <summary>Gets or sets a key-value collection containing all capabilities supported by requester.</summary>
-        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled removal in v10.0.0.")]
-        IDictionary<string, string> Capabilities { get; set; }
-
         /// <summary>Gets or sets the request preferred HTML DTD.</summary>
         string HtmlPreferedDTD { get; set; }
 

@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -24,16 +25,28 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The view for the global import page action.</summary>
     public partial class Import : PortalModuleBase
     {
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
 
         private TabInfo tab;
 
         /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public Import()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public TabInfo Tab
@@ -203,7 +216,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     EventLogController.Instance.AddLog(objTab, this.PortalSettings, this.UserId, string.Empty, EventLogController.EventLogType.TAB_CREATED);
 
-                    objTab = TabController.DeserializeTab(tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
+                    objTab = TabController.DeserializeTab(this.businessControllerProvider, tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 
                     var exceptions = string.Empty;
 
@@ -212,7 +225,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         try
                         {
-                            TabController.DeserializeTab(tabNodes[tab], null, this.PortalId, PortalTemplateModuleAction.Replace);
+                            TabController.DeserializeTab(this.businessControllerProvider, tabNodes[tab], null, this.PortalId, PortalTemplateModuleAction.Replace);
                         }
                         catch (Exception ex)
                         {
@@ -230,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 else
                 {
                     // Replace Existing Tab
-                    objTab = TabController.DeserializeTab(tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
+                    objTab = TabController.DeserializeTab(this.businessControllerProvider, tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
                 }
 
                 switch (this.optRedirect.SelectedValue)

@@ -44,10 +44,12 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
         private readonly INavigationManager navigationManager;
+        private readonly IServiceProvider serviceProvider;
 
-        public Register()
+        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = navigationManager;
+            this.serviceProvider = serviceProvider;
         }
 
         protected string ExcludeTerms
@@ -456,7 +458,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
             if (property.DataType != imageType.EntryID)
             {
-                DnnFormEditControlItem formItem = new DnnFormEditControlItem
+                DnnFormEditControlItem formItem = new DnnFormEditControlItem(this.serviceProvider)
                 {
                     ID = property.PropertyName,
                     ResourceKey = string.Format("ProfileProperties_{0}", property.PropertyName),
@@ -469,7 +471,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     Required = property.Required,
                 };
 
-                // To check if the property has a deafult value
+                // To check if the property has a default value
                 if (!string.IsNullOrEmpty(property.DefaultValue))
                 {
                     formItem.Value = property.DefaultValue;

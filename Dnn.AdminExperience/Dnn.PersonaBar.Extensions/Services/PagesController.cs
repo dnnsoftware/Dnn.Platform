@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Services
 {
     using System;
@@ -23,7 +22,6 @@ namespace Dnn.PersonaBar.Pages.Services
     using Dnn.PersonaBar.Themes.Components;
     using Dnn.PersonaBar.Themes.Components.DTO;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -60,14 +58,16 @@ namespace Dnn.PersonaBar.Pages.Services
 
         /// <summary>Initializes a new instance of the <see cref="PagesController"/> class.</summary>
         /// <param name="navigationManager">the navigation manager to provide navigation features.</param>
-        public PagesController(INavigationManager navigationManager)
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="templateController">The template controller.</param>
+        public PagesController(INavigationManager navigationManager, IPagesController pagesController, ITemplateController templateController)
         {
             this.NavigationManager = navigationManager;
 
-            this.pagesController = Components.PagesController.Instance;
+            this.pagesController = pagesController;
             this.themesController = ThemesController.Instance;
             this.bulkPagesController = BulkPagesController.Instance;
-            this.templateController = TemplateController.Instance;
+            this.templateController = templateController;
             this.defaultPortalThemeController = DefaultPortalThemeController.Instance;
 
             this.tabController = TabController.Instance;

@@ -5,9 +5,10 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      EditControlFactory
+    using DotNetNuke.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// The EditControlFactory control provides a factory for creating the
     /// appropriate Edit Control.
@@ -17,7 +18,17 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>CreateEditControl creates the appropriate Control based on the EditorField or TypeDataField. </summary>
         /// <param name="editorInfo">An EditorInfo object.</param>
         /// <returns>A new <see cref="EditControl"/> instance.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public static EditControl CreateEditControl(EditorInfo editorInfo)
+        {
+            return CreateEditControl(Globals.GetCurrentServiceProvider(), editorInfo);
+        }
+
+        /// <summary>CreateEditControl creates the appropriate Control based on the EditorField or TypeDataField. </summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="editorInfo">An EditorInfo object.</param>
+        /// <returns>A new <see cref="EditControl"/> instance.</returns>
+        public static EditControl CreateEditControl(IServiceProvider serviceProvider, EditorInfo editorInfo)
         {
             EditControl propEditor;
 
@@ -31,8 +42,8 @@ namespace DotNetNuke.UI.WebControls
                 // Use Editor
                 try
                 {
-                    Type editType = Type.GetType(editorInfo.Editor, true, true);
-                    propEditor = (EditControl)Activator.CreateInstance(editType);
+                    var editType = Type.GetType(editorInfo.Editor, true, true);
+                    propEditor = (EditControl)ActivatorUtilities.GetServiceOrCreateInstance(serviceProvider, editType);
                 }
                 catch (TypeLoadException)
                 {

@@ -14,4 +14,12 @@ namespace DotNetNuke.Security.Roles
 
         void RoleLeft(object sender, RoleEventArgs args);
     }
+
+    /// <summary>
+    /// The base interface <see cref="IRoleEventHandlers"/> has to be implemented by the class as well for the handler to be picked up.
+    /// </summary>
+    public interface IRoleUpdateEventHandlers
+    {
+        void RoleUpdated(object sender, RoleEventArgs args);
+    }
 }

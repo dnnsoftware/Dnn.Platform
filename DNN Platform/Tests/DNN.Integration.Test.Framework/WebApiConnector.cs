@@ -221,8 +221,8 @@ namespace DNN.Integration.Test.Framework
             var folder = "Users";
             if (userId > Null.NullInteger)
             {
-                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.Root);
-                var subFolder = PathUtils.Instance.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.SubFolder);
+                var rootFolder = PathUtils.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.Root);
+                var subFolder = PathUtils.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.SubFolder);
                 folder = $"Users/{rootFolder}/{subFolder}/{userId}/";
             }
 

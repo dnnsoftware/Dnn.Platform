@@ -40,18 +40,21 @@ namespace DotNetNuke.Web.InternalServices
 
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private int htmlModuleDefitionId;
+        private readonly ISearchController searchController;
+        private int htmlModuleDefinitionId;
 
-        public SearchServiceController()
+        public SearchServiceController(ISearchController searchController)
         {
+            this.searchController = searchController;
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
-            this.htmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
+            this.htmlModuleDefinitionId = modDef != null ? modDef.ModuleDefID : -1;
         }
 
         // this constructor is for unit tests
-        internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
+        internal SearchServiceController(ISearchController searchController, int htmlModuleDefinitionId) // , TabController newtabController, ModuleController newmoduleController)
         {
-            this.htmlModuleDefitionId = htmlModuleDefitionId;
+            this.searchController = searchController;
+            this.htmlModuleDefinitionId = htmlModuleDefinitionId;
 
             // _tabController = newtabController;
             // _moduleController = newmoduleController;
@@ -221,7 +224,7 @@ namespace DotNetNuke.Web.InternalServices
 
         internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId, out int totalHits, out bool more)
         {
-            var searchResults = SearchController.Instance.SiteSearch(searchQuery);
+            var searchResults = this.searchController.SiteSearch(searchQuery);
             totalHits = searchResults.TotalHits;
             more = totalHits > searchQuery.PageSize * searchQuery.PageIndex;
 
@@ -284,7 +287,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                     }
                 }
-                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.htmlModuleDefitionId)
+                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.htmlModuleDefinitionId)
                 {
                     // special handling for Html module
                     var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
@@ -373,7 +376,7 @@ namespace DotNetNuke.Web.InternalServices
 
         internal IEnumerable<BasicView> GetBasicViews(SearchQuery searchQuery, out int totalHits)
         {
-            var sResult = SearchController.Instance.SiteSearch(searchQuery);
+            var sResult = this.searchController.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
             var showFriendlyTitle = this.GetBooleanSetting("ShowFriendlyTitle", true);
             var showDescription = this.GetBooleanSetting("ShowDescription", true);
@@ -612,7 +615,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
-            if (result.ModuleDefId > 0 && result.ModuleDefId == this.htmlModuleDefitionId)
+            if (result.ModuleDefId > 0 && result.ModuleDefId == this.htmlModuleDefinitionId)
             {
                 // special handling for Html module
                 var tabTitle = this.GetTabTitleFromModuleId(result.ModuleId);

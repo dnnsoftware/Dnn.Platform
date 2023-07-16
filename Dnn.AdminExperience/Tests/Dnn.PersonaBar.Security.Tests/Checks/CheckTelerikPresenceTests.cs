@@ -1,18 +1,36 @@
-﻿namespace Dnn.PersonaBar.Security.Tests.Checks
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace Dnn.PersonaBar.Security.Tests.Checks
 {
     using System;
     using System.Linq;
 
     using Dnn.PersonaBar.Security.Components;
     using Dnn.PersonaBar.Security.Components.Checks;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class CheckTelerikPresenceTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [Test]
         public void Execute_WhenError_ReturnsUnverified()
         {

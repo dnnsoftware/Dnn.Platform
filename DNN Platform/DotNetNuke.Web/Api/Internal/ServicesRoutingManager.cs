@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Api.Internal
     using System.Web.Routing;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
@@ -24,23 +25,27 @@ namespace DotNetNuke.Web.Api.Internal
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public sealed class ServicesRoutingManager : IMapRoute
+    public sealed class ServicesRoutingManager : IMapRoute, IRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
         private readonly Dictionary<string, int> moduleUsage = new Dictionary<string, int>();
+        private readonly IServiceProvider serviceProvider;
         private readonly RouteCollection routes;
         private readonly PortalAliasRouteManager portalAliasRouteManager;
 
         /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
-        public ServicesRoutingManager()
-            : this(RouteTable.Routes)
+        /// <param name="serviceProvider">The dependency injection container.</param>
+        public ServicesRoutingManager(IServiceProvider serviceProvider)
+            : this(serviceProvider, RouteTable.Routes)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
+        /// <param name="serviceProvider">The dependency injection container.</param>
         /// <param name="routes">The route collection.</param>
-        internal ServicesRoutingManager(RouteCollection routes)
+        internal ServicesRoutingManager(IServiceProvider serviceProvider, RouteCollection routes)
         {
+            this.serviceProvider = serviceProvider;
             this.routes = routes;
             this.portalAliasRouteManager = new PortalAliasRouteManager();
             this.TypeLocator = new TypeLocator();
@@ -159,7 +164,19 @@ namespace DotNetNuke.Web.Api.Internal
             return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IServiceRouteMapper).IsAssignableFrom(t);
         }
 
-        private static void RegisterAuthenticationHandlers()
+        private static bool IsTracingEnabled()
+        {
+            var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
+
+            if (!string.IsNullOrEmpty(configValue))
+            {
+                return Convert.ToBoolean(configValue);
+            }
+
+            return false;
+        }
+
+        private void RegisterAuthenticationHandlers()
         {
             // authentication message handlers from web.config file
             var authSvcCfg = AuthServicesConfiguration.GetConfig();
@@ -180,8 +197,7 @@ namespace DotNetNuke.Web.Api.Internal
                 try
                 {
                     var type = Reflection.CreateType(handlerEntry.ClassName, false);
-                    var handler = Activator.CreateInstance(type, handlerEntry.DefaultInclude, handlerEntry.ForceSsl) as AuthMessageHandlerBase;
-                    if (handler == null)
+                    if (ActivatorUtilities.CreateInstance(this.serviceProvider, type, handlerEntry.DefaultInclude, handlerEntry.ForceSsl) is not AuthMessageHandlerBase handler)
                     {
                         throw new Exception("The handler is not a descendant of AuthMessageHandlerBase abstract class");
                     }
@@ -190,6 +206,7 @@ namespace DotNetNuke.Web.Api.Internal
                     if (registeredSchemes.Contains(schemeName))
                     {
                         Logger.Trace($"The following handler scheme '{handlerEntry.ClassName}' is already added and will be skipped");
+                        handler.Dispose();
                         continue;
                     }
 
@@ -212,18 +229,6 @@ namespace DotNetNuke.Web.Api.Internal
                     Logger.Error("Cannot instantiate/activate instance of " + handlerEntry.ClassName + Environment.NewLine + ex);
                 }
             }
-        }
-
-        private static bool IsTracingEnabled()
-        {
-            var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
-
-            if (!string.IsNullOrEmpty(configValue))
-            {
-                return Convert.ToBoolean(configValue);
-            }
-
-            return false;
         }
 
         private void LocateServicesAndMapRoutes()

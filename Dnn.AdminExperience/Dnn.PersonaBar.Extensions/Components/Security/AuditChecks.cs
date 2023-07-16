@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Security.Components
 {
     using System;
@@ -9,7 +8,9 @@ namespace Dnn.PersonaBar.Security.Components
     using System.Linq;
     using System.Web;
 
+    using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Security.Components.Checks;
+
     using DotNetNuke.Common;
 
     public class AuditChecks
@@ -17,7 +18,14 @@ namespace Dnn.PersonaBar.Security.Components
         private readonly IEnumerable<IAuditCheck> auditChecks;
 
         /// <summary>Initializes a new instance of the <see cref="AuditChecks"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
         public AuditChecks()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AuditChecks"/> class.</summary>
+        /// <param name="pagesController">The pages controller.</param>
+        public AuditChecks(IPagesController pagesController)
         {
             var checks = new List<IAuditCheck>
             {
@@ -36,7 +44,7 @@ namespace Dnn.PersonaBar.Security.Components
                 new CheckAllowableFileExtensions(),
                 new CheckHiddenSystemFiles(),
                 new CheckTelerikPresence(),
-                new CheckUserProfilePage(),
+                new CheckUserProfilePage(pagesController),
             };
 
             if (Globals.NETFrameworkVersion <= new Version(4, 5, 1))
@@ -60,7 +68,7 @@ namespace Dnn.PersonaBar.Security.Components
                 catch (Exception ex)
                 {
                     var result = new CheckResult(SeverityEnum.Unverified, check.Id);
-                    result.Notes.Add("An error occured, Message: " + HttpUtility.HtmlEncode(ex.Message));
+                    result.Notes.Add("An error occurred, Message: " + HttpUtility.HtmlEncode(ex.Message));
                     results.Add(result);
                 }
             }

@@ -1,38 +1,53 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu.Localisation
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using MenuNode = DotNetNuke.Web.DDRMenu.MenuNode;
 
     /// <summary>Implements the localization logic for all providers.</summary>
-    public class Localiser
+    public class Localiser : ILocaliser
     {
+        private readonly IEnumerable<ILocalisation> localizations;
+        private readonly IPortalController portalController;
         private static bool apiChecked;
         private static ILocalisation localisationApi;
-        private readonly int portalId;
 
         /// <summary>Initializes a new instance of the <see cref="Localiser"/> class.</summary>
-        /// <param name="portalId">The id of the portal on which the menu is displayed.</param>
-        public Localiser(int portalId)
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public Localiser()
+            : this(null, null)
         {
-            this.portalId = portalId;
         }
 
-        private static ILocalisation LocalisationApi
+        /// <summary>Initializes a new instance of the <see cref="Localiser"/> class.</summary>
+        /// <param name="localizations">The localization strategies to use.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public Localiser(IEnumerable<ILocalisation> localizations, IPortalController portalController)
+        {
+            this.localizations = localizations ?? Globals.GetCurrentServiceProvider().GetServices<ILocalisation>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        }
+
+        private ILocalisation LocalisationApi
         {
             get
             {
                 if (!apiChecked)
                 {
-#pragma warning disable CS0618 // Type or member is obsolete, Ealo and Apollor can be removed from here when those classes are removed in v10.
-                    foreach (var api in new ILocalisation[] { new Generic(), new Ealo(), new Apollo() })
-#pragma warning restore CS0618 // Type or member is obsolete
+                    foreach (var api in this.localizations)
                     {
                         if (api.HaveApi())
                         {
@@ -48,22 +63,27 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             }
         }
 
-        /// <summary>Localizes the menu nodes.</summary>
-        /// <param name="nodes">The collection of nodes to localize.</param>
-        /// <returns>The localized collection of nodes.</returns>
-        public static DNNNodeCollection LocaliseDNNNodeCollection(DNNNodeCollection nodes)
+        /// <inheritdoc />
+        public DNNNodeCollection LocaliseDNNNodeCollection(DNNNodeCollection nodes)
         {
-            return (LocalisationApi == null) ? nodes : (LocalisationApi.LocaliseNodes(nodes) ?? nodes);
+            return this.LocalisationApi?.LocaliseNodes(nodes) ?? nodes;
         }
 
         /// <summary>Localizes a single node.</summary>
         /// <param name="node">The node to localize.</param>
+        [Obsolete("Deprecated in DNN 10.0.0, scheduled removal in v12. Use overload taking a portalId.")]
         public void LocaliseNode(MenuNode node)
+        {
+            this.LocaliseNode(node, this.portalController.GetCurrentSettings().PortalId);
+        }
+
+        /// <inheritdoc />
+        public void LocaliseNode(MenuNode node, int portalId)
         {
             var tab = (node.TabId > 0) ? TabController.Instance.GetTab(node.TabId, Null.NullInteger, false) : null;
             if (tab != null)
             {
-                var localised = this.LocaliseTab(tab);
+                var localised = this.LocaliseTab(tab, portalId);
                 tab = localised ?? tab;
 
                 if (localised != null)
@@ -89,9 +109,9 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             node.Children.ForEach(this.LocaliseNode);
         }
 
-        private TabInfo LocaliseTab(TabInfo tab)
+        private TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
-            return (LocalisationApi == null) ? null : LocalisationApi.LocaliseTab(tab, this.portalId);
+            return this.LocalisationApi?.LocaliseTab(tab, portalId);
         }
     }
 }

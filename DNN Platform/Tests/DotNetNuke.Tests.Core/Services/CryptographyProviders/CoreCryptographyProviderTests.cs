@@ -1,34 +1,37 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
 {
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Services.Cryptography;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
     using Microsoft.Extensions.DependencyInjection;
-    using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class CoreCryptographyProviderTests
     {
-        private static CryptographyProvider _provider;
+        private static CryptographyProvider provider;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(CoreCryptographyProvider)));
 
-            _provider = ComponentFactory.GetComponent<CryptographyProvider>("CoreCryptographyProvider");
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton<CryptographyProvider, CoreCryptographyProvider>());
+
+            provider = ComponentFactory.GetComponent<CryptographyProvider>("CoreCryptographyProvider");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -40,7 +43,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
             // Arrange
 
             // Act
-            var encryptedValue = _provider.EncryptParameter(message, encryptionKey);
+            var encryptedValue = provider.EncryptParameter(message, encryptionKey);
 
             // Assert
             Assert.AreNotEqual(message, encryptedValue);
@@ -55,7 +58,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
             // Arrange
 
             // Act
-            var decryptedValue = _provider.DecryptParameter(message, encryptionKey);
+            var decryptedValue = provider.DecryptParameter(message, encryptionKey);
 
             // Assert
             Assert.AreEqual(string.Empty, decryptedValue);

@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Lists
         /// <param name="eventLogger">An event logger.</param>
         public ListController(IEventLogger eventLogger)
         {
-            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets the lists that do not support localization.</summary>
@@ -428,47 +428,6 @@ namespace DotNetNuke.Common.Lists
             ListEntryInfo entry = this.GetListEntryInfo(entryID);
             this.ClearListCache(entry.PortalID);
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
-        }
-
-        /// <summary>Gets a collection of list entries.</summary>
-        /// <param name="listName">The name of the list to get.</param>
-        /// <returns>A collection of list entries.</returns>
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
-        {
-            return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
-        }
-
-        /// <summary>Gets a collection of list entries.</summary>
-        /// <param name="listName">The name of the list to get.</param>
-        /// <param name="parentKey">The parent key.</param>
-        /// <returns>A collection of list entries.</returns>
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
-        {
-            return this.GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
-        }
-
-        /// <summary>Gets a collection of list entries.</summary>
-        /// <param name="listName">The name of the list to get.</param>
-        /// <param name="parentKey">The parent key.</param>
-        /// <param name="portalId">The id of the site (portal) to get the list from.</param>
-        /// <returns>A collection of list entries.</returns>
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
-        {
-            var items = this.GetListEntryInfoItems(listName, parentKey, portalId);
-
-            var collection = new ListEntryInfoCollection();
-            if (items != null)
-            {
-                items.ToList().ForEach(x => collection.Add(x.Key, x));
-            }
-
-            return collection;
         }
 
         private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)

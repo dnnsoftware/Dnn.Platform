@@ -21,8 +21,11 @@ namespace Dnn.PersonaBar.Security.Services
     using Dnn.PersonaBar.Extensions.Components.Security.Ssl;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Security.Helper;
     using Dnn.PersonaBar.Security.Services.Dto;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -38,31 +41,41 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Constants = Dnn.PersonaBar.Library.Constants;
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
         private const string BULLETINXMLNODEPATH = "//channel/item";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController controller;
-        private readonly IPortalAliasController portalAliasController;
+        private readonly IPagesController pagesController;
+        private readonly IPortalAliasService portalAliasService;
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
-        public SecurityController()
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public SecurityController(IPagesController pagesController, IPortalAliasService portalAliasService)
             : this(
                 new Components.SecurityController(),
-                PortalAliasController.Instance)
+                pagesController,
+                portalAliasService)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
         /// <param name="controller">The security controller.</param>
-        /// <param name="portalAliasController">The portal alias controller.</param>
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
         internal SecurityController(
             Components.SecurityController controller,
-            IPortalAliasController portalAliasController)
+            IPagesController pagesController,
+            IPortalAliasService portalAliasService)
         {
+            this.pagesController = pagesController;
             this.controller = controller;
-            this.portalAliasController = portalAliasController;
+            this.portalAliasService = portalAliasService;
         }
 
         /// GET: api/Security/GetBasicLoginSettings
@@ -782,7 +795,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.pagesController);
                 var results = audit.DoChecks(checkAll);
                 var response = new
                 {
@@ -808,7 +821,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.pagesController);
                 var result = audit.DoCheck(id);
                 var response = new
                 {
@@ -1020,11 +1033,11 @@ namespace Dnn.PersonaBar.Security.Services
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
 
-                var alias = this.portalAliasController.GetPortalAlias(portalAlias, portalId);
+                var alias = this.portalAliasService.GetPortalAlias(portalAlias, portalId);
                 if (alias == null)
                 {
                     alias = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias };
-                    this.portalAliasController.AddPortalAlias(alias);
+                    this.portalAliasService.AddPortalAlias(alias);
                 }
             }
 

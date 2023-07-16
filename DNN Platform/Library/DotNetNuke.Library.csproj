@@ -20,7 +20,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke</RootNamespace>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -51,7 +51,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591, 3001, 3002, 1574, 1573</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -65,7 +65,7 @@
     <Optimize>true</Optimize>
     <DefineConstants>
     </DefineConstants>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
@@ -75,14 +75,19 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
     </Reference>
     <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
@@ -91,8 +96,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.2.13, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -100,31 +105,33 @@
     <Reference Include="Lucene.Net.Contrib.FastVectorHighlighter">
       <HintPath>..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
     </Reference>
-    <Reference Include="MailKit, Version=2.15.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MailKit.2.15.0\lib\net47\MailKit.dll</HintPath>
+    <Reference Include="MailKit, Version=4.0.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MailKit.4.0.0\lib\net48\MailKit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.7.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.7.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.FileSystemGlobbing.5.0.0\lib\net461\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Web.Infrastructure">
-      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="MimeKit, Version=2.15.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MimeKit.2.15.1\lib\net47\MimeKit.dll</HintPath>
+    <Reference Include="MimeKit, Version=4.0.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MimeKit.4.0.0\lib\net48\MimeKit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -132,9 +139,8 @@
     <Reference Include="PetaPoco, Version=6.0.524.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\PetaPoco.Compiled.6.0.524\lib\net45\PetaPoco.dll</HintPath>
     </Reference>
-    <Reference Include="SchwabenCode.QuickIO">
-      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SchwabenCode.QuickIO, Version=2.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net45\SchwabenCode.QuickIO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -150,10 +156,23 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -191,7 +210,7 @@
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\Internal\FileSystemUtilsProvider.cs" />
     <Compile Include="Common\Internal\IFileSystemUtils.cs" />
-    <Compile Include="Common\Lists\ListEntryInfoCollection.cs" />
+    <Compile Include="Common\Internal\IRoutingManager.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
@@ -199,15 +218,17 @@
     <Compile Include="Common\Utilities\JsonExtensionsWeb.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Common\Utilities\ValidationUtils.cs" />
+    <Compile Include="ComponentModel\ContainerWithServiceProviderFallback.cs" />
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Data\DatabaseConnectionProvider.cs" />
     <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
     <Compile Include="Data\PetaPoco\FluentMapper.cs" />
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
-    <Compile Include="Entities\Content\ContentExtensions.cs" />
     <Compile Include="Entities\Content\Taxonomy\ScopeTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
+    <Compile Include="Entities\Modules\BusinessControllerProvider.cs" />
+    <Compile Include="Entities\Modules\BusinessControllerProviderExtensions.cs" />
     <Compile Include="Entities\Modules\Prompt\AddModule.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
@@ -270,7 +291,6 @@
     <Compile Include="Obsolete\LogInfo.cs" />
     <Compile Include="Obsolete\LogTypeConfigInfo.cs" />
     <Compile Include="Obsolete\LogTypeInfo.cs" />
-    <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Obsolete\SerializationController.cs" />
     <Compile Include="Prompt\Command.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
@@ -407,25 +427,16 @@
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowStatePermission.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowInvalidOperationException.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowConcurrencyException.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflow.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowController.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowSource.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowDoesNotExistException.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowSecurityException.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowNameAlreadyExistsException.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowStateNameAlreadyExistsException.cs" />
     <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowException.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowState.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\IContentWorkflowAction.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\IContentWorkflowController.cs" />
     <Compile Include="Entities\Content\Workflow\ISystemWorkflowManager.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowEngine.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowLogger.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowStateManager.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowManager.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowLogType.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowLog.cs" />
-    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowStatePermission.cs" />
     <Compile Include="Entities\Content\Workflow\Repositories\WorkflowActionRepository.cs" />
     <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowActionRepository.cs" />
     <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowLogRepository.cs" />
@@ -483,27 +494,15 @@
     <Compile Include="Common\Internal\EventHandlersContainer.cs" />
     <Compile Include="Entities\Users\UserEventArgs.cs" />
     <Compile Include="Entities\Users\UserEventHandlers.cs" />
-    <Compile Include="Obsolete\IPortalSettings.cs" />
-    <Compile Include="Obsolete\IUserController.cs" />
-    <Compile Include="Obsolete\IModuleController.cs" />
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
     <Compile Include="Entities\Modules\ModuleController.cs" />
-    <Compile Include="Obsolete\IPortalAliasController.cs" />
-    <Compile Include="Obsolete\PortalTemplateIOImpl.cs" />
-    <Compile Include="Obsolete\TestablePortalAliasController.cs" />
-    <Compile Include="Obsolete\ITabController.cs" />
-    <Compile Include="Obsolete\CBO.cs" />
-    <Compile Include="Obsolete\LogController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
-    <Compile Include="Obsolete\PortalController.cs" />
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
     <Compile Include="Entities\Portals\Templates\IPortalTemplateIO.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateIO.cs" />
-    <Compile Include="Obsolete\RoleController.cs" />
     <Compile Include="Obsolete\TabController.cs" />
-    <Compile Include="Obsolete\TestablePortalController.cs" />
     <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
     <Compile Include="Entities\Tabs\TabAliasSkinInfo.cs" />
     <Compile Include="Entities\Tabs\TabException.cs" />
@@ -566,8 +565,6 @@
     <Compile Include="Entities\Users\Exceptions\UserAlreadyVerifiedException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserDoesNotExistException.cs" />
     <Compile Include="Entities\Users\IUserController.cs" />
-    <Compile Include="Obsolete\TestablePortalSettings.cs" />
-    <Compile Include="Obsolete\TestableUserController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordSettings.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPropertyAccess.cs" />
@@ -677,14 +674,11 @@
     <Compile Include="Entities\Host\ServerInfo.cs" />
     <Compile Include="Entities\Icons\IconController.cs" />
     <Compile Include="Entities\Modules\IModuleController.cs" />
-    <Compile Include="Obsolete\TestableModuleController.cs" />
     <Compile Include="Entities\Tabs\ITabController.cs" />
-    <Compile Include="Obsolete\TestableTabController.cs" />
     <Compile Include="Framework\IServicesFramework.cs" />
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
-    <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\Cookies\AuthCookieController.cs" />
     <Compile Include="Security\Cookies\IAuthCookieController.cs" />
     <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />
@@ -700,12 +694,10 @@
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
     <Compile Include="Security\RegistrationSettings.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
-    <Compile Include="Obsolete\TestableRoleController.cs" />
     <Compile Include="Security\Roles\IRoleController.cs" />
     <Compile Include="Security\Roles\IRoleEventHandlers.cs" />
     <Compile Include="Security\Roles\RoleEventArgs.cs" />
     <Compile Include="Security\Roles\SecurityMode.cs" />
-    <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
     <Compile Include="Services\Analytics\GoogleAnalytics4Engine.cs" />
     <Compile Include="Services\Assets\AssetManagerException.cs" />
@@ -743,6 +735,7 @@
     <Compile Include="Services\Connections\IConnectionsManager.cs" />
     <Compile Include="Services\Connections\IConnector.cs" />
     <Compile Include="Services\Connections\ConnectorArgumentException.cs" />
+    <Compile Include="Services\Connections\Startup.cs" />
     <Compile Include="Services\Cryptography\FipsCompilanceCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CoreCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
@@ -751,6 +744,7 @@
     <Compile Include="Services\DependencyInjection\IScopeAccessor.cs" />
     <Compile Include="Services\EventQueue\EventMessageProcessorBase.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
+    <Compile Include="Services\Exceptions\SearchException.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
@@ -975,10 +969,6 @@
     <Compile Include="Services\Search\ModuleIndexer.cs" />
     <Compile Include="Services\Search\SearchContentModuleInfo.cs" />
     <Compile Include="Services\Search\SearchContentModuleInfoCollection.cs" />
-    <Compile Include="Services\Search\SearchCriteria.cs" />
-    <Compile Include="Services\Search\SearchCriteriaCollection.cs" />
-    <Compile Include="Services\Search\SearchDataStore.cs" />
-    <Compile Include="Services\Search\SearchDataStoreController.cs" />
     <Compile Include="Services\Sitemap\CoreSitemapProvider.cs" />
     <Compile Include="Services\Social\Messaging\Internal\IInternalMessagingController.cs" />
     <Compile Include="Services\Social\Messaging\Internal\InternalMessagingController.cs" />
@@ -1041,9 +1031,6 @@
     </Compile>
     <Compile Include="Entities\Modules\IHydratable.cs" />
     <Compile Include="Entities\Modules\IPortable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Entities\Modules\ISearchable.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Modules\IUpgradeable.cs">
@@ -1293,7 +1280,6 @@
     <Compile Include="Services\Social\Notifications\INotificationsController.cs" />
     <Compile Include="Services\Social\Notifications\NotificationsController.cs" />
     <Compile Include="Services\Social\Notifications\NotificationType.cs" />
-    <Compile Include="Services\SystemDateTime\SystemDateTime.cs" />
     <Compile Include="Services\EventQueue\Config\EventQueueConfiguration.cs" />
     <Compile Include="Services\EventQueue\Config\PublishedEvent.cs" />
     <Compile Include="Services\EventQueue\Config\SubscriberInfo.cs" />
@@ -1308,7 +1294,6 @@
     <Compile Include="Services\Exceptions\ObjectHydrationException.cs" />
     <Compile Include="Services\Exceptions\PageLoadException.cs" />
     <Compile Include="Services\Exceptions\SchedulerException.cs" />
-    <Compile Include="Services\Exceptions\SearchException.cs" />
     <Compile Include="Services\Exceptions\SecurityException.cs" />
     <Compile Include="Services\FileSystem\ContentDisposition.cs" />
     <Compile Include="Services\FileSystem\Exceptions\PermissionsNotMetException.cs" />
@@ -1501,29 +1486,10 @@
     <Compile Include="Services\Scheduling\SchedulingProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Search\IndexingProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchConfig.cs" />
-    <Compile Include="Services\Search\SearchDataStoreProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Search\SearchEngine.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Search\SearchEngineScheduler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchItemInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchItemInfoCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchResultsInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Search\SearchResultsInfoCollection.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Sitemap\SitemapBuilder.cs" />
@@ -1954,17 +1920,17 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets'))" />
   </Target>
   <Import Project="Library.build" />
   <Import Project="..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets" Condition="Exists('..\..\packages\Microsoft.Build.Tasks.Git.1.1.1\build\Microsoft.Build.Tasks.Git.targets')" />
   <Import Project="..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.Common.1.1.1\build\Microsoft.SourceLink.Common.targets')" />
   <Import Project="..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.GitHub.1.1.1\build\Microsoft.SourceLink.GitHub.targets')" />
-  <Import Project="..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets" Condition="Exists('..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets')" />
+  <Import Project="..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets" Condition="Exists('..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" />
 </Project>

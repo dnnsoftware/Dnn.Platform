@@ -411,11 +411,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        [XmlIgnore]
-        [JsonIgnore]
-        [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
-        public int TimeZoneOffset { get; set; }
-
         /// <inheritdoc />
         public int KeyID
         {
@@ -515,9 +510,6 @@ namespace DotNetNuke.Entities.Portals
             this.PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
 
             this.DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
-#pragma warning disable 612,618 //needed for upgrades and backwards compatibility
-            this.TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);
-#pragma warning restore 612,618
             this.AdminTabId = Null.SetNullInteger(dr["AdminTabID"]);
             this.HomeDirectory = Null.SetNullString(dr["HomeDirectory"]);
             this.SuperTabId = Null.SetNullInteger(dr["SuperTabId"]);
