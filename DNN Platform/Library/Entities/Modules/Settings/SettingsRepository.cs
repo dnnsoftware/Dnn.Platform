@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <inheritdoc/>
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.PortalID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
         /// <inheritdoc/>
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                 }
             });
-            DataCache.SetCache(this.CacheKey(moduleContext == null ? portalId : moduleContext.TabModuleID), settings);
+            DataCache.SetCache(this.CacheKey(portalId), settings);
         }
 
         private T Load(CacheItemArgs args)
