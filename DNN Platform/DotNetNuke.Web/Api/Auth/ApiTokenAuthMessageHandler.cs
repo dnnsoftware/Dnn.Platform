@@ -19,17 +19,19 @@ namespace DotNetNuke.Web.Api.Auth
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApiTokenAuthMessageHandler));
 
-        private readonly IApiTokenController apiTokenController = ApiTokenController.Instance;
+        private readonly IApiTokenController apiTokenController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiTokenAuthMessageHandler"/> class.
         /// </summary>
         /// <param name="includeByDefault">A value that indicates whether the handler is included by default in the authentication pipeline.</param>
         /// <param name="forceSsl">A value that indicates whether SSL is required.</param>
-        public ApiTokenAuthMessageHandler(bool includeByDefault, bool forceSsl)
+        /// <param name="apiTokenController">The API token controller.</param>
+        public ApiTokenAuthMessageHandler(bool includeByDefault, bool forceSsl, IApiTokenController apiTokenController)
             : base(includeByDefault, forceSsl)
         {
             IsEnabled = true;
+            this.apiTokenController = apiTokenController;
         }
 
         /// <inheritdoc/>

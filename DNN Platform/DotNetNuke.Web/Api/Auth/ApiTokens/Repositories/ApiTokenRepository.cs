@@ -12,11 +12,10 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     /// <inheritdoc />
-    internal class ApiTokenRepository : ServiceLocator<IApiTokenRepository, ApiTokenRepository>, IApiTokenRepository
+    internal class ApiTokenRepository : IApiTokenRepository
     {
         /// <inheritdoc />
         public ApiTokenBase GetApiToken(int portalId, string tokenHash)
@@ -169,12 +168,6 @@ AND (CreatedByUserId=@2 OR @2=-1)
                 var rep = context.GetRepository<ApiToken>();
                 return rep.Find(pageIndex, pageSize, sql, portalId, userId, (int)scope, apiKey);
             }
-        }
-
-        /// <inheritdoc />
-        protected override Func<IApiTokenRepository> GetFactory()
-        {
-            return () => new ApiTokenRepository();
         }
     }
 }

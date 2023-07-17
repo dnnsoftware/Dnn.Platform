@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Api
 {
+    using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Api.Auth.ApiTokens;
@@ -42,6 +43,9 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public ApiTokenScope Scope { get; set; } = ApiTokenScope.User;
 
+        [Dependency]
+        private IApiTokenController ApiTokenController { get; set; }
+
         /// <summary>
         /// Check if the request is authorized.
         /// </summary>
@@ -49,7 +53,7 @@ namespace DotNetNuke.Web.Api
         /// <returns>True if authorized, false otherwise.</returns>
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            var token = ApiTokenController.Instance.GetCurrentThreadApiToken();
+            var token = this.ApiTokenController.GetCurrentThreadApiToken();
             if (token == null)
             {
                 return false;

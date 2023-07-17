@@ -56,15 +56,18 @@ namespace Dnn.PersonaBar.Security.Services
         private readonly Components.SecurityController controller;
         private readonly IPagesController pagesController;
         private readonly IPortalAliasService portalAliasService;
+        private readonly IApiTokenController apiTokenController;
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
         /// <param name="pagesController">The pages controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
-        public SecurityController(IPagesController pagesController, IPortalAliasService portalAliasService)
+        /// <param name="apiTokenController">The API token controller.</param>
+        public SecurityController(IPagesController pagesController, IPortalAliasService portalAliasService, IApiTokenController apiTokenController)
             : this(
                 new Components.SecurityController(),
                 pagesController,
-                portalAliasService)
+                portalAliasService,
+                apiTokenController)
         {
         }
 
@@ -72,14 +75,17 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="controller">The security controller.</param>
         /// <param name="pagesController">The pages controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="apiTokenController">The API token controller.</param>
         internal SecurityController(
             Components.SecurityController controller,
             IPagesController pagesController,
-            IPortalAliasService portalAliasService)
+            IPortalAliasService portalAliasService,
+            IApiTokenController apiTokenController)
         {
             this.pagesController = pagesController;
             this.controller = controller;
             this.portalAliasService = portalAliasService;
+            this.apiTokenController = apiTokenController;
         }
 
         /// GET: api/Security/GetBasicLoginSettings
@@ -1167,7 +1173,7 @@ namespace Dnn.PersonaBar.Security.Services
                 }
             }
 
-            var response = ApiTokenController.Instance.GetApiTokens(requestedScope, noScopeDefined, portalId, requestingUser, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
+            var response = this.apiTokenController.GetApiTokens(requestedScope, noScopeDefined, portalId, requestingUser, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
             return this.Request.CreateResponse(HttpStatusCode.OK, response.Serialize());
         }
 
@@ -1188,17 +1194,17 @@ namespace Dnn.PersonaBar.Security.Services
             if (user.IsSuperUser)
             {
                 // If the user is a superuser, sets the API token scope to host.
-                response = ApiTokenController.Instance.ApiTokenKeyList(ApiTokenScope.Host, Thread.CurrentThread.CurrentUICulture.Name);
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.Host, Thread.CurrentThread.CurrentUICulture.Name);
             }
             else if (user.IsAdmin)
             {
                 // If the user is an admin, sets the API token scope to portal.
-                response = ApiTokenController.Instance.ApiTokenKeyList(ApiTokenScope.Portal, Thread.CurrentThread.CurrentUICulture.Name);
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.Portal, Thread.CurrentThread.CurrentUICulture.Name);
             }
             else
             {
                 // If the user is regular, set the API token scope to user.
-                response = ApiTokenController.Instance.ApiTokenKeyList(ApiTokenScope.User, Thread.CurrentThread.CurrentUICulture.Name);
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.User, Thread.CurrentThread.CurrentUICulture.Name);
             }
 
             // Returns the response.
@@ -1278,7 +1284,7 @@ namespace Dnn.PersonaBar.Security.Services
                     break;
             }
 
-            var token = ApiTokenController.Instance.CreateApiToken(this.PortalId, data.TokenName.Trim(), requestedScope, expirationTime, data.ApiKeys, this.UserInfo.UserID);
+            var token = this.apiTokenController.CreateApiToken(this.PortalId, data.TokenName.Trim(), requestedScope, expirationTime, data.ApiKeys, this.UserInfo.UserID);
             return this.Request.CreateResponse(HttpStatusCode.OK, token);
         }
 
@@ -1292,7 +1298,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
         {
-            var token = ApiTokenController.Instance.GetApiToken(data.ApiTokenId);
+            var token = this.apiTokenController.GetApiToken(data.ApiTokenId);
             if (token == null)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid token");
@@ -1330,7 +1336,7 @@ namespace Dnn.PersonaBar.Security.Services
 
             if (canManage)
             {
-                ApiTokenController.Instance.RevokeOrDeleteApiToken(token.ToBase(), data.Delete, user.UserID);
+                this.apiTokenController.RevokeOrDeleteApiToken(token.ToBase(), data.Delete, user.UserID);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, true);
@@ -1358,7 +1364,7 @@ namespace Dnn.PersonaBar.Security.Services
                 userId = -1;
             }
 
-            ApiTokenController.Instance.DeleteExpiredAndRevokedApiTokens(portalId, userId);
+            this.apiTokenController.DeleteExpiredAndRevokedApiTokens(portalId, userId);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, true);
         }

@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     /// <summary>
     /// Repository to manage API tokens.
     /// </summary>
-    internal interface IApiTokenRepository
+    public interface IApiTokenRepository
     {
         /// <summary>
         /// Retrieves an existing API token instance using its hash and portal identifier.
