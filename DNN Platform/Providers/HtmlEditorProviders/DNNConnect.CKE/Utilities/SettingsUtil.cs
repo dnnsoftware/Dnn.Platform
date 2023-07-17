@@ -360,7 +360,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             {
                                 RoleId = objRole.RoleID,
                                 RoleName = objRole.RoleName,
-                                UploadFileLimit = Convert.ToInt32(uploadFileLimit)
+                                UploadFileLimit = Convert.ToInt32(uploadFileLimit),
                             })
                     .ToList();
 

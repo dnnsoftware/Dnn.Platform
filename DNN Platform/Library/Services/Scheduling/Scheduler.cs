@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// Checks the scheduled item if it has servers specified to run on. If it does, then it checks to see if the server is active.
             /// </summary>
-            /// <param name="scheduleItem">The schedule to check</param>
+            /// <param name="scheduleItem">The schedule to check.</param>
             /// <returns>True if nothing happens to the scheduled item. Returns false if the scheduled item was updated.</returns>
             /// <remarks>
             /// If the server specified is not active then the scheduled item will be assigned to the most recent active server.

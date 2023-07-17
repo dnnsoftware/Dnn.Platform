@@ -29,6 +29,7 @@
     <DocumentationFile>bin\Dnn.AzureConnector.xml</DocumentationFile>
     <LangVersion>7</LangVersion>
     <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,6 +41,7 @@
     <DocumentationFile>bin\Dnn.AzureConnector.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

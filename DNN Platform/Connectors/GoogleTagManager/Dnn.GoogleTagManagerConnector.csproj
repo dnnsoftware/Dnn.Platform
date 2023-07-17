@@ -29,6 +29,7 @@
     <DocumentationFile>bin\DNN.Connectors.GoogleTagManager.xml</DocumentationFile>
     <LangVersion>7</LangVersion>
     <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,7 +41,7 @@
     <DocumentationFile>bin\DNN.Connectors.GoogleTagManager.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

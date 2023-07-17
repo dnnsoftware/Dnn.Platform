@@ -42,6 +42,8 @@
     <DocumentationFile>bin\DotNetNuke.Authentication.Twitter.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,6 +55,8 @@
     <NoWarn>1591</NoWarn>
     <DocumentationFile>bin\DotNetNuke.Authentication.Twitter.XML</DocumentationFile>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.configuration" />

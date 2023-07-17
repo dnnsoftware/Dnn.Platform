@@ -40,6 +40,7 @@
     <DocumentationFile>bin\DotNetNuke.Skins.Xcillion.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +52,7 @@
     <DocumentationFile>bin\DotNetNuke.Skins.Xcillion.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

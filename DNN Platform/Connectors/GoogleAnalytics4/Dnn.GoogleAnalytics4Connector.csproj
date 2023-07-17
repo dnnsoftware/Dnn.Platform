@@ -40,6 +40,7 @@
     <DocumentationFile>bin\DNN.Connectors.GoogleAnalytics4.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
