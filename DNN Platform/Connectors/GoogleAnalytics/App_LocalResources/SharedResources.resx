@@ -121,7 +121,7 @@
     <value>Delete Connection</value>
   </data>
   <data name="ConnectorName.Text" xml:space="preserve">
-    <value>Google Analytics Core Connector</value>
+    <value>Google Analytics (Legacy UA) Connector</value>
   </data>
   <data name="TrackAdministrators.Text" xml:space="preserve">
     <value>Track for Administrators:</value>
