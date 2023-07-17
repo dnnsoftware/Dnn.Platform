@@ -12,11 +12,14 @@ PRINT N'Creating {databaseOwner}[{objectQualifier}ApiTokens]'
 GO
 CREATE TABLE {databaseOwner}{objectQualifier}ApiTokens (
 	[ApiTokenId] [int] IDENTITY(1,1) NOT NULL,
+	[TokenName] [nvarchar](100) NULL,
 	[TokenHash] [varchar](96) NOT NULL,
 	[ExpiresOn] [datetime] NOT NULL,
 	[Scope] [int] NOT NULL,
 	[PortalId] [int] NOT NULL,
-	[IsRevoked] [bit] NOT NULL,
+	[IsRevoked] [bit] NOT NULL DEFAULT (0),
+	[IsDeleted] [bit] NOT NULL DEFAULT (0),
+	[RevokedByUserId] [int] NULL,
 	[RevokedOnDate] [datetime] NULL,
 	[CreatedByUserId] [int] NOT NULL,
 	[CreatedOnDate] [datetime] NOT NULL,

@@ -409,7 +409,10 @@ CREATE TABLE {databaseOwner}{objectQualifier}ApiTokenKeys (
 END
 GO
 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'FK_{objectQualifier}ApiTokenKeys_ApiTokens') AND type = 'D')
+BEGIN
 ALTER TABLE {databaseOwner}{objectQualifier}ApiTokenKeys ADD CONSTRAINT [FK_{objectQualifier}ApiTokenKeys_ApiTokens] FOREIGN KEY ([ApiTokenId]) REFERENCES {databaseOwner}{objectQualifier}ApiTokens ([ApiTokenId]) ON DELETE CASCADE
+END
 GO
 
 DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_ApiTokens]
@@ -419,6 +422,7 @@ CREATE VIEW {databaseOwner}[{objectQualifier}vw_ApiTokens]
 AS
 SELECT
  a.*,
+ portals.PortalName,
  uc.DisplayName CreatedByUser,
  uc.Username CreatedByUsername,
  ur.DisplayName RevokedByUser,
@@ -427,36 +431,13 @@ SELECT
    FROM {databaseOwner}[{objectQualifier}ApiTokenKeys] atk WHERE atk.ApiTokenId=a.ApiTokenId
    FOR XML PATH ('')), 1, 1, '')) Keys
 FROM {databaseOwner}[{objectQualifier}ApiTokens] a
+LEFT JOIN (
+ SELECT pl.PortalID, pl.PortalName
+ FROM {databaseOwner}[{objectQualifier}Portals] p
+ INNER JOIN {databaseOwner}[{objectQualifier}PortalLocalization] pl ON p.PortalID=pl.PortalID AND pl.CultureCode=p.DefaultLanguage
+) portals ON portals.PortalID=a.PortalId
 LEFT JOIN {databaseOwner}[{objectQualifier}Users] uc ON uc.UserID=a.CreatedByUserId
 LEFT JOIN {databaseOwner}[{objectQualifier}Users] ur ON ur.UserID=a.RevokedByUserId
-GO
-
-/*****************************************/
-/* Add PB menu permission for API Tokens */
-/*****************************************/
-
-
-INSERT INTO {databaseOwner}.[{objectQualifier}PersonaBarPermission]
-           ([MenuId]
-           ,[PermissionKey]
-           ,[PermissionName]
-           ,[ViewOrder]
-           ,[CreatedByUserID]
-           ,[CreatedOnDate]
-           ,[LastModifiedByUserID]
-           ,[LastModifiedOnDate])
-SELECT
- pbm.MenuId,
- 'MANAGE_API_TOKENS',
- 'Manage API Tokens',
- 9999,
- -1,
- GETDATE(),
- -1,
- GETDATE()
-FROM {databaseOwner}.[{objectQualifier}PersonaBarMenu] pbm 
-WHERE pbm.Identifier='Dnn.Security'
-AND NOT EXISTS (SELECT * FROM {databaseOwner}.[{objectQualifier}PersonaBarPermission] x WHERE x.MenuId=pbm.MenuId AND x.PermissionKey='MANAGE_API_TOKENS')
 GO
 
 
