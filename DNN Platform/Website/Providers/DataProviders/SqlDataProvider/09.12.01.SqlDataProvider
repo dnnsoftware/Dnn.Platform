@@ -53,6 +53,23 @@ AS
 			WHERE   (PT.IsActive = 1)
 GO
 
+
+/* Fix Scheduler Frequency for Server Monitor #5634 */
+
+IF EXISTS (SELECT * 
+            FROM {databaseOwner}[{objectQualifier}Schedule] 
+            WHERE TypeFullName = 'DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke' 
+            AND TimeLapse = 5 
+            AND RetryTimeLapse = 10
+            AND TimeLapseMeasurement = 'm'
+            AND RetryTimeLapseMeasurement = 'm')
+BEGIN
+    --Update the retry timelapse to 2 minutes, similar to other standard jobs
+    UPDATE {databaseOwner}[{objectQualifier}Schedule]
+    SET RetryTimeLapse = 2
+    WHERE TypeFullName = 'DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke'
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
