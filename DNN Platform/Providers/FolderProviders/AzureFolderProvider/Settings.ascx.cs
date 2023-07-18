@@ -6,6 +6,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.UI.WebControls;
 
@@ -119,7 +120,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void DdlContainers_SelectedIndexChanged(object sender, EventArgs e)
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.ddlContainers.SelectedIndex != 1)
             {
@@ -150,7 +152,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void BtnNewContainer_Click(object sender, EventArgs e)
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        protected void btnNewContainer_Click(object sender, EventArgs e)
         {
             this.SelectContainerPanel.Visible = false;
             this.CreateContainerPanel.Visible = true;
@@ -158,7 +161,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void BtnSelectExistingContainer_Click(object sender, EventArgs e)
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        protected void btnSelectExistingContainer_Click(object sender, EventArgs e)
         {
             this.SelectContainerPanel.Visible = true;
             this.CreateContainerPanel.Visible = false;
@@ -166,7 +170,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void ValContainerName_ServerValidate(object source, ServerValidateEventArgs args)
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        protected void valContainerName_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (this.SelectContainerPanel.Visible)
             {

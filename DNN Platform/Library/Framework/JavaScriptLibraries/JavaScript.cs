@@ -473,6 +473,5 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
             }
         }
-
     }
 }

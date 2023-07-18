@@ -435,43 +435,43 @@ namespace DotNetNuke.Common
                 // Check whether the current App Version is the same as the DB Version
             var redirect = CheckVersion(app);
             if (!string.IsNullOrEmpty(redirect) || InstallBlocker.Instance.IsInstallInProgress())
-                {
+            {
                 return redirect;
             }
 
-                    Logger.Info("Application Initializing");
+            Logger.Info("Application Initializing");
 
-                    // Set globals
-                    Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
-                    Globals.OperatingSystemVersion = Environment.OSVersion.Version;
-                    Globals.NETFrameworkVersion = GetNETFrameworkVersion();
-                    Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
+            // Set globals
+            Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
+            Globals.OperatingSystemVersion = Environment.OSVersion.Version;
+            Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+            Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
 
-                    Upgrade.CheckFipsCompilanceAssemblies();
+            Upgrade.CheckFipsCompilanceAssemblies();
 
-                    // Log Server information
-                    ServerController.UpdateServerActivity(new ServerInfo());
+            // Log Server information
+            ServerController.UpdateServerActivity(new ServerInfo());
 
-                    // Start Scheduler
-                    StartScheduler();
+            // Start Scheduler
+            StartScheduler();
 
-                    // Log Application Start
-                    LogStart();
+            // Log Application Start
+            LogStart();
 
-                    // Process any messages in the EventQueue for the Application_Start event
+            // Process any messages in the EventQueue for the Application_Start event
             using (var scope = Globals.DependencyProvider.CreateScope())
             {
                 EventQueueController.ProcessMessages(scope.ServiceProvider, "Application_Start");
             }
 
-                    ServicesRoutingManager.RegisterServiceRoutes();
+            ServicesRoutingManager.RegisterServiceRoutes();
 
-                    // Set Flag so we can determine the first Page Request after Application Start
-                    app.Context.Items.Add("FirstRequest", true);
+            // Set Flag so we can determine the first Page Request after Application Start
+            app.Context.Items.Add("FirstRequest", true);
 
-                    Logger.Info("Application Initialized");
+            Logger.Info("Application Initialized");
 
-                    initialized = true;
+            initialized = true;
 
             return redirect;
         }

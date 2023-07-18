@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.Api.Internal
                 // this must run before any auth message handlers
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new DnnContextMessageHandler());
 
-                RegisterAuthenticationHandlers();
+                this.RegisterAuthenticationHandlers();
 
                 // this must run after all other auth message handlers
                 var handler = new WebFormsAuthMessageHandler();

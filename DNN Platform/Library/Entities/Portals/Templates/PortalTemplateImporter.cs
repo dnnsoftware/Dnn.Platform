@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;

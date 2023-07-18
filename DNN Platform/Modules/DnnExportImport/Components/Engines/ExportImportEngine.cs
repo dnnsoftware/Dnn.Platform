@@ -58,7 +58,6 @@ namespace Dnn.ExportImport.Components.Engines
             new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
         };
 
-
         private readonly Stopwatch stopWatch = Stopwatch.StartNew();
         private readonly List<BasePortableService> portableServices;
         private readonly ExportController exportController;

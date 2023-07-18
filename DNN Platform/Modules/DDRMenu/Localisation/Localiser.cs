@@ -20,10 +20,11 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     /// <summary>Implements the localization logic for all providers.</summary>
     public class Localiser : ILocaliser
     {
-        private readonly IEnumerable<ILocalisation> localizations;
-        private readonly IPortalController portalController;
         private static bool apiChecked;
         private static ILocalisation localisationApi;
+
+        private readonly IEnumerable<ILocalisation> localizations;
+        private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="Localiser"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]

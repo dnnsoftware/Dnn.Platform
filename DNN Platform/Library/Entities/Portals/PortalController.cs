@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
-    
+
     using Microsoft.Extensions.DependencyInjection;
 
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;

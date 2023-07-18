@@ -16,7 +16,6 @@ namespace DotNetNuke.Services.FileSystem
     /// </summary>
     public interface IFileManager
     {
-
         /// <summary>Gets current user's file upload extension whitelist.</summary>
         FileExtensionWhitelist WhiteList { get; }
 

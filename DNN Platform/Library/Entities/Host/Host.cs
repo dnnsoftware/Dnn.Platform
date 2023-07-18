@@ -1115,7 +1115,6 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-
         /// <summary>  Gets a value indicating whether gets whether to use a hosted version of the MS Ajax Library.</summary>
         /// <remarks>
         ///   Defaults to False.
@@ -1127,7 +1126,6 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetBoolean("EnableMsAjaxCDN", false);
             }
         }
-
 
         /// <summary>Gets get the time, in seconds, before asynchronous postbacks time out if no response is received.</summary>
         public static int AsyncTimeout

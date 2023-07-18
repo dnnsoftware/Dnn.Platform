@@ -6,6 +6,7 @@ namespace DotNetNuke.Modules.NavigationProvider
     using System;
     using System.Collections.Generic;
     using System.Web.UI;
+
     using DotNetNuke.Common;
     using DotNetNuke.Framework;
     using DotNetNuke.UI.Skins;
