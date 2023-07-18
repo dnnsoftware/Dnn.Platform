@@ -200,7 +200,7 @@ internal partial class Page
     internal partial class Wrapper<T>
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IApplicationStatusInfo.")]
-        public partial (decimal, Int32) GetThemBoth(decimal x)
+        internal partial (decimal, Int32) GetThemBoth(decimal x)
         {
             return (x + 1, 1);
         }

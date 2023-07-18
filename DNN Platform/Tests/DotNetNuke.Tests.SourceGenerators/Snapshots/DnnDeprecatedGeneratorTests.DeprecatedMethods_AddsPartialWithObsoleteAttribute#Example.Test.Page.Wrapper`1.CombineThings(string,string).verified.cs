@@ -7,7 +7,7 @@ partial class Page
     partial class Wrapper<T>
     {
         [global::System.Obsolete("Deprecated in DotNetNuke 9.4.4. Use overload taking IServiceProvider. Scheduled for removal in v11.0.0.")]
-        partial global::System.Text.StringBuilder CombineThings(
+        public static partial global::System.Text.StringBuilder CombineThings(
             string y,
             string z);
     }
