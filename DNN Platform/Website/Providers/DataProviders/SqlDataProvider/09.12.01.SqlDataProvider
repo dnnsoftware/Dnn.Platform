@@ -1,4 +1,4 @@
-﻿/************************************************************/
+/************************************************************/
 /*****              SqlDataProvider                     *****/
 /*****                                                  *****/
 /*****                                                  *****/
@@ -7,7 +7,6 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
-
 
 /* Fix GetExtensionUrlProviders #5564 */
 /**************************************/
@@ -54,6 +53,11 @@ AS
 GO
 
 
+/* Fix Invalid Objects #5552 */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchWord]
+GO
+
 /* Fix Scheduler Frequency for Server Monitor #5634 */
 
 --Update the retry timelapse to 2 minutes, similar to other standard jobs
@@ -65,6 +69,8 @@ AND RetryTimeLapse = 10
 AND TimeLapseMeasurement = 'm'
 AND RetryTimeLapseMeasurement = 'm';
 GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
