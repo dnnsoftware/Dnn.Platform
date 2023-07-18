@@ -221,13 +221,25 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                     writer.WriteLine(',');
                 }
 
-                writer.Write($"{parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameter.Name}");
+                writer.Write($"{GetParameterPrefix(parameter.RefKind)}{parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameter.Name}");
             }
 
             writer.Indent--;
         }
 
         writer.WriteLine(");");
+    }
+
+    private static string GetParameterPrefix(RefKind refKind)
+    {
+        return refKind switch
+        {
+            RefKind.None => string.Empty,
+            RefKind.Ref => "ref ",
+            RefKind.Out => "out ",
+            RefKind.In => "in ",
+            _ => throw new ArgumentOutOfRangeException(nameof(refKind), refKind, "Unexpected RefKind value"),
+        };
     }
 
     private static string GetHintName(string namespaceName, IEnumerable<TypeDeclarationSyntax> containingTypes, ISymbol symbol)
@@ -271,6 +283,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                 hintNameBuilder.Append(',');
             }
 
+            hintNameBuilder.Append(GetParameterPrefix(parameter.RefKind));
             hintNameBuilder.Append(parameter.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat).Replace("?", "_NULLABLE_"));
         }
 

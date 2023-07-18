@@ -206,8 +206,9 @@ internal partial class Page
         }
 
         [DnnDeprecated(9, 4, 4, "Use overload taking IServiceProvider.")]
-        public static partial System.Text.StringBuilder CombineThings(string y, String z)
+        public static partial System.Text.StringBuilder CombineThings(string y, out String z)
         {
+            z = nameof(CombineThings);
             return new StringBuilder(y + z);
         }
     }
