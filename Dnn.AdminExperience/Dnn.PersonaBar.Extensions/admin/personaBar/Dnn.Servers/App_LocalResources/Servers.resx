@@ -406,7 +406,7 @@
     <value>SMTP Authentication:</value>
   </data>
   <data name="plSMTPEnableSSL.Help" xml:space="preserve">
-    <value>Used for SMTP services that require secure connection. This setting is typically not required.</value>
+    <value>If supported by the mail provider, this indicates that a secure connection is required. The MailKit provider handles connection security automatically; therefore, this setting has no effect when that provider is used.</value>
   </data>
   <data name="plSMTPEnableSSL.Text" xml:space="preserve">
     <value>SMTP Enable SSL:</value>
