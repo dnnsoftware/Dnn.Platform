@@ -88,8 +88,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
 
             foreach (var containingType in containingTypes)
             {
-                writer.WriteLine($"partial {containingType.Keyword} {containingType.Identifier}");
-                writer.WriteLine("{");
+                OpenPartialType(writer, semanticModel, containingType, context.CancellationToken);
                 writer.Indent++;
             }
 
@@ -99,9 +98,8 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             switch (memberDeclaration)
             {
                 case TypeDeclarationSyntax typeDeclaration:
-                    writer.WriteLine($"partial {typeDeclaration.Keyword} {typeDeclaration.Identifier}");
-                    writer.WriteLine("{");
-                    writer.WriteLine("}");
+                    OpenPartialType(writer, semanticModel, typeDeclaration, context.CancellationToken);
+                    writer.WriteLine('}');
                     break;
                 case MethodDeclarationSyntax methodDeclaration:
                     WritePartialMethod(writer, semanticModel, methodDeclaration, context.CancellationToken);
@@ -120,6 +118,43 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         }
     }
 
+    private static void OpenPartialType(
+        IndentedTextWriter writer,
+        SemanticModel semanticModel,
+        TypeDeclarationSyntax typeDeclaration,
+        CancellationToken cancellationToken)
+    {
+        writer.Write($"partial {typeDeclaration.Keyword} {typeDeclaration.Identifier}");
+        if (typeDeclaration.TypeParameterList is not null)
+        {
+            var typeSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
+            if (typeSymbol is not null)
+            {
+                writer.Write('<');
+
+                var isFirst = true;
+                foreach (var parameter in typeDeclaration.TypeParameterList.Parameters)
+                {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        writer.Write(',');
+                    }
+
+                    writer.Write(parameter.Identifier);
+                }
+
+                writer.Write('>');
+            }
+        }
+
+        writer.WriteLine();
+        writer.WriteLine("{");
+    }
+
     private static void WritePartialMethod(
         IndentedTextWriter writer,
         SemanticModel semanticModel,
@@ -133,8 +168,42 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             return;
         }
 
-        var returnType = methodSymbol.ReturnsVoid ? "void" : methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        writer.Write($"partial {returnType} {methodSymbol.Name}(");
+        string returnType;
+        var accessibilityModifier = string.Empty;
+        if (methodSymbol.ReturnsVoid)
+        {
+            returnType = "void";
+        }
+        else
+        {
+            accessibilityModifier = $"{SyntaxFacts.GetText(methodSymbol.DeclaredAccessibility)} ";
+            returnType = methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        }
+
+        writer.Write($"{methodDeclaration.Modifiers} {returnType} {methodSymbol.Name}");
+        if (!methodSymbol.TypeParameters.IsDefaultOrEmpty)
+        {
+            writer.Write('<');
+
+            var isFirst = true;
+            foreach (var typeParameter in methodSymbol.TypeParameters)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write(typeParameter.Name);
+            }
+
+            writer.Write('>');
+        }
+
+        writer.Write("(");
         if (!methodSymbol.Parameters.IsDefaultOrEmpty)
         {
             writer.WriteLine();
@@ -167,12 +236,26 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         foreach (var type in containingTypes)
         {
             hintNameBuilder.Append($".{type.Identifier}");
+            if (type.TypeParameterList is not null && type.TypeParameterList.Parameters.Count > 0)
+            {
+                hintNameBuilder.Append($"`{type.TypeParameterList.Parameters.Count}");
+            }
         }
 
         hintNameBuilder.Append($".{symbol.Name}");
+        if (symbol is INamedTypeSymbol { IsGenericType: true } namedTypeSymbol)
+        {
+            hintNameBuilder.Append($"`{namedTypeSymbol.TypeParameters.Length}");
+        }
+
         if (symbol is not IMethodSymbol method)
         {
             return hintNameBuilder.ToString();
+        }
+
+        if (!method.TypeParameters.IsDefaultOrEmpty)
+        {
+            hintNameBuilder.Append($"`{method.TypeParameters.Length}");
         }
 
         var isFirst = true;

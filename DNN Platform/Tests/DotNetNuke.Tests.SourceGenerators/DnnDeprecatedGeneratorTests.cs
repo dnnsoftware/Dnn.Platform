@@ -54,6 +54,41 @@ public partial class PagesController
     }
 
     [Test]
+    public async Task DeprecatedGenericPartialClass_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+[DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
+public partial class PagesController<T,U>
+{
+}
+
+""");
+    }
+
+    [Test]
+    public async Task DeprecatedNestedGenericPartialClass_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+public partial class PagesController<T,U>
+{
+    [DnnDeprecated(10, 0, 0, "Please use outer class.")]
+    public partial class Inner<T,X,Z>
+    {
+    }
+}
+
+""");
+    }
+
+    [Test]
     public async Task DeprecatedPartialInterface_AddsPartialWithObsoleteAttribute()
     {
         await Verify("""
@@ -63,6 +98,22 @@ using DotNetNuke.Internal.SourceGenerators;
 
 [DnnDeprecated(10, 0, 0, "Please use the other IPagesController.")]
 public partial interface IPagesController
+{
+}
+
+""");
+    }
+
+    [Test]
+    public async Task DeprecatedPartialGenericInterface_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+[DnnDeprecated(10, 0, 0, "Please use the other IPagesController.")]
+public partial interface IPagesController<T>
 {
 }
 
@@ -134,9 +185,9 @@ internal partial class Page
     internal partial static class StaticWrapper
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IServiceProvider.")]
-        public static partial void DoAThing(string i)
+        public static partial void DoAThing<T>(ref T i)
         {
-            return i;
+            return;
         }
 
         [DnnDeprecated(9, 4, 4, "Use overload taking IApplicationStatusInfo.")]
@@ -146,7 +197,7 @@ internal partial class Page
         }
     }
 
-    internal partial class Wrapper
+    internal partial class Wrapper<T>
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IApplicationStatusInfo.")]
         public partial (decimal, Int32) GetThemBoth(decimal x)
