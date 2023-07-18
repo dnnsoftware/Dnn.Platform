@@ -42,7 +42,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.Html.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
@@ -55,7 +55,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.Html.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>

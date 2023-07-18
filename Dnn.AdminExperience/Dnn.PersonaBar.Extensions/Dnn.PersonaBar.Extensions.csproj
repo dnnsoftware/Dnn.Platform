@@ -31,7 +31,7 @@
     <DocumentationFile>bin\Dnn.PersonaBar.Extensions.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1602,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
@@ -44,7 +44,7 @@
     <DocumentationFile>bin\Dnn.PersonaBar.Extensions.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1602,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>

@@ -35,7 +35,7 @@
     <DocumentationFile>bin\DotNetNuke.Web.Razor.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,CS0809,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
@@ -46,7 +46,7 @@
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>bin\DotNetNuke.Web.Razor.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,CS0809,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
