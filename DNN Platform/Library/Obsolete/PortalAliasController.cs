@@ -58,7 +58,6 @@ namespace DotNetNuke.Entities.Portals
         public static bool ValidateAlias(string portalAlias, bool ischild) =>
             ((IPortalAliasService)Instance).ValidateAlias(portalAlias, ischild);
 
-        
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public int AddPortalAlias(PortalAliasInfo portalAlias) =>

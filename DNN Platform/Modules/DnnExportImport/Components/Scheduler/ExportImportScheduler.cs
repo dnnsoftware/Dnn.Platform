@@ -25,7 +25,6 @@ namespace Dnn.ExportImport.Components.Scheduler
     /// <summary>Implements a SchedulerClient for the Exporting/Importing of site items.</summary>
     public class ExportImportScheduler : SchedulerClient
     {
-        private readonly ExportImportEngine engine;
         private const int EmergencyScheduleFrequency = 120;
         private const int DefaultScheduleFrequency = 1;
         private const string EmergencyScheduleFrequencyUnit = "m";
@@ -41,6 +40,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
+        private readonly ExportImportEngine engine;
         private readonly IEntitiesController entitiesController;
 
         /// <summary>Initializes a new instance of the <see cref="ExportImportScheduler"/> class.</summary>

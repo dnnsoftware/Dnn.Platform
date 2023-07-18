@@ -139,7 +139,6 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-
         private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
         {
             // Create a Package

@@ -35,6 +35,8 @@
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
     <LangVersion>7</LangVersion>
     <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1606,SA1611</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +48,8 @@
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1606,SA1611</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -53,6 +53,11 @@ AS
 			WHERE   (PT.IsActive = 1)
 GO
 
+
+/* Fix Invalid Objects #5552 */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchWord]
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

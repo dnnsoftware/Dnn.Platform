@@ -38,6 +38,8 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1606,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,6 +50,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1606,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">

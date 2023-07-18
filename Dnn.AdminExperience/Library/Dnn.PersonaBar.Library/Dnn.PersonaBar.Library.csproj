@@ -29,6 +29,8 @@
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,CS3005,SA1600,SA1602,SA1606,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,6 +42,8 @@
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,CS3005,SA1600,SA1602,SA1606,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SolutionInfo.cs">

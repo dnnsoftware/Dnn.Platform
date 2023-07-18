@@ -16,8 +16,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     public class SearchContentModuleInfo
     {
-
-
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ModuleSearchBase SearchBaseControllerType;
@@ -25,7 +23,6 @@ namespace DotNetNuke.Services.Search
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ModuleInfo MModInfo;
-
 
         public ModuleSearchBase ModSearchBaseControllerType
         {

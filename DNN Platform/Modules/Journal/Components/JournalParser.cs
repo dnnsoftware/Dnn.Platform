@@ -53,6 +53,7 @@ namespace DotNetNuke.Modules.Journal.Components
         }
 
         /// <summary>Initializes a new instance of the <see cref="JournalParser"/> class.</summary>
+        /// <param name="navigationManager"></param>
         /// <param name="portalSettings"></param>
         /// <param name="moduleId"></param>
         /// <param name="profileId"></param>

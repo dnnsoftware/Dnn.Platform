@@ -220,8 +220,8 @@ namespace DotNetNuke.Services.Scheduling
         /// <summary>
         /// Replaces the old server name, with the new server name on all schedules where the old server name was found.
         /// </summary>
-        /// <param name="oldServer">The old server to replace</param>
-        /// <param name="newServer">The new server to use</param>
+        /// <param name="oldServer">The old server to replace.</param>
+        /// <param name="newServer">The new server to use.</param>
         internal static void ReplaceServer(ServerInfo oldServer, ServerInfo newServer)
         {
             DataProvider.Instance().ReplaceServerOnSchedules(oldServer.ServerName, newServer.ServerName);

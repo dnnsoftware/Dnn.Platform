@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
         /// <param name="navigationManager">A manager to provide navigation services.</param>
-        /// <param name="applicatiohnStatusInfo">The application status info.</param>
+        /// <param name="applicationStatusInfo">The application status info.</param>
         public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo)
         {
             this.navigationManager = navigationManager;
@@ -687,9 +687,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// GET: api/SiteSettings/GetProfilePropertyLocalization
         /// <summary>Gets profile property localization.</summary>
         /// <param name="portalId">The ID of the portal for which to get the profile properties for.</param>
+        /// <param name="cultureCode">The culture code in which to get the category in.</param>
         /// <param name="propertyName">The name of the property to get.</param>
         /// <param name="propertyCategory">The category of the property to get.</param>
-        /// <param name="cultureCode">The culture code in which to get the category in.</param>
         /// <returns>Profile property.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]

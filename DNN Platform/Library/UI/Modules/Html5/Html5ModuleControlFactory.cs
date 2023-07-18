@@ -17,9 +17,6 @@ namespace DotNetNuke.UI.Modules.Html5
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
 
-        /// <inheritdoc/>
-        public override int Priority => 100;
-
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5ModuleControlFactory()
@@ -33,6 +30,9 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         }
+
+        /// <inheritdoc/>
+        public override int Priority => 100;
 
         /// <inheritdoc/>
         public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)

@@ -18,7 +18,6 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
-    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;

@@ -16,7 +16,7 @@ namespace DNN.Connectors.GoogleAnalytics
     /// <summary>Connector to provide configuration for Google Analytics support.</summary>
     public class GoogleAnalyticsConnector : IConnector
     {
-        private const string DefaultDisplayName = "Google Analytics";
+        private const string DefaultDisplayName = "Google Analytics (Legacy UA)";
 
         private string displayName;
 

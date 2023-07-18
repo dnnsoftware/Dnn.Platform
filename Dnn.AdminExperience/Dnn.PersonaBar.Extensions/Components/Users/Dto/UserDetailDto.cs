@@ -21,8 +21,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {
-        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-
         public UserDetailDto()
         {
         }
@@ -95,6 +93,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
+
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         private static string GetSettingUrl(int portalId, int userId)
         {
