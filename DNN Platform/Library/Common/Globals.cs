@@ -40,6 +40,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
@@ -65,7 +66,7 @@ namespace DotNetNuke.Common
         "SA1310:Field names should not contain underscore",
         Justification = "Changing all these public fields names would be a massive breaking change only for a code style issue.")]
     [StandardModule]
-    public sealed class Globals
+    public sealed partial class Globals
     {
         /// <summary>Global role id for all users.</summary>
         /// <value>-1.</value>
@@ -528,8 +529,8 @@ namespace DotNetNuke.Common
         /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
         /// <returns>A value indicating whether any incremental sql script file exists.</returns>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
-        public static bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
+        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        public static partial bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
         /// <summary>Builds the cross tab dataset.</summary>
         /// <param name="dataSetName">Name of the data set.</param>
@@ -542,8 +543,8 @@ namespace DotNetNuke.Common
         /// <param name="stringValueColumn">The string value column.</param>
         /// <param name="numericValueColumn">The numeric value column.</param>
         /// <returns>the dataset instance.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled for removal in v11")]
-        public static DataSet BuildCrossTabDataSet(
+        [DnnDeprecated(9, 8, 1, "No replacement")]
+        public static partial DataSet BuildCrossTabDataSet(
             string dataSetName,
             IDataReader result,
             string fixedColumns,
@@ -569,8 +570,8 @@ namespace DotNetNuke.Common
         /// <param name="numericValueColumn">Name of the column, that contains the field value, if stored as number. Column must be contained in DataReader.</param>
         /// <param name="culture">culture of the field values in data reader's string value column.</param>
         /// <returns>The generated DataSet.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled for removal in v11")]
-        public static DataSet BuildCrossTabDataSet(
+        [DnnDeprecated(9, 8, 1, "No replacement")]
+        public static partial DataSet BuildCrossTabDataSet(
             string dataSetName,
             IDataReader result,
             string fixedColumns,
@@ -900,21 +901,21 @@ namespace DotNetNuke.Common
 
         /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
-        public static void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
+        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        public static partial void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
 
         /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment (revision) number.</param>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
-        public static void UpdateDataBaseVersionIncrement(Version version, int increment) =>
+        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        public static partial void UpdateDataBaseVersionIncrement(Version version, int increment) =>
             applicationStatusInfo.UpdateDatabaseVersionIncrement(version, increment);
 
         /// <summary>Gets the last applied iteration (revision).</summary>
         /// <param name="version">The version for which to check the last revision.</param>
         /// <returns>The last applied iteration (revision) for the requested version.</returns>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
-        public static int GetLastAppliedIteration(Version version) =>
+        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        public static partial int GetLastAppliedIteration(Version version) =>
             applicationStatusInfo.GetLastAppliedIteration(version);
 
         /// <summary>Adds the port.</summary>
@@ -1217,8 +1218,8 @@ namespace DotNetNuke.Common
 
         /// <summary>Sets the status.</summary>
         /// <param name="status">The status.</param>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
-        public static void SetStatus(UpgradeStatus status) =>
+        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        public static partial void SetStatus(UpgradeStatus status) =>
             applicationStatusInfo.SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
 
         /// <summary>
@@ -2263,8 +2264,8 @@ namespace DotNetNuke.Common
         /// <param name="path">The path to format.</param>
         /// <param name="settings">The portal settings.</param>
         /// <returns>The formatted (friendly) URL.</returns>
-        [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
-        public static string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
+        [DnnDeprecated(9, 4, 3, "Use the IPortalSettings overload")]
+        public static partial string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
             return FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
@@ -2292,8 +2293,8 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page to include in the URL.</param>
         /// <param name="settings">The portal settings.</param>
         /// <returns>The formatted (friendly) url.</returns>
-        [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
-        public static string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        [DnnDeprecated(9, 4, 3, "Use the IPortalSettings overload")]
+        public static partial string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
             return FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
@@ -2365,8 +2366,8 @@ namespace DotNetNuke.Common
         /// <param name="moduleId">The id of the module (unused).</param>
         /// <param name="url">the url to import.</param>
         /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is.</returns>
-        [Obsolete("Deprecated in 9.8.1, moduleId is not used in the method, use the overload that takes only the url, scheduled removal in v11")]
-        public static string ImportUrl(int moduleId, string url)
+        [DnnDeprecated(9, 8, 1, "moduleId is not used in the method, use the overload that takes only the url")]
+        public static partial string ImportUrl(int moduleId, string url)
         {
             return ImportUrl(url);
         }
@@ -2455,8 +2456,8 @@ namespace DotNetNuke.Common
         /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <returns>Formatted URL.</returns>
-        [Obsolete("Deprecated in v9.8.1, use the overload that takes IPortalSettings instead, scheduled removal in v11.")]
-        public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
+        [DnnDeprecated(9, 8, 1, "Use the overload that takes IPortalSettings instead")]
+        public static partial string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
             return LoginURL(returnUrl, overrideSetting, (IPortalSettings)portalSettings);
         }
@@ -2528,8 +2529,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL()
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL()
         {
             return navigationManager.NavigateURL();
         }
@@ -2539,8 +2540,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID)
         {
             return navigationManager.NavigateURL(tabID);
         }
@@ -2551,8 +2552,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, bool isSuperTab)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, bool isSuperTab)
         {
             return navigationManager.NavigateURL(tabID, isSuperTab);
         }
@@ -2562,8 +2563,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(string controlKey)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(string controlKey)
         {
             return navigationManager.NavigateURL(controlKey);
         }
@@ -2574,8 +2575,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(string controlKey, params string[] additionalParameters)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(string controlKey, params string[] additionalParameters)
         {
             return navigationManager.NavigateURL(controlKey, additionalParameters);
         }
@@ -2586,8 +2587,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, string controlKey)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, string controlKey)
         {
             return navigationManager.NavigateURL(tabID, controlKey);
         }
@@ -2599,8 +2600,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
             return navigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
@@ -2613,8 +2614,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return navigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
@@ -2628,8 +2629,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
@@ -2642,8 +2643,8 @@ namespace DotNetNuke.Common
         /// <param name="language">The language code.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
@@ -2657,8 +2658,8 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page name to pass to <see cref="FriendlyUrl(DotNetNuke.Entities.Tabs.TabInfo,string,string)"/>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted url.</returns>
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
-        public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
+        [DnnDeprecated(9, 4, 2, "Use INavigationManager via dependency injection")]
+        public static partial string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             return navigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
@@ -2782,8 +2783,8 @@ namespace DotNetNuke.Common
         /// <summary>Encodes the reserved characters.</summary>
         /// <param name="queryString">The query string.</param>
         /// <returns>Encoded content.</returns>
-        [Obsolete("Deprecated in v9.8.1, use System.Net.WebUtility.UrlEncode instead, scheduled removal in v11.")]
-        public static string EncodeReservedCharacters(string queryString)
+        [DnnDeprecated(9, 8, 1, "Use System.Net.WebUtility.UrlEncode instead")]
+        public static partial string EncodeReservedCharacters(string queryString)
         {
             queryString = queryString.Replace("$", "%24");
             queryString = queryString.Replace("&", "%26");
@@ -2801,8 +2802,8 @@ namespace DotNetNuke.Common
         /// <summary>Dates to string.</summary>
         /// <param name="dateValue">The date value.</param>
         /// <returns>return value of input with SortableDateTimePattern.</returns>
-        [Obsolete(@"Deprecated in 9.8.1, use DateTime.ToString(""s"") instead, schedule removal in v11.")]
-        public static string DateToString(DateTime dateValue)
+        [DnnDeprecated(9, 8, 1, @"Use DateTime.ToString(""s"") instead")]
+        public static partial string DateToString(DateTime dateValue)
         {
             try
             {
@@ -2827,8 +2828,8 @@ namespace DotNetNuke.Common
         /// <param name="hashObject">The hash object.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>HashOject's value or DefaultValue if HashObject is null.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled removal in v11")]
-        public static string GetHashValue(object hashObject, string defaultValue)
+        [DnnDeprecated(9, 8, 1, "No replacement")]
+        public static partial string GetHashValue(object hashObject, string defaultValue)
         {
             if (hashObject != null)
             {
@@ -3089,8 +3090,8 @@ namespace DotNetNuke.Common
         /// <param name="helpUrl">The help URL.</param>
         /// <param name="moduleConfig">The module config.</param>
         /// <returns>The help url.</returns>
-        [Obsolete("Deprecated in 9.8.1, ModuleInfo is unused, use the overload that does not take a ModuleInfo, scheduled removal in v11.")]
-        public static string GetOnLineHelp(string helpUrl, ModuleInfo moduleConfig)
+        [DnnDeprecated(9, 8, 1, "ModuleInfo is unused, use the overload that does not take a ModuleInfo")]
+        public static partial string GetOnLineHelp(string helpUrl, ModuleInfo moduleConfig)
         {
             return GetOnLineHelp(helpUrl);
         }
@@ -3147,8 +3148,8 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The String Source to deserialize.</param>
         /// <returns>The deserialized Hashtable.</returns>
-        [Obsolete("Deprecated in 9.8.1, scheduled for removal in v11.")]
-        public static Hashtable DeserializeHashTableBase64(string source)
+        [DnnDeprecated(9, 8, 1, "No replacement")]
+        public static partial Hashtable DeserializeHashTableBase64(string source)
         {
             Hashtable objHashTable;
             if (!string.IsNullOrEmpty(source))
@@ -3185,8 +3186,8 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The String Source to deserialize.</param>
         /// <returns>The deserialized Hashtable.</returns>
-        [Obsolete("Deprecated in v9.8.1, this API was not meant to be public and only deserializes xml with a root of 'profile', scheduled removal in v11.")]
-        public static Hashtable DeserializeHashTableXml(string source)
+        [DnnDeprecated(9, 8, 1, "This API was not meant to be public and only deserializes xml with a root of 'profile'")]
+        public static partial Hashtable DeserializeHashTableXml(string source)
         {
             return XmlUtils.DeSerializeHashtable(source, "profile");
         }
@@ -3198,8 +3199,8 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The Hashtable to serialize.</param>
         /// <returns>The serialized String.</returns>
-        [Obsolete("Deprecated in v9.8.1, scheduled removal in v11.")]
-        public static string SerializeHashTableBase64(Hashtable source)
+        [DnnDeprecated(9, 8, 1, "No replacement")]
+        public static partial string SerializeHashTableBase64(Hashtable source)
         {
             string strString;
             if (source.Count != 0)
@@ -3236,8 +3237,8 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="source">The Hashtable to serialize.</param>
         /// <returns>The serialized String.</returns>
-        [Obsolete("Deprecated in v9.8.1, this method was never meant to be public and only works for 'profile' root namespace, scheduled removal in v11.")]
-        public static string SerializeHashTableXml(Hashtable source)
+        [DnnDeprecated(9, 8, 1, "This method was never meant to be public and only works for 'profile' root namespace")]
+        public static partial string SerializeHashTableXml(Hashtable source)
         {
             return XmlUtils.SerializeDictionary(source, "profile");
         }
@@ -3264,8 +3265,8 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32).
         /// </remarks>
-        [Obsolete("Obsoleted in DNN 7.3.0 as it causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead.. Scheduled removal in v11.0.0.")]
-        public static string UserProfilePicFormattedUrl()
+        [DnnDeprecated(7, 3, 0, "It causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead", RemovalVersion = 11)]
+        public static partial string UserProfilePicFormattedUrl()
         {
             var avatarUrl = PortalController.Instance.GetCurrentPortalSettings().DefaultPortalAlias;
             if (string.IsNullOrEmpty(avatarUrl))
@@ -3290,8 +3291,8 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32).
         /// </remarks>
-        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl. Scheduled removal in v11.0.0.")]
-        public static string UserProfilePicRelativeUrl()
+        [DnnDeprecated(8, 0, 0, "Please use UserController.Instance.GetUserProfilePictureUrl", RemovalVersion = 11)]
+        public static partial string UserProfilePicRelativeUrl()
         {
             return UserProfilePicRelativeUrl(true);
         }
@@ -3303,8 +3304,8 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32).
         /// </remarks>
-        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl. Scheduled removal in v11.0.0.")]
-        public static string UserProfilePicRelativeUrl(bool includeCdv)
+        [DnnDeprecated(8, 0, 0, "Please use UserController.Instance.GetUserProfilePictureUrl", RemovalVersion = 11)]
+        public static partial string UserProfilePicRelativeUrl(bool includeCdv)
         {
             const string query = "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
@@ -3328,8 +3329,8 @@ namespace DotNetNuke.Common
         /// <summary>Formats an email address as a cloacked html link.</summary>
         /// <param name="email">The formatted email address.</param>
         /// <returns>A cloacked html link.</returns>
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
-        public static string FormatEmail(string email)
+        [DnnDeprecated(7, 0, 0, "This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail", RemovalVersion = 11)]
+        public static partial string FormatEmail(string email)
         {
             return HtmlUtils.FormatEmail(email);
         }
@@ -3337,8 +3338,8 @@ namespace DotNetNuke.Common
         /// <summary>Formats a domain name including link.</summary>
         /// <param name="website">The domain name to format.</param>
         /// <returns>The formatted domain name.</returns>
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatWebsite. Scheduled removal in v11.0.0.")]
-        public static string FormatWebsite(object website)
+        [DnnDeprecated(7, 0, 0, "This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatWebsite", RemovalVersion = 11)]
+        public static partial string FormatWebsite(object website)
         {
             return HtmlUtils.FormatWebsite(website);
         }
@@ -3346,16 +3347,16 @@ namespace DotNetNuke.Common
         /// <summary>Xml encodes an html string.</summary>
         /// <param name="html">The html to encode.</param>
         /// <returns>The encoded html for usage in xml.</returns>
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode. Scheduled removal in v11.0.0.")]
-        public static string XMLEncode(string html)
+        [DnnDeprecated(7, 0, 0, "This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode", RemovalVersion = 11)]
+        public static partial string XMLEncode(string html)
         {
             return XmlUtils.XMLEncode(html);
         }
 
         /// <summary>Gets the database connection string.</summary>
         /// <returns>The database connection string.</returns>
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString. Scheduled removal in v11.0.0.")]
-        public static string GetDBConnectionString()
+        [DnnDeprecated(7, 0, 0, "This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString", RemovalVersion = 11)]
+        public static partial string GetDBConnectionString()
         {
             return Config.GetConnectionString();
         }
@@ -3365,8 +3366,8 @@ namespace DotNetNuke.Common
         /// <param name="strExtensions">The extensions to filter for.</param>
         /// <param name="noneSpecified">If true, adds 'None Specified' to the list.</param>
         /// <returns>A list of file names.</returns>
-        [Obsolete("This method has been deprecated. Scheduled removal in v11.0.0.")]
-        public static ArrayList GetFileList(
+        [DnnDeprecated(7, 0, 0, "No replacement", RemovalVersion = 11)]
+        public static partial ArrayList GetFileList(
             DirectoryInfo currentDirectory,
             [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
             string strExtensions,
@@ -3404,8 +3405,8 @@ namespace DotNetNuke.Common
         /// <summary>Gets the subfolder path for a give filename path.</summary>
         /// <param name="strFileNamePath">The filename full path.</param>
         /// <returns>The subfolder name.</returns>
-        [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer). Scheduled removal in v11.0.0.")]
-        public static string GetSubFolderPath(string strFileNamePath)
+        [DnnDeprecated(7, 0, 0, "Replaced by GetSubFolderPath(string strFileNamePath, int portalId)", RemovalVersion = 11)]
+        public static partial string GetSubFolderPath(string strFileNamePath)
         {
             // Obtain PortalSettings from Current Context
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -3427,8 +3428,8 @@ namespace DotNetNuke.Common
         /// <summary>Gets a LinkClick url for tracking purposes.</summary>
         /// <param name="link">The actual link the LinkClick handler should point to.</param>
         /// <returns>The formatted LinkClick url.</returns>
-        [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs. Scheduled removal in v11.0.0.")]
-        public static string LinkClickURL(string link)
+        [DnnDeprecated(7, 0, 0, "Use Common.Globals.LinkClick() for proper handling of URLs", RemovalVersion = 11)]
+        public static partial string LinkClickURL(string link)
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return LinkClick(link, portalSettings.ActiveTab.TabID, -1, false);
@@ -3438,8 +3439,8 @@ namespace DotNetNuke.Common
         /// <remarks>IMPORTANT: It is highly recommended to use other forms of sql injection protection such as using SqlParameters or ORMs.</remarks>
         /// <param name="strSQL">The string to filter.</param>
         /// <returns>The filtered string.</returns>
-        [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class. Scheduled removal in v11.0.0.")]
-        public static string PreventSQLInjection(string strSQL)
+        [DnnDeprecated(7, 0, 0, "Use Security Filter functions in the PortalSecurity class", RemovalVersion = 11)]
+        public static partial string PreventSQLInjection(string strSQL)
         {
             return PortalSecurity.Instance.InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
@@ -3452,8 +3453,8 @@ namespace DotNetNuke.Common
         /// since the connection string may not have been configured yet, which can occur during the installation
         /// wizard.
         /// </remarks>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
-        internal static bool IsInstalled() => applicationStatusInfo.IsInstalled();
+        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        internal static partial bool IsInstalled() => applicationStatusInfo.IsInstalled();
 
         /// <summary>Gets the culture code of the tab.</summary>
         /// <param name="tabId">The tab ID.</param>

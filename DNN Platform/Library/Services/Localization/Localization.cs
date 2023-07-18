@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization.Internal;
     using DotNetNuke.Services.Log.EventLog;
@@ -48,7 +49,7 @@ namespace DotNetNuke.Services.Localization
     /// pageCreationProgressArea.Localization.CurrentFileName = Localization.GetString("Processing", LocalResourceFile);
     /// </code>
     /// </example>
-    public class Localization
+    public partial class Localization
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
         private static string defaultKeyName = "resourcekey";
@@ -546,8 +547,8 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo.</returns>
-        [Obsolete("Deprecated in Platform 9.8.0. Scheduled removal in v11.0.0. Use overload taking IPortalSettings instead.")]
-        public static CultureInfo GetPageLocale(PortalSettings portalSettings)
+        [DnnDeprecated(9, 8, 0, "Use overload taking IPortalSettings instead")]
+        public static partial CultureInfo GetPageLocale(PortalSettings portalSettings)
         {
             return GetPageLocale((IPortalSettings)portalSettings);
         }
@@ -1475,8 +1476,8 @@ namespace DotNetNuke.Services.Localization
         ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
         ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
         /// </remarks>
-        [Obsolete("Deprecated in Platform 9.8.0. Scheduled removal in v11.0.0. Use overload taking IPortalSettings instead.")]
-        public static void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
+        [DnnDeprecated(9, 8, 0, "Use overload taking IPortalSettings instead")]
+        public static partial void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
         {
             SetThreadCultures(cultureInfo, (IPortalSettings)portalSettings);
         }

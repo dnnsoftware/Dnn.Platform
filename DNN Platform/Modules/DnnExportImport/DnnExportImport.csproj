@@ -145,6 +145,10 @@
     <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+      <Project>{5FE5D021-9C8D-47A6-BD34-F328BA3E709C}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>

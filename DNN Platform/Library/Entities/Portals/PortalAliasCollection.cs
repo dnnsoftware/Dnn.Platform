@@ -7,9 +7,11 @@ namespace DotNetNuke.Entities.Portals
     using System;
     using System.Collections;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     [Serializable]
-    [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
-    public class PortalAliasCollection : DictionaryBase
+    [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
+    public partial class PortalAliasCollection : DictionaryBase
     {
         /// <summary>Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.</summary>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
@@ -54,15 +56,15 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
-        public bool Contains(string key)
+        [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
+        public partial bool Contains(string key)
         {
             return this.Dictionary.Contains(key);
         }
 
         /// <summary>Adds an entry to the collection.</summary>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use IDictionary<string, IPortalAliasInfo> instead.")]
-        public void Add(string key, PortalAliasInfo value)
+        [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
+        public partial void Add(string key, PortalAliasInfo value)
         {
             this.Dictionary.Add(key, value);
         }

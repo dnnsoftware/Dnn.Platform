@@ -6,11 +6,12 @@ namespace DotNetNuke.Web.Razor.Helpers
     using System;
     using System.Web;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public class HtmlHelper
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public partial class HtmlHelper
     {
         private readonly string resourceFile;
         private ModuleInstanceContext context;
@@ -22,20 +23,20 @@ namespace DotNetNuke.Web.Razor.Helpers
             this.resourceFile = resourcefile;
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public object GetLocalizedString(string key)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public partial object GetLocalizedString(string key)
         {
             return Localization.GetString(key, this.resourceFile);
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public object GetLocalizedString(string key, string culture)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public partial object GetLocalizedString(string key, string culture)
         {
             return Localization.GetString(key, this.resourceFile, culture);
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public HtmlString Raw(string text)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public partial HtmlString Raw(string text)
         {
             return new HtmlString(text);
         }

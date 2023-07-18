@@ -7,10 +7,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
 // ReSharper enable CheckNamespace
 {
-    using System;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-    public interface IContentWorkflowAction
+    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+    public partial interface IContentWorkflowAction
     {
         string GetAction(string[] parameters);
     }

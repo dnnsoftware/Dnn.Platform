@@ -10,18 +10,19 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.WebControls;
 
     /// <summary>Deprecated Apollo localization.</summary>
-    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
-    public class Apollo : ILocalisation
+    [DnnDeprecated(9, 4, 0, "No replacement", RemovalVersion = 10)]
+    public partial class Apollo : ILocalisation
     {
         private bool haveChecked;
         private MethodInfo apiMember;
 
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
-        public bool HaveApi()
+        /// <inheritdoc cref="ILocalisation.HaveApi"/>
+        [DnnDeprecated(9, 4, 0, "No replacement", RemovalVersion = 10)]
+        public partial bool HaveApi()
         {
             if (!this.haveChecked)
             {
@@ -44,16 +45,16 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return this.apiMember != null;
         }
 
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
-        public TabInfo LocaliseTab(TabInfo tab, int portalId)
+        /// <inheritdoc cref="ILocalisation.LocaliseTab"/>
+        [DnnDeprecated(9, 4, 0, "No replacement", RemovalVersion = 10)]
+        public partial TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return this.apiMember.Invoke(null, new object[] { tab }) as TabInfo ?? tab;
         }
 
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
-        public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
+        /// <inheritdoc cref="ILocalisation.LocaliseNodes"/>
+        [DnnDeprecated(9, 4, 0, "No replacement", RemovalVersion = 10)]
+        public partial DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
             return null;
         }

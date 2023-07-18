@@ -8,13 +8,14 @@ namespace DotNetNuke.Modules.RazorHost
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the AddScript view logic.</summary>
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;

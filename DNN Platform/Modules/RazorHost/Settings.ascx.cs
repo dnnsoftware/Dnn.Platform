@@ -8,9 +8,10 @@ namespace DotNetNuke.Modules.RazorHost
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>Implements the Settings view logic.</summary>
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class Settings : ModuleSettingsBase
     {
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";

@@ -11,12 +11,13 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
     /// <summary>The UserOnlineController class provides Business Layer methods for Users Online.</summary>
-    [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-    public class UserOnlineController
+    [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+    public partial class UserOnlineController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserOnlineController));
         private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
@@ -24,8 +25,8 @@ namespace DotNetNuke.Entities.Users
         private static readonly string CacheKey = "OnlineUserList";
 
         /// <summary>Clears the cached Users Online Information.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public void ClearUserList()
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial void ClearUserList()
         {
             string key = "OnlineUserList";
             DataCache.RemoveCache(key);
@@ -33,16 +34,16 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>Gets the Online time window.</summary>
         /// <returns>The window to use in minutes when determining if the user is online.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public int GetOnlineTimeWindow()
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial int GetOnlineTimeWindow()
         {
             return Host.Host.UsersOnlineTimeWindow;
         }
 
         /// <summary>Gets the cached Users Online Information.</summary>
         /// <returns>A <see cref="Hashtable"/> with <see cref="string"/> keys for the user ID (a GUID for anonymous users) and <see cref="BaseUserInfo"/> instances for the values.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public Hashtable GetUserList()
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial Hashtable GetUserList()
         {
             var userList = (Hashtable)DataCache.GetCache(CacheKey);
             if (userList == null)
@@ -63,16 +64,16 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>Gets whether the Users Online functionality is enabled.</summary>
         /// <returns><see langword="true"/> if the Users Online functionality is enabled, otherwise <see langword="false"/>.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public bool IsEnabled()
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial bool IsEnabled()
         {
             return Host.Host.EnableUsersOnline;
         }
 
         /// <summary>Determines whether a User is online.</summary>
         /// <returns><see langword="true"/> if the user is online, otherwise <see langword="false"/>.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public bool IsUserOnline(UserInfo user)
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial bool IsUserOnline(UserInfo user)
         {
             bool isOnline = false;
             if (this.IsEnabled())
@@ -84,15 +85,15 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Sets the cached Users Online Information.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public void SetUserList(Hashtable userList)
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial void SetUserList(Hashtable userList)
         {
             DataCache.SetCache(CacheKey, userList);
         }
 
         /// <summary>Tracks an online User.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public void TrackUsers()
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial void TrackUsers()
         {
             HttpContext context = HttpContext.Current;
 
@@ -117,8 +118,8 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Update the Users Online information.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public void UpdateUsersOnline()
+        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public partial void UpdateUsersOnline()
         {
             // Get a Current User List
             Hashtable userList = this.GetUserList();

@@ -10,9 +10,10 @@ namespace DotNetNuke.HttpModules.Compression
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("The http modules in web.config removed in 9.2.0, this class need to be removed in future release for upgrade compactible.. Scheduled removal in v11.0.0.")]
-    public class CompressionModule : IHttpModule
+    [DnnDeprecated(9, 2, 0, "No replacement")]
+    public partial class CompressionModule : IHttpModule
     {
         /// <summary>Init the handler and fulfill <see cref="IHttpModule"/>.</summary>
         /// <remarks>

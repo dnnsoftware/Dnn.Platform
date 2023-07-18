@@ -8,11 +8,12 @@ namespace DotNetNuke.Modules.RazorHost
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
 
     /// <summary>Extension methods for the razor host settings.</summary>
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public static class RazorHostSettingsExtensions
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public static partial class RazorHostSettingsExtensions
     {
         /// <summary>Loads the razor host settings control.</summary>
         /// <param name="parent">The parent user control.</param>

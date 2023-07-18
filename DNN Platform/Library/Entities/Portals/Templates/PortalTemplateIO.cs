@@ -13,9 +13,10 @@ namespace DotNetNuke.Entities.Portals.Internal
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Scheduled to become internal in v11.0.0.")]
-    public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
+    [DnnDeprecated(9, 11, 1, "No replacement")]
+    public partial class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
         /// <inheritdoc/>
         public IEnumerable<string> EnumerateTemplates()

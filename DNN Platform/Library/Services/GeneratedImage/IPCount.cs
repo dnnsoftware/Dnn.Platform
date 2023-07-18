@@ -11,9 +11,10 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
     using System.Web.Hosting;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.UserRequest;
 
-    public class IPCount
+    public partial class IPCount
     {
         private const string TempFileExtension = ".tmp";
         private const string CacheAppRelativePath = @"~\App_Data\_ipcount\";
@@ -176,8 +177,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
         /// <summary>method to get Client ip address.</summary>
         /// <returns>IP Address of visitor.</returns>
-        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
-        public static string GetVisitorIPAddress(HttpContextBase context)
+        [DnnDeprecated(9, 2, 0, "Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
+        public static partial string GetVisitorIPAddress(HttpContextBase context)
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
         }

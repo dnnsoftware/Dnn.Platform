@@ -5,7 +5,7 @@
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
-    using DotNetNuke.Common;
+
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
 

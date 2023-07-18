@@ -3,13 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content
 {
-    using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Moving ContentExtensions to the DotNetNuke.Entities.Content namespace was an error. Please use DotNetNuke.Entities.Content.Common.ContentExtensions. Scheduled removal in v10.0.0.")]
-    public static class ContentExtensions
+    [DnnDeprecated(7, 0, 0, "Moving ContentExtensions to the DotNetNuke.Entities.Content namespace was an error. Please use DotNetNuke.Entities.Content.Common.ContentExtensions.", RemovalVersion = 10)]
+    public static partial class ContentExtensions
     {
         // only forwarding public methods that existed as of 6.1.0
         // calls to internal methods will be fixed in the source

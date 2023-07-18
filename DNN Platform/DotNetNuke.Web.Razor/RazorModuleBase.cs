@@ -7,11 +7,12 @@ namespace DotNetNuke.Web.Razor
     using System.IO;
     using System.Web.UI;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.Modules;
 
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public class RazorModuleBase : ModuleUserControlBase
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public partial class RazorModuleBase : ModuleUserControlBase
     {
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected virtual string RazorScriptFile
@@ -39,8 +40,8 @@ namespace DotNetNuke.Web.Razor
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override void OnPreRender(EventArgs e)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        protected override partial void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             try

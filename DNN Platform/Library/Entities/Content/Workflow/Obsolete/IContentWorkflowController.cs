@@ -12,10 +12,11 @@ namespace DotNetNuke.Entities.Content.Workflow
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
 
-    [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-    public interface IContentWorkflowController
+    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+    public partial interface IContentWorkflowController
     {
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         void StartWorkflow(int workflowID, int itemID, int userID);

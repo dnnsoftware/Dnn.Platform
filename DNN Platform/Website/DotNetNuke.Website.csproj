@@ -3414,6 +3414,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+      <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>

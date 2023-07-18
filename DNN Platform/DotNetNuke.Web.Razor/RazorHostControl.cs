@@ -10,10 +10,11 @@ namespace DotNetNuke.Web.Razor
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
 
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public class RazorHostControl : ModuleControlBase, IActionable
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public partial class RazorHostControl : ModuleControlBase, IActionable
     {
         private readonly string razorScriptFile;
 
@@ -62,8 +63,8 @@ namespace DotNetNuke.Web.Razor
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override void OnPreRender(EventArgs e)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        protected override partial void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 

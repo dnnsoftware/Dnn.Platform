@@ -16,13 +16,14 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides access to Dnn Lists.</summary>
-    public class ListController
+    public partial class ListController
     {
         /// <summary>The list of list types that are not localized.</summary>
         [Obsolete("Deprecated in v9.8.1, use UnLocalizedLists instead, schedule removal in v11.")]
@@ -433,9 +434,9 @@ namespace DotNetNuke.Common.Lists
         /// <summary>Gets a collection of list entries.</summary>
         /// <param name="listName">The name of the list to get.</param>
         /// <returns>A collection of list entries.</returns>
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0.")]
+        [DnnDeprecated(6, 0, 1, "Use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead", RemovalVersion = 10)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
+        public partial ListEntryInfoCollection GetListEntryInfoCollection(string listName)
         {
             return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
         }
@@ -444,9 +445,9 @@ namespace DotNetNuke.Common.Lists
         /// <param name="listName">The name of the list to get.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns>A collection of list entries.</returns>
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
+        [DnnDeprecated(6, 0, 1, "Use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead", RemovalVersion = 10)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
+        public partial ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
         {
             return this.GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
         }
@@ -456,9 +457,9 @@ namespace DotNetNuke.Common.Lists
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) to get the list from.</param>
         /// <returns>A collection of list entries.</returns>
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
+        [DnnDeprecated(6, 0, 1, "Use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead", RemovalVersion = 10)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
+        public partial ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
         {
             var items = this.GetListEntryInfoItems(listName, parentKey, portalId);
 

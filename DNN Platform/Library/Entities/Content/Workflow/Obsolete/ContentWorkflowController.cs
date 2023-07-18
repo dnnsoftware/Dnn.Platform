@@ -16,6 +16,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
@@ -23,8 +24,8 @@ namespace DotNetNuke.Entities.Content.Workflow
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Social.Notifications;
 
-    [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-    public class ContentWorkflowController : ComponentBase<IContentWorkflowController, ContentWorkflowController>, IContentWorkflowController
+    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+    public partial class ContentWorkflowController : ComponentBase<IContentWorkflowController, ContentWorkflowController>, IContentWorkflowController
     {
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
         private readonly ContentController contentController;

@@ -6,10 +6,12 @@ namespace DotNetNuke.Services.Search
     using System;
     using System.Collections;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>Represents a collection of <see cref="SearchResultsInfo"/> objects.</summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
     [Serializable]
-    public class SearchResultsInfoCollection : CollectionBase
+    public partial class SearchResultsInfoCollection : CollectionBase
     {
         /// <summary>Initializes a new instance of the <see cref="SearchResultsInfoCollection"/> class.</summary>
         public SearchResultsInfoCollection()

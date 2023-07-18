@@ -6,11 +6,12 @@ namespace DotNetNuke.UI.Skins.Controls
     using System;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.WebControls;
 
-    [Obsolete("Support was removed for SolPart & Similar Modules in DNN 8.x, this control is no-longer functional to that point.  Usage of DDRMenu is suggested.  Scheduled removal in v10.0.0.")]
+    [DnnDeprecated(8, 0, 0, "Support was removed for SolPart & Similar Modules in DNN 8.x, this control is no-longer functional to that point.  Usage of DDRMenu is suggested.")]
     public partial class Nav : NavObjectBase
     {
         /// <inheritdoc/>

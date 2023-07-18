@@ -5,13 +5,15 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      OnlineUserInfo
     /// <summary>The OnlineUserInfo class provides an Entity for an online user.</summary>
     [Serializable]
-    [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-    public class OnlineUserInfo : BaseUserInfo
+    [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+    public partial class OnlineUserInfo : BaseUserInfo
     {
         private int userID;
 

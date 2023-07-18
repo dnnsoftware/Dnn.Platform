@@ -9,8 +9,9 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    public abstract class FriendlyUrlProvider
+    public abstract partial class FriendlyUrlProvider
     {
         // return the provider
         public static FriendlyUrlProvider Instance()
@@ -22,8 +23,8 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName);
 
-        [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
-        public virtual string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        [DnnDeprecated(9, 4, 3, "Use the IPortalSettings overload")]
+        public virtual partial string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
             return this.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }

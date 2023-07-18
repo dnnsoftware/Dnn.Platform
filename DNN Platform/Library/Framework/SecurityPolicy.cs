@@ -9,7 +9,9 @@ namespace DotNetNuke.Framework
     using System.Security.Permissions;
     using System.Web;
 
-    public class SecurityPolicy
+    using DotNetNuke.Internal.SourceGenerators;
+
+    public partial class SecurityPolicy
     {
         public const string ReflectionPermission = "ReflectionPermission";
         public const string WebPermission = "WebPermission";
@@ -122,8 +124,8 @@ namespace DotNetNuke.Framework
             return hasPermission;
         }
 
-        [Obsolete("Replaced by correctly spelt method. Scheduled removal in v10.0.0.")]
-        public static bool HasRelectionPermission()
+        [DnnDeprecated(7, 0, 0, "Replaced by correctly spelt method", RemovalVersion = 10)]
+        public static partial bool HasRelectionPermission()
         {
             GetPermissions();
             return reflectionPermission;

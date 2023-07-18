@@ -7,6 +7,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -37,7 +38,7 @@
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,CS0809,SA1600</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,CS0809,SA1600,SA1601</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +49,7 @@
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,CS0809,SA1600</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,CS0809,SA1600,SA1601</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
@@ -136,6 +137,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+      <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>

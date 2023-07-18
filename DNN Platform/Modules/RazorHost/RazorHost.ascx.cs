@@ -7,12 +7,13 @@ namespace DotNetNuke.Modules.RazorHost
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Razor;
 
     /// <summary>Implements the RazorHost view logic.</summary>
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorHost : RazorModuleBase, IActionable
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";

@@ -7,6 +7,8 @@ namespace DotNetNuke.Entities.Controllers
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>Interface of HostController.</summary>
     /// <example>
     /// <code lang="C#">
@@ -20,8 +22,8 @@ namespace DotNetNuke.Entities.Controllers
     /// </code>
     /// </example>
     /// <seealso cref="HostController"/>
-    [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Application.IHostSettingsService instead.")]
-    public interface IHostController
+    [DnnDeprecated(9, 7, 1, "use DotNetNuke.Abstractions.Application.IHostSettingsService instead")]
+    public partial interface IHostController
     {
         /// <summary>Gets the setting value for the specific key.</summary>
         /// <param name="key">The setting key string.</param>
