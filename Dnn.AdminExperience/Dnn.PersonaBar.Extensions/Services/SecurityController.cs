@@ -1342,11 +1342,16 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// <summary>
-        /// Deletes expired and revoked tokens.
+        /// Deletes expired API tokens.
         /// </summary>
+        /// <remarks>
+        /// If the user is a SuperUser, all expired API tokens across all portals will be deleted.
+        /// If the user is an Admin, only the expired API tokens for the current portal will be deleted.
+        /// For all other users, only their own expired API tokens will be deleted.
+        /// </remarks>
+        /// <returns>An HTTP response message with a boolean value indicating whether expired API tokens were deleted.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage DeleteExpiredTokens()
         {
             var portalId = this.PortalId;
