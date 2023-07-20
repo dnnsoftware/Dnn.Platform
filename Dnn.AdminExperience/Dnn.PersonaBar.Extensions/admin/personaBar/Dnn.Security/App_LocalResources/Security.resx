@@ -1405,4 +1405,7 @@
   <data name="DeleteExpired.Text" xml:space="preserve">
     <value>Delete Expired</value>
   </data>
+  <data name="LastUsedOnDate.Text" xml:space="preserve">
+    <value>Last Used On</value>
+  </data>
 </root>

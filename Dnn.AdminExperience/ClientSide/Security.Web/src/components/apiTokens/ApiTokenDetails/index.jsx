@@ -69,6 +69,11 @@ class ApiTokenDetails extends Component {
                             {utils.formatDateTime(this.props.apiToken.ExpiresOn)}
                         </div>
                         <Label
+                            label={resx.get("LastUsedOnDate")} />
+                        <div>
+                            {utils.formatDateTime(this.props.apiToken.LastUsedOnDate)}
+                        </div>
+                        <Label
                             label={resx.get("ApiTokenStatus")} />
                         <div className={statusClass}>
                             {status}
