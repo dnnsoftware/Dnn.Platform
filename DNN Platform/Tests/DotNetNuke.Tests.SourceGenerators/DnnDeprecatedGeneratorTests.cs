@@ -220,6 +220,25 @@ internal partial class Page
 """);
     }
 
+    [Test]
+    public async Task DeprecatedMethodWithParamsParameter_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+partial class Page
+{
+    [DnnDeprecated(9, 9, 1, "Use overload taking IEnumerable.")]
+    partial void WithParams(params int[] numbers)
+    {
+    }
+}
+
+""");
+    }
+
     private static async Task Verify(string source)
     {
         var references =

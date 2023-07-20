@@ -169,8 +169,15 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         }
 
         var returnType = methodSymbol.ReturnsVoid ? "void" : methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-
         writer.Write($"{methodDeclaration.Modifiers} {returnType} {methodSymbol.Name}");
+        WriteMethodTypeParameters(writer, methodSymbol);
+        WriteMethodParameters(writer, methodSymbol);
+        WriteMethodTypeConstraints(writer, methodSymbol);
+        writer.WriteLine(';');
+    }
+
+    private static void WriteMethodTypeParameters(IndentedTextWriter writer, IMethodSymbol methodSymbol)
+    {
         if (!methodSymbol.TypeParameters.IsDefaultOrEmpty)
         {
             writer.Write('<');
@@ -192,52 +199,10 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
 
             writer.Write('>');
         }
+    }
 
-        writer.Write("(");
-        if (!methodSymbol.Parameters.IsDefaultOrEmpty)
-        {
-            writer.WriteLine();
-            writer.Indent++;
-
-            var isFirst = true;
-            foreach (var parameter in methodSymbol.Parameters)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    writer.WriteLine(',');
-                }
-
-                writer.Write($"{GetParameterPrefix(parameter.RefKind)}{parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameter.Name}");
-                if (parameter.HasExplicitDefaultValue)
-                {
-                    writer.Write(" = ");
-                    switch (parameter.ExplicitDefaultValue)
-                    {
-                        case null:
-                            writer.Write("null");
-                            break;
-                        case true:
-                            writer.Write("true");
-                            break;
-                        case false:
-                            writer.Write("false");
-                            break;
-                        default:
-                            writer.Write(parameter.ExplicitDefaultValue);
-                            break;
-                    }
-                }
-            }
-
-            writer.Indent--;
-        }
-
-        writer.Write(')');
-
+    private static void WriteMethodTypeConstraints(IndentedTextWriter writer, IMethodSymbol methodSymbol)
+    {
         writer.Indent++;
         foreach (var parameter in methodSymbol.TypeParameters)
         {
@@ -335,7 +300,63 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         }
 
         writer.Indent--;
-        writer.WriteLine(';');
+    }
+
+    private static void WriteMethodParameters(IndentedTextWriter writer, IMethodSymbol methodSymbol)
+    {
+        writer.Write("(");
+        if (methodSymbol.Parameters.IsDefaultOrEmpty)
+        {
+            writer.Write(')');
+            return;
+        }
+
+        writer.WriteLine();
+        writer.Indent++;
+
+        var isFirst = true;
+        foreach (var parameter in methodSymbol.Parameters)
+        {
+            if (isFirst)
+            {
+                isFirst = false;
+            }
+            else
+            {
+                writer.WriteLine(',');
+            }
+
+            writer.Write(GetParameterPrefix(parameter.RefKind));
+            if (parameter.IsParams)
+            {
+                writer.Write("params ");
+            }
+
+            writer.Write($"{parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameter.Name}");
+            if (parameter.HasExplicitDefaultValue)
+            {
+                writer.Write(" = ");
+                switch (parameter.ExplicitDefaultValue)
+                {
+                    case null:
+                        writer.Write("null");
+                        break;
+                    case true:
+                        writer.Write("true");
+                        break;
+                    case false:
+                        writer.Write("false");
+                        break;
+                    default:
+                        writer.Write(parameter.ExplicitDefaultValue);
+                        break;
+                }
+            }
+        }
+
+        writer.Indent--;
+
+        writer.Write(')');
     }
 
     private static string GetParameterPrefix(RefKind refKind)
