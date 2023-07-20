@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public abstract class LoggingProvider
     {
-        [Obsolete("Deprecated in 9.8.0. Not suitable replacement, use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public enum ReturnType
         {
             LogInfoObjects = 0,

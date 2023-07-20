@@ -187,7 +187,7 @@ namespace DotNetNuke.Entities.Modules
         ///   Gets the CacheDirectory property is used to return the location of the "Cache"
         ///   Directory for the Module.
         /// </summary>
-        [Obsolete("This property is deprecated.  Plaese use ModuleController.CacheDirectory(). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Please use ModuleController.CacheDirectory(). Scheduled removal in v11.0.0.")]
         public string CacheDirectory
         {
             get
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Modules
         ///   Gets the CacheFileName property is used to store the FileName for this Module's
         ///   Cache.
         /// </summary>
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
         public string CacheFileName
         {
             get
@@ -212,7 +212,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
         public string CacheKey
         {
             get

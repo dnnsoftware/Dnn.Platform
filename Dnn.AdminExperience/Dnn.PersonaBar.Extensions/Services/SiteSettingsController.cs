@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         /// <summary>Gets provides navigation services.</summary>
-        [Obsolete("Deprecated in v9.10.2, please use DI to register your own navigation manager. Schedule for removal in v11")]
+        [Obsolete("Deprecated in DotNetNuke 9.10.2. Please use DI to register your own navigation manager. Scheduled for removal in v11.0.0.")]
         protected INavigationManager NavigationManager => this.navigationManager;
 
         /// GET: api/SiteSettings/GetPortalSettings

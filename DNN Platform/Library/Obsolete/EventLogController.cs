@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Log.EventLog
 #pragma warning disable SA1600 // Elements should be documented, not documenting, the whole class is deprecated.
     public partial class EventLogController : ServiceLocator<IEventLogController, EventLogController>, IEventLogController
     {
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.EventLogType' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.EventLogType' instead. Scheduled removal in v11.0.0.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.DocumentationRules",
             "SA1602:Enumeration items should be documented",

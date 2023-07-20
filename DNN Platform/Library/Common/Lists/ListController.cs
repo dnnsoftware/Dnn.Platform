@@ -26,7 +26,7 @@ namespace DotNetNuke.Common.Lists
     public partial class ListController
     {
         /// <summary>The list of list types that are not localized.</summary>
-        [Obsolete("Deprecated in v9.8.1, use UnLocalizedLists instead, schedule removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. Use UnLocalizedLists instead. Scheduled removal in v11.0.0.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.MaintainabilityRules",
             "SA1401:Fields should be private",

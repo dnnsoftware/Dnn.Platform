@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Controllers
     /// <inheritdoc cref="IHostController" />
     public partial class HostController : ComponentBase<IHostController, HostController>, IHostController
     {
-        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. Use DotNetNuke.Abstractions.IHostSettingsService instead. Scheduled removal in v11.0.0.")]
         public static new IHostController Instance
         {
             get

@@ -317,7 +317,7 @@ namespace DotNetNuke.Common
         /// <value>
         /// The application map path.
         /// </value>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled removal in v11.0.0.")]
         public static string ApplicationMapPath => applicationStatusInfo.ApplicationMapPath;
 
         /// <summary>Gets the desktop module path.</summary>
@@ -351,7 +351,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets the database version.</summary>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled removal in v11.0.0.")]
         public static Version DataBaseVersion { get => applicationStatusInfo.DatabaseVersion; }
 
         /// <summary>Gets the host map path.</summary>
@@ -416,12 +416,12 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the status of application.</summary>
         /// <seealso cref="GetStatus"/>
-        [Obsolete("Deprecated in 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.1. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead. Scheduled removal in v11.0.0.")]
         public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
         /// <summary>Gets image file types.</summary>
         /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
-        [Obsolete("Deprecated in v9.8.1, use ImageFileTypes instead, scheduled for removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. Use ImageFileTypes instead. Scheduled removal in v11.0.0.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
             "SA1300:Element should begin with upper-case letter",

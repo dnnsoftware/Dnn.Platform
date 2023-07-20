@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Installer
             this.Path = filePath;
         }
 
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compresstion types. Scheduled for removal in v11.0.0.")]
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;

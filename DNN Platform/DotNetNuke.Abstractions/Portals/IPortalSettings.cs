@@ -150,8 +150,7 @@ namespace DotNetNuke.Abstractions.Portals
 
         /// <summary>Gets a value indicating whether the Skin Widgets are enabled/supported.</summary>
         /// <remarks>Defaults to True.</remarks>
-        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0")]
-
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Skin widgets are no longer supported. Scheduled removal in v11.0.0.")]
         bool EnableSkinWidgets { get; }
 
         /// <summary>Gets a value indicating whether the content is localized.</summary>

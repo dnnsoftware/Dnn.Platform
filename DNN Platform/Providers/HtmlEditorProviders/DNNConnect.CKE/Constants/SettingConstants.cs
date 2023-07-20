@@ -9,7 +9,7 @@ namespace DNNConnect.CKEditorProvider.Constants
     public static class SettingConstants
     {
         /// <summary>The Legacy Toolbar Setting XML File Name.</summary>
-        [Obsolete("Legacy XML File")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Legacy XML file. Scheduled removal in v11.0.0.")]
         public const string ToolbarXmlFileName = "Dnn.CKToolbar.xml";
 
         /// <summary>The Legacy Toolbar Setting XML File Name.</summary>

@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.ClientCapability
         bool SupportsFlash { get; set; }
 
         /// <summary>Gets or sets a key-value collection containing all capabilities supported by requester.</summary>
-        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled for removal in v10.0.0.")]
         IDictionary<string, string> Capabilities { get; set; }
 
         /// <summary>Gets or sets the request preferred HTML DTD.</summary>

@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.FileSystem
     public interface IFileManager
     {
         /// <summary>Gets the system defined content types.</summary>
-        [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.4.2. It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled for removal in v10.0.0.")]
         IDictionary<string, string> ContentTypes { get; }
 
         /// <summary>Gets current user's file upload extension whitelist.</summary>
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>Gets the Content Type for the specified file extension.</summary>
         /// <param name="extension">The file extension.</param>
         /// <returns>The Content Type for the specified extension.</returns>
-        [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension). Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.4.2. It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension). Scheduled for removal in v10.0.0.")]
         string GetContentType(string extension);
 
         /// <summary>Gets the file metadata for the specified file.</summary>

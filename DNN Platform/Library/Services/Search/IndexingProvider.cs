@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Search
             return Enumerable.Empty<SearchDocument>();
         }
 
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.1.0. Use 'IndexSearchDocuments' instead. Scheduled for removal in v10.0.0.")]
         public abstract SearchItemInfoCollection GetSearchIndexItems(int portalId);
 
         /// <summary>Retrieves the date/time of the last item to be indexed.</summary>

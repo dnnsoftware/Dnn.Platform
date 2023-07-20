@@ -1,5 +1,5 @@
 ﻿[DnnDeprecated(9, 4, 0, "No replacement", RemovalVersion = 10)]
-[Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+[Obsolete("Deprecated in DotNetNuke 9.4.0. No replacement. Scheduled removal in v10.0.0.")]
 
 PROJECT: Effority Ealo
 

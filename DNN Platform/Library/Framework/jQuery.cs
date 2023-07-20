@@ -51,7 +51,7 @@ namespace DotNetNuke.Framework
         /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery script.</summary>
         /// <value>The HostSetting for the URL of the hosted version of the jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUrl
         {
             get
@@ -68,7 +68,7 @@ namespace DotNetNuke.Framework
         /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.</summary>
         /// <value>The HostSetting for the URL of the hosted version of the jQuery migrated script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedMigrateUrl
         {
             get
@@ -85,7 +85,7 @@ namespace DotNetNuke.Framework
         /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery UI script.</summary>
         /// <value>The HostSetting for the URL of the hosted version of the jQuery UI script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property.</remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUIUrl
         {
             get
@@ -104,7 +104,7 @@ namespace DotNetNuke.Framework
         /// This property checks for both the minified version and the full uncompressed version of jQuery.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool IsInstalled
         {
             get
@@ -120,7 +120,7 @@ namespace DotNetNuke.Framework
         /// This property checks for both the minified version and the full uncompressed version of jQuery UI.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool IsUIInstalled
         {
             get
@@ -166,7 +166,7 @@ namespace DotNetNuke.Framework
         /// <summary>Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</summary>
         /// <value>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryDebug property.</remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseDebugScript
         {
             get
@@ -183,7 +183,7 @@ namespace DotNetNuke.Framework
         /// <summary>Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.</summary>
         /// <value>The HostSetting to determine if we should use a hosted version of the jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryHosted property.</remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseHostedScript
         {
             get
