@@ -8,7 +8,8 @@ partial class Page
     {
         [global::System.Obsolete("Deprecated in DotNetNuke 8.4.4. Use overload taking IServiceProvider. Scheduled for removal in v10.0.0.")]
         public static partial void DoAThing<T>(
-            ref global::System.Collections.Generic.IEnumerable<T> i);
+            ref global::System.Collections.Generic.IEnumerable<T> i)
+            where T : new(),class;
     }
 }
 

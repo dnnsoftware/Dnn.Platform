@@ -187,6 +187,7 @@ internal partial class Page
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IServiceProvider.")]
         public static partial void DoAThing<T>(ref IEnumerable<T> i)
+            where T : class, new()
         {
             return;
         }

@@ -236,7 +236,106 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             writer.Indent--;
         }
 
-        writer.WriteLine(");");
+        writer.Write(')');
+
+        writer.Indent++;
+        foreach (var parameter in methodSymbol.TypeParameters)
+        {
+            if (!parameter.ConstraintTypes.IsDefaultOrEmpty ||
+                parameter.HasConstructorConstraint ||
+                parameter.HasNotNullConstraint ||
+                parameter.HasReferenceTypeConstraint ||
+                parameter.HasUnmanagedTypeConstraint ||
+                parameter.HasValueTypeConstraint)
+            {
+                writer.WriteLine();
+                writer.Write($"where {parameter.Name} : ");
+            }
+
+            var isFirstConstraint = true;
+            foreach (var constraintType in parameter.ConstraintTypes)
+            {
+                if (isFirstConstraint)
+                {
+                    isFirstConstraint = false;
+                }
+                else
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write(constraintType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+            }
+
+            if (parameter.HasNotNullConstraint)
+            {
+                if (isFirstConstraint)
+                {
+                    isFirstConstraint = false;
+                }
+                else
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write("notnull");
+            }
+
+            if (parameter.HasReferenceTypeConstraint)
+            {
+                if (isFirstConstraint)
+                {
+                    isFirstConstraint = false;
+                }
+                else
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write("class");
+            }
+
+            if (parameter.HasUnmanagedTypeConstraint)
+            {
+                if (isFirstConstraint)
+                {
+                    isFirstConstraint = false;
+                }
+                else
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write("unmanaged");
+            }
+
+            if (parameter.HasValueTypeConstraint)
+            {
+                if (isFirstConstraint)
+                {
+                    isFirstConstraint = false;
+                }
+                else
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write("struct");
+            }
+
+            if (parameter.HasConstructorConstraint)
+            {
+                if (!isFirstConstraint)
+                {
+                    writer.Write(',');
+                }
+
+                writer.Write("new()");
+            }
+        }
+
+        writer.Indent--;
+        writer.WriteLine(';');
     }
 
     private static string GetParameterPrefix(RefKind refKind)
