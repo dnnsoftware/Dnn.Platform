@@ -191,7 +191,7 @@ internal partial class Page
         }
 
         [DnnDeprecated(9, 4, 4, "Use overload taking IApplicationStatusInfo.")]
-        public static partial int?[] GetTheseThings(int? a, int b)
+        public static partial int?[] GetTheseThings(int? a = null, int b = -1)
         {
             return new[] { a, b, };
         }
@@ -200,9 +200,10 @@ internal partial class Page
     internal partial class Wrapper<T>
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IApplicationStatusInfo.")]
-        internal partial (decimal, Int32) GetThemBoth(decimal x)
+        internal partial (decimal, Int32) GetThemBoth(decimal x, bool addOne = true)
         {
-            return (x + 1, 1);
+            var theInt = addOne ? 1 : 2;
+            return (x + theInt, theInt);
         }
 
         [DnnDeprecated(9, 4, 4, "Use overload taking IServiceProvider.")]

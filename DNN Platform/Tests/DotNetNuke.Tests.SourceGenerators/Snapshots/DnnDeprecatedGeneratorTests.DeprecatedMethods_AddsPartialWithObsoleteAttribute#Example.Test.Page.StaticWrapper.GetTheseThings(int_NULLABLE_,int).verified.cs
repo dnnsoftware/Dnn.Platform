@@ -8,8 +8,8 @@ partial class Page
     {
         [global::System.Obsolete("Deprecated in DotNetNuke 9.4.4. Use overload taking IApplicationStatusInfo. Scheduled for removal in v11.0.0.")]
         public static partial int?[] GetTheseThings(
-            int? a,
-            int b);
+            int? a = null,
+            int b = -1);
     }
 }
 

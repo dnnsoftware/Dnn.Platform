@@ -168,17 +168,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             return;
         }
 
-        string returnType;
-        var accessibilityModifier = string.Empty;
-        if (methodSymbol.ReturnsVoid)
-        {
-            returnType = "void";
-        }
-        else
-        {
-            accessibilityModifier = $"{SyntaxFacts.GetText(methodSymbol.DeclaredAccessibility)} ";
-            returnType = methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        }
+        var returnType = methodSymbol.ReturnsVoid ? "void" : methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
         writer.Write($"{methodDeclaration.Modifiers} {returnType} {methodSymbol.Name}");
         if (!methodSymbol.TypeParameters.IsDefaultOrEmpty)
@@ -222,6 +212,25 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                 }
 
                 writer.Write($"{GetParameterPrefix(parameter.RefKind)}{parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameter.Name}");
+                if (parameter.HasExplicitDefaultValue)
+                {
+                    writer.Write(" = ");
+                    switch (parameter.ExplicitDefaultValue)
+                    {
+                        case null:
+                            writer.Write("null");
+                            break;
+                        case true:
+                            writer.Write("true");
+                            break;
+                        case false:
+                            writer.Write("false");
+                            break;
+                        default:
+                            writer.Write(parameter.ExplicitDefaultValue);
+                            break;
+                    }
+                }
             }
 
             writer.Indent--;
