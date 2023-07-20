@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.SourceGenerators;
@@ -232,6 +232,25 @@ partial class Page
 {
     [DnnDeprecated(9, 9, 1, "Use overload taking IEnumerable.")]
     partial void WithParams(params int[] numbers)
+    {
+    }
+}
+
+""");
+    }
+
+    [Test]
+    public async Task DeprecatedExtensionMethod_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+partial class Page
+{
+    [DnnDeprecated(9, 9, 1, "Use overload taking IEnumerable.")]
+    partial void AnExtension(this int[] numbers)
     {
     }
 }

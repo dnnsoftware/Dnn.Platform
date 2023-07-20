@@ -326,6 +326,11 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                 writer.WriteLine(',');
             }
 
+            if (methodSymbol.IsExtensionMethod)
+            {
+                writer.Write("this ");
+            }
+
             writer.Write(GetParameterPrefix(parameter.RefKind));
             if (parameter.IsParams)
             {
