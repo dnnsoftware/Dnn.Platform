@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -52,7 +51,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         {
             Requires.NotNull(apiToken);
             apiToken.CreatedByUserId = userId;
-            apiToken.CreatedOnDate = DateTime.UtcNow;
+            apiToken.CreatedOnDate = DateUtils.GetDatabaseUtcTime();
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<ApiTokenBase>();
@@ -73,7 +72,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         {
             Requires.NotNull(apiToken);
             apiToken.IsRevoked = true;
-            apiToken.RevokedOnDate = DateTime.UtcNow;
+            apiToken.RevokedOnDate = DateUtils.GetDatabaseUtcTime();
             apiToken.RevokedByUserId = userId;
             using (var context = DataContext.Instance())
             {
@@ -99,7 +98,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         {
             using (var context = DataContext.Instance())
             {
-                var now = DateTime.UtcNow;
+                var now = DateUtils.GetDatabaseUtcTime();
                 var sql = @"UPDATE {databaseOwner}{objectQualifier}ApiTokens
 SET IsDeleted=1
 WHERE (IsRevoked=1 OR ExpiresOn<@0)

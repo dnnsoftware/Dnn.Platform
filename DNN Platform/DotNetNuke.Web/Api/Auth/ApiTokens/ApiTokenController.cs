@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using System.Web;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Reflections;
@@ -203,7 +204,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             var apiToken = this.apiTokenRepository.GetApiToken(this.PortalSettings.PortalId, hashedToken);
             if (apiToken != null)
             {
-                if (apiToken.ExpiresOn < DateTime.UtcNow || apiToken.IsRevoked)
+                if (apiToken.ExpiresOn < DateUtils.GetDatabaseUtcTime() || apiToken.IsRevoked)
                 {
                     if (Logger.IsTraceEnabled)
                     {
