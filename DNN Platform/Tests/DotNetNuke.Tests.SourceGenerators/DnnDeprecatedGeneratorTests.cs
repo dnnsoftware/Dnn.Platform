@@ -178,6 +178,7 @@ public partial class Page
 namespace Example.Test;
 
 using System;
+using System.Collections.Generic;
 using DotNetNuke.Internal.SourceGenerators;
 
 internal partial class Page
@@ -185,7 +186,7 @@ internal partial class Page
     internal partial static class StaticWrapper
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IServiceProvider.")]
-        public static partial void DoAThing<T>(ref T i)
+        public static partial void DoAThing<T>(ref IEnumerable<T> i)
         {
             return;
         }

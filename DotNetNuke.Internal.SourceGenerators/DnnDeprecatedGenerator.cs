@@ -293,7 +293,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             }
 
             hintNameBuilder.Append(GetParameterPrefix(parameter.RefKind));
-            hintNameBuilder.Append(parameter.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat).Replace("?", "_NULLABLE_"));
+            hintNameBuilder.Append(parameter.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat).Replace("?", "_NULLABLE_").Replace("<", "__").Replace(">", "__"));
         }
 
         hintNameBuilder.Append(')');
