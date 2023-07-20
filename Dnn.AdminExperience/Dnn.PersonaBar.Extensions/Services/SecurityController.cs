@@ -45,6 +45,7 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Auth.ApiTokens;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
+
     using Constants = Dnn.PersonaBar.Library.Constants;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
