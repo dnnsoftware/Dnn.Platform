@@ -1099,8 +1099,6 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 }
 
-                DataCache.ClearCache();
-
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
