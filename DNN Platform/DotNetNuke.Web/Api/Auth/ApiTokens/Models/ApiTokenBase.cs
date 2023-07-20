@@ -86,6 +86,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
         public DateTime CreatedOnDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the time the token was last used.
+        /// </summary>
+        public DateTime LastUsedOnDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of token keys associated with an API token.
         /// </summary>
         [IgnoreColumn]

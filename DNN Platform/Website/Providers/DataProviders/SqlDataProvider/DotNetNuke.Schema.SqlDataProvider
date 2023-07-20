@@ -23,6 +23,7 @@ CREATE TABLE {databaseOwner}{objectQualifier}ApiTokens (
 	[RevokedOnDate] [datetime] NULL,
 	[CreatedByUserId] [int] NOT NULL,
 	[CreatedOnDate] [datetime] NOT NULL,
+	[LastUsedOnDate] [datetime] NULL,
  CONSTRAINT [PK_{objectQualifier}ApiTokens] PRIMARY KEY CLUSTERED 
 (
 	[ApiTokenId] ASC

@@ -230,11 +230,13 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                             return (null, null);
                         }
 
+                        this.apiTokenRepository.SetApiTokenLastUsed(apiToken);
                         return (apiToken, userInfo);
 
                     case ApiTokenScope.Portal:
                         if (apiToken.PortalId == this.PortalSettings.PortalId)
                         {
+                            this.apiTokenRepository.SetApiTokenLastUsed(apiToken);
                             return (apiToken, null);
                         }
 
@@ -242,6 +244,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                     case ApiTokenScope.Host:
                         if (apiToken.PortalId == -1)
                         {
+                            this.apiTokenRepository.SetApiTokenLastUsed(apiToken);
                             return (apiToken, null);
                         }
 

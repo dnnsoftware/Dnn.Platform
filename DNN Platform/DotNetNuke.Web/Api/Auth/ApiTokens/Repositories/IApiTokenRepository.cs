@@ -78,5 +78,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         /// <param name="pageSize">The maximum number of records to return in a single page.</param>
         /// <returns>A paged list of `ApiToken` objects.</returns>
         public IPagedList<ApiToken> GetApiTokens(ApiTokenScope scope, bool includeNarrowerScopes, int portalId, int userId, ApiTokenFilter filter, string apiKey, int pageIndex, int pageSize);
+
+        /// <summary>
+        /// Sets the LastUsedOnDate field to the current UTC time on the database.
+        /// </summary>
+        /// <param name="apiToken">The token for which to set the last used date.</param>
+        void SetApiTokenLastUsed(ApiTokenBase apiToken);
     }
 }

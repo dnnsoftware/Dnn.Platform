@@ -168,5 +168,17 @@ AND (CreatedByUserId=@2 OR @2=-1)
                 return rep.Find(pageIndex, pageSize, sql, portalId, userId, (int)scope, apiKey);
             }
         }
+
+        /// <inheritdoc/>
+        public void SetApiTokenLastUsed(ApiTokenBase apiToken)
+        {
+            using (var context = DataContext.Instance())
+            {
+                var sql = @"UPDATE {databaseOwner}{objectQualifier}ApiTokens
+SET LastUsedOnDate=GETDATE()
+WHERE ApiTokenId=@0";
+                context.Execute(System.Data.CommandType.Text, sql, apiToken.ApiTokenId);
+            }
+        }
     }
 }
