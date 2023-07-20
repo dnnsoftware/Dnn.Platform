@@ -88,7 +88,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
         /// <summary>
         /// Gets or sets the time the token was last used.
         /// </summary>
-        public DateTime LastUsedOnDate { get; set; }
+        public DateTime? LastUsedOnDate { get; set; }
 
         /// <summary>
         /// Gets or sets the list of token keys associated with an API token.
