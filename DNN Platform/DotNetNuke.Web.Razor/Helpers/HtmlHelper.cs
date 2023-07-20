@@ -16,7 +16,6 @@ namespace DotNetNuke.Web.Razor.Helpers
         private readonly string resourceFile;
         private ModuleInstanceContext context;
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public HtmlHelper(ModuleInstanceContext context, string resourcefile)
         {
             this.context = context;

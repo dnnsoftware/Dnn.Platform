@@ -18,7 +18,6 @@ namespace DotNetNuke.Web.Razor.Helpers
 
         /// <summary>Initializes a new instance of the <see cref="UrlHelper"/> class.</summary>
         /// <param name="context">The module context.</param>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UrlHelper(ModuleInstanceContext context)
         {
             this.context = context;

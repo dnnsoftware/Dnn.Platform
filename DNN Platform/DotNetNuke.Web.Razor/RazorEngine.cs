@@ -20,7 +20,6 @@ namespace DotNetNuke.Web.Razor
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorEngine
     {
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public RazorEngine(string razorScriptFile, ModuleInstanceContext moduleContext, string localResourceFile)
         {
             this.RazorScriptFile = razorScriptFile;
@@ -45,22 +44,17 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public DotNetNukeWebPage Webpage { get; set; }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected HttpContextBase HttpContext
         {
             get { return new HttpContextWrapper(System.Web.HttpContext.Current); }
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile { get; set; }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected ModuleInstanceContext ModuleContext { get; set; }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string LocalResourceFile { get; set; }
 
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]

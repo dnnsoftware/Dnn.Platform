@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.RazorHost
 {
-    using System;
-
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Internal.SourceGenerators;
@@ -19,7 +17,6 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleActionCollection ModuleActions
         {
             get
@@ -52,7 +49,6 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override string RazorScriptFile
         {
             get

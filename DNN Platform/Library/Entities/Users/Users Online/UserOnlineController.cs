@@ -25,8 +25,7 @@ namespace DotNetNuke.Entities.Users
         private static readonly string CacheKey = "OnlineUserList";
 
         /// <summary>Clears the cached Users Online Information.</summary>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial void ClearUserList()
+        public void ClearUserList()
         {
             string key = "OnlineUserList";
             DataCache.RemoveCache(key);
@@ -34,16 +33,14 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>Gets the Online time window.</summary>
         /// <returns>The window to use in minutes when determining if the user is online.</returns>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial int GetOnlineTimeWindow()
+        public int GetOnlineTimeWindow()
         {
             return Host.Host.UsersOnlineTimeWindow;
         }
 
         /// <summary>Gets the cached Users Online Information.</summary>
         /// <returns>A <see cref="Hashtable"/> with <see cref="string"/> keys for the user ID (a GUID for anonymous users) and <see cref="BaseUserInfo"/> instances for the values.</returns>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial Hashtable GetUserList()
+        public Hashtable GetUserList()
         {
             var userList = (Hashtable)DataCache.GetCache(CacheKey);
             if (userList == null)
@@ -64,16 +61,14 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>Gets whether the Users Online functionality is enabled.</summary>
         /// <returns><see langword="true"/> if the Users Online functionality is enabled, otherwise <see langword="false"/>.</returns>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial bool IsEnabled()
+        public bool IsEnabled()
         {
             return Host.Host.EnableUsersOnline;
         }
 
         /// <summary>Determines whether a User is online.</summary>
         /// <returns><see langword="true"/> if the user is online, otherwise <see langword="false"/>.</returns>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial bool IsUserOnline(UserInfo user)
+        public bool IsUserOnline(UserInfo user)
         {
             bool isOnline = false;
             if (this.IsEnabled())
@@ -85,15 +80,13 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Sets the cached Users Online Information.</summary>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial void SetUserList(Hashtable userList)
+        public void SetUserList(Hashtable userList)
         {
             DataCache.SetCache(CacheKey, userList);
         }
 
         /// <summary>Tracks an online User.</summary>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial void TrackUsers()
+        public void TrackUsers()
         {
             HttpContext context = HttpContext.Current;
 
@@ -118,8 +111,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Update the Users Online information.</summary>
-        [DnnDeprecated(TODO, 0, 0, "Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public partial void UpdateUsersOnline()
+        public void UpdateUsersOnline()
         {
             // Get a Current User List
             Hashtable userList = this.GetUserList();
@@ -146,7 +138,6 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>Tracks an Anonymous User.</summary>
         /// <param name="context">An HttpContext Object.</param>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAnonymousUser(HttpContext context)
         {
             string cookieName = "DotNetNukeAnonymous";
@@ -232,7 +223,6 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>Tracks an Authenticated User.</summary>
         /// <param name="context">An HttpContext Object.</param>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAuthenticatedUser(HttpContext context)
         {
             // Retrieve Portal Settings

@@ -17,7 +17,6 @@ namespace DotNetNuke.Entities.Users
         private string userID;
 
         /// <summary>Gets or sets the User Id for this online user.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public string UserID
         {
             get

@@ -17,10 +17,7 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void LoadSettings()
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             string basePath = this.Server.MapPath(this.razorScriptFolder);
             var scriptFileSetting = this.Settings["ScriptFile"] as string;
@@ -41,10 +38,7 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void UpdateSettings()
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
         }

@@ -23,7 +23,6 @@ namespace DotNetNuke.Web.Razor
             this.Model = model ?? Activator.CreateInstance<TModel>();
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
             get { return this.PageContext?.Model as TModel ?? this.model; }

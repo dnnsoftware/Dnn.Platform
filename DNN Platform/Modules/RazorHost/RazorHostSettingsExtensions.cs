@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Modules.RazorHost
 {
-    using System;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules;
@@ -20,7 +19,6 @@ namespace DotNetNuke.Modules.RazorHost
         /// <param name="configuration">The module configuration, <see cref="ModuleInfo"/>.</param>
         /// <param name="localResourceFile">The local resource file for localization strings.</param>
         /// <returns>Razor Host Settings, <see cref="Settings"/>.</returns>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public static Settings LoadRazorSettingsControl(this UserControl parent, ModuleInfo configuration, string localResourceFile)
         {
             var control = (Settings)parent.LoadControl("~/DesktopModules/RazorModules/RazorHost/Settings.ascx");

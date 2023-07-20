@@ -28,10 +28,7 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
@@ -41,10 +38,7 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 
@@ -54,7 +48,6 @@ namespace DotNetNuke.Modules.RazorHost
         /// <summary>Cancel button click event handler.</summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event arguments.</param>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected void CmdCancel_Click(object sender, EventArgs e)
         {
             try
@@ -70,7 +63,6 @@ namespace DotNetNuke.Modules.RazorHost
         /// <summary>Add button event handler.</summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event arguments.</param>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected void CmdAdd_Click(object sender, EventArgs e)
         {
             try

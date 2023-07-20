@@ -24,14 +24,12 @@ namespace DotNetNuke.Entities.Users
         /// Constructs a PurgeUsesOnline SchedulerClient.
         /// </summary>
         /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem.</param>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public PurgeUsersOnline(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         /// <summary>DoWork does th4 Scheduler work.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DoWork()
         {
             try
@@ -56,7 +54,6 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>UpdateUsersOnline updates the Users Online information.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void UpdateUsersOnline()
         {
             var objUserOnlineController = new UserOnlineController();

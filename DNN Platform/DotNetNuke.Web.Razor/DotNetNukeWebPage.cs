@@ -14,20 +14,16 @@ namespace DotNetNuke.Web.Razor
     {
         private dynamic model;
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public dynamic Model
         {
             get { return this.model ?? (this.model = this.PageContext.Model); }
             set { this.model = value; }
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal DnnHelper Dnn { get; internal set; }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal HtmlHelper Html { get; internal set; }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal UrlHelper Url { get; internal set; }
 
         /// <inheritdoc/>
