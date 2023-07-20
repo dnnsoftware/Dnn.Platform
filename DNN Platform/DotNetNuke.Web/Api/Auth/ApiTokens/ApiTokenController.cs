@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -27,7 +27,6 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         private const string AuthScheme = "Bearer";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApiTokenController));
-        private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
         private readonly IApiTokenRepository apiTokenRepository;
@@ -259,7 +258,10 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 
         private string GetHashedStr(string data)
         {
-            return this.EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
+            using (var hasher = SHA384.Create())
+            {
+                return this.EncodeBase64(hasher.ComputeHash(TextEncoder.GetBytes(data)));
+            }
         }
     }
 }
