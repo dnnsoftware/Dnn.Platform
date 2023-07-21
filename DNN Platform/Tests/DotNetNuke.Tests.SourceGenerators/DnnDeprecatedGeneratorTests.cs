@@ -265,6 +265,35 @@ partial class Page
     }
 
     [Test]
+    public async Task DeprecatedMethodWithOptionalParameters_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify("""
+namespace Example.Test;
+
+using System.Collections;
+using System.IO;
+using System.Runtime.InteropServices;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+partial class Page
+{
+    [DnnDeprecated(7, 0, 0, "No replacement", RemovalVersion = 11)]
+    public static partial ArrayList GetFileList(
+        DirectoryInfo currentDirectory,
+        [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
+        string strExtensions,
+        [Optional, DefaultParameterValue(true)] // ERROR: Optional parameters aren't supported in C#
+        bool noneSpecified)
+    {
+        return null;
+    }
+}
+
+""");
+    }
+
+    [Test]
     public async Task DeprecatedExtensionMethod_AddsPartialWithObsoleteAttribute()
     {
         await Verify("""

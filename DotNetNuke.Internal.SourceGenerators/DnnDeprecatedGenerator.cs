@@ -352,6 +352,11 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                     case false:
                         writer.Write("false");
                         break;
+                    case string stringValue:
+                        writer.Write("@\"");
+                        writer.Write(stringValue.Replace("\"", "\"\""));
+                        writer.Write('"');
+                        break;
                     default:
                         writer.Write(parameter.ExplicitDefaultValue);
                         break;
