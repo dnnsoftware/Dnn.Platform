@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         /// <param name="portalId">The identifier of the portal where the token was generated.</param>
         /// <param name="tokenHash">The hash code of the API token.</param>
         /// <returns>An instance of the `ApiToken` class if it exists.</returns>
-        ApiTokenBase GetApiToken(int portalId, string tokenHash);
+        ApiToken GetApiToken(int portalId, string tokenHash);
 
         /// <summary>
         /// Retrieves an existing API token instance using its hash and portal identifier.

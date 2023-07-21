@@ -27,19 +27,19 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// </summary>
         /// <param name="request">The `HttpRequestMessage` instance that contains the token.</param>
         /// <returns>A tuple object containing an `ApiToken` object and a `UserInfo` object.</returns>
-        (ApiTokenBase, UserInfo) ValidateToken(HttpRequestMessage request);
+        (ApiToken, UserInfo) ValidateToken(HttpRequestMessage request);
 
         /// <summary>
         /// Sets the API token of the current thread.
         /// </summary>
         /// <param name="token">The `ApiToken` instance to set.</param>
-        void SetApiTokenForRequest(ApiTokenBase token);
+        void SetApiTokenForRequest(ApiToken token);
 
         /// <summary>
         /// Gets the API token of the current thread.
         /// </summary>
         /// <returns>An `ApiToken` object.</returns>
-        ApiTokenBase GetCurrentThreadApiToken();
+        ApiToken GetCurrentThreadApiToken();
 
         /// <summary>
         /// Retrieves a sorted dictionary of token keys and their values based on the provided API token scope and locale.

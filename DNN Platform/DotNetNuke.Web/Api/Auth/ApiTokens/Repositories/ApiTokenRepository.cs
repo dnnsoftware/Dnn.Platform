@@ -17,11 +17,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     internal class ApiTokenRepository : IApiTokenRepository
     {
         /// <inheritdoc />
-        public ApiTokenBase GetApiToken(int portalId, string tokenHash)
+        public ApiToken GetApiToken(int portalId, string tokenHash)
         {
             using (var context = DataContext.Instance())
             {
-                var rep = context.GetRepository<ApiTokenBase>();
+                var rep = context.GetRepository<ApiToken>();
                 return rep.Find("WHERE (PortalId=@0 OR PortalId=-1) AND TokenHash=@1 AND IsDeleted=0", portalId, tokenHash).FirstOrDefault();
             }
         }

@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         private Abstractions.Portals.IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc />
-        public (ApiTokenBase, UserInfo) ValidateToken(HttpRequestMessage request)
+        public (ApiToken, UserInfo) ValidateToken(HttpRequestMessage request)
         {
             if (!ApiTokenAuthMessageHandler.IsEnabled)
             {
@@ -64,15 +64,15 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
-        public void SetApiTokenForRequest(ApiTokenBase token)
+        public void SetApiTokenForRequest(ApiToken token)
         {
             HttpContext.Current.Items["ApiToken"] = token;
         }
 
         /// <inheritdoc />
-        public ApiTokenBase GetCurrentThreadApiToken()
+        public ApiToken GetCurrentThreadApiToken()
         {
-            if (HttpContext.Current != null && HttpContext.Current.Items["ApiToken"] is ApiTokenBase token)
+            if (HttpContext.Current != null && HttpContext.Current.Items["ApiToken"] is ApiToken token)
             {
                 return token;
             }
@@ -206,7 +206,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             return authorization;
         }
 
-        private (ApiTokenBase, UserInfo) ValidateAuthorizationValue(string authorization)
+        private (ApiToken, UserInfo) ValidateAuthorizationValue(string authorization)
         {
             var tokenAndHostGuid = authorization + Entities.Host.Host.GUID;
             var hashedToken = this.GetHashedStr(tokenAndHostGuid);
@@ -224,7 +224,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                     return (null, null);
                 }
 
-                apiToken.TokenKeys = this.apiTokenRepository.GetApiTokenKeys(apiToken.ApiTokenId);
+                apiToken.TokenKeys = apiToken.Keys.Split(',').ToList();
 
                 switch (apiToken.Scope)
                 {
