@@ -442,3 +442,37 @@ LEFT JOIN {databaseOwner}[{objectQualifier}Users] ur ON ur.UserID=a.RevokedByUse
 GO
 
 
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'APITOKEN_AUTHENTICATION_FAILED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'APITOKEN_AUTHENTICATION_FAILED', N'API Token Authentication Failed', N'', N'DotNetNuke.Logging.EventLogType', N'OperationFailure')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'APITOKEN_AUTHENTICATION_FAILED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'APITOKEN_AUTHENTICATION_FAILED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'APITOKEN_CREATED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'APITOKEN_CREATED', N'API Token Created', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'APITOKEN_CREATED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'APITOKEN_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'APITOKEN_DELETED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'APITOKEN_DELETED', N'API Token Deleted', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'APITOKEN_DELETED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'APITOKEN_DELETED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'APITOKEN_REVOKED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'APITOKEN_REVOKED', N'API Token Revoked', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'APITOKEN_REVOKED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'APITOKEN_REVOKED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')

@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -31,12 +32,17 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
         private readonly IApiTokenRepository apiTokenRepository;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="ApiTokenController"/> class.</summary>
         /// <param name="apiTokenRepository">The API token repository.</param>
-        public ApiTokenController(IApiTokenRepository apiTokenRepository)
+        /// <param name="eventLogger">The event logger.</param>
+        public ApiTokenController(
+            IApiTokenRepository apiTokenRepository,
+            IEventLogger eventLogger)
         {
             this.apiTokenRepository = apiTokenRepository;
+            this.eventLogger = eventLogger;
         }
 
         /// <inheritdoc />
@@ -115,7 +121,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         {
             if (scope == ApiTokenScope.Host)
             {
-                portalId = DotNetNuke.Common.Utilities.Null.NullInteger;
+                portalId = Null.NullInteger;
             }
 
             string newToken;
@@ -137,7 +143,8 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 ExpiresOn = expiresOn,
                 TokenHash = hashedToken,
             };
-            token = this.apiTokenRepository.AddApiToken(token, apiKeys, userId);
+            var ret = this.apiTokenRepository.AddApiToken(token, apiKeys, userId);
+            this.eventLogger.AddLog(ret.ToLogProps(), this.PortalSettings, userId, EventLogType.APITOKEN_CREATED.ToString(), false);
             return newToken;
         }
 
@@ -148,15 +155,17 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         }
 
         /// <inheritdoc />
-        public void RevokeOrDeleteApiToken(ApiTokenBase token, bool delete, int userId)
+        public void RevokeOrDeleteApiToken(ApiToken token, bool delete, int userId)
         {
             if (delete)
             {
-                this.apiTokenRepository.DeleteApiToken(token);
+                this.apiTokenRepository.DeleteApiToken(token.ToBase());
+                this.eventLogger.AddLog(token.ToLogProps(), this.PortalSettings, userId, EventLogType.APITOKEN_DELETED.ToString(), false);
             }
             else
             {
-                this.apiTokenRepository.RevokeApiToken(token, userId);
+                this.apiTokenRepository.RevokeApiToken(token.ToBase(), userId);
+                this.eventLogger.AddLog(token.ToLogProps(), this.PortalSettings, userId, EventLogType.APITOKEN_REVOKED.ToString(), false);
             }
         }
 
@@ -211,6 +220,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                         Logger.Trace("Token expired");
                     }
 
+                    this.eventLogger.AddLog("Token Auth", authorization, EventLogType.APITOKEN_AUTHENTICATION_FAILED);
                     return (null, null);
                 }
 
@@ -252,6 +262,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 }
             }
 
+            this.eventLogger.AddLog("Token Auth", authorization, EventLogType.APITOKEN_AUTHENTICATION_FAILED);
             return (null, null);
         }
 

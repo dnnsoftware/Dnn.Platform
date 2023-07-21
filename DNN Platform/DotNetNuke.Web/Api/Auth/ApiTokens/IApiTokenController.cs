@@ -88,7 +88,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <param name="token">The `ApiTokenBase` object to revoke or delete.</param>
         /// <param name="delete">A boolean value indicating whether to delete or revoke the token.</param>
         /// <param name="userId">The id of the user that revokes the token if being revoked.</param>
-        void RevokeOrDeleteApiToken(ApiTokenBase token, bool delete, int userId);
+        void RevokeOrDeleteApiToken(ApiToken token, bool delete, int userId);
 
         /// <summary>
         /// Deletes expired and revoked API tokens.

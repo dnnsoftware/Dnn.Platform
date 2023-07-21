@@ -65,6 +65,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
                 IsDeleted = this.IsDeleted,
                 RevokedByUserId = this.RevokedByUserId,
                 RevokedOnDate = this.RevokedOnDate,
+                LastUsedOnDate = this.LastUsedOnDate,
                 CreatedByUserId = this.CreatedByUserId,
                 CreatedOnDate = this.CreatedOnDate,
             };

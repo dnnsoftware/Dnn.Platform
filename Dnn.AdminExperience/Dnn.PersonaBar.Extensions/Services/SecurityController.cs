@@ -1335,7 +1335,7 @@ namespace Dnn.PersonaBar.Security.Services
 
             if (canManage)
             {
-                this.apiTokenController.RevokeOrDeleteApiToken(token.ToBase(), data.Delete, user.UserID);
+                this.apiTokenController.RevokeOrDeleteApiToken(token, data.Delete, user.UserID);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, true);

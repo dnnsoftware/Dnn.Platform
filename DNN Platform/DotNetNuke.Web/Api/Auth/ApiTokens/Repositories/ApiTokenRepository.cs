@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         }
 
         /// <inheritdoc />
-        public ApiTokenBase AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId)
+        public ApiToken AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId)
         {
             Requires.NotNull(apiToken);
             apiToken.CreatedByUserId = userId;
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
                 }
             }
 
-            return apiToken;
+            return this.GetApiToken(apiToken.ApiTokenId);
         }
 
         /// <inheritdoc />

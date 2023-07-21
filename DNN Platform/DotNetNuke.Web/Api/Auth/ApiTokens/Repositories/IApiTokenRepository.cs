@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         /// <param name="apiKeys">Comma separated list of API keys for this token.</param>
         /// <param name="userId">User ID of the user creating the token.</param>
         /// <returns>The same instance.</returns>
-        ApiTokenBase AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId);
+        ApiToken AddApiToken(ApiTokenBase apiToken, string apiKeys, int userId);
 
         /// <summary>
         /// Revokes an API token.

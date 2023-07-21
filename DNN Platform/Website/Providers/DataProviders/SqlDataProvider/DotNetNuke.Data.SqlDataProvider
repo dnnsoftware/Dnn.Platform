@@ -210,7 +210,12 @@ DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
 DECLARE @UpdateOn datetime = NULL
 DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
-PRINT(N'Add 146 rows to {databaseOwner}[{objectQualifier}EventLogTypes]')
+PRINT(N'Add 150 rows to {databaseOwner}[{objectQualifier}EventLogTypes]')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APITOKEN_AUTHENTICATION_FAILED', N'API Token Authentication Failed', N'', N'DotNetNuke.Logging.EventLogType', N'OperationFailure')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APITOKEN_CREATED', N'API Token Created', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APITOKEN_DELETED', N'API Token Deleted', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APITOKEN_REVOKED', N'API Token Revoked', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APPLICATION_SHUTTING_DOWN', N'Application Shutting Down', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'ADMIN_ALERT', N'Admin Alert', N'', N'DotNetNuke.Logging.EventLogType', N'AdminAlert')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APPLICATION_END', N'Application Ended', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'APPLICATION_SHUTTING_DOWN', N'Application Shutting Down', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
@@ -6205,7 +6210,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID], [Co
 INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID], [Content], [ContentTypeID], [TabID], [ModuleID], [ContentKey], [Indexed], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [StateID]) VALUES (69, N'Account Registration', 3, -1, -1, N'', 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentItems] OFF
 
-PRINT(N'Add 119 rows to {databaseOwner}[{objectQualifier}EventLogConfig]')
+PRINT(N'Add 123 rows to {databaseOwner}[{objectQualifier}EventLogConfig]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}EventLogConfig] ON
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (1, N'APPLICATION_START', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (2, N'APPLICATION_END', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
@@ -6334,6 +6339,10 @@ INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey]
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (125, N'PORTAL_REMOVEDFROMPORTALGROUP', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (126, N'PORTAL_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (127, N'PORTAL_DELETED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (128, N'APITOKEN_AUTHENTICATION_FAILED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (129, N'APITOKEN_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (130, N'APITOKEN_DELETED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (131, N'APITOKEN_REVOKED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}EventLogConfig] OFF
 
