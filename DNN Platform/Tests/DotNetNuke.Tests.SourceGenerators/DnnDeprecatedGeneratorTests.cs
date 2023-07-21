@@ -304,7 +304,7 @@ using DotNetNuke.Internal.SourceGenerators;
 partial class Page
 {
     [DnnDeprecated(9, 9, 1, "Use overload taking IEnumerable.")]
-    partial void AnExtension(this int[] numbers)
+    partial void AnExtension(this int[] numbers, string another)
     {
     }
 }

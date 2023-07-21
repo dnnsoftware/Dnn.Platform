@@ -320,15 +320,15 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             if (isFirst)
             {
                 isFirst = false;
+
+                if (methodSymbol.IsExtensionMethod)
+                {
+                    writer.Write("this ");
+                }
             }
             else
             {
                 writer.WriteLine(',');
-            }
-
-            if (methodSymbol.IsExtensionMethod)
-            {
-                writer.Write("this ");
             }
 
             writer.Write(GetParameterPrefix(parameter.RefKind));
