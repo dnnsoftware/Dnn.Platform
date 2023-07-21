@@ -6,7 +6,7 @@ partial class Page
 {
     partial class Wrapper<T>
     {
-        [global::System.Obsolete("Deprecated in DotNetNuke 8.4.4. Use overload taking IApplicationStatusInfo. Scheduled for removal in v10.0.0.")]
+        [global::System.Obsolete(@"Deprecated in DotNetNuke 8.4.4. Use overload taking IApplicationStatusInfo. Scheduled for removal in v10.0.0.")]
         internal partial (decimal, int) GetThemBoth(
             decimal x,
             bool addOne = true);

@@ -6,7 +6,7 @@ partial class Page
 {
     partial class StaticWrapper
     {
-        [global::System.Obsolete("Deprecated in DotNetNuke 9.4.4. Use overload taking IApplicationStatusInfo. Scheduled for removal in v11.0.0.")]
+        [global::System.Obsolete(@"Deprecated in DotNetNuke 9.4.4. Use overload taking IApplicationStatusInfo. Scheduled for removal in v11.0.0.")]
         public static partial int?[] GetTheseThings(
             int? a = null,
             int b = -1);

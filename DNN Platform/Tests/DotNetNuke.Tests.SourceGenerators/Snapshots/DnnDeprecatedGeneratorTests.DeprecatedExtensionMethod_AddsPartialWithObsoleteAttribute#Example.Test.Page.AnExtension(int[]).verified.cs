@@ -4,7 +4,7 @@ namespace Example.Test;
 
 partial class Page
 {
-    [global::System.Obsolete("Deprecated in DotNetNuke 9.9.1. Use overload taking IEnumerable. Scheduled for removal in v11.0.0.")]
+    [global::System.Obsolete(@"Deprecated in DotNetNuke 9.9.1. Use overload taking IEnumerable. Scheduled for removal in v11.0.0.")]
     partial void AnExtension(
         this int[] numbers);
 }

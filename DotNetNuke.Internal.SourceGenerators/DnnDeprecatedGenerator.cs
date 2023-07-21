@@ -93,7 +93,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             }
 
             writer.WriteLine($"""
-[global::System.Obsolete("Deprecated in DotNetNuke {deprecation.MajorVersion}.{deprecation.MinorVersion}.{deprecation.PatchVersion}. {deprecation.Replacement.TrimEnd('.')}. Scheduled for removal in v{deprecation.RemovalVersion}.0.0.")]
+[global::System.Obsolete(@"Deprecated in DotNetNuke {deprecation.MajorVersion}.{deprecation.MinorVersion}.{deprecation.PatchVersion}. {deprecation.Replacement.TrimEnd('.').Replace("\"", "\"\"")}. Scheduled for removal in v{deprecation.RemovalVersion}.0.0.")]
 """);
             switch (memberDeclaration)
             {

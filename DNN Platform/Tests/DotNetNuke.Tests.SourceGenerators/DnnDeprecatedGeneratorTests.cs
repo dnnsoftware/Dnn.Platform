@@ -172,6 +172,31 @@ public partial class Page
     }
 
     [Test]
+    public async Task DeprecatedWithSpecialCharacters_AddsPartialWithObsoleteAttribute()
+    {
+        await Verify(""""
+namespace Example.Test;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+[DnnDeprecated(9, 1, 2, @"Use PageMaker.MakePage(""PageType0"")")]
+public partial class Page
+{
+    [DnnDeprecated(9, 2, 2, "Use PageMaker.MakePage(\"\n\tPageType1\t\n\")")]
+    public static partial void MakePage()
+    {
+    }
+
+    [DnnDeprecated(9, 2, 2, """ Use PageMaker.MakePage("PageType2") """)]
+    public static partial void MakePage2()
+    {
+    }
+}
+
+"""");
+    }
+
+    [Test]
     public async Task DeprecatedMethods_AddsPartialWithObsoleteAttribute()
     {
         await Verify("""
