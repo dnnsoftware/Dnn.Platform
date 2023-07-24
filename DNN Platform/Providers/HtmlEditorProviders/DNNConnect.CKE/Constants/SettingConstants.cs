@@ -69,6 +69,9 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>The inject JS setting name.</summary>
         public const string INJECTJS = "injectjs";
 
+        /// <summary>The browser allow follow folder permissions setting name.</summary>
+        public const string BROWSERALLOWFOLLOWFOLDERPERMS = "BrowsAllowFolderPerms";
+
         /// <summary>The roles setting name.</summary>
         public const string ROLES = "roles";
 

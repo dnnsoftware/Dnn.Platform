@@ -128,6 +128,10 @@
 	                        <asp:ListItem Text="Easy Image Upload" Value="easyimage"></asp:ListItem>
 	                      </asp:dropdownlist>
 				    </div>
+                    <div class="dnnFormItem">
+                        <asp:label id="lblBrowAllowFollowPerms" runat="server" CssClass="dnnLabel">Allow folder users</asp:label>   
+                        <asp:CheckBox ID="BrowAllowFollowPerms" runat="server" Checked="true" resourcekey="BrowAllowFollowPerms" Text="Allow users with folder permissions"></asp:CheckBox>                  
+                    </div>
 				    <div class="dnnFormItem">
                         <asp:label id="lblBrowAllow" runat="server" CssClass="dnnLabel">File Browser Security</asp:label>
                         <asp:CheckBoxList ID="chblBrowsGr" runat="server"></asp:CheckBoxList>

@@ -92,6 +92,9 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <summary>Gets or sets a value indicating whether Editor File Browser.</summary>
         public string sBrowser { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether Browser Allow follows Folder Permissions.</summary>
+        public bool BrowserAllowFollowFolderPerms { get; set; }
+
         /// <summary>Gets or sets a value indicating whether Allowed Browser Roles.</summary>
         public string sBrowserRoles { get; set; }
 
