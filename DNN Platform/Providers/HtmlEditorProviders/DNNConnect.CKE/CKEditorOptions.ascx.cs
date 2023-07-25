@@ -880,6 +880,8 @@ namespace DNNConnect.CKEditorProvider
                 this.ConfigUrl.Url = this.ReFormatURL(importedSettings.Config.CustomConfig);
             }
 
+            this.BrowAllowFollowPerms.Checked = importedSettings.BrowserAllowFollowFolderPerms;
+
             if (!string.IsNullOrEmpty(importedSettings.BrowserRoles))
             {
                 string sRoles = importedSettings.BrowserRoles;
@@ -2435,6 +2437,8 @@ namespace DNNConnect.CKEditorProvider
                 moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.HEIGHT}", this.txtWidth.Text);
             }
 
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}", this.BrowAllowFollowPerms.Checked.ToString());
+
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CSS}", this.CssUrl.Url);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
@@ -2691,7 +2695,7 @@ namespace DNNConnect.CKEditorProvider
                 EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
             }
 
-            EditorController.AddOrUpdateEditorHostSetting($"{key}injectjs", this.InjectSyntaxJs.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.INJECTJS}", this.InjectSyntaxJs.Checked.ToString());
 
             if (Utility.IsUnit(this.txtWidth.Text))
             {
@@ -2708,6 +2712,8 @@ namespace DNNConnect.CKEditorProvider
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
+
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}", this.BrowAllowFollowPerms.Checked.ToString());
 
             var sRoles = this.chblBrowsGr.Items.Cast<ListItem>()
                 .Where(item => item.Selected)
