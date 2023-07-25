@@ -8,10 +8,11 @@ namespace DotNetNuke.Entities.Users.Internal
     using System.ComponentModel;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead. Scheduled removal in v10.0.0.")]
-    public class TestableUserController : ServiceLocator<IUserController, TestableUserController>, IUserController
+    [DnnDeprecated(7, 3, 0, "Please use UserController instead", RemovalVersion = 10)]
+    public partial class TestableUserController : ServiceLocator<IUserController, TestableUserController>, IUserController
     {
         /// <inheritdoc/>
         public UserInfo GetUserByDisplayname(int portalId, string displayName)

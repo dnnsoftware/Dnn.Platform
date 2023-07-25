@@ -3,12 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
-    using System;
-
     using DotNetNuke.ComponentModel;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
-    public abstract class SearchDataStoreProvider
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
+    public abstract partial class SearchDataStoreProvider
     {
         // return the provider
         public static SearchDataStoreProvider Instance()

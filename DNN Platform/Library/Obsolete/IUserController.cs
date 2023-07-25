@@ -4,13 +4,14 @@
 
 namespace DotNetNuke.Entities.Users.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Users instead. Scheduled removal in v10.0.0.")]
-    public interface IUserController
+    [DnnDeprecated(7, 3, 0, "please use version in DotNetNuke.Entities.Users instead", RemovalVersion = 10)]
+    public partial interface IUserController
     {
         UserInfo GetUserByDisplayname(int portalId, string displayName);
 

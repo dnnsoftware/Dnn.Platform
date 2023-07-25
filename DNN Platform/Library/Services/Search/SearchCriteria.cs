@@ -4,14 +4,14 @@
 
 namespace DotNetNuke.Services.Search
 {
-    using System;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.DataStore
     /// Class:      SearchCriteria
     /// <summary>The SearchCriteria represents a search criterion.</summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
-    public class SearchCriteria
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
+    public partial class SearchCriteria
     {
         public string Criteria { get; set; }
 

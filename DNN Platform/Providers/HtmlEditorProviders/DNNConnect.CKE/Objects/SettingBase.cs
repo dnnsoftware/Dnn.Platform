@@ -3,15 +3,15 @@
 // See the LICENSE file in the project root for more information
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System;
     using System.Collections.Generic;
     using System.Web.UI.WebControls;
 
     using DNNConnect.CKEditorProvider.Constants;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>The Settings Base.</summary>
-    [Obsolete("This class is phasing out please use EditorProviderSettings Class instead")]
-    public class SettingBase : object
+    [DnnDeprecated(7, 0, 0, "Please use EditorProviderSettings Class instead", RemovalVersion = 11)]
+    public partial class SettingBase : object
     {
 #pragma warning disable SA1300 // Element should begin with upper-case letter
         /// <summary>Gets or sets How many Items to Show per Page on the File List.</summary>

@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.FileSystem.Internal;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Services.FileSystem
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Exposes methods to manage folders.</summary>
-    public class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
+    public partial class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
     {
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
@@ -771,8 +772,8 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="newFolderPath">The new folder path.</param>
         /// <returns>The moved folder.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.1.  It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder) . Scheduled removal in v10.0.0.")]
-        public virtual IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath)
+        [DnnDeprecated(7, 1, 0, "It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder)", RemovalVersion = 10)]
+        public virtual partial IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath)
         {
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("newFolderPath", newFolderPath);

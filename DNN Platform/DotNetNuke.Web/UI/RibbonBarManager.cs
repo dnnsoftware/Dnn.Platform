@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.UI
         CHILD = 3,
     }
 
-    public class RibbonBarManager
+    public partial class RibbonBarManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
 

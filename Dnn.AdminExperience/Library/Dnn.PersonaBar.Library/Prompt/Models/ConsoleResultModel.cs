@@ -6,11 +6,13 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     using Newtonsoft.Json;
 
     /// <summary>Standard response object sent to client.</summary>
-    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
-    public class ConsoleResultModel
+    [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
+    public partial class ConsoleResultModel
     {
         // the returned result - text or HTML
         [JsonProperty(PropertyName = "output")]

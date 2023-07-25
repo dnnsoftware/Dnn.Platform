@@ -8,10 +8,11 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.ComponentModel;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalController instead. Scheduled removal in v10.0.0.")]
-    public class TestablePortalController : ServiceLocator<IPortalController, TestablePortalController>
+    [DnnDeprecated(7, 3, 0, "Please use PortalController instead", RemovalVersion = 10)]
+    public partial class TestablePortalController : ServiceLocator<IPortalController, TestablePortalController>
     {
         /// <inheritdoc/>
         protected override Func<IPortalController> GetFactory()

@@ -3,28 +3,29 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-    using System;
     using System.ComponentModel;
+
+    using DotNetNuke.Internal.SourceGenerators;
 
     public partial class LogController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 7.3. Use GetLogTypeInfo and use the LoggingIsActive property.. Scheduled removal in v10.0.0.")]
-        public bool LoggingIsEnabled(string logType, int portalID)
+        [DnnDeprecated(7, 3, 0, "Use GetLogTypeInfo and use the LoggingIsActive property.", RemovalVersion = 10)]
+        public partial bool LoggingIsEnabled(string logType, int portalID)
         {
             return LoggingProvider.Instance().LoggingIsEnabled(logType, portalID);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 7.3. Use LoggingProvider.Instance().SupportsEmailNotification().. Scheduled removal in v10.0.0.")]
-        public virtual bool SupportsEmailNotification()
+        [DnnDeprecated(7, 3, 0, "Use LoggingProvider.Instance().SupportsEmailNotification().", RemovalVersion = 10)]
+        public virtual partial bool SupportsEmailNotification()
         {
             return LoggingProvider.Instance().SupportsEmailNotification();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 7.3. Use LoggingProvider.Instance().SupportsInternalViewer().. Scheduled removal in v10.0.0.")]
-        public virtual bool SupportsInternalViewer()
+        [DnnDeprecated(7, 3, 0, "Use LoggingProvider.Instance().SupportsInternalViewer().", RemovalVersion = 10)]
+        public virtual partial bool SupportsInternalViewer()
         {
             return LoggingProvider.Instance().SupportsInternalViewer();
         }

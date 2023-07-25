@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>Gets the portal settings for the portal where the WebControl is displayed.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Deprecated in 9.8, use PortalController.Instance.GetCurrentSettings() instead, if you need access to the ActiveTab, use TabController.CurrentPage. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use PortalController.Instance.GetCurrentSettings() instead, if you need access to the ActiveTab, use TabController.CurrentPage. Scheduled for removal in v11.0.0.")]
         public PortalSettings PortalSettings
         {
             get
@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         public abstract string HtmlOutput { get; }
 
         /// <summary>Gets a value indicating whether this WebControl is currently displayed in the admin menu.</summary>
-        [Obsolete("There is no longer the concept of an Admin Page.  All pages are controlled by Permissions. Scheduled removal in v11.0.0.", true)]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. There is no longer the concept of an Admin Page.  All pages are controlled by Permissions. Scheduled for removal in v11.0.0.", true)]
         public bool IsAdminMenu
         {
             get

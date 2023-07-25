@@ -7,10 +7,12 @@ namespace DotNetNuke.Web.Razor
     using System;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
+
     using Microsoft.Extensions.DependencyInjection;
 
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public abstract class DotNetNukeWebPage<TModel> : DotNetNukeWebPage
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public abstract partial class DotNetNukeWebPage<TModel> : DotNetNukeWebPage
         where TModel : class
     {
         private TModel model;
@@ -21,7 +23,6 @@ namespace DotNetNuke.Web.Razor
             this.Model = model ?? Activator.CreateInstance<TModel>();
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
             get { return this.PageContext?.Model as TModel ?? this.model; }

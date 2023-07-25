@@ -12,14 +12,15 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    internal class PortalAliasRouteManager : IPortalAliasRouteManager
+    internal partial class PortalAliasRouteManager : IPortalAliasRouteManager
     {
         private List<int> prefixCounts;
 
         // TODO: this method need remove after drop use old api format.
-        [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
-        public static string GetOldRouteUrl(string moduleFolderName, string url, int count)
+        [DnnDeprecated(9, 0, 0, "Replaced with GetRouteUrl")]
+        public static partial string GetOldRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);

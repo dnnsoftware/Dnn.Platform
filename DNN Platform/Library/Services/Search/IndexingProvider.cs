@@ -8,13 +8,14 @@ namespace DotNetNuke.Services.Search
     using System.Linq;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
     /// <summary>A base class for search indexers.</summary>
-    [Obsolete("Legacy Indexing base class -- Deprecated in DNN 7.1. Use 'IndexingProviderBase' instead.. Scheduled removal in v10.0.0.")]
-    public abstract class IndexingProvider
+    [DnnDeprecated(7, 1, 0, "Use 'IndexingProviderBase' instead", RemovalVersion = 10)]
+    public abstract partial class IndexingProvider
     {
         private const string TimePostfix = "UtcTime";
         private const string DataPostfix = "Data";
@@ -29,13 +30,13 @@ namespace DotNetNuke.Services.Search
             throw new NotImplementedException();
         }
 
-        [Obsolete("Deprecated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.. Scheduled removal in v10.0.0.")]
-        public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
+        [DnnDeprecated(7, 4, 2, "Use 'IndexSearchDocuments' instead for lower memory footprint during search", RemovalVersion = 10)]
+        public virtual partial IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             return Enumerable.Empty<SearchDocument>();
         }
 
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.1.0. Use 'IndexSearchDocuments' instead. Scheduled for removal in v10.0.0.")]
         public abstract SearchItemInfoCollection GetSearchIndexItems(int portalId);
 
         /// <summary>Retrieves the date/time of the last item to be indexed.</summary>

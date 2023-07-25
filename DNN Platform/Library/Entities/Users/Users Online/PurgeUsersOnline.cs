@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
 
@@ -15,22 +16,20 @@ namespace DotNetNuke.Entities.Users
     /// The PurgeUsersOnline class provides a Scheduler for purging the Users Online
     /// data.
     /// </summary>
-    [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-    public class PurgeUsersOnline : SchedulerClient
+    [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 10)]
+    public partial class PurgeUsersOnline : SchedulerClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PurgeUsersOnline"/> class.
         /// Constructs a PurgeUsesOnline SchedulerClient.
         /// </summary>
         /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem.</param>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public PurgeUsersOnline(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         /// <summary>DoWork does th4 Scheduler work.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DoWork()
         {
             try
@@ -55,7 +54,6 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>UpdateUsersOnline updates the Users Online information.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void UpdateUsersOnline()
         {
             var objUserOnlineController = new UserOnlineController();

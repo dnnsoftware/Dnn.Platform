@@ -12,15 +12,16 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Log.EventLog;
     using Microsoft.VisualBasic;
 
     using Globals = DotNetNuke.Common.Globals;
 
-    public class SchedulingController
+    public partial class SchedulingController
     {
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
-        public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName)
+        [DnnDeprecated(7, 3, 0, "Use alternate overload", RemovalVersion = 10)]
+        public static partial int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName)
         {
             return AddSchedule(
                 typeFullName,
@@ -210,8 +211,8 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning restore 618
         }
 
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
-        public static void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
+        [DnnDeprecated(7, 3, 0, "Use alternate overload", RemovalVersion = 10)]
+        public static partial void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
             DataProvider.Instance().UpdateSchedule(
                 scheduleID,

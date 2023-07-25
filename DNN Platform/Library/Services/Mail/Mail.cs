@@ -18,11 +18,12 @@ namespace DotNetNuke.Services.Mail
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Tokens;
 
     using Localize = DotNetNuke.Services.Localization.Localization;
 
-    public class Mail
+    public partial class Mail
     {
         public static string ConvertToText(string sHTML)
         {
@@ -72,8 +73,8 @@ namespace DotNetNuke.Services.Mail
             MailProvider.Instance().SendMail(mailInfo);
         }
 
-        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
-        public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
+        [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
+        public static partial string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
             var mailInfo = new MailInfo
             {
@@ -396,8 +397,8 @@ namespace DotNetNuke.Services.Mail
                 smtpEnableSSL);
         }
 
-        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
-        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+        [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
+        public static partial string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             return SendMail(
                 mailFrom,
@@ -441,8 +442,8 @@ namespace DotNetNuke.Services.Mail
                 smtpEnableSSL);
         }
 
-        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
-        public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+        [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
+        public static partial string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             var smtpInfo = new SmtpInfo
             {

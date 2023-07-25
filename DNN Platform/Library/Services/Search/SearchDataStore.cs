@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
@@ -14,6 +13,7 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Search.Internals;
 
@@ -24,8 +24,8 @@ namespace DotNetNuke.Services.Search
     /// The SearchDataStore is an implementation of the abstract SearchDataStoreProvider
     /// class.
     /// </summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
-    public class SearchDataStore : SearchDataStoreProvider
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
+    public partial class SearchDataStore : SearchDataStoreProvider
     {
         /// <inheritdoc />
         public override SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId)

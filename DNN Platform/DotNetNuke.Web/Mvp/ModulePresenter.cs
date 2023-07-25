@@ -4,10 +4,10 @@
 
 namespace DotNetNuke.Web.Mvp
 {
-    using System;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ModulePresenter<TView> : ModulePresenterBase<TView>
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public abstract partial class ModulePresenter<TView> : ModulePresenterBase<TView>
         where TView : class, IModuleView
     {
         /// <summary>Initializes a new instance of the <see cref="ModulePresenter{TView}"/> class.</summary>

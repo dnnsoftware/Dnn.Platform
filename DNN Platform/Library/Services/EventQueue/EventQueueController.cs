@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.EventQueue
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -39,7 +40,7 @@ namespace DotNetNuke.Services.EventQueue
     /// }
     /// </code>
     /// </example>
-    public class EventQueueController
+    public partial class EventQueueController
     {
         /// <summary>Gets the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
@@ -174,8 +175,8 @@ namespace DotNetNuke.Services.EventQueue
             return success;
         }
 
-        [Obsolete("This method is obsolete. Use Sendmessage(message, eventName) instead. Scheduled removal in v10.0.0.")]
-        public bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
+        [DnnDeprecated(7, 0, 0, "Use Sendmessage(message, eventName) instead", RemovalVersion = 10)]
+        public partial bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
         {
             return SendMessage(message, eventName);
         }

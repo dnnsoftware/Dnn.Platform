@@ -13,10 +13,11 @@ namespace DotNetNuke.Web.UI.WebControls
     using ClientDependency.Core;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
     [ParseChildren(true)]
-    public class DnnFormEditor : WebControl, INamingContainer
+    public partial class DnnFormEditor : WebControl, INamingContainer
     {
         private object dataSource;
         private int itemCount;
@@ -117,8 +118,8 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
-        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
+        [DnnDeprecated(7, 4, 1, "Please add encryptIds")]
+        internal static partial void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
         {
             SetUpItems(items, parentControl, localResourceFile, false);
         }

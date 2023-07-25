@@ -12,13 +12,14 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
     using Newtonsoft.Json;
 
     /// <summary>The SearchEngine manages the Indexing of the Portal content.</summary>
-    internal class SearchEngine
+    internal partial class SearchEngine
     {
         /// <summary>Initializes a new instance of the <see cref="SearchEngine"/> class.</summary>
         /// <param name="scheduler"></param>
@@ -143,8 +144,8 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
         /// <returns>A new <see cref="SearchItemInfoCollection"/> instance.</returns>
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
+        [DnnDeprecated(7, 1, 0, "Use 'IndexSearchDocuments' instead")]
+        protected partial SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
         {
             var searchItems = new SearchItemInfoCollection();
             var portals = PortalController.Instance.GetPortals();
@@ -166,8 +167,8 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
         /// <returns>A new <see cref="SearchItemInfoCollection"/> instance.</returns>
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
+        [DnnDeprecated(7, 1, 0, "Use 'IndexSearchDocuments' instead", RemovalVersion = 10)]
+        protected partial SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
         {
             var searchItems = new SearchItemInfoCollection();
             searchItems.AddRange(indexer.GetSearchIndexItems(portalId));

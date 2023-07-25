@@ -10,46 +10,47 @@ namespace DotNetNuke.Services.Search
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>The SearchDataStoreController is the Business Controller class for SearchDataStore.</summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
-    public class SearchDataStoreController
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
+    public partial class SearchDataStoreController
     {
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to return a NullInteger value. Scheduled removal in v10.0.0.")]
-        public static int AddSearchItem(SearchItemInfo item)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to return a NullInteger value", RemovalVersion = 10)]
+        public static partial int AddSearchItem(SearchItemInfo item)
         {
             return Null.NullInteger;
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
-        public static void DeleteSearchItem(int searchItemId)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to do nothing", RemovalVersion = 10)]
+        public static partial void DeleteSearchItem(int searchItemId)
         {
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
-        public static void DeleteSearchItemWords(int searchItemId)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to do nothing", RemovalVersion = 10)]
+        public static partial void DeleteSearchItemWords(int searchItemId)
         {
         }
 
         /// <returns>An empty <see cref="SearchItemInfo"/>.</returns>
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static SearchItemInfo GetSearchItem(int moduleId, string searchKey)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to return empty result set", RemovalVersion = 10)]
+        public static partial SearchItemInfo GetSearchItem(int moduleId, string searchKey)
         {
             var empty = new SearchItemInfo();
             return empty;
         }
 
         /// <returns>An empty <see cref="Dictionary{TKey,TValue}"/>.</returns>
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static Dictionary<string, SearchItemInfo> GetSearchItems(int moduleId)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to return empty result set", RemovalVersion = 10)]
+        public static partial Dictionary<string, SearchItemInfo> GetSearchItems(int moduleId)
         {
             var empty = new Dictionary<string, SearchItemInfo>();
             return empty;
         }
 
         /// <returns>An empty <see cref="ArrayList"/>.</returns>
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static ArrayList GetSearchItems(int portalId, int tabId, int moduleId)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to return empty result set", RemovalVersion = 10)]
+        public static partial ArrayList GetSearchItems(int portalId, int tabId, int moduleId)
         {
             var empty = new ArrayList();
             return empty;
@@ -59,16 +60,16 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalID">A Id of the Portal.</param>
         /// <param name="word">The word.</param>
         /// <returns>An empty <see cref="SearchResultsInfoCollection"/>.</returns>
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static SearchResultsInfoCollection GetSearchResults(int portalID, string word)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to return empty result set", RemovalVersion = 10)]
+        public static partial SearchResultsInfoCollection GetSearchResults(int portalID, string word)
         {
             var empty = new SearchResultsInfoCollection();
             return empty;
         }
 
         /// <returns>An empty <see cref="SearchResultsInfoCollection"/>.</returns>
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
-        public static SearchResultsInfoCollection GetSearchResults(int portalId, int tabId, int moduleId)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to return empty result set", RemovalVersion = 10)]
+        public static partial SearchResultsInfoCollection GetSearchResults(int portalId, int tabId, int moduleId)
         {
             var empty = new SearchResultsInfoCollection();
             return empty;
@@ -108,8 +109,8 @@ namespace DotNetNuke.Services.Search
             return dicSearchSettings;
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
-        public static void UpdateSearchItem(SearchItemInfo item)
+        [DnnDeprecated(7, 2, 2, "Implementation changed to do nothing", RemovalVersion = 10)]
+        public static partial void UpdateSearchItem(SearchItemInfo item)
         {
         }
     }

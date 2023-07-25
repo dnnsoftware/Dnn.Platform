@@ -9,8 +9,10 @@ namespace DotNetNuke.Web.Client
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     // note: this class is duplicated in ClientDependency.Core.Config.DnnConfiguration, any updates need to be synced between the two.
-    public class ClientResourceSettings
+    public partial class ClientResourceSettings
     {
         // public keys used to identify the dictionaries stored in the application context
         public static readonly string HostSettingsDictionaryKey = "HostSettingsDictionary";
@@ -80,8 +82,8 @@ namespace DotNetNuke.Web.Client
             }
         }
 
-        [Obsolete("Deprecated in DotNetNuke 9.10.3.  Use overload taking portalId. Scheduled removal in v11.0.0.")]
-        public bool IsOverridingDefaultSettingsEnabled()
+        [DnnDeprecated(9, 10, 3, "Use overload taking portalId")]
+        public partial bool IsOverridingDefaultSettingsEnabled()
         {
             int? portalId = GetPortalIdThroughReflection();
             return this.IsOverridingDefaultSettingsEnabled(portalId);
@@ -97,8 +99,8 @@ namespace DotNetNuke.Web.Client
             return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
         }
 
-        [Obsolete("Deprecated in DotNetNuke 9.10.3.  Use overload taking portalId. Scheduled removal in v11.0.0.")]
-        public int? GetVersion()
+        [DnnDeprecated(9, 10, 3, "Use overload taking portalId")]
+        public partial int? GetVersion()
         {
             int? portalId = GetPortalIdThroughReflection();
             return this.GetVersion(portalId);

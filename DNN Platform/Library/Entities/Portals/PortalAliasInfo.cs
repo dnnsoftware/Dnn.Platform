@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         string IPortalAliasInfo.HttpAlias { get; set; }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead. Scheduled removal in v11.0.0.")]
         public string HTTPAlias
         {
             get => this.ThisAsInterface.HttpAlias;
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         int IPortalAliasInfo.PortalAliasId { get; set; }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalAliasId instead.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalAliasId instead. Scheduled removal in v11.0.0.")]
         public int PortalAliasID
         {
             get => this.ThisAsInterface.PortalAliasId;
@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         int IPortalAliasInfo.PortalId { get; set; }
 
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalId instead.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalId instead. Scheduled removal in v11.0.0.")]
         public int PortalID
         {
             get => this.ThisAsInterface.PortalId;
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Portals
         public bool Redirect { get; set; }
 
         /// <summary>Gets or sets the Browser Type.</summary>
-        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead. Scheduled removal in v11.0.0.")]
         public BrowserTypes BrowserType
         {
             get => (BrowserTypes)this.ThisAsInterface.BrowserType;

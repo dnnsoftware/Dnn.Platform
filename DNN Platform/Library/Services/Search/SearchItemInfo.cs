@@ -6,14 +6,15 @@ namespace DotNetNuke.Services.Search
     using System;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchItemInfo
     /// <summary>The SearchItemInfo represents a Search Item.</summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
     [Serializable]
-    public class SearchItemInfo
+    public partial class SearchItemInfo
     {
         private int author;
         private string content;

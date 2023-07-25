@@ -13,12 +13,13 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Dto;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
     [DnnAuthorize]
-    public class ContentWorkflowServiceController : DnnApiController
+    public partial class ContentWorkflowServiceController : DnnApiController
     {
         private readonly IWorkflowEngine workflowEngine;
 
@@ -100,10 +101,10 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
-        [Obsolete("Obsolted in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        [DnnDeprecated(7, 4, 0, "No replacement")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage Review(NotificationDTO postData)
+        public partial HttpResponseMessage Review(NotificationDTO postData)
         {
             try
             {
