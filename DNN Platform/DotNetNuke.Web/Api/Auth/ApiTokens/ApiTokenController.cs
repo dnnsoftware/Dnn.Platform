@@ -129,7 +129,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             {
                 var tokenBytes = new byte[32];
                 generator.GetBytes(tokenBytes);
-                newToken = EncodeBase64(tokenBytes);
+                newToken = this.EncodeBase64(tokenBytes);
             }
 
             var tokenAndHostGuid = newToken + Entities.Host.Host.GUID;
