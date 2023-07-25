@@ -11,13 +11,14 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the EditScript view logic.</summary>
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
@@ -39,7 +40,6 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <summary>Gets the razor script file.</summary>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {
             get
@@ -56,10 +56,7 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
@@ -71,10 +68,7 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 

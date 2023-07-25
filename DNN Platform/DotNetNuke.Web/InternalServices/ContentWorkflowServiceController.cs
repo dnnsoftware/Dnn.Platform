@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -13,12 +13,13 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Dto;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
     [DnnAuthorize]
-    public class ContentWorkflowServiceController : DnnApiController
+    public partial class ContentWorkflowServiceController : DnnApiController
     {
         private readonly IWorkflowEngine workflowEngine;
 

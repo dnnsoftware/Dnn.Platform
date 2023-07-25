@@ -18,13 +18,14 @@ namespace DotNetNuke.Services.Journal
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
-    internal class JournalControllerImpl : IJournalController
+    internal partial class JournalControllerImpl : IJournalController
     {
         private const string AllowResizePhotosSetting = "Journal_AllowResizePhotos";
         private const string AllowPhotosSetting = "Journal_AllowPhotos";

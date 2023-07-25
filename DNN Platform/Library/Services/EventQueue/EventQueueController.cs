@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.EventQueue
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.Log.EventLog;
     using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Services.EventQueue
     /// }
     /// </code>
     /// </example>
-    public class EventQueueController
+    public partial class EventQueueController
     {
         /// <summary>Gets the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
@@ -65,8 +66,8 @@ namespace DotNetNuke.Services.EventQueue
         /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
-        public static bool ProcessMessages(string eventName)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial bool ProcessMessages(string eventName)
         {
             using var scope = Globals.GetOrCreateServiceScope();
             return ProcessMessages(scope.ServiceProvider, eventName);
@@ -85,8 +86,8 @@ namespace DotNetNuke.Services.EventQueue
         /// <param name="eventName">Name of the event.</param>
         /// <param name="subscriberId">The subscriber ID.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
-        public static bool ProcessMessages(string eventName, string subscriberId)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial bool ProcessMessages(string eventName, string subscriberId)
         {
             return ProcessMessages(GetMessages(eventName, subscriberId));
         }
@@ -104,8 +105,8 @@ namespace DotNetNuke.Services.EventQueue
         /// <summary>Processes the messages.</summary>
         /// <param name="eventMessages">The event messages.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
-        public static bool ProcessMessages(EventMessageCollection eventMessages)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial bool ProcessMessages(EventMessageCollection eventMessages)
         {
             using var scope = Globals.GetOrCreateServiceScope();
             return ProcessMessages(scope.ServiceProvider, eventMessages);

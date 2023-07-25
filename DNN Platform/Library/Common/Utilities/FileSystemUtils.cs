@@ -12,6 +12,7 @@ namespace DotNetNuke.Common.Utilities
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using ICSharpCode.SharpZipLib.Zip;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,7 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>
     /// File System utilities.
     /// </summary>
-    public class FileSystemUtils
+    public partial class FileSystemUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
@@ -430,8 +431,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="filePath">The path to the file to add.</param>
         /// <param name="fileName">Name of the file to use in the zip entry.</param>
         /// <param name="folder">The name of the folder to use in the zip entry..</param>
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
-        public static void AddToZip(ref ZipOutputStream zipFile, string filePath, string fileName, string folder)
+        [DnnDeprecated(9, 11, 0, "Replaced with .NET compression types.")]
+        public static partial void AddToZip(ref ZipOutputStream zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
             try
@@ -479,8 +480,8 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="zipStream">The zip stream.</param>
         /// <param name="destPath">The destination path to extract to.</param>
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
-        public static void UnzipResources(ZipInputStream zipStream, string destPath)
+        [DnnDeprecated(9, 11, 0, "Replaced with .NET compression types.")]
+        public static partial void UnzipResources(ZipInputStream zipStream, string destPath)
         {
             try
             {

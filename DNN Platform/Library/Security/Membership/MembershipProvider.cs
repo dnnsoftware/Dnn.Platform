@@ -146,24 +146,24 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>Deletes all UserOnline info from the database that has activity outside of the time window.</summary>
         /// <param name="timeWindow">Time Window in Minutes.</param>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public abstract void DeleteUsersOnline(int timeWindow);
 
         /// <summary>Gets a collection of Online Users.</summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public abstract ArrayList GetOnlineUsers(int portalId);
 
         /// <summary>Gets whether the user in question is online.</summary>
         /// <param name="user">The user.</param>
         /// <returns>A Boolean indicating whether the user is online.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public abstract bool IsUserOnline(UserInfo user);
 
         /// <summary>Updates UserOnline info time window.</summary>
         /// <param name="userList">List of users to update.</param>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public abstract void UpdateUsersOnline(Hashtable userList);
 
         // Legacy

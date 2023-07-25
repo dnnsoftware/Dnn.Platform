@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Profile;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
@@ -25,7 +26,7 @@ namespace DotNetNuke.Entities.Profile
     /// The ProfileController class provides Business Layer methods for profiles and
     /// for profile property Definitions.
     /// </summary>
-    public class ProfileController
+    public partial class ProfileController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
         private static readonly DataProvider DataProvider = DataProvider.Instance();
@@ -404,8 +405,8 @@ namespace DotNetNuke.Entities.Profile
             return res;
         }
 
-        [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
-        public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
+        [DnnDeprecated(7, 0, 0, "Please use GetPropertyDefinition(int definitionId, int portalId) instead", RemovalVersion = 11)]
+        public static partial ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
             return CBO.FillObject<ProfilePropertyDefinition>(DataProvider.GetPropertyDefinition(definitionId));
         }

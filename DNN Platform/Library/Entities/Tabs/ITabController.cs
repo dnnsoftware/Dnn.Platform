@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
-        [Obsolete("This has been deprecated in favor of AddMissingLanguagesWithWarnings. Scheduled for removal in v11.0.0")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use AddMissingLanguagesWithWarnings. Scheduled removal in v11.0.0.")]
         void AddMissingLanguages(int portalId, int tabId);
 
         /// <summary>Adds localized copies of the page in all missing languages.</summary>

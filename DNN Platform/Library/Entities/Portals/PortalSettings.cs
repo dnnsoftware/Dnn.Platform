@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Gets the mode the user is viewing the page in.</summary>
-        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. Use Personalization.GetUserMode() instead. Scheduled removal in v11.0.0.")]
         public Mode UserMode
         {
             get => Personalization.GetUserMode();
@@ -463,8 +463,7 @@ namespace DotNetNuke.Entities.Portals
         public bool EnableRegisterNotification { get; internal set; }
 
         /// <inheritdoc />
-        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0.")]
-
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. This setting is no longer relevant as skin widgets are no longer supported. Scheduled removal in v11.0.0.")]
         public bool EnableSkinWidgets { get; internal set; }
 
         /// <inheritdoc />

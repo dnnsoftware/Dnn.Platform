@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -13,13 +14,13 @@ namespace DotNetNuke.UI.WebControls
     /// The EditControlFactory control provides a factory for creating the
     /// appropriate Edit Control.
     /// </summary>
-    public class EditControlFactory
+    public partial class EditControlFactory
     {
         /// <summary>CreateEditControl creates the appropriate Control based on the EditorField or TypeDataField. </summary>
         /// <param name="editorInfo">An EditorInfo object.</param>
         /// <returns>A new <see cref="EditControl"/> instance.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
-        public static EditControl CreateEditControl(EditorInfo editorInfo)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial EditControl CreateEditControl(EditorInfo editorInfo)
         {
             return CreateEditControl(Globals.GetCurrentServiceProvider(), editorInfo);
         }

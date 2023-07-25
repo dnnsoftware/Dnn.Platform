@@ -9,7 +9,11 @@ namespace DotNetNuke.Common.Utilities
     using System.IO;
     using System.IO.Compression;
 
-    public static class FileSystemExtensions
+    using DotNetNuke.Internal.SourceGenerators;
+
+    using ICSharpCode.SharpZipLib.Zip;
+
+    public static partial class FileSystemExtensions
     {
         public static void CheckZipEntry(this ZipArchiveEntry input)
         {
@@ -53,8 +57,8 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
-        public static void CheckZipEntry(this ICSharpCode.SharpZipLib.Zip.ZipEntry input)
+        [DnnDeprecated(9, 11, 0, "Replaced with .NET compression types.")]
+        public static partial void CheckZipEntry(this ZipEntry input)
         {
             var fullName = input.Name.Replace('\\', '/');
             if (fullName.StartsWith("..") || fullName.Contains("/../"))

@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.Containers
     public abstract class ActionBase : UserControl, IActionControl
     {
         /// <summary>Defines if the action supports icons.</summary>
-        [Obsolete("Deprecates in v9.8.1, sheduled removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. Use SupportsIcons property. Scheduled for removal in v11.0.0.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
             "SA1308:Variable names should not be prefixed",

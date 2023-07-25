@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Installer.Dependencies;
     using DotNetNuke.Services.Localization;
@@ -25,7 +26,7 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.UI.Skins;
 
     /// <summary>The PackageController class provides the business class for the packages.</summary>
-    public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
+    public partial class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
