@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
     using DotNetNuke.Entities.Modules.Settings;
 
+    /// <summary>A repository for retrieving API Token settings.</summary>
     public class ApiTokenSettingsRepository : SettingsRepository<ApiTokenSettings>
     {
     }
