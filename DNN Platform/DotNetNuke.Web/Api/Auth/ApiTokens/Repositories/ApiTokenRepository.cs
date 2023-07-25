@@ -175,7 +175,7 @@ AND (CreatedByUserId=@2 OR @2=-1)
             using (var context = DataContext.Instance())
             {
                 var sql = @"UPDATE {databaseOwner}{objectQualifier}ApiTokens
-SET LastUsedOnDate=GETDATE()
+SET LastUsedOnDate=GETUTCDATE()
 WHERE ApiTokenId=@0";
                 context.Execute(System.Data.CommandType.Text, sql, apiToken.ApiTokenId);
             }
