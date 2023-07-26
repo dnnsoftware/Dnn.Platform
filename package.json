@@ -38,5 +38,8 @@
     "lint": "lerna run lint",
     "test": "lerna run test"
   },
+  "resolutions": {
+    "@types/ws": "8.5.4"
+  },
   "packageManager": "yarn@3.4.1"
 }
