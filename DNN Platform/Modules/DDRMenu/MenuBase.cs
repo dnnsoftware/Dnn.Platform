@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
@@ -29,7 +30,7 @@ namespace DotNetNuke.Web.DDRMenu
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Base class for multiple DDR Menu classes.</summary>
-    public class MenuBase
+    public partial class MenuBase
     {
         private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
         {
@@ -62,7 +63,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Gets the portal settings for the current portal.</summary>
         // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
-        [Obsolete("Deprecated in Dnn 9.8.1, scheduled removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v11.0.0.")]
         internal PortalSettings HostPortalSettings
         {
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
@@ -82,8 +83,8 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Instantiates the MenuBase.</summary>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
-        public static MenuBase Instantiate(string menuStyle)
+        [DnnDeprecated(10, 0, 0, "Please use overload with ILocaliser")]
+        public static partial MenuBase Instantiate(string menuStyle)
         {
             return Instantiate(
                 Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>(),

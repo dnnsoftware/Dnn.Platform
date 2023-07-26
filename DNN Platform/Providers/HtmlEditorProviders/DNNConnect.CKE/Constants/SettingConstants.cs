@@ -9,7 +9,7 @@ namespace DNNConnect.CKEditorProvider.Constants
     public static class SettingConstants
     {
         /// <summary>The Legacy Toolbar Setting XML File Name.</summary>
-        [Obsolete("Legacy XML File")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Legacy XML file. Scheduled removal in v11.0.0.")]
         public const string ToolbarXmlFileName = "Dnn.CKToolbar.xml";
 
         /// <summary>The Legacy Toolbar Setting XML File Name.</summary>
@@ -68,6 +68,9 @@ namespace DNNConnect.CKEditorProvider.Constants
 
         /// <summary>The inject JS setting name.</summary>
         public const string INJECTJS = "injectjs";
+
+        /// <summary>The browser allow follow folder permissions setting name.</summary>
+        public const string BROWSERALLOWFOLLOWFOLDERPERMS = "BrowsAllowFolderPerms";
 
         /// <summary>The roles setting name.</summary>
         public const string ROLES = "roles";

@@ -13,11 +13,12 @@ namespace DotNetNuke.Web.Mvp
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public abstract partial class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
         where TModel : class, new()
     {
         /// <summary>Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.</summary>

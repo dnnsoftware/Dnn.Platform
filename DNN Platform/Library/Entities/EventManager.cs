@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities
         private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="EventManager"/> class.</summary>
-        [Obsolete("Deprecated in 9.8.1, use overload taking IEventLogger.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. Use overload taking IEventLogger. Scheduled removal in v11.0.0.")]
         public EventManager()
             : this(null)
         {

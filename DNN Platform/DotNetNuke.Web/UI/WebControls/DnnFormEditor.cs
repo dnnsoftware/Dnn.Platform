@@ -13,10 +13,11 @@ namespace DotNetNuke.Web.UI.WebControls
     using ClientDependency.Core;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
     [ParseChildren(true)]
-    public class DnnFormEditor : WebControl, INamingContainer
+    public partial class DnnFormEditor : WebControl, INamingContainer
     {
         private object dataSource;
         private int itemCount;

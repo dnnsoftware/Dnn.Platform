@@ -283,7 +283,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
-        [Obsolete("Deprecated in 9.9.2. Scheduled for removal in v11.0.0")]
+        [Obsolete("Deprecated in DotNetNuke 9.9.2. No replacement. Scheduled removal in v11.0.0.")]
         public static bool DisplayCopyright
         {
             get
@@ -443,7 +443,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled removal in v11.0.0.")]
         public static bool EnableUsersOnline
         {
             get
@@ -918,7 +918,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 1.
         /// </remarks>
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v11.0.0.")]
         public static int SiteLogBuffer
         {
             get
@@ -931,7 +931,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to -1.
         /// </remarks>
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in vremoval.0.0.")]
         public static int SiteLogHistory
         {
             get
@@ -944,7 +944,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to "D".
         /// </remarks>
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v11.0.0.")]
         public static string SiteLogStorage
         {
             get
@@ -1094,7 +1094,7 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>Gets the window to use in minutes when determining if the user is online.</summary>
         /// <remarks>Defaults to 15.</remarks>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled removal in v11.0.0.")]
         public static int UsersOnlineTimeWindow
         {
             get

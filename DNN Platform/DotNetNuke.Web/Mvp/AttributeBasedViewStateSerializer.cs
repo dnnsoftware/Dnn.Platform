@@ -8,8 +8,10 @@ namespace DotNetNuke.Web.Mvp
     using System.Reflection;
     using System.Web.UI;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public class AttributeBasedViewStateSerializer
+    using DotNetNuke.Internal.SourceGenerators;
+
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public partial class AttributeBasedViewStateSerializer
     {
         private const BindingFlags MemberBindingFlags = BindingFlags.Instance | BindingFlags.Public;
 

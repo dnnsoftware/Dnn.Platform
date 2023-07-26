@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Users
         public bool IsDeleted { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the User Is Online.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public bool IsOnLine { get; set; }
 
         /// <summary>Gets or sets the Last Activity Date of the User.</summary>

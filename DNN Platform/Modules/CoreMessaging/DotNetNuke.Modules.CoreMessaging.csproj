@@ -42,7 +42,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.CoreMessaging.XML</DocumentationFile>
     <NoWarn>
     </NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -55,7 +55,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.CoreMessaging.XML</DocumentationFile>
     <NoWarn>
     </NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>

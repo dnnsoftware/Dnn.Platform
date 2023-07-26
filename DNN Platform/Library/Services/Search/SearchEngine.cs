@@ -15,13 +15,14 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
     using Newtonsoft.Json;
 
     /// <summary>The SearchEngine manages the Indexing of the Portal content.</summary>
-    internal class SearchEngine
+    internal partial class SearchEngine
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngine));
         private readonly IBusinessControllerProvider businessControllerProvider;

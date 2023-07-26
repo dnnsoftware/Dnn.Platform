@@ -10,10 +10,11 @@ namespace DotNetNuke.Common.Utilities
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Upgrade;
 
     /// <summary>HtmlUtils is a Utility class that provides Html Utility methods.</summary>
-    public class HtmlUtils
+    public partial class HtmlUtils
     {
         // Create Regular Expression objects
         private const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
@@ -228,8 +229,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="html">The HTML content to clean up.</param>
         /// <param name="retainSpace">Indicates whether to replace the Entity by a space (<see langword="true"/>) or nothing (<see langword="false"/>).</param>
         /// <returns>The cleaned up string.</returns>
-        [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode. Scheduled removal in v11.0.0.")]
-        public static string StripEntities(string html, bool retainSpace)
+        [DnnDeprecated(7, 0, 0, "Please use System.Web.HtmlUtility.HtmlDecode", RemovalVersion = 11)]
+        public static partial string StripEntities(string html, bool retainSpace)
         {
             var repString = retainSpace ? " " : string.Empty;
 

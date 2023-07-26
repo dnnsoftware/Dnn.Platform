@@ -23,12 +23,13 @@ namespace DotNetNuke.Data
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
 
-    public abstract class DataProvider
+    public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
 
@@ -2276,26 +2277,26 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateUserRole", userRoleId, status, isOwner, this.GetNull(effectiveDate), this.GetNull(expiryDate), lastModifiedByUserID);
         }
 
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public virtual void DeleteUsersOnline(int timeWindow)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public virtual partial void DeleteUsersOnline(int timeWindow)
         {
             this.ExecuteNonQuery("DeleteUsersOnline", timeWindow);
         }
 
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public virtual IDataReader GetOnlineUser(int userId)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public virtual partial IDataReader GetOnlineUser(int userId)
         {
             return this.ExecuteReader("GetOnlineUser", userId);
         }
 
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public virtual IDataReader GetOnlineUsers(int portalId)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public virtual partial IDataReader GetOnlineUsers(int portalId)
         {
             return this.ExecuteReader("GetOnlineUsers", portalId);
         }
 
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public virtual void UpdateUsersOnline(Hashtable userList)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public virtual partial void UpdateUsersOnline(Hashtable userList)
         {
             if (userList.Count == 0)
             {
@@ -3102,8 +3103,8 @@ namespace DotNetNuke.Data
                 lastModifiedByUserID);
         }
 
-        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes passwordsRetained and daysRetained. Scheduled removal in v11.0.0.")]
-        public virtual IDataReader GetPasswordHistory(int userId)
+        [DnnDeprecated(9, 2, 0, "Please use the overload that takes passwordsRetained and daysRetained")]
+        public virtual partial IDataReader GetPasswordHistory(int userId)
         {
             return this.GetPasswordHistory(userId, int.MaxValue, int.MaxValue);
         }
@@ -3113,8 +3114,8 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPasswordHistory", this.GetNull(userId), passwordsRetained, daysRetained);
         }
 
-        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes daysRetained. Scheduled removal in v11.0.0.")]
-        public virtual void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
+        [DnnDeprecated(9, 2, 0, "Please use the overload that takes daysRetained")]
+        public virtual partial void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
             this.AddPasswordHistory(userId, password, passwordHistory, retained, int.MaxValue);
         }
@@ -3620,8 +3621,8 @@ namespace DotNetNuke.Data
         /// <param name="ruleType">The type of rule (1 for Allow, 2 for Deny).</param>
         /// <param name="createdByUserId">The ID of the acting user.</param>
         /// <returns>The ID of the newly created IP Filter.</returns>
-        [Obsolete("Deprecated in v9.11.1. Use the overload that takes a notes string. Scheduled removal in v11.0.0.")]
-        public virtual int AddIPFilter(string ipAddress, string subnetMask, int ruleType, int createdByUserId)
+        [DnnDeprecated(9, 11, 1, "Use the overload that takes a notes string")]
+        public virtual partial int AddIPFilter(string ipAddress, string subnetMask, int ruleType, int createdByUserId)
         {
             return this.AddIPFilter(ipAddress, subnetMask, ruleType, createdByUserId, null);
         }
@@ -3649,8 +3650,8 @@ namespace DotNetNuke.Data
         /// <param name="subnetMask">The IP mask to use for an IP range.</param>
         /// <param name="ruleType">The type of filter (1 to allow, 2 to deny).</param>
         /// <param name="lastModifiedByUserId">The ID of the acting user.</param>
-        [Obsolete("Deprecated in v9.11.1. Use the overload that takes a notes string. Scheduled removal in v11.0.0.")]
-        public virtual void UpdateIPFilter(int ipFilterid, string ipAddress, string subnetMask, int ruleType, int lastModifiedByUserId)
+        [DnnDeprecated(9, 11, 1, "Use the overload that takes a notes string")]
+        public virtual partial void UpdateIPFilter(int ipFilterid, string ipAddress, string subnetMask, int ruleType, int lastModifiedByUserId)
         {
             this.UpdateIPFilter(ipFilterid, ipAddress, subnetMask, ruleType, lastModifiedByUserId, null);
         }
@@ -4011,11 +4012,13 @@ namespace DotNetNuke.Data
             }
         }
 
-        [Obsolete("Obsoleted in 9.3.0, please use GetFiles(int, bool, boo) instead. schedule to remove in 11.0.0.")]
-        public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
+        [DnnDeprecated(9, 3, 0, "Please use GetFiles(int, bool, bool) instead")]
+#pragma warning disable CS1066
+        public virtual partial IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
         {
             return this.GetFiles(folderId, retrieveUnpublishedFiles, false);
         }
+#pragma warning restore CS1066
 
         internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
         {

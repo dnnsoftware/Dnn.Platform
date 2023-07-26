@@ -10,16 +10,17 @@ namespace DotNetNuke.DependencyInjection.Extensions
     using System.Text;
 
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary><see cref="Type"/> specific extensions to be used in Dependency Injection invocations.</summary>
-    public static class TypeExtensions
+    public static partial class TypeExtensions
     {
         /// <summary>Safely Get all Types from the assembly. If there is an error while retrieving the types it will return an empty array of <see cref="Type"/>.</summary>
         /// <param name="assembly">The assembly to retrieve all types from.</param>
         /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
         /// <remarks>This is obsolete because logging is not added. Please use the SafeGetTypes with the ILog parameter.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.9.0. Please use the SafeGetTypes overload with the ILog parameter. Scheduled removal in v11.0.0.")]
-        public static Type[] SafeGetTypes(this Assembly assembly)
+        [DnnDeprecated(9, 9, 0, "Please use the SafeGetTypes overload with the ILog parameter")]
+        public static partial Type[] SafeGetTypes(this Assembly assembly)
         {
             return assembly.SafeGetTypes(null);
         }

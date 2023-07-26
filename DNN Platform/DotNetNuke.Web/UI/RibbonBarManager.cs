@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
@@ -47,7 +48,7 @@ namespace DotNetNuke.Web.UI
         CHILD = 3,
     }
 
-    public class RibbonBarManager
+    public partial class RibbonBarManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
 
@@ -218,8 +219,8 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
-        public static int SaveTabInfoObject(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial int SaveTabInfoObject(
             TabInfo tab,
             TabInfo relativeToTab,
             TabRelativeLocation location,

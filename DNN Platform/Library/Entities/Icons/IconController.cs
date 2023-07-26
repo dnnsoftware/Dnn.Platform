@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Icons
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
-
+    using DotNetNuke.Internal.SourceGenerators;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>IconController provides all operation to icons.</summary>
@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Icons
     /// Tabs will be a sitemap for a portal, and every request at first need to check whether there is valid tab information
     /// include in the url, if not it will use default tab to display information.
     /// </remarks>
-    public class IconController
+    public partial class IconController
     {
         public const string DefaultIconSize = "16X16";
         public const string DefaultLargeIconSize = "32X32";
@@ -92,8 +92,8 @@ namespace DotNetNuke.Entities.Icons
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string[] GetIconSets()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string[] GetIconSets()
         {
             return GetIconSets(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));

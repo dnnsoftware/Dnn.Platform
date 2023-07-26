@@ -632,6 +632,10 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+      <Project>{5FE5D021-9C8D-47A6-BD34-F328BA3E709C}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>

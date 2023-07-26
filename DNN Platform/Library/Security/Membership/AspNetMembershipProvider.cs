@@ -23,6 +23,7 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Entities.Users.Membership;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
 
     // DNN-4016
@@ -30,7 +31,7 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>The AspNetMembershipProvider overrides the default MembershipProvider to provide an AspNet Membership Component (MemberRole) implementation.</summary>
-    public class AspNetMembershipProvider : MembershipProvider
+    public partial class AspNetMembershipProvider : MembershipProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetMembershipProvider));
         private static Random random = new Random();
@@ -449,8 +450,8 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc />
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public override void DeleteUsersOnline(int timeWindow)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public override partial void DeleteUsersOnline(int timeWindow)
         {
             this.dataProvider.DeleteUsersOnline(timeWindow);
         }
@@ -474,8 +475,8 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc />
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public override ArrayList GetOnlineUsers(int portalId)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public override partial ArrayList GetOnlineUsers(int portalId)
         {
             int totalRecords = 0;
             return FillUserCollection(portalId, this.dataProvider.GetOnlineUsers(portalId), ref totalRecords);
@@ -770,8 +771,8 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc />
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public override bool IsUserOnline(UserInfo user)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public override partial bool IsUserOnline(UserInfo user)
         {
             bool isOnline = false;
             var objUsersOnline = new UserOnlineController();
@@ -976,8 +977,8 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc />
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public override void UpdateUsersOnline(Hashtable userList)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public override partial void UpdateUsersOnline(Hashtable userList)
         {
             this.dataProvider.UpdateUsersOnline(userList);
         }
