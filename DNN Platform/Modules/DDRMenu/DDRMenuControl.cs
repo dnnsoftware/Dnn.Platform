@@ -17,19 +17,19 @@ namespace DotNetNuke.Web.DDRMenu
         private readonly ILocaliser localiser;
         private MenuBase menu;
 
-        /// <summary>Handles a click on the menu.</summary>
-        /// <param name="id">The id of the menu item being clicked.</param>
-        public delegate void MenuClickEventHandler(string id);
-
-        /// <summary>Handles a click on a node of the menu.</summary>
-        public event MenuClickEventHandler NodeClick;
-
         /// <summary>Initializes a new instance of the <see cref="DDRMenuControl"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
         public DDRMenuControl(ILocaliser localiser)
         {
             this.localiser = localiser;
         }
+
+        /// <summary>Handles a click on the menu.</summary>
+        /// <param name="id">The id of the menu item being clicked.</param>
+        public delegate void MenuClickEventHandler(string id);
+
+        /// <summary>Handles a click on a node of the menu.</summary>
+        public event MenuClickEventHandler NodeClick;
 
         /// <inheritdoc/>
         public override bool EnableViewState

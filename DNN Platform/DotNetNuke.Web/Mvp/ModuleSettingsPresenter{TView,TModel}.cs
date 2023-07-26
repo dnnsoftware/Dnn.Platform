@@ -10,9 +10,10 @@ namespace DotNetNuke.Web.Mvp
     using System.Linq;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ModuleSettingsPresenter<TView, TModel> : ModulePresenterBase<TView>
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public abstract partial class ModuleSettingsPresenter<TView, TModel> : ModulePresenterBase<TView>
         where TView : class, ISettingsView<TModel>
         where TModel : SettingsModel, new()
     {

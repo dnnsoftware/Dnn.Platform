@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Prompt.Components
 {
     using System;
@@ -17,11 +16,12 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
-    [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency. Will be removed in DNN 11.", false)]
-    public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
+    [DnnDeprecated(9, 2, 1, "Moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency.")]
+    public partial class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 

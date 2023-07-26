@@ -12,8 +12,8 @@ namespace DotNetNuke.Entities.Tabs
 
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +27,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabId">Tab being processed.</param>
         /// <param name="mergeTabs">Tabs need to merge.</param>
         /// <param name="hModules">Modules Hashtable.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static void DeserializePanes(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial void DeserializePanes(
             XmlNode nodePanes,
             int portalId,
             int tabId,
@@ -45,8 +45,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId">The portal id.</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static TabInfo DeserializeTab(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial TabInfo DeserializeTab(
             XmlNode tabNode,
             TabInfo tab,
             int portalId,
@@ -65,8 +65,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="modules">The h modules.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static TabInfo DeserializeTab(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial TabInfo DeserializeTab(
             XmlNode tabNode,
             TabInfo tab,
             Hashtable tabs,
@@ -84,8 +84,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="objTab">The TabInfo object to serialize.</param>
         /// <param name="includeContent">A flag used to determine if the Module content is included.</param>
         /// <returns>An <see cref="XmlNode"/> representing the page's data.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static XmlNode SerializeTab(XmlDocument tabXml, TabInfo objTab, bool includeContent)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial XmlNode SerializeTab(XmlDocument tabXml, TabInfo objTab, bool includeContent)
         {
             using var scope = Globals.GetOrCreateServiceScope();
             return SerializeTab(
@@ -102,8 +102,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portal">The Portal object to which the tab belongs.</param>
         /// <param name="includeContent">A flag used to determine if the Module content is included.</param>
         /// <returns>An <see cref="XmlNode"/> representing the page's data.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static XmlNode SerializeTab(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial XmlNode SerializeTab(
             XmlDocument tabXml,
             Hashtable tabs,
             TabInfo tab,
@@ -123,115 +123,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
-        [Obsolete("This has been deprecated in favor of AddMissingLanguagesWithWarnings. Scheduled for removal in v11.0.0")]
-        public void AddMissingLanguages(int portalId, int tabId)
+        [DnnDeprecated(9, 11, 1, "Use AddMissingLanguagesWithWarnings")]
+        public partial void AddMissingLanguages(int portalId, int tabId)
         {
             this.AddMissingLanguagesWithWarnings(portalId, tabId);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload. Scheduled removal in v10.0.0.")]
-        public void CreateLocalizedCopy(List<TabInfo> tabs, Locale locale)
-        {
-            foreach (TabInfo t in tabs)
-            {
-                this.CreateLocalizedCopy(t, locale, true);
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload. Scheduled removal in v10.0.0.")]
-        public void CreateLocalizedCopy(TabInfo originalTab, Locale locale)
-        {
-            this.CreateLocalizedCopy(originalTab, locale, true);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabsByPortal. Scheduled removal in v10.0.0.")]
-        public ArrayList GetAllTabs()
-        {
-            return CBO.FillCollection(this.dataProvider.GetAllTabs(), typeof(TabInfo));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs(). Scheduled removal in v10.0.0.")]
-        public List<TabInfo> GetCultureTabList(int portalid)
-        {
-            return (from kvp in this.GetTabsByPortal(portalid)
-                    where !kvp.Value.TabPath.StartsWith("//Admin")
-                          && kvp.Value.CultureCode == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage
-                          && !kvp.Value.IsDeleted
-                    select kvp.Value).ToList();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs(). Scheduled removal in v10.0.0.")]
-        public List<TabInfo> GetDefaultCultureTabList(int portalid)
-        {
-            return (from kvp in this.GetTabsByPortal(portalid)
-                    where !kvp.Value.TabPath.StartsWith("//Admin")
-                          && !kvp.Value.IsDeleted
-                    select kvp.Value).ToList();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method is obsolete.  It has been replaced by GetTab(ByVal TabId As Integer, ByVal PortalId As Integer, ByVal ignoreCache As Boolean) . Scheduled removal in v10.0.0.")]
-        public TabInfo GetTab(int tabId)
-        {
-            return this.GetTab(tabId, GetPortalId(tabId, Null.NullInteger), false);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached. Scheduled removal in v10.0.0.")]
-        public TabInfo GetTabByUniqueID(Guid uniqueID)
-        {
-            return CBO.FillObject<TabInfo>(this.dataProvider.GetTabByUniqueID(uniqueID));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Use GetTabsByPortal(portalId).Count. Scheduled removal in v10.0.0.")]
-        public int GetTabCount(int portalId)
-        {
-            return this.GetTabsByPortal(portalId).Count;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method is obsolete.  It has been replaced by GetTabsByParent(ByVal ParentId As Integer, ByVal PortalId As Integer) . Scheduled removal in v10.0.0.")]
-        public ArrayList GetTabsByParentId(int parentId)
-        {
-            return new ArrayList(GetTabsByParent(parentId, GetPortalId(parentId, Null.NullInteger)));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Use one of the alternate MoveTabxxx methods). Scheduled removal in v10.0.0.")]
-        public void MoveTab(TabInfo tab, TabMoveType type)
-        {
-            // Get the List of tabs with the same parent
-            IOrderedEnumerable<TabInfo> siblingTabs = this.GetSiblingTabs(tab).OrderBy(t => t.TabOrder);
-            int tabIndex = GetIndexOfTab(tab, siblingTabs);
-            switch (type)
-            {
-                case TabMoveType.Top:
-                    this.MoveTabBefore(tab, siblingTabs.First().TabID);
-                    break;
-                case TabMoveType.Bottom:
-                    this.MoveTabAfter(tab, siblingTabs.Last().TabID);
-                    break;
-                case TabMoveType.Up:
-                    this.MoveTabBefore(tab, siblingTabs.ElementAt(tabIndex - 1).TabID);
-                    break;
-                case TabMoveType.Down:
-                    this.MoveTabAfter(tab, siblingTabs.ElementAt(tabIndex + 1).TabID);
-                    break;
-                case TabMoveType.Promote:
-                    this.MoveTabAfter(tab, tab.ParentId);
-                    break;
-                case TabMoveType.Demote:
-                    this.MoveTabToParent(tab, siblingTabs.ElementAt(tabIndex - 1).TabID);
-                    break;
-            }
-
-            this.ClearCache(tab.PortalID);
         }
     }
 }

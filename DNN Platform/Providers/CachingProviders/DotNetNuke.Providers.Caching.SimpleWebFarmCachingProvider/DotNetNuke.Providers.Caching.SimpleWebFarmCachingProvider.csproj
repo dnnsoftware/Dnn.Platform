@@ -27,7 +27,8 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.xml</DocumentationFile>
     <NoWarn>1591,0618</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,7 +39,8 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.xml</DocumentationFile>
     <NoWarn>1591,0618</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

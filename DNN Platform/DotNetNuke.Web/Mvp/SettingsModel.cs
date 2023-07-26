@@ -4,11 +4,12 @@
 
 namespace DotNetNuke.Web.Mvp
 {
-    using System;
     using System.Collections.Generic;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public class SettingsModel
+    using DotNetNuke.Internal.SourceGenerators;
+
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public partial class SettingsModel
     {
         public Dictionary<string, string> ModuleSettings { get; set; }
 

@@ -15,11 +15,12 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>Controller to manage IP Filters.</summary>
-    public class IPFilterController : ComponentBase<IIPFilterController, IPFilterController>, IIPFilterController
+    public partial class IPFilterController : ComponentBase<IIPFilterController, IPFilterController>, IIPFilterController
     {
         /// <summary>Initializes a new instance of the <see cref="IPFilterController"/> class.</summary>
         internal IPFilterController()
@@ -73,16 +74,6 @@ namespace DotNetNuke.Entities.Host
         public IPFilterInfo GetIPFilter(int ipFilter)
         {
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
-        public void IsIPAddressBanned(string ipAddress)
-        {
-            if (this.CheckIfBannedIPAddress(ipAddress))
-            {// should throw 403.6
-                throw new HttpException(403, string.Empty);
-            }
         }
 
         /// <inheritdoc/>

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Library.DTO
 {
     using System;
@@ -13,10 +12,11 @@ namespace Dnn.PersonaBar.Library.DTO
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>Persona Bar Settings For User.</summary>
     [DataContract]
-    public class UserSettings : Dictionary<string, object>, IXmlSerializable
+    public partial class UserSettings : Dictionary<string, object>, IXmlSerializable
     {
         [IgnoreDataMember]
         public bool ExpandPersonaBar
@@ -82,8 +82,8 @@ namespace Dnn.PersonaBar.Library.DTO
             reader.ReadEndElement();
         }
 
-        [Obsolete("The method add for backward compatible, should remove this in future release.")]
-        private void ReadLegacySettings(XmlReader reader)
+        [DnnDeprecated(9, 2, 1, "The method add for backward compatible, should remove this in future release.")]
+        private partial void ReadLegacySettings(XmlReader reader)
         {
             while (!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
             {

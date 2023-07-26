@@ -6,8 +6,10 @@ namespace DotNetNuke.Web.Mvp
 {
     using System;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public interface ISettingsView : IModuleViewBase
+    using DotNetNuke.Internal.SourceGenerators;
+
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public partial interface ISettingsView : IModuleViewBase
     {
         event EventHandler OnLoadSettings;
 

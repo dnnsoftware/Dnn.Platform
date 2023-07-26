@@ -1,7 +1,27 @@
 [
   {
+    "name": "DnnPlugins",
+    "folder": "DNN Platform/JavaScript Libraries/DnnPlugins/",
+    "destination":  "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "HoverIntent",
+    "folder": "DNN Platform/JavaScript Libraries/HoverIntent/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
     "name": "jQuery",
     "folder": "DNN Platform/JavaScript Libraries/jQuery/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "jQuery.Fileupload",
+    "folder": "DNN Platform/JavaScript Libraries/jQuery.Fileupload/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "jQuery.iframe-transport",
+    "folder": "DNN Platform/JavaScript Libraries/jQuery.iframe-transport/",
     "destination": "Install/JavaScriptLibrary"
   },
   {
@@ -32,7 +52,8 @@
   {
     "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform/",
-    "destination": "Install/Library"
+    "destination": "Install/Library",
+    "extension": "resources"
   },
   {
     "name": "MicrosoftFileSystemGlobbing",

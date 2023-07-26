@@ -23,7 +23,6 @@ namespace Dnn.PersonaBar.UI.Services
 
         /// GET: api/Portals/GetPortals
         /// <summary>Gets portals.</summary>
-        /// <param></param>
         /// <param name="addAll">Add all portals item in list.</param>
         /// <returns>List of portals.</returns>
         [HttpGet]

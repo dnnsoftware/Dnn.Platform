@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         void UpdateContentType(ContentType contentType);
 
-        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 which manages the cache automagically. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. ContentTypeController methods use DAL2 which manages the cache automagically. Scheduled removal in v11.0.0.")]
         void ClearContentTypeCache();
     }
 }

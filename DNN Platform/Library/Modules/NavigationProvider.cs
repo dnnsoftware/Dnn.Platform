@@ -6,12 +6,14 @@ namespace DotNetNuke.Modules.NavigationProvider
     using System;
     using System.Collections.Generic;
     using System.Web.UI;
+
     using DotNetNuke.Common;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
-    public abstract class NavigationProvider : UserControlBase
+    public abstract partial class NavigationProvider : UserControlBase
     {
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
 
@@ -980,8 +982,8 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
-        public static NavigationProvider Instance(string friendlyName)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial NavigationProvider Instance(string friendlyName)
         {
             return Instance(Globals.DependencyProvider, friendlyName);
         }

@@ -41,7 +41,9 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
     <DocumentationFile>bin\DotNetNuke.Authentication.LiveConnect.XML</DocumentationFile>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,7 +54,9 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
     <DocumentationFile>bin\DotNetNuke.Authentication.LiveConnect.XML</DocumentationFile>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.FileSystem
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -25,6 +24,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.FileSystem.Internal;
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.FileSystem
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Exposes methods to manage folders.</summary>
-    public class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
+    public partial class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
     {
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
@@ -410,7 +410,7 @@ namespace DotNetNuke.Services.FileSystem
             // always use _default portal for a super user
             int portalId = userInfo.IsSuperUser ? -1 : userInfo.PortalID;
 
-            string userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(userInfo);
+            string userFolderPath = PathUtils.GetUserFolderPathInternal(userInfo);
             return this.GetFolder(portalId, userFolderPath) ?? this.AddUserFolder(userInfo);
         }
 
@@ -766,29 +766,6 @@ namespace DotNetNuke.Services.FileSystem
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
-        /// <summary>Moves the specified folder and its contents to a new location.</summary>
-        /// <param name="folder">The folder to move.</param>
-        /// <param name="newFolderPath">The new folder path.</param>
-        /// <returns>The moved folder.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.1.  It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder) . Scheduled removal in v10.0.0.")]
-        public virtual IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath)
-        {
-            Requires.NotNull("folder", folder);
-            Requires.NotNullOrEmpty("newFolderPath", newFolderPath);
-
-            var nameCharIndex = newFolderPath.Substring(0, newFolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1;
-            var parentFolder = this.GetFolder(folder.PortalID, newFolderPath.Substring(0, nameCharIndex));
-            if (parentFolder.FolderID == folder.ParentID)
-            {
-                var newFolderName = newFolderPath.Substring(nameCharIndex, newFolderPath.Length - nameCharIndex - 1);
-                this.RenameFolder(folder, newFolderName);
-                return folder;
-            }
-
-            return this.MoveFolder(folder, parentFolder);
-        }
-
         /// <summary>Checks if a given folder path is valid.</summary>
         /// <param name="folderPath">The folder path.</param>
         /// <returns>A value indicating whether the folder path is valid.</returns>
@@ -846,23 +823,15 @@ namespace DotNetNuke.Services.FileSystem
                 this.AddFolder(folderMapping, DefaultUsersFoldersPath);
             }
 
-            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
-#pragma warning disable 612,618
-            var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
-#pragma warning restore 612,618
-
-            var folderPath = PathUtils.Instance.FormatFolderPath(string.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+            var rootFolder = PathUtils.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
+            var folderPath = PathUtils.Instance.FormatFolderPath($"{DefaultUsersFoldersPath}/{rootFolder}");
 
             if (!this.FolderExists(portalId, folderPath))
             {
                 this.AddFolder(folderMapping, folderPath);
             }
 
-            // GetUserFolderPathElement is deprecated without a replacement, it should have been internal only and will be removed in DNN v10, hence the warning disable here
-#pragma warning disable 612,618
-            folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
-#pragma warning restore 612,618
-
+            folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
             if (!this.FolderExists(portalId, folderPath))
             {
                 this.AddFolder(folderMapping, folderPath);

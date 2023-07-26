@@ -4,12 +4,13 @@
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
 
-    [Obsolete("Scheduled to become internal in v11.0.0.")]
-    public interface IPortalTemplateIO
+    using DotNetNuke.Internal.SourceGenerators;
+
+    [DnnDeprecated(9, 11, 1, "No replacement")]
+    public partial interface IPortalTemplateIO
     {
         IEnumerable<string> EnumerateTemplates();
 

@@ -3,18 +3,18 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.MemberDirectory.Presenters
 {
-    using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Modules.MemberDirectory.ViewModels;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Mvp;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public class ModuleSettingsPresenter : ModuleSettingsPresenter<ISettingsView<MemberDirectorySettingsModel>, MemberDirectorySettingsModel>
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public partial class ModuleSettingsPresenter : ModuleSettingsPresenter<ISettingsView<MemberDirectorySettingsModel>, MemberDirectorySettingsModel>
     {
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPresenter"/> class.</summary>
         /// <param name="view"></param>

@@ -8,13 +8,14 @@ namespace DotNetNuke.Services.Authentication
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.UserRequest;
 
     /// <summary>
     /// The AuthenticationLoginBase class provides a bas class for Authentication
     /// Login controls.
     /// </summary>
-    public abstract class AuthenticationLoginBase : UserModuleBase
+    public abstract partial class AuthenticationLoginBase : UserModuleBase
     {
         /// <summary>Initializes a new instance of the <see cref="AuthenticationLoginBase"/> class.</summary>
         protected AuthenticationLoginBase()
@@ -60,8 +61,8 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Gets or sets the Redirect Url for this control.</summary>
         public string RedirectURL { get; set; }
 
-        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
-        public static string GetIPAddress()
+        [DnnDeprecated(9, 2, 0, "Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
+        public static partial string GetIPAddress()
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
         }

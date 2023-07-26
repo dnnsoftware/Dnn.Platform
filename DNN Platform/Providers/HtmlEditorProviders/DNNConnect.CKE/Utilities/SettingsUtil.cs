@@ -360,7 +360,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             {
                                 RoleId = objRole.RoleID,
                                 RoleName = objRole.RoleName,
-                                UploadFileLimit = Convert.ToInt32(uploadFileLimit)
+                                UploadFileLimit = Convert.ToInt32(uploadFileLimit),
                             })
                     .ToList();
 
@@ -383,6 +383,23 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
 
                 currentSettings.UploadSizeRoles = listUploadSizeRoles;
+
+                if (
+                    filteredSettings.Any(
+                        setting => setting.Name.Equals($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}")))
+                {
+                    var settingValue =
+                        filteredSettings.FirstOrDefault(
+                            s => s.Name.Equals($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}")).Value;
+
+                    if (!string.IsNullOrEmpty(settingValue))
+                    {
+                        if (bool.TryParse(settingValue, out var bResult))
+                        {
+                            currentSettings.BrowserAllowFollowFolderPerms = bResult;
+                        }
+                    }
+                }
 
                 if (
                     filteredSettings.Any(
@@ -452,6 +469,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                             break;
                         case "standard":
+                            if (currentSettings.BrowserAllowFollowFolderPerms)
+                            {
+                                if (Utility.CheckIfUserHasFolderReadAccess(currentSettings.BrowserRootDirId, portalSettings))
+                                {
+                                    currentSettings.BrowserMode = BrowserType.StandardBrowser;
+                                    break;
+                                }
+
+                                currentSettings.BrowserMode = BrowserType.None;
+                            }
+
+                            // If the user doesn't get the browser through folder permissions, check the browser-allowed roles
                             foreach (string sRoleName in roles)
                             {
                                 if (PortalSecurity.IsInRoles(sRoleName))
@@ -1172,6 +1201,15 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             currentSettings.UploadSizeRoles = listUploadSizeRoles;
 
+            if (!string.IsNullOrEmpty((string)hshModSet[$"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}"]))
+            {
+                bool bResult;
+                if (bool.TryParse((string)hshModSet[$"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}"], out bResult))
+                {
+                    currentSettings.BrowserAllowFollowFolderPerms = bResult;
+                }
+            }
+
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.ROLES)]))
             {
                 string sRoles = (string)hshModSet[string.Format("{0}{1}", key, SettingConstants.ROLES)];
@@ -1219,6 +1257,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                         break;
                     case "standard":
+                        if (currentSettings.BrowserAllowFollowFolderPerms)
+                        {
+                            if (Utility.CheckIfUserHasFolderReadAccess(currentSettings.BrowserRootDirId, portalSettings))
+                            {
+                                currentSettings.BrowserMode = BrowserType.StandardBrowser;
+                                break;
+                            }
+
+                            currentSettings.BrowserMode = BrowserType.None;
+                        }
+
+                        // If the user doesn't get the browser through folder permissions, check the browser-allowed roles
                         foreach (string sRoleName in roles)
                         {
                             if (PortalSecurity.IsInRoles(sRoleName))
@@ -1566,12 +1616,23 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                         break;
                     case "standard":
+                        if (settings.BrowserAllowFollowFolderPerms)
+                        {
+                            if (Utility.CheckIfUserHasFolderReadAccess(settings.BrowserRootDirId, portalSettings))
+                            {
+                                settings.BrowserMode = BrowserType.StandardBrowser;
+                                break;
+                            }
+
+                            settings.BrowserMode = BrowserType.None;
+                        }
+
+                        // If the user doesn't get the browser through folder permissions, check the browser-allowed roles
                         foreach (string sRoleName in roles)
                         {
                             if (PortalSecurity.IsInRoles(sRoleName))
                             {
                                 settings.BrowserMode = BrowserType.StandardBrowser;
-
                                 break;
                             }
 
@@ -1702,6 +1763,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 ResizeWidth = oldDefaultSettings.iResizeWidth,
                 ToolBarRoles = oldDefaultSettings.listToolbRoles,
                 BlankText = oldDefaultSettings.sBlankText,
+                BrowserAllowFollowFolderPerms = oldDefaultSettings.BrowserAllowFollowFolderPerms,
                 BrowserRoles = oldDefaultSettings.sBrowserRoles,
                 Browser = oldDefaultSettings.sBrowser,
                 Config =

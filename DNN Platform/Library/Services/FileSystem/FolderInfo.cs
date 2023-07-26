@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.FileSystem
@@ -31,43 +31,6 @@ namespace DotNetNuke.Services.FileSystem
         public FolderInfo()
             : this(false)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="folderpath"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="isProtected"></param>
-        /// <param name="isCached"></param>
-        /// <param name="lastUpdated"></param>
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
-        public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-            : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
-        /// <param name="uniqueId"></param>
-        /// <param name="portalId"></param>
-        /// <param name="folderpath"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="isProtected"></param>
-        /// <param name="isCached"></param>
-        /// <param name="lastUpdated"></param>
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
-        public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-        {
-            this.FolderID = Null.NullInteger;
-            this.UniqueId = uniqueId;
-            this.VersionGuid = Guid.NewGuid();
-            this.WorkflowID = Null.NullInteger;
-
-            this.PortalID = portalId;
-            this.FolderPath = folderpath;
-            this.StorageLocation = storageLocation;
-            this.IsProtected = isProtected;
-            this.IsCached = isCached;
-            this.LastUpdated = lastUpdated;
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>

@@ -13,6 +13,7 @@ namespace DotNetNuke.UI.Utilities
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
@@ -20,7 +21,7 @@ namespace DotNetNuke.UI.Utilities
     /// Class    : ClientAPI
     ///
     /// <summary>Library responsible for interacting with DNN Client API.</summary>
-    public class DNNClientAPI
+    public partial class DNNClientAPI
     {
         private static readonly Hashtable ObjEnabledClientPersonalizationKeys = new Hashtable();
 
@@ -36,16 +37,6 @@ namespace DotNetNuke.UI.Utilities
         {
             GetPersonalization = 0,
             SetPersonalization = 1,
-        }
-
-        /// <summary>Adds client side body.onload event handler.</summary>
-        /// <param name="objPage">Current page rendering content.</param>
-        /// <param name="strJSFunction">Javascript function name to execute.</param>
-        [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
-        public static void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
-        {
-            // legacy implementation replaced
-            AddBodyOnLoad(objPage, strJSFunction, strJSFunction);
         }
 
         public static void SetInitialFocus(Page objPage, Control control)

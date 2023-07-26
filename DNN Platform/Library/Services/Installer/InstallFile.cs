@@ -9,11 +9,13 @@ namespace DotNetNuke.Services.Installer
     using System.IO.Compression;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     using ICSharpCode.SharpZipLib.Zip;
 
     /// <summary>The InstallFile class represents a single file in an Installer Package.</summary>
     [Serializable]
-    public class InstallFile
+    public partial class InstallFile
     {
         private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
 
@@ -84,7 +86,7 @@ namespace DotNetNuke.Services.Installer
             this.Path = filePath;
         }
 
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compresstion types. Scheduled for removal in v11.0.0.")]
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -278,8 +280,8 @@ namespace DotNetNuke.Services.Installer
             File.SetLastWriteTime(this.TempFileName, entry.LastWriteTime.LocalDateTime);
         }
 
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0.")]
-        private void ReadZip(ZipInputStream unzip, ZipEntry entry)
+        [DnnDeprecated(9, 11, 0, "No replacement")]
+        private partial void ReadZip(ZipInputStream unzip, ZipEntry entry)
         {
             this.ParseFileName(entry.Name);
             Util.WriteStream(unzip, this.TempFileName);

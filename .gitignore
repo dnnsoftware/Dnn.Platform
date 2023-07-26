@@ -146,3 +146,6 @@ yarn-error.log
 /Build/bin/
 /.dotnet/
 /Build/Tools/
+
+/DotNetNuke.Internal.SourceGenerators/bin/
+/DNN Platform/Tests/DotNetNuke.Tests.SourceGenerators/Snapshots/*.received.*

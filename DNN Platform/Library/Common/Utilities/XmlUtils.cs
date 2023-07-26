@@ -18,10 +18,11 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
 
     /// <summary>The XmlUtils class provides Shared/Static methods for manipulating xml files.</summary>
-    public class XmlUtils
+    public partial class XmlUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(XmlUtils));
 
@@ -763,8 +764,8 @@ namespace DotNetNuke.Common.Utilities
             return sb.ToString();
         }
 
-        [Obsolete("This method is obsolete. Use .Net XmlDocument.Load instead. Scheduled removal in v11.0.0.")]
-        public static XmlDocument GetXMLContent(string contentUrl)
+        [DnnDeprecated(7, 0, 0, "Use XmlDocument.Load instead", RemovalVersion = 11)]
+        public static partial XmlDocument GetXMLContent(string contentUrl)
         {
             // This function reads an Xml document via a Url and returns it as an XmlDocument object
             var functionReturnValue = new XmlDocument { XmlResolver = null };

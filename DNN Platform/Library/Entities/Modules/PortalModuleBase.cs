@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
@@ -30,7 +31,7 @@ namespace DotNetNuke.Entities.Modules
     /// The PortalModuleBase class defines portal specific properties
     /// that are used by the portal framework to correctly display portal modules.
     /// </summary>
-    public class PortalModuleBase : UserControlBase, IModuleControl
+    public partial class PortalModuleBase : UserControlBase, IModuleControl
     {
         protected static readonly Regex FileInfoRegex = new Regex(
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
@@ -186,7 +187,7 @@ namespace DotNetNuke.Entities.Modules
         ///   Gets the CacheDirectory property is used to return the location of the "Cache"
         ///   Directory for the Module.
         /// </summary>
-        [Obsolete("This property is deprecated.  Plaese use ModuleController.CacheDirectory(). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Please use ModuleController.CacheDirectory(). Scheduled removal in v11.0.0.")]
         public string CacheDirectory
         {
             get
@@ -199,7 +200,7 @@ namespace DotNetNuke.Entities.Modules
         ///   Gets the CacheFileName property is used to store the FileName for this Module's
         ///   Cache.
         /// </summary>
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
         public string CacheFileName
         {
             get
@@ -211,7 +212,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
         public string CacheKey
         {
             get
@@ -387,8 +388,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
-        public string GetCacheFileName(int tabModuleId)
+        [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheFileName(TabModuleID)", RemovalVersion = 11)]
+        public partial string GetCacheFileName(int tabModuleId)
         {
             string strCacheKey = "TabModule:";
             strCacheKey += tabModuleId + ":";
@@ -396,8 +397,8 @@ namespace DotNetNuke.Entities.Modules
             return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
-        [Obsolete("This property is deprecated.  Please use ModuleController.CacheKey(TabModuleID). Scheduled removal in v11.0.0.")]
-        public string GetCacheKey(int tabModuleId)
+        [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheKey(TabModuleID)", RemovalVersion = 11)]
+        public partial string GetCacheKey(int tabModuleId)
         {
             string strCacheKey = "TabModule:";
             strCacheKey += tabModuleId + ":";
@@ -405,8 +406,8 @@ namespace DotNetNuke.Entities.Modules
             return strCacheKey;
         }
 
-        [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId). Scheduled removal in v11.0.0.")]
-        public void SynchronizeModule()
+        [DnnDeprecated(7, 0, 0, "Please use ModuleController.SynchronizeModule(ModuleId)", RemovalVersion = 11)]
+        public partial void SynchronizeModule()
         {
             ModuleController.SynchronizeModule(this.ModuleId);
         }

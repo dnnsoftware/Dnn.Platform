@@ -13,9 +13,9 @@ namespace DotNetNuke.Security.Membership
         LOGIN_SUPERUSER = 2,
         LOGIN_USERLOCKEDOUT = 3,
         LOGIN_USERNOTAPPROVED = 4,
-        [Obsolete("Deprecated in 9.8.1.  Scheduled removal in v11.0.0.  No alternative method implemented.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. No alternative method implemented. Scheduled for removal in v11.0.0.")]
         LOGIN_INSECUREADMINPASSWORD = 5,
-        [Obsolete("Deprecated in 9.8.1.  Scheduled removal in v11.0.0.  No alternative method implemented.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. No alternative method implemented. Scheduled for removal in v11.0.0.")]
         LOGIN_INSECUREHOSTPASSWORD = 6,
     }
 }

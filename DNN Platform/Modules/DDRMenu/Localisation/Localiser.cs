@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +19,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using MenuNode = DotNetNuke.Web.DDRMenu.MenuNode;
 
     /// <summary>Implements the localization logic for all providers.</summary>
-    public class Localiser : ILocaliser
+    public partial class Localiser : ILocaliser
     {
-        private readonly IEnumerable<ILocalisation> localizations;
-        private readonly IPortalController portalController;
         private static bool apiChecked;
         private static ILocalisation localisationApi;
+
+        private readonly IEnumerable<ILocalisation> localizations;
+        private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="Localiser"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -71,8 +73,8 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
         /// <summary>Localizes a single node.</summary>
         /// <param name="node">The node to localize.</param>
-        [Obsolete("Deprecated in DNN 10.0.0, scheduled removal in v12. Use overload taking a portalId.")]
-        public void LocaliseNode(MenuNode node)
+        [DnnDeprecated(10, 0, 0, "Use overload taking a portalId.")]
+        public partial void LocaliseNode(MenuNode node)
         {
             this.LocaliseNode(node, this.portalController.GetCurrentSettings().PortalId);
         }

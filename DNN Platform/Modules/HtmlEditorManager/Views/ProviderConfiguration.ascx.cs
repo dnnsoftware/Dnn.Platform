@@ -9,11 +9,12 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
 
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
     using DotNetNuke.Web.Mvp;
 
     /// <summary>View control for selecting an HTML provider.</summary>
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial class ProviderConfiguration : ModuleView<ProviderConfigurationViewModel>, IProviderConfigurationView
     {
         /// <summary>Occurs when the save button is clicked.</summary>

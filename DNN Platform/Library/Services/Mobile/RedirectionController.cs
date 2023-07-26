@@ -27,8 +27,6 @@ namespace DotNetNuke.Services.Mobile
 
     public class RedirectionController : IRedirectionController
     {
-        private readonly IEventLogger eventLogger;
-        private readonly IPortalController portalController;
         private const string DisableMobileRedirectCookieName = "disablemobileredirect";
         private const string DisableRedirectPresistCookieName = "disableredirectpresist";
         private const string DisableMobileRedirectQueryStringName = "nomo"; // google uses the same name nomo=1 means do not redirect to mobile
@@ -38,6 +36,9 @@ namespace DotNetNuke.Services.Mobile
         private const string FullSiteUrlCacheKey = "FullSiteUrl_{0}_{1}";
         private const string MobileSiteUrlCacheKey = "MobileSiteUrl_{0}_{1}";
         private const int UrlsCacheTimeout = 60;
+
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]

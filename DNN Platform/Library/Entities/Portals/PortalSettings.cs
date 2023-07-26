@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Gets the mode the user is viewing the page in.</summary>
-        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. Use Personalization.GetUserMode() instead. Scheduled removal in v11.0.0.")]
         public Mode UserMode
         {
             get => Personalization.GetUserMode();
@@ -383,9 +383,6 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public int SearchTabId { get; set; }
 
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v10.0.0.")]
-        public int SiteLogHistory { get; set; }
-
         /// <inheritdoc/>
         public int SplashTabId { get; set; }
 
@@ -459,11 +456,6 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public bool EnableCompositeFiles { get; internal set; }
 
-        /// <summary>Gets a value indicating whether gets whether to use the module effect in edit mode.</summary>
-        /// <remarks>Defaults to True.</remarks>
-        [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-        public bool EnableModuleEffect { get; internal set; }
-
         /// <inheritdoc />
         public bool EnablePopUps { get; internal set; }
 
@@ -471,8 +463,7 @@ namespace DotNetNuke.Entities.Portals
         public bool EnableRegisterNotification { get; internal set; }
 
         /// <inheritdoc />
-        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0.")]
-
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. This setting is no longer relevant as skin widgets are no longer supported. Scheduled removal in v11.0.0.")]
         public bool EnableSkinWidgets { get; internal set; }
 
         /// <inheritdoc />
