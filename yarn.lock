@@ -1595,7 +1595,7 @@ __metadata:
     eslint-plugin-filenames: ^1.3.2
     eslint-plugin-import: ^2.27.5
     eslint-plugin-jest: ^22.21.0
-    eslint-plugin-react: ^7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     interact.js: ^1.2.8
@@ -4854,7 +4854,7 @@ __metadata:
     es6-object-assign: 1.1.0
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     i18n-webpack-plugin: 1.0.0
@@ -5384,7 +5384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array-includes@npm:^3.0.3, array-includes@npm:^3.1.6":
+"array-includes@npm:^3.0.3, array-includes@npm:^3.1.1, array-includes@npm:^3.1.6":
   version: 3.1.6
   resolution: "array-includes@npm:3.1.6"
   dependencies:
@@ -9486,7 +9486,7 @@ __metadata:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     less: 4.1.3
@@ -10459,7 +10459,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:7.33.0, eslint-plugin-react@npm:^7.33.0":
+"eslint-plugin-react@npm:7.13.0":
+  version: 7.13.0
+  resolution: "eslint-plugin-react@npm:7.13.0"
+  dependencies:
+    array-includes: ^3.0.3
+    doctrine: ^2.1.0
+    has: ^1.0.3
+    jsx-ast-utils: ^2.1.0
+    object.fromentries: ^2.0.0
+    prop-types: ^15.7.2
+    resolve: ^1.10.1
+  peerDependencies:
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: e146e3e6422ff89d58b55b347fe25cf15a9003d5753cc924d70d78b713aa2c88cf137d23c44b8ccb8bcf02def2377dcbc9d3de8b5365344928756b036db7757d
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react@npm:7.33.0":
   version: 7.33.0
   resolution: "eslint-plugin-react@npm:7.33.0"
   dependencies:
@@ -10835,7 +10852,7 @@ __metadata:
     es6-promise: 4.2.8
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     json-loader: ^0.5.7
@@ -10972,7 +10989,7 @@ __metadata:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     less: 4.1.3
@@ -14824,6 +14841,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jsx-ast-utils@npm:^2.1.0":
+  version: 2.4.1
+  resolution: "jsx-ast-utils@npm:2.4.1"
+  dependencies:
+    array-includes: ^3.1.1
+    object.assign: ^4.1.0
+  checksum: 833477231266631e0def7ab5fa5da386790130ce5f9ab5db22fb3a8e67ee0adba9082ff27687e5c64c893af00beeb2285a7309cbc40c5edbcafdaf4e9de069a1
+  languageName: node
+  linkType: hard
+
 "jsx-ast-utils@npm:^2.4.1 || ^3.0.0":
   version: 3.3.4
   resolution: "jsx-ast-utils@npm:3.3.4"
@@ -15177,7 +15204,7 @@ fsevents@^1.2.7:
     es6-object-assign: 1.1.0
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
@@ -17333,7 +17360,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"object.fromentries@npm:^2.0.0 || ^1.0.0, object.fromentries@npm:^2.0.5, object.fromentries@npm:^2.0.6":
+"object.fromentries@npm:^2.0.0, object.fromentries@npm:^2.0.0 || ^1.0.0, object.fromentries@npm:^2.0.5, object.fromentries@npm:^2.0.6":
   version: 2.0.6
   resolution: "object.fromentries@npm:2.0.6"
   dependencies:
@@ -17811,7 +17838,7 @@ fsevents@^1.2.7:
     eslint: ^7.32.0
     eslint-import-resolver-webpack: ^0.13.2
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jest: ^28.1.3
@@ -18971,7 +18998,7 @@ fsevents@^1.2.7:
     eslint-loader: 4.0.2
     eslint-plugin-babel: ^5.3.1
     eslint-plugin-jest: ^22.21.0
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     extract-text-webpack-plugin: ^3.0.2
     fbjs: "*"
@@ -20719,7 +20746,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"resolve@^1.1.6, resolve@^1.10.0, resolve@^1.20.0, resolve@npm:^1.11.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.22.1":
+"resolve@^1.1.6, resolve@^1.10.0, resolve@^1.20.0, resolve@npm:^1.10.1, resolve@npm:^1.11.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.22.1":
   version: 1.22.3
   resolution: "resolve@npm:1.22.3"
   dependencies:
@@ -20745,7 +20772,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.11.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.11.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>":
   version: 1.22.3
   resolution: "resolve@patch:resolve@npm%3A1.22.3#~builtin<compat/resolve>::version=1.22.3&hash=c3c19d"
   dependencies:
@@ -20905,7 +20932,7 @@ fsevents@^1.2.7:
     es6-object-assign: ^1.1.0
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
@@ -21169,7 +21196,7 @@ fsevents@^1.2.7:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
@@ -21319,7 +21346,7 @@ fsevents@^1.2.7:
     es6-object-assign: 1.1.0
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
@@ -21425,7 +21452,7 @@ fsevents@^1.2.7:
     dayjs: ^1.11.9
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     less: 4.1.3
@@ -21737,7 +21764,7 @@ fsevents@^1.2.7:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     i18n-webpack-plugin: 1.0.0
     jwt-decode: 2.2.0
@@ -21790,7 +21817,7 @@ fsevents@^1.2.7:
     eslint: 7.32.0
     eslint-loader: 4.0.2
     eslint-plugin-jest: ^22.21.0
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jest: ^28.1.3
@@ -21835,7 +21862,7 @@ fsevents@^1.2.7:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     less: 4.1.3
@@ -22894,7 +22921,7 @@ fsevents@^1.2.7:
     es6-object-assign: 1.1.0
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
@@ -22936,7 +22963,7 @@ fsevents@^1.2.7:
     es6-object-assign: 1.1.0
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
@@ -23175,7 +23202,7 @@ fsevents@^1.2.7:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     less: 4.1.3
@@ -24129,7 +24156,7 @@ fsevents@^1.2.7:
     css-loader: 2.1.1
     eslint: 7.32.0
     eslint-loader: 4.0.2
-    eslint-plugin-react: 7.33.0
+    eslint-plugin-react: 7.13.0
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jest: ^28.1.3

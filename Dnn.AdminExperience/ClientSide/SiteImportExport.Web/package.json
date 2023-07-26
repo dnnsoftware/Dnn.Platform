@@ -27,7 +27,7 @@
     "css-loader": "2.1.1",
     "eslint": "7.32.0",
     "eslint-loader": "4.0.2",
-    "eslint-plugin-react": "7.33.0",
+    "eslint-plugin-react": "7.13.0",
     "eslint-plugin-spellcheck": "0.0.11",
     "i18n-webpack-plugin": "1.0.0",
     "jwt-decode": "2.2.0",
