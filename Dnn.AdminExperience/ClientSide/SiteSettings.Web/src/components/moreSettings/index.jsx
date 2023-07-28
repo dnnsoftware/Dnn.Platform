@@ -447,6 +447,7 @@ MoreSettingsPanelBody.propTypes = {
     openHtmlEditorManager: PropTypes.func,
     otherSettings: PropTypes.object,
     otherSettingsClientModified: PropTypes.bool,
+    cultureCode: PropTypes.string,
 };
 
 function mapStateToProps(state) {
