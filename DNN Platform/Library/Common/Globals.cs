@@ -528,7 +528,7 @@ namespace DotNetNuke.Common
         /// <example>If a 09.08.01.01.sqlDataProvider file exists for a provided version 09.08.01 this method will return true.</example>
         /// <param name="version">The version.</param>
         /// <returns>A value indicating whether any incremental sql script file exists.</returns>
-        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        [DnnDeprecated(9, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
         public static partial bool IncrementalVersionExists(Version version) => applicationStatusInfo.IncrementalVersionExists(version);
 
         /// <summary>Builds the cross tab dataset.</summary>
@@ -900,20 +900,20 @@ namespace DotNetNuke.Common
 
         /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
-        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        [DnnDeprecated(9, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
         public static partial void UpdateDataBaseVersion(Version version) => applicationStatusInfo.UpdateDatabaseVersion(version);
 
         /// <summary>Updates the database version.</summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment (revision) number.</param>
-        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        [DnnDeprecated(9, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
         public static partial void UpdateDataBaseVersionIncrement(Version version, int increment) =>
             applicationStatusInfo.UpdateDatabaseVersionIncrement(version, increment);
 
         /// <summary>Gets the last applied iteration (revision).</summary>
         /// <param name="version">The version for which to check the last revision.</param>
         /// <returns>The last applied iteration (revision) for the requested version.</returns>
-        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        [DnnDeprecated(9, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
         public static partial int GetLastAppliedIteration(Version version) =>
             applicationStatusInfo.GetLastAppliedIteration(version);
 
@@ -1217,7 +1217,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Sets the status.</summary>
         /// <param name="status">The status.</param>
-        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        [DnnDeprecated(9, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
         public static partial void SetStatus(UpgradeStatus status) =>
             applicationStatusInfo.SetStatus((DotNetNuke.Abstractions.Application.UpgradeStatus)status);
 
@@ -3452,7 +3452,7 @@ namespace DotNetNuke.Common
         /// since the connection string may not have been configured yet, which can occur during the installation
         /// wizard.
         /// </remarks>
-        [DnnDeprecated(7, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
+        [DnnDeprecated(9, 7, 1, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.IApplicationStatusInfo' instead")]
         internal static partial bool IsInstalled() => applicationStatusInfo.IsInstalled();
 
         /// <summary>Gets the culture code of the tab.</summary>
