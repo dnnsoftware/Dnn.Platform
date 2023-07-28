@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Tests
 {
     using Dnn.PersonaBar.Library.Helper;
@@ -9,45 +8,58 @@ namespace Dnn.PersonaBar.Pages.Tests
     using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Recyclebin.Components;
     using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class RestorePageUnitTests
     {
-        private TabInfo _tab;
-        private string _message;
-        private PortalSettings _portalSettings;
-        private IConsoleCommand _restorePage;
+        private readonly int tabId = 91;
+        private readonly int testPortalId = 1;
 
-        private Mock<ITabController> _tabControllerMock;
-        private Mock<IRecyclebinController> _recyclebinControllerMock;
-        private Mock<IContentVerifier> _contentVerifierMock;
+        private TabInfo tab;
+        private PortalSettings portalSettings;
+        private IConsoleCommand restorePage;
 
-        private int _tabId = 91;
-        private int _testPortalId = 1;
+        private Mock<ITabController> tabControllerMock;
+        private Mock<IRecyclebinController> recycleBinControllerMock;
+        private Mock<IContentVerifier> contentVerifierMock;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void RunBeforeAnyTest()
         {
-            this._message = string.Empty;
+            this.tab = new TabInfo { TabID = this.tabId, PortalID = this.testPortalId, };
+            this.portalSettings = new PortalSettings { PortalId = this.testPortalId, };
 
-            this._tab = new TabInfo();
-            this._tab.TabID = this._tabId;
-            this._tab.PortalID = this._testPortalId;
+            this.tabControllerMock = new Mock<ITabController>();
+            this.recycleBinControllerMock = new Mock<IRecyclebinController>();
+            this.contentVerifierMock = new Mock<IContentVerifier>();
 
-            this._portalSettings = new PortalSettings();
-            this._portalSettings.PortalId = this._testPortalId;
+            this.tabControllerMock.SetReturnsDefault(this.tab);
+            this.contentVerifierMock.SetReturnsDefault(true);
+            string message;
+            this.recycleBinControllerMock.Setup(r => r.RestoreTab(this.tab, out message));
 
-            this._tabControllerMock = new Mock<ITabController>();
-            this._recyclebinControllerMock = new Mock<IRecyclebinController>();
-            this._contentVerifierMock = new Mock<IContentVerifier>();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.tabControllerMock.Object);
+                    services.AddSingleton(this.recycleBinControllerMock.Object);
+                    services.AddSingleton(this.contentVerifierMock.Object);
+                });
+        }
 
-            this._tabControllerMock.SetReturnsDefault(this._tab);
-            this._contentVerifierMock.SetReturnsDefault(true);
-            this._recyclebinControllerMock.Setup(r => r.RestoreTab(this._tab, out this._message));
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -58,7 +70,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.SetupCommand();
 
             // Act
-            var result = this._restorePage.Run();
+            var result = this.restorePage.Run();
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -71,14 +83,14 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void Run_RestorePage_WithValidCommandForNonExistingTab_ShouldReturnErrorResponse()
         {
             // Arrange
-            this._tab = null;
+            this.tab = null;
 
-            this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
+            this.tabControllerMock.Setup(t => t.GetTab(this.tabId, this.testPortalId)).Returns(this.tab);
 
             this.SetupCommand();
 
             // Act
-            var result = this._restorePage.Run();
+            var result = this.restorePage.Run();
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -90,12 +102,12 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void Run_RestorePage_WithValidCommandForRequestedPortalNotAllowed_ShouldReturnErrorResponse()
         {
             // Arrange
-            this._contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(this._testPortalId, this._portalSettings, false)).Returns(false);
+            this.contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(this.testPortalId, this.portalSettings, false)).Returns(false);
 
             this.SetupCommand();
 
             // Act
-            var result = this._restorePage.Run();
+            var result = this.restorePage.Run();
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -107,14 +119,13 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void Run_RestorePage_WithValidCommandForNotRestoreTab_ShouldReturnErrorResponse()
         {
             // Arrange
-            this._message = "Tab not found";
-
-            this._recyclebinControllerMock.Setup(r => r.RestoreTab(this._tab, out this._message));
+            var message = "Tab not found";
+            this.recycleBinControllerMock.Setup(r => r.RestoreTab(this.tab, out message));
 
             this.SetupCommand();
 
             // Act
-            var result = this._restorePage.Run();
+            var result = this.restorePage.Run();
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -123,10 +134,10 @@ namespace Dnn.PersonaBar.Pages.Tests
 
         private void SetupCommand()
         {
-            this._restorePage = new RestorePage(this._tabControllerMock.Object, this._recyclebinControllerMock.Object, this._contentVerifierMock.Object);
+            this.restorePage = new RestorePage(this.tabControllerMock.Object, this.recycleBinControllerMock.Object, this.contentVerifierMock.Object);
 
-            var args = new[] { "restore-page", this._tabId.ToString() };
-            this._restorePage.Initialize(args, this._portalSettings, null, 0);
+            var args = new[] { "restore-page", this.tabId.ToString() };
+            this.restorePage.Initialize(args, this.portalSettings, null, 0);
         }
     }
 }

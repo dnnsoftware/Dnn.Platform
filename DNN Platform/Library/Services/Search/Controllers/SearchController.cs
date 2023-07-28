@@ -5,15 +5,20 @@ namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Business Layer to manage Search.</summary>
-    public class SearchController : ServiceLocator<ISearchController, SearchController>
+    [DnnDeprecated(10, 0, 0, "Please resolve ISearchController via Dependency Injection")]
+    public partial class SearchController : ServiceLocator<ISearchController, SearchController>
     {
         /// <inheritdoc/>
         protected override Func<ISearchController> GetFactory()
         {
-            return () => new SearchControllerImpl();
+            return Globals.DependencyProvider.GetRequiredService<ISearchController>;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         /// <param name="package"></param>
         public PackageInfoDto(int portalId, PackageInfo package)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
             this.PackageType = package.PackageType;
             this.FriendlyName = package.FriendlyName;

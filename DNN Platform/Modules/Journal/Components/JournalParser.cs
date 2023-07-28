@@ -42,9 +42,26 @@ namespace DotNetNuke.Modules.Journal.Components
         /// <param name="profileId"></param>
         /// <param name="socialGroupId"></param>
         /// <param name="userInfo"></param>
-        public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
+        public JournalParser(
+            PortalSettings portalSettings,
+            int moduleId,
+            int profileId,
+            int socialGroupId,
+            UserInfo userInfo)
+            : this(null, portalSettings, moduleId, profileId, socialGroupId, userInfo)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="JournalParser"/> class.</summary>
+        /// <param name="navigationManager"></param>
+        /// <param name="portalSettings"></param>
+        /// <param name="moduleId"></param>
+        /// <param name="profileId"></param>
+        /// <param name="socialGroupId"></param>
+        /// <param name="userInfo"></param>
+        public JournalParser(INavigationManager navigationManager, PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.PortalSettings = portalSettings;
             this.ModuleId = moduleId;
             this.ProfileId = profileId;

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.Api
 {
     using System;
@@ -14,6 +13,7 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Web.Http.Hosting;
     using System.Web.Http.Routing;
 
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Web.Api;
     using Moq;
     using NUnit.Framework;
@@ -21,6 +21,20 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class DnnHttpControllerSelectorTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [TestCase("Sample")]
         [TestCase("SAmple")]
         [TestCase("SAMPLE")]

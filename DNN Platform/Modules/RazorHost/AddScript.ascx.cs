@@ -22,9 +22,17 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
         /// <summary>Initializes a new instance of the <see cref="AddScript"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public AddScript()
+            : this(null)
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AddScript"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public AddScript(INavigationManager navigationManager)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>

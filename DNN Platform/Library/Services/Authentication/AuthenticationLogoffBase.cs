@@ -18,7 +18,6 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Initializes a new instance of the <see cref="AuthenticationLogoffBase"/> class.</summary>
         public AuthenticationLogoffBase()
         {
-            this.DependencyProvider = Globals.DependencyProvider;
         }
 
         /// <summary>Fires when a LogOff occurs.</summary>
@@ -37,7 +36,7 @@ namespace DotNetNuke.Services.Authentication
         /// <value>
         /// The Dependency Service.
         /// </value>
-        protected new IServiceProvider DependencyProvider { get; }
+        protected new IServiceProvider DependencyProvider => Globals.GetCurrentServiceProvider();
 
         /// <summary>Handles the <see cref="LogOff"/> event.</summary>
         /// <param name="a">The event arguments.</param>

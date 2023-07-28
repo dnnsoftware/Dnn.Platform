@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Library.Containers
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -16,12 +16,17 @@ namespace Dnn.PersonaBar.Library.Containers
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Library.Model;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Personalization;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json.Linq;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -29,12 +34,25 @@ namespace Dnn.PersonaBar.Library.Containers
     public class PersonaBarContainer : IPersonaBarContainer
     {
         private static IPersonaBarContainer instance;
+        private readonly IPersonaBarController personaBarController;
 
-        public PersonaBarContainer(INavigationManager navigationManager)
+        /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
+        public PersonaBarContainer()
+            : this(null, null)
         {
-            this.NavigationManager = navigationManager;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="personaBarController">The Persona Bar controller.</param>
+        public PersonaBarContainer(INavigationManager navigationManager, IPersonaBarController personaBarController)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.personaBarController = personaBarController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarController>();
+        }
+
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please resolve via dependency injection. Scheduled removal in v12.0.0.")]
         public static IPersonaBarContainer Instance
         {
             get
@@ -79,7 +97,7 @@ namespace Dnn.PersonaBar.Library.Containers
         {
             var portalSettings = PortalSettings.Current;
 
-            return this.GetConfigration(portalSettings);
+            return this.GetConfiguration(portalSettings);
         }
 
         /// <inheritdoc/>
@@ -87,14 +105,14 @@ namespace Dnn.PersonaBar.Library.Containers
         {
         }
 
-        private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
+        private IDictionary<string, object> GetConfiguration(PortalSettings portalSettings)
         {
             var settings = new Dictionary<string, object>();
             var user = portalSettings.UserInfo;
             var portalId = portalSettings.PortalId;
             var preferredTimeZone = TimeZoneHelper.GetPreferredTimeZone(user.Profile.PreferredTimeZone);
 
-            var menuStructure = PersonaBarController.Instance.GetMenu(portalSettings, user);
+            var menuStructure = this.personaBarController.GetMenu(portalSettings, user);
 
             settings.Add("applicationPath", Globals.ApplicationPath);
             settings.Add("buildNumber", Host.CrmVersion.ToString(CultureInfo.InvariantCulture));

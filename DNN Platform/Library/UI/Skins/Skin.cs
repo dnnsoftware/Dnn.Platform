@@ -57,24 +57,46 @@ namespace DotNetNuke.UI.Skins
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         // ReSharper restore InconsistentNaming
+        private readonly ModuleInjectionManager moduleInjectionManager;
         private readonly ModuleCommunicate communicator = new ModuleCommunicate();
         private ArrayList actionEventListeners;
         private Control controlPanel;
         private Dictionary<string, Pane> panes;
 
         /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public Skin()
+            : this(null, null, null)
         {
-            this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager)
+            : this(moduleControlPipeline, navigationManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="moduleInjectionManager">The module injection manager.</param>
+        internal Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, ModuleInjectionManager moduleInjectionManager)
+        {
+            this.ModuleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.moduleInjectionManager = moduleInjectionManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<ModuleInjectionManager>();
         }
 
         /// <summary>Gets a Dictionary of Panes.</summary>
@@ -705,10 +727,8 @@ namespace DotNetNuke.UI.Skins
             // iterate page controls
             foreach (Control ctlControl in this.Controls)
             {
-                var objPaneControl = ctlControl as HtmlContainerControl;
-
                 // Panes must be runat=server controls so they have to have an ID
-                if (objPaneControl != null && !string.IsNullOrEmpty(objPaneControl.ID))
+                if (ctlControl is HtmlContainerControl objPaneControl && !string.IsNullOrEmpty(objPaneControl.ID))
                 {
                     // load the skin panes
                     switch (objPaneControl.TagName.ToLowerInvariant())
@@ -746,32 +766,29 @@ namespace DotNetNuke.UI.Skins
 
         private bool ProcessModule(ModuleInfo module)
         {
-            var success = true;
-            if (ModuleInjectionManager.CanInjectModule(module, this.PortalSettings))
+            if (!this.moduleInjectionManager.CanInjectModule(module, this.PortalSettings))
             {
-                // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
-                this.EnsureContentItemForModule(module);
-
-                Pane pane = this.GetPane(module);
-
-                if (pane != null)
-                {
-                    success = this.InjectModule(pane, module);
-                }
-                else
-                {
-                    var lex = new ModuleLoadException(Localization.GetString("PaneNotFound.Error"));
-                    this.Controls.Add(new ErrorContainer(this.PortalSettings, MODULELOAD_ERROR, lex).Container);
-                    Exceptions.LogException(lex);
-                }
+                return true;
             }
 
-            return success;
+            // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
+            this.EnsureContentItemForModule(module);
+
+            var pane = this.GetPane(module);
+            if (pane != null)
+            {
+                return this.InjectModule(pane, module);
+            }
+
+            var lex = new ModuleLoadException(Localization.GetString("PaneNotFound.Error"));
+            this.Controls.Add(new ErrorContainer(this.PortalSettings, MODULELOAD_ERROR, lex).Container);
+            Exceptions.LogException(lex);
+            return true;
         }
 
         /// <summary>Handle access denied errors by displaying an error message or by performing a redirect to a predefined "access denied URL".</summary>
         /// <param name="redirect"><see langword="true"/> to redirect to the access denied page, <see langword="false"/> (the default behavior) to display an Access Denied message on this page.</param>
-        private void HandleAccesDenied(bool redirect = false)
+        private void HandleAccessDenied(bool redirect = false)
         {
             var message = Localization.GetString("TabAccess.Error");
             if (redirect)
@@ -796,7 +813,7 @@ namespace DotNetNuke.UI.Skins
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
                 {
-                    this.HandleAccesDenied(true);
+                    this.HandleAccessDenied(true);
                 }
 
                 int urlVersion;
@@ -804,7 +821,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     if (!TabVersionUtils.CanSeeVersionedPages())
                     {
-                        this.HandleAccesDenied(false);
+                        this.HandleAccessDenied(false);
                         return true;
                     }
 
@@ -826,7 +843,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        this.HandleAccesDenied(false);
+                        this.HandleAccessDenied(false);
                     }
                 }
                 else

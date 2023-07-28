@@ -16,10 +16,6 @@ namespace DotNetNuke.Services.FileSystem
     /// </summary>
     public interface IFileManager
     {
-        /// <summary>Gets the system defined content types.</summary>
-        [Obsolete("Deprecated in DotNetNuke 7.4.2. It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled for removal in v10.0.0.")]
-        IDictionary<string, string> ContentTypes { get; }
-
         /// <summary>Gets current user's file upload extension whitelist.</summary>
         FileExtensionWhitelist WhiteList { get; }
 
@@ -97,12 +93,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>A boolean value indicating whether the file exists or not in the specified folder.</returns>
         bool FileExists(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles);
-
-        /// <summary>Gets the Content Type for the specified file extension.</summary>
-        /// <param name="extension">The file extension.</param>
-        /// <returns>The Content Type for the specified extension.</returns>
-        [Obsolete("Deprecated in DotNetNuke 7.4.2. It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension). Scheduled for removal in v10.0.0.")]
-        string GetContentType(string extension);
 
         /// <summary>Gets the file metadata for the specified file.</summary>
         /// <param name="fileID">The file identifier.</param>

@@ -76,16 +76,6 @@ namespace DotNetNuke.Entities.Host
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
-        /// <inheritdoc cref="IIPFilterController.IsIPAddressBanned"/>
-        [DnnDeprecated(7, 1, 0, "Please use IsIPBanned instead to return the value and apply your own logic", RemovalVersion = 10)]
-        public partial void IsIPAddressBanned(string ipAddress)
-        {
-            if (this.CheckIfBannedIPAddress(ipAddress))
-            {// should throw 403.6
-                throw new HttpException(403, string.Empty);
-            }
-        }
-
         /// <inheritdoc/>
         public bool IsIPBanned(string ipAddress)
         {

@@ -422,6 +422,8 @@ namespace DotNetNuke.Security.Roles
             }
 
             this.ClearRoleCache(role.PortalID);
+
+            EventManager.Instance.OnRoleUpdated(new RoleEventArgs() { Role = role });
         }
 
         /// <inheritdoc/>

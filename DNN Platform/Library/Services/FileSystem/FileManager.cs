@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.FileSystem
         private const int BufferSize = 4096;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IFileContentTypeManager.ContentTypes"/>
         public virtual IDictionary<string, string> ContentTypes
         {
             get { return FileContentTypeManager.Instance.ContentTypes; }

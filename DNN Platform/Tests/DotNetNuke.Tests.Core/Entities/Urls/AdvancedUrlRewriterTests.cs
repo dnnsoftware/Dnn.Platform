@@ -6,10 +6,7 @@
     using System.IO;
     using System.Reflection;
     using System.Web;
-
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -19,8 +16,8 @@
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
 
@@ -59,6 +56,7 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
             Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
@@ -67,11 +65,6 @@
             var simulator = new HttpSimulator(ApplicationPath, physicalAppPath);
             simulator.SimulateRequest(new Uri(SampleHttpsUrl));
             HttpContext.Current.Items.Add(UrlRewriteItemName, FullUrl);
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IPortalAliasService>());
             MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateNew<DataProvider>();
             MockComponentProvider.CreateNew<LoggingProvider>();
@@ -126,7 +119,9 @@
             dataProvider
                 .Setup(s => s.GetPortalAliases())
                 .Returns(() => portalAliasTable.CreateDataReader());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
+            using var serviceProvider = FakeServiceProvider.Setup();
+
             var urlRewriter = new AdvancedUrlRewriter();
             var checkForRedirectsMethod = typeof(AdvancedUrlRewriter)
                 .GetMethod(
@@ -134,7 +129,7 @@
                     BindingFlags.Static | BindingFlags.NonPublic);
             var requestUri = new Uri(UriUrl);
             var queryStringCollection = new NameValueCollection();
-            var friendlyUrlSettings = new FriendlyUrlSettings(GenericPortalId);
+            var friendlyUrlSettings = new FriendlyUrlSettings(PortalController.Instance, GenericPortalId);
             var urlAction = new UrlAction(
                 HttpScheme,
                 string.Empty,

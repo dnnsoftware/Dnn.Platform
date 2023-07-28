@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
         public ExtensionLanguagePackageEditor()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }

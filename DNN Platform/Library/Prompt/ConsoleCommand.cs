@@ -38,7 +38,7 @@ namespace DotNetNuke.Prompt
         protected IDictionary<string, string> Flags { get; private set; }
 
         private static ISerializationManager SerializationManager =>
-            Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+            Common.Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
         /// <inheritdoc/>
         public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
