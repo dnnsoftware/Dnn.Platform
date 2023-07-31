@@ -13,8 +13,9 @@ namespace DotNetNuke.Web.Mvc.Routing
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    internal class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
+    internal partial class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
         private List<int> prefixCounts;
 
@@ -27,9 +28,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.10.0. Scheduled for removal in v11.0.0, use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead.")]
-        public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
+        /// <inheritdoc cref="IPortalAliasMvcRouteManager.GetRouteName(string,string,int)"/>
+        [DnnDeprecated(9, 10, 0, "Use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead")]
+        public partial string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
         {
             return this.GetRouteName(moduleFolderName, routeName, (IPortalAliasInfo)portalAlias);
         }
@@ -50,9 +51,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.10.0. Scheduled for removal in v11.0.0, use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead.")]
-        public RouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
+        /// <inheritdoc cref="IPortalAliasMvcRouteManager.GetAllRouteValues"/>
+        [DnnDeprecated(9, 10, 0, "Use overload taking DotNetNuke.Abstractions.Portals.IPortalAliasInfo instead")]
+        public partial RouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
         {
             return this.GetAllRouteValues((IPortalAliasInfo)portalAliasInfo, routeValues);
         }

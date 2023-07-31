@@ -13,10 +13,8 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -30,8 +28,8 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">ModuleInfo of current module.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="tabId">The tab id.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static void DeserializeModule(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial void DeserializeModule(
             XmlNode nodeModule,
             ModuleInfo module,
             int portalId,
@@ -48,8 +46,8 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="tabId">The tab id.</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="hModules">The modules.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static void DeserializeModule(
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial void DeserializeModule(
             XmlNode nodeModule,
             XmlNode nodePane,
             int portalId,
@@ -66,8 +64,8 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">The ModuleInfo object to serialize.</param>
         /// <param name="includeContent">A flag that determines whether the content of the module is serialized.</param>
         /// <returns>An <see cref="XmlNode"/> representing the module.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
-        public static XmlNode SerializeModule(XmlDocument xmlModule, ModuleInfo module, bool includeContent)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IBusinessControllerProvider")]
+        public static partial XmlNode SerializeModule(XmlDocument xmlModule, ModuleInfo module, bool includeContent)
         {
             using var scope = Globals.GetOrCreateServiceScope();
             return SerializeModule(scope.ServiceProvider.GetRequiredService<IBusinessControllerProvider>(), xmlModule, module, includeContent);

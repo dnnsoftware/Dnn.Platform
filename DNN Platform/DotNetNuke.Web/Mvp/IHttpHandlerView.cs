@@ -4,13 +4,13 @@
 
 namespace DotNetNuke.Web.Mvp
 {
-    using System;
+    using DotNetNuke.Internal.SourceGenerators;
 
     using WebFormsMvp;
 
     /// <summary>Http handler of an WebForms MVP View.</summary>
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public interface IHttpHandlerView : IView
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public partial interface IHttpHandlerView : IView
     {
     }
 }

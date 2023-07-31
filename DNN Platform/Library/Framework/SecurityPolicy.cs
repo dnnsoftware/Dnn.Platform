@@ -9,7 +9,9 @@ namespace DotNetNuke.Framework
     using System.Security.Permissions;
     using System.Web;
 
-    public class SecurityPolicy
+    using DotNetNuke.Internal.SourceGenerators;
+
+    public partial class SecurityPolicy
     {
         public const string ReflectionPermission = "ReflectionPermission";
         public const string WebPermission = "WebPermission";

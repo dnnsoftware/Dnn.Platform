@@ -7,10 +7,11 @@ namespace DotNetNuke.Web.Razor
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
 
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public class RazorModuleControlFactory : BaseModuleControlFactory
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public partial class RazorModuleControlFactory : BaseModuleControlFactory
     {
         /// <inheritdoc/>
         public override int Priority => 100;
@@ -23,22 +24,22 @@ namespace DotNetNuke.Web.Razor
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public override partial Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new RazorHostControl("~/" + controlSrc);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public override partial Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         /// <inheritdoc/>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public override partial Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return this.CreateControl(containerControl, string.Empty, controlSrc);
         }

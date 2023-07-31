@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users.Membership;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Security.Permissions;
@@ -326,8 +327,8 @@ namespace DotNetNuke.Entities.Users
         /// <see cref="UserLoginStatus.LOGIN_INSECUREADMINPASSWORD"/> or
         /// <see cref="UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD"/>.
         /// </param>
-        [Obsolete("Deprecated in 9.8.1.  Scheduled removal in v11.0.0.  No alternative method implemented.")]
-        public static void CheckInsecurePassword(string username, string password, ref UserLoginStatus loginStatus)
+        [DnnDeprecated(9, 8, 1, "No alternative method implemented")]
+        public static partial void CheckInsecurePassword(string username, string password, ref UserLoginStatus loginStatus)
         {
             if (username == "admin" && (password == "admin" || password == "dnnadmin"))
             {
@@ -567,8 +568,8 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets a collection of Online Users.</summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public static ArrayList GetOnlineUsers(int portalId)
+        [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+        public static partial ArrayList GetOnlineUsers(int portalId)
         {
             return MembershipProvider.Instance().GetOnlineUsers(GetEffectivePortalId(portalId));
         }

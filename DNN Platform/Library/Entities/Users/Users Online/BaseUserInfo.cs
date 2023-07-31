@@ -5,13 +5,15 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      BaseUserInfo
     /// <summary>The BaseUserInfo class provides a base Entity for an online user.</summary>
     [Serializable]
-    [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-    public abstract class BaseUserInfo
+    [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+    public abstract partial class BaseUserInfo
     {
         private DateTime creationDate;
         private DateTime lastActiveDate;
@@ -19,7 +21,6 @@ namespace DotNetNuke.Entities.Users
         private int tabID;
 
         /// <summary>Gets or sets the PortalId for this online user.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int PortalID
         {
             get
@@ -34,7 +35,6 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Gets or sets the TabId for this online user.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int TabID
         {
             get
@@ -49,7 +49,6 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Gets or sets the CreationDate for this online user.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public DateTime CreationDate
         {
             get
@@ -64,7 +63,6 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Gets or sets the LastActiveDate for this online user.</summary>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public DateTime LastActiveDate
         {
             get

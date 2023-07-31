@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The LegacyUtil class is a Utility class that provides helper methods to transfer

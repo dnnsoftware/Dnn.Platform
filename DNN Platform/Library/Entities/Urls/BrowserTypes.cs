@@ -6,7 +6,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
 
-    [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Urls.BrowserTypes instead.")]
+    [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Urls.BrowserTypes instead. Scheduled removal in v11.0.0.")]
     public enum BrowserTypes
     {
         Normal = 0,

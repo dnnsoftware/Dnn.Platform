@@ -12,12 +12,13 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Log.EventLog;
     using Microsoft.VisualBasic;
 
     using Globals = DotNetNuke.Common.Globals;
 
-    public class SchedulingController
+    public partial class SchedulingController
     {
         public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {

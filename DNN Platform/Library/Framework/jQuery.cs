@@ -14,6 +14,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -24,7 +25,7 @@ namespace DotNetNuke.Framework
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
     // ReSharper disable once InconsistentNaming
-    public class jQuery
+    public partial class jQuery
     {
         /// <summary>Returns the default URL for a hosted version of the jQuery script.</summary>
         /// <remarks>

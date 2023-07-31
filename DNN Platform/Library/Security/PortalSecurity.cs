@@ -18,6 +18,7 @@ namespace DotNetNuke.Security
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Cookies;
     using DotNetNuke.Services.Cryptography;
 
@@ -95,14 +96,17 @@ namespace DotNetNuke.Security
         public enum FilterFlag
         {
             MultiLine = 1,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. A direct call to WebUtility.HtmlEncode should be used")]
-            NoMarkup = 2,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. A direct call to WebUtility.HtmlEncode should be used")]
-            NoScripting = 4,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. Parameterized SQL should be preferred for SQL Injection protection")]
-            NoSQL = 8,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. Individual string replacement should be completed")]
 
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
+            NoMarkup = 2,
+
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
+            NoScripting = 4,
+
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. Parameterized SQL should be preferred for SQL Injection protection. Scheduled for removal in v11.0.0.")]
+            NoSQL = 8,
+
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. Individual string replacement should be completed. Scheduled for removal in v11.0.0.")]
             NoAngleBrackets = 16,
             NoProfanity = 32,
         }

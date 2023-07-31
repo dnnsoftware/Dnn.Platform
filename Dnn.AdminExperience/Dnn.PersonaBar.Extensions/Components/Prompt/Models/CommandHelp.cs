@@ -7,12 +7,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     using Newtonsoft.Json;
 
     [Serializable]
     [JsonObject]
-    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
-    public class CommandHelp
+    [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project.")]
+    public partial class CommandHelp
     {
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }

@@ -10,11 +10,12 @@ namespace DotNetNuke.Instrumentation
     using System.Linq;
     using System.Web.Compilation;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using log4net.Config;
 
     /// <summary>Provides access to logging methods.  Obsolete, use <see cref="LoggerSource"/> instead.</summary>
-    [Obsolete("Deprecated in 7.0.1 due to poor performance, use LoggerSource.Instance. Scheduled removal in v11.0.0.")]
-    public static class DnnLog
+    [DnnDeprecated(7, 0, 1, "Use LoggerSource.Instance", RemovalVersion = 11)]
+    public static partial class DnnLog
     {
         private const string ConfigFile = "DotNetNuke.log4net.config";
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));

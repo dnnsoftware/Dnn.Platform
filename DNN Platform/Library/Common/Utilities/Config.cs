@@ -16,13 +16,14 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Config class provides access to the web.config file.</summary>
-    public class Config
+    public partial class Config
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Config));
 
@@ -113,8 +114,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Adds a code subdirectory to the configuration.</summary>
         /// <param name="name">The name of the code subdirectory.</param>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void AddCodeSubDirectory(string name)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void AddCodeSubDirectory(string name)
         {
             AddCodeSubDirectory(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -165,8 +166,8 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Creates a backup of the web.config file.</summary>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void BackupConfig()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void BackupConfig()
         {
             BackupConfig(Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
@@ -252,8 +253,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Returns the maximum file size allowed to be uploaded to the application in bytes.</summary>
         /// <returns>Size in bytes.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static long GetMaxUploadSize()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial long GetMaxUploadSize()
         {
             return GetMaxUploadSize(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -294,8 +295,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Returns the maximum file size allowed to be uploaded based on the request filter limit.</summary>
         /// <returns>Size in megabytes.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static long GetRequestFilterSize()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial long GetRequestFilterSize()
         {
             return GetRequestFilterSize(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -326,8 +327,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Sets the maximum file size allowed to be uploaded to the application in bytes.</summary>
         /// <param name="newSize">The new max upload size in bytes.</param>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void SetMaxUploadSize(long newSize)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void SetMaxUploadSize(long newSize)
         {
             SetMaxUploadSize(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -453,8 +454,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Gets the authentication cookie timeout value.</summary>
         /// <returns>The timeout value.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static int GetAuthCookieTimeout()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial int GetAuthCookieTimeout()
         {
             return GetAuthCookieTimeout(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -487,8 +488,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Gets optional persistent cookie timeout value from web.config.</summary>
         /// <returns>The persistent cookie value.</returns>
         /// <remarks>Allows users to override default asp.net values.</remarks>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static int GetPersistentCookieTimeout()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial int GetPersistentCookieTimeout()
         {
             return GetPersistentCookieTimeout(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -555,16 +556,16 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Loads the web.config file into an XML document.</summary>
         /// <returns>The configuration XML document.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static XmlDocument Load()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial XmlDocument Load()
         {
             return Load("web.config");
         }
 
         /// <summary>Gets the currently configured custom error mode.</summary>
         /// <returns>The currently configured custom error mode string.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string GetCustomErrorMode()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string GetCustomErrorMode()
         {
             return GetCustomErrorMode(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -592,8 +593,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Loads a configuration file as an XML document.</summary>
         /// <param name="filename">The configuration file name.</param>
         /// <returns>The configuration as an XML document.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static XmlDocument Load(string filename)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial XmlDocument Load(string filename)
         {
             return Load(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -629,8 +630,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Removes a code subdirectory for the web.config file.</summary>
         /// <param name="name">The name of the code subdirectory.</param>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void RemoveCodeSubDirectory(string name)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void RemoveCodeSubDirectory(string name)
         {
             RemoveCodeSubDirectory(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -690,8 +691,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Save the web.config file.</summary>
         /// <param name="xmlDoc">The configuration as an XML document.</param>
         /// <returns>An empty string upon success or the error message upon failure.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string Save(XmlDocument xmlDoc)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string Save(XmlDocument xmlDoc)
         {
             return Save(xmlDoc, "web.config");
         }
@@ -700,8 +701,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="xmlDoc">The configuration as an XML document.</param>
         /// <param name="filename">The file name to save to.</param>
         /// <returns>An empty string upon success or the error message upon failure.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string Save(XmlDocument xmlDoc, string filename)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string Save(XmlDocument xmlDoc, string filename)
         {
             return Save(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -777,8 +778,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Touches the web.config file to force the application to reload.</summary>
         /// <returns>A value indicating whether the operation succeeded.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static bool Touch()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial bool Touch()
         {
             return Touch(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -805,8 +806,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Updates the database connection string.</summary>
         /// <param name="conn">The connection string value.</param>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void UpdateConnectionString(string conn)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void UpdateConnectionString(string conn)
         {
             UpdateConnectionString(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -837,8 +838,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="name">The data provider name.</param>
         /// <param name="databaseOwner">The database owner, usually dbo.</param>
         /// <param name="objectQualifier">The object qualifier if multiple Dnn instance run under the same database (not recommended).</param>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void UpdateDataProvider(string name, string databaseOwner, string objectQualifier)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void UpdateDataProvider(string name, string databaseOwner, string objectQualifier)
         {
             UpdateDataProvider(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -868,8 +869,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Updates the specified upgrade connection string.</summary>
         /// <param name="name">The connection string name.</param>
         /// <param name="upgradeConnectionString">The new value for the connection string.</param>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static void UpdateUpgradeConnectionString(string name, string upgradeConnectionString)
+        [DotNetNuke.Internal.SourceGenerators.DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial void UpdateUpgradeConnectionString(string name, string upgradeConnectionString)
         {
             UpdateUpgradeConnectionString(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -895,8 +896,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Updates the unique machine key. Warning: Do not change this after installation unless you know what your are doing.</summary>
         /// <returns>An empty string upon success or an error message upon failure.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string UpdateMachineKey()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string UpdateMachineKey()
         {
             return UpdateMachineKey(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -953,8 +954,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Updates the validation key. WARNING: Do not call this API unless you now what you are doing.</summary>
         /// <returns>An empty string upon success or an error message upon failure.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string UpdateValidationKey()
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string UpdateValidationKey()
         {
             return UpdateValidationKey(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
@@ -1012,8 +1013,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="file">The config.file to get the path for.</param>
         /// <returns>fully qualified path to the file.</returns>
         /// <remarks>Will copy the file from the template directory as required.</remarks>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string GetPathToFile(ConfigFileType file)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string GetPathToFile(ConfigFileType file)
         {
             return GetPathToFile(file, false);
         }
@@ -1033,8 +1034,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="overwrite">force an overwrite of the config file.</param>
         /// <returns>fully qualified path to the file.</returns>
         /// <remarks>Will copy the file from the template directory as required.</remarks>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string GetPathToFile(ConfigFileType file, bool overwrite)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string GetPathToFile(ConfigFileType file, bool overwrite)
         {
             return GetPathToFile(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -1069,8 +1070,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>UpdateInstallVersion, but only if the setting does not already exist.</summary>
         /// <param name="version">The version to update to.</param>
         /// <returns>An empty string upon success or an error message upon failure.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string UpdateInstallVersion(Version version)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string UpdateInstallVersion(Version version)
         {
             return UpdateInstallVersion(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
@@ -1128,8 +1129,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Adds the File Change Notification (FCN) mode to the web.config if it does not yet exist.</summary>
         /// <param name="fcnMode">The file change notification (FNC) mode.</param>
         /// <returns>Always an empty string.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1, use overload taking an IApplicationStatusInfo. Scheduled for removal in v11.")]
-        public static string AddFCNMode(FcnMode fcnMode)
+        [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
+        public static partial string AddFCNMode(FcnMode fcnMode)
         {
             return AddFCNMode(
                 Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),

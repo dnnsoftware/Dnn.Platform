@@ -8,12 +8,13 @@ namespace DotNetNuke.Services.Search
     using System.Linq;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
     /// <summary>A base class for search indexers.</summary>
-    public abstract class IndexingProviderBase
+    public abstract partial class IndexingProviderBase
     {
         private const string TimePostfix = "UtcTime";
         private const string DataPostfix = "Data";
