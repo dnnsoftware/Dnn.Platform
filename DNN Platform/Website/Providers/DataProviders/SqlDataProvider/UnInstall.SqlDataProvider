@@ -338,6 +338,8 @@ ALTER TABLE {databaseOwner}[{objectQualifier}AnonymousUsers] DROP CONSTRAINT [DF
 GO
 ALTER TABLE {databaseOwner}[{objectQualifier}AnonymousUsers] DROP CONSTRAINT [DF_{objectQualifier}AnonymousUsers_LastActiveDate]
 GO
+ALTER TABLE {databaseOwner}[{objectQualifier}ApiTokenKeys] DROP CONSTRAINT [FK_{objectQualifier}ApiTokenKeys_ApiTokens]
+GO
 DROP INDEX {databaseOwner}[{objectQualifier}Announcements].[IX_{objectQualifier}Announcements]
 GO
 DROP INDEX {databaseOwner}[{objectQualifier}Banners].[IX_{objectQualifier}Banners_1]
@@ -1173,6 +1175,10 @@ GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettingsBySetting]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]
+GO
+DROP TABLE {databaseOwner}[{objectQualifier}ApiTokens]
+GO
+DROP TABLE {databaseOwner}[{objectQualifier}ApiTokenKeys]
 GO
 
 /** Remove AspNet Data **/
