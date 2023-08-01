@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cake.BuildSystems.Module" Version="4.2.0" />
-    <PackageReference Include="Cake.FileHelpers" Version="5.0.0" />
+    <PackageReference Include="Cake.FileHelpers" Version="6.1.3" />
     <PackageReference Include="Cake.Frosting" Version="2.3.0" />
     <PackageReference Include="Cake.Git" Version="2.0.0" />
     <PackageReference Include="Cake.Issues" Version="2.0.0" />
