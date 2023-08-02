@@ -211,6 +211,7 @@
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Application\ApplicationStatusInfo.cs" />
     <Compile Include="Collections\PageSelector{T}.cs" />
+    <Compile Include="Collections\SerializablePagedList.cs" />
     <Compile Include="Common\Controls\Form.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\Internal\FileSystemUtilsProvider.cs" />
@@ -747,6 +748,7 @@
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
     <Compile Include="Services\DependencyInjection\IScopeAccessor.cs" />
+    <Compile Include="Services\DependencyInjection\ScopeAccessor.cs" />
     <Compile Include="Services\EventQueue\EventMessageProcessorBase.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchException.cs" />

@@ -283,6 +283,10 @@
                     <key>REGISTRATION_SETTINGS_EDIT</key>
                     <name>Registration Settings Edit</name>
                   </permission>
+                  <permission>
+                    <key>MANAGE_API_TOKENS</key>
+                    <name>Manage API Tokens</name>
+                  </permission>
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>

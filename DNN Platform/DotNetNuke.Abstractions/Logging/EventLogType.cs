@@ -467,5 +467,17 @@ namespace DotNetNuke.Abstractions.Logging
 
         /// <summary>Folder moved.</summary>
         FOLDER_MOVED = 153,
+
+        /// <summary>API Token Authentication Failed.</summary>
+        APITOKEN_AUTHENTICATION_FAILED = 154,
+
+        /// <summary>API Token Created.</summary>
+        APITOKEN_CREATED = 155,
+
+        /// <summary>API Token Deleted.</summary>
+        APITOKEN_DELETED = 156,
+
+        /// <summary>API Token Revoked.</summary>
+        APITOKEN_REVOKED = 157,
     }
 }

@@ -6,7 +6,7 @@ namespace DotNetNuke.Web.Api
 {
     using System.Threading;
 
-    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
 
     public class RequireHostAttribute : AuthorizeAttributeBase
     {
@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
             return currentUser.IsSuperUser;
         }
     }
