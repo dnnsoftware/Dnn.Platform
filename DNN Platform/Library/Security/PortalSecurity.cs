@@ -353,7 +353,8 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is a follower; otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified user is a follower of the current user; otherwise, <c>false</c>.
+
         /// </returns>
         public static bool IsFollower(int userId)
         {
