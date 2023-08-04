@@ -202,7 +202,7 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Determined whether the current user is denied for the given role(s)
+        /// Determines whether the current user is denied for the given role(s)
         /// </summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
