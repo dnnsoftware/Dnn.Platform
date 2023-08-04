@@ -397,10 +397,8 @@ namespace DotNetNuke.Security
 
         /// <summary>
         /// Decrypts a string using a provided passphrase.
-
         /// </summary>
         /// <param name="message">The encrypted message.</param>
-
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The decrypted string.</returns>
         public string DecryptString(string message, string passphrase)
