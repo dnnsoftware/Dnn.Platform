@@ -397,7 +397,8 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="strKey">The encryption key.</param>
 
-        /// <param name="strData">The string data.</param>
+        /// <param name="strData">The encrypted data.</param>
+
         /// <returns>The decrypted string.</returns>
         public string Decrypt(string strKey, string strData)
         {
