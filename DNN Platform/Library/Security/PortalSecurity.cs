@@ -687,7 +687,8 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Signs the user out.
+        /// Signs the current user out.
+
         /// </summary>
         public void SignOut()
         {
