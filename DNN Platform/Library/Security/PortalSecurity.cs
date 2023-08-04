@@ -295,7 +295,6 @@ namespace DotNetNuke.Security
 
         /// <summary>
         /// Determines whether the provided user belongs to the specified roles.
-
         /// </summary>
         /// <param name="objUserInfo">The user information.</param>
         /// <param name="settings">The settings.</param>
