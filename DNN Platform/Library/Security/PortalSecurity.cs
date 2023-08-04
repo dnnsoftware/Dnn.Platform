@@ -348,7 +348,8 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Determines whether the specified user is a follower.
+        /// Determines whether the specified user is a follower of the current user.
+
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
