@@ -595,7 +595,6 @@ namespace DotNetNuke.Security
 
         /// <summary>
         /// Signs the provided user in and sets a persistent login cookie if needed
-
         /// </summary>
         /// <param name="user">The user info.</param>
         /// <param name="createPersistentCookie">if set to <c>true</c> [create persistent cookie].</param>
