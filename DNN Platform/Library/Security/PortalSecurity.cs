@@ -417,7 +417,7 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Encrypts a string using a provided passphrase
+        /// Encrypts a string using a provided passphrase.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="passphrase">The passphrase.</param>
