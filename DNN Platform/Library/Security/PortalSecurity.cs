@@ -395,7 +395,8 @@ namespace DotNetNuke.Security
         /// Decrypts the provided string data using a supplied key.
 
         /// </summary>
-        /// <param name="strKey">The string key.</param>
+        /// <param name="strKey">The encryption key.</param>
+
         /// <param name="strData">The string data.</param>
         /// <returns>The decrypted string.</returns>
         public string Decrypt(string strKey, string strData)
