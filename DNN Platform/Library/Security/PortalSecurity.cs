@@ -332,7 +332,8 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Determines whether the specified user is a friend.
+        /// Determines whether the specified user is a friend of the current user.
+
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
