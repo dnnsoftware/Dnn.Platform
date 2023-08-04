@@ -303,7 +303,8 @@ namespace DotNetNuke.Security
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the current user belongs to the specific roles; otherwise, <c>false</c>.
+        ///   <c>true</c> if the provided user belongs to the specific roles; otherwise, <c>false</c>.
+
         /// </returns>
         public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
