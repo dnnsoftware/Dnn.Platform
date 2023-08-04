@@ -207,7 +207,6 @@ namespace DotNetNuke.Security
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
         ///   <c>true</c> if the current user is denied from the provided specified roles; otherwise, <c>false</c>.
-
         /// </returns>
         public static bool IsDenied(string roles)
         {
