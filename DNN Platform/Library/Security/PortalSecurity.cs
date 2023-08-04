@@ -336,7 +336,8 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is a friend; otherwise, <c>false</c>.
+        ///   <c>true</c> if the specified user is a friend of the current user; otherwise, <c>false</c>.
+
         /// </returns>
         public static bool IsFriend(int userId)
         {
