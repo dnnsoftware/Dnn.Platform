@@ -430,7 +430,8 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Encrypts the string.
+        /// Encrypts a string using a provided passphrase
+
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="passphrase">The passphrase.</param>
