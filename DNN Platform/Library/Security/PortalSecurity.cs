@@ -406,7 +406,8 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Decrypts the string.
+        /// Decrypts a string using a provided passphrase.
+
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="passphrase">The passphrase.</param>
