@@ -2993,7 +2993,6 @@
     <Content Include="Resources\Shared\scripts\jquery\jquery-migrate.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery-ui.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery-ui.min.js" />
-    <Content Include="Resources\Shared\scripts\jquery\jquery-vsdoc.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.fileupload.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.hoverIntent.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.iframe-transport.js" />
