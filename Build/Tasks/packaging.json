@@ -19,6 +19,7 @@
     "/bin/Dnn.PersonaBar.*",
     "/bin/DotNetNuke.Authentication.*",
     "/bin/DotNetNuke.Modules.*",
+    "/bin/DotNetNuke.Internal.*",
     "/bin/DotNetNuke.Web.Deprecated.dll",
     "/bin/DotNetNuke.Website.Deprecated.dll",
     "/bin/System.IdentityModel.Tokens.Jwt.*",
