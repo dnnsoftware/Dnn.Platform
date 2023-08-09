@@ -2062,9 +2062,9 @@ div.ui-dialog-titlebar>.ui-dialog-titlebar-close:hover {
     top: 0;
     opacity: 0;
     display: none;
+    visibility: hidden;
     box-sizing: border-box;
-    animation: summarymenu 200ms linear;
-    animation-fill-mode: forwards;
+    animation: summarymenu 200ms linear forwards;
     text-align: left;
     cursor: default;
 }
@@ -2080,15 +2080,11 @@ div.ui-dialog-titlebar>.ui-dialog-titlebar-close:hover {
 @keyframes summarymenu {
     0% {
         opacity: 0;
-        display: none;
-    }
-    1% {
-        opacity: 0;
-        display: block;
+        visibility: hidden;
     }
     100% {
         opacity: 1;
-        display: block;
+        visibility: visible;
     }
 }
 
