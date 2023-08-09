@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Common.Extensions
 {
+    using System.Collections;
     using System.Web;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -51,9 +52,10 @@ namespace DotNetNuke.Common.Extensions
         /// <returns>A service scope.</returns>
         public static IServiceScope GetScope(this HttpContextBase httpContext)
         {
-            if (httpContext.Items.Contains(typeof(IServiceScope)))
+            var scope = httpContext.Items.GetScope();
+            if (scope is not null || Globals.DependencyProvider is null)
             {
-                return httpContext.Items[typeof(IServiceScope)] as IServiceScope;
+                return scope;
             }
 
             var scopeLock = new object();
@@ -64,7 +66,6 @@ namespace DotNetNuke.Common.Extensions
                 return GetScope(httpContext);
             }
 
-            IServiceScope scope = null;
             httpContext.Items.Add(ScopeLockName, scopeLock);
             lock (httpContext.Items[ScopeLockName])
             {
@@ -87,9 +88,14 @@ namespace DotNetNuke.Common.Extensions
             return GetScope(httpContext);
         }
 
+        private static IServiceScope GetScope(this IDictionary httpContextItems)
+        {
+            return httpContextItems[typeof(IServiceScope)] as IServiceScope;
+        }
+
         private static void DisposeScope(HttpContextBase httpContext)
         {
-            httpContext.GetScope()?.Dispose();
+            httpContext.Items.GetScope()?.Dispose();
             httpContext.ClearScope();
         }
     }
