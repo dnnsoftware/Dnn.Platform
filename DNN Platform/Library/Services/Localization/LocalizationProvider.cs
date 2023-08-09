@@ -211,22 +211,26 @@ namespace DotNetNuke.Services.Localization
             // clone the dictionart so that when merge values into dictionart, it won't
             // affect the cache data.
             res = res.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, systemLanguage));
             res = MergeResourceFile(res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
             if (defaultLanguage != systemLanguage)
             {
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage));
+                res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, defaultLanguage));
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage, portalSettings.PortalId));
             }
 
             if (fallbackLanguage != defaultLanguage)
             {
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage));
+                res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, fallbackLanguage));
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage, portalSettings.PortalId));
             }
 
             if (locale != fallbackLanguage)
             {
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale));
+                res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, locale));
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale, portalSettings.PortalId));
             }
 
@@ -361,6 +365,14 @@ namespace DotNetNuke.Services.Localization
                 new CacheItemArgs(resourceFile, DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority),
                 GetResourceFileCallBack,
                 true);
+        }
+
+        private static string GetResourceFileNameHost(string resourceFileRoot, string language)
+        {
+            string resourceFile = GetResourceFileName(resourceFileRoot, language);
+            resourceFile = resourceFile.Replace(".resx", ".Host.resx");
+
+            return resourceFile;
         }
 
         private static string GetResourceFileName(string resourceFileRoot, string language, int portalId)

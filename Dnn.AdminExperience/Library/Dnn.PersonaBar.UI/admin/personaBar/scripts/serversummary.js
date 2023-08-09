@@ -27,16 +27,19 @@ define(['jquery', 'knockout', 'jquery.hoverIntent.min'], function ($, ko) {
     return $summary;
   }
   var showServerSummary = function () {
-    mainFrame.style.width = '100%';
-    $('.hoverSummaryMenu, .hovermenu').hide();
-    getSummaryContainer().addClass('shown');
+      mainFrame.style.width = '100%';
+      var container = getSummaryContainer();
+      container.show();
+      container.addClass('shown');
   }
 
   var hideServerSummary = function () {
     if (!$('.hovermenu:visible').length && !$('.socialpanel:visible').length) {
       mainFrame.style.width = personaBarWidth + "px";
     }
-    getSummaryContainer().removeClass('shown');
+      var container = getSummaryContainer();
+      container.removeClass('shown');
+      container.hide();
   }
 
   var getServerInfo = function (callback) {
