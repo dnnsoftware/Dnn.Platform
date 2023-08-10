@@ -315,6 +315,7 @@ public class RendererTests
                     {
                         new() { PackageName = "09.01.02", DependencyVersion = string.Empty, IsPackageDependency = false, },
                     },
+                    CanInstall = true,
                 },
             },
         };
@@ -341,6 +342,7 @@ public class RendererTests
                     {
                         new() { PackageName = "DNNJWT", DependencyVersion = string.Empty, IsPackageDependency = true, },
                     },
+                    CanInstall = true,
                 },
             },
         };
@@ -367,6 +369,8 @@ public class RendererTests
                     {
                         new() { PackageName = "DNNJWT", DependencyVersion = string.Empty, IsPackageDependency = true, },
                     },
+                    CanInstall = true,
+
                 },
             },
         };
@@ -387,6 +391,7 @@ public class RendererTests
             Name = "Jimmy",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         var james = new SessionResponse
@@ -394,6 +399,7 @@ public class RendererTests
             Name = "James",
             Attempted = false,
             Success = false,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
@@ -413,6 +419,7 @@ public class RendererTests
             Name = "Jimmy",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         var james = new SessionResponse
@@ -420,10 +427,44 @@ public class RendererTests
             Name = "James",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
         console.Output.ShouldContainStringsInOrder("✅", "Jimmy", "Succeeded", "\n", "✅", "James", "Succeeded", "\n");
+    }
+
+    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+    [Theory]
+    public void RenderInstallationStatus_WhenNotSuccessfulButNoFailures_ShowsThatPackageFailed(LogLevel logLevel)
+    {
+        var packages = new SortedList<int, SessionResponse?>
+        {
+            {
+                0,
+                new SessionResponse
+                {
+                    CanInstall = false,
+                    Name = "Jamestown.zip",
+                    Failures = new List<string?>(0),
+                    Attempted = true,
+                    Success = false,
+                    Packages = new List<PackageResponse?>
+                    {
+                        new PackageResponse { Name = "James: Town", CanInstall = false, VersionStr = "1.2.3", Dependencies = new List<DependencyResponse?>(1) { new DependencyResponse { DependencyVersion = string.Empty, IsPackageDependency = true, PackageName = "Miss Sing" }, }, },
+                    },
+                }
+            },
+        };
+
+        var console = new TestConsole().Interactive();
+        var renderer = new Renderer(console);
+        renderer.RenderInstallationStatus(logLevel, packages);
+
+        console.Output.ShouldContainStringsInOrder(
+            "❌",
+            "Jamestown.zip",
+            "Failed");
     }
 
     [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
@@ -438,6 +479,7 @@ public class RendererTests
             Name = "Jimmy",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         var james = new SessionResponse
@@ -445,6 +487,7 @@ public class RendererTests
             Name = "James",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
@@ -463,6 +506,7 @@ public class RendererTests
             Name = "James",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         var george = new SessionResponse
@@ -470,6 +514,7 @@ public class RendererTests
             Name = "George",
             Attempted = false,
             Success = false,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
@@ -492,6 +537,7 @@ public class RendererTests
             Name = "James",
             Attempted = true,
             Success = true,
+            CanInstall = true,
         };
 
         var george = new SessionResponse
@@ -499,6 +545,7 @@ public class RendererTests
             Name = "George",
             Attempted = false,
             Success = false,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
@@ -521,6 +568,7 @@ public class RendererTests
             Name = "James",
             Attempted = false,
             Success = false,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, });
@@ -542,6 +590,7 @@ public class RendererTests
             Name = "Jimmy",
             Attempted = true,
             Failures = new List<string?> { "BAD ZIP", "REALLY FAILED", },
+            CanInstall = true,
         };
 
         var james = new SessionResponse
@@ -549,6 +598,7 @@ public class RendererTests
             Name = "James",
             Attempted = true,
             Success = false,
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
@@ -568,6 +618,7 @@ public class RendererTests
             Name = "Jimmy",
             Attempted = true,
             Failures = new List<string?> { "Failed SQL Query", "SELECT [Name] FROM Place", },
+            CanInstall = true,
         };
 
         renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, });

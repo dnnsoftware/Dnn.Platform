@@ -228,12 +228,25 @@ public class Renderer : IRenderer
                 this.succeededPackageFiles.Add(file.Name);
             }
 
-            if (file.Failures?.Any() == true && !this.failedPackageFiles.Contains(file.Name))
+            if ((file.Failures?.Any() == true || !file.CanInstall) && !this.failedPackageFiles.Contains(file.Name))
             {
                 if (level <= LogLevel.Error)
                 {
                     var failureTree = new Tree(Markup.FromInterpolated($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
-                    failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => new Text(f!)));
+
+                    if (file.Failures?.Any() == true)
+                    {
+                        failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => new Text(f!)));
+                    }
+                    else
+                    {
+                        failureTree.AddNode("Can't install some packages, check their dependencies");
+                        if (file.Packages != null)
+                        {
+                            failureTree.AddNodes(file.Packages.Where(p => p?.CanInstall == false).Select(p => Markup.FromInterpolated($"Unable to install [aqua]{p!.Name}[/]")));
+                        }
+                    }
+
                     this.console.Write(failureTree);
                 }
 
