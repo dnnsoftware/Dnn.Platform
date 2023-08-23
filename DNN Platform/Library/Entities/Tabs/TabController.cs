@@ -28,6 +28,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
@@ -969,8 +970,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
-        [Obsolete("This has been deprecated in favor of AddMissingLanguagesWithWarnings. Scheduled for removal in v11.0.0")]
-        public void AddMissingLanguages(int portalId, int tabId)
+        [DnnDeprecated(9, 11, 1, "Use AddMissingLanguagesWithWarnings")]
+        public partial void AddMissingLanguages(int portalId, int tabId)
         {
             this.AddMissingLanguagesWithWarnings(portalId, tabId);
         }

@@ -1,0 +1,40 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DnnPlugins" type="JavaScript_Library" version="09.12.00" isSystem="true">
+      <friendlyName>DNN jQuery Plugins</friendlyName>
+      <description>A collection of jQuery plugins for DNN UI components (tabs, panels, tooltips, checkboxes, etc.)</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="LICENSE.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+          <dependency type="managedPackage" version="03.05.01">jQuery</dependency>
+          <dependency type="managedPackage" version="03.04.00">jQuery-Migrate</dependency>
+          <dependency type="managedPackage" version="01.13.02">jQuery-UI</dependency>
+          <dependency type="managedPackage" version="01.10.01">HoverIntent</dependency>
+      </dependencies>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>DnnPlugins</libraryName>
+            <fileName>dnn.jquery.js</fileName>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>DnnPlugins</libraryFolderName>
+            <jsfile>
+              <name>dnn.jquery.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>        
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

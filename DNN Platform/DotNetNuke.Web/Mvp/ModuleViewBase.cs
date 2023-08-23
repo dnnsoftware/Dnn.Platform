@@ -6,13 +6,14 @@ namespace DotNetNuke.Web.Mvp
     using System;
     using System.Globalization;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins.Controls;
     using WebFormsMvp.Web;
 
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ModuleViewBase : ModuleUserControlBase, IModuleViewBase
+    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+    public abstract partial class ModuleViewBase : ModuleUserControlBase, IModuleViewBase
     {
         protected ModuleViewBase()
         {

@@ -283,7 +283,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
-        [Obsolete("Deprecated in 9.9.2. Scheduled for removal in v11.0.0")]
+        [Obsolete("Deprecated in DotNetNuke 9.9.2. No replacement. Scheduled removal in v11.0.0.")]
         public static bool DisplayCopyright
         {
             get
@@ -335,7 +335,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>  Gets a value indicating whether gets whether the installation participates in the improvements program.</summary>
-        [Obsolete("Improvement program functionality removed in 9.7.3.  API Scheduled for removal in 10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.7.3. No replacement. Scheduled removal in v10.0.0.")]
         public static bool ParticipateInImprovementProg
         {
             get
@@ -453,7 +453,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled removal in v11.0.0.")]
         public static bool EnableUsersOnline
         {
             get
@@ -949,7 +949,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 1.
         /// </remarks>
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v11.0.0.")]
         public static int SiteLogBuffer
         {
             get
@@ -962,7 +962,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to -1.
         /// </remarks>
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in vremoval.0.0.")]
         public static int SiteLogHistory
         {
             get
@@ -975,7 +975,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to "D".
         /// </remarks>
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v11.0.0.")]
         public static string SiteLogStorage
         {
             get
@@ -1125,7 +1125,7 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>Gets the window to use in minutes when determining if the user is online.</summary>
         /// <remarks>Defaults to 15.</remarks>
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled removal in v11.0.0.")]
         public static int UsersOnlineTimeWindow
         {
             get
@@ -1150,7 +1150,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -1166,7 +1166,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -1183,7 +1183,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -1207,7 +1207,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -1231,7 +1231,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultUIHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.1. This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -1266,7 +1266,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
-        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.1.0. No replacement. Scheduled removal in v10.0.0.")]
         public static bool EnableTelerikCdn
         {
             get
@@ -1276,7 +1276,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>Gets get Telerik CDN Basic Path.</summary>
-        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.1.0. No replacement. Scheduled removal in v10.0.0.")]
         public static string TelerikCdnBasicUrl
         {
             get
@@ -1286,7 +1286,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>Gets get Telerik CDN Secure Path.</summary>
-        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.1.0. No replacement. Scheduled removal in v10.0.0.")]
         public static string TelerikCdnSecureUrl
         {
             get

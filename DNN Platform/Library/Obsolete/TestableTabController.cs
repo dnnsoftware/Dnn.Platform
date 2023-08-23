@@ -9,10 +9,11 @@ namespace DotNetNuke.Entities.Tabs.Internal
     using System.ComponentModel;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use TabController instead. Scheduled removal in v10.0.0.")]
-    public class TestableTabController : ServiceLocator<DotNetNuke.Entities.Tabs.Internal.ITabController, TestableTabController>, ITabController
+    [DnnDeprecated(7, 3, 0, "Please use TabController instead", RemovalVersion = 10)]
+    public partial class TestableTabController : ServiceLocator<DotNetNuke.Entities.Tabs.Internal.ITabController, TestableTabController>, ITabController
     {
         /// <inheritdoc/>
         public void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)

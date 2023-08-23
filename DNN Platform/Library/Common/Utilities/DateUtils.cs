@@ -6,10 +6,11 @@ namespace DotNetNuke.Common.Utilities
     using System;
 
     using DotNetNuke.Data;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
     /// <summary>Provides utility methods to work with Dates.</summary>
-    public class DateUtils
+    public partial class DateUtils
     {
         private static DateTime lastUpdateUtc = DateTime.MinValue;
         private static DateTime lastUpdateLocal = DateTime.MinValue;
@@ -20,8 +21,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Gets the database time.</summary>
         /// <returns>Date/time of the database in UTC.</returns>
-        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime. Scheduled removal in v11.0.0.")]
-        public static DateTime GetDatabaseTime()
+        [DnnDeprecated(9, 1, 0, "Replaced by GetDatabaseUtcTime")]
+        public static partial DateTime GetDatabaseTime()
         {
             return GetDatabaseUtcTime();
         }

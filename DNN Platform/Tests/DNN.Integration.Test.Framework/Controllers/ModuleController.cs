@@ -11,8 +11,9 @@ namespace DNN.Integration.Test.Framework.Controllers
 
     using DNN.Integration.Test.Framework.Helpers;
     using DNN.Integration.Test.Framework.Scripts;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    public static class ModuleController
+    public static partial class ModuleController
     {
         private const string PortalIdMarker = @"'$[portal_id]'";
         private const string RoleIdMarker = @"'$[role_id]'";
@@ -21,11 +22,13 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string PermissionKeyMarker = @"$[permission_key]";
         private const string FriendlyNameMarker = @"$[friendly_name]";
 
-        [Obsolete("typo in name, use AddModulePermission instead. Scheduled removal in v10.0.0.")]
-        public static int AddModuleOPermission(int roleId, int moduleId, string permissionCode, string permissionKey, int portalId = 0)
+        [DnnDeprecated(8, 0, 0, "Typo in name, use AddModulePermission instead. Scheduled removal in v10.0.0.", RemovalVersion = 10)]
+#pragma warning disable CS1066
+        public static partial int AddModuleOPermission(int roleId, int moduleId, string permissionCode, string permissionKey, int portalId = 0)
         {
             return AddModulePermission(roleId, moduleId, permissionCode, permissionKey, portalId);
         }
+#pragma warning restore CS1066
 
         public static int AddModulePermission(int roleId, int moduleId, string permissionCode, string permissionKey, int portalId = 0)
         {

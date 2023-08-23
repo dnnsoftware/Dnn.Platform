@@ -11,12 +11,13 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Library responsible for reflection.</summary>
-    public class Reflection
+    public partial class Reflection
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Reflection));
 
@@ -24,8 +25,8 @@ namespace DotNetNuke.Framework
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string objectProviderType)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string objectProviderType)
         {
             return CreateObject(objectProviderType, true);
         }
@@ -44,8 +45,8 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string objectProviderType, bool useCache)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string objectProviderType, bool useCache)
         {
             return CreateObject(objectProviderType, string.Empty, string.Empty, string.Empty, useCache);
         }
@@ -66,8 +67,8 @@ namespace DotNetNuke.Framework
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and AssemblyName ( this allows derived providers to share the same config ).</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName)
         {
             return CreateObject(objectProviderType, string.Empty, objectNamespace, objectAssemblyName, true);
         }
@@ -90,8 +91,8 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and AssemblyName ( this allows derived providers to share the same config ).</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName, bool useCache)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string objectProviderType, string objectNamespace, string objectAssemblyName, bool useCache)
         {
             return CreateObject(objectProviderType, string.Empty, objectNamespace, objectAssemblyName, useCache);
         }
@@ -115,8 +116,8 @@ namespace DotNetNuke.Framework
         /// <param name="objectAssemblyName">The assembly of the object to create.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName)
         {
             return CreateObject(objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, true);
         }
@@ -141,8 +142,8 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string objectProviderType, string objectProviderName, string objectNamespace, string objectAssemblyName, bool useCache)
         {
             return CreateObject(objectProviderType, objectProviderName, objectNamespace, objectAssemblyName, useCache, true);
         }
@@ -169,8 +170,8 @@ namespace DotNetNuke.Framework
         /// <param name="fixAssemblyName">Whether append provider name as part of the assembly name.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, AssemblyName and ProviderName.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(
             string objectProviderType,
             string objectProviderName,
             string objectNamespace,
@@ -258,8 +259,8 @@ namespace DotNetNuke.Framework
         /// <param name="cacheKey">The Cache Key.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string typeName, string cacheKey)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string typeName, string cacheKey)
         {
             return CreateObject(typeName, cacheKey, true);
         }
@@ -280,8 +281,8 @@ namespace DotNetNuke.Framework
         /// <param name="useCache">Caching switch.</param>
         /// <returns>The created Object.</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(string typeName, string cacheKey, bool useCache)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(string typeName, string cacheKey, bool useCache)
         {
             return CreateObject(Globals.DependencyProvider, typeName, cacheKey, useCache);
         }
@@ -302,8 +303,8 @@ namespace DotNetNuke.Framework
         /// <typeparam name="T">The type of object to create.</typeparam>
         /// <returns>The created object.</returns>
         /// <remarks>Generic version.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static T CreateObject<T>()
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial T CreateObject<T>()
         {
             return CreateObject<T>(Globals.DependencyProvider);
         }
@@ -328,8 +329,8 @@ namespace DotNetNuke.Framework
         /// <summary>Creates an object.</summary>
         /// <param name="type">The type of object to create.</param>
         /// <returns>The created object.</returns>
-        [Obsolete("Deprecated in DotNetNuke 9.11.3. Please use overload with IServiceProvider. Scheduled removal in v11.0.0.")]
-        public static object CreateObject(Type type)
+        [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
+        public static partial object CreateObject(Type type)
         {
             return CreateObject(Globals.DependencyProvider, type);
         }
@@ -492,8 +493,8 @@ namespace DotNetNuke.Framework
         }
 
         // dynamically create a default Provider from a ProviderType - this method was used by the CachingProvider to avoid a circular dependency
-        [Obsolete("This method has been deprecated. Please use CreateObject(ByVal ObjectProviderType As String, ByVal UseCache As Boolean) As Object. Scheduled removal in v11.0.0.")]
-        internal static object CreateObjectNotCached(string objectProviderType)
+        [DnnDeprecated(7, 0, 0, "Please use CreateObject(string objectProviderType, bool useCache)", RemovalVersion = 11)]
+        internal static partial object CreateObjectNotCached(string objectProviderType)
         {
             string typeName = string.Empty;
             Type objType = null;

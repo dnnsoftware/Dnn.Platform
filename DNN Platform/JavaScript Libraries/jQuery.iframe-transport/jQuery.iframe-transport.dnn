@@ -1,0 +1,36 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="jQuery.iframe-transport" type="JavaScript_Library" version="10.07.00" isSystem="true">
+      <friendlyName>jQuery Iframe Transport Plugin</friendlyName>
+      <description>An AJAX transport for jQuery using an iframe, for browsers that do not support uploads via XHR2.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="LICENSE.txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>jQuery.iframe-transport</libraryName>
+            <fileName>jquery.iframe-transport.js</fileName>
+            <objectName>jQuery.ajaxSettings.converters['iframe json']</objectName>
+            <CDNPath>https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.7.0/js/jquery.iframe-transport.min.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>jQuery.iframe-transport</libraryFolderName>
+            <jsfile>
+              <name>jquery.iframe-transport.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>        
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

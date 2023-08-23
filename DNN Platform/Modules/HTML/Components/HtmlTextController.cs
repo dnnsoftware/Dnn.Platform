@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
@@ -34,7 +35,7 @@ namespace DotNetNuke.Modules.Html
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The HtmlTextController is the Controller class for managing HtmlText information the HtmlText module.</summary>
-    public class HtmlTextController : ModuleSearchBase, IPortable, IUpgradeable
+    public partial class HtmlTextController : ModuleSearchBase, IPortable, IUpgradeable
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public const int MAX_DESCRIPTION_LENGTH = 100;
@@ -87,8 +88,8 @@ namespace DotNetNuke.Modules.Html
             return content;
         }
 
-        [Obsolete("Deprecated in Platform 9.11.0. Use overload without int. Scheduled removal in v11.0.0.")]
-        public static string ManageRelativePaths(string htmlContent, string strUploadDirectory, string strToken, int intPortalID)
+        [DnnDeprecated(9, 11, 0, "Use overload without int")]
+        public static partial string ManageRelativePaths(string htmlContent, string strUploadDirectory, string strToken, int intPortalID)
         {
             return ManageRelativePaths(htmlContent, strUploadDirectory, strToken);
         }

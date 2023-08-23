@@ -6,10 +6,12 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>Attribute to define the help for the flag parameter.</summary>
     [AttributeUsage(AttributeTargets.Field)]
-    [Obsolete("Moved to DotNetNuke.Prompt in the core library project and is now a Property Attribute called CommandParameter. Will be removed in DNN 11.", false)]
-    public class FlagParameterAttribute : Attribute
+    [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project and is now a Property Attribute called CommandParameter")]
+    public partial class FlagParameterAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.</summary>
         /// <param name="flag"></param>

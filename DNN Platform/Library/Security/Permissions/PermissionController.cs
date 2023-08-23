@@ -15,10 +15,11 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
-    public class PermissionController
+    public partial class PermissionController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
@@ -205,8 +206,8 @@ namespace DotNetNuke.Security.Permissions
             return result;
         }
 
-        [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int). Scheduled removal in v10.0.0.")]
-        public ArrayList GetPermissionsByModuleID(int moduleId)
+        [DnnDeprecated(7, 3, 0, "Replaced by GetPermissionsByModule(int, int)", RemovalVersion = 10)]
+        public partial ArrayList GetPermissionsByModuleID(int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 

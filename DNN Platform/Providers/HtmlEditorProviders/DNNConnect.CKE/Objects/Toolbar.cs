@@ -4,11 +4,11 @@
 
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>Toolbar Class.</summary>
-    [Obsolete("This class is phasing out please use ToolbarSet Class instead")]
-    public class Toolbar
+    [DnnDeprecated(7, 0, 0, "This class is phasing out please use ToolbarSet Class instead", RemovalVersion = 11)]
+    public partial class Toolbar
     {
 #pragma warning disable SA1300 // Element should begin with upper-case letter
         /// <summary>Gets or sets The Name of the Toolbar Set.</summary>

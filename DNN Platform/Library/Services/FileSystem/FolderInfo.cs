@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="isProtected"></param>
         /// <param name="isCached"></param>
         /// <param name="lastUpdated"></param>
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.1.0. Use the parameterless constructor and object initializers. Scheduled for removal in v10.0.0.")]
         public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
             : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
         {
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="isProtected"></param>
         /// <param name="isCached"></param>
         /// <param name="lastUpdated"></param>
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.1.0. Use the parameterless constructor and object initializers. Scheduled for removal in v10.0.0.")]
         public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
         {
             this.FolderID = Null.NullInteger;

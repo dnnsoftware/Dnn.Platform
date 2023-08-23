@@ -22,10 +22,11 @@ namespace Dnn.ExportImport.Components.Common
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using Newtonsoft.Json;
 
     /// <summary>A collection of utilities for import/export.</summary>
-    public static class Util
+    public static partial class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
         private static int noRole = Convert.ToInt32(Globals.glbRoleNothing);
@@ -33,20 +34,20 @@ namespace Dnn.ExportImport.Components.Common
         /// <summary>Checks if a string is either null or empty ("").</summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string is null or empty.</returns>
-        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrEmpty from System.String instead, scheduled removal in v11.")]
-        public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
+        [DnnDeprecated(9, 8, 0, "Use string.IsNullOrEmpty from System.String instead")]
+        public static partial bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
 
         /// <summary>Checks if a string is either null or contains only whitespace (" ").</summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string is null or contains only whtespace.</returns>
-        [Obsolete("Depreacted in v9.8.0, use string.IsNullOrWhiteSpace from System.String instead, scheduled removal in v11.")]
-        public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
+        [DnnDeprecated(9, 8, 0, "Use string.IsNullOrWhiteSpace from System.String instead")]
+        public static partial bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
 
         /// <summary>Check if a given string is not null or empty (contains any value).</summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string contains any value.</returns>
-        [Obsolete("Depracated in v9.8.0 use !string.IsNullOrEmpty from System.String instead, cheduled removal in v11.")]
-        public static bool HasValue(this string s) => !string.IsNullOrEmpty(s);
+        [DnnDeprecated(9, 8, 0, "Use !string.IsNullOrEmpty from System.String instead")]
+        public static partial bool HasValue(this string s) => !string.IsNullOrEmpty(s);
 
         /// <summary>Gets the types that implement BasePortableService.</summary>
         /// <returns>An enumeration of the types that implement BasePortableService.</returns>

@@ -4,12 +4,13 @@
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
-    using System;
     using System.ComponentModel;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalController.Instance.GetCurrentPortalSettings to get a mockable PortalSettings. Scheduled removal in v10.0.0.")]
-    public interface IPortalSettings
+    [DnnDeprecated(7, 3, 0, "Use PortalController.Instance.GetCurrentPortalSettings to get a mockable PortalSettings", RemovalVersion = 10)]
+    public partial interface IPortalSettings
     {
         string AdministratorRoleName { get; }
     }

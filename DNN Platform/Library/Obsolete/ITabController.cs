@@ -4,17 +4,18 @@
 
 namespace DotNetNuke.Entities.Tabs.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Tabs instead. Scheduled removal in v10.0.0.")]
-    public interface ITabController
+    [DnnDeprecated(7, 3, 0, "Please use version in DotNetNuke.Entities.Tabs instead", RemovalVersion = 10)]
+    public partial interface ITabController
     {
         void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 

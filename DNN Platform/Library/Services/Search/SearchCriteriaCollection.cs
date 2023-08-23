@@ -3,12 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
-    using System;
     using System.Collections;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>Represents a collection of <see cref="SearchCriteria">SearchCriteria</see> objects.</summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
-    public class SearchCriteriaCollection : CollectionBase
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
+    public partial class SearchCriteriaCollection : CollectionBase
     {
         /// <summary>Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.</summary>
         public SearchCriteriaCollection()

@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.UI
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Web.UI
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
-    public class Utilities
+    public partial class Utilities
     {
         /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>
         /// <param name="targetControl">The control that should have a skin injected.</param>
@@ -30,20 +31,20 @@ namespace DotNetNuke.Web.UI
             ApplySkin(targetControl, string.Empty, controlName, controlSubSkinName);
         }
 
-        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
-        public static void ApplySkin(Control targetControl)
+        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
+        public static partial void ApplySkin(Control targetControl)
         {
             ApplySkin(targetControl, string.Empty, string.Empty, string.Empty);
         }
 
-        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
-        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName)
+        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
+        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName)
         {
             ApplySkin(targetControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
         }
 
-        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
-        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName)
+        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
+        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName)
         {
             ApplySkin(targetControl, string.Empty, controlName, fallBackEmbeddedSkinName);
         }
@@ -51,8 +52,8 @@ namespace DotNetNuke.Web.UI
         // Use selected skin's webcontrol skin if one exists
         // or use _default skin's webcontrol skin if one exists
         // or use embedded skin
-        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
-        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
+        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
+        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
         {
             PropertyInfo skinProperty = null;
             PropertyInfo enableEmbeddedSkinsProperty = null;

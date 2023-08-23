@@ -30,6 +30,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.ResizeWidthUpload = -1;
             this.ResizeHeightUpload = -1;
             this.ResizeWidth = -1;
+            this.BrowserAllowFollowFolderPerms = false;
             this.BrowserRoles = "0;Administrators;";
             this.Browser = "standard";
             this.ImageButton = "standard";
@@ -167,6 +168,11 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether which Image Button to use.</summary>
         public string ImageButton { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allowing the file browser will depend on folder permissions.
+        /// </summary>
+        public bool BrowserAllowFollowFolderPerms { get; set; }
 
         /// <summary>Gets or sets a value indicating whether Allowed Browser Roles.</summary>
         public string BrowserRoles { get; set; }

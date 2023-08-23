@@ -9,50 +9,51 @@ namespace DotNetNuke.Common.Utilities
     using System.Data;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>The CBO class generates objects.</summary>
     public partial class CBO
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 7.3.  Use CreateObject<T>(bool). Scheduled removal in v10.0.0.")]
-        public static TObject CreateObject<TObject>()
+        [DnnDeprecated(7, 3, 0, "Use CreateObject<T>(bool)", RemovalVersion = 10)]
+        public static partial TObject CreateObject<TObject>()
         {
             return (TObject)CreateObjectInternal(typeof(TObject), false);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 7.3.  Use CreateObject<T>(bool). Scheduled removal in v10.0.0.")]
-        public static object CreateObject(Type objType, bool initialise)
+        [DnnDeprecated(7, 3, 0, "Use CreateObject<T>(bool)", RemovalVersion = 10)]
+        public static partial object CreateObject(Type objType, bool initialise)
         {
             return CreateObjectInternal(objType, initialise);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 7.3.  Use FillDictionary<TKey, TValue>(string keyField, IDataReader dr). Scheduled removal in v10.0.0.")]
-        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr)
+        [DnnDeprecated(7, 3, 0, "Use FillDictionary<TKey, TValue>(string keyField, IDataReader dr)", RemovalVersion = 10)]
+        public static partial IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr)
             where TItem : IHydratable
         {
             return FillDictionaryFromReader("KeyID", dr, new Dictionary<int, TItem>(), true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 7.3.  Use FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary). Scheduled removal in v10.0.0.")]
-        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr, ref IDictionary<int, TItem> objToFill)
+        [DnnDeprecated(7, 3, 0, "Use FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)", RemovalVersion = 10)]
+        public static partial IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr, ref IDictionary<int, TItem> objToFill)
             where TItem : IHydratable
         {
             return FillDictionaryFromReader("KeyID", dr, objToFill, true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 7.3.  Replaced by FillObject<T> . Scheduled removal in v10.0.0.")]
-        public static object FillObject(IDataReader dr, Type objType)
+        [DnnDeprecated(7, 3, 0, "Replaced by FillObject<T> ", RemovalVersion = 10)]
+        public static partial object FillObject(IDataReader dr, Type objType)
         {
             return CreateObjectFromReader(objType, dr, true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 7.3.  Replaced by FillObject<T> . Scheduled removal in v10.0.0.")]
-        public static object FillObject(IDataReader dr, Type objType, bool closeReader)
+        [DnnDeprecated(7, 3, 0, "Replaced by FillObject<T> ", RemovalVersion = 10)]
+        public static partial object FillObject(IDataReader dr, Type objType, bool closeReader)
         {
             return CreateObjectFromReader(objType, dr, closeReader);
         }

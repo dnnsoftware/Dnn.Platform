@@ -30,7 +30,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.SiteExportImport.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,7 +43,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.SiteExportImport.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiteDB, Version=5.0.13.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
@@ -49,8 +53,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -142,6 +145,10 @@
     <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+      <Project>{5FE5D021-9C8D-47A6-BD34-F328BA3E709C}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
@@ -168,6 +175,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.02.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\09.12.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\09.03.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>

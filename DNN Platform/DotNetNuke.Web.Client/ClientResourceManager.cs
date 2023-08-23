@@ -18,9 +18,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core.CompositeFiles.Providers;
     using ClientDependency.Core.Config;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.</summary>
-    public class ClientResourceManager
+    public partial class ClientResourceManager
     {
         /// <summary>The default css provider.</summary>
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
@@ -440,8 +441,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>This is a utility method that can be called to update the version of the composite files.</summary>
-        [Obsolete("This method is not required anymore. The CRM version is now managed in host settings and site settings.. Scheduled removal in v11.0.0.")]
-        public static void UpdateVersion()
+        [DnnDeprecated(8, 0, 1, "This method is not required anymore. The CRM version is now managed in host settings and site settings", RemovalVersion = 10)]
+        public static partial void UpdateVersion()
         {
         }
 

@@ -9,10 +9,11 @@ namespace DotNetNuke.Security.Roles.Internal
     using System.ComponentModel;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use RoleController instead. Scheduled removal in v10.0.0.")]
-    public class TestableRoleController : ServiceLocator<IRoleController, TestableRoleController>, IRoleController
+    [DnnDeprecated(7, 3, 0, "Please use RoleController instead", RemovalVersion = 10)]
+    public partial class TestableRoleController : ServiceLocator<IRoleController, TestableRoleController>, IRoleController
     {
         /// <inheritdoc/>
         public int AddRole(RoleInfo role)

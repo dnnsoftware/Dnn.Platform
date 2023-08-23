@@ -55,7 +55,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1602,SA1606,SA1607,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -66,7 +68,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <LangVersion>7</LangVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1602,SA1606,SA1607,SA1611,SA1614</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
@@ -89,8 +93,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PetaPoco">
       <SpecificVersion>False</SpecificVersion>
@@ -2990,7 +2993,6 @@
     <Content Include="Resources\Shared\scripts\jquery\jquery-migrate.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery-ui.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery-ui.min.js" />
-    <Content Include="Resources\Shared\scripts\jquery\jquery-vsdoc.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.fileupload.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.hoverIntent.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.iframe-transport.js" />
@@ -3411,6 +3413,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+      <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
