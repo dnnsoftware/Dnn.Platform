@@ -16,6 +16,21 @@ namespace DotNetNuke.Services.Mail.OAuth
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SmtpOAuthController));
 
+        private readonly TypeLocator typeLocator;
+
+        /// <summary>Initializes a new instance of the <see cref="SmtpOAuthController"/> class.</summary>
+        public SmtpOAuthController()
+            : this(new TypeLocator())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SmtpOAuthController"/> class.</summary>
+        /// <param name="typeLocator">The type locator to use to find <see cref="ISmtpOAuthProvider"/> instances.</param>
+        public SmtpOAuthController(TypeLocator typeLocator)
+        {
+            this.typeLocator = typeLocator;
+        }
+
         /// <inheritdoc />
         public ISmtpOAuthProvider GetOAuthProvider(string name)
         {
@@ -25,8 +40,7 @@ namespace DotNetNuke.Services.Mail.OAuth
         /// <inheritdoc />
         public IList<ISmtpOAuthProvider> GetOAuthProviders()
         {
-            var typeLocator = new TypeLocator();
-            return typeLocator.GetAllMatchingTypes(
+            return this.typeLocator.GetAllMatchingTypes(
                 t => t != null &&
                      t.IsClass &&
                      !t.IsAbstract &&

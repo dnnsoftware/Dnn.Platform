@@ -4,34 +4,21 @@
 
 namespace DotNetNuke.Tests.Mail
 {
-    using System;
-    using System.IO;
-    using System.Web;
-    using System.Web.Configuration;
-
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Services.Mail.OAuth;
-    using DotNetNuke.Tests.Utilities.Mocks;
-    using Dnn.GoogleMailAuthProvider.Components;
     using Dnn.ExchangeOnlineAuthProvider.Components;
+    using Dnn.GoogleMailAuthProvider.Components;
+    using DotNetNuke.Framework.Internal.Reflection;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Mail.OAuth;
+    using Moq;
     using NUnit.Framework;
-    using DotNetNuke.Prompt;
 
     [TestFixture]
     public class SmtpOAuthControllerTest
     {
-        [SetUp]
-        public void Setup()
-        {
-            // Load the provider instances.
-            var googleProvider = typeof(GoogleMailOAuthProvider);
-            var exchangeProvider = typeof(ExchangeOnlineOAuthProvider);
-        }
-
         [Test]
         public void Google_OAuth_Provider_Should_Exists()
         {
-            var provider = SmtpOAuthController.Instance.GetOAuthProvider("GoogleMail");
+            var provider = CreateSmtpOAuthController().GetOAuthProvider("GoogleMail");
 
             Assert.NotNull(provider);
         }
@@ -39,9 +26,24 @@ namespace DotNetNuke.Tests.Mail
         [Test]
         public void Exchange_OAuth_Provider_Should_Exists()
         {
-            var provider = SmtpOAuthController.Instance.GetOAuthProvider("ExchangeOnline");
+            var provider = CreateSmtpOAuthController().GetOAuthProvider("ExchangeOnline");
 
             Assert.NotNull(provider);
+        }
+
+        private static SmtpOAuthController CreateSmtpOAuthController()
+        {
+            var assemblyLocator = new Mock<IAssemblyLocator>();
+            assemblyLocator.SetupGet(al => al.Assemblies)
+                .Returns(
+                    new[]
+                    {
+                        new AssemblyWrapper(typeof(GoogleMailOAuthProvider).Assembly),
+                        new AssemblyWrapper(typeof(ExchangeOnlineOAuthProvider).Assembly),
+                    });
+
+            var typeLocator = new TypeLocator { AssemblyLocator = assemblyLocator.Object, };
+            return new SmtpOAuthController(typeLocator);
         }
     }
 }
