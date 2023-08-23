@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Mail
                     var (provider, portalId) = GetOAuthProvider(smtpClient, smtpInfo);
                     if (provider != null)
                     {
-                        provider.AuthorizeAsync(portalId, new OAuthSmtpClient(smtpClient), cancellationToken);
+                        await provider.AuthorizeAsync(portalId, new OAuthSmtpClient(smtpClient), cancellationToken);
                     }
 
                     await smtpClient.SendAsync(mailMessage, cancellationToken);

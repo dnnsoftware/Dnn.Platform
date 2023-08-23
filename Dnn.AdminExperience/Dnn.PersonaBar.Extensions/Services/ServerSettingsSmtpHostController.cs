@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = this.hostSettingsService.GetString("SMTPAuthentication"),
                         enableSmtpSsl = this.hostSettingsService.GetBoolean("SMTPEnableSSL", false),
                         smtpUserName = this.hostSettingsService.GetString("SMTPUsername"),
-                        smtpPassword = GetSmtpPassword(-1, true),
+                        smtpPassword = this.GetSmtpPassword(-1, true),
                         smtpHostEmail = this.hostSettingsService.GetString("HostEmail"),
                         messageSchedulerBatchSize = Host.MessageSchedulerBatchSize,
                         authProvider = this.hostSettingsService.GetString("SMTPAuthProvider"),
@@ -75,7 +75,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0"),
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
-                        smtpPassword = GetSmtpPassword(portalId, true),
+                        smtpPassword = this.GetSmtpPassword(portalId, true),
                         authProvider = PortalController.GetPortalSetting("SMTPAuthProvider", portalId, string.Empty),
                     },
                     portalName = PortalSettings.Current.PortalName,
@@ -182,7 +182,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 }
 
                 DataCache.ClearCache();
-                if(errorMessages.Any())
+                if (errorMessages.Any())
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { success = false, errors = errorMessages });
                 }
@@ -285,7 +285,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     }),
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+                return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception exc)
             {

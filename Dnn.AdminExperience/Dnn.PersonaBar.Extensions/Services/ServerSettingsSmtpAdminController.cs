@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 IList<string> errorMessages = new List<string>();
-                var providerSettingsChanged = false;
+
                 var portalId = PortalSettings.Current.PortalId;
 
                 PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
                 var providerChanged = false;
-                if (request.SmtpAuthentication == 3) //oauth authentication
+                if (request.SmtpAuthentication == 3) // oauth authentication
                 {
                     // Only the mail kit provider supports oauth.
                     EnsureMailProviderSupportOAuth();
@@ -219,7 +219,8 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var portalId = PortalSettings.Current.PortalId;
                 var providers = SmtpOAuthController.Instance.GetOAuthProviders();
-                var result = providers.Select(i => new {
+                var result = providers.Select(i => new
+                {
                     name = i.Name,
                     localizedName = i.LocalizedName,
                     settings = i.GetSettings(portalId).Where(s => !s.IsBackground),
@@ -227,7 +228,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     authorizeUrl = i.GetAuthorizeUrl(portalId),
                 });
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { host = new object[] { }, site = result });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { host = new object[] { }, site = result });
             }
             catch (Exception exc)
             {
