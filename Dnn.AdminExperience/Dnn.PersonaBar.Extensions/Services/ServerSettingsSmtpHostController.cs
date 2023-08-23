@@ -161,7 +161,8 @@ namespace Dnn.PersonaBar.Servers.Services
                     PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
-                    if (request.SmtpAuthentication == 3) // OAuth authentication
+                    // OAuth authentication
+                    if (request.SmtpAuthentication == 3)
                     {
                         // Only the mail kit provider supports OAuth.
                         EnsureMailProviderSupportOAuth();

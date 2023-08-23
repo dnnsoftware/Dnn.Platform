@@ -117,7 +117,9 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
                 var providerChanged = false;
-                if (request.SmtpAuthentication == 3) // oauth authentication
+
+                // oauth authentication
+                if (request.SmtpAuthentication == 3)
                 {
                     // Only the mail kit provider supports oauth.
                     EnsureMailProviderSupportOAuth();
