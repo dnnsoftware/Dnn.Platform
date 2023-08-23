@@ -1,0 +1,59 @@
+﻿<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Dnn.GoogleMailAuthProvider" type="Library" isSystem="false" version="09.12.00">
+            <friendlyName>Google Mail SMTP OAuth Provider</friendlyName>
+            <description>The provider allows you to config the SMTP client to send emails with gmail service.</description>
+            <iconFile>~/Icons/Sigma/Extensions_32x32_Standard.png</iconFile>
+          <dependencies>
+            <dependency type="CoreVersion">09.12.00</dependency>
+          </dependencies>
+            <owner>
+                <name>.NET Foundation and Contributors</name>
+                <organization>DNN Community</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+            <azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Dnn.GoogleMailAuthProvider.dll</name>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Google.Apis.Auth.dll</name>
+                            <version>1.58.0</version>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Google.Apis.Auth.PlatformServices.dll</name>
+                            <version>1.58.0</version>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Google.Apis.Core.dll</name>
+                            <version>1.58.0</version>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Google.Apis.dll</name>
+                            <version>1.58.0</version>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>Providers\SmtpOAuthProviders\GoogleMail</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>
