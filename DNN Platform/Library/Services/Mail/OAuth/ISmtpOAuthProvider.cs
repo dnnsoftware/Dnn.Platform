@@ -23,6 +23,12 @@ namespace DotNetNuke.Services.Mail.OAuth
         /// <returns><see langword="true"/> if the authorization has been completed, otherwise <see langword="false"/>..</returns>
         bool IsAuthorized(int portalId);
 
+        /// <summary>Whether the provider has completed the authorization process for the portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns><see langword="true"/> if the authorization has been completed, otherwise <see langword="false"/>..</returns>
+        Task<bool> IsAuthorizedAsync(int portalId, CancellationToken cancellationToken = default);
+
         /// <summary>Get the authorize URL.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>The URL.</returns>
@@ -34,10 +40,10 @@ namespace DotNetNuke.Services.Mail.OAuth
         IList<SmtpOAuthSetting> GetSettings(int portalId);
 
         /// <summary>Update provider settings.</summary>
-        /// <param name="portalId">the portal id of the setting, pass <see cref="Null.NullInteger"/> if it's a global setting.</param>
-        /// <param name="settings">the settings.</param>
-        /// <param name="errorMessages">the errors.</param>
-        /// <returns>Whether update the settings successfully.</returns>
+        /// <param name="portalId">The portal ID of the setting, pass <see cref="Null.NullInteger"/> if it's a global setting.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="errorMessages">The errors.</param>
+        /// <returns>Whether the settings changed.</returns>
         bool UpdateSettings(int portalId, IDictionary<string, string> settings, out IList<string> errorMessages);
 
         /// <summary>Authorize the SMTP client.</summary>
@@ -46,10 +52,10 @@ namespace DotNetNuke.Services.Mail.OAuth
         void Authorize(int portalId, IOAuth2SmtpClient smtpClient);
 
         /// <summary>Authorize the SMTP client.</summary>
-        /// <param name="portalId">The portal id.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="smtpClient">The SMTP client.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A <see cref="Task"/> indicating completion.</returns>
-        Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default(CancellationToken));
+        Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default);
     }
 }

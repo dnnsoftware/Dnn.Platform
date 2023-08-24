@@ -2,404 +2,388 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.GoogleMailAuthProvider.Components
+namespace Dnn.GoogleMailAuthProvider.Components;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Mail.OAuth;
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Util;
+
+/// <inheritdoc/>
+public class GoogleMailOAuthProvider : ISmtpOAuthProvider
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private readonly IHostSettingsService hostSettingsService;
+    private readonly IPortalAliasService portalAliasService;
 
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Collections;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Security;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Mail.OAuth;
-    using DotNetNuke.Web;
-    using Google.Apis.Auth.OAuth2;
-    using Google.Apis.Auth.OAuth2.Flows;
-    using Google.Apis.Auth.OAuth2.Responses;
-    using Google.Apis.Util;
-    using MailKit.Net.Smtp;
-    using MailKit.Security;
-
-    /// <inheritdoc/>
-    public class GoogleMailOAuthProvider : ISmtpOAuthProvider
+    /// <summary>Initializes a new instance of the <see cref="GoogleMailOAuthProvider"/> class.</summary>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
     {
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IPortalAliasService portalAliasService;
+        this.hostSettingsService = hostSettingsService;
+        this.portalAliasService = portalAliasService;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="GoogleMailOAuthProvider"/> class.</summary>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        /// <param name="portalAliasService">The portal alias service.</param>
-        public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
+    /// <inheritdoc />
+    public string Name => Constants.Name;
+
+    /// <inheritdoc />
+    public string LocalizedName => Localization.GetSafeJSString(this.Name, Constants.LocalResourcesFile);
+
+    /// <inheritdoc />
+    public bool IsAuthorized(int portalId)
+    {
+        return Task.Run(() => this.IsAuthorizedAsync(portalId)).GetAwaiter().GetResult();
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> IsAuthorizedAsync(int portalId, CancellationToken cancellationToken = default)
+    {
+        var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
+        if (string.IsNullOrWhiteSpace(accountEmail))
         {
-            this.hostSettingsService = hostSettingsService;
-            this.portalAliasService = portalAliasService;
+            return false;
         }
 
-        /// <summary>
-        /// Gets provider name.
-        /// </summary>
-        public string Name => Constants.Name;
+        var credential = await new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail);
 
-        /// <summary>
-        /// Gets the localized name.
-        /// </summary>
-        public string LocalizedName => Localization.GetSafeJSString(this.Name, Constants.LocalResourcesFile);
+        return !string.IsNullOrWhiteSpace(credential?.AccessToken);
+    }
 
-        /// <summary>
-        /// Whether the provider completed the authorize process.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>status.</returns>
-        public bool IsAuthorized(int portalId)
+    /// <inheritdoc />
+    public string GetAuthorizeUrl(int portalId)
+    {
+        var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
+        var clientId = this.GetSetting(portalId, Constants.ClientIdSettingName);
+        var clientSecret = this.GetSetting(portalId, Constants.ClientSecretSettingName);
+
+        if (string.IsNullOrWhiteSpace(accountEmail)
+            || string.IsNullOrWhiteSpace(clientId)
+            || string.IsNullOrWhiteSpace(clientSecret))
         {
-            var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
-            if (string.IsNullOrWhiteSpace(accountEmail))
-            {
-                return false;
-            }
-
-            var credential = new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail).Result;
-
-            return !string.IsNullOrWhiteSpace(credential?.AccessToken);
+            return string.Empty;
         }
 
-        /// <summary>
-        /// Get the authorize url.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>The authorize url.</returns>
-        public string GetAuthorizeUrl(int portalId)
+        var portalSettings = new PortalSettings(portalId == Null.NullInteger ? Host.HostPortalID : portalId);
+        var portalAlias = this.portalAliasService.GetPortalAliasesByPortalId(portalId == Null.NullInteger ? Host.HostPortalID : portalId)
+            .OrderByDescending(a => a.IsPrimary)
+            .First();
+        var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On;
+
+        var siteUrl = $"{(sslEnabled ? "https" : "http")}://{portalAlias.HttpAlias}";
+
+        return string.Format(Constants.CallbackUrl, siteUrl, portalId);
+    }
+
+    /// <inheritdoc />
+    public IList<SmtpOAuthSetting> GetSettings(int portalId)
+    {
+        return portalId > Null.NullInteger ? GetSettingsFromPortal(portalId) : this.GetSettingsFromHost();
+    }
+
+    /// <inheritdoc />
+    public bool UpdateSettings(int portalId, IDictionary<string, string> settings, out IList<string> errorMessages)
+    {
+        errorMessages = new List<string>();
+        bool changed;
+
+        if (portalId == Null.NullInteger)
         {
-            var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
-            var clientId = this.GetSetting(portalId, Constants.ClientIdSettingName);
-            var clientSecret = this.GetSetting(portalId, Constants.ClientSecretSettingName);
-
-            if (string.IsNullOrWhiteSpace(accountEmail)
-                || string.IsNullOrWhiteSpace(clientId)
-                || string.IsNullOrWhiteSpace(clientSecret))
-            {
-                return string.Empty;
-            }
-
-            var portalSettings = new PortalSettings(portalId == Null.NullInteger ? Host.HostPortalID : portalId);
-            var portalAlias = this.portalAliasService.GetPortalAliasesByPortalId(portalId == Null.NullInteger ? Host.HostPortalID : portalId)
-                .OrderByDescending(a => a.IsPrimary)
-                .FirstOrDefault();
-            var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On;
-
-            var siteUrl = $"{(sslEnabled ? "https" : "http")}://{portalAlias.HttpAlias}";
-
-            return string.Format(Constants.CallbackUrl, siteUrl, portalId);
+            changed = this.UpdateHostSettings(settings);
+        }
+        else
+        {
+            changed = this.UpdatePortalSettings(portalId, settings);
         }
 
-        /// <summary>
-        /// Get the provider parameters.
-        /// </summary>
-        /// <param name="portalId">the portal id of the setting, pass Null.NullInteger if it's a global setting.</param>
-        /// <returns>parameters list.</returns>
-        public IList<SmtpOAuthSetting> GetSettings(int portalId)
+        if (changed)
         {
-            return portalId > Null.NullInteger ? this.GetSettingsFromPortal(portalId) : this.GetSettingsFromHost();
+            var settingName = string.Format(Constants.DataStoreSettingName, portalId);
+            this.DeleteSetting(portalId, settingName);
         }
 
-        /// <summary>
-        /// update provider settings.
-        /// </summary>
-        /// <param name="portalId">the portal id of the setting, pass Null.NullInteger if it's a global setting.</param>
-        /// <param name="settings">the settings.</param>
-        /// <param name="errorMessages">the errors.</param>
-        /// <returns>Whether update the settings successfully.</returns>
-        public bool UpdateSettings(int portalId, IDictionary<string, string> settings, out IList<string> errorMessages)
+        return changed;
+    }
+
+    /// <inheritdoc />
+    public void Authorize(int portalId, IOAuth2SmtpClient smtpClient)
+    {
+        var settings = this.GetSettings(portalId);
+        var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
+        var codeFlow = this.CreateAuthorizationCodeFlow(portalId);
+        if (codeFlow == null)
         {
-            errorMessages = new List<string>();
-            var changed = false;
-
-            if (portalId == Null.NullInteger)
-            {
-                changed = this.UpdateHostSettings(settings);
-            }
-            else
-            {
-                changed = this.UpdatePortalSettings(portalId, settings);
-            }
-
-            if (changed)
-            {
-                var settingName = string.Format(Constants.DataStoreSettingName, portalId);
-                this.DeleteSetting(portalId, settingName);
-            }
-
-            return changed;
+            return;
         }
 
-        /// <summary>Authorize the SMTP client.</summary>
-        /// <param name="portalId">The portal ID.</param>
-        /// <param name="smtpClient">The SMTP client.</param>
-        public void Authorize(int portalId, IOAuth2SmtpClient smtpClient)
+        var response = new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail).Result;
+        var credential = new UserCredential(codeFlow, accountEmail, response);
+        if (credential.Token.IsExpired(SystemClock.Default))
         {
-            var settings = this.GetSettings(portalId);
-            var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
-            var codeFlow = this.CreateAuthorizationCodeFlow(portalId);
-            if (codeFlow != null)
-            {
-                var response = new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail).Result;
-                var credential = new UserCredential(codeFlow, accountEmail, response);
-                if (credential != null)
-                {
-                    if (credential.Token.IsExpired(SystemClock.Default))
-                    {
-                        var refreshed = credential.RefreshTokenAsync(CancellationToken.None).Result;
-                    }
-
-                    smtpClient.Authenticate(credential.UserId, credential.Token.AccessToken);
-                }
-            }
+            _ = credential.RefreshTokenAsync(CancellationToken.None).Result;
         }
 
-        /// <summary>Authorize the SMTP client.</summary>
-        /// <param name="portalId">The portal ID.</param>
-        /// <param name="smtpClient">The SMTP client.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A <see cref="Task"/> indicating completion.</returns>
-        public Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default(CancellationToken))
+        smtpClient.Authenticate(credential.UserId, credential.Token.AccessToken);
+    }
+
+    /// <inheritdoc />
+    public async Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken)
+    {
+        var settings = this.GetSettings(portalId);
+        var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
+        var codeFlow = this.CreateAuthorizationCodeFlow(portalId);
+        if (codeFlow == null)
         {
-            return Task.Run(() =>
+            return;
+        }
+
+        var response = await new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail);
+        var credential = new UserCredential(codeFlow, accountEmail, response);
+        if (credential.Token.IsExpired(SystemClock.Default))
+        {
+            _ = await credential.RefreshTokenAsync(cancellationToken);
+        }
+
+        await smtpClient.AuthenticateAsync(credential.UserId, credential.Token.AccessToken, cancellationToken);
+    }
+
+    /// <summary>Create authorization code flow.</summary>
+    /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalId">The portal ID.</param>
+    /// <returns>The authorization code flow.</returns>
+    internal static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, int portalId)
+    {
+        return CreateAuthorizationCodeFlow(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, portalId);
+    }
+
+    private static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, int portalId)
+    {
+        var settings = authProvider.GetSettings(portalId);
+        var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
+        var clientId = settings.FirstOrDefault(i => i.Name == Constants.ClientIdSettingName)?.Value ?? string.Empty;
+        var clientSecret = settings.FirstOrDefault(i => i.Name == Constants.ClientSecretSettingName)?.Value ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(accountEmail) ||
+            string.IsNullOrWhiteSpace(clientId) ||
+            string.IsNullOrWhiteSpace(clientSecret))
+        {
+            return null;
+        }
+
+        var clientSecrets = new ClientSecrets
+        {
+            ClientId = clientId,
+            ClientSecret = clientSecret,
+        };
+
+        return new GoogleAuthorizationCodeFlow(
+            new GoogleAuthorizationCodeFlow.Initializer
             {
-                this.Authorize(portalId, smtpClient);
+                DataStore = new GoogleCredentialDataStore(portalId, hostSettingsService),
+                Scopes = new[] { "https://mail.google.com/", },
+                ClientSecrets = clientSecrets,
+                Prompt = "consent",
             });
+    }
+
+    private static IList<SmtpOAuthSetting> GetSettingsFromPortal(int portalId)
+    {
+        var portalSettings = PortalController.Instance.GetPortalSettings(portalId);
+        if (portalSettings == null)
+        {
+            throw new ArgumentException("Invalid portal Id.");
         }
 
-        /// <summary>Create authorization code flow.</summary>
-        /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>The authorization code flow.</returns>
-        internal static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, int portalId)
+        var accountEmail = portalSettings.GetValueOrDefault(Constants.AccountEmailSettingName, string.Empty);
+        var clientId = portalSettings.GetValueOrDefault(Constants.ClientIdSettingName, string.Empty);
+        var clientSecret = portalSettings.GetValueOrDefault(Constants.ClientSecretSettingName, string.Empty);
+        if (!string.IsNullOrWhiteSpace(clientSecret))
         {
-            return CreateAuthorizationCodeFlow(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, portalId);
+            clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
         }
 
-        private static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, int portalId)
+        return new List<SmtpOAuthSetting>
         {
-            var settings = authProvider.GetSettings(portalId);
-            var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
-            var clientId = settings.FirstOrDefault(i => i.Name == Constants.ClientIdSettingName)?.Value ?? string.Empty;
-            var clientSecret = settings.FirstOrDefault(i => i.Name == Constants.ClientSecretSettingName)?.Value ?? string.Empty;
-
-            if (string.IsNullOrWhiteSpace(accountEmail) ||
-                string.IsNullOrWhiteSpace(clientId) ||
-                string.IsNullOrWhiteSpace(clientSecret))
+            new SmtpOAuthSetting
             {
-                return null;
-            }
-
-            var clientSecrets = new ClientSecrets
+                Name = Constants.AccountEmailSettingName,
+                Value = accountEmail,
+                Label = Localization.GetString("AccountEmail", Constants.LocalResourcesFile),
+                Help = Localization.GetString("AccountEmail.Help", Constants.LocalResourcesFile),
+                IsRequired = true,
+            },
+            new SmtpOAuthSetting
             {
-                ClientId = clientId,
-                ClientSecret = clientSecret,
-            };
+                Name = Constants.ClientIdSettingName,
+                Value = clientId,
+                Label = Localization.GetString("ClientId", Constants.LocalResourcesFile),
+                Help = Localization.GetString("ClientId.Help", Constants.LocalResourcesFile),
+                IsRequired = true,
+            },
+            new SmtpOAuthSetting
+            {
+                Name = Constants.ClientSecretSettingName,
+                Value = clientSecret,
+                Label = Localization.GetString("ClientSecret", Constants.LocalResourcesFile),
+                Help = Localization.GetString("ClientSecret.Help", Constants.LocalResourcesFile),
+                IsSecure = true,
+                IsRequired = true,
+            },
+        };
+    }
 
-            return new GoogleAuthorizationCodeFlow(
-                new GoogleAuthorizationCodeFlow.Initializer
-                {
-                    DataStore = new GoogleCredentialDataStore(portalId, hostSettingsService),
-                    Scopes = new[] { "https://mail.google.com/", },
-                    ClientSecrets = clientSecrets,
-                    Prompt = "consent",
-                });
+    /// <summary>Create authorization code flow.</summary>
+    /// <param name="portalId">The portal ID.</param>
+    /// <returns>The authorization code flow.</returns>
+    private IAuthorizationCodeFlow CreateAuthorizationCodeFlow(int portalId)
+    {
+        return CreateAuthorizationCodeFlow(this, this.hostSettingsService, portalId);
+    }
+
+    private IList<SmtpOAuthSetting> GetSettingsFromHost()
+    {
+        var hostSettings = this.hostSettingsService.GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
+
+        var accountEmail = hostSettings.GetValueOrDefault(Constants.AccountEmailSettingName, string.Empty);
+        var clientId = hostSettings.GetValueOrDefault(Constants.ClientIdSettingName, string.Empty);
+        var clientSecret = hostSettings.GetValueOrDefault(Constants.ClientSecretSettingName, string.Empty);
+        if (!string.IsNullOrWhiteSpace(clientSecret))
+        {
+            clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
         }
 
-        /// <summary>Create authorization code flow.</summary>
-        /// <param name="portalId">The portal ID.</param>
-        /// <returns>The authorization code flow.</returns>
-        private IAuthorizationCodeFlow CreateAuthorizationCodeFlow(int portalId)
+        return new List<SmtpOAuthSetting>
         {
-            return CreateAuthorizationCodeFlow(this, this.hostSettingsService, portalId);
+            new SmtpOAuthSetting
+            {
+                Name = Constants.AccountEmailSettingName,
+                Value = accountEmail,
+                Label = Localization.GetString("AccountEmail", Constants.LocalResourcesFile),
+                Help = Localization.GetString("AccountEmail.Help", Constants.LocalResourcesFile),
+                IsRequired = true,
+            },
+            new SmtpOAuthSetting
+            {
+                Name = Constants.ClientIdSettingName,
+                Value = clientId,
+                Label = Localization.GetString("ClientId", Constants.LocalResourcesFile),
+                Help = Localization.GetString("ClientId.Help", Constants.LocalResourcesFile),
+                IsRequired = true,
+            },
+            new SmtpOAuthSetting
+            {
+                Name = Constants.ClientSecretSettingName,
+                Value = clientSecret,
+                Label = Localization.GetString("ClientSecret", Constants.LocalResourcesFile),
+                Help = Localization.GetString("ClientSecret.Help", Constants.LocalResourcesFile),
+                IsSecure = true,
+                IsRequired = true,
+            },
+        };
+    }
+
+    private bool UpdateHostSettings(IDictionary<string, string> settings)
+    {
+        var accountEmail = this.GetSetting(Null.NullInteger, Constants.AccountEmailSettingName);
+        var clientId = this.GetSetting(Null.NullInteger, Constants.ClientIdSettingName);
+        var clientSecret = this.GetSetting(Null.NullInteger, Constants.ClientSecretSettingName);
+
+        var changed = false;
+        if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
+        {
+            this.hostSettingsService.Update(Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
+            changed = true;
         }
 
-        private IList<SmtpOAuthSetting> GetSettingsFromPortal(int portalId)
+        if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
         {
-            var portalSettings = PortalController.Instance.GetPortalSettings(portalId);
-            if (portalSettings == null)
-            {
-                throw new ArgumentException("Invalid portal Id.");
-            }
-
-            var accountEmail = portalSettings.GetValueOrDefault<string>(Constants.AccountEmailSettingName, string.Empty);
-            var clientId = portalSettings.GetValueOrDefault<string>(Constants.ClientIdSettingName, string.Empty);
-            var clientSecret = portalSettings.GetValueOrDefault<string>(Constants.ClientSecretSettingName, string.Empty);
-            if (!string.IsNullOrWhiteSpace(clientSecret))
-            {
-                clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
-            }
-
-            return new List<SmtpOAuthSetting>
-            {
-                new SmtpOAuthSetting
-                {
-                    Name = Constants.AccountEmailSettingName,
-                    Value = accountEmail,
-                    Label = Localization.GetString("AccountEmail", Constants.LocalResourcesFile),
-                    Help = Localization.GetString("AccountEmail.Help", Constants.LocalResourcesFile),
-                    IsRequired = true,
-                },
-                new SmtpOAuthSetting
-                {
-                    Name = Constants.ClientIdSettingName,
-                    Value = clientId,
-                    Label = Localization.GetString("ClientId", Constants.LocalResourcesFile),
-                    Help = Localization.GetString("ClientId.Help", Constants.LocalResourcesFile),
-                    IsRequired = true,
-                },
-                new SmtpOAuthSetting
-                {
-                    Name = Constants.ClientSecretSettingName,
-                    Value = clientSecret,
-                    Label = Localization.GetString("ClientSecret", Constants.LocalResourcesFile),
-                    Help = Localization.GetString("ClientSecret.Help", Constants.LocalResourcesFile),
-                    IsSecure = true,
-                    IsRequired = true,
-                },
-            };
+            this.hostSettingsService.Update(Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
+            changed = true;
         }
 
-        private IList<SmtpOAuthSetting> GetSettingsFromHost()
+        if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
         {
-            var hostSettings = this.hostSettingsService.GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
-
-            var accountEmail = hostSettings.GetValueOrDefault<string>(Constants.AccountEmailSettingName, string.Empty);
-            var clientId = hostSettings.GetValueOrDefault<string>(Constants.ClientIdSettingName, string.Empty);
-            var clientSecret = hostSettings.GetValueOrDefault<string>(Constants.ClientSecretSettingName, string.Empty);
-            if (!string.IsNullOrWhiteSpace(clientSecret))
-            {
-                clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
-            }
-
-            return new List<SmtpOAuthSetting>
-            {
-                new SmtpOAuthSetting
-                {
-                    Name = Constants.AccountEmailSettingName,
-                    Value = accountEmail,
-                    Label = Localization.GetString("AccountEmail", Constants.LocalResourcesFile),
-                    Help = Localization.GetString("AccountEmail.Help", Constants.LocalResourcesFile),
-                    IsRequired = true,
-                },
-                new SmtpOAuthSetting
-                {
-                    Name = Constants.ClientIdSettingName,
-                    Value = clientId,
-                    Label = Localization.GetString("ClientId", Constants.LocalResourcesFile),
-                    Help = Localization.GetString("ClientId.Help", Constants.LocalResourcesFile),
-                    IsRequired = true,
-                },
-                new SmtpOAuthSetting
-                {
-                    Name = Constants.ClientSecretSettingName,
-                    Value = clientSecret,
-                    Label = Localization.GetString("ClientSecret", Constants.LocalResourcesFile),
-                    Help = Localization.GetString("ClientSecret.Help", Constants.LocalResourcesFile),
-                    IsSecure = true,
-                    IsRequired = true,
-                },
-            };
+            var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
+            this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
+            changed = true;
         }
 
-        private bool UpdateHostSettings(IDictionary<string, string> settings)
+        if (changed)
         {
-            var accountEmail = this.GetSetting(Null.NullInteger, Constants.AccountEmailSettingName);
-            var clientId = this.GetSetting(Null.NullInteger, Constants.ClientIdSettingName);
-            var clientSecret = this.GetSetting(Null.NullInteger, Constants.ClientSecretSettingName);
-
-            var changed = false;
-            if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
-            {
-                this.hostSettingsService.Update(Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
-                changed = true;
-            }
-
-            if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
-            {
-                this.hostSettingsService.Update(Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
-                changed = true;
-            }
-
-            if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
-            {
-                var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-                this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
-                changed = true;
-            }
-
-            if (changed)
-            {
-                DataCache.ClearCache();
-            }
-
-            return changed;
+            DataCache.ClearCache();
         }
 
-        private bool UpdatePortalSettings(int portalId, IDictionary<string, string> settings)
+        return changed;
+    }
+
+    private bool UpdatePortalSettings(int portalId, IDictionary<string, string> settings)
+    {
+        var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
+        var clientId = this.GetSetting(portalId, Constants.ClientIdSettingName);
+        var clientSecret = this.GetSetting(portalId, Constants.ClientSecretSettingName);
+
+        var changed = false;
+        if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
         {
-            var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
-            var clientId = this.GetSetting(portalId, Constants.ClientIdSettingName);
-            var clientSecret = this.GetSetting(portalId, Constants.ClientSecretSettingName);
-
-            var changed = false;
-            if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
-            {
-                PortalController.UpdatePortalSetting(portalId, Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
-                changed = true;
-            }
-
-            if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
-            {
-                PortalController.UpdatePortalSetting(portalId, Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
-                changed = true;
-            }
-
-            if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
-            {
-                var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-                PortalController.UpdatePortalSetting(portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
-                changed = true;
-            }
-
-            if (changed)
-            {
-                DataCache.ClearPortalCache(portalId, false);
-            }
-
-            return changed;
+            PortalController.UpdatePortalSetting(portalId, Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
+            changed = true;
         }
 
-        private string GetSetting(int portalId, string settingName)
+        if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
         {
-            var settings = this.GetSettings(portalId);
-            var setting = settings.FirstOrDefault(i => i.Name == settingName);
-
-            return setting?.Value ?? string.Empty;
+            PortalController.UpdatePortalSetting(portalId, Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
+            changed = true;
         }
 
-        private void DeleteSetting(int portalId, string settingName)
+        if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
         {
-            if (portalId == Null.NullInteger)
-            {
-                this.hostSettingsService.Update(settingName, string.Empty, false);
-            }
-            else
-            {
-                PortalController.UpdatePortalSetting(portalId, settingName, string.Empty, false);
-            }
+            var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
+            PortalController.UpdatePortalSetting(portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
+            changed = true;
+        }
+
+        if (changed)
+        {
+            DataCache.ClearPortalCache(portalId, false);
+        }
+
+        return changed;
+    }
+
+    private string GetSetting(int portalId, string settingName)
+    {
+        var settings = this.GetSettings(portalId);
+        var setting = settings.FirstOrDefault(i => i.Name == settingName);
+
+        return setting?.Value ?? string.Empty;
+    }
+
+    private void DeleteSetting(int portalId, string settingName)
+    {
+        if (portalId == Null.NullInteger)
+        {
+            this.hostSettingsService.Update(settingName, string.Empty, false);
+        }
+        else
+        {
+            PortalController.UpdatePortalSetting(portalId, settingName, string.Empty, false);
         }
     }
 }

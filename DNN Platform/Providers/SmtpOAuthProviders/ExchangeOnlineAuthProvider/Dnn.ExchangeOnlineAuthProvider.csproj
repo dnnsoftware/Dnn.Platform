@@ -127,7 +127,6 @@
     </Compile>
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\ExchangeOnlineOAuthProvider.cs" />
-    <Compile Include="Components\HttpExtensions.cs" />
     <Compile Include="Components\TokenCacheHelper.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\ServicesController.cs" />

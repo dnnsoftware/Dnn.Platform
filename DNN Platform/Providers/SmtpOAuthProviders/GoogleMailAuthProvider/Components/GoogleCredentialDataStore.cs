@@ -2,194 +2,158 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.GoogleMailAuthProvider.Components
+namespace Dnn.GoogleMailAuthProvider.Components;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+
+using Google.Apis.Json;
+using Google.Apis.Util.Store;
+
+/// <summary>Google credentials data store class.</summary>
+public class GoogleCredentialDataStore : IDataStore
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    private readonly IHostSettingsService hostSettingsService;
+    private readonly int portalId;
 
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Web;
-    using Google.Apis.Json;
-    using Google.Apis.Util.Store;
-    using Newtonsoft.Json.Linq;
-
-    /// <summary>Google credentials data store class.</summary>
-    public class GoogleCredentialDataStore : IDataStore
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GoogleCredentialDataStore"/> class.
+    /// </summary>
+    /// <param name="portalId">The portal id.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    public GoogleCredentialDataStore(int portalId, IHostSettingsService hostSettingsService)
     {
-        private static readonly Task CompletedTask = Task.FromResult(0);
+        this.portalId = portalId;
+        this.hostSettingsService = hostSettingsService;
+    }
 
-        private readonly IHostSettingsService hostSettingsService;
-        private int portalId;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GoogleCredentialDataStore"/> class.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        public GoogleCredentialDataStore(int portalId, IHostSettingsService hostSettingsService)
+    /// <inheritdoc />
+    public Task ClearAsync()
+    {
+        var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
+        if (this.portalId == Null.NullInteger)
         {
-            this.portalId = portalId;
-            this.hostSettingsService = hostSettingsService;
+            this.hostSettingsService.Update(settingName, null, true);
+        }
+        else
+        {
+            PortalController.UpdatePortalSetting(this.portalId, settingName, null, true);
         }
 
-        /// <summary>
-        /// Clear all the credentials.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public Task ClearAsync()
-        {
-            var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
-            if (this.portalId == Null.NullInteger)
-            {
-                this.hostSettingsService.Update(settingName, null, true);
-            }
-            else
-            {
-                PortalController.UpdatePortalSetting(this.portalId, settingName, null, true);
-            }
+        return Task.CompletedTask;
+    }
 
-            return Task.CompletedTask;
+    /// <inheritdoc />
+    public Task DeleteAsync<T>(string key)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            throw new ArgumentException("Key MUST have a value");
         }
 
-        /// <summary>
-        /// Delete the credentials.
-        /// </summary>
-        /// <typeparam name="T">The data type.</typeparam>
-        /// <param name="key">The credential key.</param>
-        /// <returns>the credential.</returns>
-        public Task DeleteAsync<T>(string key)
+        var dataStore = this.LoadDataStore();
+        var settingName = GenerateStoredKey(key, typeof(T));
+        if (dataStore.ContainsKey(settingName))
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentException("Key MUST have a value");
-            }
-
-            var dataStore = this.LoadDataStore();
-            var settingName = this.GenerateStoredKey(key, typeof(T));
-            if (dataStore.ContainsKey(settingName))
-            {
-                dataStore.Remove(settingName);
-            }
-
-            this.SaveDataStore(dataStore);
-
-            return CompletedTask;
+            dataStore.Remove(settingName);
         }
 
-        /// <summary>
-        /// Get the credential.
-        /// </summary>
-        /// <typeparam name="T">The data type.</typeparam>
-        /// <param name="key">The credential key.</param>
-        /// <returns>The credential.</returns>
-        public Task<T> GetAsync<T>(string key)
+        this.SaveDataStore(dataStore);
+
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task<T> GetAsync<T>(string key)
+    {
+        if (string.IsNullOrEmpty(key))
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentException("Key MUST have a value");
-            }
-
-            var dataStore = this.LoadDataStore();
-            var settingName = this.GenerateStoredKey(key, typeof(T));
-            var settingValue = string.Empty;
-
-            if (dataStore.ContainsKey(settingName))
-            {
-                settingValue = dataStore[settingName];
-            }
-
-            TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
-            if (!string.IsNullOrWhiteSpace(settingValue))
-            {
-                try
-                {
-                    tcs.SetResult(NewtonsoftJsonSerializer.Instance.Deserialize<T>(settingValue));
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            }
-            else
-            {
-                tcs.SetResult(default(T));
-            }
-
-            return tcs.Task;
+            throw new ArgumentException("Key MUST have a value");
         }
 
-        /// <summary>
-        /// Stores the given value for the given key.
-        /// </summary>
-        /// <typeparam name="T">The type to store in the data store.</typeparam>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value to store in the data store.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task StoreAsync<T>(string key, T value)
+        var dataStore = this.LoadDataStore();
+        var settingName = GenerateStoredKey(key, typeof(T));
+        if (!dataStore.TryGetValue(settingName, out var settingValue))
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentException("Key MUST have a value");
-            }
-
-            var dataStore = this.LoadDataStore();
-            var settingName = this.GenerateStoredKey(key, typeof(T));
-            var settingValue = NewtonsoftJsonSerializer.Instance.Serialize(value);
-            dataStore[settingName] = settingValue;
-            this.SaveDataStore(dataStore);
-
-            return CompletedTask;
+            settingValue = string.Empty;
         }
 
-        private IDictionary<string, string> LoadDataStore()
+        if (string.IsNullOrWhiteSpace(settingValue))
         {
-            var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
-            var settingValue = string.Empty;
-
-            if (this.portalId == Null.NullInteger)
-            {
-                settingValue = this.hostSettingsService.GetEncryptedString(settingName, Config.GetDecryptionkey());
-            }
-            else
-            {
-                settingValue = PortalController.GetEncryptedString(settingName, this.portalId, Config.GetDecryptionkey());
-            }
-
-            if (string.IsNullOrWhiteSpace(settingValue))
-            {
-                return new Dictionary<string, string>();
-            }
-
-            return NewtonsoftJsonSerializer.Instance.Deserialize<IDictionary<string, string>>(settingValue);
+            return Task.FromResult(default(T));
         }
 
-        private void SaveDataStore(IDictionary<string, string> dataStore)
+        try
         {
-            var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
-            var settingValue = NewtonsoftJsonSerializer.Instance.Serialize(dataStore);
+            return Task.FromResult(NewtonsoftJsonSerializer.Instance.Deserialize<T>(settingValue));
+        }
+        catch (Exception ex)
+        {
+            return Task.FromException<T>(ex);
+        }
+    }
 
-            if (this.portalId == Null.NullInteger)
-            {
-                this.hostSettingsService.UpdateEncryptedString(settingName, settingValue, Config.GetDecryptionkey());
-            }
-            else
-            {
-                PortalController.UpdateEncryptedString(this.portalId, settingName, settingValue, Config.GetDecryptionkey());
-            }
+    /// <inheritdoc />
+    public Task StoreAsync<T>(string key, T value)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            throw new ArgumentException("Key MUST have a value");
         }
 
-        private string GenerateStoredKey(string key, Type t)
+        var dataStore = this.LoadDataStore();
+        var settingName = GenerateStoredKey(key, typeof(T));
+        var settingValue = NewtonsoftJsonSerializer.Instance.Serialize(value);
+        dataStore[settingName] = settingValue;
+        this.SaveDataStore(dataStore);
+
+        return Task.CompletedTask;
+    }
+
+    private static string GenerateStoredKey(string key, Type t)
+    {
+        return $"{t.FullName}-{key}";
+    }
+
+    private IDictionary<string, string> LoadDataStore()
+    {
+        var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
+        string settingValue;
+
+        if (this.portalId == Null.NullInteger)
         {
-            return string.Format("{0}-{1}", t.FullName, key);
+            settingValue = this.hostSettingsService.GetEncryptedString(settingName, Config.GetDecryptionkey());
+        }
+        else
+        {
+            settingValue = PortalController.GetEncryptedString(settingName, this.portalId, Config.GetDecryptionkey());
+        }
+
+        if (string.IsNullOrWhiteSpace(settingValue))
+        {
+            return new Dictionary<string, string>();
+        }
+
+        return NewtonsoftJsonSerializer.Instance.Deserialize<IDictionary<string, string>>(settingValue);
+    }
+
+    private void SaveDataStore(IDictionary<string, string> dataStore)
+    {
+        var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
+        var settingValue = NewtonsoftJsonSerializer.Instance.Serialize(dataStore);
+
+        if (this.portalId == Null.NullInteger)
+        {
+            this.hostSettingsService.UpdateEncryptedString(settingName, settingValue, Config.GetDecryptionkey());
+        }
+        else
+        {
+            PortalController.UpdateEncryptedString(this.portalId, settingName, settingValue, Config.GetDecryptionkey());
         }
     }
 }

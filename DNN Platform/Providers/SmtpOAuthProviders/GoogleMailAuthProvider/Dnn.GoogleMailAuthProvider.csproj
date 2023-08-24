@@ -135,7 +135,6 @@
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\GoogleCredentialDataStore.cs" />
     <Compile Include="Components\GoogleMailOAuthProvider.cs" />
-    <Compile Include="Components\HttpExtensions.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\ServicesController.cs" />
     <AdditionalFiles Include="..\..\..\..\stylecop.json">
