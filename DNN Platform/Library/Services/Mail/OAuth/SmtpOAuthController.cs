@@ -3,65 +3,46 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Mail.OAuth
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using DotNetNuke.Framework;
-    using DotNetNuke.Framework.Reflections;
-    using DotNetNuke.Instrumentation;
+    using DotNetNuke.DependencyInjection.Extensions;
 
-    /// <summary>Smtp OAuth controller.</summary>
-    public class SmtpOAuthController : ServiceLocator<ISmtpOAuthController, SmtpOAuthController>, ISmtpOAuthController
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+
+    /// <summary>SMTP OAuth controller.</summary>
+    public class SmtpOAuthController : ISmtpOAuthController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SmtpOAuthController));
-
-        private readonly TypeLocator typeLocator;
+        private readonly IEnumerable<ISmtpOAuthProvider> smtpOAuthProviders;
 
         /// <summary>Initializes a new instance of the <see cref="SmtpOAuthController"/> class.</summary>
-        public SmtpOAuthController()
-            : this(new TypeLocator())
+        /// <param name="smtpOAuthProviders">The SMTP OAuth providers.</param>
+        public SmtpOAuthController(IEnumerable<ISmtpOAuthProvider> smtpOAuthProviders)
         {
+            this.smtpOAuthProviders = smtpOAuthProviders;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="SmtpOAuthController"/> class.</summary>
-        /// <param name="typeLocator">The type locator to use to find <see cref="ISmtpOAuthProvider"/> instances.</param>
-        public SmtpOAuthController(TypeLocator typeLocator)
+        /// <summary>Registers all of the <see cref="ISmtpOAuthProvider"/> types with the <paramref name="serviceCollection"/>.</summary>
+        /// <param name="serviceCollection">The services collection.</param>
+        public static void RegisterOAuthProviders(IServiceCollection serviceCollection)
         {
-            this.typeLocator = typeLocator;
+            var providerTypes = TypeExtensions.SafeGetTypes()
+                .Types.Where(t => t is { IsClass: true, IsAbstract: false } && typeof(ISmtpOAuthProvider).IsAssignableFrom(t));
+
+            serviceCollection.TryAddEnumerable(providerTypes.Select(t => ServiceDescriptor.Transient(typeof(ISmtpOAuthProvider), t)));
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<ISmtpOAuthProvider> GetOAuthProviders()
+        {
+            return this.smtpOAuthProviders.ToList();
         }
 
         /// <inheritdoc />
         public ISmtpOAuthProvider GetOAuthProvider(string name)
         {
-            return this.GetOAuthProviders().FirstOrDefault(i => i.Name == name);
-        }
-
-        /// <inheritdoc />
-        public IList<ISmtpOAuthProvider> GetOAuthProviders()
-        {
-            return this.typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     typeof(ISmtpOAuthProvider).IsAssignableFrom(t)).Select(t =>
-                     {
-                         try
-                         {
-                             return Activator.CreateInstance(t) as ISmtpOAuthProvider;
-                         }
-                         catch (Exception e)
-                         {
-                             Logger.ErrorFormat("Unable to create {0} while getting all smtp oauth providers. {1}", t.FullName, e.Message);
-                             return null;
-                         }
-                     }).Where(i => i != null).ToList();
-        }
-
-        /// <inheritdoc />
-        protected override Func<ISmtpOAuthController> GetFactory()
-        {
-            return () => new SmtpOAuthController();
+            return this.smtpOAuthProviders.FirstOrDefault(i => i.Name == name);
         }
     }
 }

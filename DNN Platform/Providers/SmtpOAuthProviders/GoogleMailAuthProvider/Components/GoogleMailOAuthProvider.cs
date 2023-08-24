@@ -32,7 +32,17 @@ namespace Dnn.GoogleMailAuthProvider.Components
     /// <inheritdoc/>
     public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     {
-        private readonly IServiceProvider serviceProvider = GetServiceProvider();
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalAliasService portalAliasService;
+
+        /// <summary>Initializes a new instance of the <see cref="GoogleMailOAuthProvider"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
+        {
+            this.hostSettingsService = hostSettingsService;
+            this.portalAliasService = portalAliasService;
+        }
 
         /// <summary>
         /// Gets provider name.
@@ -57,7 +67,7 @@ namespace Dnn.GoogleMailAuthProvider.Components
                 return false;
             }
 
-            var credential = new GoogleCredentialDataStore(portalId).GetAsync<TokenResponse>(accountEmail).Result;
+            var credential = new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail).Result;
 
             return !string.IsNullOrWhiteSpace(credential?.AccessToken);
         }
@@ -81,7 +91,7 @@ namespace Dnn.GoogleMailAuthProvider.Components
             }
 
             var portalSettings = new PortalSettings(portalId == Null.NullInteger ? Host.HostPortalID : portalId);
-            var portalAlias = this.GetService<IPortalAliasService>().GetPortalAliasesByPortalId(portalId == Null.NullInteger ? Host.HostPortalID : portalId)
+            var portalAlias = this.portalAliasService.GetPortalAliasesByPortalId(portalId == Null.NullInteger ? Host.HostPortalID : portalId)
                 .OrderByDescending(a => a.IsPrimary)
                 .FirstOrDefault();
             var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On;
@@ -131,19 +141,17 @@ namespace Dnn.GoogleMailAuthProvider.Components
             return changed;
         }
 
-        /// <summary>
-        /// Authorize the smtp client.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="smtpClient">The smtp client.</param>
+        /// <summary>Authorize the SMTP client.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="smtpClient">The SMTP client.</param>
         public void Authorize(int portalId, IOAuth2SmtpClient smtpClient)
         {
             var settings = this.GetSettings(portalId);
             var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
-            var codeFlow = CreateAuthorizationCodeFlow(portalId);
+            var codeFlow = this.CreateAuthorizationCodeFlow(portalId);
             if (codeFlow != null)
             {
-                var response = new GoogleCredentialDataStore(portalId).GetAsync<TokenResponse>(accountEmail).Result;
+                var response = new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail).Result;
                 var credential = new UserCredential(codeFlow, accountEmail, response);
                 if (credential != null)
                 {
@@ -157,12 +165,10 @@ namespace Dnn.GoogleMailAuthProvider.Components
             }
         }
 
-        /// <summary>
-        /// Authorize the smtp client.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="smtpClient">The smtp client.</param>
-        /// <param name="cancellationToken">The cancallation token.</param>
+        /// <summary>Authorize the SMTP client.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="smtpClient">The SMTP client.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A <see cref="Task"/> indicating completion.</returns>
         public Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -172,23 +178,26 @@ namespace Dnn.GoogleMailAuthProvider.Components
             });
         }
 
-        /// <summary>
-        /// Create authorization code flow.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
+        /// <summary>Create authorization code flow.</summary>
+        /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>The authorization code flow.</returns>
-        internal static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(int portalId)
+        internal static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, int portalId)
         {
-            var authProvider = SmtpOAuthController.Instance.GetOAuthProvider(Constants.Name);
+            return CreateAuthorizationCodeFlow(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, portalId);
+        }
 
+        private static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, int portalId)
+        {
             var settings = authProvider.GetSettings(portalId);
             var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
             var clientId = settings.FirstOrDefault(i => i.Name == Constants.ClientIdSettingName)?.Value ?? string.Empty;
             var clientSecret = settings.FirstOrDefault(i => i.Name == Constants.ClientSecretSettingName)?.Value ?? string.Empty;
 
-            if (string.IsNullOrWhiteSpace(accountEmail)
-                || string.IsNullOrWhiteSpace(clientId)
-                || string.IsNullOrWhiteSpace(clientSecret))
+            if (string.IsNullOrWhiteSpace(accountEmail) ||
+                string.IsNullOrWhiteSpace(clientId) ||
+                string.IsNullOrWhiteSpace(clientSecret))
             {
                 return null;
             }
@@ -199,21 +208,22 @@ namespace Dnn.GoogleMailAuthProvider.Components
                 ClientSecret = clientSecret,
             };
 
-            var codeFlow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
-            {
-                DataStore = new GoogleCredentialDataStore(portalId),
-                Scopes = new[] { "https://mail.google.com/" },
-                ClientSecrets = clientSecrets,
-                Prompt = "consent",
-            });
-
-            return codeFlow;
+            return new GoogleAuthorizationCodeFlow(
+                new GoogleAuthorizationCodeFlow.Initializer
+                {
+                    DataStore = new GoogleCredentialDataStore(portalId, hostSettingsService),
+                    Scopes = new[] { "https://mail.google.com/", },
+                    ClientSecrets = clientSecrets,
+                    Prompt = "consent",
+                });
         }
 
-        private static IServiceProvider GetServiceProvider()
+        /// <summary>Create authorization code flow.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>The authorization code flow.</returns>
+        private IAuthorizationCodeFlow CreateAuthorizationCodeFlow(int portalId)
         {
-            return HttpContextSource.Current?.GetScope()?.ServiceProvider ??
-                DependencyInjectionInitialize.BuildServiceProvider();
+            return CreateAuthorizationCodeFlow(this, this.hostSettingsService, portalId);
         }
 
         private IList<SmtpOAuthSetting> GetSettingsFromPortal(int portalId)
@@ -264,7 +274,7 @@ namespace Dnn.GoogleMailAuthProvider.Components
 
         private IList<SmtpOAuthSetting> GetSettingsFromHost()
         {
-            var hostSettings = this.GetService<IHostSettingsService>().GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
+            var hostSettings = this.hostSettingsService.GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
 
             var accountEmail = hostSettings.GetValueOrDefault<string>(Constants.AccountEmailSettingName, string.Empty);
             var clientId = hostSettings.GetValueOrDefault<string>(Constants.ClientIdSettingName, string.Empty);
@@ -313,20 +323,20 @@ namespace Dnn.GoogleMailAuthProvider.Components
             var changed = false;
             if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
             {
-                this.GetService<IHostSettingsService>().Update(Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
+                this.hostSettingsService.Update(Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
                 changed = true;
             }
 
             if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
             {
-                this.GetService<IHostSettingsService>().Update(Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
+                this.hostSettingsService.Update(Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
                 changed = true;
             }
 
             if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
             {
                 var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-                this.GetService<IHostSettingsService>().Update(Constants.ClientSecretSettingName, encryptedSecret, false);
+                this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
                 changed = true;
             }
 
@@ -384,18 +394,12 @@ namespace Dnn.GoogleMailAuthProvider.Components
         {
             if (portalId == Null.NullInteger)
             {
-                this.GetService<IHostSettingsService>().Update(settingName, string.Empty, false);
+                this.hostSettingsService.Update(settingName, string.Empty, false);
             }
             else
             {
                 PortalController.UpdatePortalSetting(portalId, settingName, string.Empty, false);
             }
-        }
-
-        private T GetService<T>()
-            where T : class
-        {
-            return (T)this.serviceProvider.GetService(typeof(T));
         }
     }
 }

@@ -11,8 +11,12 @@ namespace Dnn.ExchangeOnlineAuthProvider
     using System.Web.UI;
 
     using Dnn.ExchangeOnlineAuthProvider.Components;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Mail.OAuth;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Identity.Client;
     using Microsoft.Identity.Client.Extensibility;
 
@@ -21,6 +25,33 @@ namespace Dnn.ExchangeOnlineAuthProvider
     /// </summary>
     public partial class Authorize : Page
     {
+        private readonly ISmtpOAuthController smtpOAuthController;
+        private readonly IHostSettingsService hostSettingsService;
+
+        /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+        protected Authorize()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+        /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService)
+        {
+            if (smtpOAuthController != null)
+            {
+                this.smtpOAuthController = smtpOAuthController;
+                this.hostSettingsService = hostSettingsService;
+            }
+            else
+            {
+                var serviceProvider = HttpContextSource.Current.GetScope().ServiceProvider;
+                this.smtpOAuthController = serviceProvider.GetRequiredService<ISmtpOAuthController>();
+                this.hostSettingsService = hostSettingsService ?? serviceProvider.GetRequiredService<IHostSettingsService>();
+            }
+        }
+
         /// <summary>
         /// OnLoad event.
         /// </summary>
@@ -39,8 +70,8 @@ namespace Dnn.ExchangeOnlineAuthProvider
                 }
             }
 
-            var authProvider = SmtpOAuthController.Instance.GetOAuthProvider(Constants.Name);
-            var clientApplication = ExchangeOnlineOAuthProvider.CreateClientApplication(portalId);
+            var authProvider = this.smtpOAuthController.GetOAuthProvider(Constants.Name);
+            var clientApplication = ExchangeOnlineOAuthProvider.CreateClientApplication(this.smtpOAuthController, this.hostSettingsService, portalId);
 
             if (clientApplication == null || authProvider.IsAuthorized(portalId))
             {

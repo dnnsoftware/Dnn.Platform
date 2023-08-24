@@ -11,15 +11,46 @@ namespace Dnn.GoogleMailAuthProvider
     using System.Web.UI;
 
     using Dnn.GoogleMailAuthProvider.Components;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Mail.OAuth;
     using Google.Apis.Auth.OAuth2.Web;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Google OAuth callback.
     /// </summary>
     public partial class Authorize : Page
     {
+        private readonly ISmtpOAuthController smtpOAuthController;
+        private readonly IHostSettingsService hostSettingsService;
+
+        /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+        protected Authorize()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+        /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService)
+        {
+            if (smtpOAuthController != null)
+            {
+                this.smtpOAuthController = smtpOAuthController;
+                this.hostSettingsService = hostSettingsService;
+            }
+            else
+            {
+                var serviceProvider = HttpContextSource.Current.GetScope().ServiceProvider;
+                this.smtpOAuthController = serviceProvider.GetRequiredService<ISmtpOAuthController>();
+                this.hostSettingsService = hostSettingsService ?? serviceProvider.GetRequiredService<IHostSettingsService>();
+            }
+        }
+
         /// <summary>
         /// OnLoad event.
         /// </summary>
@@ -38,12 +69,12 @@ namespace Dnn.GoogleMailAuthProvider
                 }
             }
 
-            var authProvider = SmtpOAuthController.Instance.GetOAuthProvider(Constants.Name);
+            var authProvider = this.smtpOAuthController.GetOAuthProvider(Constants.Name);
 
             var settings = authProvider.GetSettings(portalId);
             var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
 
-            var codeFlow = GoogleMailOAuthProvider.CreateAuthorizationCodeFlow(portalId);
+            var codeFlow = GoogleMailOAuthProvider.CreateAuthorizationCodeFlow(this.smtpOAuthController, this.hostSettingsService, portalId);
             if (codeFlow == null || authProvider.IsAuthorized(portalId))
             {
                 this.CloseWindow();

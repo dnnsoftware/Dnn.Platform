@@ -6,8 +6,8 @@ namespace DotNetNuke.Tests.Mail
 {
     using Dnn.ExchangeOnlineAuthProvider.Components;
     using Dnn.GoogleMailAuthProvider.Components;
-    using DotNetNuke.Framework.Internal.Reflection;
-    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Services.Mail.OAuth;
     using Moq;
     using NUnit.Framework;
@@ -31,19 +31,22 @@ namespace DotNetNuke.Tests.Mail
             Assert.NotNull(provider);
         }
 
+        [Test]
+        public void NonExistent_OAuth_Provider_Should_Be_Null()
+        {
+            var provider = CreateSmtpOAuthController().GetOAuthProvider("AnotherProvider");
+
+            Assert.Null(provider);
+        }
+
         private static SmtpOAuthController CreateSmtpOAuthController()
         {
-            var assemblyLocator = new Mock<IAssemblyLocator>();
-            assemblyLocator.SetupGet(al => al.Assemblies)
-                .Returns(
-                    new[]
-                    {
-                        new AssemblyWrapper(typeof(GoogleMailOAuthProvider).Assembly),
-                        new AssemblyWrapper(typeof(ExchangeOnlineOAuthProvider).Assembly),
-                    });
-
-            var typeLocator = new TypeLocator { AssemblyLocator = assemblyLocator.Object, };
-            return new SmtpOAuthController(typeLocator);
+            return new SmtpOAuthController(
+                new ISmtpOAuthProvider[]
+                {
+                    new GoogleMailOAuthProvider(Mock.Of<IHostSettingsService>(), Mock.Of<IPortalAliasService>()),
+                    new ExchangeOnlineOAuthProvider(Mock.Of<IHostSettingsService>(), Mock.Of<IPortalAliasService>()),
+                });
         }
     }
 }

@@ -33,13 +33,17 @@ namespace Dnn.PersonaBar.Servers.Services
         private const string ObfuscateString = "*****";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
         private readonly IHostSettingsService hostSettingsService;
+        private readonly ISmtpOAuthController smtpOAuthController;
 
         /// <summary>Initializes a new instance of the <see cref="ServerSettingsSmtpHostController"/> class.</summary>
         /// <param name="hostSettingsService">A service to manage host settings.</param>
+        /// <param name="smtpOAuthController">A controller for SMTP OAuth providers.</param>
         public ServerSettingsSmtpHostController(
-            IHostSettingsService hostSettingsService)
+            IHostSettingsService hostSettingsService,
+            ISmtpOAuthController smtpOAuthController)
         {
             this.hostSettingsService = hostSettingsService;
+            this.smtpOAuthController = smtpOAuthController;
         }
 
         /// <summary>Gets the SMTP settings for the host.</summary>
@@ -135,7 +139,7 @@ namespace Dnn.PersonaBar.Servers.Services
                             providerChanged = true;
                         }
 
-                        var provider = SmtpOAuthController.Instance.GetOAuthProvider(request.AuthProvider);
+                        var provider = this.smtpOAuthController.GetOAuthProvider(request.AuthProvider);
                         if (provider != null)
                         {
                             providerChanged = provider.UpdateSettings(Null.NullInteger, request.AuthProviderSettings, out errorMessages);
@@ -174,7 +178,7 @@ namespace Dnn.PersonaBar.Servers.Services
                             providerChanged = true;
                         }
 
-                        var provider = SmtpOAuthController.Instance.GetOAuthProvider(request.AuthProvider);
+                        var provider = this.smtpOAuthController.GetOAuthProvider(request.AuthProvider);
                         if (provider != null)
                         {
                             providerChanged = provider.UpdateSettings(portalId, request.AuthProviderSettings, out errorMessages);
@@ -265,7 +269,7 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var portalId = PortalSettings.Current.PortalId;
 
-                var providers = SmtpOAuthController.Instance.GetOAuthProviders();
+                var providers = this.smtpOAuthController.GetOAuthProviders();
                 var result = new
                 {
                     host = providers.Select(i => new

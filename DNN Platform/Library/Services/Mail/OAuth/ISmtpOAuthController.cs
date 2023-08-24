@@ -3,16 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Mail.OAuth
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>A contract specifying the ability to retrieve the SMTP OAuth providers.</summary>
     public interface ISmtpOAuthController
     {
         /// <summary>Get all the OAuth providers.</summary>
         /// <returns>OAuth providers list.</returns>
-        IList<ISmtpOAuthProvider> GetOAuthProviders();
+        IReadOnlyCollection<ISmtpOAuthProvider> GetOAuthProviders();
 
         /// <summary>Get an OAuth provider by name.</summary>
         /// <param name="name">The provider name.</param>

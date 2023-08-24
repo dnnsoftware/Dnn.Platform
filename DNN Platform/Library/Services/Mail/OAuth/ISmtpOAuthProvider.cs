@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Mail.OAuth
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 

@@ -24,15 +24,18 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
     /// </summary>
     public class TokenCacheHelper
     {
+        private readonly IHostSettingsService hostSettingsService;
         private int portalId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenCacheHelper"/> class.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
-        public TokenCacheHelper(int portalId)
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public TokenCacheHelper(int portalId, IHostSettingsService hostSettingsService)
         {
             this.portalId = portalId;
+            this.hostSettingsService = hostSettingsService;
         }
 
         /// <summary>
@@ -43,12 +46,6 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
         {
             tokenCache.SetBeforeAccess(this.BeforeAccessNotification);
             tokenCache.SetAfterAccess(this.AfterAccessNotification);
-        }
-
-        private static IServiceProvider GetServiceProvider()
-        {
-            return HttpContextSource.Current?.GetScope()?.ServiceProvider ??
-                DependencyInjectionInitialize.BuildServiceProvider();
         }
 
         private void BeforeAccessNotification(TokenCacheNotificationArgs args)
@@ -73,8 +70,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
         {
             if (portalId == Null.NullInteger)
             {
-                var hostSettingsService = (IHostSettingsService)GetServiceProvider().GetService(typeof(IHostSettingsService));
-                return hostSettingsService.GetEncryptedString(Constants.AuthenticationSettingName, Config.GetDecryptionkey());
+                return this.hostSettingsService.GetEncryptedString(Constants.AuthenticationSettingName, Config.GetDecryptionkey());
             }
 
             return PortalController.GetEncryptedString(Constants.AuthenticationSettingName, portalId, Config.GetDecryptionkey());
@@ -85,8 +81,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
             var settingValue = Encoding.UTF8.GetString(data);
             if (portalId == Null.NullInteger)
             {
-                var hostSettingsService = (IHostSettingsService)GetServiceProvider().GetService(typeof(IHostSettingsService));
-                hostSettingsService.UpdateEncryptedString(Constants.AuthenticationSettingName, settingValue, Config.GetDecryptionkey());
+                this.hostSettingsService.UpdateEncryptedString(Constants.AuthenticationSettingName, settingValue, Config.GetDecryptionkey());
             }
             else
             {

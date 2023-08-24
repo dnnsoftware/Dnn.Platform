@@ -29,7 +29,17 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
     /// <inheritdoc/>
     public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     {
-        private readonly IServiceProvider serviceProvider = GetServiceProvider();
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalAliasService portalAliasService;
+
+        /// <summary>Initializes a new instance of the <see cref="ExchangeOnlineOAuthProvider"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
+        {
+            this.hostSettingsService = hostSettingsService;
+            this.portalAliasService = portalAliasService;
+        }
 
         /// <summary>
         /// Gets provider name.
@@ -48,7 +58,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
         /// <returns>status.</returns>
         public bool IsAuthorized(int portalId)
         {
-            var clientApplication = CreateClientApplication(portalId);
+            var clientApplication = CreateClientApplication(this, this.hostSettingsService, portalId);
             if (clientApplication == null)
             {
                 return false;
@@ -76,7 +86,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
             }
 
             var portalSettings = new PortalSettings(portalId == Null.NullInteger ? Host.HostPortalID : portalId);
-            var portalAlias = this.GetService<IPortalAliasService>().GetPortalAliasesByPortalId(portalId == Null.NullInteger ? Host.HostPortalID : portalId)
+            var portalAlias = this.portalAliasService.GetPortalAliasesByPortalId(portalId == Null.NullInteger ? Host.HostPortalID : portalId)
                 .OrderByDescending(a => a.IsPrimary)
                 .FirstOrDefault();
             var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On;
@@ -137,7 +147,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
                 return;
             }
 
-            var clientApplication = CreateClientApplication(portalId);
+            var clientApplication = CreateClientApplication(this, this.hostSettingsService, portalId);
             var account = clientApplication.GetAccountsAsync().Result.First();
             var scopes = GetAuthenticationScopes();
             var result = clientApplication.AcquireTokenSilent(scopes, account).ExecuteAsync().Result;
@@ -168,20 +178,37 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
         /// <summary>
         /// Create the authentication client application.
         /// </summary>
+        /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="portalId">The portal id.</param>
         /// <returns>The client application.</returns>
-        internal static ConfidentialClientApplication CreateClientApplication(int portalId)
+        internal static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, int portalId)
         {
-            var authProvider = SmtpOAuthController.Instance.GetOAuthProvider(Constants.Name);
+            return CreateClientApplication(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, portalId);
+        }
 
+        /// <summary>
+        /// Get the authentication scopes list.
+        /// </summary>
+        /// <returns>The scopes.</returns>
+        internal static IList<string> GetAuthenticationScopes()
+        {
+            return new string[]
+            {
+                "https://outlook.office365.com/.default",
+            };
+        }
+
+        private static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, int portalId)
+        {
             var settings = authProvider.GetSettings(portalId);
             var tenantId = settings.FirstOrDefault(i => i.Name == Constants.TenantIdSettingName)?.Value ?? string.Empty;
             var clientId = settings.FirstOrDefault(i => i.Name == Constants.ClientIdSettingName)?.Value ?? string.Empty;
             var clientSecret = settings.FirstOrDefault(i => i.Name == Constants.ClientSecretSettingName)?.Value ?? string.Empty;
 
-            if (string.IsNullOrWhiteSpace(tenantId)
-                || string.IsNullOrWhiteSpace(clientId)
-                || string.IsNullOrWhiteSpace(clientSecret))
+            if (string.IsNullOrWhiteSpace(tenantId) ||
+                string.IsNullOrWhiteSpace(clientId) ||
+                string.IsNullOrWhiteSpace(clientSecret))
             {
                 return null;
             }
@@ -204,34 +231,10 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
                 .CreateWithApplicationOptions(options)
                 .Build();
 
-            var tokenCacheHelper = new TokenCacheHelper(portalId);
+            var tokenCacheHelper = new TokenCacheHelper(portalId, hostSettingsService);
             tokenCacheHelper.EnableSerialization(clientApplication.UserTokenCache);
 
             return clientApplication;
-        }
-
-        /// <summary>
-        /// Get the authentication scopes list.
-        /// </summary>
-        /// <returns>The scopes.</returns>
-        internal static IList<string> GetAuthenticationScopes()
-        {
-            return new string[]
-            {
-                "https://outlook.office365.com/.default",
-            };
-        }
-
-        private static IServiceProvider GetServiceProvider()
-        {
-            return HttpContextSource.Current?.GetScope()?.ServiceProvider ??
-                DependencyInjectionInitialize.BuildServiceProvider();
-        }
-
-        private T GetService<T>()
-            where T : class
-        {
-            return (T)this.serviceProvider.GetService(typeof(T));
         }
 
         private IList<SmtpOAuthSetting> GetSettingsFromPortal(int portalId)
@@ -282,7 +285,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
 
         private IList<SmtpOAuthSetting> GetSettingsFromHost()
         {
-            var hostSettings = this.GetService<IHostSettingsService>().GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
+            var hostSettings = this.hostSettingsService.GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
 
             var tenantId = hostSettings.GetValueOrDefault<string>(Constants.TenantIdSettingName, string.Empty);
             var clientId = hostSettings.GetValueOrDefault<string>(Constants.ClientIdSettingName, string.Empty);
@@ -331,20 +334,20 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
             var changed = false;
             if (settings.ContainsKey(Constants.TenantIdSettingName) && settings[Constants.TenantIdSettingName] != tenantId)
             {
-                this.GetService<IHostSettingsService>().Update(Constants.TenantIdSettingName, settings[Constants.TenantIdSettingName], false);
+                this.hostSettingsService.Update(Constants.TenantIdSettingName, settings[Constants.TenantIdSettingName], false);
                 changed = true;
             }
 
             if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
             {
-                this.GetService<IHostSettingsService>().Update(Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
+                this.hostSettingsService.Update(Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
                 changed = true;
             }
 
             if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
             {
                 var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-                this.GetService<IHostSettingsService>().Update(Constants.ClientSecretSettingName, encryptedSecret, false);
+                this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
                 changed = true;
             }
 
@@ -402,7 +405,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Components
         {
             if (portalId == Null.NullInteger)
             {
-                this.GetService<IHostSettingsService>().Update(settingName, string.Empty, false);
+                this.hostSettingsService.Update(settingName, string.Empty, false);
             }
             else
             {

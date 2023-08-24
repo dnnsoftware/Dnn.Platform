@@ -22,23 +22,23 @@ namespace Dnn.GoogleMailAuthProvider.Components
     using Google.Apis.Util.Store;
     using Newtonsoft.Json.Linq;
 
-    /// <summary>
-    /// Google credentials data store class.
-    /// </summary>
+    /// <summary>Google credentials data store class.</summary>
     public class GoogleCredentialDataStore : IDataStore
     {
         private static readonly Task CompletedTask = Task.FromResult(0);
-        private readonly IServiceProvider serviceProvider = GetServiceProvider();
 
+        private readonly IHostSettingsService hostSettingsService;
         private int portalId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GoogleCredentialDataStore"/> class.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
-        public GoogleCredentialDataStore(int portalId)
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public GoogleCredentialDataStore(int portalId, IHostSettingsService hostSettingsService)
         {
             this.portalId = portalId;
+            this.hostSettingsService = hostSettingsService;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Dnn.GoogleMailAuthProvider.Components
             var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
             if (this.portalId == Null.NullInteger)
             {
-                this.GetService<IHostSettingsService>().Update(settingName, null, true);
+                this.hostSettingsService.Update(settingName, null, true);
             }
             else
             {
@@ -150,18 +150,6 @@ namespace Dnn.GoogleMailAuthProvider.Components
             return CompletedTask;
         }
 
-        private static IServiceProvider GetServiceProvider()
-        {
-            return HttpContextSource.Current?.GetScope()?.ServiceProvider ??
-                DependencyInjectionInitialize.BuildServiceProvider();
-        }
-
-        private T GetService<T>()
-            where T : class
-        {
-            return (T)this.serviceProvider.GetService(typeof(T));
-        }
-
         private IDictionary<string, string> LoadDataStore()
         {
             var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
@@ -169,7 +157,7 @@ namespace Dnn.GoogleMailAuthProvider.Components
 
             if (this.portalId == Null.NullInteger)
             {
-                settingValue = this.GetService<IHostSettingsService>().GetEncryptedString(settingName, Config.GetDecryptionkey());
+                settingValue = this.hostSettingsService.GetEncryptedString(settingName, Config.GetDecryptionkey());
             }
             else
             {
@@ -191,7 +179,7 @@ namespace Dnn.GoogleMailAuthProvider.Components
 
             if (this.portalId == Null.NullInteger)
             {
-                this.GetService<IHostSettingsService>().UpdateEncryptedString(settingName, settingValue, Config.GetDecryptionkey());
+                this.hostSettingsService.UpdateEncryptedString(settingName, settingValue, Config.GetDecryptionkey());
             }
             else
             {
