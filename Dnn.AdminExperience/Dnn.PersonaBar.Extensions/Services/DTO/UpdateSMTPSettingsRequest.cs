@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Servers.Services.Dto
 {
+    using System.Collections.Generic;
+
     public class UpdateSmtpSettingsRequest
     {
         public string SmtpServerMode { get; set; }
@@ -25,5 +27,9 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
         public bool EnableSmtpSsl { get; set; }
 
         public int MessageSchedulerBatchSize { get; set; }
+
+        public string AuthProvider { get; set; }
+
+        public IDictionary<string, string> AuthProviderSettings { get; set; }
     }
 }

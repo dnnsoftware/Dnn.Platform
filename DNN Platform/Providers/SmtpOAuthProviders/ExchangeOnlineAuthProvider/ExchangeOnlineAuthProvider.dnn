@@ -1,0 +1,49 @@
+﻿<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Dnn.ExchangeOnlineAuthProvider" type="Library" isSystem="false" version="09.12.00">
+            <friendlyName>Exchange Online SMTP OAuth Provider</friendlyName>
+            <description>The provider allows you to config the SMTP client to send emails with Microsoft exchange online service.</description>
+            <iconFile>~/Icons/Sigma/Extensions_32x32_Standard.png</iconFile>
+          <dependencies>
+            <dependency type="CoreVersion">09.12.00</dependency>
+          </dependencies>
+            <owner>
+                <name>.NET Foundation and Contributors</name>
+                <organization>DNN Community</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+            <azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Dnn.ExchangeOnlineAuthProvider.dll</name>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Microsoft.Identity.Client.dll</name>
+                            <version>4.49.1.0</version>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Microsoft.IdentityModel.Abstractions.dll</name>
+                            <version>6.22.0.30727</version>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>Providers\SmtpOAuthProviders\ExchangeOnline</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

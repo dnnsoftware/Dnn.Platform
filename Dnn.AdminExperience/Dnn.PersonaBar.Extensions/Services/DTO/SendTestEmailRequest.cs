@@ -17,5 +17,7 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
         public string SmtpPassword { get; set; }
 
         public bool EnableSmtpSsl { get; set; }
+
+        public string AuthProvider { get; set; }
     }
 }

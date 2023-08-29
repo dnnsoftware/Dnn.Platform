@@ -17,6 +17,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
 
@@ -50,6 +51,8 @@ namespace DotNetNuke
             services.AddScoped<IPortalAliasService, PortalAliasController>();
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
+            services.AddTransient<ISmtpOAuthController, SmtpOAuthController>();
+            SmtpOAuthController.RegisterOAuthProviders(services);
         }
     }
 }
