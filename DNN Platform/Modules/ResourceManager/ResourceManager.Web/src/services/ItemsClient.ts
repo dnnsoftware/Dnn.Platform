@@ -169,7 +169,6 @@ export class ItemsClient{
                 signal: this.abortController.signal,
             })
             .then(response => {
-                debugger;
                 if (response.status == 200) {
                     var filename = response.headers.get("Content-Disposition").split("filename=")[1];
                     filename = this.decodeRFC5987ContentDisposition(filename);
