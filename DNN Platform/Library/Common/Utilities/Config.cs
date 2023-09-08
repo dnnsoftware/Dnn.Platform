@@ -318,8 +318,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode != null)
             {
-                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
-                return maxAllowedContentLength / 1024 / 1024;
+                return 4294967295 / 1024 / 1024; // 4GB (max allowedContentLength supported in IIS7)
             }
 
             return DefaultRequestFilter;
@@ -352,7 +351,6 @@ namespace DotNetNuke.Common.Utilities
             if (httpNode != null)
             {
                 httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");
-                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#");
             }
 
             httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??

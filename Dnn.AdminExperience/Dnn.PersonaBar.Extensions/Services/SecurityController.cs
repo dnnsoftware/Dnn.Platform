@@ -709,7 +709,7 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.RememberCheckbox,
                             Host.AutoAccountUnlockDuration,
                             Host.AsyncTimeout,
-                            MaxUploadSize = Config.GetMaxUploadSize() / (1024 * 1024),
+                            MaxUploadSize = Config.GetMaxUploadSize() / 1024 / 1024,
                             RangeUploadSize = Config.GetRequestFilterSize(),
                             AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
                             DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
