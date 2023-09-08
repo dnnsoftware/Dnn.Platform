@@ -18,7 +18,7 @@ export class DnnActionDownloadItem {
   }
 
   private handleClick(): void {
-    this.itemsClient.download(this.item.itemId, true);
+    this.itemsClient.download(this.item.itemId, false);
   }
 
   render() {
