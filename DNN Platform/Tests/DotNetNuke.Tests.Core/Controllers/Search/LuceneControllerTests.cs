@@ -9,15 +9,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.Linq;
     using System.Threading;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+    using DotNetNuke.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Lucene.Net.Documents;
@@ -62,6 +62,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<CachingProvider> cachingProvider;
         private Mock<ISearchHelper> mockSearchHelper;
         private Mock<SearchQuery> mockSearchQuery;
+        private FakeServiceProvider serviceProvider;
 
         private string SearchIndexFolder => this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, string.Empty);
 
@@ -81,13 +82,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             this.mockSearchQuery = new Mock<SearchQuery>();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.cachingProvider.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockSearchHelper.Object);
+                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                });
 
             this.DeleteIndexFolder();
             this.CreateNewLuceneControllerInstance();
@@ -100,7 +105,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.luceneController.Dispose();
             this.DeleteIndexFolder();
             SearchHelper.ClearInstance();
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
 
             this.mockHostController = null;
             this.luceneController = null;

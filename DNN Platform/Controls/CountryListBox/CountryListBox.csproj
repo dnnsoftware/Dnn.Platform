@@ -12,7 +12,7 @@
     <AssemblyName>CountryListBox</AssemblyName>
     <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <RootNamespace>CountryListBox</RootNamespace>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

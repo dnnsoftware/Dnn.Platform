@@ -1,19 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Services.UserRequest
 {
     using System.Collections.Specialized;
     using System.Web;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.UserRequest;
-    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -27,39 +25,39 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
     {
         private Mock<IPortalController> mockPortalController;
         private Mock<IHostController> mockHostController;
-        private Mock<HttpContextBase> mockhttpContext;
         private Mock<HttpRequestBase> mockRequest;
 
         private UserRequestIPAddressController userRequestIPAddressController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
         {
-            NameValueCollection serverVariables = new NameValueCollection();
-
             // Setup Mock
-            this.mockhttpContext = HttpContextHelper.RegisterMockHttpContext();
-            this.mockRequest = Mock.Get(this.mockhttpContext.Object.Request);
-            this.mockRequest.Setup(x => x.ServerVariables).Returns(serverVariables);
             this.mockHostController = new Mock<IHostController>();
             this.mockHostController.As<IHostSettingsService>();
             this.mockPortalController = MockComponentProvider.CreateNew<IPortalController>();
             PortalController.SetTestableInstance(this.mockPortalController.Object);
 
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockPortalController.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                });
+            var mockHttpContext = Mock.Get(HttpContextSource.Current);
+            this.mockRequest = Mock.Get(mockHttpContext.Object.Request);
+            this.mockRequest.Setup(x => x.ServerVariables).Returns(new NameValueCollection());
+
             // System under test
             this.userRequestIPAddressController = new UserRequestIPAddressController();
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
         }
 
@@ -79,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             this.mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
 
             // Act
-            string userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
+            string userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockRequest.Object);
 
             // Assert
             Assert.AreEqual(expectedIp, userRequestIPAddress);
@@ -99,7 +97,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             this.mockRequest.Setup(x => x.ServerVariables).Returns(serverVariables);
 
             // Act
-            var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
+            var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockRequest.Object);
 
             // Assert
             Assert.AreSame(expectedIp, userRequestIPAddress);
@@ -117,7 +115,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             this.mockRequest.Setup(x => x.UserHostAddress).Returns(expectedIp);
 
             // Act
-            var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
+            var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockRequest.Object);
 
             // Assert
             Assert.AreSame(expectedIp, userRequestIPAddress);
@@ -139,7 +137,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             this.mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
 
             // Act
-            var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
+            var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockRequest.Object);
 
             // Assert
             Assert.AreSame(string.Empty, userRequestIPAddress);

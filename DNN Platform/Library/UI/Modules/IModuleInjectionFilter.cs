@@ -6,8 +6,13 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
 
+    /// <summary>A contract specifying the ability to determine whether a module should be included on a page.</summary>
     public interface IModuleInjectionFilter
     {
+        /// <summary>Determines whether the given <paramref name="module"/> should be included on the page.</summary>
+        /// <param name="module">The module to be injected.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns><see langword="true"/> if the module can be injected, otherwise <see langword="false"/>.</returns>
         bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings);
     }
 }

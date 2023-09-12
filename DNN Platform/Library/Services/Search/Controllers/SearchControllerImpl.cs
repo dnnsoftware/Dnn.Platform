@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using System.Text;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -22,12 +23,29 @@ namespace DotNetNuke.Services.Search.Controllers
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>  The Impl Controller class for Search.</summary>
     internal class SearchControllerImpl : ISearchController
     {
         private const string SeacrchContollersCacheKey = "SearchControllers";
 
+        private readonly IServiceProvider serviceProvider;
         private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
+
+        /// <summary>Initializes a new instance of the <see cref="SearchControllerImpl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public SearchControllerImpl()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchControllerImpl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public SearchControllerImpl(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider ?? Globals.DependencyProvider;
+        }
 
         /// <inheritdoc/>
         public SearchResults SiteSearch(SearchQuery searchQuery)
@@ -462,12 +480,6 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private Dictionary<int, BaseResultController> GetSearchResultControllers()
         {
-            var cachArg = new CacheItemArgs(SeacrchContollersCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<Dictionary<int, BaseResultController>>(cachArg, this.GetSearchResultsControllersCallBack);
-        }
-
-        private Dictionary<int, BaseResultController> GetSearchResultsControllersCallBack(CacheItemArgs cacheItem)
-        {
             var searchTypes = SearchHelper.Instance.GetSearchTypes();
             var resultControllers = new Dictionary<int, BaseResultController>();
 
@@ -476,7 +488,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 try
                 {
                     var searchControllerType = Reflection.CreateType(searchType.SearchResultClass);
-                    var searchController = Reflection.CreateObject(searchControllerType);
+                    var searchController = Reflection.CreateObject(this.serviceProvider, searchControllerType);
 
                     resultControllers.Add(searchType.SearchTypeId, (BaseResultController)searchController);
                 }
@@ -526,7 +538,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private bool HasPermissionToViewDoc(Document document, SearchQuery searchQuery)
         {
-            // others LuceneResult fields are not impotrant at this moment
+            // others LuceneResult fields are not important at this moment
             var result = GetPartialSearchResult(document, searchQuery);
             var resultController = this.GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);

@@ -848,6 +848,25 @@ namespace DotNetNuke.Collections
             return source;
         }
 
+        /// <summary>
+        /// Converts the specified IPagedList to a Serializable Paged List.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list.</typeparam>
+        /// <param name="list">The IPagedList results from the database.</param>
+        /// <returns>A serializable list of type T.</returns>
+        public static SerializablePagedList<T> Serialize<T>(this IPagedList<T> list)
+        {
+            var res = new SerializablePagedList<T>();
+            res.PageIndex = list.PageIndex;
+            res.PageSize = list.PageSize;
+            res.IsFirstPage = list.IsFirstPage;
+            res.IsLastPage = list.IsLastPage;
+            res.PageCount = list.PageCount;
+            res.TotalCount = list.TotalCount;
+            res.Data = list;
+            return res;
+        }
+
         /// <summary>Converts the <paramref name="value"/> into a <typeparamref name="T"/> instance.</summary>
         /// <typeparam name="T">The type of the value to return.</typeparam>
         /// <param name="value">The value to convert.</param>

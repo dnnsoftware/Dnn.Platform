@@ -55,7 +55,7 @@ namespace DotNetNuke.Common.Internal
         {
             try
             {
-                return Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
+                return Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>().Status;
             }
             catch (NullReferenceException)
             {

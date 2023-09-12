@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
+
     using Microsoft.Extensions.DependencyInjection;
 
     [DnnDeprecated(9, 8, 1, "Use dependency injection to resolve IEventLogger, IEventLogService or IEventLogConfigService instead")]
@@ -189,7 +190,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
         public static partial void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId) =>
-            Globals.DependencyProvider.GetRequiredService<IEventLogger>()
+            Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>()
                 .AddSettingLog((Abstractions.Logging.EventLogType)logTypeKey, idFieldName, idValue, settingName, settingValue, userId);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
@@ -232,6 +233,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public partial void AddLog(PortalSettings portalSettings, int userID, EventLogType logType) =>
             this.AddLog((IPortalSettings)portalSettings, userID, logType);
 
+        /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
         public partial void AddLog(IPortalSettings portalSettings, int userID, EventLogType logType) =>
             this.EventLogger.AddLog(portalSettings, userID, (Abstractions.Logging.EventLogType)logType);

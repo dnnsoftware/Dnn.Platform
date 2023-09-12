@@ -150,7 +150,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 this.chkAllTabs.CheckedChanged += this.OnAllTabsCheckChanged;
                 this.chkInheritPermissions.CheckedChanged += this.OnInheritPermissionsChanged;
-                this.chkWebSlice.CheckedChanged += this.OnWebSliceCheckChanged;
                 this.cboCacheProvider.TextChanged += this.OnCacheProviderIndexChanged;
                 this.cmdDelete.Click += this.OnDeleteClick;
                 this.cmdUpdate.Click += this.OnUpdateClick;
@@ -475,18 +474,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Module.DisplayTitle = this.chkDisplayTitle.Checked;
                     this.Module.DisplayPrint = this.chkDisplayPrint.Checked;
                     this.Module.DisplaySyndicate = this.chkDisplaySyndicate.Checked;
-                    this.Module.IsWebSlice = this.chkWebSlice.Checked;
-                    this.Module.WebSliceTitle = this.txtWebSliceTitle.Text;
-
-                    this.Module.WebSliceExpiryDate = this.diWebSliceExpiry.SelectedDate != null
-                                                ? this.diWebSliceExpiry.SelectedDate.Value
-                                                : Null.NullDate;
-
-                    if (!string.IsNullOrEmpty(this.txtWebSliceTTL.Text))
-                    {
-                        this.Module.WebSliceTTL = Convert.ToInt32(this.txtWebSliceTTL.Text);
-                    }
-
                     this.Module.IsDefaultModule = this.chkDefault.Checked;
                     this.Module.AllModules = this.chkAllModules.Checked;
                     ModuleController.Instance.UpdateModule(this.Module);
@@ -583,13 +570,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        protected void OnWebSliceCheckChanged(object sender, EventArgs e)
-        {
-            this.webSliceTitle.Visible = this.chkWebSlice.Checked;
-            this.webSliceExpiry.Visible = this.chkWebSlice.Checked;
-            this.webSliceTTL.Visible = this.chkWebSlice.Checked;
-        }
-
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -669,22 +649,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.chkDisplayTitle.Checked = this.Module.DisplayTitle;
                 this.chkDisplayPrint.Checked = this.Module.DisplayPrint;
                 this.chkDisplaySyndicate.Checked = this.Module.DisplaySyndicate;
-
-                this.chkWebSlice.Checked = this.Module.IsWebSlice;
-                this.webSliceTitle.Visible = this.Module.IsWebSlice;
-                this.webSliceExpiry.Visible = this.Module.IsWebSlice;
-                this.webSliceTTL.Visible = this.Module.IsWebSlice;
-
-                this.txtWebSliceTitle.Text = this.Module.WebSliceTitle;
-                if (!Null.IsNull(this.Module.WebSliceExpiryDate))
-                {
-                    this.diWebSliceExpiry.SelectedDate = this.Module.WebSliceExpiryDate;
-                }
-
-                if (!Null.IsNull(this.Module.WebSliceTTL))
-                {
-                    this.txtWebSliceTTL.Text = this.Module.WebSliceTTL.ToString();
-                }
 
                 if (this.Module.ModuleID == PortalSettings.Current.DefaultModuleId && this.Module.TabID == PortalSettings.Current.DefaultTabId)
                 {

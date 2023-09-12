@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-// ReSharper disable InconsistentNaming
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     using System;
@@ -11,13 +9,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Globalization;
     using System.Text;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
@@ -27,6 +21,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Social.Notifications.Data;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -38,64 +33,71 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     [TestFixture]
     public class NotificationsControllerTests
     {
-        private Mock<IDataService> _mockDataService;
-        private Mock<IPortalController> _portalController;
-        private Mock<IPortalGroupController> _portalGroupController;
-        private Mock<DotNetNuke.Services.Social.Messaging.Data.IDataService> _mockMessagingDataService;
-        private Mock<IMessagingController> _mockMessagingController;
-        private Mock<IInternalMessagingController> _mockInternalMessagingController;
-        private NotificationsController _notificationsController;
-        private Mock<NotificationsController> _mockNotificationsController;
-        private Mock<DataProvider> _dataProvider;
-        private Mock<CachingProvider> _cachingProvider;
-        private DataTable _dtNotificationTypes;
-        private DataTable _dtNotificationTypeActions;
-        private DataTable _dtNotificationActions;
+        private Mock<IDataService> mockDataService;
+        private Mock<IPortalController> portalController;
+        private Mock<IPortalGroupController> portalGroupController;
+        private Mock<DotNetNuke.Services.Social.Messaging.Data.IDataService> mockMessagingDataService;
+        private Mock<IMessagingController> mockMessagingController;
+        private Mock<IInternalMessagingController> mockInternalMessagingController;
+        private NotificationsController notificationsController;
+        private Mock<NotificationsController> mockNotificationsController;
+        private Mock<DataProvider> dataProvider;
+        private Mock<CachingProvider> cachingProvider;
+        private FakeServiceProvider serviceProvider;
+
+        private DataTable dtNotificationTypes;
+        private DataTable dtNotificationTypeActions;
+        private DataTable dtNotificationActions;
 
         [SetUp]
 
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.Container = new SimpleContainer();
 
-            this._mockDataService = new Mock<IDataService>();
-            this._portalController = new Mock<IPortalController>();
-            this._portalGroupController = new Mock<IPortalGroupController>();
+            this.mockDataService = new Mock<IDataService>();
+            this.portalController = new Mock<IPortalController>();
+            this.portalGroupController = new Mock<IPortalGroupController>();
 
-            this._mockMessagingDataService = new Mock<DotNetNuke.Services.Social.Messaging.Data.IDataService>();
-            this._dataProvider = MockComponentProvider.CreateDataProvider();
-            this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
+            this.mockMessagingDataService = new Mock<DotNetNuke.Services.Social.Messaging.Data.IDataService>();
+            this.dataProvider = MockComponentProvider.CreateDataProvider();
+            this.cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
-            this._notificationsController = new NotificationsController(this._mockDataService.Object, this._mockMessagingDataService.Object);
-            this._mockNotificationsController = new Mock<NotificationsController> { CallBase = true };
+            this.notificationsController = new NotificationsController(this.mockDataService.Object, this.mockMessagingDataService.Object);
+            this.mockNotificationsController = new Mock<NotificationsController> { CallBase = true };
 
-            this._mockMessagingController = new Mock<IMessagingController>();
-            MessagingController.SetTestableInstance(this._mockMessagingController.Object);
-            PortalController.SetTestableInstance(this._portalController.Object);
-            PortalGroupController.RegisterInstance(this._portalGroupController.Object);
+            this.mockMessagingController = new Mock<IMessagingController>();
+            MessagingController.SetTestableInstance(this.mockMessagingController.Object);
+            PortalController.SetTestableInstance(this.portalController.Object);
+            PortalGroupController.RegisterInstance(this.portalGroupController.Object);
 
-            this._mockInternalMessagingController = new Mock<IInternalMessagingController>();
-            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this.mockInternalMessagingController = new Mock<IInternalMessagingController>();
+            InternalMessagingController.SetTestableInstance(this.mockInternalMessagingController.Object);
 
-            DataService.RegisterInstance(this._mockDataService.Object);
-            DotNetNuke.Services.Social.Messaging.Data.DataService.RegisterInstance(this._mockMessagingDataService.Object);
+            DataService.RegisterInstance(this.mockDataService.Object);
+            DotNetNuke.Services.Social.Messaging.Data.DataService.RegisterInstance(this.mockMessagingDataService.Object);
 
             this.SetupDataProvider();
             this.SetupDataTables();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockDataService.Object);
+                    services.AddSingleton(this.cachingProvider.Object);
+                    services.AddSingleton(this.dataProvider.Object);
+                    services.AddSingleton(this.portalController.Object);
+                    services.AddSingleton(this.portalGroupController.Object);
+                    services.AddSingleton(this.mockMessagingDataService.Object);
+                    services.AddSingleton(this.mockMessagingController.Object);
+                    services.AddSingleton(this.mockInternalMessagingController.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             ComponentFactory.Container = null;
             MessagingController.ClearInstance();
             PortalController.ClearInstance();
@@ -105,7 +107,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CreateNotificationType_Throws_On_Null_NotificationType()
         {
-            Assert.Throws<ArgumentNullException>(() => this._notificationsController.CreateNotificationType(null));
+            Assert.Throws<ArgumentNullException>(() => this.notificationsController.CreateNotificationType(null));
         }
 
         [Test]
@@ -116,21 +118,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var notificationType = CreateNewNotificationType();
             notificationType.Name = name;
 
-            Assert.Throws<ArgumentException>(() => this._notificationsController.CreateNotificationType(notificationType));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.CreateNotificationType(notificationType));
         }
 
         [Test]
         public void CreateNotificationType_Calls_DataService_CreateNotificationType()
         {
-            this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
+            this.mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.CreateNotificationType(Constants.Messaging_NotificationTypeName, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), Constants.UserID_User12, It.IsAny<bool>()))
                 .Verifiable();
 
-            this._mockNotificationsController.Object.CreateNotificationType(CreateNewNotificationType());
+            this.mockNotificationsController.Object.CreateNotificationType(CreateNewNotificationType());
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
@@ -143,7 +145,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notificationType = CreateNewNotificationType();
             notificationType.TimeToLive = actualTimeToLive;
-            this._notificationsController.CreateNotificationType(notificationType);
+            this.notificationsController.CreateNotificationType(notificationType);
 
             Assert.AreEqual(expectedTimeToLiveTotalMinutes, (int)notificationType.TimeToLive.TotalMinutes);
         }
@@ -153,9 +155,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var expectedNotificationType = CreateValidNotificationType();
 
-            this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
+            this.mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.CreateNotificationType(
                     expectedNotificationType.Name,
                     expectedNotificationType.Description,
@@ -165,7 +167,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Returns(Constants.Messaging_NotificationTypeId);
 
             var actualNotificationType = CreateNewNotificationType();
-            this._mockNotificationsController.Object.CreateNotificationType(actualNotificationType);
+            this.mockNotificationsController.Object.CreateNotificationType(actualNotificationType);
 
             Assert.IsTrue(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType));
         }
@@ -173,71 +175,71 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteNotificationType_Calls_DataService_DeleteNotificationType()
         {
-            this._mockDataService.Setup(ds => ds.DeleteNotificationType(Constants.Messaging_NotificationTypeId)).Verifiable();
-            this._mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeCache());
-            this._mockNotificationsController.Object.DeleteNotificationType(Constants.Messaging_NotificationTypeId);
-            this._mockDataService.Verify();
+            this.mockDataService.Setup(ds => ds.DeleteNotificationType(Constants.Messaging_NotificationTypeId)).Verifiable();
+            this.mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeCache());
+            this.mockNotificationsController.Object.DeleteNotificationType(Constants.Messaging_NotificationTypeId);
+            this.mockDataService.Verify();
         }
 
         [Test]
         public void DeleteNotificationType_Removes_Cache_Object()
         {
-            this._mockDataService.Setup(ds => ds.DeleteNotificationType(Constants.Messaging_NotificationTypeId));
-            this._mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeCache()).Verifiable();
-            this._mockNotificationsController.Object.DeleteNotificationType(Constants.Messaging_NotificationTypeId);
-            this._mockNotificationsController.Verify();
+            this.mockDataService.Setup(ds => ds.DeleteNotificationType(Constants.Messaging_NotificationTypeId));
+            this.mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeCache()).Verifiable();
+            this.mockNotificationsController.Object.DeleteNotificationType(Constants.Messaging_NotificationTypeId);
+            this.mockNotificationsController.Verify();
         }
 
         [Test]
 
         public void GetNotificationType_By_Id_Gets_Object_From_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
-            this._cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
-            this._notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
-            this._cachingProvider.Verify();
+            this.cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
+            this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
+            this.cachingProvider.Verify();
         }
 
         [Test]
 
         public void GetNotificationType_By_Id_Calls_DataService_GetNotificationType_When_Object_Is_Not_In_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
             var messageTypeDataTable = new DataTable();
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationType(Constants.Messaging_NotificationTypeId))
                 .Returns(messageTypeDataTable.CreateDataReader())
                 .Verifiable();
 
-            this._notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
+            this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotificationType_By_Id_Returns_Valid_Object()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
             var expectedNotificationType = CreateValidNotificationType();
 
-            this._dtNotificationTypes.Rows.Clear();
+            this.dtNotificationTypes.Rows.Clear();
 
-            this._dtNotificationTypes.Rows.Add(
+            this.dtNotificationTypes.Rows.Add(
                 expectedNotificationType.NotificationTypeId,
                 expectedNotificationType.Name,
                 expectedNotificationType.Description,
                 (int)expectedNotificationType.TimeToLive.TotalMinutes,
                 expectedNotificationType.DesktopModuleId);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationType(Constants.Messaging_NotificationTypeId))
-                .Returns(this._dtNotificationTypes.CreateDataReader());
+                .Returns(this.dtNotificationTypes.CreateDataReader());
 
-            var actualNotificationType = this._notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
+            var actualNotificationType = this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
 
             Assert.IsTrue(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType));
         }
@@ -248,57 +250,57 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         public void GetNotificationType_By_Name_Throws_On_Null_Or_Empty_Name(string name)
         {
-            Assert.Throws<ArgumentException>(() => this._notificationsController.GetNotificationType(name));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.GetNotificationType(name));
         }
 
         [Test]
 
         public void GetNotificationType_By_Name_Gets_Object_From_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
-            this._cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
-            this._notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
-            this._cachingProvider.Verify();
+            this.cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
+            this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
+            this.cachingProvider.Verify();
         }
 
         [Test]
 
         public void GetNotificationType_By_Name_Calls_DataService_GetNotificationTypeByName_When_Object_Is_Not_In_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeByName(Constants.Messaging_NotificationTypeName))
-                .Returns(this._dtNotificationTypes.CreateDataReader())
+                .Returns(this.dtNotificationTypes.CreateDataReader())
                 .Verifiable();
 
-            this._notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
+            this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotificationType_By_Name_Returns_Valid_Object()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
             var expectedNotificationType = CreateValidNotificationType();
 
-            this._dtNotificationTypes.Rows.Clear();
+            this.dtNotificationTypes.Rows.Clear();
 
-            this._dtNotificationTypes.Rows.Add(
+            this.dtNotificationTypes.Rows.Add(
                 expectedNotificationType.NotificationTypeId,
                 expectedNotificationType.Name,
                 expectedNotificationType.Description,
                 (int)expectedNotificationType.TimeToLive.TotalMinutes,
                 expectedNotificationType.DesktopModuleId);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeByName(Constants.Messaging_NotificationTypeName))
-                .Returns(this._dtNotificationTypes.CreateDataReader());
+                .Returns(this.dtNotificationTypes.CreateDataReader());
 
-            var actualNotificationType = this._notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
+            var actualNotificationType = this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
 
             Assert.IsTrue(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType));
         }
@@ -306,13 +308,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void SetNotificationTypeActions_Throws_On_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => this._notificationsController.SetNotificationTypeActions(null, Constants.Messaging_NotificationTypeId));
+            Assert.Throws<ArgumentNullException>(() => this.notificationsController.SetNotificationTypeActions(null, Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
         public void SetNotificationTypeActions_Throws_On_EmptyList()
         {
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SetNotificationTypeActions(new List<NotificationTypeAction>(), Constants.Messaging_NotificationTypeId));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SetNotificationTypeActions(new List<NotificationTypeAction>(), Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
@@ -322,7 +324,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var action = CreateNewNotificationTypeAction();
             action.NameResourceKey = name;
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
@@ -332,16 +334,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var action = CreateNewNotificationTypeAction();
             action.APICall = apiCall;
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
 
         public void SetNotificationTypeActions_Calls_DataService_AddNotificationTypeAction_For_Each_Of_Two_Actions()
         {
-            this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
+            this.mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
-            // _mockDataService
+            // mockDataService
             //                .Setup(ds => ds.AddNotificationTypeAction(
             //                    Constants.Messaging_NotificationTypeId,
             //                    Constants.Messaging_NotificationTypeActionNameResourceKey,
@@ -350,13 +352,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //                    Constants.Messaging_NotificationTypeActionAPICall,
             //                    Constants.UserID_User12))
             //                .Verifiable();
-            this._mockNotificationsController.Setup(nc => nc.GetNotificationTypeAction(It.IsAny<int>()));
+            this.mockNotificationsController.Setup(nc => nc.GetNotificationTypeAction(It.IsAny<int>()));
 
-            this._mockNotificationsController.Object.SetNotificationTypeActions(
+            this.mockNotificationsController.Object.SetNotificationTypeActions(
                 new[] { CreateNewNotificationTypeAction(), CreateNewNotificationTypeAction() },
                 Constants.Messaging_NotificationTypeId);
 
-            this._mockDataService.Verify(
+            this.mockDataService.Verify(
                 x => x.AddNotificationTypeAction(
                 Constants.Messaging_NotificationTypeId,
                 Constants.Messaging_NotificationTypeActionNameResourceKey,
@@ -372,9 +374,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var expectedNotificationTypeAction = CreateValidNotificationTypeAction();
 
-            this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
+            this.mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.AddNotificationTypeAction(
                     expectedNotificationTypeAction.NotificationTypeId,
                     expectedNotificationTypeAction.NameResourceKey,
@@ -384,12 +386,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     Constants.UserID_User12))
                 .Returns(expectedNotificationTypeAction.NotificationTypeActionId);
 
-            this._mockNotificationsController
+            this.mockNotificationsController
                 .Setup(nc => nc.GetNotificationTypeAction(expectedNotificationTypeAction.NotificationTypeActionId))
                 .Returns(expectedNotificationTypeAction);
 
             var action = CreateNewNotificationTypeAction();
-            this._mockNotificationsController.Object.SetNotificationTypeActions(new[] { action }, expectedNotificationTypeAction.NotificationTypeId);
+            this.mockNotificationsController.Object.SetNotificationTypeActions(new[] { action }, expectedNotificationTypeAction.NotificationTypeId);
 
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, action));
         }
@@ -397,58 +399,58 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteNotificationTypeAction_Calls_DataService_DeleteNotificationTypeAction()
         {
-            this._mockDataService.Setup(ds => ds.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId)).Verifiable();
-            this._mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeActionCache());
-            this._mockNotificationsController.Object.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
-            this._mockDataService.Verify();
+            this.mockDataService.Setup(ds => ds.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId)).Verifiable();
+            this.mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeActionCache());
+            this.mockNotificationsController.Object.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
+            this.mockDataService.Verify();
         }
 
         [Test]
         public void DeleteNotificationTypeAction_Removes_Cache_Object()
         {
-            this._mockDataService.Setup(ds => ds.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId));
-            this._mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeActionCache()).Verifiable();
-            this._mockNotificationsController.Object.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
-            this._mockNotificationsController.Verify();
+            this.mockDataService.Setup(ds => ds.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId));
+            this.mockNotificationsController.Setup(nc => nc.RemoveNotificationTypeActionCache()).Verifiable();
+            this.mockNotificationsController.Object.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
+            this.mockNotificationsController.Verify();
         }
 
         [Test]
 
         public void GetNotificationTypeAction_By_Id_Gets_Object_From_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
-            this._cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
-            this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
-            this._cachingProvider.Verify();
+            this.cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
+            this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
+            this.cachingProvider.Verify();
         }
 
         [Test]
 
         public void GetNotificationTypeAction_By_Id_Calls_DataService_GetNotificationTypeAction_When_Object_Is_Not_In_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId))
-                .Returns(this._dtNotificationTypeActions.CreateDataReader())
+                .Returns(this.dtNotificationTypeActions.CreateDataReader())
                 .Verifiable();
 
-            this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
+            this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotificationTypeAction_By_Id_Returns_Valid_Object()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
             var expectedNotificationTypeAction = CreateValidNotificationTypeAction();
 
-            this._dtNotificationTypeActions.Clear();
+            this.dtNotificationTypeActions.Clear();
 
-            this._dtNotificationTypeActions.Rows.Add(
+            this.dtNotificationTypeActions.Rows.Add(
                 expectedNotificationTypeAction.NotificationTypeActionId,
                 expectedNotificationTypeAction.NotificationTypeId,
                 expectedNotificationTypeAction.NameResourceKey,
@@ -457,11 +459,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 expectedNotificationTypeAction.Order,
                 expectedNotificationTypeAction.APICall);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId))
-                .Returns(this._dtNotificationTypeActions.CreateDataReader);
+                .Returns(this.dtNotificationTypeActions.CreateDataReader);
 
-            var actualNotificationTypeAction = this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
+            var actualNotificationTypeAction = this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
 
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeAction));
         }
@@ -472,48 +474,48 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         public void GetNotificationTypeAction_By_Name_Throws_On_Null_Or_Empty_Name(string name)
         {
-            Assert.Throws<ArgumentException>(() => this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, name));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, name));
         }
 
         [Test]
 
         public void GetNotificationTypeAction_By_Name_Gets_Object_From_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
-            this._cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
-            this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
-            this._cachingProvider.Verify();
+            this.cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Setup(cp => cp.GetItem(It.IsAny<string>())).Verifiable();
+            this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
+            this.cachingProvider.Verify();
         }
 
         [Test]
 
         public void GetNotificationTypeAction_By_Name_Calls_DataService_GetNotificationTypeActionByName_When_Object_Is_Not_In_Cache()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeActionByName(
                     Constants.Messaging_NotificationTypeId,
                     Constants.Messaging_NotificationTypeActionNameResourceKey))
-                .Returns(this._dtNotificationTypeActions.CreateDataReader())
+                .Returns(this.dtNotificationTypeActions.CreateDataReader())
                 .Verifiable();
 
-            this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
+            this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotificationTypeAction_By_Name_Returns_Valid_Object()
         {
-            this._cachingProvider.Object.PurgeCache();
+            this.cachingProvider.Object.PurgeCache();
 
             var expectedNotificationTypeAction = CreateValidNotificationTypeAction();
 
-            this._dtNotificationTypeActions.Clear();
+            this.dtNotificationTypeActions.Clear();
 
-            this._dtNotificationTypeActions.Rows.Add(
+            this.dtNotificationTypeActions.Rows.Add(
                 expectedNotificationTypeAction.NotificationTypeActionId,
                 expectedNotificationTypeAction.NotificationTypeId,
                 expectedNotificationTypeAction.NameResourceKey,
@@ -522,13 +524,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 expectedNotificationTypeAction.Order,
                 expectedNotificationTypeAction.APICall);
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeActionByName(
                     Constants.Messaging_NotificationTypeId,
                     Constants.Messaging_NotificationTypeActionNameResourceKey))
-                .Returns(this._dtNotificationTypeActions.CreateDataReader());
+                .Returns(this.dtNotificationTypeActions.CreateDataReader());
 
-            var actualNotificationTypeAction = this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
+            var actualNotificationTypeAction = this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
 
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeAction));
         }
@@ -537,14 +539,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         public void GetNotificationTypeActions_Calls_DataService_GetNotificationTypeActions()
         {
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId))
-                .Returns(this._dtNotificationTypeActions.CreateDataReader())
+                .Returns(this.dtNotificationTypeActions.CreateDataReader())
                 .Verifiable();
 
-            this._notificationsController.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId);
+            this.notificationsController.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
@@ -553,9 +555,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var expectedNotificationTypeAction = CreateValidNotificationTypeAction();
 
-            this._dtNotificationTypeActions.Clear();
+            this.dtNotificationTypeActions.Clear();
 
-            this._dtNotificationTypeActions.Rows.Add(
+            this.dtNotificationTypeActions.Rows.Add(
                 expectedNotificationTypeAction.NotificationTypeActionId,
                 expectedNotificationTypeAction.NotificationTypeId,
                 expectedNotificationTypeAction.NameResourceKey,
@@ -564,9 +566,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 expectedNotificationTypeAction.Order,
                 expectedNotificationTypeAction.APICall);
 
-            this._mockDataService.Setup(ds => ds.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId)).Returns(this._dtNotificationTypeActions.CreateDataReader());
+            this.mockDataService.Setup(ds => ds.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId)).Returns(this.dtNotificationTypeActions.CreateDataReader());
 
-            var actualNotificationTypeActions = this._notificationsController.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId);
+            var actualNotificationTypeActions = this.notificationsController.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId);
 
             Assert.AreEqual(1, actualNotificationTypeActions.Count);
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeActions[0]));
@@ -583,9 +585,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalID = Constants.CONTENT_ValidPortalId,
             };
 
-            this._mockNotificationsController.Setup(nc => nc.GetAdminUser()).Returns(adminUser);
+            this.mockNotificationsController.Setup(nc => nc.GetAdminUser()).Returns(adminUser);
 
-            this._mockNotificationsController
+            this.mockNotificationsController
                 .Setup(nc => nc.SendNotification(
                     It.IsAny<Notification>(),
                     Constants.PORTAL_Zero,
@@ -594,7 +596,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notification = CreateUnsavedNotification();
 
-            this._mockNotificationsController.Object.SendNotification(
+            this.mockNotificationsController.Object.SendNotification(
                 notification,
                 Constants.PORTAL_Zero,
                 new List<RoleInfo>(),
@@ -616,9 +618,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             notification.Body = body;
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(notification, Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SendNotification(notification, Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
         }
 
         [Test]
@@ -626,9 +628,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void SendNotification_Throws_On_Null_Roles_And_Users()
         {
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, null, null));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, null, null));
         }
 
         [Test]
@@ -645,9 +647,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             notification.Subject = subject.ToString();
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(notification, Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SendNotification(notification, Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
         }
 
         [Test]
@@ -655,9 +657,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void SendNotification_Throws_On_Roles_And_Users_With_No_DisplayNames()
         {
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
         }
 
         [Test]
@@ -674,9 +676,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             }
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, roles, users));
+            Assert.Throws<ArgumentException>(() => this.notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, roles, users));
         }
 
         [Test]
@@ -690,9 +692,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalID = Constants.PORTAL_Zero,
             };
 
-            this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
+            this.mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             var roles = new List<RoleInfo>();
             var users = new List<UserInfo>
@@ -704,25 +706,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     },
                             };
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.SendNotification(
                     It.IsAny<Notification>(),
                     Constants.PORTAL_Zero))
                 .Verifiable();
 
-            this._mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
+            this.mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
             notification.SendToast = false;
 
-            this._mockNotificationsController.Object.SendNotification(
+            this.mockNotificationsController.Object.SendNotification(
                 notification,
                 Constants.PORTAL_Zero,
                 roles,
                 users);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
@@ -736,13 +738,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalID = Constants.PORTAL_Zero,
             };
 
-            this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
+            this.mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
-            this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
+            this.portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             var roles = new List<RoleInfo>();
             var users = new List<UserInfo>
@@ -754,25 +756,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     },
                             };
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.SendNotification(
                     It.IsAny<Notification>(),
                     Constants.PORTAL_Zero))
                 .Verifiable();
 
-            this._mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
+            this.mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
             notification.SendToast = false;
 
-            this._mockNotificationsController.Object.SendNotification(
+            this.mockNotificationsController.Object.SendNotification(
                 notification,
                 Constants.PORTAL_Zero,
                 roles,
                 users);
 
-            this._mockDataService.Verify();
+            this.mockDataService.Verify();
         }
 
         [Test]
@@ -786,9 +788,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalID = Constants.PORTAL_Zero,
             };
 
-            this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
+            this.mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             var roles = new List<RoleInfo>
                             {
@@ -800,32 +802,32 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                             };
             var users = new List<UserInfo>();
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.SendNotification(
                     It.IsAny<Notification>(),
                     Constants.PORTAL_Zero))
                 .Returns(Constants.Messaging_MessageId_1);
 
-            this._mockMessagingDataService
+            this.mockMessagingDataService
                 .Setup(mds => mds.CreateMessageRecipientsForRole(
                     Constants.Messaging_MessageId_1,
                     Constants.RoleID_RegisteredUsers.ToString(CultureInfo.InvariantCulture),
                     It.IsAny<int>()))
                 .Verifiable();
 
-            this._mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
+            this.mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
             notification.SendToast = false;
 
-            this._mockNotificationsController.Object.SendNotification(
+            this.mockNotificationsController.Object.SendNotification(
                 notification,
                 Constants.PORTAL_Zero,
                 roles,
                 users);
 
-            this._mockMessagingDataService.Verify();
+            this.mockMessagingDataService.Verify();
         }
 
         [Test]
@@ -839,9 +841,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalID = Constants.PORTAL_Zero,
             };
 
-            this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
+            this.mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             var roles = new List<RoleInfo>();
             var users = new List<UserInfo>
@@ -853,19 +855,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     },
                             };
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.SendNotification(
                     It.IsAny<Notification>(),
                     Constants.PORTAL_Zero))
                 .Returns(Constants.Messaging_MessageId_1);
 
-            this._mockInternalMessagingController
+            this.mockInternalMessagingController
                 .Setup(mc => mc.GetMessageRecipient(
                     Constants.Messaging_MessageId_1,
                     Constants.UserID_User12))
                 .Returns((MessageRecipient)null);
 
-            this._mockMessagingDataService
+            this.mockMessagingDataService
                 .Setup(mds => mds.SaveMessageRecipient(
                     It.Is<MessageRecipient>(mr =>
                                             mr.MessageID == Constants.Messaging_MessageId_1 &&
@@ -875,19 +877,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     It.IsAny<int>()))
                 .Verifiable();
 
-            this._mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
+            this.mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
             notification.SendToast = false;
 
-            this._mockNotificationsController.Object.SendNotification(
+            this.mockNotificationsController.Object.SendNotification(
                 notification,
                 Constants.PORTAL_Zero,
                 roles,
                 users);
 
-            this._mockMessagingDataService.Verify();
+            this.mockMessagingDataService.Verify();
         }
 
         [Test]
@@ -903,10 +905,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalID = Constants.PORTAL_Zero,
             };
 
-            this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
+            this.mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             var roles = new List<RoleInfo>();
             var users = new List<UserInfo>
@@ -918,25 +920,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     },
                             };
 
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.SendNotification(
                     It.IsAny<Notification>(),
                     Constants.PORTAL_Zero))
                 .Returns(Constants.Messaging_MessageId_1);
 
-            this._mockMessagingDataService
+            this.mockMessagingDataService
                 .Setup(mds => mds.CreateMessageRecipientsForRole(
                     Constants.Messaging_MessageId_1,
                     Constants.RoleID_RegisteredUsers.ToString(CultureInfo.InvariantCulture),
                     It.IsAny<int>()));
 
-            this._mockInternalMessagingController
+            this.mockInternalMessagingController
                 .Setup(mc => mc.GetMessageRecipient(
                     Constants.Messaging_MessageId_1,
                     Constants.UserID_User12))
                 .Returns((MessageRecipient)null);
 
-            this._mockMessagingDataService
+            this.mockMessagingDataService
                 .Setup(mds => mds.SaveMessageRecipient(
                     It.Is<MessageRecipient>(mr =>
                                             mr.MessageID == Constants.Messaging_MessageId_1 &&
@@ -945,13 +947,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                             mr.RecipientID == Null.NullInteger),
                     It.IsAny<int>()));
 
-            this._mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
+            this.mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
             notification.SendToast = false;
 
-            this._mockNotificationsController.Object.SendNotification(
+            this.mockNotificationsController.Object.SendNotification(
                 notification,
                 Constants.PORTAL_Zero,
                 roles,
@@ -968,87 +970,87 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                             new MessageRecipient(),
                                         };
 
-            this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
+            this.mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
 
-            this._mockDataService.Setup(ds => ds.DeleteNotification(Constants.Messaging_MessageId_1)).Verifiable();
-            this._notificationsController.DeleteNotification(Constants.Messaging_MessageId_1);
-            this._mockDataService.Verify();
+            this.mockDataService.Setup(ds => ds.DeleteNotification(Constants.Messaging_MessageId_1)).Verifiable();
+            this.notificationsController.DeleteNotification(Constants.Messaging_MessageId_1);
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotifications_Calls_DataService_GetNotifications()
         {
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(new DataTable().CreateDataReader())
                 .Verifiable();
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            this._notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
-            this._mockDataService.Verify();
+            this.notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotifications_Calls_DataService_GetNotifications_When_Portal_Is_In_Group()
         {
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(new DataTable().CreateDataReader())
                 .Verifiable();
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
-            this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
+            this.portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
-            this._notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
-            this._mockDataService.Verify();
+            this.notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
+            this.mockDataService.Verify();
         }
 
         [Test]
 
         public void GetNotifications_Calls_DataService_GetNotificationByContext()
         {
-            this._mockDataService
+            this.mockDataService
                 .Setup(ds => ds.GetNotificationByContext(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext))
                 .Returns(new DataTable().CreateDataReader())
                 .Verifiable();
 
-            this._notificationsController.GetNotificationByContext(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext);
-            this._mockDataService.Verify();
+            this.notificationsController.GetNotificationByContext(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext);
+            this.mockDataService.Verify();
         }
 
         [Test]
         public void CountNotifications_Calls_DataService_CountNotifications()
         {
-            this._mockDataService.Setup(ds => ds.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero)).Verifiable();
-            this._notificationsController.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero);
-            this._mockDataService.Verify();
+            this.mockDataService.Setup(ds => ds.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero)).Verifiable();
+            this.notificationsController.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero);
+            this.mockDataService.Verify();
         }
 
         [Test]
         public void DeleteNotificationRecipient_Calls_MessagingController_DeleteMessageRecipient()
         {
-            this._mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();
-            this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(new List<MessageRecipient>());
-            this._notificationsController.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
-            this._mockMessagingController.Verify();
+            this.mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();
+            this.mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(new List<MessageRecipient>());
+            this.notificationsController.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
+            this.mockMessagingController.Verify();
         }
 
         [Test]
 
         public void DeleteNotificationRecipientByContext_Calls_DeleteMessageRecipient()
         {
-            this._mockNotificationsController.Setup(mc => mc.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();
-            this._mockNotificationsController.Setup(mc => mc.GetNotificationByContext(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext))
+            this.mockNotificationsController.Setup(mc => mc.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();
+            this.mockNotificationsController.Setup(mc => mc.GetNotificationByContext(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext))
                 .Returns(new List<Notification> { new Notification { NotificationID = Constants.Messaging_MessageId_1 } });
-            this._mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext, Constants.UserID_User12);
-            this._mockMessagingController.Verify();
+            this.mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationContext, Constants.UserID_User12);
+            this.mockMessagingController.Verify();
         }
 
         [Test]
@@ -1059,20 +1061,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                             new MessageRecipient(),
                                         };
 
-            this._mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12));
-            this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
-            this._mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
+            this.mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12));
+            this.mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
+            this.mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
 
-            this._mockNotificationsController.Verify(nc => nc.DeleteNotification(Constants.Messaging_MessageId_1), Times.Never());
+            this.mockNotificationsController.Verify(nc => nc.DeleteNotification(Constants.Messaging_MessageId_1), Times.Never());
         }
 
         [Test]
         public void DeleteNotificationRecipient_Deletes_Notification_When_There_Are_No_More_Recipients()
         {
-            this._mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12));
-            this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(new List<MessageRecipient>());
-            this._mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
-            this._mockNotificationsController.Verify(nc => nc.DeleteNotification(Constants.Messaging_MessageId_1));
+            this.mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12));
+            this.mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(new List<MessageRecipient>());
+            this.mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
+            this.mockNotificationsController.Verify(nc => nc.DeleteNotification(Constants.Messaging_MessageId_1));
         }
 
         [Test]
@@ -1084,19 +1086,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                      new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_2 },
                                  };
 
-            this._mockInternalMessagingController.Setup(imc => imc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(recipients);
+            this.mockInternalMessagingController.Setup(imc => imc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(recipients);
 
-            this._mockNotificationsController.Object.DeleteAllNotificationRecipients(Constants.Messaging_MessageId_1);
+            this.mockNotificationsController.Object.DeleteAllNotificationRecipients(Constants.Messaging_MessageId_1);
 
-            this._mockNotificationsController.Verify(nc => nc.DeleteNotificationRecipient(It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(2));
+            this.mockNotificationsController.Verify(nc => nc.DeleteNotificationRecipient(It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(2));
         }
 
         [Test]
         public void DeleteAllNotificationRecipients_Does_Not_Call_DeleteNotificationRecipient_When_Notification_Has_No_Recipients()
         {
-            this._mockInternalMessagingController.Setup(imc => imc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(new List<MessageRecipient>());
-            this._mockNotificationsController.Object.DeleteAllNotificationRecipients(Constants.Messaging_MessageId_1);
-            this._mockNotificationsController.Verify(nc => nc.DeleteNotificationRecipient(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            this.mockInternalMessagingController.Setup(imc => imc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(new List<MessageRecipient>());
+            this.mockNotificationsController.Object.DeleteAllNotificationRecipients(Constants.Messaging_MessageId_1);
+            this.mockNotificationsController.Verify(nc => nc.DeleteNotificationRecipient(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
         }
 
         private static Notification CreateUnsavedNotification()
@@ -1184,45 +1186,45 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+            this.dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
         }
 
         private void SetupDataTables()
         {
-            this._dtNotificationTypes = new DataTable();
-            this._dtNotificationTypes.Columns.Add("NotificationTypeID", typeof(int));
-            this._dtNotificationTypes.Columns.Add("Name", typeof(string));
-            this._dtNotificationTypes.Columns.Add("Description", typeof(string));
-            this._dtNotificationTypes.Columns.Add("TTL", typeof(int));
-            this._dtNotificationTypes.Columns.Add("DesktopModuleID", typeof(int));
-            this._dtNotificationTypes.Columns.Add("CreatedByUserID", typeof(int));
-            this._dtNotificationTypes.Columns.Add("CreatedOnDate", typeof(DateTime));
-            this._dtNotificationTypes.Columns.Add("LastModifiedByUserID", typeof(int));
-            this._dtNotificationTypes.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            this._dtNotificationTypes.Columns.Add("IsTask", typeof(bool));
+            this.dtNotificationTypes = new DataTable();
+            this.dtNotificationTypes.Columns.Add("NotificationTypeID", typeof(int));
+            this.dtNotificationTypes.Columns.Add("Name", typeof(string));
+            this.dtNotificationTypes.Columns.Add("Description", typeof(string));
+            this.dtNotificationTypes.Columns.Add("TTL", typeof(int));
+            this.dtNotificationTypes.Columns.Add("DesktopModuleID", typeof(int));
+            this.dtNotificationTypes.Columns.Add("CreatedByUserID", typeof(int));
+            this.dtNotificationTypes.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this.dtNotificationTypes.Columns.Add("LastModifiedByUserID", typeof(int));
+            this.dtNotificationTypes.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this.dtNotificationTypes.Columns.Add("IsTask", typeof(bool));
 
-            this._dtNotificationTypeActions = new DataTable();
-            this._dtNotificationTypeActions.Columns.Add("NotificationTypeActionID", typeof(int));
-            this._dtNotificationTypeActions.Columns.Add("NotificationTypeID", typeof(int));
-            this._dtNotificationTypeActions.Columns.Add("NameResourceKey", typeof(string));
-            this._dtNotificationTypeActions.Columns.Add("DescriptionResourceKey", typeof(string));
-            this._dtNotificationTypeActions.Columns.Add("ConfirmResourceKey", typeof(string));
-            this._dtNotificationTypeActions.Columns.Add("Order", typeof(int));
-            this._dtNotificationTypeActions.Columns.Add("APICall", typeof(string));
-            this._dtNotificationTypeActions.Columns.Add("CreatedByUserID", typeof(int));
-            this._dtNotificationTypeActions.Columns.Add("CreatedOnDate", typeof(DateTime));
-            this._dtNotificationTypeActions.Columns.Add("LastModifiedByUserID", typeof(int));
-            this._dtNotificationTypeActions.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this.dtNotificationTypeActions = new DataTable();
+            this.dtNotificationTypeActions.Columns.Add("NotificationTypeActionID", typeof(int));
+            this.dtNotificationTypeActions.Columns.Add("NotificationTypeID", typeof(int));
+            this.dtNotificationTypeActions.Columns.Add("NameResourceKey", typeof(string));
+            this.dtNotificationTypeActions.Columns.Add("DescriptionResourceKey", typeof(string));
+            this.dtNotificationTypeActions.Columns.Add("ConfirmResourceKey", typeof(string));
+            this.dtNotificationTypeActions.Columns.Add("Order", typeof(int));
+            this.dtNotificationTypeActions.Columns.Add("APICall", typeof(string));
+            this.dtNotificationTypeActions.Columns.Add("CreatedByUserID", typeof(int));
+            this.dtNotificationTypeActions.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this.dtNotificationTypeActions.Columns.Add("LastModifiedByUserID", typeof(int));
+            this.dtNotificationTypeActions.Columns.Add("LastModifiedOnDate", typeof(DateTime));
 
-            this._dtNotificationActions = new DataTable();
-            this._dtNotificationActions.Columns.Add("NotificationActionID");
-            this._dtNotificationActions.Columns.Add("MessageID");
-            this._dtNotificationActions.Columns.Add("NotificationTypeActionID");
-            this._dtNotificationActions.Columns.Add("Key");
-            this._dtNotificationActions.Columns.Add("CreatedByUserID", typeof(int));
-            this._dtNotificationActions.Columns.Add("CreatedOnDate", typeof(DateTime));
-            this._dtNotificationActions.Columns.Add("LastModifiedByUserID", typeof(int));
-            this._dtNotificationActions.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this.dtNotificationActions = new DataTable();
+            this.dtNotificationActions.Columns.Add("NotificationActionID");
+            this.dtNotificationActions.Columns.Add("MessageID");
+            this.dtNotificationActions.Columns.Add("NotificationTypeActionID");
+            this.dtNotificationActions.Columns.Add("Key");
+            this.dtNotificationActions.Columns.Add("CreatedByUserID", typeof(int));
+            this.dtNotificationActions.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this.dtNotificationActions.Columns.Add("LastModifiedByUserID", typeof(int));
+            this.dtNotificationActions.Columns.Add("LastModifiedOnDate", typeof(DateTime));
         }
 
         private class NotificationTypeComparer : IEqualityComparer<NotificationType>

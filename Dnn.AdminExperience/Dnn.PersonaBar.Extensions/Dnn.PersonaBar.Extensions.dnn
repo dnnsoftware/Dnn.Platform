@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="09.12.00">
+        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="10.00.00">
             <friendlyName>Dnn.PersonaBar.Extensions</friendlyName>
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
@@ -282,6 +282,10 @@
                   <permission>
                     <key>REGISTRATION_SETTINGS_EDIT</key>
                     <name>Registration Settings Edit</name>
+                  </permission>
+                  <permission>
+                    <key>MANAGE_API_TOKENS</key>
+                    <name>Manage API Tokens</name>
                   </permission>
                 </component>
                 <component type="PersonaBarMenu">

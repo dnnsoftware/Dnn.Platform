@@ -16,7 +16,8 @@ namespace DotNetNuke.Modules.Groups
     {
         public static string NavigateUrl(int tabId, string[] @params)
         {
-            return Globals.DependencyProvider.GetRequiredService<INavigationManager>()?.NavigateURL(tabId, string.Empty, @params);
+            var navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            return navigationManager.NavigateURL(tabId, string.Empty, @params);
         }
 
         public static string[] AddParams(string param, string[] currParams)

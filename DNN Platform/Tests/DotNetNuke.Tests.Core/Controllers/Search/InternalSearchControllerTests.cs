@@ -8,18 +8,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.Data;
     using System.IO;
     using System.Threading;
-
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+    using DotNetNuke.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -79,6 +79,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<ILocaleController> mockLocaleController;
         private Mock<ISearchHelper> mockSearchHelper;
         private Mock<IUserController> mockUserController;
+        private FakeServiceProvider serviceProvider;
 
         private IInternalSearchController internalSearchController;
         private LuceneControllerImpl luceneController;
@@ -103,12 +104,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.mockHostController = new Mock<IHostController>();
             this.SetupHostController();
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockLocaleController = MockComponentProvider.CreateLocaleController();
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
@@ -123,6 +118,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 .Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
             UserController.SetTestableInstance(this.mockUserController.Object);
 
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.mockDataProvider.Object);
+                    services.AddSingleton(this.mockLocaleController.Object);
+                    services.AddSingleton(this.mockSearchHelper.Object);
+                    services.AddSingleton(this.mockUserController.Object);
+                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                });
+
             this.CreateNewLuceneControllerInstance();
         }
 
@@ -131,14 +139,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this.DeleteIndexFolder();
             this.mockHostController = null;
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             this.luceneController.Dispose();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
             this.luceneController = null;
-            Globals.DependencyProvider = null;
         }
 
         [Test]

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu
 {
     using System;
@@ -15,18 +14,23 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Base class for multiple DDR Menu classes.</summary>
-    public class MenuBase
+    public partial class MenuBase
     {
         private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
         {
@@ -35,11 +39,24 @@ namespace DotNetNuke.Web.DDRMenu
             { "currentchildren", "." },
         };
 
+        private readonly ILocaliser localiser;
         private Settings menuSettings;
-
         private HttpContext currentContext;
-
         private PortalSettings hostPortalSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="MenuBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
+        public MenuBase()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MenuBase"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        public MenuBase(ILocaliser localiser)
+        {
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+        }
 
         /// <summary>Gets or sets the template definition.</summary>
         public TemplateDefinition TemplateDef { get; set; }
@@ -66,12 +83,24 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Instantiates the MenuBase.</summary>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
-        public static MenuBase Instantiate(string menuStyle)
+        [DnnDeprecated(10, 0, 0, "Please use overload with ILocaliser")]
+        public static partial MenuBase Instantiate(string menuStyle)
+        {
+            return Instantiate(
+                Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>(),
+                menuStyle);
+        }
+
+        /// <summary>Instantiates the MenuBase.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        /// <param name="menuStyle">The menu style to use.</param>
+        /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
+        public static MenuBase Instantiate(ILocaliser localiser, string menuStyle)
         {
             try
             {
                 var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
-                return new MenuBase { TemplateDef = templateDef };
+                return new MenuBase(localiser) { TemplateDef = templateDef };
             }
             catch (Exception exc)
             {
@@ -115,8 +144,9 @@ namespace DotNetNuke.Web.DDRMenu
             if (string.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
+
                 // TODO: In Dnn v11, replace this to use IPortalSettings private field instantiate in constructor
-                new Localiser(this.HostPortalSettings.PortalId).LocaliseNode(this.RootNode);
+                this.localiser.LocaliseNode(this.RootNode, this.HostPortalSettings.PortalId);
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
@@ -251,7 +281,7 @@ namespace DotNetNuke.Web.DDRMenu
                 }
                 else
                 {
-                    filteredNodes.Add(this.RootNode.FindByNameOrId(nodeText));
+                    filteredNodes.AddRange(this.RootNode.FindAllByNameOrId(nodeText));
                 }
             }
 

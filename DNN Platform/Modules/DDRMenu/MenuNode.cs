@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.DDRMenu
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -264,6 +265,27 @@ namespace DotNetNuke.Web.DDRMenu
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Finds all menu nodes in the hierarchy with matching name or id.
+        /// </summary>
+        /// <param name="tabNameOrId">A string representing either the tab (page) name or id.</param>
+        /// <returns>
+        /// A <see cref="IEnumerable{MenuNode}"/> instance containing all menu nodes found.
+        /// </returns>
+        public IEnumerable<MenuNode> FindAllByNameOrId(string tabNameOrId)
+        {
+            foreach (var found in this.Children.SelectMany(child => child.FindAllByNameOrId(tabNameOrId)))
+            {
+                yield return found;
+            }
+
+            if (tabNameOrId.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase)
+                || tabNameOrId == this.TabId.ToString())
+            {
+                yield return this;
+            }
         }
 
         /// <summary>Checks if this node has childrens.</summary>

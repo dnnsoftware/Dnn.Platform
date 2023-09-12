@@ -23,6 +23,9 @@ namespace Dnn.ExportImport.Components.Common
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     /// <summary>A collection of utilities for import/export.</summary>
@@ -49,36 +52,20 @@ namespace Dnn.ExportImport.Components.Common
         [DnnDeprecated(9, 8, 0, "Use !string.IsNullOrEmpty from System.String instead")]
         public static partial bool HasValue(this string s) => !string.IsNullOrEmpty(s);
 
-        /// <summary>Gets the types that implement BasePortableService.</summary>
-        /// <returns>An enumeration of the types that implement BasePortableService.</returns>
-        public static IEnumerable<BasePortableService> GetPortableImplementors()
+        /// <summary>Gets instances of the types that <see cref="BasePortableService"/>.</summary>
+        /// <returns>A sequence of the <see cref="BasePortableService"/> implementations.</returns>
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial IEnumerable<BasePortableService> GetPortableImplementors()
         {
-            var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(
-                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                     typeof(BasePortableService).IsAssignableFrom(t));
+            return GetPortableImplementors(Globals.DependencyProvider);
+        }
 
-            foreach (var type in types)
-            {
-                BasePortableService portable2Type;
-                try
-                {
-                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
-                }
-                catch (Exception e)
-                {
-                    Logger.ErrorFormat(
-                        "Unable to create {0} while calling BasePortableService implementors. {1}",
-                        type.FullName,
-                        e.Message);
-                    portable2Type = null;
-                }
-
-                if (portable2Type != null)
-                {
-                    yield return portable2Type;
-                }
-            }
+        /// <summary>Gets instances of the types that <see cref="BasePortableService"/>.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <returns>A sequence of the <see cref="BasePortableService"/> implementations.</returns>
+        public static IEnumerable<BasePortableService> GetPortableImplementors(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetServices<BasePortableService>();
         }
 
         /// <summary>Formats a size to a human readable format.</summary>

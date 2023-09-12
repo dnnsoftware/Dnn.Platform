@@ -9,16 +9,27 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      SettingsEditorControl
-    /// <summary>
-    /// The SettingsEditorControl control provides an Editor to edit DotNetNuke
-    /// Settings.
-    /// </summary>
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
+
+    /// <summary>The SettingsEditorControl control provides an Editor to edit DotNetNuke Settings.</summary>
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
     {
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public SettingsEditorControl()
+            : this(Globals.GetCurrentServiceProvider())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public SettingsEditorControl(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        {
+        }
+
         /// <summary>Gets or sets the CustomEditors that are used by this control.</summary>
         /// <value>The CustomEditors object.</value>
         [Browsable(false)]

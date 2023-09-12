@@ -3,12 +3,16 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Components.Services;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -17,6 +21,20 @@ namespace Dnn.ExportImport.Components.Controllers
     /// <summary>The export controller.</summary>
     public class ExportController : BaseController
     {
+        /// <summary>Initializes a new instance of the <see cref="ExportController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IEnumerable<BasePortableService>. Scheduled removal in v12.0.0.")]
+        public ExportController()
+            : base(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ExportController"/> class.</summary>
+        /// <param name="portableServices">The portable service implementations.</param>
+        public ExportController(IEnumerable<BasePortableService> portableServices)
+            : base(portableServices)
+        {
+        }
+
         /// <summary>Queues an export operation.</summary>
         /// <param name="userId">The user ID.</param>
         /// <param name="exportDto">The export DTO.</param>
