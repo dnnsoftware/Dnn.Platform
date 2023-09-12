@@ -83,6 +83,10 @@
       margin-bottom: 0px;
     }
   }
+  .smtpServerSettingsTab .smtp-authentication-mode .dnn-radio-buttons ul li label{
+    padding: 0 0 0 24px;
+    text-align: left;
+  }
   .buttons-panel {
     text-align: center;
     margin-top: 55px;
@@ -226,6 +230,25 @@
     .warningText {
       font-weight: bolder;
       color: @thunder;
+    }
+    .warningButton {
+      width: 100%;
+      .dnn-ui-common-button {
+        width: 100%;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        &:first-child {
+          margin-top: 15px;
+        }
+      }
+    }
+
+    &.authorize-box{
+      float: left;
+    }
+    &.success{
+      border-color: #64b657;
+      background-color: #ecffeb;
     }
   }
 }
