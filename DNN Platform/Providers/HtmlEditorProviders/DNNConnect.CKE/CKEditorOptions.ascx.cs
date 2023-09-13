@@ -769,7 +769,7 @@ namespace DNNConnect.CKEditorProvider
             // get the all-sites settings to be able to to show overridden values
             // when we're not in all-sites mode
             var allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
-                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), "DNNCKP#-1#", new List<RoleInfo>());
+                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), SettingConstants.HostKey, new List<RoleInfo>());
 
             this.HostBrowserRootDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
             this.HostBrowserRootDir.Text = this.HostBrowserRootDir.ReadOnly ? allPortalsSettings.HostBrowserRootDir : importedSettings.HostBrowserRootDir;

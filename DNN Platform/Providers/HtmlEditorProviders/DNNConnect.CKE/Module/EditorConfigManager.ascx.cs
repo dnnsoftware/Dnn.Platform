@@ -362,7 +362,7 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="parentNode">The parent node.</param>
         private void RenderPortalNode(PortalInfo portal, ModuleController moduleController, List<EditorHostSetting> editorHostSettings, TreeNode parentNode = null)
         {
-            var portalKey = $"DNNCKP#{portal.PortalID}#";
+            var portalKey = SettingConstants.PortalKey(portal.PortalID);
 
             var portalSettingsExists = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, portalKey);
 
