@@ -11,6 +11,7 @@ namespace DNNConnect.CKEditorProvider.Module
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DNNConnect.CKEditorProvider.Constants;
     using DNNConnect.CKEditorProvider.Helper;
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
@@ -332,7 +333,7 @@ namespace DNNConnect.CKEditorProvider.Module
 
         private void RenderHostNode(IEnumerable<PortalInfo> portals, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
         {
-            const string hostKey = "DNNCKH#";
+            var hostKey = SettingConstants.HostKey;
             var hostSettingsExist = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, hostKey);
 
             var hostNode = new TreeNode()

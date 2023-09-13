@@ -4,6 +4,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     using System;
+    using System.Dynamic;
 
     /// <summary>Provider Constants.</summary>
     public static class SettingConstants
@@ -128,5 +129,19 @@ namespace DNNConnect.CKEditorProvider.Constants
 
         /// <summary>The resize Upload height setting name.</summary>
         public const string RESIZEHEIGHTUPLOAD = "resizeheightupload";
+
+        /// <summary>Gets the prefix key for host level settings.</summary>
+        /// <returns>Host Key.</returns>
+        public static string HostKey => PortalKey(-1);
+
+        /// <summary>Gets the prefix key for portal level settings.</summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>Portal Key.</returns>
+        public static string PortalKey(int portalId) => PortalKey(portalId.ToString());
+
+        /// <summary>Gets the prefix key for portal level settings.</summary>
+        /// <param name="portalId">The portal id as a string.</param>
+        /// <returns>Portal Key.</returns>
+        public static string PortalKey(string portalId) => $"DNNCKP#{portalId}#";
     }
 }
