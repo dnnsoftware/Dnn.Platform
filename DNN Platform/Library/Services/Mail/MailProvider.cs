@@ -11,6 +11,9 @@ namespace DotNetNuke.Services.Mail
     /// <summary>A provider with the ability to send emails.</summary>
     public abstract class MailProvider
     {
+        /// <summary>Gets a value indicating whether this provider supports OAuth authentication to the SMTP server.</summary>
+        public virtual bool SupportsOAuth => false;
+
         /// <summary>Gets the currently configured <see cref="MailProvider"/> instance.</summary>
         /// <returns>A <see cref="MailProvider"/> instance.</returns>
         public static MailProvider Instance()

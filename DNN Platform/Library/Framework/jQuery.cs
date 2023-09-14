@@ -33,7 +33,7 @@ namespace DotNetNuke.Framework
         /// Using the hosted version increases the likelihood that the file is already
         /// cached in the user's browser.
         /// </remarks>
-        public const string DefaultHostedUrl = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
+        public const string DefaultHostedUrl = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
 
         public const string DefaultUIHostedUrl = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js";
         private const string JQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";

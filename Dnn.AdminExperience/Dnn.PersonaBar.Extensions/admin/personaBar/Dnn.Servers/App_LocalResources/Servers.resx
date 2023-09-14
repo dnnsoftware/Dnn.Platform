@@ -450,6 +450,9 @@
   <data name="SMTPNTLM.Text" xml:space="preserve">
     <value>NTLM</value>
   </data>
+  <data name="SMTPOAUTH.Text" xml:space="preserve">
+    <value>OAuth</value>
+  </data>
   <data name="errorMessageLoadingLog.Text" xml:space="preserve">
     <value>Error loading log.</value>
   </data>
@@ -719,5 +722,23 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="Change.Text" xml:space="preserve">
     <value>Change</value>
+  </data>
+  <data name="SmtpTab_OAuthProviders.Help" xml:space="preserve">
+    <value>Please select the smtp oauth provider.</value>
+  </data>
+  <data name="SmtpTab_OAuthProviders.Text" xml:space="preserve">
+    <value>Auth Provider</value>
+  </data>
+  <data name="Authorize.Text" xml:space="preserve">
+    <value>Authorize</value>
+  </data>
+  <data name="AuthorizeCompleted.Text" xml:space="preserve">
+    <value>Your OAuth provider's configuration has been completed.</value>
+  </data>
+  <data name="CompleteAuthorize.Text" xml:space="preserve">
+    <value>Your OAuth provider settings have been saved, please click the Authorize button to complete the authorize process.</value>
+  </data>
+  <data name="OAuthConfigurationNotSaved.Text" xml:space="preserve">
+    <value>Please save the settings and complete the authorization process before testing when OAuth authentication mode is enabled in host or website level.</value>
   </data>
 </root>

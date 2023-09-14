@@ -469,6 +469,27 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the currently configured SMTP OAuth provider if existing, for the current portal if portal SMTP enabled, otherwise for the installation.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to empty string.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static string SMTPAuthProvider
+        {
+            get
+            {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSetting("SMTPAuthProvider", PortalSettings.Current.PortalId, string.Empty);
+                }
+
+                return HostController.Instance.GetString("SMTPAuthProvider", string.Empty);
+            }
+        }
+
         /// <summary>  Gets a value indicating whether gets whether the Event Log Buffer is Enabled.</summary>
         /// <remarks>
         ///   Defaults to False.

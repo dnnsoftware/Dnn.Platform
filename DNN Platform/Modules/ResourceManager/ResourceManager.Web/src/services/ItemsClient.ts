@@ -171,6 +171,7 @@ export class ItemsClient{
             .then(response => {
                 if (response.status == 200) {
                     var filename = response.headers.get("Content-Disposition").split("filename=")[1];
+                    filename = this.decodeRFC5987ContentDisposition(filename);
                     response.blob().then(blob => {
                         var oldDownloadLink = document.querySelector("#downloadLink");
                         if (oldDownloadLink) {
@@ -188,6 +189,20 @@ export class ItemsClient{
             })
             .catch(error => reject(error));
         });
+    }
+    private decodeRFC5987ContentDisposition(filename: string): string {
+        filename = filename.replace(/(^")|("$)/g, '');
+
+        if (filename.startsWith("=?utf-8?B?") && filename.endsWith("?=")) {
+            const encoded = filename.slice(10, -2);
+            return decodeURIComponent(
+              atob(encoded)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+            );
+          }
+          return filename;
     }
 
     public search(
@@ -741,3 +756,4 @@ export interface DeleteFolderRequest{
 export interface DeleteFileRequest{
     FileId: number;
 }
+

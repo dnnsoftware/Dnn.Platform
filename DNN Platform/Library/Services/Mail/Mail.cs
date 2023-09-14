@@ -312,7 +312,30 @@ namespace DotNetNuke.Services.Mail
                 smtpAuthentication,
                 smtpUsername,
                 smtpPassword,
-                smtpEnableSSL);
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, string attachment, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
+        {
+            return SendMail(
+                mailFrom,
+                mailTo,
+                cc,
+                bcc,
+                mailFrom,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachment.Split('|'),
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                authProvider);
         }
 
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
@@ -333,7 +356,30 @@ namespace DotNetNuke.Services.Mail
                 smtpAuthentication,
                 smtpUsername,
                 smtpPassword,
-                smtpEnableSSL);
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
+        {
+            return SendMail(
+                mailFrom,
+                mailTo,
+                cc,
+                bcc,
+                mailFrom,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                authProvider);
         }
 
         /// <summary>Sends an email based on params.</summary>
@@ -394,7 +440,35 @@ namespace DotNetNuke.Services.Mail
                 smtpAuthentication,
                 smtpUsername,
                 smtpPassword,
-                smtpEnableSSL);
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
+        {
+            var attachmentList = (from attachment in attachments
+                                  where !string.IsNullOrEmpty(attachment)
+                                  select new Attachment(attachment))
+                                  .ToList();
+
+            return SendMail(
+                mailFrom,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachmentList,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                authProvider);
         }
 
         [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
@@ -417,7 +491,32 @@ namespace DotNetNuke.Services.Mail
                 smtpAuthentication,
                 smtpUsername,
                 smtpPassword,
-                smtpEnableSSL);
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
+        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
+        {
+            return SendMail(
+                mailFrom,
+                string.Empty,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                authProvider);
         }
 
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
@@ -439,11 +538,59 @@ namespace DotNetNuke.Services.Mail
                 smtpAuthentication,
                 smtpUsername,
                 smtpPassword,
-                smtpEnableSSL);
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
+        {
+            return SendMail(
+                mailFrom,
+                string.Empty,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                authProvider);
         }
 
         [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
         public static partial string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+        {
+            return SendMail(
+                mailFrom,
+                mailSender,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        [Obsolete("This method has been deprecated. Please use SendEmail() with ICollection<MailAttachment> Scheduled removal in v11.0.0.")]
+        public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
         {
             var smtpInfo = new SmtpInfo
             {
@@ -452,6 +599,7 @@ namespace DotNetNuke.Services.Mail
                 Username = smtpUsername,
                 Password = smtpPassword,
                 EnableSSL = smtpEnableSSL,
+                AuthProvider = authProvider,
             };
 
             var mailInfo = new MailInfo
@@ -480,6 +628,29 @@ namespace DotNetNuke.Services.Mail
 
         public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
+            return SendMail(
+                mailFrom,
+                mailSender,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL,
+                Host.SMTPAuthProvider);
+        }
+
+        public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, ICollection<MailAttachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL, string authProvider)
+        {
             var smtpInfo = new SmtpInfo
             {
                 Server = smtpServer,
@@ -487,6 +658,7 @@ namespace DotNetNuke.Services.Mail
                 Username = smtpUsername,
                 Password = smtpPassword,
                 EnableSSL = smtpEnableSSL,
+                AuthProvider = authProvider,
             };
 
             var mailInfo = new MailInfo

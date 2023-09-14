@@ -13,6 +13,7 @@ export default function smtpServerTabReducer(state = {
         case ActionTypes.LOAD_SMTP_SERVER_TAB:
             return { ...state,
                 smtpServerInfo: {},
+                isDirty: false,
                 errorMessage: ""
             };
         case ActionTypes.LOADED_SMTP_SERVER_TAB:
@@ -21,9 +22,23 @@ export default function smtpServerTabReducer(state = {
                 errorMessage: "",
                 errors: {}
             };
+        case ActionTypes.LOAD_OAUTH_PROVIDERS:
+            return { ...state,
+                authProviders: {},
+                errorMessage: "",
+                providerChanged: false
+            };
+        case ActionTypes.LOADED_OAUTH_PROVIDERS:
+            return { ...state,
+                authProviders: action.payload.authProviders,
+                errorMessage: "",
+                errors: {}
+            };
         case ActionTypes.ERROR_LOADING_SMTP_SERVER_TAB:
             return { ...state,
                 smtpServerInfo: {},
+                isDirty: false,
+                authProviders: {},
                 errorMessage: action.payload.errorMessage
             };
         case ActionTypes.CHANGE_SMTP_SERVER_MODE: {
@@ -49,7 +64,8 @@ export default function smtpServerTabReducer(state = {
                 smtpServerInfo: {
                     ...state.smtpServerInfo,
                     smtpServerMode: action.payload.smtpServeMode
-                }, 
+                },
+                isDirty: true,
                 errors
             };
         }
@@ -60,7 +76,8 @@ export default function smtpServerTabReducer(state = {
                         host: {...state.smtpServerInfo.host,
                             smtpAuthentication: action.payload.smtpAuthentication
                         }
-                    }
+                    },
+                    isDirty: true
                 };
             }
 
@@ -69,12 +86,15 @@ export default function smtpServerTabReducer(state = {
                     site: {...state.smtpServerInfo.site,
                         smtpAuthentication: action.payload.smtpAuthentication
                     }
-                }
+                },
+                isDirty: true
             };
         }
         case ActionTypes.CHANGE_SMTP_CONFIGURATION_VALUE: {
             const field = action.payload.field;
             const value = action.payload.value;
+            const passCheck = action.payload.passCheck;
+            const isDirty = passCheck === true ? {...state}.isDirty : true;
             const smtpServerInfo = {
                 ...state.smtpServerInfo
             };
@@ -90,8 +110,8 @@ export default function smtpServerTabReducer(state = {
                     smtpServerInfo.site[field] = value;
                 }
             }
-
             return { ...state, smtpServerInfo,
+                isDirty: isDirty,
                 errors: {
                     ...(state.errors),
                     ...validateFields(field, value)
@@ -103,11 +123,30 @@ export default function smtpServerTabReducer(state = {
                 errorMessage:  "",
                 infoMessage: ""
             };
-        case ActionTypes.UPDATED_SMTP_SERVER_SETTINGS: 
-            return { ...state,
-                errorMessage: "",
-                infoMessage: localization.get("SaveConfirmationMessage")
-            };
+        case ActionTypes.UPDATED_SMTP_SERVER_SETTINGS:
+        { 
+            const success = action.payload.success;
+            const errors = action.payload.errors;
+            const providerChanged = action.payload.providerChanged;
+            const smtpServerInfo = {...state.smtpServerInfo};
+
+            if(success === false){
+                return { ...state,
+                    errorMessage: errors.join("<br />"),
+                    infoMessage: ""
+                };
+            } else {
+                smtpServerInfo["isDirty"] = false;
+                return { ...state,
+                    errorMessage: "",
+                    infoMessage: localization.get("SaveConfirmationMessage"),
+                    success: success,
+                    smtpServerInfo,
+                    isDirty: false,
+                    providerChanged: providerChanged
+                };
+            }
+        }
         case ActionTypes.ERROR_UPDATING_SMTP_SERVER_SETTINGS:
             return { ...state,
                 errorMessage: action.payload.errorMessage,
