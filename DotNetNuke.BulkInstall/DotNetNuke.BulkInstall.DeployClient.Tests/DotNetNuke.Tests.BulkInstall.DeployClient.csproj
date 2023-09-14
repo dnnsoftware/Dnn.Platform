@@ -5,9 +5,10 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<LangVersion>latest</LangVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
-    <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
+		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<ItemGroup>

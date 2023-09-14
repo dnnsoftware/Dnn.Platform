@@ -111,7 +111,27 @@ public class Installer : IInstaller
     {
         this.stopwatch.StartNew();
 
-        async Task<(HttpResponseMessage?, Exception?)> SendRequest()
+        var result = await SendRequest();
+        while (result.Exception != null || result.Response.IsSuccessStatusCode == false)
+        {
+            if (options.InstallationStatusTimeout <= this.stopwatch.Elapsed.TotalSeconds || content != null)
+            {
+                if (result.Exception != null)
+                {
+                    throw result.Exception;
+                }
+
+                result.Response.EnsureSuccessStatusCode();
+            }
+            else
+            {
+                result = await SendRequest();
+            }
+        }
+
+        return result.Response;
+
+        async Task<WebResult> SendRequest()
         {
             using var request = new HttpRequestMessage
             {
@@ -126,34 +146,13 @@ public class Installer : IInstaller
             try
             {
                 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(Math.Max(100, options.InstallationStatusTimeout)));
-                return (await this.httpClient.SendAsync(request, cts.Token), null);
+                return new WebResult(await this.httpClient.SendAsync(request, cts.Token));
             }
             catch (HttpRequestException requestException)
             {
-                return (null, requestException);
+                return new WebResult(requestException);
             }
         }
-
-        var (response, exception) = await SendRequest();
-        while (exception != null || response?.IsSuccessStatusCode == false)
-        {
-            if (options.InstallationStatusTimeout <= this.stopwatch.Elapsed.TotalSeconds || content != null)
-            {
-                if (exception != null)
-                {
-                    throw exception;
-                }
-
-                Debug.Assert(response != null, nameof(response) + " != null");
-                response.EnsureSuccessStatusCode();
-            }
-            else
-            {
-                (response, exception) = await SendRequest();
-            }
-        }
-
-        return response;
     }
 
     private class ResponseJson
@@ -164,5 +163,24 @@ public class Installer : IInstaller
     private class CreateSessionResponse
     {
         public string? Guid { get; set; }
+    }
+
+    private class WebResult
+    {
+        private HttpResponseMessage? response;
+
+        public WebResult(HttpResponseMessage response)
+        {
+            this.response = response;
+        }
+
+        public WebResult(HttpRequestException exception)
+        {
+            this.Exception = exception;
+        }
+
+        public HttpResponseMessage Response => this.response ?? throw new InvalidOperationException("Response must have a value.");
+
+        public HttpRequestException? Exception { get; }
     }
 }

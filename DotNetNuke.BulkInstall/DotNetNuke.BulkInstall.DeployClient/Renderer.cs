@@ -139,7 +139,7 @@ public class Renderer : IRenderer
         static TreeNode MakeNode(IEnumerable<string[]> files)
         {
             var filesList = files.ToList();
-            if (filesList is [[var fileName,],])
+            if (filesList is[[var fileName,],])
             {
                 return new TreeNode(Markup.FromInterpolated($":page_facing_up: [aqua]{fileName}[/]"));
             }

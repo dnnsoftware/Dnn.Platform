@@ -370,7 +370,6 @@ public class RendererTests
                         new() { PackageName = "DNNJWT", DependencyVersion = string.Empty, IsPackageDependency = true, },
                     },
                     CanInstall = true,
-
                 },
             },
         };
