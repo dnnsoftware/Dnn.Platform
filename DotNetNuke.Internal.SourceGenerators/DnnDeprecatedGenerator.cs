@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-/// <summary>A source generator which turns <see cref="DnnDeprecatedAttribute"/> into <see cref="ObsoleteAttribute"/>.</summary>
+/// <summary>A source generator which turns <c>DnnDeprecatedAttribute</c> into <see cref="ObsoleteAttribute"/>.</summary>
 [Generator]
 public class DnnDeprecatedGenerator : IIncrementalGenerator
 {
@@ -461,7 +461,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         return true;
     }
 
-    private static DnnDeprecatedAttribute? GetDeprecation(ISymbol typeSymbol, ISymbol dnnDeprecatedType)
+    private static DnnDeprecation? GetDeprecation(ISymbol typeSymbol, ISymbol dnnDeprecatedType)
     {
         foreach (var attribute in typeSymbol.GetAttributes())
         {
@@ -479,7 +479,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                 }
             }
 
-            var deprecation = new DnnDeprecatedAttribute(
+            var deprecation = new DnnDeprecation(
                 (int)args[0].Value!,
                 (int)args[1].Value!,
                 (int)args[2].Value!,
@@ -487,7 +487,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
 
             foreach (var arg in attribute.NamedArguments)
             {
-                if (!arg.Key.Equals(nameof(DnnDeprecatedAttribute.RemovalVersion), StringComparison.Ordinal))
+                if (!arg.Key.Equals("RemovalVersion", StringComparison.Ordinal))
                 {
                     continue;
                 }
@@ -567,5 +567,27 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         }
 
         return null;
+    }
+
+    private class DnnDeprecation
+    {
+        public DnnDeprecation(int majorVersion, int minorVersion, int patchVersion, string replacement)
+        {
+            this.MajorVersion = majorVersion;
+            this.MinorVersion = minorVersion;
+            this.PatchVersion = patchVersion;
+            this.Replacement = replacement;
+            this.RemovalVersion = majorVersion + 2;
+        }
+
+        public int MajorVersion { get; }
+
+        public int MinorVersion { get; }
+
+        public int PatchVersion { get; }
+
+        public string Replacement { get; }
+
+        public int RemovalVersion { get; set; }
     }
 }

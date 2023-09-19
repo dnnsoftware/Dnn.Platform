@@ -318,7 +318,7 @@ partial class Page
             AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
                 .Select(a => MetadataReference.CreateFromFile(a.Location))
-                .Append(MetadataReference.CreateFromFile(typeof(DnnDeprecatedAttribute).Assembly.Location));
+                .Append(MetadataReference.CreateFromFile(typeof(DnnDeprecatedGenerator).Assembly.Location));
         var compilation = CSharpCompilation.Create(
             "AnAssemblyName",
             new[] { CSharpSyntaxTree.ParseText(source), },
