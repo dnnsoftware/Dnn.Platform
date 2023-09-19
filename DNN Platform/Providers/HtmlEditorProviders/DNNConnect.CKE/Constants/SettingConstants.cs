@@ -4,7 +4,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     using System;
-    using System.Dynamic;
+    using System.Globalization;
 
     /// <summary>Provider Constants.</summary>
     public static class SettingConstants
@@ -137,7 +137,7 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>Gets the prefix key for portal level settings.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <returns>Portal Key.</returns>
-        public static string PortalKey(int portalId) => PortalKey(portalId.ToString());
+        public static string PortalKey(int portalId) => PortalKey(portalId.ToString(CultureInfo.InvariantCulture));
 
         /// <summary>Gets the prefix key for portal level settings.</summary>
         /// <param name="portalId">The portal id as a string.</param>
