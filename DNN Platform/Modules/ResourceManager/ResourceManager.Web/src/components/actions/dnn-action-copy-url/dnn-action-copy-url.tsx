@@ -14,7 +14,7 @@ export class DnnActionCopyUrl {
   private handleClick(): void {
     let t;
     if (this.items[0].path.includes(":")) {
-      t = `${this.items[0].path}`;
+      t = this.items[0].path;
     } else {
       t = `${window.location.protocol}//${window.location.host}${this.items[0].path}`;
     }   
