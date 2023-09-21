@@ -280,7 +280,9 @@ namespace DotNetNuke.Web.DDRMenu
                     n =>
                     {
                         var tab = TabController.Instance.GetTab(n.TabId, portalSettings.PortalId);
-                        return tab == null || !tab.IsVisible;
+                        // Node added through NodeManipulator would have tab==null
+                        // and should not be filtered out
+                        return !(tab?.IsVisible ?? true);
                     }));
 
             parentNode.Children.RemoveAll(n => filteredNodes.Contains(n));
