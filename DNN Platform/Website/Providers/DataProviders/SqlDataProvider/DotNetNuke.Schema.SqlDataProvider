@@ -3359,9 +3359,9 @@ AS
 ELSE
 	BEGIN 
 		DECLARE @AdminTabId int
-		SET @AdminTabId = (SELECT AdminTabId 
+		SET @AdminTabId = (SELECT TOP 1 AdminTabId 
 								FROM {databaseOwner}{objectQualifier}PortalLocalization 
-								WHERE PortalID = @PortalID AND CultureCode='en-US')
+								WHERE PortalID = @PortalID)
 
 		INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
 			[PortalID],
