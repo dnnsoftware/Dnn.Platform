@@ -166,11 +166,11 @@ namespace DotNetNuke.Web.Api
                 {
                     return ids.First();
                 }
-            }
 
-            if (Logger.IsWarnEnabled)
-            {
-                Logger.WarnFormat("The specified moniker ({0}) is not defined in the system", monikerValue);
+                if (Logger.IsWarnEnabled)
+                {
+                    Logger.WarnFormat("The specified moniker ({0}) is not defined in the system", monikerValue);
+                }
             }
 
             return Null.NullInteger;
