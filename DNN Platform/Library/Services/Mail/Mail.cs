@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Mail
             // Send Notification to User
             var user = UserController.Instance.GetUserById(portalId, userId);
             int toUser = user.UserID;
-            string locale = user.Profile.PreferredLocale;
+            string locale = user.Profile.PreferredLocale ?? settings.DefaultLanguage;
             string subject;
             string body;
             ArrayList custom = null;
@@ -142,7 +142,7 @@ namespace DotNetNuke.Services.Mail
                     body = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
                     toUser = settings.AdministratorId;
                     UserInfo admin = UserController.GetUserById(settings.PortalId, settings.AdministratorId);
-                    locale = admin.Profile.PreferredLocale;
+                    locale = admin?.Profile.PreferredLocale;
                     break;
                 case MessageType.UserRegistrationPrivate:
                     subject = "EMAIL_USER_REGISTRATION_PRIVATE_SUBJECT";
@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.Mail
                     body = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_ADMINISTRATOR_BODY";
                     toUser = settings.AdministratorId;
                     admin = UserController.GetUserById(settings.PortalId, settings.AdministratorId);
-                    locale = admin.Profile.PreferredLocale;
+                    locale = admin?.Profile.PreferredLocale;
                     break;
                 case MessageType.UserAuthorized:
                     subject = "EMAIL_USER_AUTHORIZED_SUBJECT";
@@ -220,7 +220,12 @@ namespace DotNetNuke.Services.Mail
 
             var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
                 string.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
-            SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
+
+            var toUserInfo = UserController.GetUserById(settings.PortalId, toUser);
+            if (toUserInfo != null)
+            {
+                SendEmail(fromUser, toUserInfo.Email, subject, body);
+            }
 
             return Null.NullString;
         }
