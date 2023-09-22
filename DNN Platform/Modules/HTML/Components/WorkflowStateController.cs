@@ -13,16 +13,31 @@ namespace DotNetNuke.Modules.Html
     public class WorkflowStateController
     {
         private const string WORKFLOWCACHEKEY = "Workflow{0}";
+        private const string WORKFLOWS_CACHE_KEY = "Workflows{0}";
         private const int WORKFLOWCACHETIMEOUT = 20;
 
         private const CacheItemPriority WORKFLOWCACHEPRIORITY = CacheItemPriority.Normal;
 
-        /// <summary>GetWorkFlows retrieves a collection of workflows for the portal.</summary>
+        /// <summary>GetWorkFlows retrieves a collection of workflows for the portal from the cache.</summary>
         /// <param name="portalID">The ID of the Portal.</param>
         /// <returns>An <see cref="ArrayList"/> of <see cref="WorkflowStateInfo"/> instances.</returns>
         public ArrayList GetWorkflows(int portalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetWorkflows(portalID), typeof(WorkflowStateInfo));
+            var cacheKey = string.Format(WORKFLOWS_CACHE_KEY, portalID);
+            return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(cacheKey, WORKFLOWCACHETIMEOUT, WORKFLOWCACHEPRIORITY, portalID), this.GetWorkflowsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   GetWorkflowsCallBack retrieves a collection of WorkflowStateInfo objects for the Portal from the database.
+        /// </summary>
+        /// <param name = "cacheItemArgs">Arguments passed by the GetWorkflowStates method.</param>
+        /// <returns>WorkflowStateInfo List.</returns>
+        /// -----------------------------------------------------------------------------
+        public object GetWorkflowsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            return CBO.FillCollection(DataProvider.Instance().GetWorkflows(portalId), typeof(WorkflowStateInfo));
         }
 
         /// <summary>GetWorkFlowStates retrieves a collection of WorkflowStateInfo objects for the Workflow from the cache.</summary>
