@@ -1172,13 +1172,6 @@ namespace DNNConnect.CKEditorProvider.Web
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
 
-            // Inject jQuery if editor is loaded in a RadWindow
-            if (HttpContext.Current.Request.QueryString["rwndrnd"] != null)
-            {
-                ScriptManager.RegisterClientScriptInclude(
-                    this, csType, "jquery_registered", Globals.ResolveUrl(JavaScript.GetJQueryScriptReference()));
-            }
-
             if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {

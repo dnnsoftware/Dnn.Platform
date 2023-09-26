@@ -24,9 +24,6 @@ namespace DotNetNuke.UI.Skins
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Skins
-    /// Class    : Pane
     /// <summary>The Pane class represents a Pane within the Skin.</summary>
     public class Pane
     {
@@ -100,7 +97,7 @@ namespace DotNetNuke.UI.Skins
                 sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
             }
 
-            if (this.IsVesionableModule(module))
+            if (this.IsVersionableModule(module))
             {
                 classFormatString += " DnnVersionableControl";
             }
@@ -536,7 +533,7 @@ namespace DotNetNuke.UI.Skins
             return container;
         }
 
-        /// <summary>ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop.</summary>
+        /// <summary>ModuleMoveToPanePostBack executes when a module is moved by Drag-and-Drop.</summary>
         /// <param name="args">A ClientAPIPostBackEventArgs object.</param>
         private void ModuleMoveToPanePostBack(ClientAPIPostBackEventArgs args)
         {
@@ -555,15 +552,15 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        private bool IsVesionableModule(ModuleInfo moduleInfo)
+        private bool IsVersionableModule(ModuleInfo moduleInfo)
         {
             if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
             {
                 return false;
             }
 
-            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
-            return controller is IVersionable;
+            var controllerType = Framework.Reflection.CreateType(moduleInfo.DesktopModule.BusinessControllerClass);
+            return typeof(IVersionable).IsAssignableFrom(controllerType);
         }
     }
 }

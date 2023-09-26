@@ -1,21 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.InternalServices
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Web.Http;
     using System.Web.Http.Hosting;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -27,8 +27,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.InternalServices;
@@ -93,20 +95,17 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private SearchServiceController searchServiceController;
         private IInternalSearchController internalSearchController;
         private LuceneControllerImpl luceneController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
 
         public void SetUp()
         {
             // Arrange
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(CultureEnUs);
+
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockLocaleController = MockComponentProvider.CreateLocaleController();
@@ -116,6 +115,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.mockModuleController = new Mock<IModuleController>();
             this.mockTabController = new Mock<ITabController>();
             this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<IHostSettingsService>();
 
             this.SetupDataProvider();
             this.SetupHostController();
@@ -125,11 +125,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.DeleteIndexFolder();
 
             TabController.SetTestableInstance(this.mockTabController.Object);
-            this.internalSearchController = InternalSearchController.Instance;
 
             this.mockCBO = new Mock<ICBO>();
-            var tabKey = string.Format("{0}-{1}-{2}", TabSearchTypeId, 0, CultureEnUs);
-            var userKey = string.Format("{0}-{1}-{2}", UserSearchTypeId, 0, CultureEnUs);
+            var tabKey = $"{TabSearchTypeId}-{0}-{CultureEnUs}";
+            var userKey = $"{UserSearchTypeId}-{0}-{CultureEnUs}";
             this.mockCBO.Setup(c => c.GetCachedObject<IDictionary<string, string>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
                     .Returns(new Dictionary<string, string>() { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
             CBO.SetTestableInstance(this.mockCBO.Object);
@@ -142,15 +141,32 @@ namespace DotNetNuke.Tests.Web.InternalServices
             provider.Setup(x => x.TryFindModuleInfo(request, out expectedModule)).Returns(true);
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
-            this.searchServiceController = new SearchServiceController(HtmlModDefId) { Request = request };
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockDataProvider.Object);
+                    services.AddSingleton(this.mockLocaleController.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.mockDataService.Object);
+                    services.AddSingleton(this.mockUserController.Object);
+                    services.AddSingleton(this.mockModuleController.Object);
+                    services.AddSingleton(this.mockTabController.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockCBO.Object);
+                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                });
 
+            this.searchServiceController = new SearchServiceController(new SearchControllerImpl(this.serviceProvider), HtmlModDefId) { Request = request };
+
+            this.internalSearchController = InternalSearchController.Instance;
             this.CreateNewLuceneControllerInstance();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             this.luceneController.Dispose();
             this.DeleteIndexFolder();
             CBO.ClearInstance();
@@ -354,7 +370,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private void SetupUserController()
         {
             this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
-            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile { } });
+            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile(), });
             UserController.SetTestableInstance(this.mockUserController.Object);
         }
 
@@ -568,10 +584,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("DisplayTitle", typeof(byte));
             table.Columns.Add("DisplayPrint", typeof(byte));
             table.Columns.Add("DisplaySyndicate", typeof(byte));
-            table.Columns.Add("IsWebSlice", typeof(byte));
-            table.Columns.Add("WebSliceTitle", typeof(string));
-            table.Columns.Add("WebSliceExpiryDate", typeof(DateTime));
-            table.Columns.Add("WebSliceTTL", typeof(int));
             table.Columns.Add("InheritViewPermissions", typeof(int));
             table.Columns.Add("IsShareable", typeof(int));
             table.Columns.Add("IsShareableViewOnly", typeof(int));
@@ -686,7 +698,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             DataTable table = new DataTable("Portal");
 
-            var cols = new string[]
+            var cols = new[]
                            {
                                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
                                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
@@ -726,16 +738,12 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 LocalizedName = UserSearchTypeName,
                 ModuleDefinitionId = 0,
             };
-            var results = this.searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
-            return results;
+            return this.searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
         }
 
         private IEnumerable<GroupedDetailView> GetGroupedDetailViewResults(SearchQuery searchQuery)
         {
-            bool more = false;
-            int totalHits = 0;
-            var results = this.searchServiceController.GetGroupedDetailViews(searchQuery, UserSearchTypeId, out totalHits, out more);
-            return results;
+            return this.searchServiceController.GetGroupedDetailViews(searchQuery, UserSearchTypeId, out _, out _);
         }
     }
 }

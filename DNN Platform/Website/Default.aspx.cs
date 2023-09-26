@@ -50,7 +50,7 @@ namespace DotNetNuke.Framework
 
         public DefaultPage()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string CurrentSkinPath

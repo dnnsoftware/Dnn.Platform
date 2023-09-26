@@ -311,12 +311,9 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-#pragma warning disable SA1124 // Do not use regions
-        #region Security Screen Methods
         private static ITelerikUtils CreateTelerikUtils()
-#pragma warning restore SA1124 // Do not use regions
         {
-            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
+            return Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>();
         }
 
         private static SecurityTabResult GetTelerikNotInstalledResult()
@@ -533,7 +530,6 @@ namespace DotNetNuke.Services.Install
 
             return true;
         }
-        #endregion
 
         private static string Encrypt(string token)
         {
@@ -547,7 +543,7 @@ namespace DotNetNuke.Services.Install
 
         private static string GetHostSetting(string key)
         {
-            return Globals.DependencyProvider
+            return Globals.GetCurrentServiceProvider()
                 .GetRequiredService<IHostSettingsService>()
                 .GetSettingsDictionary()[key];
         }
@@ -561,7 +557,7 @@ namespace DotNetNuke.Services.Install
                 Value = value,
             };
 
-            Globals.DependencyProvider
+            Globals.GetCurrentServiceProvider()
                 .GetRequiredService<IHostSettingsService>()
                 .Update(setting);
         }
@@ -691,7 +687,7 @@ namespace DotNetNuke.Services.Install
             currentStep = null;
             upgradeProgress = 100;
 
-            Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+            Globals.GetCurrentServiceProvider().GetService<IDamUninstaller>().Execute();
 
             CurrentStepActivity(Localization.GetString("UpgradeDone", LocalResourceFile));
 

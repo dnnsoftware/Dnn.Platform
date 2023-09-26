@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -16,20 +17,31 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The view for the global export page action.</summary>
     public partial class Export : PortalModuleBase
     {
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
         private TabInfo tab;
 
         /// <summary>Initializes a new instance of the <see cref="Export"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public Export()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Export"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Export(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public TabInfo Tab
@@ -146,7 +158,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
             var xmlTab = new XmlDocument { XmlResolver = null };
-            var nodeTab = TabController.SerializeTab(xmlTab, this.Tab, this.chkContent.Checked);
+            var nodeTab = TabController.SerializeTab(this.businessControllerProvider, xmlTab, this.Tab, this.chkContent.Checked);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
         }
 

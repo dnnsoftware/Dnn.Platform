@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.SystemHealth
@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.SystemHealth
     using DotNetNuke.Services.Scheduling;
 
     /// <summary>
-    /// When run on each server it updates the last activity date for the server and removes any servers that havent been seen in 24 hours.
+    /// When run on each server it updates the last activity date for the server and removes any servers that haven't been seen in 24 hours.
     /// </summary>
     public class WebServerMonitor : SchedulerClient
     {
@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.SystemHealth
         /// Initializes a new instance of the <see cref="WebServerMonitor"/> class.
         /// Constructs a WebServerMonitor SchedulerClient.
         /// </summary>
-        /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem.</param>
+        /// <param name="objScheduleHistoryItem">A SchedulerHistoryItem.</param>
         /// <remarks>
         /// This must be run on all servers.
         /// </remarks>

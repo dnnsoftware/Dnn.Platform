@@ -404,24 +404,6 @@ namespace DotNetNuke.Data
             return this.ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount, enabled);
         }
 
-        [DnnDeprecated(7, 4, 0, "Please use CreatePortal overload with cultureCode", RemovalVersion = 10)]
-        public virtual partial int CreatePortal(string portalname, string currency, DateTime expiryDate, double hostFee, double hostSpace, int pageQuota, int userQuota, int siteLogHistory, string homeDirectory, int createdByUserID)
-        {
-            return
-                this.CreatePortal(
-                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
-                                            currency,
-                                            expiryDate,
-                                            hostFee,
-                                            hostSpace,
-                                            pageQuota,
-                                            userQuota,
-                                            siteLogHistory,
-                                            homeDirectory,
-                                            "en-US",
-                                            createdByUserID);
-        }
-
         public virtual int CreatePortal(string portalname, string currency, DateTime expiryDate, double hostFee, double hostSpace, int pageQuota, int userQuota, int siteLogHistory, string homeDirectory, string cultureCode, int createdByUserID)
         {
             return
@@ -958,7 +940,7 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-        public virtual void AddTabModule(int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, bool isWebSlice, string webSliceTitle, DateTime webSliceExpiryDate, int webSliceTTL, Guid uniqueId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int createdByUserID)
+        public virtual void AddTabModule(int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, Guid uniqueId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int createdByUserID)
         {
             this.ExecuteNonQuery(
                 "AddTabModule",
@@ -980,10 +962,6 @@ namespace DotNetNuke.Data
                 displayTitle,
                 displayPrint,
                 displaySyndicate,
-                isWebSlice,
-                webSliceTitle,
-                this.GetNull(webSliceExpiryDate),
-                webSliceTTL,
                 uniqueId,
                 versionGuid,
                 this.GetNull(defaultLanguageGuid),
@@ -1159,7 +1137,7 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateModuleSetting", moduleId, settingName, settingValue, lastModifiedByUserID);
         }
 
-        public virtual void UpdateTabModule(int tabModuleId, int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, bool isWebSlice, string webSliceTitle, DateTime webSliceExpiryDate, int webSliceTTL, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int lastModifiedByUserID)
+        public virtual void UpdateTabModule(int tabModuleId, int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int lastModifiedByUserID)
         {
             this.ExecuteNonQuery(
                 "UpdateTabModule",
@@ -1182,10 +1160,6 @@ namespace DotNetNuke.Data
                 displayTitle,
                 displayPrint,
                 displaySyndicate,
-                isWebSlice,
-                webSliceTitle,
-                this.GetNull(webSliceExpiryDate),
-                webSliceTTL,
                 versionGuid,
                 this.GetNull(defaultLanguageGuid),
                 localizedVersionGuid,
@@ -3797,124 +3771,6 @@ namespace DotNetNuke.Data
             return this.ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
         }
 
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
-        {
-            return this.ExecuteScalar<int>(
-                "AddContentWorkflow",
-                this.GetNull(portalId),
-                workflowName,
-                description,
-                isDeleted,
-                startAfterCreating,
-                startAfterEditing,
-                dispositionEnabled);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflow(int workflowId)
-        {
-            return this.ExecuteReader("GetContentWorkflow", workflowId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflows(int portalId)
-        {
-            return this.ExecuteReader("GetContentWorkflows", portalId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial void UpdateContentWorkflow(int workflowId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
-        {
-            this.ExecuteNonQuery(
-                "UpdateContentWorkflow",
-                workflowId,
-                workflowName,
-                description,
-                isDeleted,
-                startAfterCreating,
-                startAfterEditing,
-                dispositionEnabled);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflowState(int workflowId, string stateName, int order, bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState, string onCompleteMessageSubject, string onCompleteMessageBody, string onDiscardMessageSubject, string onDiscardMessageBody)
-        {
-            return this.ExecuteScalar<int>(
-                "AddContentWorkflowState",
-                workflowId,
-                stateName,
-                order,
-                isActive,
-                sendEmail,
-                sendMessage,
-                isDisposalState,
-                onCompleteMessageSubject,
-                onCompleteMessageBody,
-                onDiscardMessageSubject,
-                onDiscardMessageBody);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial void DeleteContentWorkflowState(int stateId)
-        {
-            this.ExecuteNonQuery("DeleteContentWorkflowState", stateId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial void UpdateContentWorkflowState(int stateId, string stateName, int order, bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState, string onCompleteMessageSubject, string onCompleteMessageBody, string onDiscardMessageSubject, string onDiscardMessageBody)
-        {
-            this.ExecuteNonQuery(
-                "UpdateContentWorkflowState",
-                stateId,
-                stateName,
-                order,
-                isActive,
-                sendEmail,
-                sendMessage,
-                isDisposalState,
-                onCompleteMessageSubject,
-                onCompleteMessageBody,
-                onDiscardMessageSubject,
-                onDiscardMessageBody);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowState(int stateId)
-        {
-            return this.ExecuteReader("GetContentWorkflowState", stateId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowStates(int workflowId)
-        {
-            return this.ExecuteReader("GetContentWorkflowStates", workflowId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use instead IWorkflowLogger.AddWorkflowLog", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflowLog(string action, string comment, int user, int workflowId, int contentItemId)
-        {
-            return this.ExecuteScalar<int>(
-                "AddContentWorkflowLog",
-                action,
-                comment,
-                user,
-                workflowId,
-                contentItemId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowLogger.GetWorkflowLogs", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowLogs(int contentItemId, int workflowId)
-        {
-            return this.ExecuteReader("GetContentWorkflowLogs", contentItemId, workflowId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int DeleteContentWorkflowLogs(int contentItemId, int workflowId)
-        {
-            return this.ExecuteScalar<int>("DeleteContentWorkflowLogs", contentItemId, workflowId);
-        }
-
         public virtual int AddContentWorkflowStatePermission(int stateId, int permissionId, int roleId, bool allowAccess, int userId, int createdByUserId)
         {
             return this.ExecuteScalar<int>(
@@ -3958,18 +3814,6 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetContentWorkflowStatePermissionsByStateID(int stateId)
         {
             return this.ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
-        {
-            return this.ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
-        {
-            return this.ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
         }
 
         public virtual IDataReader GetAllSearchTypes()
@@ -4142,12 +3986,6 @@ namespace DotNetNuke.Data
         public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
         {
             return Globals.ConvertDataReaderToDataSet(this.ExecuteReader(procedureName, commandParameters));
-        }
-
-        [DnnDeprecated(7, 0, 0, "0.  This method is unnecessary.  Use the generic version ExecuteScalar<T>.", RemovalVersion = 10)]
-        public virtual partial object ExecuteScalar(string procedureName, params object[] commandParameters)
-        {
-            return this.ExecuteScalar<object>(procedureName, commandParameters);
         }
 
         public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)

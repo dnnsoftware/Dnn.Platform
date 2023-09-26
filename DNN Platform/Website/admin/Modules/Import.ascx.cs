@@ -4,17 +4,15 @@
 namespace DotNetNuke.Modules.Admin.Modules
 {
     using System;
-    using System.Collections;
     using System.IO;
-    using System.Web;
     using System.Web.UI.WebControls;
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
@@ -22,19 +20,32 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
+
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The global import module action control.</summary>
     public partial class Import : PortalModuleBase
     {
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
 
         private int moduleId = -1;
         private ModuleInfo module;
 
         /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public Import()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private ModuleInfo Module
@@ -195,71 +206,72 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private string ImportModule()
         {
-            var strMessage = string.Empty;
-            if (this.Module != null)
+            if (this.Module == null)
             {
-                if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
-                {
-                    try
-                    {
-                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
-                        {
-                            var xmlDoc = new XmlDocument { XmlResolver = null };
-                            try
-                            {
-                                var content = XmlUtils.RemoveInvalidXmlCharacters(this.txtContent.Text);
-                                xmlDoc.LoadXml(content);
-                            }
-                            catch
-                            {
-                                strMessage = Localization.GetString("NotValidXml", this.LocalResourceFile);
-                            }
-
-                            if (string.IsNullOrEmpty(strMessage))
-                            {
-                                var strType = xmlDoc.DocumentElement.GetAttribute("type");
-                                if (strType == Globals.CleanName(this.Module.DesktopModule.ModuleName) || strType == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
-                                {
-                                    var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
-
-                                    // DNN26810 if rootnode = "content", import only content(the old way)
-                                    if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
-                                    {
-                                        ((IPortable)objObject).ImportModule(this.moduleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
-                                    }
-
-                                    // otherwise (="module") import the new way
-                                    else
-                                    {
-                                        ModuleController.DeserializeModule(xmlDoc.DocumentElement, this.Module, this.PortalId, this.TabId);
-                                    }
-
-                                    this.Response.Redirect(this.navigationManager.NavigateURL(), true);
-                                }
-                                else
-                                {
-                                    strMessage = Localization.GetString("NotCorrectType", this.LocalResourceFile);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
-                        }
-                    }
-                    catch
-                    {
-                        strMessage = Localization.GetString("Error", this.LocalResourceFile);
-                    }
-                }
-                else
-                {
-                    strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
-                }
+                return string.Empty;
             }
 
-            return strMessage;
+            if (string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) || !this.Module.DesktopModule.IsPortable)
+            {
+                return Localization.GetString("ImportNotSupported", this.LocalResourceFile);
+            }
+
+            try
+            {
+                var controller = this.businessControllerProvider.GetInstance<IPortable>(this.Module);
+                if (controller is null)
+                {
+                    return Localization.GetString("ImportNotSupported", this.LocalResourceFile);
+                }
+
+                var xmlDoc = new XmlDocument { XmlResolver = null };
+                try
+                {
+                    var content = XmlUtils.RemoveInvalidXmlCharacters(this.txtContent.Text);
+                    xmlDoc.LoadXml(content);
+                }
+                catch
+                {
+                    return Localization.GetString("NotValidXml", this.LocalResourceFile);
+                }
+
+                var strType = xmlDoc.DocumentElement.GetAttribute("type");
+                if (strType != Globals.CleanName(this.Module.DesktopModule.ModuleName) &&
+                    strType != Globals.CleanName(this.Module.DesktopModule.FriendlyName))
+                {
+                    return Localization.GetString("NotCorrectType", this.LocalResourceFile);
+                }
+
+                var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
+
+                // DNN26810 if rootnode = "content", import only content(the old way)
+                if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
+                {
+                    controller.ImportModule(
+                        this.moduleId,
+                        xmlDoc.DocumentElement.InnerXml,
+                        strVersion,
+                        this.UserInfo.UserID);
+                }
+
+                // otherwise (="module") import the new way
+                else
+                {
+                    ModuleController.DeserializeModule(
+                        this.businessControllerProvider,
+                        xmlDoc.DocumentElement,
+                        this.Module,
+                        this.PortalId,
+                        this.TabId);
+                }
+
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
+                return string.Empty;
+            }
+            catch
+            {
+                return Localization.GetString("Error", this.LocalResourceFile);
+            }
         }
     }
 }

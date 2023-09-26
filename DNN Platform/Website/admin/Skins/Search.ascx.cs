@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Search()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string SeeMoreText

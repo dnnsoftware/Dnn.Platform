@@ -11,11 +11,12 @@ namespace Dnn.PersonaBar.Prompt.Services
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library.Attributes;
-    using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Prompt.Common;
     using Dnn.PersonaBar.Prompt.Components;
     using Dnn.PersonaBar.Prompt.Components.Models;
+
+    using DotNetNuke.Abstractions.Prompt;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
@@ -24,6 +25,13 @@ namespace Dnn.PersonaBar.Prompt.Services
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using IConsoleCommand = DotNetNuke.Abstractions.Prompt.IConsoleCommand;
+#pragma warning disable CS0618
+    using IOldConsoleCommand = Dnn.PersonaBar.Library.Prompt.IConsoleCommand;
+#pragma warning restore CS0618
+
     [MenuPermission(MenuName = "Dnn.Prompt")]
     [RequireHost]
     public class CommandController : ControllerBase, IServiceRouteMapper
@@ -31,8 +39,22 @@ namespace Dnn.PersonaBar.Prompt.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
         private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
+        private readonly IServiceProvider serviceProvider;
+        private readonly ICommandRepository commandRepository;
+        private readonly Components.Repositories.ICommandRepository oldCommandRepository;
         private int portalId = -1;
         private PortalSettings portalSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CommandController"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="commandRepository">The command repository.</param>
+        /// <param name="oldCommandRepository">The obsolete command repository (to be removed in DNN 11).</param>
+        public CommandController(IServiceProvider serviceProvider, ICommandRepository commandRepository, Components.Repositories.ICommandRepository oldCommandRepository)
+        {
+            this.serviceProvider = serviceProvider;
+            this.commandRepository = commandRepository;
+            this.oldCommandRepository = oldCommandRepository;
+        }
 
         private new int PortalId
         {
@@ -128,10 +150,10 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
 
                 // first look in new commands, then in the old commands
-                var newCommand = DotNetNuke.Prompt.CommandRepository.Instance.GetCommand(cmdName);
+                var newCommand = this.commandRepository.GetCommand(this.serviceProvider, cmdName);
                 if (newCommand == null)
                 {
-                    var allCommands = Components.Repositories.CommandRepository.Instance.GetCommands();
+                    var allCommands = this.oldCommandRepository.GetCommands();
 
                     // if no command found notify
                     if (!allCommands.ContainsKey(cmdName))
@@ -200,10 +222,10 @@ namespace Dnn.PersonaBar.Prompt.Services
             // Instantiate and run the command
             try
             {
-                var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
+                var cmdObj = (IOldConsoleCommand)ActivatorUtilities.GetServiceOrCreateInstance(this.serviceProvider, cmdTypeToRun);
                 if (isHelpCmd)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command.Args, cmdObj));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, this.oldCommandRepository.GetCommandHelp(command.Args, cmdObj));
                 }
 
                 // set env. data for command use
@@ -217,15 +239,14 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, DotNetNuke.Abstractions.Prompt.IConsoleCommand cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
+        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, IConsoleCommand cmdObj, string[] args, bool isHelpCmd, DateTime startTime)
         {
             // Instantiate and run the command that uses the new interfaces and base class
             try
             {
-                var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun.GetType());
                 if (isHelpCmd)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, this.commandRepository.GetCommandHelp(cmdObj));
                 }
 
                 // set env. data for command use
@@ -239,7 +260,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command, DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponseNewCommands(IConsoleCommand consoleCommand, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -313,13 +334,13 @@ namespace Dnn.PersonaBar.Prompt.Services
         }
 
         /// <summary>Log every command run by a users.</summary>
-        /// <param name="consoleCommand"></param>
-        /// <param name="cmdTypeToRun"></param>
-        /// <param name="command"></param>
-        /// <param name="startTime"></param>
-        /// <param name="error"></param>
+        /// <param name="consoleCommand">The old command, or <see langword="null"/>.</param>
+        /// <param name="cmdTypeToRun">The type of command to run.</param>
+        /// <param name="command">The command input.</param>
+        /// <param name="startTime">The start time of the command run.</param>
+        /// <param name="error">An error message.</param>
         /// <returns>A <see cref="ConsoleResultModel"/> response.</returns>
-        private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponse(IOldConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;

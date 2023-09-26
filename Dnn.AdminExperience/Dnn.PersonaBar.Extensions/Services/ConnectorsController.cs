@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.Connectors.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
@@ -24,6 +25,14 @@ namespace Dnn.PersonaBar.Connectors.Services
     public class ConnectorsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectorsController));
+        private readonly IServiceProvider serviceProvider;
+        private readonly IConnectionsManager connectionsManager;
+
+        public ConnectorsController(IServiceProvider serviceProvider, IConnectionsManager connectionsManager)
+        {
+            this.serviceProvider = serviceProvider;
+            this.connectionsManager = connectionsManager;
+        }
 
         [HttpGet]
         public HttpResponseMessage GetConnections()
@@ -228,7 +237,7 @@ namespace Dnn.PersonaBar.Connectors.Services
 
         private IList<IConnector> GetConnections(int portalId)
         {
-            var connectors = ConnectionsManager.Instance.GetConnectors();
+            var connectors = this.connectionsManager.GetConnectors(this.serviceProvider);
             var allConnectors = new List<IConnector>();
             foreach (var con in connectors)
             {

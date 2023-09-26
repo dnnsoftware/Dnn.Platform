@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
@@ -32,7 +33,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     {
         private string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
-        internal (bool success, string message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles)
+        internal (bool success, string message) ExportPortalTemplate(IBusinessControllerProvider businessControllerProvider, int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles)
         {
             if (!exportTabIds.Any())
             {
@@ -89,7 +90,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 }
 
                 // Serialize tabs
-                this.SerializeTabs(writer, portal, isMultiLanguage, exportTabIds, includeContent, locales, localizationCulture);
+                this.SerializeTabs(businessControllerProvider, writer, portal, isMultiLanguage, exportTabIds, includeContent, locales, localizationCulture);
 
                 if (includeFiles)
                 {
@@ -473,7 +474,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteEndElement();
         }
 
-        private void SerializeTabs(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<int> tabsToExport, bool includeContent, IEnumerable<string> locales, string localizationCulture = "")
+        private void SerializeTabs(IBusinessControllerProvider businessControllerProvider, XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<int> tabsToExport, bool includeContent, IEnumerable<string> locales, string localizationCulture = "")
         {
             // supporting object to build the tab hierarchy
             var tabs = new Hashtable();
@@ -484,6 +485,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             {
                 // Process Default Language first
                 this.SerializeTabs(
+                    businessControllerProvider,
                     writer,
                     portal,
                     tabs,
@@ -497,6 +499,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     if (cultureCode != portal.DefaultLanguage)
                     {
                         this.SerializeTabs(
+                            businessControllerProvider,
                             writer,
                             portal,
                             tabs,
@@ -514,6 +517,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     Convert.ToBoolean(contentLocalizable))
                 {
                     this.SerializeTabs(
+                        businessControllerProvider,
                         writer,
                         portal,
                         tabs,
@@ -524,6 +528,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 else
                 {
                     this.SerializeTabs(
+                        businessControllerProvider,
                         writer,
                         portal,
                         tabs,
@@ -536,7 +541,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteEndElement();
         }
 
-        private void SerializeTabs(XmlWriter writer, PortalInfo portal, Hashtable tabs, TabCollection tabCollection, IEnumerable<int> tabsToExport, bool chkContent)
+        private void SerializeTabs(IBusinessControllerProvider businessControllerProvider, XmlWriter writer, PortalInfo portal, Hashtable tabs, TabCollection tabCollection, IEnumerable<int> tabsToExport, bool chkContent)
         {
             tabsToExport = tabsToExport.ToList();
             foreach (var tab in tabCollection.Values.OrderBy(x => x.Level))
@@ -552,7 +557,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         if (tabsToExport.Any(p => p == tabId) ||
                             tabsToExport.All(p => p != tabId))
                         {
-                            tabNode = TabController.SerializeTab(new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
+                            tabNode = TabController.SerializeTab(businessControllerProvider, new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
                         }
                     }
                     else
@@ -564,7 +569,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                             ||
                             tabsToExport.Count(p => p == defaultTab.TabID) > 0)
                         {
-                            tabNode = TabController.SerializeTab(new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
+                            tabNode = TabController.SerializeTab(businessControllerProvider, new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
                         }
                     }
 

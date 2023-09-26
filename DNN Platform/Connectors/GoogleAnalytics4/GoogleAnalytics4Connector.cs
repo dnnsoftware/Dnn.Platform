@@ -9,8 +9,6 @@ namespace DNN.Connectors.GoogleAnalytics4
     using System.Web;
     using System.Xml;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Analytics.Config;
     using DotNetNuke.Services.Connections;
     using DotNetNuke.Services.Exceptions;
@@ -81,7 +79,7 @@ namespace DNN.Connectors.GoogleAnalytics4
         /// <inheritdoc/>
         public bool HasConfig(int portalId)
         {
-            IDictionary<string, string> config = this.GetConfig(portalId);
+            var config = this.GetConfig(portalId);
 
             return config.ContainsKey("Ga4ID") && !string.IsNullOrEmpty(config["Ga4ID"]);
         }
@@ -90,7 +88,6 @@ namespace DNN.Connectors.GoogleAnalytics4
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var ga4Config = AnalyticsConfiguration.GetConfig("GoogleAnalytics4");
-            var portalSettings = new PortalSettings(portalId);
 
             // Important, knockout handles empty strings as false and any other string as true
             // so we need to pass empty strings when we mean false, however it passes us back the string "false"
@@ -134,9 +131,7 @@ namespace DNN.Connectors.GoogleAnalytics4
 
             try
             {
-                var isDeactivating = false;
-
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
+                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating);
 
                 string ga4ID;
                 string trackForAdmin;

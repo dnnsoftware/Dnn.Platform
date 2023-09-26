@@ -383,9 +383,6 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public int SearchTabId { get; set; }
 
-        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v10.0.0.")]
-        public int SiteLogHistory { get; set; }
-
         /// <inheritdoc/>
         public int SplashTabId { get; set; }
 
@@ -458,11 +455,6 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         public bool EnableCompositeFiles { get; internal set; }
-
-        /// <summary>Gets a value indicating whether gets whether to use the module effect in edit mode.</summary>
-        /// <remarks>Defaults to True.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 7.4.0. No replacement. Scheduled removal in v10.0.0.")]
-        public bool EnableModuleEffect { get; internal set; }
 
         /// <inheritdoc />
         public bool EnablePopUps { get; internal set; }

@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterFileUpload(this.Page);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
         }
 
         /// <inheritdoc/>

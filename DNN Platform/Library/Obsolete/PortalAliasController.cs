@@ -30,37 +30,9 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                var portalAliasSettingsService = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
+                var portalAliasSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
                 return portalAliasSettingsService is IPortalAliasController castedController ? castedController : new PortalAliasController();
             }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 3, 0, "Replaced by PortalAliasController.Instance.GetPortalAlias", RemovalVersion = 10)]
-        public static partial PortalAliasInfo GetPortalAliasInfo(string httpAlias)
-        {
-            return Instance.GetPortalAlias(httpAlias);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 1, 0, "Replaced by PortalAliasController.Instance.GetPortalAliases", RemovalVersion = 10)]
-        public static partial PortalAliasCollection GetPortalAliasLookup()
-        {
-            var portalAliasCollection = new PortalAliasCollection();
-            var aliasController = new PortalAliasController();
-            foreach (var kvp in aliasController.GetPortalAliasesInternal())
-            {
-                portalAliasCollection.Add(kvp.Key, kvp.Value);
-            }
-
-            return portalAliasCollection;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 3, 0, "Replaced by PortalAliasController.Instance.GetPortalAlias", RemovalVersion = 10)]
-        public static partial PortalAliasInfo GetPortalAliasLookup(string httpAlias)
-        {
-            return Instance.GetPortalAlias(httpAlias);
         }
 
         /// <summary>Gets the portal alias by portal.</summary>
@@ -86,50 +58,6 @@ namespace DotNetNuke.Entities.Portals
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
         public static partial bool ValidateAlias(string portalAlias, bool ischild) =>
             ((IPortalAliasService)Instance).ValidateAlias(portalAlias, ischild);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 1, 0, "Replaced by PortalAliasController.Instance.DeletePortalAlias", RemovalVersion = 10)]
-        public partial void DeletePortalAlias(int portalAliasId)
-        {
-            DataProvider.Instance().DeletePortalAlias(portalAliasId);
-
-            EventLogController.Instance.AddLog(
-                "PortalAliasID",
-                portalAliasId.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PORTALALIAS_DELETED);
-
-            DataCache.RemoveCache(DataCache.PortalAliasCacheKey);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 1, 0, "Replaced by PortalAliasController.Instance.GetPortalAliasesByPortalId", RemovalVersion = 10)]
-        public partial ArrayList GetPortalAliasArrayByPortalID(int portalID)
-        {
-            return new ArrayList(Instance.GetPortalAliasesByPortalId(portalID).ToArray());
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 1, 0, "Replaced by PortalAliasController.Instance.GetPortalAliasesByPortalId", RemovalVersion = 10)]
-        public partial PortalAliasCollection GetPortalAliasByPortalID(int portalID)
-        {
-            var portalAliasCollection = new PortalAliasCollection();
-
-            foreach (PortalAliasInfo alias in GetPortalAliasLookup().Values.Cast<PortalAliasInfo>().Where(alias => alias.PortalID == portalID))
-            {
-                portalAliasCollection.Add(alias.HTTPAlias, alias);
-            }
-
-            return portalAliasCollection;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DnnDeprecated(7, 1, 0, "Replaced by PortalAliasController.Instance.UpdatePortalAlias", RemovalVersion = 10)]
-        public partial void UpdatePortalAliasInfo(PortalAliasInfo portalAlias)
-        {
-            Instance.UpdatePortalAlias(portalAlias);
-        }
 
         /// <inheritdoc cref="IPortalAliasService.AddPortalAlias"/>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]

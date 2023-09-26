@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>Initializes a new instance of the <see cref="CleanupInstaller"/> class.</summary>
         public CleanupInstaller()
             : this(
-                Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>(),
-                Globals.DependencyProvider.GetRequiredService<IFileSystemUtils>())
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IFileSystemUtils>())
         {
         }
 
