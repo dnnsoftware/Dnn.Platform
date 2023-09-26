@@ -115,9 +115,13 @@
     <Compile Include="WebApiException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" OutputItemType="Analyzer">
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
       <Project>{5FE5D021-9C8D-47A6-BD34-F328BA3E709C}</Project>
       <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
