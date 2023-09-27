@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Internal.SourceGenerators;
 
+using System;
 using System.Diagnostics;
 
 /// <summary>Marks a type or member as deprecated.</summary>

@@ -4,33 +4,17 @@
 namespace DotNetNuke.Tests.SourceGenerators;
 
 [TestFixture]
-public class DnnDeprecatedGeneratorTests
+public class GeneratorTests
 {
     [Test]
-    public async Task NotDeprecatedClass_DoesNotGenerateAnything()
+    public async Task NoAttribute_GenerateNothing()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-public partial class PagesController
-{
-}
-
-""");
-    }
-
-    [Test]
-    public async Task DeprecatedNonPartialClass_ReportsAnErrorDiagnostic()
-    {
-        await Verify("""
-namespace Example.Test;
-
-using DotNetNuke.Internal.SourceGenerators;
-
-[DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
-public class PagesController
+public partial class D
 {
 }
 
@@ -38,15 +22,15 @@ public class PagesController
     }
 
     [Test]
-    public async Task DeprecatedPartialClass_AddsPartialWithObsoleteAttribute()
+    public async Task NotPartial_ReportsError()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-[DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
-public partial class PagesController
+[DnnDeprecated(10, 0, 0, "Please resolve B via dependency injection.")]
+public class D
 {
 }
 
@@ -54,15 +38,15 @@ public partial class PagesController
     }
 
     [Test]
-    public async Task DeprecatedGenericPartialClass_AddsPartialWithObsoleteAttribute()
+    public async Task Class()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-[DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
-public partial class PagesController<T,U>
+[DnnDeprecated(10, 0, 0, "Please resolve B via dependency injection.")]
+public partial class D
 {
 }
 
@@ -70,17 +54,33 @@ public partial class PagesController<T,U>
     }
 
     [Test]
-    public async Task DeprecatedNestedGenericPartialClass_AddsPartialWithObsoleteAttribute()
+    public async Task GenericClass()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-public partial class PagesController<T,U>
+[DnnDeprecated(10, 0, 0, "Please resolve B via dependency injection.")]
+public partial class D<T,U>
+{
+}
+
+""");
+    }
+
+    [Test]
+    public async Task NestedGeneric()
+    {
+        await Verify("""
+namespace G;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+public partial class D<T,U>
 {
     [DnnDeprecated(10, 0, 0, "Please use outer class.")]
-    public partial class Inner<T,X,Z>
+    public partial class C<T,X,Z>
     {
     }
 }
@@ -89,15 +89,15 @@ public partial class PagesController<T,U>
     }
 
     [Test]
-    public async Task DeprecatedPartialInterface_AddsPartialWithObsoleteAttribute()
+    public async Task Interface()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-[DnnDeprecated(10, 0, 0, "Please use the other IPagesController.")]
-public partial interface IPagesController
+[DnnDeprecated(10, 0, 0, "Please use the other B.")]
+public partial interface B
 {
 }
 
@@ -105,15 +105,15 @@ public partial interface IPagesController
     }
 
     [Test]
-    public async Task DeprecatedPartialGenericInterface_AddsPartialWithObsoleteAttribute()
+    public async Task GenericInterface()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-[DnnDeprecated(10, 0, 0, "Please use the other IPagesController.")]
-public partial interface IPagesController<T>
+[DnnDeprecated(10, 0, 0, "Please use the other B.")]
+public partial interface B<T>
 {
 }
 
@@ -121,15 +121,15 @@ public partial interface IPagesController<T>
     }
 
     [Test]
-    public async Task DeprecatedPartialStruct_AddsPartialWithObsoleteAttribute()
+    public async Task Struct()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
 [DnnDeprecated(10, 0, 0, "Please use PageInfo.")]
-public partial struct Page
+public partial struct A
 {
 }
 
@@ -137,15 +137,15 @@ public partial struct Page
     }
 
     [Test]
-    public async Task DeprecatedPartialRecord_AddsPartialWithObsoleteAttribute()
+    public async Task Record()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
 [DnnDeprecated(10, 0, 0, "Please use PageInfo.")]
-public partial record Page
+public partial record A
 {
 }
 
@@ -153,17 +153,17 @@ public partial record Page
     }
 
     [Test]
-    public async Task DeprecatedNestedPartialRecord_AddsPartialWithObsoleteAttribute()
+    public async Task NestedRecord()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-public partial class Page
+public partial class A
 {
     [DnnDeprecated(9, 1, 2, "Please use InnerPageInfo.")]
-    public partial record InnerPage
+    public partial record H
     {
     }
 }
@@ -172,23 +172,23 @@ public partial class Page
     }
 
     [Test]
-    public async Task DeprecatedWithSpecialCharacters_AddsPartialWithObsoleteAttribute()
+    public async Task SpecialCharacters()
     {
         await Verify(""""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
 [DnnDeprecated(9, 1, 2, @"Use PageMaker.MakePage(""PageType0"")")]
-public partial class Page
+public partial class A
 {
     [DnnDeprecated(9, 2, 2, "Use PageMaker.MakePage(\"\n\tPageType1\t\n\")")]
-    public static partial void MakePage()
+    public static partial void I()
     {
     }
 
     [DnnDeprecated(9, 2, 2, """ Use PageMaker.MakePage("PageType2") """)]
-    public static partial void MakePage2()
+    public static partial void J()
     {
     }
 }
@@ -197,28 +197,28 @@ public partial class Page
     }
 
     [Test]
-    public async Task DeprecatedMethods_AddsPartialWithObsoleteAttribute()
+    public async Task Methods()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Internal.SourceGenerators;
 
-internal partial class Page
+internal partial class A
 {
-    internal partial static class StaticWrapper
+    internal partial static class K
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IServiceProvider.")]
-        public static partial void DoAThing<T>(ref IEnumerable<T> i)
+        public static partial void L<T>(ref IEnumerable<T> i)
             where T : class, new()
         {
             return;
         }
 
         [DnnDeprecated(9, 4, 4, "Use overload taking IApplicationStatusInfo.")]
-        public static partial int?[] GetTheseThings(int? a = null, int b = -1)
+        public static partial int?[] M(int? a = null, int b = -1)
         {
             return new[] { a, b, };
         }
@@ -227,14 +227,14 @@ internal partial class Page
     internal partial class Wrapper<T>
     {
         [DnnDeprecated(8, 4, 4, "Use overload taking IApplicationStatusInfo.")]
-        internal partial (decimal, Int32) GetThemBoth(decimal x, bool addOne = true)
+        internal partial (decimal, Int32) N(decimal x, bool addOne = true)
         {
             var theInt = addOne ? 1 : 2;
             return (x + theInt, theInt);
         }
 
         [DnnDeprecated(9, 4, 4, "Use overload taking IServiceProvider.")]
-        public static partial System.Text.StringBuilder CombineThings(string y, out String z)
+        public static partial System.Text.StringBuilder O(string y, out String z)
         {
             z = nameof(CombineThings);
             return new StringBuilder(y + z);
@@ -246,17 +246,17 @@ internal partial class Page
     }
 
     [Test]
-    public async Task DeprecatedMethodWithParamsParameter_AddsPartialWithObsoleteAttribute()
+    public async Task ParamsParameter()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-partial class Page
+partial class A
 {
     [DnnDeprecated(9, 9, 1, "Use overload taking IEnumerable.")]
-    partial void WithParams(params int[] numbers)
+    partial void P(params int[] numbers)
     {
     }
 }
@@ -265,10 +265,10 @@ partial class Page
     }
 
     [Test]
-    public async Task DeprecatedMethodWithOptionalParameters_AddsPartialWithObsoleteAttribute()
+    public async Task OptionalParameters()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using System.Collections;
 using System.IO;
@@ -276,10 +276,10 @@ using System.Runtime.InteropServices;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-partial class Page
+partial class A
 {
     [DnnDeprecated(7, 0, 0, "No replacement", RemovalVersion = 11)]
-    public static partial ArrayList GetFileList(
+    public static partial ArrayList Q(
         DirectoryInfo currentDirectory,
         [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
         string strExtensions,
@@ -294,17 +294,17 @@ partial class Page
     }
 
     [Test]
-    public async Task DeprecatedExtensionMethod_AddsPartialWithObsoleteAttribute()
+    public async Task ExtensionMethod()
     {
         await Verify("""
-namespace Example.Test;
+namespace G;
 
 using DotNetNuke.Internal.SourceGenerators;
 
-partial class Page
+partial class A
 {
     [DnnDeprecated(9, 9, 1, "Use overload taking IEnumerable.")]
-    partial void AnExtension(this int[] numbers, string another)
+    partial void R(this int[] numbers, string another)
     {
     }
 }
