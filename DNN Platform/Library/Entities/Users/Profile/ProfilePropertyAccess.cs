@@ -22,11 +22,12 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
     /// <summary>Provides access to profile properties.</summary>
-    public class ProfilePropertyAccess : IPropertyAccess
+    public partial class ProfilePropertyAccess : IPropertyAccess
     {
         private readonly UserInfo user;
 
@@ -52,8 +53,8 @@ namespace DotNetNuke.Entities.Users
         /// <param name="accessingUser">The accessing user.</param>
         /// <param name="targetUser">The target user.</param>
         /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
-        [Obsolete("Deprecated in 9.8, Use the overload that takes IPortalSettings instead. Scheduled removal in v11.0.0")]
-        public static bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
+        [DnnDeprecated(9, 8, 0, "Use the overload that takes IPortalSettings instead")]
+        public static partial bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
             var portalSettingsAsInterface = (IPortalSettings)portalSettings;
             return CheckAccessLevel(portalSettingsAsInterface, property, accessingUser, targetUser);

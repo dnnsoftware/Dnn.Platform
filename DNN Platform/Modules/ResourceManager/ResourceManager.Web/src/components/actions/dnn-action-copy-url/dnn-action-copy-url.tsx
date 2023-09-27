@@ -12,8 +12,13 @@ export class DnnActionCopyUrl {
   @Prop() items!: Item[];
 
   private handleClick(): void {
-    const url = `${window.location.protocol}//${window.location.host}${this.items[0].path}`;
-    navigator.clipboard.writeText(url);
+    let t;
+    if (this.items[0].path.includes(":")) {
+      t = this.items[0].path;
+    } else {
+      t = `${window.location.protocol}//${window.location.host}${this.items[0].path}`;
+    }   
+    navigator.clipboard.writeText(t);
   }
 
   render() {

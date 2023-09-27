@@ -8,11 +8,11 @@ namespace DotNetNuke.HttpModules.UsersOnline
 
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-    public class UsersOnlineModule : IHttpModule
+    [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
+    public partial class UsersOnlineModule : IHttpModule
     {
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public string ModuleName
         {
             get
@@ -32,7 +32,6 @@ namespace DotNetNuke.HttpModules.UsersOnline
         {
         }
 
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void OnAuthorizeRequest(object s, EventArgs e)
         {
             // First check if we are upgrading/installing

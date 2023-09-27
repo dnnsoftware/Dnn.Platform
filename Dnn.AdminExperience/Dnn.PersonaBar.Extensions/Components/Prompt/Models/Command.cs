@@ -6,12 +6,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     using Newtonsoft.Json;
 
     [Serializable]
     [JsonObject]
-    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
-    public class Command
+    [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project.")]
+    public partial class Command
     {
         public string Key { get; set; }
 

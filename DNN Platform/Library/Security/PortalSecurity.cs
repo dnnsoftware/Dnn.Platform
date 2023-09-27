@@ -18,6 +18,7 @@ namespace DotNetNuke.Security
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Cookies;
     using DotNetNuke.Services.Cryptography;
 
@@ -95,14 +96,17 @@ namespace DotNetNuke.Security
         public enum FilterFlag
         {
             MultiLine = 1,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. A direct call to WebUtility.HtmlEncode should be used")]
-            NoMarkup = 2,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. A direct call to WebUtility.HtmlEncode should be used")]
-            NoScripting = 4,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. Parameterized SQL should be preferred for SQL Injection protection")]
-            NoSQL = 8,
-            [Obsolete("Deprecated in 9.8.1. Scheduled removal in v11.0.0. Individual string replacement should be completed")]
 
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
+            NoMarkup = 2,
+
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
+            NoScripting = 4,
+
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. Parameterized SQL should be preferred for SQL Injection protection. Scheduled for removal in v11.0.0.")]
+            NoSQL = 8,
+
+            [Obsolete("Deprecated in DotNetNuke 9.8.1. Individual string replacement should be completed. Scheduled for removal in v11.0.0.")]
             NoAngleBrackets = 16,
             NoProfanity = 32,
         }
@@ -133,6 +137,9 @@ namespace DotNetNuke.Security
             Owner = 3,
         }
 
+        /// <summary>
+        /// Forces the secure connection.
+        /// </summary>
         public static void ForceSecureConnection()
         {
             // get current url
@@ -159,6 +166,11 @@ namespace DotNetNuke.Security
             }
         }
 
+        /// <summary>
+        /// Gets the cookie domain for the portal group or from web.config.
+        /// </summary>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <returns>Cookie domain for the portal group or from web.config.</returns>
         public static string GetCookieDomain(int portalId)
         {
             string cookieDomain = string.Empty;
@@ -189,6 +201,13 @@ namespace DotNetNuke.Security
             return cookieDomain;
         }
 
+        /// <summary>
+        /// Determines whether the current user is denied for the given role(s).
+        /// </summary>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns>
+        ///   <c>true</c> if the current user is denied from the provided specified roles; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsDenied(string roles)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -196,6 +215,15 @@ namespace DotNetNuke.Security
             return IsDenied(objUserInfo, settings, roles);
         }
 
+        /// <summary>
+        /// Determines whether the specified user is denied for the given roles.
+        /// </summary>
+        /// <param name="objUserInfo">The user information.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified user is denied; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
             // super user always has full access
@@ -234,6 +262,13 @@ namespace DotNetNuke.Security
             return isDenied;
         }
 
+        /// <summary>
+        /// Determines whether the current user belonds to the specified role.
+        /// </summary>
+        /// <param name="role">The role name.</param>
+        /// <returns>
+        ///   <c>true</c> if user belongs to the specified role; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsInRole(string role)
         {
             if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
@@ -244,6 +279,13 @@ namespace DotNetNuke.Security
             return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
         }
 
+        /// <summary>
+        /// Determines whether the current user belongs to the specified roles.
+        /// </summary>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns>
+        ///   <c>true</c> if user belongs to the specified roles; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsInRoles(string roles)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -251,6 +293,15 @@ namespace DotNetNuke.Security
             return IsInRoles(objUserInfo, settings, roles);
         }
 
+        /// <summary>
+        /// Determines whether the provided user belongs to the specified roles.
+        /// </summary>
+        /// <param name="objUserInfo">The user information.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns>
+        ///   <c>true</c> if the provided user belongs to the specific roles; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
             // super user always has full access
@@ -276,6 +327,13 @@ namespace DotNetNuke.Security
             return isInRoles;
         }
 
+        /// <summary>
+        /// Determines whether the specified user is a friend of the current user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified user is a friend of the current user; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsFriend(int userId)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -283,6 +341,13 @@ namespace DotNetNuke.Security
             return IsInRoles(objUserInfo, settings, RoleFriendPrefix + userId);
         }
 
+        /// <summary>
+        /// Determines whether the specified user is a follower of the current user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified user is a follower of the current user; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsFollower(int userId)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -290,6 +355,13 @@ namespace DotNetNuke.Security
             return IsInRoles(objUserInfo, settings, RoleFollowerPrefix + userId);
         }
 
+        /// <summary>
+        /// Determines whether the specified user is an owner.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified user is an owner; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsOwner(int userId)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -311,21 +383,45 @@ namespace DotNetNuke.Security
             }
         }
 
+        /// <summary>
+        /// Decrypts the provided string data using a supplied key.
+        /// </summary>
+        /// <param name="strKey">The encryption key.</param>
+        /// <param name="strData">The encrypted data.</param>
+        /// <returns>The decrypted string.</returns>
         public string Decrypt(string strKey, string strData)
         {
             return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
         }
 
+        /// <summary>
+        /// Decrypts a string using a provided passphrase.
+        /// </summary>
+        /// <param name="message">The encrypted message.</param>
+        /// <param name="passphrase">The passphrase.</param>
+        /// <returns>The decrypted string.</returns>
         public string DecryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().DecryptString(message, passphrase);
         }
 
+        /// <summary>
+        /// Encrypts the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>The encrypted string.</returns>
         public string Encrypt(string key, string data)
         {
             return CryptographyProvider.Instance().EncryptParameter(data, key);
         }
 
+        /// <summary>
+        /// Encrypts a string using a provided passphrase.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="passphrase">The passphrase.</param>
+        /// <returns>The encrypted string.</returns>
         public string EncryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().EncryptString(message, passphrase);
@@ -496,6 +592,11 @@ namespace DotNetNuke.Security
             return inputString;
         }
 
+        /// <summary>
+        /// Signs the provided user in and sets a persistent login cookie if needed.
+        /// </summary>
+        /// <param name="user">The user info.</param>
+        /// <param name="createPersistentCookie">if set to <c>true</c> [create persistent cookie].</param>
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
@@ -570,6 +671,9 @@ namespace DotNetNuke.Security
             HttpContext.Current.Items["DNN_UserSignIn"] = true;
         }
 
+        /// <summary>
+        /// Signs the current user out.
+        /// </summary>
         public void SignOut()
         {
             InvalidateAspNetSession(HttpContext.Current);

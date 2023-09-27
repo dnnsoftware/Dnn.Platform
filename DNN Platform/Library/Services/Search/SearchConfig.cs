@@ -10,11 +10,12 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>The SearchConfig class provides a configuration class for Search.</summary>
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
+    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
     [Serializable]
-    public class SearchConfig
+    public partial class SearchConfig
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
         private readonly bool searchIncludeCommon;

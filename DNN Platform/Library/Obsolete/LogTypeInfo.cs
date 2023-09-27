@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public partial class LogTypeInfo
     {
-        [Obsolete("Deprecated in 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeInfo.LogTypeCssClass' instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeInfo.LogTypeCssClass' instead. Scheduled removal in v11.0.0.")]
         public string LogTypeCSSClass
         {
             get => ((ILogTypeInfo)this).LogTypeCssClass;

@@ -7,13 +7,12 @@ namespace DotNetNuke.Entities.Content.Workflow
 
 // ReSharper enable CheckNamespace
 {
-    using System;
-
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
 
     /// <summary>This entity represents a state permission.</summary>
-    [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-    public class ContentWorkflowStatePermission : PermissionInfoBase
+    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+    public partial class ContentWorkflowStatePermission : PermissionInfoBase
     {
         /// <summary>Gets or sets workflow state permission Id.</summary>
         public int WorkflowStatePermissionID { get; set; }

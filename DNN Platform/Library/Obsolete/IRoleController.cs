@@ -7,9 +7,11 @@ namespace DotNetNuke.Security.Roles.Internal
     using System.Collections.Generic;
     using System.ComponentModel;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Security.Roles instead. Scheduled removal in v10.0.0.")]
-    public interface IRoleController
+    [DnnDeprecated(7, 3, 0, "Please use version in DotNetNuke.Security.Roles instead", RemovalVersion = 10)]
+    public partial interface IRoleController
     {
         /// <summary>Adds a role.</summary>
         /// <param name="role">The Role to Add.</param>

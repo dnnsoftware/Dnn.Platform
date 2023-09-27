@@ -3,12 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework.Providers
 {
-    using System;
     using System.Configuration;
     using System.Xml;
 
-    [Obsolete("This class is obsolete.  It is no longer used to load provider configurations, as there are medium trust issues. Scheduled removal in v11.0.0.")]
-    internal class ProviderConfigurationHandler : IConfigurationSectionHandler
+    using DotNetNuke.Internal.SourceGenerators;
+
+    [DnnDeprecated(7, 0, 0, "It is no longer used to load provider configurations, as there are medium trust issues", RemovalVersion = 10)]
+    internal partial class ProviderConfigurationHandler : IConfigurationSectionHandler
     {
         /// <inheritdoc/>
         public virtual object Create(object parent, object context, XmlNode node)

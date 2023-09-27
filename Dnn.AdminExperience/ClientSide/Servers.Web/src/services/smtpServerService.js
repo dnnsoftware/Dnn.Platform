@@ -17,10 +17,15 @@ const sendTestEmail = function (parameters) {
     return serviceFramework.post(getControllerName(), "SendTestEmail", parameters);
 };
 
+const getOAuthProviders = function(){
+    return serviceFramework.get(getControllerName(), "GetSmtpOAuthProviders");
+};
+
 const smtpServerService = {
     getSmtpSettings,
     updateSmtpSettings,
-    sendTestEmail
+    sendTestEmail,
+    getOAuthProviders
 };
 
 export default smtpServerService; 

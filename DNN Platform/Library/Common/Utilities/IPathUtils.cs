@@ -33,7 +33,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="userID">The user identifier.</param>
         /// <param name="mode">The UserFolderElement to get.</param>
         /// <returns>The element from the user folder path.</returns>
-        [Obsolete("Deprecated in DNN 6.2.  No replacement, this should have been internal only. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 6.2.0. No replacement, this should have been internal only. Scheduled removal in v10.0.0.")]
         string GetUserFolderPathElement(int userID, PathUtils.UserFolderElement mode);
 
         /// <summary>Checks if a folder is a default protected folder.</summary>

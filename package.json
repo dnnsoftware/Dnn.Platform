@@ -27,7 +27,7 @@
     "DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   ],
   "devDependencies": {
-    "lerna": "^6.5.1"
+    "lerna": "^6.6.2"
   },
   "scripts": {
     "build": "lerna run build --stream",
@@ -37,6 +37,9 @@
     "clean": "lerna run clean",
     "lint": "lerna run lint",
     "test": "lerna run test"
+  },
+  "resolutions": {
+    "@types/ws": "8.5.4"
   },
   "packageManager": "yarn@3.4.1"
 }

@@ -533,4 +533,10 @@
   <data name="HostUploadFolderLabelForImg.Text" xml:space="preserve">
     <value>Default Upload Folder for images for all portals (overrides setting below)</value>
   </data>
+  <data name="BrowAllowFollowPerms.Text" xml:space="preserve">
+    <value>Allow users with folder permissions</value>
+  </data>
+  <data name="lblBrowAllowFollowPerms.Text" xml:space="preserve">
+    <value>Allow folder users</value>
+  </data>
 </root>

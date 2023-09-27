@@ -709,8 +709,8 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.RememberCheckbox,
                             Host.AutoAccountUnlockDuration,
                             Host.AsyncTimeout,
-                            MaxUploadSize = Config.GetMaxUploadSize() / (1024 * 1024),
-                            RangeUploadSize = Config.GetRequestFilterSize(),
+                            MaxUploadSize = Config.GetMaxUploadSize() / 1024 / 1024,
+                            RangeUploadSize = 4294967295 / 1024 / 1024, // 4GB (max allowedContentLength supported in IIS7)
                             AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
                             DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
                         },

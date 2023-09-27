@@ -8,12 +8,13 @@ namespace DotNetNuke.Common.Lists
     using System.ComponentModel;
 
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>Represents a collection of list entries.</summary>
     [Serializable]
-    [Obsolete("Obsoleted in 6.0.1.  Replaced by using generic collections of ListEntryInfo objects. Scheduled removal in v10.0.0.")]
+    [DnnDeprecated(6, 0, 1, "Replaced by using generic collections of ListEntryInfo objects", RemovalVersion = 10)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ListEntryInfoCollection : CollectionBase
+    public partial class ListEntryInfoCollection : CollectionBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListEntryInfoCollection));
         private readonly Hashtable keyIndexLookup = new Hashtable();

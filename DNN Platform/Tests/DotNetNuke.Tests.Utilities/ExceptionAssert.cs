@@ -7,10 +7,12 @@ namespace DotNetNuke.Tests.Utilities
     using System;
     using System.Reflection;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     using NUnit.Framework;
 
-    [Obsolete("Use Assert.Exception or ExpectedExceptionAttribute. Scheduled removal in v11.0.0.")]
-    public static class ExceptionAssert
+    [DnnDeprecated(7, 0, 0, "Use Assert.Exception or ExpectedExceptionAttribute", RemovalVersion = 11)]
+    public static partial class ExceptionAssert
     {
         // public static void Throws<TException>(Action act) where TException : Exception
         // {

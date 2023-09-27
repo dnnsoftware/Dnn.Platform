@@ -9,10 +9,11 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.ComponentModel;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead. Scheduled removal in v10.0.0.")]
-    public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>, IPortalAliasController
+    [DnnDeprecated(7, 3, 0, "Please use PortalAliasController instead", RemovalVersion = 10)]
+    public partial class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>, IPortalAliasController
     {
         /// <inheritdoc/>
         public int AddPortalAlias(PortalAliasInfo portalAlias)

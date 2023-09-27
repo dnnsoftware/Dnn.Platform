@@ -242,18 +242,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         public static bool CheckIfUserHasFolderWriteAccess(int folderId, IPortalSettings portalSettings)
         {
-            try
-            {
-                var checkFolder = folderId.Equals(-1)
-                                      ? ConvertFilePathToFolderInfo(portalSettings.HomeDirectoryMapPath, portalSettings)
-                                      : FolderManager.Instance.GetFolder(folderId);
+            return CheckIfUserHasFolderAccess(folderId, portalSettings, "WRITE");
+        }
 
-                return FolderPermissionController.HasFolderPermission(checkFolder.FolderPermissions, "WRITE");
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+        /// <summary>Checks if user has read access to the folder.</summary>
+        /// <param name="folderId">The folder id.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns>
+        /// Returns if the user has write access to the folder.
+        /// </returns>
+        public static bool CheckIfUserHasFolderReadAccess(int folderId, IPortalSettings portalSettings)
+        {
+            return CheckIfUserHasFolderAccess(folderId, portalSettings, "READ");
         }
 
         /// <summary>Converts a File Path to a Folder Info.</summary>
@@ -503,6 +503,22 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             return null;
+        }
+
+        private static bool CheckIfUserHasFolderAccess(int folderId, IPortalSettings portalSettings, string permissionKey)
+        {
+            try
+            {
+                var checkFolder = folderId.Equals(-1)
+                    ? ConvertFilePathToFolderInfo(portalSettings.HomeDirectoryMapPath, portalSettings)
+                    : FolderManager.Instance.GetFolder(folderId);
+
+                return FolderPermissionController.HasFolderPermission(checkFolder.FolderPermissions, permissionKey);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

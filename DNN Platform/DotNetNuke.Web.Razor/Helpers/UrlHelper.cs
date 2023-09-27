@@ -7,17 +7,17 @@ namespace DotNetNuke.Web.Razor.Helpers
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public class UrlHelper
+    [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+    public partial class UrlHelper
     {
         private readonly ModuleInstanceContext context;
 
         /// <summary>Initializes a new instance of the <see cref="UrlHelper"/> class.</summary>
         /// <param name="context">The module context.</param>
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UrlHelper(ModuleInstanceContext context)
         {
             this.context = context;
@@ -26,14 +26,14 @@ namespace DotNetNuke.Web.Razor.Helpers
 
         protected INavigationManager NavigationManager { get; }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public string NavigateToControl()
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public partial string NavigateToControl()
         {
             return this.NavigationManager.NavigateURL(this.context.TabId);
         }
 
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public string NavigateToControl(string controlKey)
+        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
+        public partial string NavigateToControl(string controlKey)
         {
             return this.NavigationManager.NavigateURL(this.context.TabId, controlKey, "mid=" + this.context.ModuleId);
         }

@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Gets the portal settings for the current portal.</summary>
         // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
-        [Obsolete("Deprecated in Dnn 9.8.1, scheduled removal in v11.")]
+        [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v11.0.0.")]
         internal PortalSettings HostPortalSettings
         {
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }

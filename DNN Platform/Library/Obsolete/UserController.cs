@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Users
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>The UserController class provides Business Layer methods for Users.</summary>
     /// <remarks>
@@ -34,8 +35,8 @@ namespace DotNetNuke.Entities.Users
     public partial class UserController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.2.2. This method has been replaced by UserController.MoveUserToPortal and UserControllar.CopyUserToPortal. Scheduled removal in v10.0.0.")]
-        public static void CopyUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser, bool deleteUser)
+        [DnnDeprecated(7, 2, 2, "This method has been replaced by UserController.MoveUserToPortal and UserController.CopyUserToPortal", RemovalVersion = 10)]
+        public static partial void CopyUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser, bool deleteUser)
         {
             if (deleteUser)
             {
@@ -48,8 +49,8 @@ namespace DotNetNuke.Entities.Users
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Replaced by UserController.Instance.GetCurrentUserInfo(). Scheduled removal in v10.0.0.")]
-        public static UserInfo GetCurrentUserInfo()
+        [DnnDeprecated(7, 3, 0, "Replaced by UserController.Instance.GetCurrentUserInfo()", RemovalVersion = 10)]
+        public static partial UserInfo GetCurrentUserInfo()
         {
             return GetCurrentUserInternal();
         }
@@ -62,15 +63,15 @@ namespace DotNetNuke.Entities.Users
         /// <param name="newPassword">The new password.</param>
         /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        [Obsolete("Deprecate in 7.4.2, Use ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage).. Scheduled removal in v10.0.0.")]
-        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        [DnnDeprecated(7, 4, 2, "Use ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)", RemovalVersion = 10)]
+        public static partial bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
         {
             return ChangePasswordByToken(portalid, username, newPassword, string.Empty, resetToken, out errorMessage);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.1, keep this method to compatible with upgrade wizard.. Scheduled removal in v10.0.0.")]
-        public static UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
+        [DnnDeprecated(6, 1, 0, "Keep this method to compatible with upgrade wizard", RemovalVersion = 10)]
+        public static partial UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
         {
             UserInfo objUserInfo = null;
             try

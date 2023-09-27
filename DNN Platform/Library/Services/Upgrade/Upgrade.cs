@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem;
@@ -50,7 +51,7 @@ namespace DotNetNuke.Services.Upgrade
     using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
 
     /// <summary>The Upgrade class provides Shared/Static methods to Upgrade/Install a DotNetNuke Application.</summary>
-    public class Upgrade
+    public partial class Upgrade
     {
         private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
@@ -485,8 +486,8 @@ namespace DotNetNuke.Services.Upgrade
 
         /// <summary>Obsolete, AddPortal manages the Installation of a new DotNetNuke Portal.</summary>
         /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
-        [Obsolete("Deprecated in DNN 9.3.0, will be removed in 11.0.0. Use the overloaded method with the 'superUser' parameter instead. Scheduled removal in v11.0.0.")]
-        public static int AddPortal(XmlNode node, bool status, int indent)
+        [DnnDeprecated(9, 3, 0, "Use the overloaded method with the 'superUser' parameter instead")]
+        public static partial int AddPortal(XmlNode node, bool status, int indent)
         {
             return AddPortal(node, status, indent, null);
         }

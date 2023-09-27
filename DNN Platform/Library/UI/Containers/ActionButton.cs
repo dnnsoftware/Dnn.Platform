@@ -3,9 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
-    using System;
-
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
@@ -14,8 +13,8 @@ namespace DotNetNuke.UI.Containers
     /// <remarks>
     ///   ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
-    [Obsolete("This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList.. Scheduled removal in v11.0.0.")]
-    public class ActionButton : ActionBase
+    [DnnDeprecated(7, 0, 0, "This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList", RemovalVersion = 11)]
+    public partial class ActionButton : ActionBase
     {
         private ActionButtonList buttonList;
 

@@ -3,14 +3,15 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
-    using System;
     using System.ComponentModel;
+
+    using DotNetNuke.Internal.SourceGenerators;
 
     public partial class PortalSettings
     {
-        [Obsolete("Deprecated in DNN 7.4. Replaced by PortalSettingsController.Instance().GetPortalAliasMappingMode. Scheduled removal in v10.0.0.")]
+        [DnnDeprecated(7, 4, 0, "Replaced by PortalSettingsController.Instance().GetPortalAliasMappingMode", RemovalVersion = 10)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static PortalAliasMapping GetPortalAliasMappingMode(int portalId)
+        public static partial PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             return PortalSettingsController.Instance().GetPortalAliasMappingMode(portalId);
         }

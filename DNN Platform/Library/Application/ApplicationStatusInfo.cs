@@ -19,10 +19,10 @@ namespace DotNetNuke.Application
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApplicationStatusInfo));
 
+        private readonly IApplicationInfo applicationInfo;
+
         private UpgradeStatus status = UpgradeStatus.Unknown;
         private string applicationMapPath;
-
-        private readonly IApplicationInfo applicationInfo;
 
         /// <summary>Initializes a new instance of the <see cref="ApplicationStatusInfo"/> class.</summary>
         /// <param name="applicationInfo">The application info.</param>

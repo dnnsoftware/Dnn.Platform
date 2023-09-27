@@ -420,7 +420,7 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 6.2.0. Use ProfileVisibility. Scheduled removal in v10.0.0.")]
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]

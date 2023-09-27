@@ -9,9 +9,11 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>This entity represents a Workflow Log.</summary>
-    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
-    public class ContentWorkflowLog
+    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+    public partial class ContentWorkflowLog
     {
         /// <summary>Gets or sets workflow log Id.</summary>
         public int WorkflowLogID { get; set; }

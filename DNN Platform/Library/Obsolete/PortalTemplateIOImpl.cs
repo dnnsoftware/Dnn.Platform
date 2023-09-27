@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
@@ -12,10 +11,11 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.Xml;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalTemplateIO. Scheduled removal in v10.0.0.")]
-    public class PortalTemplateIOImpl : IPortalTemplateIO
+    [DnnDeprecated(7, 3, 0, "Use PortalTemplateIO", RemovalVersion = 10)]
+    public partial class PortalTemplateIOImpl : IPortalTemplateIO
     {
         /// <inheritdoc/>
         public IEnumerable<string> EnumerateTemplates()

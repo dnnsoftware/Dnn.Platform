@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.Knockout);
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
-            jQuery.RegisterFileUpload(this.Page);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             this.AddIe7StyleSheet();
 
             base.OnInit(e);

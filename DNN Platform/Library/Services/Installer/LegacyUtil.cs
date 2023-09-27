@@ -15,16 +15,18 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The LegacyUtil class is a Utility class that provides helper methods to transfer
     /// legacy packages to Cambrian's Universal Installer based system.
     /// </summary>
-    public class LegacyUtil
+    public partial class LegacyUtil
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));
 
@@ -140,8 +142,8 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>Process legacy language package (that is based on manifest xml file).</summary>
-        [Obsolete("Module package required, functionality removed.  Will be removed in 10.0.0.")]
-        public static void ProcessLegacyLanguages()
+        [DnnDeprecated(9, 8, 0, "Module package required, functionality removed", RemovalVersion = 10)]
+        public static partial void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
             if (File.Exists(filePath))
@@ -265,8 +267,8 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>Process legacy module version 3 .dnn install file.</summary>
         /// <param name="desktopModule"></param>
-        [Obsolete("Version 3 package formats not supported, must use modern package format.  Will be removed in 10.0.0.")]
-        public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
+        [DnnDeprecated(9, 8, 0, "Version 3 package formats not supported, must use modern package format", RemovalVersion = 10)]
+        public static partial void ProcessLegacyModule(DesktopModuleInfo desktopModule)
         {
             // Get the Module folder
             string moduleFolder = Path.Combine(Globals.ApplicationMapPath, Path.Combine("DesktopModules", desktopModule.FolderName));

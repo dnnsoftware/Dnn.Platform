@@ -7,10 +7,11 @@ namespace DotNetNuke.Entities.Modules.Internal
     using System.ComponentModel;
 
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use ModuleController instead. Scheduled removal in v10.0.0.")]
-    public class TestableModuleController : ServiceLocator<IModuleController, TestableModuleController>, IModuleController
+    [DnnDeprecated(7, 3, 0, "Please use ModuleController instead", RemovalVersion = 10)]
+    public partial class TestableModuleController : ServiceLocator<IModuleController, TestableModuleController>, IModuleController
     {
         /// <inheritdoc/>
         public ModuleInfo GetModule(int moduleId, int tabId)

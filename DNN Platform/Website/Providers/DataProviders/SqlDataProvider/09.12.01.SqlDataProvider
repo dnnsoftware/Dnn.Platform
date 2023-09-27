@@ -1,0 +1,85 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Fix GetExtensionUrlProviders #5564 */
+/**************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetExtensionUrlProviders]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetExtensionUrlProviders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetExtensionUrlProviders] 
+	@PortalID	int 
+AS
+	SELECT 
+		p.*, 
+		pc.PortalID
+	FROM  {databaseOwner}{objectQualifier}ExtensionUrlProviderConfiguration pc 
+		RIGHT OUTER JOIN {databaseOwner}{objectQualifier}ExtensionUrlProviders p 
+			ON pc.ExtensionUrlProviderID = p.ExtensionUrlProviderID
+	WHERE pc.PortalID = @PortalID OR pc.PortalID IS Null
+
+	SELECT ExtensionUrlProviderID, 
+			PortalID, 
+			SettingName, 
+			SettingValue
+	FROM {databaseOwner}{objectQualifier}ExtensionUrlProviderSetting
+	WHERE PortalID = @PortalID
+
+	SELECT DISTINCT 
+			P.ExtensionUrlProviderID,
+			TM.TabID
+		FROM {databaseOwner}{objectQualifier}DesktopModules DM
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions MD ON DM.DesktopModuleID = MD.DesktopModuleID 
+			INNER JOIN {databaseOwner}{objectQualifier}Modules M ON MD.ModuleDefID = M.ModuleDefID 
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules TM ON M.ModuleID = TM.ModuleID 
+			INNER JOIN {databaseOwner}{objectQualifier}vw_ExtensionUrlProviders P ON DM.DesktopModuleID = P.DesktopModuleId
+		WHERE     (P.PortalID = @PortalID) OR (P.PortalID IS NULL)
+		  
+		UNION
+			SELECT  
+				P.ExtensionUrlProviderID,
+				PT.TabId
+			FROM    {databaseOwner}{objectQualifier}ExtensionUrlProviderTab PT
+				INNER JOIN {databaseOwner}{objectQualifier}ExtensionUrlProviders P ON P.ExtensionUrlProviderID = PT.ExtensionUrlProviderID
+			WHERE   (PT.IsActive = 1)
+GO
+
+
+/* Drop Objects No Longer Needed #5552 */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchWord]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportDocumentLibraryCategories]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportDocumentLibraryCategories]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportDocumentLibraryCategoryAssoc]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportDocumentLibraryCategoryAssoc]
+GO
+IF EXISTS (SELECT * FROM Sys.OBJECTS WHERE (name = N'{objectQualifier}FitsExtendedPropertyPermission') AND TYPE = 'FN')
+	DROP FUNCTION {databaseOwner}[{objectQualifier}FitsExtendedPropertyPermission]
+GO
+
+/* Fix Scheduler Frequency for Server Monitor #5634 */
+
+--Update the retry timelapse to 2 minutes, similar to other standard jobs
+UPDATE {databaseOwner}[{objectQualifier}Schedule]
+SET RetryTimeLapse = 2
+WHERE TypeFullName = 'DotNetNuke.Services.SystemHealth.WebServerMonitor, DotNetNuke'
+AND TimeLapse = 5 
+AND RetryTimeLapse = 10
+AND TimeLapseMeasurement = 'm'
+AND RetryTimeLapseMeasurement = 'm';
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

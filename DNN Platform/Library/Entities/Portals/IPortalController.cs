@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>Creates the portal.</summary>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>Creates the portal.</summary>
@@ -87,12 +87,12 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Get all the available portal templates grouped by culture.</summary>
         /// <returns>List of PortalTemplateInfo objects.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplates instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplates instead. Scheduled removal in v11.0.0.")]
         IList<PortalController.PortalTemplateInfo> GetAvailablePortalTemplates();
 
         /// <summary>Gets the current portal settings.</summary>
         /// <returns>portal settings.</returns>
-        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0. Use GetCurrentSettings instead.")]
+        [Obsolete("Deprecated in DotNetNuke 9.4.2. Use GetCurrentSettings instead. Scheduled removal in v11.0.0.")]
         PortalSettings GetCurrentPortalSettings();
 
         /// <summary>Gets the current portal settings.</summary>
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="templateFileName">The file name of the portal template.</param>
         /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
         /// <returns>A portal template.</returns>
-        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplate instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplate instead. Scheduled removal in v11.0.0.")]
         PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
         /// <summary>Verifies if there's enough space to upload a new file on the given portal.</summary>
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks>
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
-        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead. Scheduled removal in v11.0.0.")]
         void ParseTemplate(int portalId, PortalController.PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
         /// <summary>Processes the resource file for the template file selected.</summary>
@@ -196,7 +196,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
 
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 
         /// <summary>Adds or Updates or Deletes a portal setting value.</summary>

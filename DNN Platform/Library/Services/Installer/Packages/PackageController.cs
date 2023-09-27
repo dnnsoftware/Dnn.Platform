@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Installer.Dependencies;
     using DotNetNuke.Services.Localization;
@@ -25,7 +26,7 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.UI.Skins;
 
     /// <summary>The PackageController class provides the business class for the packages.</summary>
-    public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
+    public partial class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
@@ -259,93 +260,93 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static int AddPackage(PackageInfo package, bool includeDetail)
+        [DnnDeprecated(7, 2, 0, "Replaced by SaveExtensionPackage(PackageInfo package)", RemovalVersion = 10)]
+        public static partial int AddPackage(PackageInfo package, bool includeDetail)
         {
             Instance.SaveExtensionPackage(package);
             return package.PackageID;
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static void DeletePackage(PackageInfo package)
+        [DnnDeprecated(7, 2, 0, "Replaced by DeleteExtensionPackage(PackageInfo package)", RemovalVersion = 10)]
+        public static partial void DeletePackage(PackageInfo package)
         {
             Instance.DeleteExtensionPackage(package);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static void DeletePackage(int packageID)
+        [DnnDeprecated(7, 2, 0, "Replaced by DeleteExtensionPackage(PackageInfo package)", RemovalVersion = 10)]
+        public static partial void DeletePackage(int packageID)
         {
             Instance.DeleteExtensionPackage(Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID));
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static PackageInfo GetPackage(int packageID)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial PackageInfo GetPackage(int packageID)
         {
             return Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static PackageInfo GetPackage(int packageID, bool ignoreCache)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial PackageInfo GetPackage(int packageID, bool ignoreCache)
         {
             return Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static PackageInfo GetPackageByName(string name)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial PackageInfo GetPackageByName(string name)
         {
             return Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == name);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static PackageInfo GetPackageByName(int portalId, string name)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial PackageInfo GetPackageByName(int portalId, string name)
         {
             return Instance.GetExtensionPackage(portalId, p => p.Name == name);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static List<PackageInfo> GetPackages()
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial List<PackageInfo> GetPackages()
         {
             return Instance.GetExtensionPackages(Null.NullInteger).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static List<PackageInfo> GetPackages(int portalId)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial List<PackageInfo> GetPackages(int portalId)
         {
             return Instance.GetExtensionPackages(portalId).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static List<PackageInfo> GetPackagesByType(string type)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial List<PackageInfo> GetPackagesByType(string type)
         {
             return Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static List<PackageInfo> GetPackagesByType(int portalId, string type)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)", RemovalVersion = 10)]
+        public static partial List<PackageInfo> GetPackagesByType(int portalId, string type)
         {
             return Instance.GetExtensionPackages(portalId, p => p.PackageType.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackageType(Func<PackageType, bool> predicate). Scheduled removal in v10.0.0.")]
-        public static PackageType GetPackageType(string type)
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackageType(Func<PackageType, bool> predicate)", RemovalVersion = 10)]
+        public static partial PackageType GetPackageType(string type)
         {
             return Instance.GetExtensionPackageType(t => t.PackageType == type);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackageTypes(). Scheduled removal in v10.0.0.")]
-        public static List<PackageType> GetPackageTypes()
+        [DnnDeprecated(7, 2, 0, "Replaced by GetExtensionPackageTypes()", RemovalVersion = 10)]
+        public static partial List<PackageType> GetPackageTypes()
         {
             return Instance.GetExtensionPackageTypes().ToList();
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static void SavePackage(PackageInfo package)
+        [DnnDeprecated(7, 2, 0, "Replaced by SaveExtensionPackage(PackageInfo package)", RemovalVersion = 10)]
+        public static partial void SavePackage(PackageInfo package)
         {
             Instance.SaveExtensionPackage(package);
         }
 
-        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static void UpdatePackage(PackageInfo package)
+        [DnnDeprecated(7, 2, 0, "Replaced by SaveExtensionPackage(PackageInfo package)", RemovalVersion = 10)]
+        public static partial void UpdatePackage(PackageInfo package)
         {
             Instance.SaveExtensionPackage(package);
         }

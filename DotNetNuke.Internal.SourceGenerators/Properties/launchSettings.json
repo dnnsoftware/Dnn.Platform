@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "DotNetNuke.Internal.SourceGenerators": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Dnn.PersonaBar.Extensions.csproj"
+    }
+  }
+}

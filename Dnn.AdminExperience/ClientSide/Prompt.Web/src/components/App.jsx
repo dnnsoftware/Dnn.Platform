@@ -206,6 +206,7 @@ App.propTypes = {
     options: PropTypes.array,
     resultHtml: PropTypes.string,
     error: PropTypes.string,
+    dispatch: PropTypes.func,
 };
 
 function mapStateToProps(state) {

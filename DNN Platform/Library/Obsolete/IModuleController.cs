@@ -4,16 +4,17 @@
 
 namespace DotNetNuke.Entities.Modules.Internal
 {
-    using System;
     using System.ComponentModel;
+
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Modules instead. Scheduled removal in v10.0.0.")]
-    public interface IModuleController
+    [DnnDeprecated(7, 3, 0, "Please use version in DotNetNuke.Entities.Modules instead", RemovalVersion = 10)]
+    public partial interface IModuleController
     {
         /// <summary>Gets the module.</summary>
         /// <param name="moduleId">The module ID.</param>
