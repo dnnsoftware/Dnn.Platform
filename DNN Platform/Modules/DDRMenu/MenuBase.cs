@@ -222,7 +222,6 @@ namespace DotNetNuke.Web.DDRMenu
                                     return false;
                                 }
 
-
                                 var tab = TabController.Instance.GetTab(n.TabId, Null.NullInteger, false);
                                 foreach (TabPermissionInfo perm in tab.TabPermissions)
                                 {
