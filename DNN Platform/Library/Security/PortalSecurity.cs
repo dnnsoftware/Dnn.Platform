@@ -1029,7 +1029,7 @@ namespace DotNetNuke.Security
             return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
         }
 
-        /// <summary> This function removes control characters from the string.</summary>
+        /// <summary>This function removes control characters from the string.</summary>
         /// <param name="str">This is the string to be filtered.</param>
         /// <returns>Filtered UserInput.</returns>
         /// <remarks>This is a private function that is used internally by the <see cref="InputFilter"/> function.</remarks>
