@@ -38,6 +38,7 @@ namespace DotNetNuke.Security
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex ControlCharactersRegex = new Regex(@"\p{C}+", RegexOptions.Compiled);
+        private static readonly Regex ControlCharacterToWhitespaceRegex = new Regex(@"\r\n|\r|\n|\t", RegexOptions.Compiled);
 
         private static readonly Regex[] RxListStrings = new[]
         {
@@ -114,6 +115,9 @@ namespace DotNetNuke.Security
             /// <summary>
             /// Removes all unicode control characters (like \0, \t, \n, \r, etc.) from the string.
             /// </summary>
+            /// <remarks>
+            /// The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.
+            /// </remarks>
             NoControlCharacters = 64,
         }
 
@@ -1035,7 +1039,7 @@ namespace DotNetNuke.Security
         /// <remarks>This is a private function that is used internally by the <see cref="InputFilter"/> function.</remarks>
         private static string FormatRemoveControlCharacters(string str)
         {
-            return ControlCharactersRegex.Replace(str.Replace('\t', ' '), string.Empty);
+            return ControlCharactersRegex.Replace(ControlCharacterToWhitespaceRegex.Replace(str, " "), string.Empty);
         }
 
         /// <summary>This function determines if the Input string contains any markup.</summary>

@@ -132,7 +132,11 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
         [TestCase("O'\0Example", "O'Example",
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
-        [TestCase("My\nUsername", "MyUsername",
+        [TestCase("My\r\nUsername", "My Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("My\rUsername", "My Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("My\nUsername", "My Username",
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
         [TestCase("My\tUsername", "My Username",
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
