@@ -136,6 +136,8 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
         [TestCase("My\tUsername", "My Username",
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("mail@example.com", "mail@example.com",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
 
         public void Control_Character_Should_Not_Be_Allowed(string html, string expectedOutput,
             DotNetNuke.Security.PortalSecurity.FilterFlag markup)
