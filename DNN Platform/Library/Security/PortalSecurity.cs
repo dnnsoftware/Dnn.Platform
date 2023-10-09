@@ -37,6 +37,7 @@ namespace DotNetNuke.Security
 
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ControlCharactersRegex = new Regex(@"\p{C}+", RegexOptions.Compiled);
 
         private static readonly Regex[] RxListStrings = new[]
         {
@@ -109,6 +110,11 @@ namespace DotNetNuke.Security
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Individual string replacement should be completed. Scheduled for removal in v11.0.0.")]
             NoAngleBrackets = 16,
             NoProfanity = 32,
+
+            /// <summary>
+            /// Removes all unicode control characters (like \0, \t, \n, \r, etc.) from the string.
+            /// </summary>
+            NoControlCharacters = 64,
         }
 
         /// <summary>Determines the configuration source for the remove and replace functions.</summary>
@@ -471,6 +477,11 @@ namespace DotNetNuke.Security
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
                 tempInput = this.Replace(tempInput, ConfigType.ListController, "ProfanityFilter", FilterScope.SystemAndPortalList);
+            }
+
+            if ((filterType & FilterFlag.NoControlCharacters) == FilterFlag.NoControlCharacters)
+            {
+                tempInput = FormatRemoveControlCharacters(tempInput);
             }
 
             return tempInput;
@@ -1016,6 +1027,15 @@ namespace DotNetNuke.Security
         {
             // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
             return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
+        }
+
+        /// <summary> This function removes control characters from the string.</summary>
+        /// <param name="str">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>This is a private function that is used internally by the <see cref="InputFilter"/> function.</remarks>
+        private static string FormatRemoveControlCharacters(string str)
+        {
+            return ControlCharactersRegex.Replace(str.Replace('\t', ' '), string.Empty);
         }
 
         /// <summary>This function determines if the Input string contains any markup.</summary>
