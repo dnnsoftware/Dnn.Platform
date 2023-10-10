@@ -386,23 +386,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                 if (
                     filteredSettings.Any(
-                        setting => setting.Name.Equals($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}")))
-                {
-                    var settingValue =
-                        filteredSettings.FirstOrDefault(
-                            s => s.Name.Equals($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}")).Value;
-
-                    if (!string.IsNullOrEmpty(settingValue))
-                    {
-                        if (bool.TryParse(settingValue, out var bResult))
-                        {
-                            currentSettings.BrowserAllowFollowFolderPerms = bResult;
-                        }
-                    }
-                }
-
-                if (
-                    filteredSettings.Any(
                         setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))))
                 {
                     var settingValue =
@@ -436,6 +419,26 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                 roles.Add(sRoleName);
                             }
                         }
+                    }
+                }
+            }
+
+            // check the BrowserAllowFollowFolderPerms setting before the browser mode, because it depends on it
+            // skip if the setting already is true, to let the host setting go before the site level setting
+            if (currentSettings.BrowserAllowFollowFolderPerms == false &&
+                filteredSettings.Any(
+                    setting => setting.Name.Equals($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}")))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals($"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}")).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    bool bResult;
+                    if (bool.TryParse(settingValue, out bResult))
+                    {
+                        currentSettings.BrowserAllowFollowFolderPerms = bResult;
                     }
                 }
             }
