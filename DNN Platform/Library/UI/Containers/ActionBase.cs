@@ -5,6 +5,8 @@ namespace DotNetNuke.UI.Containers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Logging;
@@ -126,13 +128,19 @@ namespace DotNetNuke.UI.Containers
         /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
+            if (this.ModuleControl != null)
+            {
+                // We need to defer accesing this.Actions as it could only be accesible after the WebForms async point.
+                this.Page.RegisterAsyncTask(new PageAsyncTask(this.LoadActionsAsync));
+            }
+
+            base.OnLoad(e);
+        }
+
+        private Task LoadActionsAsync(CancellationToken cancellationToken)
+        {
             try
             {
-                if (this.ModuleControl == null)
-                {
-                    return;
-                }
-
                 this.ActionRoot.Actions.AddRange(this.Actions);
             }
             catch (Exception exc)
@@ -140,7 +148,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-            base.OnLoad(e);
+            return Task.CompletedTask;
         }
     }
 }

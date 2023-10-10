@@ -6,6 +6,8 @@ namespace DotNetNuke.Web.Mvc
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -72,6 +74,26 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
+        protected async Task ExecuteModuleAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+                var moduleExecutionEngine = this.GetModuleExecutionEngine();
+
+                this.result = await moduleExecutionEngine.ExecuteModuleAsync(this.GetModuleRequestContext(httpContext), cancellationToken);
+
+                this.ModuleActions = this.LoadActions(this.result);
+
+                httpContext.SetModuleRequestResult(this.result);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
@@ -79,7 +101,7 @@ namespace DotNetNuke.Web.Mvc
 
             if (this.ExecuteModuleImmediately)
             {
-                this.ExecuteModule();
+                this.Page.RegisterAsyncTask(new PageAsyncTask(this.ExecuteModuleAsync));
             }
         }
 
@@ -87,11 +109,16 @@ namespace DotNetNuke.Web.Mvc
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+            this.Page.RegisterAsyncTask(new PageAsyncTask(this.OnPreRenderAsync));
+        }
+
+        private Task OnPreRenderAsync(CancellationToken cancellationToken)
+        {
             try
             {
                 if (this.result == null)
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 var mvcString = RenderModule(this.result);
@@ -104,6 +131,8 @@ namespace DotNetNuke.Web.Mvc
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
+            return Task.CompletedTask;
         }
 
         private static ModuleApplication GetModuleApplication(
