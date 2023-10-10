@@ -7,8 +7,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using System.Web.Mvc.Async;
 
-    public class ResultCapturingActionInvoker : ControllerActionInvoker
+    public class ResultCapturingActionInvoker : AsyncControllerActionInvoker
     {
         public ActionResult ResultOfLastInvoke { get; set; }
 
@@ -16,6 +17,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
         {
             var context = base.InvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters);
+            this.ResultOfLastInvoke = context.Result;
+            return context;
+        }
+
+        protected override ActionExecutedContext EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+        {
+            var context = base.EndInvokeActionMethodWithFilters(asyncResult);
             this.ResultOfLastInvoke = context.Result;
             return context;
         }
