@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
@@ -14,7 +15,7 @@ namespace DotNetNuke.Security.Permissions
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PermissionInfoBase
     /// <summary>PermissionInfoBase provides a base class for PermissionInfo classes.</summary>
-    /// <remarks>All Permission calsses have  a common set of properties
+    /// <remarks>All Permission classes have  a common set of properties
     ///   - AllowAccess
     ///   - RoleID
     ///   - RoleName
@@ -25,7 +26,7 @@ namespace DotNetNuke.Security.Permissions
     /// and these are implemented in this base class.
     /// </remarks>
     [Serializable]
-    public abstract class PermissionInfoBase : PermissionInfo
+    public abstract class PermissionInfoBase : PermissionInfo, IPermissionInfo
     {
         private bool allowAccess;
         private string displayName;
@@ -45,8 +46,7 @@ namespace DotNetNuke.Security.Permissions
             this.displayName = Null.NullString;
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets  aflag that indicates whether the user or role has permission.</summary>
-        /// <returns>A Boolean.</returns>
+        /// <inheritdoc />
         [XmlElement("allowaccess")]
         public bool AllowAccess
         {
@@ -61,8 +61,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>Gets or sets the User's DisplayName.</summary>
-        /// <returns>A String.</returns>
+        /// <inheritdoc />
         [XmlElement("displayname")]
         public string DisplayName
         {
@@ -77,8 +76,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>Gets or sets the Role ID.</summary>
-        /// <returns>An Integer.</returns>
+        /// <inheritdoc cref="IPermissionInfo.RoleId" />
         [XmlElement("roleid")]
         public int RoleID
         {
@@ -93,8 +91,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>Gets or sets the Role Name.</summary>
-        /// <returns>A String.</returns>
+        /// <inheritdoc />
         [XmlElement("rolename")]
         public string RoleName
         {
@@ -109,8 +106,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>Gets or sets the User ID.</summary>
-        /// <returns>An Integer.</returns>
+        /// <inheritdoc cref="IPermissionInfo.UserId" />
         [XmlElement("userid")]
         public int UserID
         {
@@ -125,8 +121,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>Gets or sets the User Name.</summary>
-        /// <returns>A String.</returns>
+        /// <inheritdoc />
         [XmlElement("username")]
         public string Username
         {
@@ -139,6 +134,20 @@ namespace DotNetNuke.Security.Permissions
             {
                 this.username = value;
             }
+        }
+
+        /// <inheritdoc />
+        int IPermissionInfo.RoleId
+        {
+            get => this.RoleID;
+            set => this.RoleID = value;
+        }
+
+        /// <inheritdoc />
+        int IPermissionInfo.UserId
+        {
+            get => this.UserID;
+            set => this.UserID = value;
         }
 
         /// <summary>FillInternal fills the PermissionInfoBase from a Data Reader.</summary>

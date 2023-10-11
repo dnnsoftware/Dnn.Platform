@@ -3,27 +3,35 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.Modules.ResourceManager.Services.Dto
 {
+    using System;
     using System.Linq;
+    using System.Web;
 
     using Dnn.Modules.ResourceManager.Components;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides information about folder permissions.</summary>
     public class FolderPermissions : Permissions
     {
         /// <summary>Initializes a new instance of the <see cref="FolderPermissions"/> class.</summary>
         public FolderPermissions()
-            : base(false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderPermissions"/> class.</summary>
         /// <param name="needDefinitions">A vlaue indicating whether the permissions definitions need to be loaded.</param>
-        public FolderPermissions(bool needDefinitions)
-            : base(needDefinitions)
+        /// <param name="permissionService">The permission service.</param>
+        public FolderPermissions(bool needDefinitions, IPermissionService permissionService)
+            : base(needDefinitions, permissionService)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForFolders(PortalSettings.Current.PortalId))
             {
@@ -34,8 +42,9 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
         /// <summary>Initializes a new instance of the <see cref="FolderPermissions"/> class.</summary>
         /// <param name="needDefinitions">A value indicating whether the permission definitions need to be loaded.</param>
         /// <param name="permissions">A colleciton of folder permissions.</param>
-        public FolderPermissions(bool needDefinitions, FolderPermissionCollection permissions)
-            : base(needDefinitions)
+        /// <param name="permissionService">The permission service.</param>
+        public FolderPermissions(bool needDefinitions, FolderPermissionCollection permissions, IPermissionService permissionService)
+            : base(needDefinitions, permissionService)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForFolders(PortalSettings.Current.PortalId))
             {
@@ -63,13 +72,13 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
         }
 
         /// <inheritdoc/>
-        protected override void LoadPermissionDefinitions()
+        protected override void LoadPermissionDefinitions(IPermissionService permissionService)
         {
-            foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+            foreach (var permission in permissionService.GetDefinitionsByFolder())
             {
                 this.PermissionDefinitions.Add(new Permission
                 {
-                    PermissionId = permission.PermissionID,
+                    PermissionId = permission.PermissionId,
                     PermissionName = permission.PermissionName,
                     FullControl = PermissionHelper.IsFullControl(permission),
                     View = PermissionHelper.IsViewPermission(permission),

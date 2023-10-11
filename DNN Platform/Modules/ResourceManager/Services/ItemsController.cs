@@ -20,6 +20,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
@@ -45,14 +46,20 @@ namespace Dnn.Modules.ResourceManager.Services
         private readonly IModuleControlPipeline modulePipeline;
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly Hashtable mappedPathsSupported = new Hashtable();
+        private readonly IPermissionService permissionService;
 
         /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
         /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
         /// <param name="applicationStatusInfo">The application status info.</param>
-        public ItemsController(IModuleControlPipeline modulePipeline, IApplicationStatusInfo applicationStatusInfo)
+        /// <param name="permissionService">The permission service.</param>
+        public ItemsController(
+            IModuleControlPipeline modulePipeline,
+            IApplicationStatusInfo applicationStatusInfo,
+            IPermissionService permissionService)
         {
             this.modulePipeline = modulePipeline;
             this.applicationStatusInfo = applicationStatusInfo;
+            this.permissionService = permissionService;
         }
 
         /// <summary>Gets the content for a specific folder.</summary>
@@ -442,7 +449,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 lastModifiedBy = lastModifiedBy != null ? lastModifiedBy.Username : string.Empty,
                 type = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).MappingName,
                 isVersioned = folder.IsVersioned,
-                permissions = new FolderPermissions(true, folder.FolderPermissions),
+                permissions = new FolderPermissions(true, folder.FolderPermissions, this.permissionService),
             });
         }
 

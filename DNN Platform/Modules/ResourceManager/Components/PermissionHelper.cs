@@ -10,6 +10,7 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using Dnn.Modules.ResourceManager.Services.Dto;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -121,18 +122,30 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
+        /// <inheritdoc cref="IsFullControl(IPermissionDefinitionInfo)"/>
+        public static bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return IsFullControl((IPermissionInfo)permissionInfo);
+        }
+
         /// <summary>Check if the permission is for full control.</summary>
         /// <param name="permissionInfo">The <see cref="PermissionInfo"/> to check.</param>
         /// <returns>A value indicating whether this permission is for full control.</returns>
-        public static bool IsFullControl(PermissionInfo permissionInfo)
+        public static bool IsFullControl(IPermissionDefinitionInfo permissionInfo)
         {
             return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
+        }
+
+        /// <inheritdoc cref="IsViewPermission(IPermissionDefinitionInfo)"/>
+        public static bool IsViewPermission(PermissionInfo permissionInfo)
+        {
+            return IsViewPermission((IPermissionDefinitionInfo)permissionInfo);
         }
 
         /// <summary>Checks if the permission is for view.</summary>
         /// <param name="permissionInfo">The <see cref="PermissionInfo"/> to check.</param>
         /// <returns>A value indicating whether the permission is for view.</returns>
-        public static bool IsViewPermission(PermissionInfo permissionInfo)
+        public static bool IsViewPermission(IPermissionDefinitionInfo permissionInfo)
         {
             return permissionInfo.PermissionKey == "VIEW";
         }

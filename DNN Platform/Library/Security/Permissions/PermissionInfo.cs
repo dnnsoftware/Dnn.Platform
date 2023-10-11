@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using Newtonsoft.Json;
@@ -16,34 +17,47 @@ namespace DotNetNuke.Security.Permissions
     /// Class    : PermissionInfo
     /// <summary>PermissionInfo provides the Entity Layer for Permissions.</summary>
     [Serializable]
-    public class PermissionInfo : BaseEntityInfo
+    public class PermissionInfo : BaseEntityInfo, IPermissionDefinitionInfo
     {
-        /// <summary>Gets or sets the Mdoule Definition ID.</summary>
-        /// <returns>An Integer.</returns>
+        /// <inheritdoc cref="IPermissionDefinitionInfo.ModuleDefId" />
         [XmlIgnore]
         [JsonIgnore]
         public int ModuleDefID { get; set; }
 
-        /// <summary>Gets or sets the Permission Code.</summary>
-        /// <returns>A String.</returns>
+        /// <inheritdoc />
         [XmlElement("permissioncode")]
         public string PermissionCode { get; set; }
 
-        /// <summary>Gets or sets the Permission ID.</summary>
-        /// <returns>An Integer.</returns>
+        /// <inheritdoc cref="IPermissionDefinitionInfo.PermissionID" />
         [XmlElement("permissionid")]
         public int PermissionID { get; set; }
 
-        /// <summary>Gets or sets the Permission Key.</summary>
-        /// <returns>A String.</returns>
+        /// <inheritdoc />
         [XmlElement("permissionkey")]
         public string PermissionKey { get; set; }
 
-        /// <summary>Gets or sets the Permission Name.</summary>
-        /// <returns>A String.</returns>
+        /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
         public string PermissionName { get; set; }
+
+        /// <inheritdoc />
+        [XmlIgnore]
+        [JsonIgnore]
+        int IPermissionDefinitionInfo.ModuleDefId
+        {
+            get => this.ModuleDefID;
+            set => this.ModuleDefID = value;
+        }
+
+        /// <inheritdoc />
+        [XmlIgnore]
+        [JsonIgnore]
+        int IPermissionDefinitionInfo.PermissionId
+        {
+            get => this.PermissionID;
+            set => this.PermissionID = value;
+        }
 
         /// <summary>FillInternal fills a PermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>

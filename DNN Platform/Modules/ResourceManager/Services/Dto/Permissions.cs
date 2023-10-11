@@ -3,10 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.Modules.ResourceManager.Services.Dto
 {
+    using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     using Dnn.Modules.ResourceManager.Components;
+
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Security.Permissions;
 
     /// <summary>Represents a permissions set.</summary>
     [DataContract]
@@ -14,21 +18,21 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
     {
         /// <summary>Initializes a new instance of the <see cref="Permissions"/> class.</summary>
         protected Permissions()
-            : this(false)
         {
+            this.RolePermissions = new List<RolePermission>();
+            this.UserPermissions = new List<UserPermission>();
         }
 
         /// <summary>Initializes a new instance of the <see cref="Permissions"/> class.</summary>
         /// <param name="needDefinitions">A value indicating whether the permissions need to be loaded.</param>
-        protected Permissions(bool needDefinitions)
+        /// <param name="permissionService">The permission service.</param>
+        protected Permissions(bool needDefinitions, IPermissionService permissionService)
+            : this()
         {
-            this.RolePermissions = new List<RolePermission>();
-            this.UserPermissions = new List<UserPermission>();
-
             if (needDefinitions)
             {
                 this.PermissionDefinitions = new List<Permission>();
-                this.LoadPermissionDefinitions();
+                this.LoadPermissionDefinitions(permissionService);
                 this.EnsureDefaultRoles();
             }
         }
@@ -46,6 +50,7 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
         public IList<UserPermission> UserPermissions { get; set; }
 
         /// <summary>Loads the permissions definitions.</summary>
-        protected abstract void LoadPermissionDefinitions();
+        /// <param name="permissionService">The permission service.</param>
+        protected abstract void LoadPermissionDefinitions(IPermissionService permissionService);
     }
 }
