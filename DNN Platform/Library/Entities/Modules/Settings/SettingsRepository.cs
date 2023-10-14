@@ -50,13 +50,13 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <inheritdoc/>
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.PortalID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.PortalID, moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
         /// <inheritdoc/>
         public T GetSettings(int portalId)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(portalId), 20, CacheItemPriority.AboveNormal, null, portalId), this.Load, false);
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(portalId, -1), 20, CacheItemPriority.AboveNormal, null, portalId), this.Load, false);
         }
 
         /// <inheritdoc/>
@@ -164,7 +164,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                 }
             });
-            DataCache.SetCache(this.CacheKey(portalId), settings);
+            DataCache.SetCache(this.CacheKey(portalId, moduleContext?.TabModuleID ?? -1), settings);
         }
 
         private T Load(CacheItemArgs args)
@@ -220,7 +220,12 @@ namespace DotNetNuke.Entities.Modules.Settings
             return settings;
         }
 
-        private string CacheKey(int id) => $"Settings{this.MappingCacheKey}_{id}";
+        /// <summary>Gets the cache key for the given portal and tab module.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabModuleId">The tab module ID.</param>
+        /// <remarks>When <paramref name="tabModuleId"/> is -1, the cache key is for portal settings instead.</remarks>
+        /// <returns>The cache key.</returns>
+        private string CacheKey(int portalId, int tabModuleId) => $"Settings{this.MappingCacheKey}_{portalId}_{tabModuleId}";
 
         /// <summary>Deserializes the property.</summary>
         /// <param name="settings">The settings.</param>
