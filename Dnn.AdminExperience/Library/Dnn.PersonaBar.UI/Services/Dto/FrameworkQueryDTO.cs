@@ -8,6 +8,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
     using System.Runtime.Serialization;
 
     [DataContract]
+    [Serializable]
     public class FrameworkQueryDTO
     {
         [DataMember(Name = "UpToDate")]

@@ -192,7 +192,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         this.portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        "DNNCKH#",
+                        SettingConstants.HostKey,
                         portalRoles);
                     break;
                 case SettingsMode.Portal:
@@ -200,7 +200,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         this.portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        $"DNNCKP#{portalId}#",
+                        SettingConstants.PortalKey(portalId),
                         portalRoles);
                     break;
                 case SettingsMode.Page:
