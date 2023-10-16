@@ -166,11 +166,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             });
 
             DataCache.ClearCache(this.CacheKeyPortalPrefix(portalId));
-            DataCache.SetCache(this.CacheKey(portalId, -1), settings);
-            if (moduleContext is not null)
-            {
-                DataCache.SetCache(this.CacheKey(portalId, moduleContext.TabModuleID), settings);
-            }
+            DataCache.SetCache(this.CacheKey(portalId, moduleContext?.TabModuleID ?? -1), settings);
         }
 
         private T Load(CacheItemArgs args)
