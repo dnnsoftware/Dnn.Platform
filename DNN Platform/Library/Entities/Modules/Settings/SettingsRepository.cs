@@ -164,7 +164,13 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                 }
             });
-            DataCache.SetCache(this.CacheKey(portalId, moduleContext?.TabModuleID ?? -1), settings);
+
+            DataCache.ClearCache(this.CacheKeyPortalPrefix(portalId));
+            DataCache.SetCache(this.CacheKey(portalId, -1), settings);
+            if (moduleContext is not null)
+            {
+                DataCache.SetCache(this.CacheKey(portalId, moduleContext.TabModuleID), settings);
+            }
         }
 
         private T Load(CacheItemArgs args)
@@ -225,7 +231,12 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <param name="tabModuleId">The tab module ID.</param>
         /// <remarks>When <paramref name="tabModuleId"/> is -1, the cache key is for portal settings instead.</remarks>
         /// <returns>The cache key.</returns>
-        private string CacheKey(int portalId, int tabModuleId) => $"Settings{this.MappingCacheKey}_{portalId}_{tabModuleId}";
+        private string CacheKey(int portalId, int tabModuleId) => $"{this.CacheKeyPortalPrefix(portalId)}{tabModuleId}";
+
+        /// <summary>Gets the prefix of the cache key for the given portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>The cache key prefix.</returns>
+        private string CacheKeyPortalPrefix(int portalId) => $"Settings{this.MappingCacheKey}_{portalId}_";
 
         /// <summary>Deserializes the property.</summary>
         /// <param name="settings">The settings.</param>
