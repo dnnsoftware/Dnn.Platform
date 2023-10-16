@@ -1393,9 +1393,9 @@ namespace DotNetNuke.Entities.Tabs
                     // correctly, this may occurred when install is set up in web farm.
                     tab = CBO.FillObject<TabInfo>(this.dataProvider.GetTab(tabId));
 
-                    // if tab is not null means that the cache doesn't update correctly, we need clear the cache
-                    // and let it rebuild cache when request next time.
-                    if (tab != null)
+                    // if tab is not null, and it is for "portalId", that means that the cache doesn't update correctly,
+                    // we need to clear the cache and let it rebuild cache when request next time.
+                    if (tab != null && tab.PortalID == portalId)
                     {
                         this.ClearCache(tab.PortalID);
                     }

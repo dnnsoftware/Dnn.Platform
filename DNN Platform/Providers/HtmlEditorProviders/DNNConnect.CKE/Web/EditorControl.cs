@@ -928,10 +928,10 @@ namespace DNNConnect.CKEditorProvider.Web
             // Set Current Mode to Default
             this.currentEditorSettings.SettingMode = SettingsMode.Default;
 
-            const string hostKey = "DNNCKH#";
-            var portalKey = string.Format("DNNCKP#{0}#", this.portalSettings.PortalId);
-            var pageKey = string.Format("DNNCKT#{0}#", this.portalSettings.ActiveTab.TabID);
-            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", this.parentModulId, this.ID);
+            var hostKey = SettingConstants.HostKey;
+            var portalKey = SettingConstants.PortalKey(this.portalSettings.PortalId);
+            var pageKey = $"DNNCKT#{this.portalSettings.ActiveTab.TabID}#";
+            var moduleKey = $"DNNCKMI#{this.parentModulId}#INS#{this.ID}#";
 
             // Load Host Settings ?!
             if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))

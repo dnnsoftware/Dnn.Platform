@@ -4,9 +4,11 @@
 
 namespace Dnn.PersonaBar.UI.Services.DTO
 {
+    using System;
     using System.Runtime.Serialization;
 
     [DataContract]
+    [Serializable]
     public class SuggestionDto
     {
         [DataMember(Name = "value")]

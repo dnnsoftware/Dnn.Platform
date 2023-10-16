@@ -4314,10 +4314,14 @@
         });
     };
 
+    function registerEvents() {
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(saveRgDataDivScrollTop);
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(dnnInitCustomisedCtrls);
+    }
+
     window.__rgDataDivScrollTopPersistArray = [];
     $(document).ajaxComplete(dnnInitCustomisedCtrls);
-    Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(saveRgDataDivScrollTop);
-    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(dnnInitCustomisedCtrls);
     $(dnnInitCustomisedCtrls);
+    $(registerEvents);
     handlerSendVerificationMailLink();
 })(jQuery);

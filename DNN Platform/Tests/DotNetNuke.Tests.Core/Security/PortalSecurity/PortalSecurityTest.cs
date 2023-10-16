@@ -127,5 +127,33 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             // Assert
             Assert.AreEqual(filterOutput, expectedOutput);
         }
+
+        [TestCase("User\0name", "Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("O'\0Example", "O'Example",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("My\r\nUsername", "My Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("My\rUsername", "My Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("My\nUsername", "My Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("My\tUsername", "My Username",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+        [TestCase("mail@example.com", "mail@example.com",
+            DotNetNuke.Security.PortalSecurity.FilterFlag.NoControlCharacters)]
+
+        public void Control_Character_Should_Not_Be_Allowed(string html, string expectedOutput,
+            DotNetNuke.Security.PortalSecurity.FilterFlag markup)
+        {
+            // Arrange
+            var portalSecurity = new DotNetNuke.Security.PortalSecurity();
+
+            // Act
+            var filterOutput = portalSecurity.InputFilter(html, markup);
+
+            // Assert
+            Assert.AreEqual(filterOutput, expectedOutput);
+        }
     }
 }

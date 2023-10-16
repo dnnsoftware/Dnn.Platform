@@ -769,7 +769,7 @@ namespace DNNConnect.CKEditorProvider
             // get the all-sites settings to be able to to show overridden values
             // when we're not in all-sites mode
             var allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
-                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), "DNNCKP#-1#", new List<RoleInfo>());
+                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), SettingConstants.HostKey, new List<RoleInfo>());
 
             this.HostBrowserRootDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
             this.HostBrowserRootDir.Text = this.HostBrowserRootDir.ReadOnly ? allPortalsSettings.HostBrowserRootDir : importedSettings.HostBrowserRootDir;
@@ -1839,8 +1839,8 @@ namespace DNNConnect.CKEditorProvider
             var settingsDictionary = EditorController.GetEditorHostSettings();
             var portalRoles = RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID);
 
-            var hostKey = "DNNCKH#";
-            var portalKey = $"DNNCKP#{this.portalSettings?.PortalId ?? Host.HostPortalID}#";
+            var hostKey = SettingConstants.HostKey;
+            var portalKey = SettingConstants.PortalKey(this.portalSettings?.PortalId ?? Host.HostPortalID);
             var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
             var moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
@@ -2793,10 +2793,10 @@ namespace DNNConnect.CKEditorProvider
             switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Host:
-                    this.SaveSettingsByKey("DNNCKH#");
+                    this.SaveSettingsByKey(SettingConstants.HostKey);
                     break;
                 case SettingsMode.Portal:
-                    this.SaveSettingsByKey($"DNNCKP#{this.portalSettings?.PortalId ?? Host.HostPortalID}#");
+                    this.SaveSettingsByKey(SettingConstants.PortalKey(this.portalSettings?.PortalId ?? Host.HostPortalID));
                     break;
                 case SettingsMode.Page:
                     this.SaveSettingsByKey($"DNNCKT#{this.CurrentOrSelectedTabId}#");
@@ -3287,6 +3287,7 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.Config.Skin = this.ddlSkin.SelectedValue;
             exportSettings.Config.CodeMirror.Theme = this.CodeMirrorTheme.SelectedValue;
             exportSettings.Browser = this.ddlBrowser.SelectedValue;
+            exportSettings.BrowserAllowFollowFolderPerms = this.BrowAllowFollowPerms.Checked;
             exportSettings.ImageButton = this.ddlImageButton.SelectedValue;
             exportSettings.FileListViewMode =
                 (FileListView)Enum.Parse(typeof(FileListView), this.FileListViewMode.SelectedValue);
