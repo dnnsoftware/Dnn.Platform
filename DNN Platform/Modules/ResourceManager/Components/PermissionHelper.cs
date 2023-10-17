@@ -23,24 +23,24 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <summary>Adds user permissions to the <see cref="Permissions"/> dto.</summary>
         /// <param name="dto"><see cref="Permissions"/> data transfer object to extend.</param>
         /// <param name="permissionInfo">Permission to add.</param>
-        public static void AddUserPermission(this Permissions dto, PermissionInfoBase permissionInfo)
+        public static void AddUserPermission(this Permissions dto, IPermissionInfo permissionInfo)
         {
-            var userPermission = dto.UserPermissions.FirstOrDefault(p => p.UserId == permissionInfo.UserID);
+            var userPermission = dto.UserPermissions.FirstOrDefault(p => p.UserId == permissionInfo.UserId);
             if (userPermission == null)
             {
                 userPermission = new UserPermission
                 {
-                    UserId = permissionInfo.UserID,
+                    UserId = permissionInfo.UserId,
                     DisplayName = permissionInfo.DisplayName,
                 };
                 dto.UserPermissions.Add(userPermission);
             }
 
-            if (userPermission.Permissions.All(p => p.PermissionId != permissionInfo.PermissionID))
+            if (userPermission.Permissions.All(p => p.PermissionId != permissionInfo.PermissionId))
             {
                 userPermission.Permissions.Add(new Permission
                 {
-                    PermissionId = permissionInfo.PermissionID,
+                    PermissionId = permissionInfo.PermissionId,
                     PermissionName = permissionInfo.PermissionName,
                     AllowAccess = permissionInfo.AllowAccess,
                 });
@@ -50,24 +50,24 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <summary>Adds role permissions to the <see cref="Permissions"/> dto.</summary>
         /// <param name="dto"><see cref="Permissions"/> dto to extend.</param>
         /// <param name="permissionInfo">Permission to add.</param>
-        public static void AddRolePermission(this Permissions dto, PermissionInfoBase permissionInfo)
+        public static void AddRolePermission(this Permissions dto, IPermissionInfo permissionInfo)
         {
-            var rolePermission = dto.RolePermissions.FirstOrDefault(p => p.RoleId == permissionInfo.RoleID);
+            var rolePermission = dto.RolePermissions.FirstOrDefault(p => p.RoleId == permissionInfo.RoleId);
             if (rolePermission == null)
             {
                 rolePermission = new RolePermission
                 {
-                    RoleId = permissionInfo.RoleID,
+                    RoleId = permissionInfo.RoleId,
                     RoleName = permissionInfo.RoleName,
                 };
                 dto.RolePermissions.Add(rolePermission);
             }
 
-            if (rolePermission.Permissions.All(p => p.PermissionId != permissionInfo.PermissionID))
+            if (rolePermission.Permissions.All(p => p.PermissionId != permissionInfo.PermissionId))
             {
                 rolePermission.Permissions.Add(new Permission
                 {
-                    PermissionId = permissionInfo.PermissionID,
+                    PermissionId = permissionInfo.PermissionId,
                     PermissionName = permissionInfo.PermissionName,
                     AllowAccess = permissionInfo.AllowAccess,
                 });
@@ -122,24 +122,12 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <inheritdoc cref="IsFullControl(IPermissionDefinitionInfo)"/>
-        public static bool IsFullControl(PermissionInfo permissionInfo)
-        {
-            return IsFullControl((IPermissionInfo)permissionInfo);
-        }
-
         /// <summary>Check if the permission is for full control.</summary>
         /// <param name="permissionInfo">The <see cref="PermissionInfo"/> to check.</param>
         /// <returns>A value indicating whether this permission is for full control.</returns>
         public static bool IsFullControl(IPermissionDefinitionInfo permissionInfo)
         {
             return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
-        }
-
-        /// <inheritdoc cref="IsViewPermission(IPermissionDefinitionInfo)"/>
-        public static bool IsViewPermission(PermissionInfo permissionInfo)
-        {
-            return IsViewPermission((IPermissionDefinitionInfo)permissionInfo);
         }
 
         /// <summary>Checks if the permission is for view.</summary>
@@ -157,7 +145,7 @@ namespace Dnn.Modules.ResourceManager.Components
         {
             var data = new { Groups = new List<object>(), Roles = new List<object>() };
 
-            // retreive role groups info
+            // Retrieves role groups info
             data.Groups.Add(new { GroupId = -2, Name = "AllRoles" });
             data.Groups.Add(new { GroupId = -1, Name = "GlobalRoles", Selected = true });
 
@@ -166,7 +154,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 data.Groups.Add(new { GroupId = group.RoleGroupID, Name = group.RoleGroupName });
             }
 
-            // retreive roles info
+            // Retrieves roles info
             data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleUnauthUser), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
             data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleAllUsers), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
             foreach (RoleInfo role in RoleController.Instance.GetRoles(portalId).OrderBy(r => r.RoleName))
@@ -181,50 +169,94 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <param name="permissions">The list of <see cref="RolePermission"/> to convert.</param>
         /// <param name="folderId">The folder id.</param>
         /// <returns>An ArrayList of <see cref="FolderPermissionInfo"/>.</returns>
-        public static ArrayList ToPermissionInfos(this IList<RolePermission> permissions, int folderId)
+        public static IEnumerable<FolderPermissionInfo> AsFolderPermissions(this IEnumerable<RolePermission> permissions, int folderId)
         {
-            var newPermissions = new ArrayList();
-            foreach (var permission in permissions)
-            {
-                foreach (var p in permission.Permissions)
+            return permissions.SelectMany(
+                p => p.Permissions,
+                (p, permission) => new FolderPermissionInfo
                 {
-                    newPermissions.Add(new FolderPermissionInfo()
-                    {
-                        AllowAccess = p.AllowAccess,
-                        FolderID = folderId,
-                        PermissionID = p.PermissionId,
-                        RoleID = permission.RoleId,
-                        UserID = Null.NullInteger,
-                    });
-                }
-            }
-
-            return newPermissions;
+                    AllowAccess = permission.AllowAccess,
+                    FolderID = folderId,
+                    PermissionID = permission.PermissionId,
+                    RoleID = p.RoleId,
+                    UserID = Null.NullInteger,
+                });
         }
 
         /// <summary>Converts a list of <see cref="UserPermission"/> into a collection of <see cref="FolderPermissionInfo"/>.</summary>
         /// <param name="permissions">The list of <see cref="UserPermission"/> to extend.</param>
         /// <param name="folderId">The id of the folder.</param>
         /// <returns>An ArrayList of <see cref="FolderPermissionInfo"/>.</returns>
-        public static ArrayList ToPermissionInfos(this IList<UserPermission> permissions, int folderId)
+        public static IEnumerable<FolderPermissionInfo> AsFolderPermissions(this IEnumerable<UserPermission> permissions, int folderId)
         {
-            var newPermissions = new ArrayList();
-            foreach (var permission in permissions)
-            {
-                foreach (var p in permission.Permissions)
+            return permissions.SelectMany(
+                p => p.Permissions,
+                (p, permission) => new FolderPermissionInfo
                 {
-                    newPermissions.Add(new FolderPermissionInfo()
-                    {
-                        AllowAccess = p.AllowAccess,
-                        FolderID = folderId,
-                        PermissionID = p.PermissionId,
-                        RoleID = int.Parse(Globals.glbRoleNothing),
-                        UserID = permission.UserId,
-                    });
+                    AllowAccess = permission.AllowAccess,
+                    FolderID = folderId,
+                    PermissionID = permission.PermissionId,
+                    RoleID = int.Parse(Globals.glbRoleNothing),
+                    UserID = p.UserId,
+                });
+        }
+
+        /// <summary>Get the permissions for a folder.</summary>
+        /// <param name="permissionService">The permission service.</param>
+        /// <param name="collection">The collection of <see cref="FolderPermissionInfo"/>.</param>
+        /// <returns>A <see cref="Permissions"/> dto.</returns>
+        public static Permissions GetFolderPermissions(
+            this IPermissionService permissionService,
+            FolderPermissionCollection collection)
+        {
+            var permissions = new Permissions();
+
+            // Load the definitions
+            foreach (var definition in permissionService.GetDefinitionsByFolder())
+            {
+                var definitionDto = new Permission
+                {
+                    PermissionId = definition.PermissionId,
+                    PermissionName = definition.PermissionName,
+                    FullControl = IsFullControl(definition),
+                    View = IsViewPermission(definition),
+                };
+
+                permissions.PermissionDefinitions.Add(definitionDto);
+            }
+
+            // Load the permissions
+            permissions.EnsureDefaultRoles();
+
+            foreach (var role in PermissionProvider.Instance().ImplicitRolesForFolders(PortalSettings.Current.PortalId))
+            {
+                permissions.EnsureRole(role, true, true);
+            }
+
+            foreach (FolderPermissionInfo permission in collection)
+            {
+                if (permission.UserID != Null.NullInteger)
+                {
+                    permissions.AddUserPermission(permission);
+                }
+                else
+                {
+                    permissions.AddRolePermission(permission);
                 }
             }
 
-            return newPermissions;
+            // Sort the permissions
+            permissions.RolePermissions = permissions.RolePermissions
+                .OrderByDescending(p => p.Locked)
+                .ThenByDescending(p => p.IsDefault)
+                .ThenBy(p => p.RoleName)
+                .ToList();
+
+            permissions.UserPermissions = permissions.UserPermissions
+                .OrderBy(p => p.DisplayName)
+                .ToList();
+
+            return permissions;
         }
     }
 }

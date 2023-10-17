@@ -14,27 +14,14 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
 
     /// <summary>Represents a permissions set.</summary>
     [DataContract]
-    public abstract class Permissions
+    public class Permissions
     {
         /// <summary>Initializes a new instance of the <see cref="Permissions"/> class.</summary>
-        protected Permissions()
+        public Permissions()
         {
             this.RolePermissions = new List<RolePermission>();
             this.UserPermissions = new List<UserPermission>();
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Permissions"/> class.</summary>
-        /// <param name="needDefinitions">A value indicating whether the permissions need to be loaded.</param>
-        /// <param name="permissionService">The permission service.</param>
-        protected Permissions(bool needDefinitions, IPermissionService permissionService)
-            : this()
-        {
-            if (needDefinitions)
-            {
-                this.PermissionDefinitions = new List<Permission>();
-                this.LoadPermissionDefinitions(permissionService);
-                this.EnsureDefaultRoles();
-            }
+            this.PermissionDefinitions = new List<Permission>();
         }
 
         /// <summary>Gets or sets the list of permissions definitions.</summary>
@@ -48,9 +35,5 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
         /// <summary>Gets or sets a list of user based permissions.</summary>
         [DataMember(Name = "userPermissions")]
         public IList<UserPermission> UserPermissions { get; set; }
-
-        /// <summary>Loads the permissions definitions.</summary>
-        /// <param name="permissionService">The permission service.</param>
-        protected abstract void LoadPermissionDefinitions(IPermissionService permissionService);
     }
 }

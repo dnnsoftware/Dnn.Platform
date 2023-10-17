@@ -449,7 +449,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 lastModifiedBy = lastModifiedBy != null ? lastModifiedBy.Username : string.Empty,
                 type = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).MappingName,
                 isVersioned = folder.IsVersioned,
-                permissions = new FolderPermissions(true, folder.FolderPermissions, this.permissionService),
+                permissions = this.permissionService.GetFolderPermissions(folder.FolderPermissions),
             });
         }
 
