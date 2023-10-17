@@ -46,20 +46,20 @@ namespace Dnn.Modules.ResourceManager.Services
         private readonly IModuleControlPipeline modulePipeline;
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly Hashtable mappedPathsSupported = new Hashtable();
-        private readonly IPermissionService permissionService;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
         /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
         /// <param name="applicationStatusInfo">The application status info.</param>
-        /// <param name="permissionService">The permission service.</param>
+        /// <param name="permissionDefinitionService">The permission service.</param>
         public ItemsController(
             IModuleControlPipeline modulePipeline,
             IApplicationStatusInfo applicationStatusInfo,
-            IPermissionService permissionService)
+            IPermissionDefinitionService permissionDefinitionService)
         {
             this.modulePipeline = modulePipeline;
             this.applicationStatusInfo = applicationStatusInfo;
-            this.permissionService = permissionService;
+            this.permissionDefinitionService = permissionDefinitionService;
         }
 
         /// <summary>Gets the content for a specific folder.</summary>
@@ -449,7 +449,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 lastModifiedBy = lastModifiedBy != null ? lastModifiedBy.Username : string.Empty,
                 type = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).MappingName,
                 isVersioned = folder.IsVersioned,
-                permissions = this.permissionService.GetFolderPermissions(folder.FolderPermissions),
+                permissions = this.permissionDefinitionService.GetFolderPermissions(folder.FolderPermissions),
             });
         }
 

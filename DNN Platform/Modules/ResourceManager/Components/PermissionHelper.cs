@@ -202,17 +202,17 @@ namespace Dnn.Modules.ResourceManager.Components
         }
 
         /// <summary>Get the permissions for a folder.</summary>
-        /// <param name="permissionService">The permission service.</param>
+        /// <param name="permissionDefinitionService">The permission service.</param>
         /// <param name="collection">The collection of <see cref="FolderPermissionInfo"/>.</param>
         /// <returns>A <see cref="Permissions"/> dto.</returns>
         public static Permissions GetFolderPermissions(
-            this IPermissionService permissionService,
+            this IPermissionDefinitionService permissionDefinitionService,
             FolderPermissionCollection collection)
         {
             var permissions = new Permissions();
 
             // Load the definitions
-            foreach (var definition in permissionService.GetDefinitionsByFolder())
+            foreach (var definition in permissionDefinitionService.GetDefinitionsByFolder())
             {
                 var definitionDto = new Permission
                 {

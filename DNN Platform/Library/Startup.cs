@@ -52,7 +52,7 @@ namespace DotNetNuke
 
             services.AddScoped<IPortalAliasService, PortalAliasController>();
 
-            services.AddScoped<IPermissionService, PermissionController>();
+            services.AddScoped<IPermissionDefinitionService, PermissionController>();
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
             services.AddTransient<ISmtpOAuthController, SmtpOAuthController>();

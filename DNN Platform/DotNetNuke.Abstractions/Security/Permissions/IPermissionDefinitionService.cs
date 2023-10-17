@@ -7,7 +7,7 @@ namespace DotNetNuke.Abstractions.Security.Permissions;
 using System.Collections.Generic;
 
 /// <summary>Handles the Business Control Layer for Permissions.</summary>
-public interface IPermissionService
+public interface IPermissionDefinitionService
 {
     /// <summary>Gets the permissions.</summary>
     /// <returns>The permissions.</returns>
