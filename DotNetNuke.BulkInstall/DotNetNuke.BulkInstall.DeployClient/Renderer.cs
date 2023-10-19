@@ -107,7 +107,14 @@ public class Renderer : IRenderer
 
                     if (string.IsNullOrEmpty(dependency.DependencyVersion) && !dependency.IsPackageDependency)
                     {
-                        packageNode.AddNode(Markup.FromInterpolated($"Depends on :radioactive: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
+                        if (Version.TryParse(dependency.PackageName, out _))
+                        {
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :radioactive: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
+                        }
+                        else
+                        {
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :gear: [grey]{dependency.PackageName}[/]"));
+                        }
                     }
                     else
                     {

@@ -326,6 +326,33 @@ public class RendererTests
 
     [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
     [Theory]
+    public void RenderInstallationOverview_DisplaysUnknownDependency(LogLevel logLevel)
+    {
+        var console = new TestConsole().Interactive();
+
+        var renderer = new Renderer(console);
+        var sessionResponse = new SessionResponse
+        {
+            Packages = new List<PackageResponse?>
+            {
+                new()
+                {
+                    Name = "Jamestown.zip",
+                    Dependencies = new List<DependencyResponse?>
+                    {
+                        new() { PackageName = "Unknown Package", DependencyVersion = string.Empty, IsPackageDependency = false, },
+                    },
+                    CanInstall = true,
+                },
+            },
+        };
+
+        renderer.RenderInstallationOverview(logLevel, new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+        console.Output.ShouldContainStringsInOrder("Jamestown.zip", "⚙", "Unknown Package");
+    }
+
+    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+    [Theory]
     public void RenderInstallationOverview_WhenDependencyHasNoVersion_DisplaysDependencyName(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
