@@ -24,53 +24,57 @@ namespace DotNetNuke.UI.Skins
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable, ISkinPackageInfo
     {
-        private int packageID = Null.NullInteger;
-        private int portalID = Null.NullInteger;
+        private int packageId = Null.NullInteger;
+        private int portalId = Null.NullInteger;
         private string skinName;
-        private int skinPackageID = Null.NullInteger;
+        private int skinPackageId = Null.NullInteger;
         private string skinType;
-        private List<SkinInfo> skins = new List<SkinInfo>();
+        private Dictionary<int, string> skins = new Dictionary<int, string>();
+        private List<SkinInfo> skinsList = new List<SkinInfo>();
         private AbstractionList<ISkinInfo, SkinInfo> abstractSkins;
 
         /// <inheritdoc cref="ISkinPackageInfo.PackageId"/>
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.PackageId)} instead. Scheduled for removal in v11.0.0.")]
         public int PackageID
         {
             get
             {
-                return this.packageID;
+                return ((ISkinPackageInfo)this).PackageId;
             }
 
             set
             {
-                this.packageID = value;
+                ((ISkinPackageInfo)this).PackageId = value;
             }
         }
 
         /// <inheritdoc cref="ISkinPackageInfo.SkinPackageId"/>
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.SkinPackageId)} instead. Scheduled for removal in v11.0.0.")]
         public int SkinPackageID
         {
             get
             {
-                return this.skinPackageID;
+                return ((ISkinPackageInfo)this).SkinPackageId;
             }
 
             set
             {
-                this.skinPackageID = value;
+                ((ISkinPackageInfo)this).SkinPackageId = value;
             }
         }
 
         /// <inheritdoc cref="ISkinPackageInfo.PortalId"/>
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
         public int PortalID
         {
             get
             {
-                return this.portalID;
+                return ((ISkinPackageInfo)this).PortalId;
             }
 
             set
             {
-                this.portalID = value;
+                ((ISkinPackageInfo)this).PortalId = value;
             }
         }
 
@@ -88,10 +92,11 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc cref="ISkinPackageInfo.Skins"/>
+        /// <summary>Gets or sets a dictionary mapping from <see cref="SkinInfo.SkinId"/> to <see cref="SkinInfo.SkinSrc"/>.</summary>
         [XmlIgnore]
         [JsonIgnore]
-        public List<SkinInfo> Skins
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.Skins)} instead. Scheduled for removal in v11.0.0.")]
+        public Dictionary<int, string> Skins
         {
             get
             {
@@ -101,6 +106,22 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.skins = value;
+            }
+        }
+
+        /// <inheritdoc cref="ISkinPackageInfo.Skins"/>
+        [XmlIgnore]
+        [JsonIgnore]
+        public List<SkinInfo> SkinsList
+        {
+            get
+            {
+                return this.skinsList;
+            }
+
+            set
+            {
+                this.skinsList = value;
             }
         }
 
@@ -123,12 +144,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this.SkinPackageID;
+                return ((ISkinPackageInfo)this).SkinPackageId;
             }
 
             set
             {
-                this.SkinPackageID = value;
+                ((ISkinPackageInfo)this).SkinPackageId = value;
             }
         }
 
@@ -137,8 +158,8 @@ namespace DotNetNuke.UI.Skins
         [JsonIgnore]
         int ISkinPackageInfo.PackageId
         {
-            get => this.PackageID;
-            set => this.PackageID = value;
+            get => this.packageId;
+            set => this.packageId = value;
         }
 
         /// <inheritdoc/>
@@ -146,8 +167,8 @@ namespace DotNetNuke.UI.Skins
         [JsonIgnore]
         int ISkinPackageInfo.SkinPackageId
         {
-            get => this.SkinPackageID;
-            set => this.SkinPackageID = value;
+            get => this.skinPackageId;
+            set => this.skinPackageId = value;
         }
 
         /// <inheritdoc/>
@@ -157,7 +178,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this.abstractSkins ??= new AbstractionList<ISkinInfo, SkinInfo>(this.Skins);
+                return this.abstractSkins ??= new AbstractionList<ISkinInfo, SkinInfo>(this.SkinsList);
             }
         }
 
@@ -175,16 +196,17 @@ namespace DotNetNuke.UI.Skins
         [JsonIgnore]
         int ISkinPackageInfo.PortalId
         {
-            get => this.PortalID;
-            set => this.PortalID = value;
+            get => this.portalId;
+            set => this.portalId = value;
         }
 
         /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
-            this.SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
-            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
-            this.SkinName = Null.SetNullString(dr["SkinName"]);
+            var @this = (ISkinPackageInfo)this;
+            @this.SkinPackageId = Null.SetNullInteger(dr["SkinPackageID"]);
+            @this.PackageId = Null.SetNullInteger(dr["PackageID"]);
+            @this.SkinName = Null.SetNullString(dr["SkinName"]);
             this.SkinType = Null.SetNullString(dr["SkinType"]);
 
             // Call the base classes fill method to populate base class properties
@@ -194,15 +216,17 @@ namespace DotNetNuke.UI.Skins
             {
                 while (dr.Read())
                 {
-                    int skinID = Null.SetNullInteger(dr["SkinID"]);
-                    if (skinID > Null.NullInteger)
+                    int skinId = Null.SetNullInteger(dr["SkinID"]);
+                    if (skinId > Null.NullInteger)
                     {
-                        this.skins.Add(new SkinInfo
+                        var skinSrc = Null.SetNullString(dr["SkinSrc"]);
+                        this.skins[skinId] = skinSrc;
+                        this.skinsList.Add(new SkinInfo
                         {
-                            SkinId = skinID,
-                            SkinSrc = Null.SetNullString(dr["SkinSrc"]),
-                            SkinPackageId = this.SkinPackageID,
-                            PortalId = this.PortalID,
+                            SkinId = skinId,
+                            SkinSrc = skinSrc,
+                            SkinPackageId = @this.SkinPackageId,
+                            PortalId = @this.PortalId,
                             SkinRoot = SkinUtils.FromDatabaseName(this.SkinType) switch
                             {
                                 SkinPackageType.Container => SkinController.RootContainer,

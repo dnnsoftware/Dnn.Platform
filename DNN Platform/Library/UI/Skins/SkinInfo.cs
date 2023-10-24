@@ -6,7 +6,6 @@ namespace DotNetNuke.UI.Skins
     using System;
 
     using DotNetNuke.Abstractions.Skins;
-    using DotNetNuke.Internal.SourceGenerators;
 
     /// Project  : DotNetNuke
     /// Class    : SkinInfo

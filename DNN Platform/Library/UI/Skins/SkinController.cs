@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <inheritdoc cref="ISkinService.RootSkin" />
-        [Obsolete($"Deprecated in DotNetNuke 10.0.0. Use {nameof(SkinType)}.{nameof(ISkinService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(SkinType)}.{nameof(ISkinService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
         public static string RootSkin
         {
             get
@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.RootContainer" />
-        [Obsolete($"Deprecated in DotNetNuke 10.0.0. Use {nameof(SkinType)}.{nameof(ISkinService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(SkinType)}.{nameof(ISkinService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
         public static string RootContainer
         {
             get
@@ -59,21 +59,21 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.AddSkin" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.AddSkin)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.AddSkin)} instead.")]
         public static partial int AddSkin(int skinPackageID, string skinSrc)
         {
             return DataProvider.Instance().AddSkin(skinPackageID, skinSrc);
         }
 
         /// <inheritdoc cref="ISkinService.AddSkinPackage" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.AddSkinPackage)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.AddSkinPackage)} instead.")]
         public static partial int AddSkinPackage(SkinPackageInfo skinPackage)
         {
             return AddSkinPackage((ISkinPackageInfo)skinPackage);
         }
 
         /// <inheritdoc cref="ISkinService.CanDeleteSkinFolder" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.CanDeleteSkinFolder)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.CanDeleteSkinFolder)} instead.")]
         public static partial bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
         {
             string skinType;
@@ -126,14 +126,14 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.DeleteSkin" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.DeleteSkin)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.DeleteSkin)} instead.")]
         public static partial void DeleteSkin(int skinID)
         {
             DataProvider.Instance().DeleteSkin(skinID);
         }
 
         /// <inheritdoc cref="ISkinService.DeleteSkinPackage" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.DeleteSkinPackage)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.DeleteSkinPackage)} instead.")]
         public static partial void DeleteSkinPackage(SkinPackageInfo skinPackage)
         {
             DeleteSkinPackage((ISkinPackageInfo)skinPackage);
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.FormatSkinPath" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.FormatSkinPath)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.FormatSkinPath)} instead.")]
         public static partial string FormatSkinPath(string skinSrc)
         {
             string strSkinSrc = skinSrc;
@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.FormatSkinSrc" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.FormatSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.FormatSkinSrc)} instead.")]
         public static partial string FormatSkinSrc(string skinSrc, PortalSettings portalSettings)
         {
             return FormatSkinSrc(skinSrc, (IPortalSettings)portalSettings);
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default admin container for the portal use <see cref="IPortalSettings.DefaultAdminContainer"/> instead.
         /// </remarks>
         /// <returns>The global default admin container.</returns>
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
         public static partial string GetDefaultAdminContainer()
         {
             SkinDefaults defaultContainer = SkinDefaults.GetSkinDefaults(SkinDefaultType.ContainerInfo);
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default admin skin for the portal use <see cref="IPortalSettings.DefaultAdminSkin"/> instead.
         /// </remarks>
         /// <returns>The global default admin skin.</returns>
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
         public static partial string GetDefaultAdminSkin()
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
@@ -218,7 +218,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default skin for the portal use <see cref="IPortalSettings.DefaultPortalSkin"/> instead.
         /// </remarks>
         /// <returns>The global default skin.</returns>
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
         public static partial string GetDefaultPortalContainer()
         {
             SkinDefaults defaultContainer = SkinDefaults.GetSkinDefaults(SkinDefaultType.ContainerInfo);
@@ -231,7 +231,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default skin for the portal use <see cref="IPortalSettings.DefaultPortalSkin"/> instead.
         /// </remarks>
         /// <returns>The global default skin.</returns>
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
         public static partial string GetDefaultPortalSkin()
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
@@ -239,28 +239,28 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.GetSkinByPackageID" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinPackageById)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinPackageById)} instead.")]
         public static partial SkinPackageInfo GetSkinByPackageID(int packageID)
         {
             return CBO.FillObject<SkinPackageInfo>(DataProvider.Instance().GetSkinByPackageID(packageID));
         }
 
         /// <inheritdoc cref="ISkinService.GetSkinPackage" />]
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinPackage)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinPackage)} instead.")]
         public static partial SkinPackageInfo GetSkinPackage(int portalId, string skinName, string skinType)
         {
             return CBO.FillObject<SkinPackageInfo>(DataProvider.Instance().GetSkinPackage(portalId, skinName, skinType));
         }
 
         /// <inheritdoc cref="ISkinService.GetSkinsInFolder" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinsInFolder)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinsInFolder)} instead.")]
         public static partial List<KeyValuePair<string, string>> GetSkins(PortalInfo portalInfo, string skinRoot, SkinScope scope)
         {
             return GetSkins((IPortalInfo)portalInfo, skinRoot, scope);
         }
 
         /// <inheritdoc cref="ISkinService.GetSkinsInFolder" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinsInFolder)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinsInFolder)} instead.")]
         public static partial List<KeyValuePair<string, string>> GetSkins(IPortalInfo portalInfo, string skinRoot, SkinScope scope)
         {
             var skins = new List<KeyValuePair<string, string>>();
@@ -282,14 +282,14 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.IsGlobalSkin" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.IsGlobalSkin)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.IsGlobalSkin)} instead.")]
         public static partial bool IsGlobalSkin(string skinSrc)
         {
             return skinSrc.Contains(Globals.HostPath);
         }
 
         /// <inheritdoc cref="ISkinService.SetSkin" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.SetSkin)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.SetSkin)} instead.")]
         public static partial void SetSkin(string skinRoot, int portalId, SkinType skinType, string skinSrc)
         {
             var selectedCultureCode = LocaleController.Instance.GetCurrentLocale(portalId).Code;
@@ -351,14 +351,14 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc cref="ISkinService.UpdateSkin" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.UpdateSkin)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.UpdateSkin)} instead.")]
         public static partial void UpdateSkin(int skinID, string skinSrc)
         {
             DataProvider.Instance().UpdateSkin(skinID, skinSrc);
         }
 
         /// <inheritdoc cref="ISkinService.UpdateSkinPackage" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(ISkinService)}.{nameof(ISkinService.UpdateSkin)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.UpdateSkin)} instead.")]
         public static partial void UpdateSkinPackage(SkinPackageInfo skinPackage)
         {
             UpdateSkinPackage((ISkinPackageInfo)skinPackage);
