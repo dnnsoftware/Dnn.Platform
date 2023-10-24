@@ -4,7 +4,6 @@
 
 namespace Dnn.Modules.ResourceManager.Components
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -173,13 +172,18 @@ namespace Dnn.Modules.ResourceManager.Components
         {
             return permissions.SelectMany(
                 p => p.Permissions,
-                (p, permission) => new FolderPermissionInfo
+                (p, permission) =>
                 {
-                    AllowAccess = permission.AllowAccess,
-                    FolderID = folderId,
-                    PermissionID = permission.PermissionId,
-                    RoleID = p.RoleId,
-                    UserID = Null.NullInteger,
+                    var info = new FolderPermissionInfo
+                    {
+                        AllowAccess = permission.AllowAccess,
+                    };
+                    IFolderPermissionInfo iInfo = info;
+                    iInfo.FolderId = folderId;
+                    iInfo.PermissionId = permission.PermissionId;
+                    iInfo.RoleId = p.RoleId;
+                    iInfo.UserId = Null.NullInteger;
+                    return info;
                 });
         }
 
@@ -191,13 +195,18 @@ namespace Dnn.Modules.ResourceManager.Components
         {
             return permissions.SelectMany(
                 p => p.Permissions,
-                (p, permission) => new FolderPermissionInfo
+                (p, permission) =>
                 {
-                    AllowAccess = permission.AllowAccess,
-                    FolderID = folderId,
-                    PermissionID = permission.PermissionId,
-                    RoleID = int.Parse(Globals.glbRoleNothing),
-                    UserID = p.UserId,
+                    var info = new FolderPermissionInfo
+                    {
+                        AllowAccess = permission.AllowAccess,
+                    };
+                    IFolderPermissionInfo iInfo = info;
+                    iInfo.FolderId = folderId;
+                    iInfo.PermissionId = permission.PermissionId;
+                    iInfo.RoleId = int.Parse(Globals.glbRoleNothing);
+                    iInfo.UserId = p.UserId;
+                    return info;
                 });
         }
 
@@ -233,9 +242,9 @@ namespace Dnn.Modules.ResourceManager.Components
                 permissions.EnsureRole(role, true, true);
             }
 
-            foreach (FolderPermissionInfo permission in collection)
+            foreach (IFolderPermissionInfo permission in collection)
             {
-                if (permission.UserID != Null.NullInteger)
+                if (permission.UserId != Null.NullInteger)
                 {
                     permissions.AddUserPermission(permission);
                 }

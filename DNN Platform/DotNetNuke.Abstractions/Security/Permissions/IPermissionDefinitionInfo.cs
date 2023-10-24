@@ -4,10 +4,10 @@
 
 namespace DotNetNuke.Abstractions.Security.Permissions;
 
-/// <summary>PermissionInfo provides the Entity Layer for Permissions.</summary>
+/// <summary>Information about the definition of a permission.</summary>
 public interface IPermissionDefinitionInfo
 {
-    /// <summary>Gets or sets the Mdoule Definition ID.</summary>
+    /// <summary>Gets or sets the Module Definition ID.</summary>
     public int ModuleDefId { get; set; }
 
     /// <summary>Gets or sets the Permission Code.</summary>

@@ -4,7 +4,7 @@
 
 namespace DotNetNuke.Abstractions.Security.Permissions;
 
-/// <summary>PermissionInfoBase provides a base class for PermissionInfo classes.</summary>
+/// <summary>Information about an applied instance of a permission.</summary>
 public interface IPermissionInfo : IPermissionDefinitionInfo
 {
     /// <summary>Gets or sets a value indicating whether gets and sets a flag that indicates whether the user or role has permission.</summary>
