@@ -30,18 +30,18 @@ namespace DotNetNuke.Security.Permissions
     {
         private bool allowAccess;
         private string displayName;
-        private int roleID;
+        private int roleId;
         private string roleName;
-        private int userID;
+        private int userId;
         private string username;
 
         /// <summary>Initializes a new instance of the <see cref="PermissionInfoBase"/> class.</summary>
         public PermissionInfoBase()
         {
-            this.roleID = int.Parse(Globals.glbRoleNothing);
+            this.roleId = int.Parse(Globals.glbRoleNothing);
             this.allowAccess = false;
             this.roleName = Null.NullString;
-            this.userID = Null.NullInteger;
+            this.userId = Null.NullInteger;
             this.username = Null.NullString;
             this.displayName = Null.NullString;
         }
@@ -78,16 +78,17 @@ namespace DotNetNuke.Security.Permissions
 
         /// <inheritdoc cref="IPermissionInfo.RoleId" />
         [XmlElement("roleid")]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.RoleId)} instead. Scheduled for removal in v11.0.0.")]
         public int RoleID
         {
             get
             {
-                return this.roleID;
+                return ((IPermissionInfo)this).RoleId;
             }
 
             set
             {
-                this.roleID = value;
+                ((IPermissionInfo)this).RoleId = value;
             }
         }
 
@@ -108,16 +109,17 @@ namespace DotNetNuke.Security.Permissions
 
         /// <inheritdoc cref="IPermissionInfo.UserId" />
         [XmlElement("userid")]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.UserId)} instead. Scheduled for removal in v11.0.0.")]
         public int UserID
         {
             get
             {
-                return this.userID;
+                return ((IPermissionInfo)this).UserId;
             }
 
             set
             {
-                this.userID = value;
+                ((IPermissionInfo)this).UserId = value;
             }
         }
 
@@ -139,39 +141,40 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc />
         int IPermissionInfo.RoleId
         {
-            get => this.RoleID;
-            set => this.RoleID = value;
+            get => this.roleId;
+            set => this.roleId = value;
         }
 
         /// <inheritdoc />
         int IPermissionInfo.UserId
         {
-            get => this.UserID;
-            set => this.UserID = value;
+            get => this.userId;
+            set => this.userId = value;
         }
 
         /// <summary>FillInternal fills the PermissionInfoBase from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         protected override void FillInternal(IDataReader dr)
         {
-            // Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class properties
             base.FillInternal(dr);
 
-            this.UserID = Null.SetNullInteger(dr["UserID"]);
-            this.Username = Null.SetNullString(dr["Username"]);
-            this.DisplayName = Null.SetNullString(dr["DisplayName"]);
-            if (this.UserID == Null.NullInteger)
+            var @this = (IPermissionInfo)this;
+            @this.UserId = Null.SetNullInteger(dr["UserID"]);
+            @this.Username = Null.SetNullString(dr["Username"]);
+            @this.DisplayName = Null.SetNullString(dr["DisplayName"]);
+            if (@this.UserId == Null.NullInteger)
             {
-                this.RoleID = Null.SetNullInteger(dr["RoleID"]);
-                this.RoleName = Null.SetNullString(dr["RoleName"]);
+                @this.RoleId = Null.SetNullInteger(dr["RoleID"]);
+                @this.RoleName = Null.SetNullString(dr["RoleName"]);
             }
             else
             {
-                this.RoleID = int.Parse(Globals.glbRoleNothing);
-                this.RoleName = string.Empty;
+                @this.RoleId = int.Parse(Globals.glbRoleNothing);
+                @this.RoleName = string.Empty;
             }
 
-            this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
+            @this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
     }
 }

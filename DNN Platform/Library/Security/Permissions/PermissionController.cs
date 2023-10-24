@@ -70,21 +70,21 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByFolder" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByFolder)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByFolder)} instead.")]
         public static partial ArrayList GetPermissionsByFolder()
         {
             return new ArrayList(GetPermissionsByFolderEnumerable().ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule)} instead.")]
         public static partial ArrayList GetPermissionsByPortalDesktopModule()
         {
             return new ArrayList(GetPermissionsByPortalDesktopModuleEnumerable().ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByTab" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByTab)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByTab)} instead.")]
         public static partial ArrayList GetPermissionsByTab()
         {
             return new ArrayList(GetPermissionsByTabEnumerable().ToArray());
@@ -131,21 +131,21 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByCodeAndKey" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByCodeAndKey)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByCodeAndKey)} instead.")]
         public partial ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
         {
             return new ArrayList(GetPermissionByCodeAndKeyEnumerable(permissionCode, permissionKey).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByModuleDefId" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModuleDefId)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModuleDefId)} instead.")]
         public partial ArrayList GetPermissionsByModuleDefID(int moduleDefID)
         {
             return new ArrayList(GetPermissionsByModuleDefIdEnumerable(moduleDefID).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByModule" />
-        [DnnDeprecated(10, 0, 0, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModule)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModule)} instead.")]
         public partial ArrayList GetPermissionsByModule(int moduleId, int tabId)
         {
             return new ArrayList(GetPermissionsByModuleEnumerable(moduleId, tabId).ToArray());

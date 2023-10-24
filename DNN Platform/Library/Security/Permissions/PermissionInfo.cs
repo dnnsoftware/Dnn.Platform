@@ -22,7 +22,12 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc cref="IPermissionDefinitionInfo.ModuleDefId" />
         [XmlIgnore]
         [JsonIgnore]
-        public int ModuleDefID { get; set; }
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionDefinitionInfo)}.{nameof(IPermissionDefinitionInfo.ModuleDefId)} instead. Scheduled for removal in v11.0.0.")]
+        public int ModuleDefID
+        {
+            get => ((IPermissionDefinitionInfo)this).ModuleDefId;
+            set => ((IPermissionDefinitionInfo)this).ModuleDefId = value;
+        }
 
         /// <inheritdoc />
         [XmlElement("permissioncode")]
@@ -30,7 +35,12 @@ namespace DotNetNuke.Security.Permissions
 
         /// <inheritdoc cref="IPermissionDefinitionInfo.PermissionID" />
         [XmlElement("permissionid")]
-        public int PermissionID { get; set; }
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionDefinitionInfo)}.{nameof(IPermissionDefinitionInfo.PermissionId)} instead. Scheduled for removal in v11.0.0.")]
+        public int PermissionID
+        {
+            get => ((IPermissionDefinitionInfo)this).PermissionId;
+            set => ((IPermissionDefinitionInfo)this).PermissionId = value;
+        }
 
         /// <inheritdoc />
         [XmlElement("permissionkey")]
@@ -44,31 +54,25 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
-        int IPermissionDefinitionInfo.ModuleDefId
-        {
-            get => this.ModuleDefID;
-            set => this.ModuleDefID = value;
-        }
+        int IPermissionDefinitionInfo.ModuleDefId { get; set; }
 
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
-        int IPermissionDefinitionInfo.PermissionId
-        {
-            get => this.PermissionID;
-            set => this.PermissionID = value;
-        }
+        int IPermissionDefinitionInfo.PermissionId { get; set; }
 
         /// <summary>FillInternal fills a PermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         protected override void FillInternal(IDataReader dr)
         {
             base.FillInternal(dr);
-            this.PermissionID = Null.SetNullInteger(dr["PermissionID"]);
-            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
-            this.PermissionCode = Null.SetNullString(dr["PermissionCode"]);
-            this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
-            this.PermissionName = Null.SetNullString(dr["PermissionName"]);
+
+            var @this = (IPermissionDefinitionInfo)this;
+            @this.PermissionId = Null.SetNullInteger(dr["PermissionID"]);
+            @this.ModuleDefId = Null.SetNullInteger(dr["ModuleDefID"]);
+            @this.PermissionCode = Null.SetNullString(dr["PermissionCode"]);
+            @this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
+            @this.PermissionName = Null.SetNullString(dr["PermissionName"]);
         }
     }
 }
