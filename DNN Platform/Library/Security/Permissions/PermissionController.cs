@@ -9,6 +9,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Linq;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
-    public partial class PermissionController
+    public partial class PermissionController : IPermissionDefinitionService
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
@@ -68,27 +69,40 @@ namespace DotNetNuke.Security.Permissions
             return permissionsString;
         }
 
-        public static ArrayList GetPermissionsByFolder()
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByFolder" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByFolder)} instead.")]
+        public static partial ArrayList GetPermissionsByFolder()
         {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_FOLDER").ToArray());
+            return new ArrayList(GetPermissionsByFolderEnumerable().ToArray());
         }
 
-        public static ArrayList GetPermissionsByPortalDesktopModule()
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule)} instead.")]
+        public static partial ArrayList GetPermissionsByPortalDesktopModule()
         {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE").ToArray());
+            return new ArrayList(GetPermissionsByPortalDesktopModuleEnumerable().ToArray());
         }
 
-        public static ArrayList GetPermissionsByTab()
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByTab" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByTab)} instead.")]
+        public static partial ArrayList GetPermissionsByTab()
         {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_TAB").ToArray());
+            return new ArrayList(GetPermissionsByTabEnumerable().ToArray());
         }
 
+        /// <inheritdoc cref="IPermissionDefinitionService.AddDefinition" />
         public int AddPermission(PermissionInfo permission)
+        {
+            return this.AddPermission((IPermissionDefinitionInfo)permission);
+        }
+
+        /// <inheritdoc cref="IPermissionDefinitionService.AddDefinition" />
+        public int AddPermission(IPermissionDefinitionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
             var permissionId = Convert.ToInt32(Provider.AddPermission(
                 permission.PermissionCode,
-                permission.ModuleDefID,
+                permission.ModuleDefId,
                 permission.PermissionKey,
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID));
@@ -97,6 +111,7 @@ namespace DotNetNuke.Security.Permissions
             return permissionId;
         }
 
+        /// <inheritdoc cref="IPermissionDefinitionService.DeleteDefinition" />
         public void DeletePermission(int permissionID)
         {
             EventLogController.Instance.AddLog(
@@ -109,36 +124,47 @@ namespace DotNetNuke.Security.Permissions
             this.ClearCache();
         }
 
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinition" />
         public PermissionInfo GetPermission(int permissionID)
         {
             return GetPermissions().SingleOrDefault(p => p.PermissionID == permissionID);
         }
 
-        public ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByCodeAndKey" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByCodeAndKey)} instead.")]
+        public partial ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
         {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
-                                                             && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase)).ToArray());
+            return new ArrayList(GetPermissionByCodeAndKeyEnumerable(permissionCode, permissionKey).ToArray());
         }
 
-        public ArrayList GetPermissionsByModuleDefID(int moduleDefID)
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByModuleDefId" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModuleDefId)} instead.")]
+        public partial ArrayList GetPermissionsByModuleDefID(int moduleDefID)
         {
-            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == moduleDefID).ToArray());
+            return new ArrayList(GetPermissionsByModuleDefIdEnumerable(moduleDefID).ToArray());
         }
 
-        public ArrayList GetPermissionsByModule(int moduleId, int tabId)
+        /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByModule" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModule)} instead.")]
+        public partial ArrayList GetPermissionsByModule(int moduleId, int tabId)
         {
-            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
-
-            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == module.ModuleDefID || p.PermissionCode == "SYSTEM_MODULE_DEFINITION").ToArray());
+            return new ArrayList(GetPermissionsByModuleEnumerable(moduleId, tabId).ToArray());
         }
 
+        /// <inheritdoc cref="IPermissionDefinitionService.UpdateDefinition" />
         public void UpdatePermission(PermissionInfo permission)
+        {
+            this.UpdatePermission((IPermissionDefinitionInfo)permission);
+        }
+
+        /// <inheritdoc cref="IPermissionDefinitionService.UpdateDefinition" />
+        public void UpdatePermission(IPermissionDefinitionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
             Provider.UpdatePermission(
-                permission.PermissionID,
+                permission.PermissionId,
                 permission.PermissionCode,
-                permission.ModuleDefID,
+                permission.ModuleDefId,
                 permission.PermissionKey,
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID);
@@ -214,6 +240,42 @@ namespace DotNetNuke.Security.Permissions
             return this.GetPermissionsByModuleDefID(module.ModuleDefID);
         }
 
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitions() => GetPermissions();
+
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByFolder() => GetPermissionsByFolderEnumerable();
+
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule() => GetPermissionsByPortalDesktopModuleEnumerable();
+
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByTab() => GetPermissionsByTabEnumerable();
+
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByCodeAndKey(string permissionCode, string permissionKey) => GetPermissionByCodeAndKeyEnumerable(permissionCode, permissionKey);
+
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByModuleDefId(int moduleDefId) => GetPermissionsByModuleDefIdEnumerable(moduleDefId);
+
+        /// <inheritdoc />
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByModule(int moduleId, int tabId) => GetPermissionsByModuleEnumerable(moduleId, tabId);
+
+        /// <inheritdoc />
+        int IPermissionDefinitionService.AddDefinition(IPermissionDefinitionInfo permission) => this.AddPermission(permission);
+
+        /// <inheritdoc />
+        void IPermissionDefinitionService.DeleteDefinition(IPermissionDefinitionInfo permission) => this.DeletePermission(permission.PermissionId);
+
+        /// <inheritdoc />
+        IPermissionDefinitionInfo IPermissionDefinitionService.GetDefinition(int permissionDefinitionId) => this.GetPermission(permissionDefinitionId);
+
+        /// <inheritdoc />
+        void IPermissionDefinitionService.UpdateDefinition(IPermissionDefinitionInfo permission) => this.UpdatePermission(permission);
+
+        /// <inheritdoc />
+        void IPermissionDefinitionService.ClearCache() => this.ClearCache();
+
         private static IEnumerable<PermissionInfo> GetPermissions()
         {
             return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
@@ -222,6 +284,40 @@ namespace DotNetNuke.Security.Permissions
                 DataCache.PermissionsCacheTimeout,
                 DataCache.PermissionsCachePriority),
                 c => CBO.FillCollection<PermissionInfo>(Provider.ExecuteReader("GetPermissions")));
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissionsByFolderEnumerable()
+        {
+            return GetPermissions().Where(p => p.PermissionCode == "SYSTEM_FOLDER");
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissionsByPortalDesktopModuleEnumerable()
+        {
+            return GetPermissions().Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE");
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissionsByTabEnumerable()
+        {
+            return GetPermissions().Where(p => p.PermissionCode == "SYSTEM_TAB");
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissionByCodeAndKeyEnumerable(string permissionCode, string permissionKey)
+        {
+            return GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
+                                               && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissionsByModuleDefIdEnumerable(int moduleDefId)
+        {
+            return GetPermissions().Where(p => p.ModuleDefID == moduleDefId);
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissionsByModuleEnumerable(int moduleId, int tabId)
+        {
+            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
+            var moduleDefId = module.ModuleDefID;
+
+            return GetPermissions().Where(p => p.ModuleDefID == moduleDefId || p.PermissionCode == "SYSTEM_MODULE_DEFINITION");
         }
 
         private void ClearCache()
