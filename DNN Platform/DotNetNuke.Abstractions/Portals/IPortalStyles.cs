@@ -218,5 +218,10 @@ namespace DotNetNuke.Abstractions.Portals
         /// Gets or sets the controls padding in pixels.
         /// </summary>
         public int ControlsPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base font size in pixels.
+        /// </summary>
+        int BaseFontSize { get; set; }
     }
 }

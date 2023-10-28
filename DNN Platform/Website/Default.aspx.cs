@@ -20,7 +20,6 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
@@ -40,14 +39,19 @@ namespace DotNetNuke.Framework
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>
+    /// The DNN default page.
+    /// </summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
-
         private static readonly Regex HeaderTextRegex = new Regex(
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultPage"/> class.
+        /// </summary>
         public DefaultPage()
         {
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -85,8 +89,12 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <summary>Gets a service that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>
+        /// Gets a string representation of the list HTML attributes.
+        /// </summary>
         protected string HtmlAttributeList
         {
             get
@@ -149,13 +157,17 @@ namespace DotNetNuke.Framework
             return string.Empty;
         }
 
+        /// <summary>
+        /// Checks if the current version is not a production version.
+        /// </summary>
+        /// <returns>A value indicating whether the current version is not a production version.</returns>
         protected bool NonProductionVersion()
         {
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
         /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
         /// - set global page settings.
@@ -291,7 +303,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -317,12 +329,6 @@ namespace DotNetNuke.Framework
                 this.MetaGenerator.Content = this.Generator;
                 this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
-                /*
-                 * Never show to be html5 compatible and stay backward compatible
-                 *
-                 * MetaCopyright.Content = Copyright;
-                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
-                 */
                 this.MetaKeywords.Content = this.KeyWords;
                 this.MetaKeywords.Visible = !string.IsNullOrEmpty(this.KeyWords);
                 this.MetaDescription.Content = this.Description;
@@ -369,7 +375,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///
+        /// Initializes the page.
         /// </summary>
         /// <remarks>
         /// - Obtain PortalSettings from Current Context
@@ -606,6 +612,8 @@ namespace DotNetNuke.Framework
                 }
             }
 
+            this.CssCustomProperties.Text = this.GenerateCssCustomProperties();
+
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
@@ -643,6 +651,110 @@ namespace DotNetNuke.Framework
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
                 ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
             }
+        }
+
+        private string GenerateCssCustomProperties()
+        {
+            string cacheKey = $"Dnn_Css_Custom_Properties_{this.PortalSettings.PortalId}";
+            string cache = Common.Utilities.DataCache.GetCache<string>(cacheKey);
+
+            if (!string.IsNullOrEmpty(cache))
+            {
+                return cache;
+            }
+
+            var styles = this.PortalSettings.Styles;
+            var sb = new StringBuilder();
+            sb
+                .AppendLine(@"<style type=""text/css"">")
+                .AppendLine(@":root {")
+                .AppendLine($"--dnn-color-primary: #{styles.ColorPrimary.MinifiedHex};")
+                .AppendLine($"--dnn-color-primary-light: #{styles.ColorPrimaryLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-primary-dark: #{styles.ColorPrimaryDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-primary-contrast: #{styles.ColorPrimaryContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-primary-r: {styles.ColorPrimary.Red};")
+                .AppendLine($"--dnn-color-primary-g: {styles.ColorPrimary.Green};")
+                .AppendLine($"--dnn-color-primary-b: {styles.ColorPrimary.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-secondary: #{styles.ColorSecondary.MinifiedHex};")
+                .AppendLine($"--dnn-color-secondary-light: #{styles.ColorSecondaryLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-secondary-dark: #{styles.ColorSecondaryDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-secondary-contrast: #{styles.ColorSecondaryContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-secondary-r: {styles.ColorSecondary.Red};")
+                .AppendLine($"--dnn-color-secondary-g: {styles.ColorSecondary.Green};")
+                .AppendLine($"--dnn-color-secondary-b: {styles.ColorSecondary.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-tertiary: #{styles.ColorTertiary.MinifiedHex};")
+                .AppendLine($"--dnn-color-tertiary-light: #{styles.ColorTertiaryLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-tertiary-dark: #{styles.ColorTertiaryDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-tertiary-contrast: #{styles.ColorTertiaryContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-tertiary-r: {styles.ColorTertiary.Red};")
+                .AppendLine($"--dnn-color-tertiary-g: {styles.ColorTertiary.Green};")
+                .AppendLine($"--dnn-color-tertiary-b: {styles.ColorTertiary.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-neutral: #{styles.ColorNeutral.MinifiedHex};")
+                .AppendLine($"--dnn-color-neutral-light: #{styles.ColorNeutralLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-neutral-dark: #{styles.ColorNeutralDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-neutral-contrast: #{styles.ColorNeutralContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-neutral-r: {styles.ColorNeutral.Red};")
+                .AppendLine($"--dnn-color-neutral-g: {styles.ColorNeutral.Green};")
+                .AppendLine($"--dnn-color-neutral-b: {styles.ColorNeutral.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-background: #{styles.ColorBackground.MinifiedHex};")
+                .AppendLine($"--dnn-color-background-light: #{styles.ColorBackgroundLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-background-dark: #{styles.ColorBackgroundDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-background-contrast: #{styles.ColorBackgroundContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-background-r: {styles.ColorBackground.Red};")
+                .AppendLine($"--dnn-color-background-g: {styles.ColorBackground.Green};")
+                .AppendLine($"--dnn-color-background-b: {styles.ColorBackground.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-foreground: #{styles.ColorForeground.MinifiedHex};")
+                .AppendLine($"--dnn-color-foreground-light: #{styles.ColorForegroundLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-foreground-dark: #{styles.ColorForegroundDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-foreground-contrast: #{styles.ColorForegroundContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-foreground-r: {styles.ColorForeground.Red};")
+                .AppendLine($"--dnn-color-foreground-g: {styles.ColorForeground.Green};")
+                .AppendLine($"--dnn-color-foreground-b: {styles.ColorForeground.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-info: #{styles.ColorInfo.MinifiedHex};")
+                .AppendLine($"--dnn-color-info-light: #{styles.ColorInfoLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-info-dark: #{styles.ColorInfoDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-info-contrast: #{styles.ColorInfoContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-info-r: {styles.ColorInfo.Red};")
+                .AppendLine($"--dnn-color-info-g: {styles.ColorInfo.Green};")
+                .AppendLine($"--dnn-color-info-b: {styles.ColorInfo.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-success: #{styles.ColorSuccess.MinifiedHex};")
+                .AppendLine($"--dnn-color-success-light: #{styles.ColorSuccessLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-success-dark: #{styles.ColorSuccessDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-success-contrast: #{styles.ColorSuccessContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-success-r: {styles.ColorSuccess.Red};")
+                .AppendLine($"--dnn-color-success-g: {styles.ColorSuccess.Green};")
+                .AppendLine($"--dnn-color-success-b: {styles.ColorSuccess.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-warning: #{styles.ColorWarning.MinifiedHex};")
+                .AppendLine($"--dnn-color-warning-light: #{styles.ColorWarningLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-warning-dark: #{styles.ColorWarningDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-warning-contrast: #{styles.ColorWarningContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-warning-r: {styles.ColorWarning.Red};")
+                .AppendLine($"--dnn-color-warning-g: {styles.ColorWarning.Green};")
+                .AppendLine($"--dnn-color-warning-b: {styles.ColorWarning.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-color-danger: #{styles.ColorDanger.MinifiedHex};")
+                .AppendLine($"--dnn-color-danger-light: #{styles.ColorDangerLight.MinifiedHex};")
+                .AppendLine($"--dnn-color-danger-dark: #{styles.ColorDangerDark.MinifiedHex};")
+                .AppendLine($"--dnn-color-danger-contrast: #{styles.ColorDangerContrast.MinifiedHex};")
+                .AppendLine($"--dnn-color-danger-r: {styles.ColorDanger.Red};")
+                .AppendLine($"--dnn-color-danger-g: {styles.ColorDanger.Green};")
+                .AppendLine($"--dnn-color-danger-b: {styles.ColorDanger.Blue};")
+                .AppendLine()
+                .AppendLine($"--dnn-controls-radius: {styles.ControlsRadius}px;")
+                .AppendLine($"--dnn-controls-padding: {styles.ControlsPadding}px;")
+                .AppendLine($"--dnn-base-font-size: {styles.BaseFontSize}px;")
+                .AppendLine("}")
+                .AppendLine(@"</style>");
+
+            return sb.ToString();
         }
 
         /// <summary>

@@ -179,5 +179,9 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         [PortalSetting]
         public int ControlsPadding { get; set; } = 5;
+
+        /// <inheritdoc/>
+        [PortalSetting]
+        public int BaseFontSize { get; set; } = 16;
     }
 }
