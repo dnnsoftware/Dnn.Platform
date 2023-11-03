@@ -655,7 +655,7 @@ namespace DotNetNuke.Framework
 
         private string GenerateCssCustomProperties()
         {
-            string cacheKey = $"Dnn_Css_Custom_Properties_{this.PortalSettings.PortalId}";
+            string cacheKey = string.Format(this.PortalSettings.Styles.CacheKey, this.PortalSettings.PortalId);
             string cache = Common.Utilities.DataCache.GetCache<string>(cacheKey);
 
             if (!string.IsNullOrEmpty(cache))
@@ -753,7 +753,8 @@ namespace DotNetNuke.Framework
                 .AppendLine($"--dnn-base-font-size: {styles.BaseFontSize}px;")
                 .AppendLine("}")
                 .AppendLine(@"</style>");
-
+            var value = sb.ToString();
+            Common.Utilities.DataCache.SetCache(cacheKey, value);
             return sb.ToString();
         }
 
