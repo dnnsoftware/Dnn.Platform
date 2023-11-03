@@ -12,12 +12,12 @@ namespace DotNetNuke.Entities.Portals
     /// <summary>
     /// Represents a CSS color and its components.
     /// </summary>
-    public class StyleColor : IStyleColor
+    public struct StyleColor : IStyleColor
     {
         private string hex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StyleColor"/> class.
+        /// Initializes a new instance of the <see cref="StyleColor"/> struct.
         /// </summary>
         public StyleColor()
         {
@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StyleColor"/> class.
+        /// Initializes a new instance of the <see cref="StyleColor"/> struct.
         /// </summary>
         /// <param name="hexValue">The hex value to use.</param>
         public StyleColor(string hexValue)
