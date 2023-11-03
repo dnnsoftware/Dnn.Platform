@@ -9,8 +9,8 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Abstractions.Skins;
     using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Abstractions.Skins;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
