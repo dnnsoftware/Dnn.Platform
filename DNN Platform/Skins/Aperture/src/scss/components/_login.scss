@@ -1,0 +1,128 @@
+.dnnLogin {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    > div {
+        width:100%;
+        padding:0;
+    }
+
+    .LoginPanel {
+        width: 100%;
+        padding: 0;
+
+        .dnnFormItem {
+            .dnnFormLabel {
+                display:none;
+            }
+            
+            &:nth-child(1), &:nth-child(2) {
+                display: flex;
+                flex-direction: column;
+
+                .dnnFormLabel {
+                    display: block;
+                    float:left;
+                    &::after {
+                        clear:both;
+                        content: '';
+                    }
+                }
+
+                label {
+                    font-weight: 700;
+                    font-size: 1.5rem;
+                }
+
+                input {
+                    min-width: 100%;
+                    font-size: 1.5rem;
+                    font-weight: 500;
+                    padding: .25em;
+                }
+            }
+
+            &:nth-child(3) {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin-top: .5em;
+
+                a {
+                    width: 50%;
+                    margin:0;
+
+                    &.dnnPrimaryAction {
+                        margin-right:.25em;
+                    }
+                    &.dnnSecondaryAction {
+                        margin-left:.25em;
+                    }
+                }
+            }
+
+            .dnnLoginRememberMe {
+                display: block;
+                margin: 1em 0;
+
+                img {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .dnnCheckbox {
+                    margin: 1em 0;
+                    display: inline-flex;
+                    vertical-align: middle;
+                }
+
+                label {
+                    margin-left: .5em;
+                    font-size: 1.25rem;
+                    font-weight: 550;
+                }
+            }
+
+            &:last-child {
+                width: 100%;
+
+                .dnnLoginActions {
+                    width: 100%;
+
+                    ul { 
+                        margin:0;
+                        padding:0;
+                    }
+                    li {
+                        width: 50%;
+                        margin: 0;
+
+                        &:nth-child(1) {
+                            padding-right: .25em;
+                        }
+
+                        &:nth-child(2) {
+                            padding-left: .25em;
+                        }
+                    }
+
+                    a {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//Hides the #dnnHiddenLogin LOGIN theme object
+.hiddenLogin {
+    bottom: 0;
+    display: none;
+    height: 30px;
+    position: fixed;
+    text-indent: -1000px;
+    width: 30px;
+}

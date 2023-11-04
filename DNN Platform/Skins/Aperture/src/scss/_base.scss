@@ -1,0 +1,128 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+
+
+// Base Styles
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+body {
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 1.5;
+  font-family: $open-sans;
+  color: color('dark-shade');
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: $open-sans;
+}
+
+h1 {
+  @include font-baseline(48, 52);
+}
+
+h2 {
+  @include font-baseline(38, 48);
+}
+
+h3 {
+  @include font-baseline(26, 36);
+}
+
+h4 {
+  @include font-baseline(22, 28);
+}
+
+h5 {
+  @include font-baseline(18, 24);
+}
+
+p {
+  margin: 0 0 1.5rem;
+}
+
+ul,
+ol,
+pre,
+table,
+blockquote {
+  margin-bottom: 1.5rem;
+}
+
+
+
+// Sanitation
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  margin:0;
+}
+
+b,
+strong,
+em,
+small,
+code {
+  line-height: 1;
+}
+
+sup,
+sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -.4em;
+}
+
+sub {
+  top: .4em;
+}
+
+
+
+// Links
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+a {
+  color: color('sub-highlight');
+  text-decoration:none;
+  transition:.25s ease-in-out all;
+
+  &:hover {
+    color: color('light-shade');
+    text-decoration:none;
+  }
+}
+header a, footer a {
+	color: color('white');
+	font-weight:600;
+}
+
+
+
+// hr and pre
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+hr {
+  display:block;
+  height:1px;
+  width:25%;
+  border:0;
+  border-top:1px solid color('white');
+  margin-top:1.5rem;
+  margin-bottom:1.5rem;
+  padding: 0;
+}
+
+pre {
+  background:color('sub-highlight');
+  padding:10px 15px;
+}

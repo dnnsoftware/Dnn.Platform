@@ -1,0 +1,88 @@
+@function strip-unit($num) {
+  @return calc($num / ($num * 0 + 1));
+}
+
+// rem font-size with px fallback
+// usage: @include font-size(16)
+@mixin font-size($sizeValue) {
+  font-size: $sizeValue + px;
+  font-size: calc($sizeValue / 16) + rem;
+}
+
+// vertical rhythm
+// usage: @include font-baseline(16,24);
+@mixin font-baseline($font-size, $lineheight){
+	font-size: $font-size + px;
+	font-size: calc($font-size / $base-font-size) + rem;
+	line-height: calc($lineheight / $font-size);
+  margin: 0 0 calc((($lineheight / $font-size) * (1 / ($lineheight / $defaultlineheight))) * .5em ) 0; 
+}
+
+// Shorthand for media queries at px width and lower
+@mixin mq-max-width( $width-in-px ) {
+  @media only screen and (max-width: calc(($width-in-px / $base-font-size) * 1em )) {
+    @content;
+  }
+}
+
+// Shorthand for media queries at px width and higher
+@mixin mq-min-width( $width-in-px ) {
+  @media only screen and (min-width: calc(($width-in-px / $base-font-size) * 1em )) {
+    @content;
+  }
+}
+
+// Regular solid buttons
+@mixin button-variant($color, $hover-alpha: 1) {
+  $var-color: color($color);
+  $var-rgb-color: color($color, true);
+  color: white;
+  background-color: $var-color;
+  border-color: $var-color;
+  &:hover, &:focus {
+    color: white;
+    background-color: rgba($var-rgb-color, $hover-alpha);
+    border-color: rgba($var-rgb-color, $hover-alpha);
+  }
+}
+
+// Outline buttons
+@mixin button-outline-variant($color) {
+  $var-color: color($color);
+  color: $var-color;
+  background-color: transparent;
+  border-color: $var-color;
+  &:hover, &:focus {
+    color: white;
+    background-color: $var-color;
+    border-color: $var-color;
+  }
+}
+
+// Reverse outline to solid buttons
+@mixin button-reverse-outline-variant($color) {
+  $var-color: color($color);
+  color: white;
+  background-color: $var-color;
+  background-image: none;
+  border-color: $var-color;
+  &:hover, &:focus {
+    color: $var-color;
+    background-color: transparent;
+    border-color: $var-color;
+  }
+}
+
+// Inverse buttons to white background and colored text
+@mixin button-inverse-variant($color, $hover-alpha: 1) {
+  $var-color: color($color);
+  color: $var-color;
+  background-color: color('white');
+  background-image: none;
+  border-color: color('white');
+  &:hover, &:focus {
+    color: $color;
+    background-color: rgba(color('white', true), $hover-alpha);
+    border-color: rgba(color('white', true), $hover-alpha);
+  }
+}

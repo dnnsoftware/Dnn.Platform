@@ -1,0 +1,12 @@
+header {
+    .user-controls {
+        display:flex;
+        align-items:center;
+        margin:0;
+        margin-left:-1rem;
+        margin-right:-1rem;
+        li {
+            padding:0 1rem;
+        }
+    }
+}

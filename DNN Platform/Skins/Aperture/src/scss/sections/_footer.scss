@@ -1,0 +1,22 @@
+footer {
+  .disclaimer {
+    @include font-size(12);
+    display:flex;
+    margin:0;
+    margin-left:-1rem;
+    margin-right:-1rem;
+    li {
+      position:relative;
+      padding:0 1rem;
+      + li:before {
+        content:'';
+        position:absolute;
+        top:0;
+        left:0;
+        bottom:0;
+        width:1px;
+        background-color:white;
+      }
+    }
+  }
+}

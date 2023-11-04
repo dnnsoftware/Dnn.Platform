@@ -1,0 +1,42 @@
+// Color Array
+$colors: (
+    "white":white,
+    "light-shade":#e6e6e6,
+    "light-accent":#e0e1eb,
+    "main-shade":#ec3d46,
+    "main-accent":#462a2b,
+    "main-highlight":#00a5e1,
+    "sub-shade":#005a7b,
+    "sub-accent":#00a5e1,
+    "sub-highlight":#48ceff,
+    "dark-shade":#050621,
+    "dark-highlight":#484858,
+    "black":black,
+    "dnnPrimaryAction": darkblue,      // DNN Primary Button 
+    "dnnSecondaryAction": gainsboro,    // DNN Secondary Button 
+    "dnnTertiaryAction": grey           // DNN TertiaryButton 
+);
+
+// Convert Hex to RGB
+@function hex-to-rgb($hex) {
+    @return red($hex), green($hex), blue($hex);
+}
+
+// Setup Color Array as CSS4 Variables
+:root {
+    @each $name, $color in $colors {
+        --color-#{$name}: #{$color};
+    }
+    @each $name, $color in $colors {
+        --color-#{$name}--rgb: #{hex-to-rgb($color)};
+    }
+}
+
+// Color Selector
+@function color($color-name, $rgb: false) {
+    @if($rgb) {
+        @return var(--color-#{$color-name}--rgb, map-get($colors, $color-name));
+    } @else {
+        @return var(--color-#{$color-name}, map-get($colors, $color-name));
+    }
+}

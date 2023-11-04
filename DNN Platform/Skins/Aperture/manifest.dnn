@@ -1,0 +1,93 @@
+<dotnetnuke type="Package" version="9.0">
+  <packages>
+    <package name="Skin.Aperture" type="Skin" version="10.00.00">
+      <friendlyName>Aperture</friendlyName>
+      <description>Default theme for DNN 10.</description>
+      <iconFile>aperture.png</iconFile>
+      <owner>
+        <name>David Poindexter</name>
+        <organization>DNN Community</organization>
+        <url>dnncommunity.org</url>
+        <email>community@dnncommunity.org</email>
+      </owner>
+      <license src="themeLicense.txt" />
+      <releaseNotes src="themeReleaseNotes.txt" />
+      <dependencies>
+        <dependency type="coreVersion">10.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <basePath>Portals\_default\Skins\Aperture\</basePath>
+            <skinName>Aperture</skinName>
+
+            <!-- Main Directory -->
+            <skinFile>
+              <path/>
+              <name>default.png</name>
+            </skinFile>
+            <skinFile>
+              <path/>
+              <name>thumbnail_default.png</name>
+            </skinFile>
+            <skinFile>
+              <path/>
+              <name>LICENSE</name>
+            </skinFile>
+
+          </skinFiles>
+        </component>
+
+        <!-- Skins Folder -->
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Portals\_default\Skins\Aperture\</basePath>
+            <resourceFile>
+              <name>skin.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <!-- Containers Folder -->
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Portals\_default\Containers\Aperture\</basePath>
+            <resourceFile>
+              <name>container.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <!-- Ensure MIME types are mapped -->
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes configfile="web.config">
+                  <node path="/configuration/system.webServer" targetpath="/configuration/system.webServer/staticContent" action="update" collision="ignore">
+                    <staticContent>
+                    </staticContent>
+                  </node>
+                  <node path="/configuration/system.webServer/staticContent" action="update" key="fileExtension" collision="ignore">
+                    <remove fileExtension=".svg" />
+                    <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                    <remove fileExtension=".woff" />
+                    <mimeMap fileExtension=".woff" mimeType="font/x-woff" />
+                    <remove fileExtension=".woff2" />
+                    <mimeMap fileExtension=".woff2" mimeType="application/font-woff2" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes/>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

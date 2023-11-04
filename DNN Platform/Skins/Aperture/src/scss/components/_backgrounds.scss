@@ -1,0 +1,6 @@
+// bg classes from current color scheme
+@each $color, $value in $colors {
+    .bg-#{$color}{
+        background-color:color($color) !important;
+    }
+}

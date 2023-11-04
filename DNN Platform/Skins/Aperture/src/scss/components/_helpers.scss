@@ -1,0 +1,9 @@
+// text classes from current color scheme
+@each $color, $value in $colors {
+    .text-#{$color} {
+        color: color($color) !important;
+    }
+    .border-#{$color} {
+        border-color: color($color) !important;
+    }
+}
