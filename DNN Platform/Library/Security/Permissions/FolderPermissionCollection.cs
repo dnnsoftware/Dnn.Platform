@@ -91,6 +91,14 @@ namespace DotNetNuke.Security.Permissions
             return id;
         }
 
+        public void AddRange(IEnumerable<FolderPermissionInfo> folderPermissions)
+        {
+            foreach (var permission in folderPermissions)
+            {
+                this.List.Add(permission);
+            }
+        }
+
         public void AddRange(ArrayList folderPermissions)
         {
             foreach (FolderPermissionInfo permission in folderPermissions)

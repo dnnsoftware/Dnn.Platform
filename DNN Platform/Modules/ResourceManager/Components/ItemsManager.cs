@@ -134,8 +134,8 @@ namespace Dnn.Modules.ResourceManager.Components
             }
 
             folder.FolderPermissions.Clear();
-            folder.FolderPermissions.AddRange(folderDetails.Permissions.RolePermissions.ToPermissionInfos(folderDetails.FolderId));
-            folder.FolderPermissions.AddRange(folderDetails.Permissions.UserPermissions.ToPermissionInfos(folderDetails.FolderId));
+            folder.FolderPermissions.AddRange(folderDetails.Permissions.RolePermissions.AsFolderPermissions(folderDetails.FolderId));
+            folder.FolderPermissions.AddRange(folderDetails.Permissions.UserPermissions.AsFolderPermissions(folderDetails.FolderId));
             FolderManager.Instance.UpdateFolder(folder);
         }
 

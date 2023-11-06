@@ -10,6 +10,12 @@ There are three supported build scenarios:
 When contributing to DNN, you'd typically go through steps 2 and 3 at least and maybe 1 if you wish to run more encompassing tests. But before you delve into code, please familiarize yourself with [How to Contribute](/CONTRIBUTING.md) first.
 
 
+## Build/Develop Prerequisites
+
+- Visual Studio 2022 (or .NET SDK 6.x) or later
+- Node.js 18.x or later
+  - This project uses [Yarn](https://yarnpkg.com/), enable its local usage by running `corepack enable`
+
 ## External sources
 
 There is one project not included in this repository that are distributed with DNN:
@@ -40,7 +46,7 @@ Note that (unless a build version has been specified, see below) this process wi
 
 This process also uses Cake and follows the same logic as above, with the sole difference that the output is not a distribution zip file but rather this process pumps contents out to a directory you specify. Also you need to tell this process about your SQL server so that it can reset the database. When complete you should get the same experience as if you've built the platform and unpacked it on a server.
 
-### Prerequisites
+### Development Site Prerequisites
 
 You'll need to be running IIS and SQL server (Express) locally for this to work. Create a folder on your hard disk and set it up in IIS as a web application. Then create or edit the local settings file.
 
@@ -155,8 +161,6 @@ If a build fails midway and you have tracked artifacts, you can simply run:
 ### Troubleshooting
 
 If you encounter PowerShell security issues, please read [Cake - PowerShell Security](http://cakebuildbotdevelop.azurewebsites.net/docs/tutorials/powershell-security).
-
-If you encouter Yarn issues, please [update Yarn to the lastest version](https://yarnpkg.com/getting-started/install).
 
 ### Git branching strategy
 
