@@ -10,6 +10,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Build.AzurePipelines.Data;
     using Cake.Common.IO;
     using Cake.Common.Tools.MSBuild;
+    using Cake.Core;
     using Cake.Core.IO;
     using Cake.Frosting;
     using Cake.Issues;
@@ -40,28 +41,9 @@ namespace DotNetNuke.Build.Tasks
             }
             finally
             {
-                var issueProviders =
-                    from logFilePath in new[] { cleanLog, buildLog, }
-                    where context.FileExists(logFilePath)
-                    let settings = new MsBuildIssuesSettings(logFilePath, context.MsBuildBinaryLogFileFormat())
-                    select new MsBuildIssuesProvider(context.Log, settings);
-                var issues = context.ReadIssues(issueProviders, context.Directory("."));
-                foreach (var issue in issues)
+                if (context.AzurePipelines().IsRunningOnAzurePipelines)
                 {
-                    var messageData = new AzurePipelinesMessageData
-                    {
-                        SourcePath = issue.AffectedFileRelativePath?.FullPath,
-                        LineNumber = issue.Line,
-                    };
-
-                    if (string.Equals(issue.PriorityName, "Error", StringComparison.Ordinal))
-                    {
-                        context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
-                    }
-                    else
-                    {
-                        context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
-                    }
+                    ReportIssuesToAzurePipelines(context, cleanLog, buildLog);
                 }
             }
         }
@@ -72,6 +54,33 @@ namespace DotNetNuke.Build.Tasks
                 .SetMaxCpuCount(0)
                 .EnableBinaryLogger(binLogPath.FullPath)
                 .SetNoConsoleLogger(context.IsRunningInCI);
+        }
+
+        private static void ReportIssuesToAzurePipelines(ICakeContext context, FilePath cleanLog, FilePath buildLog)
+        {
+            var issueProviders =
+                from logFilePath in new[] { cleanLog, buildLog, }
+                where context.FileExists(logFilePath)
+                let settings = new MsBuildIssuesSettings(logFilePath, context.MsBuildBinaryLogFileFormat())
+                select new MsBuildIssuesProvider(context.Log, settings);
+            var issues = context.ReadIssues(issueProviders, context.Directory("."));
+            foreach (var issue in issues)
+            {
+                var messageData = new AzurePipelinesMessageData
+                {
+                    SourcePath = issue.AffectedFileRelativePath?.FullPath,
+                    LineNumber = issue.Line,
+                };
+
+                if (string.Equals(issue.PriorityName, "Error", StringComparison.Ordinal))
+                {
+                    context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
+                }
+                else
+                {
+                    context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
+                }
+            }
         }
     }
 }
