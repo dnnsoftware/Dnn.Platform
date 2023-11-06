@@ -111,7 +111,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
 		azure-pipelines.yml = azure-pipelines.yml
-		build.cake = build.cake
 		build.ps1 = build.ps1
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
@@ -125,6 +124,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SolutionInfo.cs = SolutionInfo.cs
 		stylecop.json = stylecop.json
 		global.json = global.json
+		package.json = package.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -581,6 +581,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.GoogleMailAuthProvider", "DNN Platform\Providers\SmtpOAuthProviders\GoogleMailAuthProvider\Dnn.GoogleMailAuthProvider.csproj", "{E5494C71-4472-4F19-AFB5-4D8902AA5670}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Mail", "DNN Platform\Tests\DotNetNuke.Tests.Mail\DotNetNuke.Tests.Mail.csproj", "{6940BDBA-E56F-48A6-B4A6-9F829245984F}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery.Fileupload", "jQuery.Fileupload", "{60AD263B-C26A-4ED3-B63F-F508230B1B55}"
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn = DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn
