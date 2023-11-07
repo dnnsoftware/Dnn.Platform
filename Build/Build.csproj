@@ -22,9 +22,7 @@
     <PackageReference Include="Cake.Issues.MsBuild" Version="3.0.0" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
-    <PackageReference Include="Cake.Yarn" Version="2.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />
-    <PackageReference Include="MSBuild.StructuredLogger" Version="2.1.820" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

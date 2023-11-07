@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -694,16 +695,14 @@ namespace DotNetNuke.Services.FileSystem
 
             var parentFolderPath = folder.FolderPath.Substring(0, folder.FolderPath.Substring(0, folder.FolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
 
-            foreach (FolderPermissionInfo objPermission in
-                this.GetFolderPermissionsFromSyncData(folder.PortalID, parentFolderPath))
+            foreach (IFolderPermissionInfo objPermission in this.GetFolderPermissionsFromSyncData(folder.PortalID, parentFolderPath))
             {
-                var folderPermission = new FolderPermissionInfo(objPermission)
-                {
-                    FolderID = folder.FolderID,
-                    RoleID = objPermission.RoleID,
-                    UserID = objPermission.UserID,
-                    AllowAccess = objPermission.AllowAccess,
-                };
+                var folderPermission = new FolderPermissionInfo(objPermission);
+                IFolderPermissionInfo iFolderPermission = folderPermission;
+                iFolderPermission.FolderId = folder.FolderID;
+                iFolderPermission.RoleId = objPermission.RoleId;
+                iFolderPermission.UserId = objPermission.UserId;
+                iFolderPermission.AllowAccess = objPermission.AllowAccess;
                 folder.FolderPermissions.Add(folderPermission, true);
             }
 

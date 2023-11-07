@@ -13,6 +13,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -27,6 +28,7 @@ namespace DotNetNuke
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
@@ -68,6 +70,8 @@ namespace DotNetNuke
             services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
 
             services.AddScoped<IPortalAliasService, PortalAliasController>();
+
+            services.AddScoped<IPermissionDefinitionService, PermissionController>();
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
             services.AddTransient<ISmtpOAuthController, SmtpOAuthController>();

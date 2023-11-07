@@ -113,7 +113,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
 		azure-pipelines.yml = azure-pipelines.yml
-		build.cake = build.cake
 		build.ps1 = build.ps1
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
@@ -127,6 +126,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SolutionInfo.cs = SolutionInfo.cs
 		stylecop.json = stylecop.json
 		global.json = global.json
+		package.json = package.json
+		.gitattributes = .gitattributes
+		.yarnrc.yml = .yarnrc.yml
+		build.config = build.config
+		build.sh = build.sh
+		cake.config = cake.config
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		DNN_Platform.local.build = DNN_Platform.local.build
+		lerna.json = lerna.json
+		SECURITY.md = SECURITY.md
+		settings.local.json = settings.local.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -603,6 +613,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.Web.Infrastructur
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Components\Microsoft.Web.Infrastructure\License.txt = DNN Platform\Components\Microsoft.Web.Infrastructure\License.txt
 		DNN Platform\Components\Microsoft.Web.Infrastructure\Microsoft.Web.Infrastructure.dnn = DNN Platform\Components\Microsoft.Web.Infrastructure\Microsoft.Web.Infrastructure.dnn
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery.Fileupload", "jQuery.Fileupload", "{60AD263B-C26A-4ED3-B63F-F508230B1B55}"
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn = DNN Platform\JavaScript Libraries\jQuery.Fileupload\jQuery.Fileupload.dnn
@@ -638,6 +649,49 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Internal.SourceGenerators", "DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj", "{5FE5D021-9C8D-47A6-BD34-F328BA3E709C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.SourceGenerators", "DNN Platform\Tests\DotNetNuke.Tests.SourceGenerators\DotNetNuke.Tests.SourceGenerators.csproj", "{88689A62-F691-457E-BFC1-781730E3591B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{572DF6DE-32A7-4695-B994-5C25AA588320}"
+	ProjectSection(SolutionItems) = preProject
+		.github\APPROVERS.md = .github\APPROVERS.md
+		.github\BUILD.md = .github\BUILD.md
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\mergeable.yml = .github\mergeable.yml
+		.github\PULL_REQUEST_PROCESS.md = .github\PULL_REQUEST_PROCESS.md
+		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
+		.github\RELEASE_SCHEDULE.md = .github\RELEASE_SCHEDULE.md
+		.github\stale.yml = .github\stale.yml
+		.github\VERSIONING_POLICY.md = .github\VERSIONING_POLICY.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{1F652865-83DA-423F-9779-D74A44E9E128}"
+	ProjectSection(SolutionItems) = preProject
+		.github\images\PoweredByNDepend.png = .github\images\PoweredByNDepend.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{439FDC7C-C86F-40DF-AC6D-2282E59A9323}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug-report.yml = .github\ISSUE_TEMPLATE\bug-report.yml
+		.github\ISSUE_TEMPLATE\config.yml = .github\ISSUE_TEMPLATE\config.yml
+		.github\ISSUE_TEMPLATE\enhancement-request.yml = .github\ISSUE_TEMPLATE\enhancement-request.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AC5B9AB0-6049-43F3-B0C6-3E3090CBA5C2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\image-actions.yml = .github\workflows\image-actions.yml
+		.github\workflows\open-merged-pr-to-future.yml = .github\workflows\open-merged-pr-to-future.yml
+		.github\workflows\updateVersions.yml = .github\workflows\updateVersions.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B3512F4-E0A9-420E-9F44-1C84413D2D58}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{4FBA4C58-559B-4CD2-9926-CDA3498FE20E}"
+	ProjectSection(SolutionItems) = preProject
+		Packages\repositories.config = Packages\repositories.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2558,6 +2612,12 @@ Global
 		{CF68C3E8-5CF4-47A8-867B-9C6CE9852AA4} = {886DB964-63D4-4841-81D1-5A7360C98230}
 		{5FE5D021-9C8D-47A6-BD34-F328BA3E709C} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{88689A62-F691-457E-BFC1-781730E3591B} = {88E649D7-1379-430F-B794-1F3B9B442C80}
+		{572DF6DE-32A7-4695-B994-5C25AA588320} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
+		{1F652865-83DA-423F-9779-D74A44E9E128} = {572DF6DE-32A7-4695-B994-5C25AA588320}
+		{439FDC7C-C86F-40DF-AC6D-2282E59A9323} = {572DF6DE-32A7-4695-B994-5C25AA588320}
+		{AC5B9AB0-6049-43F3-B0C6-3E3090CBA5C2} = {572DF6DE-32A7-4695-B994-5C25AA588320}
+		{4B3512F4-E0A9-420E-9F44-1C84413D2D58} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
+		{4FBA4C58-559B-4CD2-9926-CDA3498FE20E} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}
