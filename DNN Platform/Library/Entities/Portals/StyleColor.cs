@@ -14,6 +14,8 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     public struct StyleColor : IStyleColor
     {
+        private static readonly Regex HexColorRegex = new Regex(@"([\da-f]{3}){1,2}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private string hex;
 
         /// <summary>
@@ -124,8 +126,7 @@ namespace DotNetNuke.Entities.Portals
                 throw new ArgumentNullException("You need to provide a CSS color value in the constructor");
             }
 
-            var regex = new Regex(@"([\da-f]{3}){1,2}", RegexOptions.IgnoreCase);
-            if (!regex.IsMatch(hexValue))
+            if (!HexColorRegex.IsMatch(hexValue))
             {
                 throw new ArgumentOutOfRangeException($"The value {hexValue} that was provided is not valid, it needs to be 3 or 6 character long hexadecimal string without the # sing");
             }
