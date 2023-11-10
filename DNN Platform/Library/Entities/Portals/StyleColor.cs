@@ -16,14 +16,17 @@ namespace DotNetNuke.Entities.Portals
     {
         private static readonly Regex HexColorRegex = new Regex(@"([\da-f]{3}){1,2}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private readonly byte red;
+        private readonly byte green;
+        private readonly byte blue;
         private string hex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StyleColor"/> struct.
         /// </summary>
         public StyleColor()
+            : this("FFFFFF")
         {
-            this.hex = "FFFFFF";
         }
 
         /// <summary>
@@ -40,6 +43,10 @@ namespace DotNetNuke.Entities.Portals
             {
                 this.HexValue = ExpandColor("FFFFFF");
             }
+
+            this.red = byte.Parse(this.HexValue.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+            this.green = byte.Parse(this.HexValue.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            this.blue = byte.Parse(this.HexValue.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
         }
 
         private enum Component
@@ -52,21 +59,21 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public byte Red
         {
-            get { return this.GetComponent(Component.Red); }
+            get => this.red;
             set { this.SetComponent(Component.Red, value); }
         }
 
         /// <inheritdoc/>
         public byte Green
         {
-            get { return this.GetComponent(Component.Green); }
+            get => this.green;
             set { this.SetComponent(Component.Green, value); }
         }
 
         /// <inheritdoc/>
         public byte Blue
         {
-            get { return this.GetComponent(Component.Blue); }
+            get => this.blue;
             set { this.SetComponent(Component.Blue, value); }
         }
 
@@ -132,21 +139,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return true;
-        }
-
-        private byte GetComponent(Component comp)
-        {
-            switch (comp)
-            {
-                case Component.Red:
-                    return byte.Parse(this.hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-                case Component.Green:
-                    return byte.Parse(this.hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-                case Component.Blue:
-                    return byte.Parse(this.hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-                default:
-                    return 0;
-            }
         }
 
         private void SetComponent(Component comp, byte value)
