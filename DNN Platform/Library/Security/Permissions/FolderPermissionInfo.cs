@@ -39,7 +39,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public FolderPermissionInfo(PermissionInfo permission)
-            : this((IPermissionInfo)permission)
+            : this((IPermissionDefinitionInfo)permission)
         {
         }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Security.Permissions
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        public FolderPermissionInfo(IPermissionInfo permission)
+        public FolderPermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
             var @this = (IPermissionDefinitionInfo)this;
