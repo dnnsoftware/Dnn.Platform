@@ -664,98 +664,97 @@ namespace DotNetNuke.Framework
             }
 
             var styles = this.PortalSettings.Styles;
-            var sb = new StringBuilder();
-            sb
-                .AppendLine(@"<style type=""text/css"">")
-                .AppendLine(@":root {")
-                .AppendLine($"--dnn-color-primary: #{styles.ColorPrimary.MinifiedHex};")
-                .AppendLine($"--dnn-color-primary-light: #{styles.ColorPrimaryLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-primary-dark: #{styles.ColorPrimaryDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-primary-contrast: #{styles.ColorPrimaryContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-primary-r: {styles.ColorPrimary.Red};")
-                .AppendLine($"--dnn-color-primary-g: {styles.ColorPrimary.Green};")
-                .AppendLine($"--dnn-color-primary-b: {styles.ColorPrimary.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-secondary: #{styles.ColorSecondary.MinifiedHex};")
-                .AppendLine($"--dnn-color-secondary-light: #{styles.ColorSecondaryLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-secondary-dark: #{styles.ColorSecondaryDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-secondary-contrast: #{styles.ColorSecondaryContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-secondary-r: {styles.ColorSecondary.Red};")
-                .AppendLine($"--dnn-color-secondary-g: {styles.ColorSecondary.Green};")
-                .AppendLine($"--dnn-color-secondary-b: {styles.ColorSecondary.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-tertiary: #{styles.ColorTertiary.MinifiedHex};")
-                .AppendLine($"--dnn-color-tertiary-light: #{styles.ColorTertiaryLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-tertiary-dark: #{styles.ColorTertiaryDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-tertiary-contrast: #{styles.ColorTertiaryContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-tertiary-r: {styles.ColorTertiary.Red};")
-                .AppendLine($"--dnn-color-tertiary-g: {styles.ColorTertiary.Green};")
-                .AppendLine($"--dnn-color-tertiary-b: {styles.ColorTertiary.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-neutral: #{styles.ColorNeutral.MinifiedHex};")
-                .AppendLine($"--dnn-color-neutral-light: #{styles.ColorNeutralLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-neutral-dark: #{styles.ColorNeutralDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-neutral-contrast: #{styles.ColorNeutralContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-neutral-r: {styles.ColorNeutral.Red};")
-                .AppendLine($"--dnn-color-neutral-g: {styles.ColorNeutral.Green};")
-                .AppendLine($"--dnn-color-neutral-b: {styles.ColorNeutral.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-background: #{styles.ColorBackground.MinifiedHex};")
-                .AppendLine($"--dnn-color-background-light: #{styles.ColorBackgroundLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-background-dark: #{styles.ColorBackgroundDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-background-contrast: #{styles.ColorBackgroundContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-background-r: {styles.ColorBackground.Red};")
-                .AppendLine($"--dnn-color-background-g: {styles.ColorBackground.Green};")
-                .AppendLine($"--dnn-color-background-b: {styles.ColorBackground.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-foreground: #{styles.ColorForeground.MinifiedHex};")
-                .AppendLine($"--dnn-color-foreground-light: #{styles.ColorForegroundLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-foreground-dark: #{styles.ColorForegroundDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-foreground-contrast: #{styles.ColorForegroundContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-foreground-r: {styles.ColorForeground.Red};")
-                .AppendLine($"--dnn-color-foreground-g: {styles.ColorForeground.Green};")
-                .AppendLine($"--dnn-color-foreground-b: {styles.ColorForeground.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-info: #{styles.ColorInfo.MinifiedHex};")
-                .AppendLine($"--dnn-color-info-light: #{styles.ColorInfoLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-info-dark: #{styles.ColorInfoDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-info-contrast: #{styles.ColorInfoContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-info-r: {styles.ColorInfo.Red};")
-                .AppendLine($"--dnn-color-info-g: {styles.ColorInfo.Green};")
-                .AppendLine($"--dnn-color-info-b: {styles.ColorInfo.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-success: #{styles.ColorSuccess.MinifiedHex};")
-                .AppendLine($"--dnn-color-success-light: #{styles.ColorSuccessLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-success-dark: #{styles.ColorSuccessDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-success-contrast: #{styles.ColorSuccessContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-success-r: {styles.ColorSuccess.Red};")
-                .AppendLine($"--dnn-color-success-g: {styles.ColorSuccess.Green};")
-                .AppendLine($"--dnn-color-success-b: {styles.ColorSuccess.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-warning: #{styles.ColorWarning.MinifiedHex};")
-                .AppendLine($"--dnn-color-warning-light: #{styles.ColorWarningLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-warning-dark: #{styles.ColorWarningDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-warning-contrast: #{styles.ColorWarningContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-warning-r: {styles.ColorWarning.Red};")
-                .AppendLine($"--dnn-color-warning-g: {styles.ColorWarning.Green};")
-                .AppendLine($"--dnn-color-warning-b: {styles.ColorWarning.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-color-danger: #{styles.ColorDanger.MinifiedHex};")
-                .AppendLine($"--dnn-color-danger-light: #{styles.ColorDangerLight.MinifiedHex};")
-                .AppendLine($"--dnn-color-danger-dark: #{styles.ColorDangerDark.MinifiedHex};")
-                .AppendLine($"--dnn-color-danger-contrast: #{styles.ColorDangerContrast.MinifiedHex};")
-                .AppendLine($"--dnn-color-danger-r: {styles.ColorDanger.Red};")
-                .AppendLine($"--dnn-color-danger-g: {styles.ColorDanger.Green};")
-                .AppendLine($"--dnn-color-danger-b: {styles.ColorDanger.Blue};")
-                .AppendLine()
-                .AppendLine($"--dnn-controls-radius: {styles.ControlsRadius}px;")
-                .AppendLine($"--dnn-controls-padding: {styles.ControlsPadding}px;")
-                .AppendLine($"--dnn-base-font-size: {styles.BaseFontSize}px;")
-                .AppendLine("}")
-                .AppendLine(@"</style>");
-            var value = sb.ToString();
-            Common.Utilities.DataCache.SetCache(cacheKey, value);
-            return sb.ToString();
+            var cssVars = $@"
+                <style type=""text/css"">
+                    :root {{
+                        --dnn-color-primary: #{styles.ColorPrimary.MinifiedHex};
+                        --dnn-color-primary-light: #{styles.ColorPrimaryLight.MinifiedHex};
+                        --dnn-color-primary-dark: #{styles.ColorPrimaryDark.MinifiedHex};
+                        --dnn-color-primary-contrast: #{styles.ColorPrimaryContrast.MinifiedHex};
+                        --dnn-color-primary-r: {styles.ColorPrimary.Red};
+                        --dnn-color-primary-g: {styles.ColorPrimary.Green};
+                        --dnn-color-primary-b: {styles.ColorPrimary.Blue};
+                        
+                        --dnn-color-secondary: #{styles.ColorSecondary.MinifiedHex};
+                        --dnn-color-secondary-light: #{styles.ColorSecondaryLight.MinifiedHex};
+                        --dnn-color-secondary-dark: #{styles.ColorSecondaryDark.MinifiedHex};
+                        --dnn-color-secondary-contrast: #{styles.ColorSecondaryContrast.MinifiedHex};
+                        --dnn-color-secondary-r: {styles.ColorSecondary.Red};
+                        --dnn-color-secondary-g: {styles.ColorSecondary.Green};
+                        --dnn-color-secondary-b: {styles.ColorSecondary.Blue};
+                        
+                        --dnn-color-tertiary: #{styles.ColorTertiary.MinifiedHex};
+                        --dnn-color-tertiary-light: #{styles.ColorTertiaryLight.MinifiedHex};
+                        --dnn-color-tertiary-dark: #{styles.ColorTertiaryDark.MinifiedHex};
+                        --dnn-color-tertiary-contrast: #{styles.ColorTertiaryContrast.MinifiedHex};
+                        --dnn-color-tertiary-r: {styles.ColorTertiary.Red};
+                        --dnn-color-tertiary-g: {styles.ColorTertiary.Green};
+                        --dnn-color-tertiary-b: {styles.ColorTertiary.Blue};
+                        
+                        --dnn-color-neutral: #{styles.ColorNeutral.MinifiedHex};
+                        --dnn-color-neutral-light: #{styles.ColorNeutralLight.MinifiedHex};
+                        --dnn-color-neutral-dark: #{styles.ColorNeutralDark.MinifiedHex};
+                        --dnn-color-neutral-contrast: #{styles.ColorNeutralContrast.MinifiedHex};
+                        --dnn-color-neutral-r: {styles.ColorNeutral.Red};
+                        --dnn-color-neutral-g: {styles.ColorNeutral.Green};
+                        --dnn-color-neutral-b: {styles.ColorNeutral.Blue};
+                        
+                        --dnn-color-background: #{styles.ColorBackground.MinifiedHex};
+                        --dnn-color-background-light: #{styles.ColorBackgroundLight.MinifiedHex};
+                        --dnn-color-background-dark: #{styles.ColorBackgroundDark.MinifiedHex};
+                        --dnn-color-background-contrast: #{styles.ColorBackgroundContrast.MinifiedHex};
+                        --dnn-color-background-r: {styles.ColorBackground.Red};
+                        --dnn-color-background-g: {styles.ColorBackground.Green};
+                        --dnn-color-background-b: {styles.ColorBackground.Blue};
+                        
+                        --dnn-color-foreground: #{styles.ColorForeground.MinifiedHex};
+                        --dnn-color-foreground-light: #{styles.ColorForegroundLight.MinifiedHex};
+                        --dnn-color-foreground-dark: #{styles.ColorForegroundDark.MinifiedHex};
+                        --dnn-color-foreground-contrast: #{styles.ColorForegroundContrast.MinifiedHex};
+                        --dnn-color-foreground-r: {styles.ColorForeground.Red};
+                        --dnn-color-foreground-g: {styles.ColorForeground.Green};
+                        --dnn-color-foreground-b: {styles.ColorForeground.Blue};
+
+                        --dnn-color-info: #{styles.ColorInfo.MinifiedHex};
+                        --dnn-color-info-light: #{styles.ColorInfoLight.MinifiedHex};
+                        --dnn-color-info-dark: #{styles.ColorInfoDark.MinifiedHex};
+                        --dnn-color-info-contrast: #{styles.ColorInfoContrast.MinifiedHex};
+                        --dnn-color-info-r: {styles.ColorInfo.Red};
+                        --dnn-color-info-g: {styles.ColorInfo.Green};
+                        --dnn-color-info-b: {styles.ColorInfo.Blue};
+
+                        --dnn-color-success: #{styles.ColorSuccess.MinifiedHex};
+                        --dnn-color-success-light: #{styles.ColorSuccessLight.MinifiedHex};
+                        --dnn-color-success-dark: #{styles.ColorSuccessDark.MinifiedHex};
+                        --dnn-color-success-contrast: #{styles.ColorSuccessContrast.MinifiedHex};
+                        --dnn-color-success-r: {styles.ColorSuccess.Red};
+                        --dnn-color-success-g: {styles.ColorSuccess.Green};
+                        --dnn-color-success-b: {styles.ColorSuccess.Blue};
+
+                        --dnn-color-warning: #{styles.ColorWarning.MinifiedHex};
+                        --dnn-color-warning-light: #{styles.ColorWarningLight.MinifiedHex};
+                        --dnn-color-warning-dark: #{styles.ColorWarningDark.MinifiedHex};
+                        --dnn-color-warning-contrast: #{styles.ColorWarningContrast.MinifiedHex};
+                        --dnn-color-warning-r: {styles.ColorWarning.Red};
+                        --dnn-color-warning-g: {styles.ColorWarning.Green};
+                        --dnn-color-warning-b: {styles.ColorWarning.Blue};
+
+                        --dnn-color-danger: #{styles.ColorDanger.MinifiedHex};
+                        --dnn-color-danger-light: #{styles.ColorDangerLight.MinifiedHex};
+                        --dnn-color-danger-dark: #{styles.ColorDangerDark.MinifiedHex};
+                        --dnn-color-danger-contrast: #{styles.ColorDangerContrast.MinifiedHex};
+                        --dnn-color-danger-r: {styles.ColorDanger.Red};
+                        --dnn-color-danger-g: {styles.ColorDanger.Green};
+                        --dnn-color-danger-b: {styles.ColorDanger.Blue};
+
+                        --dnn-controls-radius: {styles.ControlsRadius}px;
+                        --dnn-controls-padding: {styles.ControlsPadding}px;
+                        --dnn-base-font-size: {styles.BaseFontSize}px;
+                    }}
+                </style>
+            ";
+            Common.Utilities.DataCache.SetCache(cacheKey, cssVars);
+            return cssVars;
         }
 
         /// <summary>
