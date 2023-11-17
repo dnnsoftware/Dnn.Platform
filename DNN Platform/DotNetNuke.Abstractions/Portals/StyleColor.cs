@@ -2,17 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Portals
+namespace DotNetNuke.Abstractions.Portals
 {
     using System;
     using System.Text.RegularExpressions;
 
-    using DotNetNuke.Abstractions.Portals;
-
     /// <summary>
     /// Represents a CSS color and its components.
     /// </summary>
-    public struct StyleColor : IStyleColor
+    public struct StyleColor
     {
         private static readonly Regex HexColorRegex = new Regex(@"([\da-f]{3}){1,2}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -56,28 +54,36 @@ namespace DotNetNuke.Entities.Portals
             Blue,
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets the value for the red component.
+        /// </summary>
         public byte Red
         {
             get => this.red;
             set { this.SetComponent(Component.Red, value); }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets the value for the green component.
+        /// </summary>
         public byte Green
         {
             get => this.green;
             set { this.SetComponent(Component.Green, value); }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets the value for the blue component.
+        /// </summary>
         public byte Blue
         {
             get => this.blue;
             set { this.SetComponent(Component.Blue, value); }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets the color hexadecimal value.
+        /// </summary>
         public string HexValue
         {
             get
@@ -94,7 +100,10 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets a minified hexadecimal value for the color.
+        /// </summary>
+        /// <example>If the color is 0088FF, it should return 08F.</example>
         public string MinifiedHex
         {
             get

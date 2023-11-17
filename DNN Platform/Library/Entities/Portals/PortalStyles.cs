@@ -14,163 +14,163 @@ namespace DotNetNuke.Entities.Portals
     {
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorPrimary { get; set; } = new StyleColor("3792ED");
+        public StyleColor ColorPrimary { get; set; } = new StyleColor("3792ED");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorPrimaryLight { get; set; } = new StyleColor("6CB6F3");
+        public StyleColor ColorPrimaryLight { get; set; } = new StyleColor("6CB6F3");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorPrimaryDark { get; set; } = new StyleColor("0D569E");
+        public StyleColor ColorPrimaryDark { get; set; } = new StyleColor("0D569E");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorPrimaryContrast { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorPrimaryContrast { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSecondary { get; set; } = new StyleColor("CCCCCC");
+        public StyleColor ColorSecondary { get; set; } = new StyleColor("CCCCCC");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSecondaryLight { get; set; } = new StyleColor("EEEEEE");
+        public StyleColor ColorSecondaryLight { get; set; } = new StyleColor("EEEEEE");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSecondaryDark { get; set; } = new StyleColor("AAAAAA");
+        public StyleColor ColorSecondaryDark { get; set; } = new StyleColor("AAAAAA");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSecondaryContrast { get; set; } = new StyleColor("222222");
+        public StyleColor ColorSecondaryContrast { get; set; } = new StyleColor("222222");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorTertiary { get; set; } = new StyleColor("EAEAEA");
+        public StyleColor ColorTertiary { get; set; } = new StyleColor("EAEAEA");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorTertiaryLight { get; set; } = new StyleColor("F2F2F2");
+        public StyleColor ColorTertiaryLight { get; set; } = new StyleColor("F2F2F2");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorTertiaryDark { get; set; } = new StyleColor("D8D8D8");
+        public StyleColor ColorTertiaryDark { get; set; } = new StyleColor("D8D8D8");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorTertiaryContrast { get; set; } = new StyleColor("333333");
+        public StyleColor ColorTertiaryContrast { get; set; } = new StyleColor("333333");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorNeutral { get; set; } = new StyleColor("B2B2B2");
+        public StyleColor ColorNeutral { get; set; } = new StyleColor("B2B2B2");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorNeutralLight { get; set; } = new StyleColor("E5E5E5");
+        public StyleColor ColorNeutralLight { get; set; } = new StyleColor("E5E5E5");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorNeutralDark { get; set; } = new StyleColor("999999");
+        public StyleColor ColorNeutralDark { get; set; } = new StyleColor("999999");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorNeutralContrast { get; set; } = new StyleColor("000000");
+        public StyleColor ColorNeutralContrast { get; set; } = new StyleColor("000000");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorBackground { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorBackground { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorBackgroundLight { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorBackgroundLight { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorBackgroundDark { get; set; } = new StyleColor("999999");
+        public StyleColor ColorBackgroundDark { get; set; } = new StyleColor("999999");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorBackgroundContrast { get; set; } = new StyleColor("000000");
+        public StyleColor ColorBackgroundContrast { get; set; } = new StyleColor("000000");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorForeground { get; set; } = new StyleColor("000000");
+        public StyleColor ColorForeground { get; set; } = new StyleColor("000000");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorForegroundLight { get; set; } = new StyleColor("333333");
+        public StyleColor ColorForegroundLight { get; set; } = new StyleColor("333333");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorForegroundDark { get; set; } = new StyleColor("000000");
+        public StyleColor ColorForegroundDark { get; set; } = new StyleColor("000000");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorForegroundContrast { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorForegroundContrast { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorInfo { get; set; } = new StyleColor("17A2B8");
+        public StyleColor ColorInfo { get; set; } = new StyleColor("17A2B8");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorInfoLight { get; set; } = new StyleColor("23B8CF");
+        public StyleColor ColorInfoLight { get; set; } = new StyleColor("23B8CF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorInfoDark { get; set; } = new StyleColor("00889E");
+        public StyleColor ColorInfoDark { get; set; } = new StyleColor("00889E");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorInfoContrast { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorInfoContrast { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSuccess { get; set; } = new StyleColor("28A745");
+        public StyleColor ColorSuccess { get; set; } = new StyleColor("28A745");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSuccessLight { get; set; } = new StyleColor("49C25D");
+        public StyleColor ColorSuccessLight { get; set; } = new StyleColor("49C25D");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSuccessDark { get; set; } = new StyleColor("00902F");
+        public StyleColor ColorSuccessDark { get; set; } = new StyleColor("00902F");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorSuccessContrast { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorSuccessContrast { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorWarning { get; set; } = new StyleColor("FFC107");
+        public StyleColor ColorWarning { get; set; } = new StyleColor("FFC107");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorWarningLight { get; set; } = new StyleColor("FFD42E");
+        public StyleColor ColorWarningLight { get; set; } = new StyleColor("FFD42E");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorWarningDark { get; set; } = new StyleColor("E9AD00");
+        public StyleColor ColorWarningDark { get; set; } = new StyleColor("E9AD00");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorWarningContrast { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorWarningContrast { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorDanger { get; set; } = new StyleColor("DC3545");
+        public StyleColor ColorDanger { get; set; } = new StyleColor("DC3545");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorDangerLight { get; set; } = new StyleColor("F14954");
+        public StyleColor ColorDangerLight { get; set; } = new StyleColor("F14954");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorDangerDark { get; set; } = new StyleColor("C51535");
+        public StyleColor ColorDangerDark { get; set; } = new StyleColor("C51535");
 
         /// <inheritdoc/>
         [PortalSetting]
-        public IStyleColor ColorDangerContrast { get; set; } = new StyleColor("FFFFFF");
+        public StyleColor ColorDangerContrast { get; set; } = new StyleColor("FFFFFF");
 
         /// <inheritdoc/>
         [PortalSetting]

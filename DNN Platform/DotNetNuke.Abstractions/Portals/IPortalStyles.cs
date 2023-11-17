@@ -12,202 +12,202 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>
         /// Gets or sets the main shade of the primary color.
         /// </summary>
-        IStyleColor ColorPrimary { get; set; }
+        StyleColor ColorPrimary { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the primary color.
         /// </summary>
-        public IStyleColor ColorPrimaryLight { get; set; }
+        public StyleColor ColorPrimaryLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the primary color.
         /// </summary>
-        public IStyleColor ColorPrimaryDark { get; set; }
+        public StyleColor ColorPrimaryDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the primary color shades.
         /// </summary>
-        public IStyleColor ColorPrimaryContrast { get; set; }
+        public StyleColor ColorPrimaryContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the secondary color.
         /// </summary>
-        public IStyleColor ColorSecondary { get; set; }
+        public StyleColor ColorSecondary { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the secondary color.
         /// </summary>
-        public IStyleColor ColorSecondaryLight { get; set; }
+        public StyleColor ColorSecondaryLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the secondary color.
         /// </summary>
-        public IStyleColor ColorSecondaryDark { get; set; }
+        public StyleColor ColorSecondaryDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the secondary color shades.
         /// </summary>
-        public IStyleColor ColorSecondaryContrast { get; set; }
+        public StyleColor ColorSecondaryContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Tertiary color.
         /// </summary>
-        public IStyleColor ColorTertiary { get; set; }
+        public StyleColor ColorTertiary { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Tertiary color.
         /// </summary>
-        public IStyleColor ColorTertiaryLight { get; set; }
+        public StyleColor ColorTertiaryLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Tertiary color.
         /// </summary>
-        public IStyleColor ColorTertiaryDark { get; set; }
+        public StyleColor ColorTertiaryDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Tertiary color shades.
         /// </summary>
-        public IStyleColor ColorTertiaryContrast { get; set; }
+        public StyleColor ColorTertiaryContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Neutral color.
         /// </summary>
-        public IStyleColor ColorNeutral { get; set; }
+        public StyleColor ColorNeutral { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Neutral color.
         /// </summary>
-        public IStyleColor ColorNeutralLight { get; set; }
+        public StyleColor ColorNeutralLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Neutral color.
         /// </summary>
-        public IStyleColor ColorNeutralDark { get; set; }
+        public StyleColor ColorNeutralDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Neutral color shades.
         /// </summary>
-        public IStyleColor ColorNeutralContrast { get; set; }
+        public StyleColor ColorNeutralContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Background color.
         /// </summary>
-        public IStyleColor ColorBackground { get; set; }
+        public StyleColor ColorBackground { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Background color.
         /// </summary>
-        public IStyleColor ColorBackgroundLight { get; set; }
+        public StyleColor ColorBackgroundLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Background color.
         /// </summary>
-        public IStyleColor ColorBackgroundDark { get; set; }
+        public StyleColor ColorBackgroundDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Background color shades.
         /// </summary>
-        public IStyleColor ColorBackgroundContrast { get; set; }
+        public StyleColor ColorBackgroundContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Foreground color.
         /// </summary>
-        public IStyleColor ColorForeground { get; set; }
+        public StyleColor ColorForeground { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Foreground color.
         /// </summary>
-        public IStyleColor ColorForegroundLight { get; set; }
+        public StyleColor ColorForegroundLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Foreground color.
         /// </summary>
-        public IStyleColor ColorForegroundDark { get; set; }
+        public StyleColor ColorForegroundDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Foreground color shades.
         /// </summary>
-        public IStyleColor ColorForegroundContrast { get; set; }
+        public StyleColor ColorForegroundContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Info color.
         /// </summary>
-        public IStyleColor ColorInfo { get; set; }
+        public StyleColor ColorInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Info color.
         /// </summary>
-        public IStyleColor ColorInfoLight { get; set; }
+        public StyleColor ColorInfoLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Info color.
         /// </summary>
-        public IStyleColor ColorInfoDark { get; set; }
+        public StyleColor ColorInfoDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Info color shades.
         /// </summary>
-        public IStyleColor ColorInfoContrast { get; set; }
+        public StyleColor ColorInfoContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Success color.
         /// </summary>
-        public IStyleColor ColorSuccess { get; set; }
+        public StyleColor ColorSuccess { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Success color.
         /// </summary>
-        public IStyleColor ColorSuccessLight { get; set; }
+        public StyleColor ColorSuccessLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Success color.
         /// </summary>
-        public IStyleColor ColorSuccessDark { get; set; }
+        public StyleColor ColorSuccessDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Success color shades.
         /// </summary>
-        public IStyleColor ColorSuccessContrast { get; set; }
+        public StyleColor ColorSuccessContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Warning color.
         /// </summary>
-        public IStyleColor ColorWarning { get; set; }
+        public StyleColor ColorWarning { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Warning color.
         /// </summary>
-        public IStyleColor ColorWarningLight { get; set; }
+        public StyleColor ColorWarningLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Warning color.
         /// </summary>
-        public IStyleColor ColorWarningDark { get; set; }
+        public StyleColor ColorWarningDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Warning color shades.
         /// </summary>
-        public IStyleColor ColorWarningContrast { get; set; }
+        public StyleColor ColorWarningContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Danger color.
         /// </summary>
-        public IStyleColor ColorDanger { get; set; }
+        public StyleColor ColorDanger { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Danger color.
         /// </summary>
-        public IStyleColor ColorDangerLight { get; set; }
+        public StyleColor ColorDangerLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Danger color.
         /// </summary>
-        public IStyleColor ColorDangerDark { get; set; }
+        public StyleColor ColorDangerDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Danger color shades.
         /// </summary>
-        public IStyleColor ColorDangerContrast { get; set; }
+        public StyleColor ColorDangerContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the controls border radius in pixels.
