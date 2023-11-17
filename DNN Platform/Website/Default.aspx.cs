@@ -655,8 +655,8 @@ namespace DotNetNuke.Framework
 
         private string GenerateCssCustomProperties()
         {
-            string cacheKey = string.Format(this.PortalSettings.Styles.CacheKey, this.PortalSettings.PortalId);
-            string cache = Common.Utilities.DataCache.GetCache<string>(cacheKey);
+            var cacheKey = string.Format(Common.Utilities.DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cache = Common.Utilities.DataCache.GetCache<string>(cacheKey);
 
             if (!string.IsNullOrEmpty(cache))
             {
@@ -753,7 +753,14 @@ namespace DotNetNuke.Framework
                     }}
                 </style>
             ";
-            Common.Utilities.DataCache.SetCache(cacheKey, cssVars);
+            Common.Utilities.DataCache.SetCache(
+                cacheKey,
+                cssVars,
+                null,
+                System.Web.Caching.Cache.NoAbsoluteExpiration,
+                TimeSpan.FromMinutes(Common.Utilities.DataCache.PortalStylesCacheTimeOut),
+                Common.Utilities.DataCache.PortalStylesCachePriority,
+                null);
             return cssVars;
         }
 

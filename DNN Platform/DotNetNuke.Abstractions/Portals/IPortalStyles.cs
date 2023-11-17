@@ -10,11 +10,6 @@ namespace DotNetNuke.Abstractions.Portals
     public interface IPortalStyles
     {
         /// <summary>
-        /// Gets a key used to persist portal styles in cache.
-        /// </summary>
-        string CacheKey { get; }
-
-        /// <summary>
         /// Gets or sets the main shade of the primary color.
         /// </summary>
         IStyleColor ColorPrimary { get; set; }

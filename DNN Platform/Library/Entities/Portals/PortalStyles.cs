@@ -13,9 +13,6 @@ namespace DotNetNuke.Entities.Portals
     public class PortalStyles : IPortalStyles
     {
         /// <inheritdoc/>
-        public string CacheKey => "Dnn_Css_Custom_Properties_{0}";
-
-        /// <inheritdoc/>
         [PortalSetting]
         public IStyleColor ColorPrimary { get; set; } = new StyleColor("3792ED");
 
