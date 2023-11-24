@@ -18,7 +18,7 @@
     "@types/gulp": "^4.0.16",
     "babel-preset-env": "^1.7.0",
     "babelify": "^10.0.0",
-    "browser-sync": "^2.27.10",
+    "browser-sync": "^2.29.3",
     "browserify": "^17.0.0",
     "fancy-log": "^2.0.0",
     "gulp": "^4.0.2",
@@ -38,16 +38,8 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "browserslist": [
+    "last 2 versions",
     "> 1%",
-    "ie >= 8",
-    "edge >= 15",
-    "ie_mob >= 10",
-    "ff >= 45",
-    "chrome >= 45",
-    "safari >= 7",
-    "opera >= 23",
-    "ios >= 7",
-    "android >= 4",
-    "bb >= 10"
+    "not dead"
   ]
 }
