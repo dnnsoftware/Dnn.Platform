@@ -89,7 +89,8 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
                 [
                     `${containersDist}/**/*`,
                 ],
-                { nodir: true });
+                { nodir: true }
+            );
             containerResources.forEach((containerResource) => {
                 const relativePath = path.relative(containersDist, containerResource).replace(/\\/g, '/');
                 const targetPath = path.resolve(`${stagingDir}/containerResources/${relativePath}`);
