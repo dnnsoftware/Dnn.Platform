@@ -73,7 +73,8 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
                     `${skinDist}/**/*.xml`,
                     `${skinDist}/**/*.png`,
                 ],
-                { nodir: true });
+                { nodir: true }
+            );
             skinResources.forEach((skinResource) => {
                 const relativePath = path.relative(skinDist, skinResource).replace(/\\/g, '/');
                 const targetPath = path.resolve(`${stagingDir}/skinResources/${relativePath}`);
