@@ -108,7 +108,8 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
                     `${skinDist}/*.txt`,
                     `${skinDist}/*.dnn`,
                 ],
-                { nodir: true });
+                { nodir: true }
+            );
             rootResources.forEach((rootResource) => {
                 const relativePath = path.relative(skinDist, rootResource).replace(/\\/g, '/');
                 const targetPath = path.resolve(`${stagingDir}/${relativePath}`);
