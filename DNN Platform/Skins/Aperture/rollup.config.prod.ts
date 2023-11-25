@@ -7,6 +7,7 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 import { terser } from 'rollup-plugin-terser';
 import localSettings from '../../../settings.local.json' assert { type: 'json' };
 import packageJson from './package.json' assert { type: 'json' };
+import dnnPackage from './rollup-plugin-package';
 
 const packageName = packageJson.name.charAt(0).toUpperCase() + packageJson.name.substr(1).toLowerCase();
 const containersDist = localSettings.WebsitePath + '/Portals/_default/Containers/' + packageName;
@@ -30,7 +31,10 @@ export default defineConfig({
                 return 'css/skin.min.css.map';
             }
             return assetInfo?.name as string;
-        }
+        },
+        entryFileNames: () => {
+            return `js/skin.min.js`;
+        },
     },
     plugins: [
         typescript({
@@ -69,6 +73,11 @@ export default defineConfig({
             ],
             flatten: false,
             verbose: true,
+        }),
+        dnnPackage({
+            name: packageName,
+            version: packageJson.version,
+            destinationDirectory: localSettings.WebsitePath + '/Install/Skin',
         }),
     ],
     strictDeprecations: true,
