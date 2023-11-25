@@ -32,9 +32,8 @@ export default defineConfig({
             }
             return assetInfo?.name as string;
         },
-        entryFileNames: (chunkInfo) => {
-            var chunkFileName = chunkInfo?.name;
-            return `js/${chunkFileName}.min.js`;
+        entryFileNames: () => {
+            return `js/skin.min.js`;
         },
     },
     plugins: [
