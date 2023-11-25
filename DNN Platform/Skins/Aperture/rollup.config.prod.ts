@@ -77,7 +77,7 @@ export default defineConfig({
         dnnPackage({
             name: packageName,
             version: packageJson.version,
-            destinationDirectory: localSettings.WebsitePath + '/Install/Skin',
+            destinationDirectory: '../../../Website/Install/Skin',
         }),
     ],
     strictDeprecations: true,

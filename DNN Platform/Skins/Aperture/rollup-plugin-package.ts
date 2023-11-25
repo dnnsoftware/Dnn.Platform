@@ -126,9 +126,11 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
             await zip.archive(packagePath);
             fs.rmSync(stagingDir, { recursive: true, force: true });
 
+            var skinInstallPath = `${path.resolve(dnnPackageOptions.destinationDirectory)}`;
+            console.log(`Copying ${packageName} to ${skinInstallPath}`);
             fs.copyFileSync(
                 packagePath,
-                `${dnnPackageOptions.destinationDirectory}/${packageName}`);
+                `${skinInstallPath}/${packageName}`);
             fs.rmSync(artifactsDir, { recursive: true, force: true });
         },
     };
