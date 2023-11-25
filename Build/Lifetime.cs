@@ -7,6 +7,7 @@ namespace DotNetNuke.Build
     using Cake.Common;
     using Cake.Common.Diagnostics;
     using Cake.Core;
+    using Cake.Core.Diagnostics;
     using Cake.Core.IO;
     using Cake.Frosting;
 
@@ -23,6 +24,11 @@ namespace DotNetNuke.Build
                 // Temporarily commit all changes to prevent checking in scripted changes like versioning.
                 Git(context, "add .");
                 Git(context, "commit --allow-empty -m 'backup'");
+            }
+
+            if (context.Tools.Resolve(new[] { "corepack", "corepack.cmd", }) is null)
+            {
+                throw new CakeException("Could not find corepack, Node.js 18 or later must be installed.");
             }
         }
 

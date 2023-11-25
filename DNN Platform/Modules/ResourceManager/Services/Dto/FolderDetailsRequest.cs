@@ -16,8 +16,8 @@ namespace Dnn.Modules.ResourceManager.Services.Dto
         [DataMember(Name = "folderName")]
         public string FolderName { get; set; }
 
-        /// <summary>Gets or sets the <see cref="FolderPermissions"/>.</summary>
+        /// <summary>Gets or sets the <see cref="Permissions"/>.</summary>
         [DataMember(Name = "permissions")]
-        public FolderPermissions Permissions { get; set; }
+        public Permissions Permissions { get; set; }
     }
 }
