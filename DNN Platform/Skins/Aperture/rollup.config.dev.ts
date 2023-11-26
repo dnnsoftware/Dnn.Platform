@@ -26,6 +26,14 @@ export default defineConfig({
         },
         browserSync({
             proxy: localSettings.WebsiteUrl,
+            rewriteRules: [
+                {
+                    match: /w\[".*"].*/g,
+                    fn: (req, _res, match: string) => {
+                        return match.replace(/(http:\/\/|https:\/\/)[a-zA-Z0-9.-]+\//g, `//${req.headers.host}/`);
+                    }
+                },
+            ],
             files: [
                 skinDist + '/**/*',
                 containersDist + '/**/*',
