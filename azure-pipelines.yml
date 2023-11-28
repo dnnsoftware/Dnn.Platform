@@ -46,6 +46,19 @@ pr:
 
 steps:
 
+- task: PowerShell@2
+  displayName: 'Create Yarn Cache Folder'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $yarnCacheFolder = "$(YARN_CACHE_FOLDER)"
+      if (-not (Test-Path $yarnCacheFolder)) {
+        Write-Host "Creating Yarn cache folder at $yarnCacheFolder"
+        New-Item -ItemType Directory -Path $yarnCacheFolder -Force
+      } else {
+        Write-Host "Yarn cache folder already exists."
+      }
+
 - task: Cache@2
   displayName: Cache Yarn packages
   inputs:
