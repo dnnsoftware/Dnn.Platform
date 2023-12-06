@@ -7,18 +7,19 @@ namespace DotNetNuke.Security.Permissions
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
     [Serializable]
-    public class FolderPermissionInfo : PermissionInfoBase, IHydratable
+    public class FolderPermissionInfo : PermissionInfoBase, IHydratable, IFolderPermissionInfo
     {
         // local property declarations
-        private int folderID;
+        private int folderId;
         private string folderPath;
-        private int folderPermissionID;
-        private int portalID;
+        private int folderPermissionId;
+        private int portalId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
@@ -26,10 +27,10 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         public FolderPermissionInfo()
         {
-            this.folderPermissionID = Null.NullInteger;
+            this.folderPermissionId = Null.NullInteger;
             this.folderPath = Null.NullString;
-            this.portalID = Null.NullInteger;
-            this.folderID = Null.NullInteger;
+            this.portalId = Null.NullInteger;
+            this.folderId = Null.NullInteger;
         }
 
         /// <summary>
@@ -38,57 +39,118 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public FolderPermissionInfo(PermissionInfo permission)
+            : this((IPermissionDefinitionInfo)permission)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
+        /// Constructs a new FolderPermissionInfo.
+        /// </summary>
+        /// <param name="permission">A PermissionInfo object.</param>
+        public FolderPermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
-            this.ModuleDefID = permission.ModuleDefID;
-            this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
-            this.PermissionKey = permission.PermissionKey;
-            this.PermissionName = permission.PermissionName;
+            var @this = (IPermissionDefinitionInfo)this;
+            @this.ModuleDefId = permission.ModuleDefId;
+            @this.PermissionCode = permission.PermissionCode;
+            @this.PermissionId = permission.PermissionId;
+            @this.PermissionKey = permission.PermissionKey;
+            @this.PermissionName = permission.PermissionName;
         }
 
         [XmlIgnore]
         [JsonIgnore]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.FolderPermissionId)} instead. Scheduled for removal in v11.0.0.")]
         public int FolderPermissionID
         {
             get
             {
-                return this.folderPermissionID;
+                return ((IFolderPermissionInfo)this).FolderPermissionId;
             }
 
             set
             {
-                this.folderPermissionID = value;
+                ((IFolderPermissionInfo)this).FolderPermissionId = value;
             }
         }
 
         [XmlIgnore]
         [JsonIgnore]
+        int IFolderPermissionInfo.FolderPermissionId
+        {
+            get
+            {
+                return this.folderPermissionId;
+            }
+
+            set
+            {
+                this.folderPermissionId = value;
+            }
+        }
+
+        [XmlIgnore]
+        [JsonIgnore]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.FolderId)} instead. Scheduled for removal in v11.0.0.")]
         public int FolderID
         {
             get
             {
-                return this.folderID;
+                return ((IFolderPermissionInfo)this).FolderId;
             }
 
             set
             {
-                this.folderID = value;
+                ((IFolderPermissionInfo)this).FolderId = value;
             }
         }
 
         [XmlIgnore]
         [JsonIgnore]
-        public int PortalID
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.FolderId)} instead. Scheduled for removal in v11.0.0.")]
+        int IFolderPermissionInfo.FolderId
         {
             get
             {
-                return this.portalID;
+                return this.folderId;
             }
 
             set
             {
-                this.portalID = value;
+                this.folderId = value;
+            }
+        }
+
+        [XmlIgnore]
+        [JsonIgnore]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
+        public int PortalID
+        {
+            get
+            {
+                return ((IFolderPermissionInfo)this).PortalId;
+            }
+
+            set
+            {
+                ((IFolderPermissionInfo)this).PortalId = value;
+            }
+        }
+
+        [XmlIgnore]
+        [JsonIgnore]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
+        int IFolderPermissionInfo.PortalId
+        {
+            get
+            {
+                return this.portalId;
+            }
+
+            set
+            {
+                this.portalId = value;
             }
         }
 
@@ -114,12 +176,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this.FolderPermissionID;
+                return ((IFolderPermissionInfo)this).FolderPermissionId;
             }
 
             set
             {
-                this.FolderPermissionID = value;
+                ((IFolderPermissionInfo)this).FolderPermissionId = value;
             }
         }
 
@@ -128,10 +190,12 @@ namespace DotNetNuke.Security.Permissions
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
-            this.FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
-            this.FolderID = Null.SetNullInteger(dr["FolderID"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.FolderPath = Null.SetNullString(dr["FolderPath"]);
+
+            var @this = (IFolderPermissionInfo)this;
+            @this.FolderPermissionId = Null.SetNullInteger(dr["FolderPermissionID"]);
+            @this.FolderId = Null.SetNullInteger(dr["FolderID"]);
+            @this.PortalId = Null.SetNullInteger(dr["PortalID"]);
+            @this.FolderPath = Null.SetNullString(dr["FolderPath"]);
         }
     }
 }

@@ -216,6 +216,12 @@ namespace DotNetNuke.Web.DDRMenu
                         this.RootNode.Children.FindAll(
                             n =>
                             {
+                                // no need to check when the node is not a page
+                                if (n.TabId <= 0)
+                                {
+                                    return false;
+                                }
+
                                 var tab = TabController.Instance.GetTab(n.TabId, Null.NullInteger, false);
                                 foreach (TabPermissionInfo perm in tab.TabPermissions)
                                 {
