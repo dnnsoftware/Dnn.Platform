@@ -347,7 +347,7 @@ ul.dnnAdminTabNav li a,
 .dnnPrimaryAction,
 .dnnFormItem input[type="submit"],
 a.dnnPrimaryAction {
-    @extend .btn-main-shade;
+    @extend .btn-main-shade !optional;
 }
 
 .dnnPrimaryAction[disabled],
@@ -364,7 +364,7 @@ a.dnnPrimaryAction {
 a.dnnSecondaryAction,
 ul.dnnAdminTabNav li a,
 .dnnLogin .LoginTabGroup span {
-    @extend .btn-main-highlight;
+    @extend .btn-main-highlight !optional;
 }
 
 .dnnFormItem button:active,
@@ -373,8 +373,8 @@ ul.dnnAdminTabNav li a,
 .dnnSecondaryAction:active,
 a.dnnSecondaryAction:active,
 ul.dnnAdminTabNav li a:active {
-    border-color: color('main-accent');
-    background: color('main-accent'); 
+    border-color: color('primary-contrast');
+    background: color('primary'); 
 }
 
 /* Fix some old forge modules use .dnnPrimaryAction and .dnnSecondaryAction in wrong way */
@@ -394,7 +394,7 @@ span.dnnSecondaryAction>a.dnnSecondaryAction {
 /* Tertiary Action */
 .dnnTertiaryAction,
 a.dnnTertiaryAction {
-    @extend .btn-main-accent;
+    @extend .btn-main-accent !optional;
 }
 
 /* Action Button behind input */

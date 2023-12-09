@@ -1,2 +1,11 @@
-@import 'header';
-@import 'footer';
+.aperture-theme {
+    @import 'header';
+    @import 'footer';
+
+    .aperture-container {
+        margin: 0 auto;
+        padding: 0 1rem;
+        width: 100%;
+        max-width: 1280px;
+    }
+}

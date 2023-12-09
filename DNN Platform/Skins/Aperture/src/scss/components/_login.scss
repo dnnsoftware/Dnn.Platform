@@ -1,4 +1,4 @@
-.dnnLogin {
+block.dnnLogin {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -120,7 +120,7 @@
 //Hides the #dnnHiddenLogin LOGIN theme object
 .hiddenLogin {
     bottom: 0;
-    display: none;
+    display: block;
     height: 30px;
     position: fixed;
     text-indent: -1000px;

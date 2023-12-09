@@ -28,6 +28,7 @@ header {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		gap: 2rem;
 	}
 
 	li {
@@ -36,13 +37,13 @@ header {
 
 	a {
 		@include font-size(16);
-		color: color('main-accent');
+		color: color('background-light');
 		font-weight: 600;
 		text-decoration: none;
 		text-transform: uppercase;
 
 		&:hover {
-			color: color('black');
+			color: color('background');
 		}
 	}
 
@@ -59,7 +60,6 @@ header {
 		>a {
 			display: flex;
 			align-items: flex-end;
-			padding: 1rem 1.5rem;
 		}
 
 		// Below First Level
@@ -69,12 +69,12 @@ header {
 
 		li {
 			&.selected>a {
-				background: color('main-shade');
-				color: color('white');
+				background: transparent;
+				color: color('background');
 			}
 
 			&:not(.selected)>a:hover {
-				background: color('light-accent');
+				background: transparent;
 			}
 		}
 
@@ -86,8 +86,8 @@ header {
 			top: 100%;
 			min-width: 250px;
 			max-width: 100%;
-			background: color('white');
-			box-shadow: 1px 1px 5px 1px rgba(color('black', true), 0.2);
+			background: color('background');
+			box-shadow: 1px 1px 5px 1px rgba(color('foreground', true), 0.2);
 
 			// Below Second Level
 			a {
@@ -98,13 +98,13 @@ header {
 				flex-direction: column;
 
 				&:not(:first-child) {
-					// border-top: 1px solid color('dark-highlight');
+					// border-top: 1px solid color('foreground-light');
 				}
 
 				// Below Third Level
 				>ul {
 
-					// border-top: 1px solid color('dark-highlight');
+					// border-top: 1px solid color('foreground-light');
 					a {
 						@include font-size(14);
 						font-weight: 700;
@@ -135,8 +135,102 @@ $nav-width: 320px;
 
 .hamburger {
 	margin-left: auto;
-	color: color('main-accent');
+	color: color('primary-contrast');
 	cursor: pointer;
+}
+
+#menuToggle
+{
+  display: block;
+  position: relative;
+  z-index: 1;
+  
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#menuToggle a
+{
+  text-decoration: none;
+  color: #232323;
+  
+  transition: color 0.3s ease;
+}
+
+#menuToggle a:hover
+{
+  color: tomato;
+}
+
+
+#menuToggle input
+{
+  display: block;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  top: -7px;
+  left: -5px;
+  
+  cursor: pointer;
+  
+  opacity: 0;
+  z-index: 2;
+  
+  -webkit-touch-callout: none;
+}
+
+#menuToggle span
+{
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  position: relative;
+  
+  background: #cdcdcd;
+  border-radius: 3px;
+  
+  z-index: 1;
+  
+  transform-origin: 4px 0px;
+  
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+			  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+			  opacity 0.55s ease;
+}
+
+#menuToggle span:first-child
+{
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2)
+{
+  transform-origin: 0% 100%;
+}
+
+#menuToggle input:checked ~ span
+{
+  opacity: 1;
+  transform: rotate(45deg) translate(-2px, -1px);
+  background: color('primary-contrast');
+}
+
+#menuToggle input:checked ~ span:nth-last-child(3)
+{
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+#menuToggle input:checked ~ span:nth-last-child(2)
+{
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+#menuToggle input:checked ~ ul
+{
+  transform: none;
 }
 
 .nav-is-toggled {
@@ -155,7 +249,7 @@ $nav-width: 320px;
 		width: $nav-width;
 		max-width: 100%;
 		height: calc(100vh - $nav-height);
-		background-color: color('white');
+		background-color: color('primary-contrast');
 		overflow-y: auto;
 		overflow-x: hidden;
 		-webkit-overflow-scrolling: touch;
@@ -179,28 +273,28 @@ $nav-width: 320px;
 		justify-content: space-between;
 
 		&:not(:last-child) {
-			border-bottom: solid 1px color('dark-highlight');
+			border-bottom: solid 1px color('foreground-light');
 		}
 
 		.nav-link {
-			background-color: color('white');
-			color: color('main-accent');
+			background-color: color('background');
+			color: color('primary');
 		}
 
 		&.selected {
-			background-color: color('main-shade');
+			background-color: color('primary-light');
 
 			>.nav-link {
 				background-color: transparent;
-				color: color('white');
+				color: color('background');
 			}
 		}
 
 		.nav-back-link {
 			display: flex;
 			align-items: center;
-			background: color('main-accent');
-			color: color('white');
+			background: color('primary');
+			color: color('background');
 
 			i {
 				font-size: 1.125rem;
@@ -230,7 +324,7 @@ $nav-width: 320px;
 			width: 100%;
 			height: 100%;
 			transform: translateX(100%);
-			background-color: color('white');
+			background-color: color('background');
 			transition: 0.3s;
 			visibility: hidden;
 		}

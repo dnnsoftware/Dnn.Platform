@@ -3,8 +3,6 @@ footer {
     @include font-size(12);
     display:flex;
     margin:0;
-    margin-left:-1rem;
-    margin-right:-1rem;
     li {
       position:relative;
       padding:0 1rem;

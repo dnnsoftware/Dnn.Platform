@@ -13,14 +13,16 @@ body {
   font-size: 16px;
   font-weight: 200;
   line-height: 1.5;
-  font-family: $open-sans;
-  color: color('dark-shade');
+  font-family: $ubuntu;
+  color: color('foreground');
   background-color: #fff;
   -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
 }
 
 h1, h2, h3, h4, h5 {
-	font-family: $open-sans;
+	font-family: $ubuntu;
 }
 
 h1 {
@@ -92,18 +94,18 @@ sub {
 //–––––––––––––––––––––––––––––––––––––––––––––––––
 
 a {
-  color: color('sub-highlight');
+  color: color('primary');
   text-decoration:none;
   transition:.25s ease-in-out all;
 
   &:hover {
-    color: color('light-shade');
+    color: color('primary-light');
     text-decoration:none;
   }
 }
 header a, footer a {
-	color: color('white');
-	font-weight:600;
+	color: color('tertiary-contrast');
+	font-weight: 400;
 }
 
 
@@ -116,13 +118,13 @@ hr {
   height:1px;
   width:25%;
   border:0;
-  border-top:1px solid color('white');
+  border-top:1px solid color('primary');
   margin-top:1.5rem;
   margin-bottom:1.5rem;
   padding: 0;
 }
 
 pre {
-  background:color('sub-highlight');
+  background: color('neutral');
   padding:10px 15px;
 }
