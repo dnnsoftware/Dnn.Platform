@@ -278,6 +278,7 @@
     <Compile Include="Components\SqlConsole\ISqlQueryController.cs" />
     <Compile Include="Components\SqlConsole\SqlConsoleQuery.cs" />
     <Compile Include="Components\SqlConsole\SqlQueryController.cs" />
+    <Compile Include="Components\Styles\Constants.cs" />
     <Compile Include="Components\TaskScheduler\Constants.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Commands\GetTask.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Commands\ListTasks.cs" />
@@ -356,6 +357,7 @@
     <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
     <Compile Include="MenuControllers\SitesMenuController.cs" />
     <Compile Include="MenuControllers\SqlConsoleMenuController.cs" />
+    <Compile Include="MenuControllers\StylesMenuController.cs" />
     <Compile Include="MenuControllers\TaskSchedulerMenuController.cs" />
     <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -473,6 +475,7 @@
     <Compile Include="Services\SitesController.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
     <Compile Include="Services\SqlConsoleController.cs" />
+    <Compile Include="Services\StylesController.cs" />
     <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
     <Compile Include="Services\SystemInfoApplicationHostController.cs" />
     <Compile Include="Services\SystemInfoDatabaseController.cs" />
@@ -570,6 +573,9 @@
     <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\sort.js" />
     <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\SqlConsole.js" />
     <Content Include="admin\personaBar\Dnn.SqlConsole\SqlConsole.html" />
+    <Content Include="admin\personaBar\Dnn.Styles\.gitignore" />
+    <Content Include="admin\personaBar\Dnn.Styles\scripts\Styles.js" />
+    <Content Include="admin\personaBar\Dnn.Styles\Styles.html" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\css\TaskScheduler.css" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\images\active.png" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\images\btn-edit.png" />
@@ -675,6 +681,7 @@
     <Content Include="admin\personaBar\Dnn.Vocabularies\App_LocalResources\Vocabularies.resx" />
     <Content Include="admin\personaBar\Dnn.SiteGroups\App_LocalResources\SiteGroups.resx" />
     <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
+    <Content Include="admin\personaBar\Dnn.Styles\App_LocalResources\Styles.resx" />
     <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
     <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
     <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />

@@ -401,6 +401,17 @@
                   </menu>
                 </component>
                 <component type="PersonaBarMenu">
+                    <menu>
+                        <identifier>Dnn.Styles</identifier>
+                        <moduleName>Styles</moduleName>
+                        <controller>Dnn.PersonaBar.Styles.MenuControllers.StylesMenuController, Dnn.PersonaBar.Extensions</controller>
+                        <resourceKey>nav_Styles</resourceKey>
+                        <path>Styles</path>
+                        <parent>Manage</parent>
+                        <order>31</order>
+                    </menu>
+                </component>
+                <component type="PersonaBarMenu">
                   <menu>
                     <identifier>Dnn.Users</identifier>
                     <moduleName>Users</moduleName>
