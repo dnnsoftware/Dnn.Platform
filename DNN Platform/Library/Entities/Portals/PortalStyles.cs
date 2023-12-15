@@ -174,14 +174,14 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public int ControlsRadius { get; set; } = 5;
+        public double ControlsRadius { get; set; } = 5;
 
         /// <inheritdoc/>
         [PortalSetting]
-        public int ControlsPadding { get; set; } = 5;
+        public double ControlsPadding { get; set; } = 5;
 
         /// <inheritdoc/>
         [PortalSetting]
-        public int BaseFontSize { get; set; } = 16;
+        public double BaseFontSize { get; set; } = 16;
     }
 }
