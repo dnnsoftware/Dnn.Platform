@@ -113,7 +113,7 @@ namespace DotNetNuke.Abstractions.Portals
                     this.hex[2] == this.hex[3] &&
                     this.hex[4] == this.hex[5])
                 {
-                    return this.hex[0].ToString() + this.hex[2].ToString() + this.hex[4].ToString();
+                    return $"{this.hex[0]}{this.hex[2]}{this.hex[4]}";
                 }
 
                 return this.hex;
