@@ -15,6 +15,7 @@ namespace DotNetNuke.Framework
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -37,6 +38,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>
@@ -655,113 +657,107 @@ namespace DotNetNuke.Framework
 
         private string GenerateCssCustomProperties()
         {
-            var cacheKey = string.Format(Common.Utilities.DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
-            var cache = Common.Utilities.DataCache.GetCache<string>(cacheKey);
-
-            if (!string.IsNullOrEmpty(cache))
-            {
-                return cache;
-            }
-
-            var styles = this.PortalSettings.Styles;
-            var cssVars = $@"
-                <style type=""text/css"">
-                    :root {{
-                        --dnn-color-primary: #{styles.ColorPrimary.MinifiedHex};
-                        --dnn-color-primary-light: #{styles.ColorPrimaryLight.MinifiedHex};
-                        --dnn-color-primary-dark: #{styles.ColorPrimaryDark.MinifiedHex};
-                        --dnn-color-primary-contrast: #{styles.ColorPrimaryContrast.MinifiedHex};
-                        --dnn-color-primary-r: {styles.ColorPrimary.Red};
-                        --dnn-color-primary-g: {styles.ColorPrimary.Green};
-                        --dnn-color-primary-b: {styles.ColorPrimary.Blue};
-                        
-                        --dnn-color-secondary: #{styles.ColorSecondary.MinifiedHex};
-                        --dnn-color-secondary-light: #{styles.ColorSecondaryLight.MinifiedHex};
-                        --dnn-color-secondary-dark: #{styles.ColorSecondaryDark.MinifiedHex};
-                        --dnn-color-secondary-contrast: #{styles.ColorSecondaryContrast.MinifiedHex};
-                        --dnn-color-secondary-r: {styles.ColorSecondary.Red};
-                        --dnn-color-secondary-g: {styles.ColorSecondary.Green};
-                        --dnn-color-secondary-b: {styles.ColorSecondary.Blue};
-                        
-                        --dnn-color-tertiary: #{styles.ColorTertiary.MinifiedHex};
-                        --dnn-color-tertiary-light: #{styles.ColorTertiaryLight.MinifiedHex};
-                        --dnn-color-tertiary-dark: #{styles.ColorTertiaryDark.MinifiedHex};
-                        --dnn-color-tertiary-contrast: #{styles.ColorTertiaryContrast.MinifiedHex};
-                        --dnn-color-tertiary-r: {styles.ColorTertiary.Red};
-                        --dnn-color-tertiary-g: {styles.ColorTertiary.Green};
-                        --dnn-color-tertiary-b: {styles.ColorTertiary.Blue};
-                        
-                        --dnn-color-neutral: #{styles.ColorNeutral.MinifiedHex};
-                        --dnn-color-neutral-light: #{styles.ColorNeutralLight.MinifiedHex};
-                        --dnn-color-neutral-dark: #{styles.ColorNeutralDark.MinifiedHex};
-                        --dnn-color-neutral-contrast: #{styles.ColorNeutralContrast.MinifiedHex};
-                        --dnn-color-neutral-r: {styles.ColorNeutral.Red};
-                        --dnn-color-neutral-g: {styles.ColorNeutral.Green};
-                        --dnn-color-neutral-b: {styles.ColorNeutral.Blue};
-                        
-                        --dnn-color-background: #{styles.ColorBackground.MinifiedHex};
-                        --dnn-color-background-light: #{styles.ColorBackgroundLight.MinifiedHex};
-                        --dnn-color-background-dark: #{styles.ColorBackgroundDark.MinifiedHex};
-                        --dnn-color-background-contrast: #{styles.ColorBackgroundContrast.MinifiedHex};
-                        --dnn-color-background-r: {styles.ColorBackground.Red};
-                        --dnn-color-background-g: {styles.ColorBackground.Green};
-                        --dnn-color-background-b: {styles.ColorBackground.Blue};
-                        
-                        --dnn-color-foreground: #{styles.ColorForeground.MinifiedHex};
-                        --dnn-color-foreground-light: #{styles.ColorForegroundLight.MinifiedHex};
-                        --dnn-color-foreground-dark: #{styles.ColorForegroundDark.MinifiedHex};
-                        --dnn-color-foreground-contrast: #{styles.ColorForegroundContrast.MinifiedHex};
-                        --dnn-color-foreground-r: {styles.ColorForeground.Red};
-                        --dnn-color-foreground-g: {styles.ColorForeground.Green};
-                        --dnn-color-foreground-b: {styles.ColorForeground.Blue};
-
-                        --dnn-color-info: #{styles.ColorInfo.MinifiedHex};
-                        --dnn-color-info-light: #{styles.ColorInfoLight.MinifiedHex};
-                        --dnn-color-info-dark: #{styles.ColorInfoDark.MinifiedHex};
-                        --dnn-color-info-contrast: #{styles.ColorInfoContrast.MinifiedHex};
-                        --dnn-color-info-r: {styles.ColorInfo.Red};
-                        --dnn-color-info-g: {styles.ColorInfo.Green};
-                        --dnn-color-info-b: {styles.ColorInfo.Blue};
-
-                        --dnn-color-success: #{styles.ColorSuccess.MinifiedHex};
-                        --dnn-color-success-light: #{styles.ColorSuccessLight.MinifiedHex};
-                        --dnn-color-success-dark: #{styles.ColorSuccessDark.MinifiedHex};
-                        --dnn-color-success-contrast: #{styles.ColorSuccessContrast.MinifiedHex};
-                        --dnn-color-success-r: {styles.ColorSuccess.Red};
-                        --dnn-color-success-g: {styles.ColorSuccess.Green};
-                        --dnn-color-success-b: {styles.ColorSuccess.Blue};
-
-                        --dnn-color-warning: #{styles.ColorWarning.MinifiedHex};
-                        --dnn-color-warning-light: #{styles.ColorWarningLight.MinifiedHex};
-                        --dnn-color-warning-dark: #{styles.ColorWarningDark.MinifiedHex};
-                        --dnn-color-warning-contrast: #{styles.ColorWarningContrast.MinifiedHex};
-                        --dnn-color-warning-r: {styles.ColorWarning.Red};
-                        --dnn-color-warning-g: {styles.ColorWarning.Green};
-                        --dnn-color-warning-b: {styles.ColorWarning.Blue};
-
-                        --dnn-color-danger: #{styles.ColorDanger.MinifiedHex};
-                        --dnn-color-danger-light: #{styles.ColorDangerLight.MinifiedHex};
-                        --dnn-color-danger-dark: #{styles.ColorDangerDark.MinifiedHex};
-                        --dnn-color-danger-contrast: #{styles.ColorDangerContrast.MinifiedHex};
-                        --dnn-color-danger-r: {styles.ColorDanger.Red};
-                        --dnn-color-danger-g: {styles.ColorDanger.Green};
-                        --dnn-color-danger-b: {styles.ColorDanger.Blue};
-
-                        --dnn-controls-radius: {styles.ControlsRadius}px;
-                        --dnn-controls-padding: {styles.ControlsPadding}px;
-                        --dnn-base-font-size: {styles.BaseFontSize}px;
-                    }}
-                </style>
-            ";
-            Common.Utilities.DataCache.SetCache(
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheArgs = new CacheItemArgs(
                 cacheKey,
-                cssVars,
-                null,
-                System.Web.Caching.Cache.NoAbsoluteExpiration,
-                TimeSpan.FromMinutes(Common.Utilities.DataCache.PortalStylesCacheTimeOut),
-                Common.Utilities.DataCache.PortalStylesCachePriority,
-                null);
-            return cssVars;
+                DataCache.PortalStylesCacheTimeOut,
+                DataCache.PortalStylesCachePriority,
+                this.PortalSettings.Styles);
+            return DataCache.GetCachedData<string>(
+                cacheArgs,
+                static args =>
+                {
+                    var styles = (IPortalStyles)args.Params[0];
+                    return $$"""
+                             <style type="text/css">
+                                 :root {
+                                     --dnn-color-primary: #{{styles.ColorPrimary.MinifiedHex}};
+                                     --dnn-color-primary-light: #{{styles.ColorPrimaryLight.MinifiedHex}};
+                                     --dnn-color-primary-dark: #{{styles.ColorPrimaryDark.MinifiedHex}};
+                                     --dnn-color-primary-contrast: #{{styles.ColorPrimaryContrast.MinifiedHex}};
+                                     --dnn-color-primary-r: {{styles.ColorPrimary.Red}};
+                                     --dnn-color-primary-g: {{styles.ColorPrimary.Green}};
+                                     --dnn-color-primary-b: {{styles.ColorPrimary.Blue}};
+                                     
+                                     --dnn-color-secondary: #{{styles.ColorSecondary.MinifiedHex}};
+                                     --dnn-color-secondary-light: #{{styles.ColorSecondaryLight.MinifiedHex}};
+                                     --dnn-color-secondary-dark: #{{styles.ColorSecondaryDark.MinifiedHex}};
+                                     --dnn-color-secondary-contrast: #{{styles.ColorSecondaryContrast.MinifiedHex}};
+                                     --dnn-color-secondary-r: {{styles.ColorSecondary.Red}};
+                                     --dnn-color-secondary-g: {{styles.ColorSecondary.Green}};
+                                     --dnn-color-secondary-b: {{styles.ColorSecondary.Blue}};
+                                     
+                                     --dnn-color-tertiary: #{{styles.ColorTertiary.MinifiedHex}};
+                                     --dnn-color-tertiary-light: #{{styles.ColorTertiaryLight.MinifiedHex}};
+                                     --dnn-color-tertiary-dark: #{{styles.ColorTertiaryDark.MinifiedHex}};
+                                     --dnn-color-tertiary-contrast: #{{styles.ColorTertiaryContrast.MinifiedHex}};
+                                     --dnn-color-tertiary-r: {{styles.ColorTertiary.Red}};
+                                     --dnn-color-tertiary-g: {{styles.ColorTertiary.Green}};
+                                     --dnn-color-tertiary-b: {{styles.ColorTertiary.Blue}};
+                                     
+                                     --dnn-color-neutral: #{{styles.ColorNeutral.MinifiedHex}};
+                                     --dnn-color-neutral-light: #{{styles.ColorNeutralLight.MinifiedHex}};
+                                     --dnn-color-neutral-dark: #{{styles.ColorNeutralDark.MinifiedHex}};
+                                     --dnn-color-neutral-contrast: #{{styles.ColorNeutralContrast.MinifiedHex}};
+                                     --dnn-color-neutral-r: {{styles.ColorNeutral.Red}};
+                                     --dnn-color-neutral-g: {{styles.ColorNeutral.Green}};
+                                     --dnn-color-neutral-b: {{styles.ColorNeutral.Blue}};
+                                     
+                                     --dnn-color-background: #{{styles.ColorBackground.MinifiedHex}};
+                                     --dnn-color-background-light: #{{styles.ColorBackgroundLight.MinifiedHex}};
+                                     --dnn-color-background-dark: #{{styles.ColorBackgroundDark.MinifiedHex}};
+                                     --dnn-color-background-contrast: #{{styles.ColorBackgroundContrast.MinifiedHex}};
+                                     --dnn-color-background-r: {{styles.ColorBackground.Red}};
+                                     --dnn-color-background-g: {{styles.ColorBackground.Green}};
+                                     --dnn-color-background-b: {{styles.ColorBackground.Blue}};
+                                     
+                                     --dnn-color-foreground: #{{styles.ColorForeground.MinifiedHex}};
+                                     --dnn-color-foreground-light: #{{styles.ColorForegroundLight.MinifiedHex}};
+                                     --dnn-color-foreground-dark: #{{styles.ColorForegroundDark.MinifiedHex}};
+                                     --dnn-color-foreground-contrast: #{{styles.ColorForegroundContrast.MinifiedHex}};
+                                     --dnn-color-foreground-r: {{styles.ColorForeground.Red}};
+                                     --dnn-color-foreground-g: {{styles.ColorForeground.Green}};
+                                     --dnn-color-foreground-b: {{styles.ColorForeground.Blue}};
+             
+                                     --dnn-color-info: #{{styles.ColorInfo.MinifiedHex}};
+                                     --dnn-color-info-light: #{{styles.ColorInfoLight.MinifiedHex}};
+                                     --dnn-color-info-dark: #{{styles.ColorInfoDark.MinifiedHex}};
+                                     --dnn-color-info-contrast: #{{styles.ColorInfoContrast.MinifiedHex}};
+                                     --dnn-color-info-r: {{styles.ColorInfo.Red}};
+                                     --dnn-color-info-g: {{styles.ColorInfo.Green}};
+                                     --dnn-color-info-b: {{styles.ColorInfo.Blue}};
+             
+                                     --dnn-color-success: #{{styles.ColorSuccess.MinifiedHex}};
+                                     --dnn-color-success-light: #{{styles.ColorSuccessLight.MinifiedHex}};
+                                     --dnn-color-success-dark: #{{styles.ColorSuccessDark.MinifiedHex}};
+                                     --dnn-color-success-contrast: #{{styles.ColorSuccessContrast.MinifiedHex}};
+                                     --dnn-color-success-r: {{styles.ColorSuccess.Red}};
+                                     --dnn-color-success-g: {{styles.ColorSuccess.Green}};
+                                     --dnn-color-success-b: {{styles.ColorSuccess.Blue}};
+             
+                                     --dnn-color-warning: #{{styles.ColorWarning.MinifiedHex}};
+                                     --dnn-color-warning-light: #{{styles.ColorWarningLight.MinifiedHex}};
+                                     --dnn-color-warning-dark: #{{styles.ColorWarningDark.MinifiedHex}};
+                                     --dnn-color-warning-contrast: #{{styles.ColorWarningContrast.MinifiedHex}};
+                                     --dnn-color-warning-r: {{styles.ColorWarning.Red}};
+                                     --dnn-color-warning-g: {{styles.ColorWarning.Green}};
+                                     --dnn-color-warning-b: {{styles.ColorWarning.Blue}};
+             
+                                     --dnn-color-danger: #{{styles.ColorDanger.MinifiedHex}};
+                                     --dnn-color-danger-light: #{{styles.ColorDangerLight.MinifiedHex}};
+                                     --dnn-color-danger-dark: #{{styles.ColorDangerDark.MinifiedHex}};
+                                     --dnn-color-danger-contrast: #{{styles.ColorDangerContrast.MinifiedHex}};
+                                     --dnn-color-danger-r: {{styles.ColorDanger.Red}};
+                                     --dnn-color-danger-g: {{styles.ColorDanger.Green}};
+                                     --dnn-color-danger-b: {{styles.ColorDanger.Blue}};
+             
+                                     --dnn-controls-radius: {{styles.ControlsRadius}}px;
+                                     --dnn-controls-padding: {{styles.ControlsPadding}}px;
+                                     --dnn-base-font-size: {{styles.BaseFontSize}}px;
+                                 }
+                             </style>
+                             """;
+                });
         }
 
         /// <summary>
