@@ -33,15 +33,9 @@ namespace DotNetNuke.Abstractions.Portals
         /// <param name="hexValue">The hex value to use.</param>
         public StyleColor(string hexValue)
         {
-            if (this.IsValidCssColor(hexValue))
-            {
-                this.HexValue = ExpandColor(hexValue);
-            }
-            else
-            {
-                this.HexValue = ExpandColor("FFFFFF");
-            }
+            AssertIsValidCssColor(hexValue);
 
+            this.HexValue = ExpandColor(hexValue);
             this.red = byte.Parse(this.HexValue.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
             this.green = byte.Parse(this.HexValue.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             this.blue = byte.Parse(this.HexValue.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
@@ -93,10 +87,8 @@ namespace DotNetNuke.Abstractions.Portals
 
             set
             {
-                if (this.IsValidCssColor(value))
-                {
-                    this.hex = ExpandColor(value);
-                }
+                AssertIsValidCssColor(value);
+                this.hex = ExpandColor(value);
             }
         }
 
@@ -135,7 +127,7 @@ namespace DotNetNuke.Abstractions.Portals
             return value.ToUpperInvariant();
         }
 
-        private bool IsValidCssColor(string hexValue)
+        private static void AssertIsValidCssColor(string hexValue)
         {
             if (string.IsNullOrWhiteSpace(hexValue))
             {
@@ -146,8 +138,6 @@ namespace DotNetNuke.Abstractions.Portals
             {
                 throw new ArgumentOutOfRangeException($"The value {hexValue} that was provided is not valid, it needs to be 3 or 6 character long hexadecimal string without the # sing");
             }
-
-            return true;
         }
 
         private void SetComponent(Component comp, byte value)
