@@ -370,10 +370,5 @@ namespace DotNetNuke.Abstractions.Portals
 
         /// <summary>Gets a value indicating whether to display the dropdowns to quickly add a moduel to the page in the edit bar.</summary>
         bool ShowQuickModuleAddMenu { get; }
-
-        /// <summary>
-        /// Gets the dnn styles for this portal, these get injected on the page top as css custom properties.
-        /// </summary>
-        IPortalStyles Styles { get; }
     }
 }
