@@ -20,6 +20,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
@@ -662,7 +663,7 @@ namespace DotNetNuke.Framework
                 cacheKey,
                 DataCache.PortalStylesCacheTimeOut,
                 DataCache.PortalStylesCachePriority,
-                this.PortalSettings.Styles);
+                this.PortalSettings.GetStyles());
             return DataCache.GetCachedData<string>(
                 cacheArgs,
                 static args =>

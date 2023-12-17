@@ -265,9 +265,6 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", HostController.Instance.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
-
-            var portalStylesRepository = new PortalStylesRepository();
-            portalSettings.Styles = portalStylesRepository.GetSettings(portalSettings.PortalId);
         }
 
         protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
