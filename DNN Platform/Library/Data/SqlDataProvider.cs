@@ -234,6 +234,7 @@ namespace DotNetNuke.Data
                     {
                         Logger.Error(objException);
                         exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
+                        break;
                     }
                 }
             }
