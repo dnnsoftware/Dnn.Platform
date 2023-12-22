@@ -7,7 +7,7 @@
   </div>
   <div class="logo-menu-bar">
     <div class="aperture-container">
-      <dnn:LOGO id="dnnLOGO" runat="server" />
+      <dnn:LOGO id="dnnLOGO" runat="server" InjectSvg="true" />
       <dnn:MENU id="menu_desktop" CssClass="dnn-d-none dnn-d-md-block" MenuStyle="menus/desktop" runat="server" NodeSelector="*,0,2"></dnn:MENU>
       <dnn:MENU id="menu_mobile" CssClass="dnn-d-flex dnn-d-md-none" MenuStyle="menus/mobile" runat="server" NodeSelector="*,0,2"></dnn:MENU>
     </div>
