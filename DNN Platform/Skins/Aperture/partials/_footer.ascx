@@ -1,26 +1,17 @@
 <footer>
-  <div class="bg-light-shade">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div id="FooterPaneA" runat="server"></div>
+  <div class="aperture-container">
+        <div class="footer-left">
+          <div class="footer-menu">
+            <dnn:MENU id="menu_footer" CssClass="dnn-d-none dnn-d-md-block" MenuStyle="menus/footer" runat="server" NodeSelector="*,0,1"></dnn:MENU>
+          </div>
+          <div class="footer-terms-privacy">
+            <dnn:TERMS id="dnnTerms" Text="Terms" runat="server" CssClass="dnn-terms" /><dnn:PRIVACY id="dnnPrivacy" Text="Privacy" runat="server" />
+          </div>
+          <div class="footer-copyright">
+            <dnn:COPYRIGHT id="dnnCopyright" runat="server" />
+          </div>
         </div>
-        <div class="col-md-6">
-          <div id="FooterPaneB" runat="server"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="bg-main-shade text-white">
-    <div class="container py-2">
-      <div class="row">
-        <div class="col-12">
-          <ul class="list-unstyled disclaimer">
-            <li><dnn:COPYRIGHT id="dnnCopyright" runat="server" /></li>
-            <li><dnn:TERMS id="dnnTerms" Text="Terms" runat="server" /></li>
-            <li><dnn:PRIVACY id="dnnPrivacy" Text="Privacy" runat="server" /></li>
-          </ul>
-        </div>
+        <div id="FooterPane" runat="server" class="footer-right"></div>
       </div>
     </div>
   </div>

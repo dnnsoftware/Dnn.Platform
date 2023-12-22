@@ -20,7 +20,7 @@ header {
 
 /* Desktop Styling */
 
-#nav-desktop {
+#nav-desktop, #nav-footer {
 
 	&,
 	ul {
@@ -86,7 +86,7 @@ header {
 			top: 100%;
 			min-width: 250px;
 			max-width: 100%;
-			background: color('background');
+			background: color('tertiary');
 			box-shadow: 1px 1px 5px 1px rgba(color('foreground', true), 0.2);
 
 			// Below Second Level
