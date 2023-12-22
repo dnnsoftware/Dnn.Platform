@@ -17,6 +17,7 @@ export class DnnRmLeftPane {
   }
 
   private handleFolderClicked(e: CustomEvent<FolderTreeItem>): void {
+    state.selectedItems = [];
     this.itemsClient.getFolderContent(
       Number.parseInt(e.detail.data.key),
       0,
