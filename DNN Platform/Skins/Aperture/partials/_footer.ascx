@@ -2,7 +2,7 @@
   <div class="aperture-container">
         <div class="footer-left">
           <div class="footer-menu">
-            <dnn:MENU id="menu_footer" CssClass="dnn-d-none dnn-d-md-block" MenuStyle="menus/footer" runat="server" NodeSelector="*,0,1"></dnn:MENU>
+            <dnn:MENU id="menu_footer" CssClass="dnn-d-none dnn-d-md-block" MenuStyle="menus/footer" runat="server" NodeSelector="*,0,0"></dnn:MENU>
           </div>
           <div class="footer-terms-privacy">
             <dnn:TERMS id="dnnTerms" Text="Terms" runat="server" CssClass="dnn-terms" /><dnn:PRIVACY id="dnnPrivacy" Text="Privacy" runat="server" />
