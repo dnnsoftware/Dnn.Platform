@@ -251,7 +251,10 @@
     <Compile Include="Entities\Modules\Settings\SerializationManager.cs" />
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Portals\Extensions\IPortalSettingsExtensions.cs" />
     <Compile Include="Entities\Portals\IPortalSettingHandlers.cs" />
+    <Compile Include="Entities\Portals\PortalStyles.cs" />
+    <Compile Include="Entities\Portals\PortalStylesRepository.cs" />
     <Compile Include="Entities\Portals\Templates\IPortalTemplateEventHandlers.cs" />
     <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
     <Compile Include="Entities\Portals\PortalSettingUpdatedEventArgs.cs" />
