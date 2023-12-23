@@ -644,8 +644,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Internal.SourceG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Tests.SourceGenerators", "DNN Platform\Tests\DotNetNuke.Tests.SourceGenerators\DotNetNuke.Tests.SourceGenerators.csproj", "{88689A62-F691-457E-BFC1-781730E3591B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aperture", "Aperture", "{04F3856F-18A5-4916-A0EB-D3CFE0858443}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aperture", "DNN Platform\Skins\Aperture\Aperture.csproj", "{362F4A30-431E-4D14-95E1-50B80CB4BB69}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{572DF6DE-32A7-4695-B994-5C25AA588320}"
