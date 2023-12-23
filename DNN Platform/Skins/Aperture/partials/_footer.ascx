@@ -16,4 +16,3 @@
     </div>
   </div>
 </footer>
-<dnn:Login runat="server" id="dnnHiddenLogin" CssClass="hiddenLogin" />
