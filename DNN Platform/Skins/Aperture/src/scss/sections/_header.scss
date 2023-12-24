@@ -1,0 +1,38 @@
+header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    .eyebrow-bar {
+        background-color: color('tertiary');
+        padding: .5rem 0;
+        .aperture-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        margin: 0;
+    }
+    .logo-menu-bar {
+        background-color: color('tertiary-light');
+        padding: .5rem 0;
+        .aperture-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            #nav-desktop.desktop-menu {
+                @media (max-width: 767px) {
+                    display: none;
+                }
+            }
+            .mobile-menu {
+                @media (min-width: 768px) {
+                    display: none;
+                }
+            }
+        }
+        margin: 0;
+    }
+}
