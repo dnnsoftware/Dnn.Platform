@@ -338,8 +338,8 @@ legend.error {
 ul.dnnAdminTabNav li a,
 .dnnLogin .LoginTabGroup span {
     @extend .btn !optional;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 /* Primary Action */
@@ -347,7 +347,7 @@ ul.dnnAdminTabNav li a,
 .dnnPrimaryAction,
 .dnnFormItem input[type="submit"],
 a.dnnPrimaryAction {
-    @extend .btn-main-shade !optional;
+    @extend .btn-primary !optional;
 }
 
 .dnnPrimaryAction[disabled],
@@ -364,7 +364,7 @@ a.dnnPrimaryAction {
 a.dnnSecondaryAction,
 ul.dnnAdminTabNav li a,
 .dnnLogin .LoginTabGroup span {
-    @extend .btn-main-highlight !optional;
+    @extend .btn-secondary !optional;
 }
 
 .dnnFormItem button:active,
@@ -373,8 +373,8 @@ ul.dnnAdminTabNav li a,
 .dnnSecondaryAction:active,
 a.dnnSecondaryAction:active,
 ul.dnnAdminTabNav li a:active {
-    border-color: color('primary-contrast');
-    background: color('primary'); 
+    border-color: color('secondary-contrast');
+    background: color('secondary'); 
 }
 
 /* Fix some old forge modules use .dnnPrimaryAction and .dnnSecondaryAction in wrong way */
@@ -394,7 +394,7 @@ span.dnnSecondaryAction>a.dnnSecondaryAction {
 /* Tertiary Action */
 .dnnTertiaryAction,
 a.dnnTertiaryAction {
-    @extend .btn-main-accent !optional;
+    @extend .btn-tertiary !optional;
 }
 
 /* Action Button behind input */
@@ -406,7 +406,7 @@ a.dnnTertiaryAction {
 
 .dnnFormItem input[type="checkbox"] + span,
 .dnnFormItem input[type="radio"] + span {
-    margin: 0.325rem;
+    margin: 0 0 1rem .5rem;
 }
 
 /* text style for buttons and link buttons used in the portal admin pages */
@@ -663,7 +663,8 @@ ul.dnnAdminTabNav li.ui-tabs-active a {
 .dnnForm .dnnFormItem {
     clear: both;
     width: 100%;
-    display: block;
+    display: flex;
+    gap: .5rem;
     position: relative;
     text-align: left;
 }

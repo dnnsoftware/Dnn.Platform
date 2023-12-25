@@ -1,7 +1,12 @@
-block.dnnLogin {
+.dnnLogin {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 90%;
+    margin: 3rem;
+
+    @media (max-width: 768px) {
+        margin: 2rem 0;
+    }
 
     > div {
         width:100%;
@@ -44,10 +49,7 @@ block.dnnLogin {
             }
 
             &:nth-child(3) {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                margin-top: .5em;
+                width: 50%;
 
                 a {
                     width: 50%;
@@ -63,8 +65,9 @@ block.dnnLogin {
             }
 
             .dnnLoginRememberMe {
-                display: block;
-                margin: 1em 0;
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
 
                 img {
                     margin: 0;
@@ -95,7 +98,6 @@ block.dnnLogin {
                         padding:0;
                     }
                     li {
-                        width: 50%;
                         margin: 0;
 
                         &:nth-child(1) {
