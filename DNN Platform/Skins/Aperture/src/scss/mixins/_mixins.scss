@@ -39,11 +39,13 @@
 @mixin button-variant($color, $hover-alpha: 1) {
   $var-color: color($color);
   $var-color-rgb: color($color, true);
-  color: color($color + 'contrast');
+  color: color($color + '-contrast');
   background-color: $var-color;
   border-color: $var-color;
+  border-radius: var(--dnn-controls-radius, 0);
+  padding: var(--dnn-controls-padding, .5rem);
   &:hover, &:focus {
-    color: color($color + 'contrast');
+    color: color($color + '-contrast');
     background-color: rgba($var-color-rgb, $hover-alpha);
     border-color: rgba($var-color-rgb, $hover-alpha);
   }
@@ -52,10 +54,12 @@
 // Outline buttons
 @mixin button-outline-variant($color) {
   $var-color: color($color);
-  $var-color-contrast: color($color + 'contrast');
+  $var-color-contrast: color($color + '-contrast');
   color: $var-color;
   background-color: transparent;
   border-color: $var-color;
+  border-radius: var(--dnn-controls-radius, 0);
+  padding: var(--dnn-controls-padding, .5rem);
   &:hover, &:focus {
     color: $var-color-contrast;
     background-color: $var-color;
@@ -66,11 +70,13 @@
 // Reverse outline to solid buttons
 @mixin button-reverse-outline-variant($color) {
   $var-color: color($color);
-  $var-color-contrast: color($color + 'contrast');
+  $var-color-contrast: color($color + '-contrast');
   color: $var-color-contrast;
   background-color: $var-color;
   background-image: none;
   border-color: $var-color;
+  border-radius: var(--dnn-controls-radius, 0);
+  padding: var(--dnn-controls-padding, .5rem);
   &:hover, &:focus {
     color: $var-color;
     background-color: transparent;
@@ -81,12 +87,14 @@
 // Inverse buttons to white background and colored text
 @mixin button-inverse-variant($color, $hover-alpha: 1) {
   $var-color: color($color);
-  $var-color-contrast: color($color + 'contrast');
+  $var-color-contrast: color($color + '-contrast');
   $var-color-rgb: color($color, true);
   color: $var-color;
   background-color: $var-color-contrast;
   background-image: none;
   border-color: $var-color-contrast;
+  border-radius: var(--dnn-controls-radius, 0);
+  padding: var(--dnn-controls-padding, .5rem);
   &:hover, &:focus {
     color: $color;
     background-color: rgba($var-color-rgb, $hover-alpha);
