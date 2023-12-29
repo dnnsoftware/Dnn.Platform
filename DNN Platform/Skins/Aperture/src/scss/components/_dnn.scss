@@ -353,7 +353,7 @@ a.dnnPrimaryAction {
 .dnnPrimaryAction[disabled],
 .dnnPrimaryAction[disabled]:hover,
 .dnnPrimaryAction[disabled]:active {
-    @extend .aperture-btn-disabled !optional;
+    @extend .aperture-btn-neutral !optional;
 }
 
 /* Secondary Action */
@@ -420,7 +420,7 @@ a.dnnTertiaryAction {
 /* Re-set default cursor for disabled elements */
 .dnnFormItem button[disabled],
 .dnnFormItem input[disabled] {
-    @extend .aperture-btn-disabled !optional;
+    @extend .aperture-btn-neutral !optional;
 }
 
 
