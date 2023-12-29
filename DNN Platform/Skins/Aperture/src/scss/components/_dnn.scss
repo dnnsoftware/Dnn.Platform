@@ -347,13 +347,13 @@ ul.dnnAdminTabNav li a,
 .dnnPrimaryAction,
 .dnnFormItem input[type="submit"],
 a.dnnPrimaryAction {
-    @extend .btn-primary !optional;
+    @extend .aperture-btn-primary !optional;
 }
 
 .dnnPrimaryAction[disabled],
 .dnnPrimaryAction[disabled]:hover,
 .dnnPrimaryAction[disabled]:active {
-    @extend .btn-disabled !optional;
+    @extend .aperture-btn-disabled !optional;
 }
 
 /* Secondary Action */
@@ -364,7 +364,7 @@ a.dnnPrimaryAction {
 a.dnnSecondaryAction,
 ul.dnnAdminTabNav li a,
 .dnnLogin .LoginTabGroup span {
-    @extend .btn-secondary !optional;
+    @extend .aperture-btn-secondary !optional;
 }
 
 .dnnFormItem button:active,
@@ -394,7 +394,7 @@ span.dnnSecondaryAction>a.dnnSecondaryAction {
 /* Tertiary Action */
 .dnnTertiaryAction,
 a.dnnTertiaryAction {
-    @extend .btn-tertiary !optional;
+    @extend .aperture-btn-tertiary !optional;
 }
 
 /* Action Button behind input */
@@ -420,7 +420,7 @@ a.dnnTertiaryAction {
 /* Re-set default cursor for disabled elements */
 .dnnFormItem button[disabled],
 .dnnFormItem input[disabled] {
-    @extend .btn-disabled !optional;
+    @extend .aperture-btn-disabled !optional;
 }
 
 

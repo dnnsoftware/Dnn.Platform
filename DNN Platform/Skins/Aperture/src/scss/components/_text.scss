@@ -1,6 +1,6 @@
 // text classes from current color scheme
 @each $color, $value in $colors {
     .aperture-text-#{$color} {
-        color: color($color) !important;
+        color: color($color);
     }
 }
