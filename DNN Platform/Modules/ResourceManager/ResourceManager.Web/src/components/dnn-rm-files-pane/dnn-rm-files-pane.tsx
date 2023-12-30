@@ -38,12 +38,8 @@ export class DnnRmFilesPane {
   }
 
   @Listen("dnnRmFileDoubleClicked", {target: "document"})
-  handleFileDoubleClicked(e: CustomEvent<number>) {
-    //unnecessary?
-    // if (state.selectedItems.length >= 1) {
-    //   state.selectedItems = [];
-    // }
-    this.itemsClient.download(e.detail, false);
+  handleFileDoubleClicked(e: CustomEvent<string>) {
+    window.open(e.detail, "_blank");
   }
 
   componentDidUpdate() {

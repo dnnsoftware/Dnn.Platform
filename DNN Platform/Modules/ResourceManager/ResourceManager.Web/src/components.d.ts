@@ -586,7 +586,7 @@ declare namespace LocalJSX {
         /**
           * Fires when a file is double-clicked and emits the file ID into the event.detail
          */
-        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<number>) => void;
+        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<string>) => void;
         /**
           * Fires when a folder is double-clicked and emits the folder ID into the event.detail
          */
@@ -600,7 +600,7 @@ declare namespace LocalJSX {
         /**
           * Fires when a file is double-clicked and emits the file ID into the event.detail
          */
-        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsListviewCustomEvent<number>) => void;
+        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsListviewCustomEvent<string>) => void;
         /**
           * Fires when a folder is double-clicked and emits the folder ID into the event.detail
          */

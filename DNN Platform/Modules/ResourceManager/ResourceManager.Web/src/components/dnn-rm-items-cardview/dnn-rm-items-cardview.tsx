@@ -19,7 +19,7 @@ export class DnnRmItemsCardview {
   @Event() dnnRmFolderDoubleClicked: EventEmitter<number>;
 
   /** Fires when a file is double-clicked and emits the file ID into the event.detail */
-  @Event() dnnRmFileDoubleClicked: EventEmitter<number>;
+  @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
 
   componentWillLoad() {
     document.addEventListener("click", this.dismissContextMenu.bind(this));
@@ -58,7 +58,7 @@ export class DnnRmItemsCardview {
     if (item.isFolder) {
       this.dnnRmFolderDoubleClicked.emit(item.itemId);
     } else {
-      this.dnnRmFileDoubleClicked.emit(item.itemId);
+      this.dnnRmFileDoubleClicked.emit(item.path);
     }
   }
 

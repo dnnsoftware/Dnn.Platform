@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Item, ItemsClient } from '../../../services/ItemsClient';
+import { Item } from '../../../services/ItemsClient';
 import state from "../../../store/store";
 
 @Component({
@@ -11,14 +11,11 @@ export class DnnActionOpenFile {
 
   @Prop() item!: Item;
 
-  private itemsClient: ItemsClient;
-
   constructor(){
-    this.itemsClient = new ItemsClient(state.moduleId);
   }
 
   private handleClick(): void {
-    this.itemsClient.download(this.item.itemId, false);
+    window.open(this.item.path, "_blank");
   }
 
   render() {
