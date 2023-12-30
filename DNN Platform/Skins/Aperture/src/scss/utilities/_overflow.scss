@@ -1,0 +1,33 @@
+// Define a map for overflow properties
+$overflow-properties: (
+    'overflow-auto': auto,
+    'overflow-hidden': hidden,
+    'overflow-visible': visible,
+    'overflow-scroll': scroll,
+    'overflow-x-auto': auto,
+    'overflow-y-auto': auto,
+    'overflow-x-hidden': hidden,
+    'overflow-y-hidden': hidden,
+    'overflow-x-visible': visible,
+    'overflow-y-visible': visible,
+    'overflow-x-scroll': scroll,
+    'overflow-y-scroll': scroll
+);
+
+// Overflow Mixin
+@mixin overflow($class, $value) {
+    @if str-index($class, 'x') {
+        overflow-x: $value;
+    } @else if str-index($class, 'y') {
+        overflow-y: $value;
+    } @else {
+        overflow: $value;
+    }    
+}
+
+// Generate Overflow Classes
+@each $class, $value in $overflow-properties {
+    .aperture-#{$class} {
+        @include overflow($class, $value);
+    }
+}
