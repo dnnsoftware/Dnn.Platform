@@ -18,6 +18,9 @@ export class DnnRmItemsListview {
   /** Fires when a folder is double-clicked and emits the folder ID into the event.detail */
   @Event() dnnRmFolderDoubleClicked: EventEmitter<number>;
 
+  /** Fires when a file is double-clicked and emits the file ID into the event.detail */
+  @Event() dnnRmFileDoubleClicked: EventEmitter<number>;
+
   componentWillLoad() {
     document.addEventListener("click", this.dismissContextMenu.bind(this));
   }
@@ -85,6 +88,8 @@ export class DnnRmItemsListview {
   private handleDoubleClick(item: Item): void {
     if (item.isFolder) {
       this.dnnRmFolderDoubleClicked.emit(item.itemId);
+    } else {
+      this.dnnRmFileDoubleClicked.emit(item.itemId);
     }
   }
 

@@ -26,6 +26,9 @@ export namespace Components {
     interface DnnActionMoveItems {
         "items": Item[];
     }
+    interface DnnActionOpenFile {
+        "item": Item;
+    }
     interface DnnActionUnlinkItems {
         "items": Item[];
     }
@@ -252,6 +255,12 @@ declare global {
         prototype: HTMLDnnActionMoveItemsElement;
         new (): HTMLDnnActionMoveItemsElement;
     };
+    interface HTMLDnnActionOpenFileElement extends Components.DnnActionOpenFile, HTMLStencilElement {
+    }
+    var HTMLDnnActionOpenFileElement: {
+        prototype: HTMLDnnActionOpenFileElement;
+        new (): HTMLDnnActionOpenFileElement;
+    };
     interface HTMLDnnActionUnlinkItemsElement extends Components.DnnActionUnlinkItems, HTMLStencilElement {
     }
     var HTMLDnnActionUnlinkItemsElement: {
@@ -409,6 +418,7 @@ declare global {
         "dnn-action-download-item": HTMLDnnActionDownloadItemElement;
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
         "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
+        "dnn-action-open-file": HTMLDnnActionOpenFileElement;
         "dnn-action-unlink-items": HTMLDnnActionUnlinkItemsElement;
         "dnn-action-upload-file": HTMLDnnActionUploadFileElement;
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
@@ -454,6 +464,9 @@ declare namespace LocalJSX {
     }
     interface DnnActionMoveItems {
         "items": Item[];
+    }
+    interface DnnActionOpenFile {
+        "item": Item;
     }
     interface DnnActionUnlinkItems {
         "items": Item[];
@@ -571,6 +584,10 @@ declare namespace LocalJSX {
          */
         "currentItems": GetFolderContentResponse;
         /**
+          * Fires when a file is double-clicked and emits the file ID into the event.detail
+         */
+        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<number>) => void;
+        /**
           * Fires when a folder is double-clicked and emits the folder ID into the event.detail
          */
         "onDnnRmFolderDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<number>) => void;
@@ -580,6 +597,10 @@ declare namespace LocalJSX {
           * The list of current items.
          */
         "currentItems": GetFolderContentResponse;
+        /**
+          * Fires when a file is double-clicked and emits the file ID into the event.detail
+         */
+        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsListviewCustomEvent<number>) => void;
         /**
           * Fires when a folder is double-clicked and emits the folder ID into the event.detail
          */
@@ -658,6 +679,7 @@ declare namespace LocalJSX {
         "dnn-action-download-item": DnnActionDownloadItem;
         "dnn-action-edit-item": DnnActionEditItem;
         "dnn-action-move-items": DnnActionMoveItems;
+        "dnn-action-open-file": DnnActionOpenFile;
         "dnn-action-unlink-items": DnnActionUnlinkItems;
         "dnn-action-upload-file": DnnActionUploadFile;
         "dnn-resource-manager": DnnResourceManager;
@@ -695,6 +717,7 @@ declare module "@stencil/core" {
             "dnn-action-download-item": LocalJSX.DnnActionDownloadItem & JSXBase.HTMLAttributes<HTMLDnnActionDownloadItemElement>;
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
             "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
+            "dnn-action-open-file": LocalJSX.DnnActionOpenFile & JSXBase.HTMLAttributes<HTMLDnnActionOpenFileElement>;
             "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
             "dnn-action-upload-file": LocalJSX.DnnActionUploadFile & JSXBase.HTMLAttributes<HTMLDnnActionUploadFileElement>;
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
