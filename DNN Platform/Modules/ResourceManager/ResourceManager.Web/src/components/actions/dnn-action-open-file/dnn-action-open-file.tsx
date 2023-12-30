@@ -11,8 +11,6 @@ export class DnnActionOpenFile {
 
   @Prop() item!: Item;
 
-  constructor(){
-  }
 
   private handleClick(): void {
     window.open(this.item.path, "_blank");
