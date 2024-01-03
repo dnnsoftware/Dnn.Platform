@@ -10,7 +10,7 @@ export const navFunctions = (() => {
 	// setup and add overlay
 	let overlay = document.createElement('div');
 	overlay.setAttribute('id', 'body-overlay');
-	document.body.appendChild(overlay).classList.add('dnn-d-none');
+	document.body.appendChild(overlay).classList.add('aperture-d-none');
   
 	// target hamburger menu
 	const responsiveMenu = document.getElementById('nav-mobile');
@@ -19,13 +19,13 @@ export const navFunctions = (() => {
 	responsiveMenu?.addEventListener('click', function() {
 	  // toggle menu
 	  document.body.classList.toggle('nav-is-toggled');
-	  bodyOverlay?.classList.toggle('dnn-d-none');
+	  bodyOverlay?.classList.toggle('aperture-d-none');
 	});
   
 	// if overlay is clicked
 	bodyOverlay?.addEventListener('click', function() {
 	  // toggle menu and overlay
 	  document.body.classList.toggle('nav-is-toggled');
-	  bodyOverlay?.classList.toggle('dnn-d-none');
+	  bodyOverlay?.classList.toggle('aperture-d-none');
 	});
   });
