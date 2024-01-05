@@ -8,7 +8,7 @@
   <!-- Main Content -->
   <main>
     <div id="BannerPane" runat="server"></div>
-    <div id="ContentPane" class="aperture-container" runat="server"></div> 
+    <div id="ContentPane" class="aperture-content-pane" runat="server"></div> 
     <div id="FluidPane" runat="server"></div>
   </main>
 
