@@ -75,4 +75,11 @@ public class UrlUtilsTests
         var result = UrlUtils.DecryptParameter(encodedValue, key);
         Assert.AreEqual(input, result);
     }
+
+    [Test]
+    public void EncodeParameterReplacesPaddingSymbols()
+    {
+        var result = UrlUtils.EncodeParameter("D");
+        Assert.AreEqual("RA$$", result);
+    }
 }

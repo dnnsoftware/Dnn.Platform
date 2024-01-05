@@ -75,13 +75,16 @@ namespace DotNetNuke.Common.Utilities
             return PortalSecurity.Instance.Decrypt(encryptionKey, toDecrypt.ToString());
         }
 
+        /// <summary>Encodes a value (using base64) for placing in a URL.</summary>
+        /// <param name="value">The value to encode.</param>
+        /// <returns>The encoded value.</returns>
         public static string EncodeParameter(string value)
         {
             byte[] arrBytes = Encoding.UTF8.GetBytes(value);
             var toEncode = new StringBuilder(Convert.ToBase64String(arrBytes));
-            toEncode.Replace("+", "-");
-            toEncode.Replace("/", "_");
-            toEncode.Replace("=", "$");
+            toEncode.Replace('+', '-');
+            toEncode.Replace('/', '_');
+            toEncode.Replace('=', '$');
             return toEncode.ToString();
         }
 
