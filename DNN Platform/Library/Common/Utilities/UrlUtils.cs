@@ -53,7 +53,7 @@ namespace DotNetNuke.Common.Utilities
             return Encoding.UTF8.GetString(arrBytes);
         }
 
-        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>.</summary>
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(string value)
@@ -88,19 +88,26 @@ namespace DotNetNuke.Common.Utilities
             return toEncode.ToString();
         }
 
+        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+        /// <param name="value">The value to encrypt.</param>
+        /// <returns>The encrypted value.</returns>
         public static string EncryptParameter(string value)
         {
             return EncryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
         }
 
+        /// <summary>Encrypt a parameter for placing in a URL.</summary>
+        /// <param name="value">The value to encrypt.</param>
+        /// <param name="encryptionKey">The key to use when encrypting the value. This key must be used to decrypt the value.</param>
+        /// <returns>The encrypted value.</returns>
         public static string EncryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = PortalSecurity.Instance;
-            var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
+            var encryptedValue = PortalSecurity.Instance.Encrypt(encryptionKey, value);
+            var parameterValue = new StringBuilder(encryptedValue);
 
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
-            parameterValue.Replace("/", "_");
-            parameterValue.Replace("+", "-");
+            parameterValue.Replace('/', '_');
+            parameterValue.Replace('+', '-');
             parameterValue.Replace("=", "%3d");
             return parameterValue.ToString();
         }

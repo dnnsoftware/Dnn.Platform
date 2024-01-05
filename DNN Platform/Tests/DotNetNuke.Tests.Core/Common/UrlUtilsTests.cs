@@ -82,4 +82,11 @@ public class UrlUtilsTests
         var result = UrlUtils.EncodeParameter("D");
         Assert.AreEqual("RA$$", result);
     }
+
+    [Test]
+    public void EncryptParameterReplacesPaddingSymbols()
+    {
+        var result = UrlUtils.EncryptParameter("D", "key");
+        Assert.IsTrue(result.EndsWith("%3d"));
+    }
 }
