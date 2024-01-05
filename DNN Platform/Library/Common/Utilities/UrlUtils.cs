@@ -43,9 +43,12 @@ namespace DotNetNuke.Common.Utilities
             return $"{baseUrl}/{relativeUrl}";
         }
 
+        /// <summary>Decodes a base64 encoded value generated via <see cref="EncodeParameter"/>.</summary>
+        /// <param name="value">The encoded value.</param>
+        /// <returns>The decoded value.</returns>
         public static string DecodeParameter(string value)
         {
-            value = value.Replace("-", "+").Replace("_", "/").Replace("$", "=");
+            value = value.Replace('-', '+').Replace('_', '/').Replace('$', '=');
             byte[] arrBytes = Convert.FromBase64String(value);
             return Encoding.UTF8.GetString(arrBytes);
         }

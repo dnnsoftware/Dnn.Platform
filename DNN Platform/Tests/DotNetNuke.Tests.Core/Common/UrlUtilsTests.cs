@@ -44,4 +44,20 @@ public class UrlUtilsTests
         var result = UrlUtils.Combine("/a/b/c/", "/d/e/f/");
         Assert.AreEqual("/a/b/c/d/e/f/", result);
     }
+
+    [Test]
+    public void DecodeParameterHandlesRoundTrip()
+    {
+        const string input = "DNN Platform!";
+        var encodedValue = UrlUtils.EncodeParameter(input);
+        var result = UrlUtils.DecodeParameter(encodedValue);
+        Assert.AreEqual(input, result);
+    }
+
+    [Test]
+    public void DecodeParameterHandlesSpecialCharacters()
+    {
+        var result = UrlUtils.DecodeParameter("RE5_O1-$");
+        Assert.AreEqual("DN;_", result);
+    }
 }
