@@ -449,8 +449,8 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Redirect current response to 404 error page or output 404 content if error page not defined.</summary>
-        /// <param name="response"></param>
-        /// <param name="portalSetting"></param>
+        /// <param name="response">The response.</param>
+        /// <param name="portalSetting">The portal settings.</param>
         public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
