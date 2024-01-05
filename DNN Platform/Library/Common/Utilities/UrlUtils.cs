@@ -53,21 +53,26 @@ namespace DotNetNuke.Common.Utilities
             return Encoding.UTF8.GetString(arrBytes);
         }
 
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>.</summary>
+        /// <param name="value">The encrypted value.</param>
+        /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(string value)
         {
             return DecryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
         }
 
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string,string)"/>.</summary>
+        /// <param name="value">The encrypted value.</param>
+        /// <param name="encryptionKey">The key used to encrypt the value.</param>
+        /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = PortalSecurity.Instance;
-
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
             var toDecrypt = new StringBuilder(value);
-            toDecrypt.Replace("_", "/");
-            toDecrypt.Replace("-", "+");
+            toDecrypt.Replace('_', '/');
+            toDecrypt.Replace('-', '+');
             toDecrypt.Replace("%3d", "=");
-            return objSecurity.Decrypt(encryptionKey, toDecrypt.ToString());
+            return PortalSecurity.Instance.Decrypt(encryptionKey, toDecrypt.ToString());
         }
 
         public static string EncodeParameter(string value)

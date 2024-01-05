@@ -4,10 +4,13 @@
 
 namespace DotNetNuke.Tests.Core.Common;
 
+using System;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Services.Cryptography;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
@@ -18,6 +21,8 @@ public class UrlUtilsTests
     [OneTimeSetUp]
     public static void OneTimeSetUp()
     {
+        ComponentFactory.RegisterComponent<CryptographyProvider, CoreCryptographyProvider>();
+
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
         serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
@@ -59,5 +64,15 @@ public class UrlUtilsTests
     {
         var result = UrlUtils.DecodeParameter("RE5_O1-$");
         Assert.AreEqual("DN;_", result);
+    }
+
+    [Test]
+    public void DecryptParameterHandlesRoundTrip()
+    {
+        const string input = "DNN Platform!";
+        var key = Guid.NewGuid().ToString();
+        var encodedValue = UrlUtils.EncryptParameter(input, key);
+        var result = UrlUtils.DecryptParameter(encodedValue, key);
+        Assert.AreEqual(input, result);
     }
 }
