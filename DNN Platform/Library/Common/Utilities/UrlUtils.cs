@@ -17,10 +17,15 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Security;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class UrlUtils
+    /// <summary>Provides utilities for dealing with DNN's URLs. Consider using <see cref="System.Uri"/> if applicable.</summary>
+    public static class UrlUtils
     {
         private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
+        /// <summary>Combines two URLs, trimming any slashes between them.</summary>
+        /// <param name="baseUrl">The base URL.</param>
+        /// <param name="relativeUrl">The URL to add to the base URL.</param>
+        /// <returns>A new URL that combines <paramref name="baseUrl"/> and <paramref name="relativeUrl"/>.</returns>
         public static string Combine(string baseUrl, string relativeUrl)
         {
             if (baseUrl.Length == 0)
@@ -33,7 +38,9 @@ namespace DotNetNuke.Common.Utilities
                 return baseUrl;
             }
 
-            return string.Format("{0}/{1}", baseUrl.TrimEnd(new[] { '/', '\\' }), relativeUrl.TrimStart(new[] { '/', '\\' }));
+            baseUrl = baseUrl.TrimEnd('/', '\\');
+            relativeUrl = relativeUrl.TrimStart('/', '\\');
+            return $"{baseUrl}/{relativeUrl}";
         }
 
         public static string DecodeParameter(string value)
