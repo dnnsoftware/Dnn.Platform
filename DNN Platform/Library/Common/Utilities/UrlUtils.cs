@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -112,21 +113,32 @@ namespace DotNetNuke.Common.Utilities
             return parameterValue.ToString();
         }
 
+        /// <summary>Gets the name from a query string pair.</summary>
+        /// <param name="pair">The pair, e.g. <c>"name=value"</c>.</param>
+        /// <returns>The name.</returns>
         public static string GetParameterName(string pair)
         {
-            string[] nameValues = pair.Split('=');
-            return nameValues[0];
-        }
-
-        public static string GetParameterValue(string pair)
-        {
-            string[] nameValues = pair.Split('=');
-            if (nameValues.Length > 1)
+            var length = pair.IndexOf('=');
+            if (length == -1)
             {
-                return nameValues[1];
+                length = pair.Length;
             }
 
-            return string.Empty;
+            return pair.Substring(0, length);
+        }
+
+        /// <summary>Gets the value from a query string pair.</summary>
+        /// <param name="pair">The pair, e.g. <c>"name=value"</c>.</param>
+        /// <returns>The value.</returns>
+        public static string GetParameterValue(string pair)
+        {
+            var start = pair.IndexOf('=') + 1;
+            if (start == 0)
+            {
+                return string.Empty;
+            }
+
+            return pair.Substring(start);
         }
 
         /// <summary>
@@ -295,41 +307,51 @@ namespace DotNetNuke.Common.Utilities
             return popUpUrl;
         }
 
+        /// <summary>Creates a URL (or script) to close a pop-up.</summary>
+        /// <param name="refresh">Whether to refresh the page when the pop-up is closed.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="onClickEvent">Whether to generate a script for an onClick event (rather than a URL with a <c>javascript:</c> protocol).</param>
+        /// <returns>The URL or script.</returns>
         public static string ClosePopUp(bool refresh, string url, bool onClickEvent)
         {
-            var closePopUpStr = "dnnModal.closePopUp({0}, {1})";
-            closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
-
-            // Removes the javascript txt for onClick scripts)
-            if (onClickEvent && closePopUpStr.StartsWith("javascript:"))
-            {
-                closePopUpStr = closePopUpStr.Replace("javascript:", string.Empty);
-            }
-
-            return closePopUpStr;
+            var protocol = onClickEvent ? string.Empty : "javascript:";
+            var refreshBool = refresh.ToString().ToLowerInvariant();
+            var urlString = HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true);
+            return $"{protocol}dnnModal.closePopUp({refreshBool}, {urlString})";
         }
 
+        /// <summary>Replaces a query string parameter's value in a URL.</summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <param name="newValue">The parameter value.</param>
+        /// <returns>The updated URL.</returns>
         public static string ReplaceQSParam(string url, string param, string newValue)
         {
             if (Host.UseFriendlyUrls)
             {
-                return Regex.Replace(url, "(.*)(" + param + "/)([^/]+)(/.*)", "$1$2" + newValue + "$4", RegexOptions.IgnoreCase);
+                var escapedReplacementValue = newValue.Replace("$1", "$$1").Replace("$2", "$$2").Replace("$3", "$$3").Replace("$4", "$$4");
+                return Regex.Replace(url, $@"(.*)({Regex.Escape(param)}/)([^/]+)(/.*)", $"$1$2{escapedReplacementValue}$4", RegexOptions.IgnoreCase);
             }
             else
             {
-                return Regex.Replace(url, "(.*)(&|\\?)(" + param + "=)([^&\\?]+)(.*)", "$1$2$3" + newValue + "$5", RegexOptions.IgnoreCase);
+                var escapedReplacementValue = newValue.Replace("$1", "$$1").Replace("$2", "$$2").Replace("$3", "$$3").Replace("$4", "$$4").Replace("$5", "$$5");
+                return Regex.Replace(url, $@"(.*)(&|\?)({Regex.Escape(param)}=)([^&\?]+)(.*)", $"$1$2$3{escapedReplacementValue}$5", RegexOptions.IgnoreCase);
             }
         }
 
+        /// <summary>Removes the query string parameter with the given name from the URL.</summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <returns>The updated URL.</returns>
         public static string StripQSParam(string url, string param)
         {
             if (Host.UseFriendlyUrls)
             {
-                return Regex.Replace(url, "(.*)(" + param + "/[^/]+/)(.*)", "$1$3", RegexOptions.IgnoreCase);
+                return Regex.Replace(url, $"(.*)({Regex.Escape(param)}/[^/]+/)(.*)", "$1$3", RegexOptions.IgnoreCase);
             }
             else
             {
-                return Regex.Replace(url, "(.*)(&|\\?)(" + param + "=)([^&\\?]+)([&\\?])?(.*)", "$1$2$6", RegexOptions.IgnoreCase).Replace("(.*)([&\\?]$)", "$1");
+                return Regex.Replace(url, $@"(.*)(&|\?)({Regex.Escape(param)}=)([^&\?]+)([&\?])?(.*)", "$1$2$6", RegexOptions.IgnoreCase).Replace("(.*)([&\\?]$)", "$1");
             }
         }
 

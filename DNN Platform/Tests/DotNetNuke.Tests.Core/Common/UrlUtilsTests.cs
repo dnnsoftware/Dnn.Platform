@@ -5,12 +5,19 @@
 namespace DotNetNuke.Tests.Core.Common;
 
 using System;
+using System.Collections.Generic;
+using System.Web.Caching;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.Settings;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Services.Cryptography;
+using DotNetNuke.Tests.Utilities.Fakes;
+using DotNetNuke.Tests.Utilities.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
@@ -18,14 +25,18 @@ using NUnit.Framework;
 [TestFixture]
 public class UrlUtilsTests
 {
+    private static readonly Dictionary<string, IConfigurationSetting> HostSettings = new Dictionary<string, IConfigurationSetting>();
+
     [OneTimeSetUp]
     public static void OneTimeSetUp()
     {
         ComponentFactory.RegisterComponent<CryptographyProvider, CoreCryptographyProvider>();
+        MockComponentProvider.CreateDataCacheProvider();
 
         var serviceCollection = new ServiceCollection();
-        serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-        serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
+        serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+        serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
+        serviceCollection.AddSingleton<IHostSettingsService>(new FakeHostController(HostSettings));
         Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
     }
 
@@ -88,5 +99,125 @@ public class UrlUtilsTests
     {
         var result = UrlUtils.EncryptParameter("D", "key");
         Assert.IsTrue(result.EndsWith("%3d"));
+    }
+
+    [Test]
+    public void GetParameterNameReturnsName()
+    {
+        var result = UrlUtils.GetParameterName("key=value");
+        Assert.AreEqual("key", result);
+    }
+
+    [Test]
+    public void GetParameterNameReturnsEntireStringIfNoEqualsSign()
+    {
+        var result = UrlUtils.GetParameterName("just-a-key");
+        Assert.AreEqual("just-a-key", result);
+    }
+
+    [Test]
+    public void GetParameterNameReturnsEmptyIfStartsWithEqualsSign()
+    {
+        var result = UrlUtils.GetParameterName("=just-a-value");
+        Assert.AreEqual(string.Empty, result);
+    }
+
+    [Test]
+    public void GetParameterValueReturnsName()
+    {
+        var result = UrlUtils.GetParameterValue("key=value");
+        Assert.AreEqual("value", result);
+    }
+
+    [Test]
+    public void GetParameterValueReturnsEmptyStringIfNoEqualsSign()
+    {
+        var result = UrlUtils.GetParameterValue("just-a-key");
+        Assert.AreEqual(string.Empty, result);
+    }
+
+    [Test]
+    public void GetParameterValueReturnsEntireStringIfStartsWithEqualsSign()
+    {
+        var result = UrlUtils.GetParameterValue("=just-a-value");
+        Assert.AreEqual("just-a-value", result);
+    }
+
+    [Test]
+    public void ClosePopUpGeneratesAJavaScriptUrlWithValues()
+    {
+        var result = UrlUtils.ClosePopUp(false, "/hello",  false);
+        Assert.AreEqual("""javascript:dnnModal.closePopUp(false, "/hello")""", result);
+
+        result = UrlUtils.ClosePopUp(true, "blah", false);
+        Assert.AreEqual("""javascript:dnnModal.closePopUp(true, "blah")""", result);
+    }
+
+    [Test]
+    public void ClosePopUpGeneratesAScriptWhenOnClickEventIsTrue()
+    {
+        var result = UrlUtils.ClosePopUp(false, "/somewhere",  true);
+        Assert.AreEqual("""dnnModal.closePopUp(false, "/somewhere")""", result);
+    }
+
+    [Test]
+    public void ClosePopUpEncodesUrlParameter()
+    {
+        var result = UrlUtils.ClosePopUp(false, "/somewhere?value=%20hi&two='hey'",  true);
+        Assert.AreEqual("""dnnModal.closePopUp(false, "/somewhere?value=%20hi\u0026two=\u0027hey\u0027")""", result);
+    }
+
+    [Test]
+    public void ReplaceQSParamReplacesUnfriendlyParam()
+    {
+        HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
+
+        var result = UrlUtils.ReplaceQSParam("/somewhere?value=hi&two=hey", "two", "what");
+        Assert.AreEqual("/somewhere?value=hi&two=what", result);
+    }
+
+    [Test]
+    public void ReplaceQSParamReplacesFriendlyParam()
+    {
+        HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "true", };
+
+        var result = UrlUtils.ReplaceQSParam("/somewhere/value/hi/two/hey/", "two", "what");
+        Assert.AreEqual("/somewhere/value/hi/two/what/", result);
+    }
+
+    [Test]
+    public void ReplaceQSParamHandlesSpecialCharacters()
+    {
+        HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
+
+        var result = UrlUtils.ReplaceQSParam("/somewhere?one.two=three$four&one_two=123", "one.two", "four$3");
+        Assert.AreEqual("/somewhere?one.two=four$3&one_two=123", result);
+    }
+
+    [Test]
+    public void StripQSParamRemovesUnfriendlyParam()
+    {
+        HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
+
+        var result = UrlUtils.StripQSParam("/somewhere?value=hi&two=hey&three=x", "two");
+        Assert.AreEqual("/somewhere?value=hi&three=x", result);
+    }
+
+    [Test]
+    public void StripQSParamRemovesFriendlyParam()
+    {
+        HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "true", };
+
+        var result = UrlUtils.StripQSParam("/somewhere/value/hi/two/hey/", "two");
+        Assert.AreEqual("/somewhere/value/hi/", result);
+    }
+
+    [Test]
+    public void StripQSParamHandlesSpecialCharacters()
+    {
+        HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
+
+        var result = UrlUtils.StripQSParam("/somewhere?one.two=three$four&one_two=123", "one.two");
+        Assert.AreEqual("/somewhere?one_two=123", result);
     }
 }
