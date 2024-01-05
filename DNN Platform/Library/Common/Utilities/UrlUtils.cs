@@ -355,6 +355,9 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <summary>Determines whether a <paramref name="url"/> is valid as a return URL.</summary>
+        /// <param name="url">The URL string.</param>
+        /// <returns>The normalized return URL or <see cref="string.Empty"/>.</returns>
         public static string ValidReturnUrl(string url)
         {
             try
@@ -365,8 +368,8 @@ namespace DotNetNuke.Common.Utilities
                     return url;
                 }
 
-                url = url.Replace("\\", "/");
-                if (url.ToLowerInvariant().Contains("data:"))
+                url = url.Replace('\\', '/');
+                if (url.IndexOf("data:", StringComparison.OrdinalIgnoreCase) > -1)
                 {
                     return string.Empty;
                 }
@@ -380,12 +383,12 @@ namespace DotNetNuke.Common.Utilities
 
                 // redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
                 var urlWithNoQuery = url;
-                if (urlWithNoQuery.Contains("?"))
+                if (urlWithNoQuery.IndexOf('?') > -1)
                 {
                     urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
                 }
 
-                if (urlWithNoQuery.Contains("://"))
+                if (urlWithNoQuery.IndexOf(':') > -1)
                 {
                     var portalSettings = PortalSettings.Current;
                     var aliasWithHttp = Globals.AddHTTP(((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias);
@@ -405,12 +408,12 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
 
-                while (url.StartsWith("///"))
+                while (url.StartsWith("///", StringComparison.Ordinal))
                 {
                     url = url.Substring(1);
                 }
 
-                if (url.StartsWith("//"))
+                if (url.StartsWith("//", StringComparison.Ordinal))
                 {
                     var urlWithNoProtocol = url.Substring(2);
                     var portalSettings = PortalSettings.Current;

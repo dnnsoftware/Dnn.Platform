@@ -9,12 +9,14 @@ using System.Collections.Generic;
 using System.Web.Caching;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Settings;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Tests.Utilities.Fakes;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -219,5 +221,93 @@ public class UrlUtilsTests
 
         var result = UrlUtils.StripQSParam("/somewhere?one.two=three$four&one_two=123", "one.two");
         Assert.AreEqual("/somewhere?one_two=123", result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlReturnsNullWhenInputIsNull()
+    {
+        var result = UrlUtils.ValidReturnUrl(null);
+        Assert.IsNull(result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlReturnsEmptyWhenInputIsEmpty()
+    {
+        var result = UrlUtils.ValidReturnUrl(string.Empty);
+        Assert.IsEmpty(result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlDoesNotAcceptDataUrl()
+    {
+        var result = UrlUtils.ValidReturnUrl("data:text/plain,I am text file");
+        Assert.IsEmpty(result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlDoesNotAcceptXssAttack()
+    {
+        var result = UrlUtils.ValidReturnUrl("/return?onclick=alert()");
+        Assert.IsEmpty(result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlDoesNotAcceptAbsoluteUrlWithoutMatchingDomain()
+    {
+        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
+
+        var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
+        var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
+        var portalControllerMock = new Mock<IPortalController>();
+        portalControllerMock.Setup(c => c.GetCurrentPortalSettings()).Returns(portalSettings);
+        PortalController.SetTestableInstance(portalControllerMock.Object);
+
+        var result = UrlUtils.ValidReturnUrl("https://another.evil/return");
+        Assert.IsEmpty(result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlDoesAcceptAbsoluteUrlWithMatchingDomain()
+    {
+        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
+
+        var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
+        var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
+        var portalControllerMock = new Mock<IPortalController>();
+        portalControllerMock.Setup(c => c.GetCurrentPortalSettings()).Returns(portalSettings);
+        PortalController.SetTestableInstance(portalControllerMock.Object);
+
+        var result = UrlUtils.ValidReturnUrl("https://dnncommunity.org/return");
+        Assert.AreEqual("https://dnncommunity.org/return", result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlDoesNotAcceptAbsoluteUrlWithoutProtocolWhenDomainDoesNotMatch()
+    {
+        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
+
+        var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
+        var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
+        var portalControllerMock = new Mock<IPortalController>();
+        portalControllerMock.Setup(c => c.GetCurrentPortalSettings()).Returns(portalSettings);
+        PortalController.SetTestableInstance(portalControllerMock.Object);
+
+        var result = UrlUtils.ValidReturnUrl("/////dnncommunity.net/return");
+        Assert.IsEmpty(result);
+    }
+
+    [Test]
+    public void ValidateReturnUrlAcceptsAbsoluteUrlWithoutProtocolWhenDomainDoesMatches()
+    {
+        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
+
+        var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
+        var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
+        var portalControllerMock = new Mock<IPortalController>();
+        portalControllerMock.Setup(c => c.GetCurrentPortalSettings()).Returns(portalSettings);
+        PortalController.SetTestableInstance(portalControllerMock.Object);
+
+        var result = UrlUtils.ValidReturnUrl("/////dnncommunity.org/return");
+        Assert.AreEqual("//dnncommunity.org/return", result);
     }
 }
