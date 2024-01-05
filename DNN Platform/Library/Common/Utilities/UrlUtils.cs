@@ -433,12 +433,16 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        // Whether current page is show in popup.
+        /// <summary>Determines whether the current page is being shown in a pop-up.</summary>
+        /// <returns><see langword="true"/> if the current page is in a pop-up, otherwise <see langword="false"/>.</returns>
         public static bool InPopUp()
         {
-            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
+            return HttpContext.Current != null && IsPopUp(HttpContext.Current.Request.Url.ToString());
         }
 
+        /// <summary>Determines whether the given URL is for a page being shown in a pop-up.</summary>
+        /// <param name="url">The URL.</param>
+        /// <returns><see langword="true"/> if the URL is for a page in a pop-up, otherwise <see langword="false"/>.</returns>
         public static bool IsPopUp(string url)
         {
             return url.IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;

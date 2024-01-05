@@ -310,4 +310,18 @@ public class UrlUtilsTests
         var result = UrlUtils.ValidReturnUrl("/////dnncommunity.org/return");
         Assert.AreEqual("//dnncommunity.org/return", result);
     }
+
+    [Test]
+    public void IsPopUpIsTrueWhenPopUpParameterIsOnUrl()
+    {
+        var result = UrlUtils.IsPopUp("/page?popUp=true");
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void IsPopUpIsFalseWhenPopUpParameterIsNotOnUrl()
+    {
+        var result = UrlUtils.IsPopUp("/page");
+        Assert.IsFalse(result);
+    }
 }
