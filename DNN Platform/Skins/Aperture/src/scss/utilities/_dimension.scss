@@ -29,7 +29,19 @@ $sizes: (
         @each $breakpoint, $min-width in $breakpoints {
             @media (min-width: $min-width) {
                 .aperture-#{$property}-#{$breakpoint}-#{$key} {
-                    #{$property}: #{$value} !important;
+                    @if ($property == 'w') {
+                        width: $value !important;
+                    } @else if($property == 'h') {
+                        height: $value !important;
+                    } @else if($property == 'min-w') {
+                        min-width: $value !important;
+                    } @else if($property == 'min-h') {
+                        min-height: $value !important;
+                    } @else if($property == 'max-w') {
+                        max-width: $value !important;
+                    } @else if($property == 'max-h') {
+                        max-height: $value !important;
+                    }
                 }
             }
         }
