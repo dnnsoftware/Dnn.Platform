@@ -1,0 +1,15 @@
+$controls: (
+    "radius": 0,
+    "padding": .5rem,
+);
+
+///TODO: Remove these in favor of those injected by DNN 10. The defaults in DNN 10 should match these.
+:root {
+    --dnn-controls-radius: #{map-get($controls, 'radius')};
+    --dnn-controls-padding: #{map-get($controls, 'padding')};
+}
+
+// Control function
+@function control($control-name) {
+    @return var(--dnn-controls-#{$control-name}, map-get($controls, $control-name));
+ }

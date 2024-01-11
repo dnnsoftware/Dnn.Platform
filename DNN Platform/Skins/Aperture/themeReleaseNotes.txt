@@ -1,0 +1,12 @@
+<h2>Aperture Theme</h2>
+<div><em>Default theme for DNN 10.</em></div>
+<div>&nbsp;</div>
+<h3>Release History</h3>
+<hr />
+<div>&nbsp;</div>
+<div>
+	<h4>Version 1.0.0</h4>
+	<ul>
+		<li style="margin-left:20px;">Initial Release</li>
+	</ul>
+</div>

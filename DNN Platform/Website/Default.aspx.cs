@@ -15,12 +15,13 @@ namespace DotNetNuke.Framework
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
@@ -38,16 +39,22 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>
+    /// The DNN default page.
+    /// </summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
-
         private static readonly Regex HeaderTextRegex = new Regex(
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultPage"/> class.
+        /// </summary>
         public DefaultPage()
         {
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -85,8 +92,12 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <summary>Gets a service that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>
+        /// Gets a string representation of the list HTML attributes.
+        /// </summary>
         protected string HtmlAttributeList
         {
             get
@@ -149,13 +160,17 @@ namespace DotNetNuke.Framework
             return string.Empty;
         }
 
+        /// <summary>
+        /// Checks if the current version is not a production version.
+        /// </summary>
+        /// <returns>A value indicating whether the current version is not a production version.</returns>
         protected bool NonProductionVersion()
         {
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
         /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
         /// - set global page settings.
@@ -291,7 +306,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -317,12 +332,6 @@ namespace DotNetNuke.Framework
                 this.MetaGenerator.Content = this.Generator;
                 this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
-                /*
-                 * Never show to be html5 compatible and stay backward compatible
-                 *
-                 * MetaCopyright.Content = Copyright;
-                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
-                 */
                 this.MetaKeywords.Content = this.KeyWords;
                 this.MetaKeywords.Visible = !string.IsNullOrEmpty(this.KeyWords);
                 this.MetaDescription.Content = this.Description;
@@ -369,7 +378,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///
+        /// Initializes the page.
         /// </summary>
         /// <remarks>
         /// - Obtain PortalSettings from Current Context
@@ -606,6 +615,8 @@ namespace DotNetNuke.Framework
                 }
             }
 
+            this.CssCustomProperties.Text = this.GenerateCssCustomProperties();
+
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
@@ -643,6 +654,111 @@ namespace DotNetNuke.Framework
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
                 ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
             }
+        }
+
+        private string GenerateCssCustomProperties()
+        {
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheArgs = new CacheItemArgs(
+                cacheKey,
+                DataCache.PortalStylesCacheTimeOut,
+                DataCache.PortalStylesCachePriority,
+                this.PortalSettings.GetStyles());
+            return DataCache.GetCachedData<string>(
+                cacheArgs,
+                static args =>
+                {
+                    var styles = (IPortalStyles)args.Params[0];
+                    return $$"""
+                             <style type="text/css">
+                                 :root {
+                                     --dnn-color-primary: #{{styles.ColorPrimary.MinifiedHex}};
+                                     --dnn-color-primary-light: #{{styles.ColorPrimaryLight.MinifiedHex}};
+                                     --dnn-color-primary-dark: #{{styles.ColorPrimaryDark.MinifiedHex}};
+                                     --dnn-color-primary-contrast: #{{styles.ColorPrimaryContrast.MinifiedHex}};
+                                     --dnn-color-primary-r: {{styles.ColorPrimary.Red}};
+                                     --dnn-color-primary-g: {{styles.ColorPrimary.Green}};
+                                     --dnn-color-primary-b: {{styles.ColorPrimary.Blue}};
+                                     
+                                     --dnn-color-secondary: #{{styles.ColorSecondary.MinifiedHex}};
+                                     --dnn-color-secondary-light: #{{styles.ColorSecondaryLight.MinifiedHex}};
+                                     --dnn-color-secondary-dark: #{{styles.ColorSecondaryDark.MinifiedHex}};
+                                     --dnn-color-secondary-contrast: #{{styles.ColorSecondaryContrast.MinifiedHex}};
+                                     --dnn-color-secondary-r: {{styles.ColorSecondary.Red}};
+                                     --dnn-color-secondary-g: {{styles.ColorSecondary.Green}};
+                                     --dnn-color-secondary-b: {{styles.ColorSecondary.Blue}};
+                                     
+                                     --dnn-color-tertiary: #{{styles.ColorTertiary.MinifiedHex}};
+                                     --dnn-color-tertiary-light: #{{styles.ColorTertiaryLight.MinifiedHex}};
+                                     --dnn-color-tertiary-dark: #{{styles.ColorTertiaryDark.MinifiedHex}};
+                                     --dnn-color-tertiary-contrast: #{{styles.ColorTertiaryContrast.MinifiedHex}};
+                                     --dnn-color-tertiary-r: {{styles.ColorTertiary.Red}};
+                                     --dnn-color-tertiary-g: {{styles.ColorTertiary.Green}};
+                                     --dnn-color-tertiary-b: {{styles.ColorTertiary.Blue}};
+                                     
+                                     --dnn-color-neutral: #{{styles.ColorNeutral.MinifiedHex}};
+                                     --dnn-color-neutral-light: #{{styles.ColorNeutralLight.MinifiedHex}};
+                                     --dnn-color-neutral-dark: #{{styles.ColorNeutralDark.MinifiedHex}};
+                                     --dnn-color-neutral-contrast: #{{styles.ColorNeutralContrast.MinifiedHex}};
+                                     --dnn-color-neutral-r: {{styles.ColorNeutral.Red}};
+                                     --dnn-color-neutral-g: {{styles.ColorNeutral.Green}};
+                                     --dnn-color-neutral-b: {{styles.ColorNeutral.Blue}};
+                                     
+                                     --dnn-color-background: #{{styles.ColorBackground.MinifiedHex}};
+                                     --dnn-color-background-light: #{{styles.ColorBackgroundLight.MinifiedHex}};
+                                     --dnn-color-background-dark: #{{styles.ColorBackgroundDark.MinifiedHex}};
+                                     --dnn-color-background-contrast: #{{styles.ColorBackgroundContrast.MinifiedHex}};
+                                     --dnn-color-background-r: {{styles.ColorBackground.Red}};
+                                     --dnn-color-background-g: {{styles.ColorBackground.Green}};
+                                     --dnn-color-background-b: {{styles.ColorBackground.Blue}};
+                                     
+                                     --dnn-color-foreground: #{{styles.ColorForeground.MinifiedHex}};
+                                     --dnn-color-foreground-light: #{{styles.ColorForegroundLight.MinifiedHex}};
+                                     --dnn-color-foreground-dark: #{{styles.ColorForegroundDark.MinifiedHex}};
+                                     --dnn-color-foreground-contrast: #{{styles.ColorForegroundContrast.MinifiedHex}};
+                                     --dnn-color-foreground-r: {{styles.ColorForeground.Red}};
+                                     --dnn-color-foreground-g: {{styles.ColorForeground.Green}};
+                                     --dnn-color-foreground-b: {{styles.ColorForeground.Blue}};
+             
+                                     --dnn-color-info: #{{styles.ColorInfo.MinifiedHex}};
+                                     --dnn-color-info-light: #{{styles.ColorInfoLight.MinifiedHex}};
+                                     --dnn-color-info-dark: #{{styles.ColorInfoDark.MinifiedHex}};
+                                     --dnn-color-info-contrast: #{{styles.ColorInfoContrast.MinifiedHex}};
+                                     --dnn-color-info-r: {{styles.ColorInfo.Red}};
+                                     --dnn-color-info-g: {{styles.ColorInfo.Green}};
+                                     --dnn-color-info-b: {{styles.ColorInfo.Blue}};
+             
+                                     --dnn-color-success: #{{styles.ColorSuccess.MinifiedHex}};
+                                     --dnn-color-success-light: #{{styles.ColorSuccessLight.MinifiedHex}};
+                                     --dnn-color-success-dark: #{{styles.ColorSuccessDark.MinifiedHex}};
+                                     --dnn-color-success-contrast: #{{styles.ColorSuccessContrast.MinifiedHex}};
+                                     --dnn-color-success-r: {{styles.ColorSuccess.Red}};
+                                     --dnn-color-success-g: {{styles.ColorSuccess.Green}};
+                                     --dnn-color-success-b: {{styles.ColorSuccess.Blue}};
+             
+                                     --dnn-color-warning: #{{styles.ColorWarning.MinifiedHex}};
+                                     --dnn-color-warning-light: #{{styles.ColorWarningLight.MinifiedHex}};
+                                     --dnn-color-warning-dark: #{{styles.ColorWarningDark.MinifiedHex}};
+                                     --dnn-color-warning-contrast: #{{styles.ColorWarningContrast.MinifiedHex}};
+                                     --dnn-color-warning-r: {{styles.ColorWarning.Red}};
+                                     --dnn-color-warning-g: {{styles.ColorWarning.Green}};
+                                     --dnn-color-warning-b: {{styles.ColorWarning.Blue}};
+             
+                                     --dnn-color-danger: #{{styles.ColorDanger.MinifiedHex}};
+                                     --dnn-color-danger-light: #{{styles.ColorDangerLight.MinifiedHex}};
+                                     --dnn-color-danger-dark: #{{styles.ColorDangerDark.MinifiedHex}};
+                                     --dnn-color-danger-contrast: #{{styles.ColorDangerContrast.MinifiedHex}};
+                                     --dnn-color-danger-r: {{styles.ColorDanger.Red}};
+                                     --dnn-color-danger-g: {{styles.ColorDanger.Green}};
+                                     --dnn-color-danger-b: {{styles.ColorDanger.Blue}};
+             
+                                     --dnn-controls-radius: {{styles.ControlsRadius}}px;
+                                     --dnn-controls-padding: {{styles.ControlsPadding}}px;
+                                     --dnn-base-font-size: {{styles.BaseFontSize}}px;
+                                 }
+                             </style>
+                             """;
+                });
         }
 
         /// <summary>

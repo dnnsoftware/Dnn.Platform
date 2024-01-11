@@ -1,0 +1,14 @@
+.aperture-title-wrapper {
+    margin-top: 1rem;
+    h5 {
+        margin-left: 2rem;
+    }
+}
+
+.aperture-content-pane {
+    .aperture-title-wrapper {
+        h5 {
+            margin-left: 0;
+        }
+    }
+}

@@ -23,3 +23,31 @@ updates:
     labels:
       - ".NET"
       - "Type: Maintenance"
+    groups:
+      MailKit:
+        patterns:
+          - "MailKit"
+          - "MimeKit"
+          - "BouncyCastle.Cryptography"
+      Google-Apis:
+        patterns:
+          - "Google.Apis*"
+      AspNet:
+        patterns:
+          - "Microsoft.AspNet.*"
+      SourceLink:
+        patterns:
+          - "Microsoft.SourceLink.*"
+      TestStack-Dossier:
+        patterns:
+          - "TestStack.Dossier"
+          - "AutoFixture"
+          - "Fare"
+          - "NSubstitute"
+          - "Castle.Core"
+      Cake-Issues:
+        patterns:
+          - "Cake.Issues*"
+      DependencyInjection:
+        patterns:
+          - "Microsoft.Extensions.DependencyInjection*"
