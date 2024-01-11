@@ -29,24 +29,24 @@
 
 	<ItemGroup>
 		<PackageReference Include="IsCI" Version="1.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Spectre.Console" Version="0.46.0" />
-		<PackageReference Include="Spectre.Console.Analyzer" Version="0.46.0">
+		<PackageReference Include="Spectre.Console" Version="0.48.0" />
+		<PackageReference Include="Spectre.Console.Analyzer" Version="0.48.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
-		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.2.0" />
+		<PackageReference Include="Spectre.Console.Cli" Version="0.48.0" />
+		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.4.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IO.Abstractions" Version="19.2.1" />
+		<PackageReference Include="System.IO.Abstractions" Version="20.0.4" />
 	</ItemGroup>
 
   <ItemGroup>
