@@ -55,7 +55,8 @@ h6 {
 }
 
 p {
-  margin: 0 0 1.5rem;
+  @include font-baseline(18, calc(18 * 1.5));
+  margin-bottom: 1.5rem;
 }
 
 ul,
