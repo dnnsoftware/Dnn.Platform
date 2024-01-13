@@ -1,4 +1,27 @@
 export const navFunctions = (() => {
+	// add event listeners to all anchor tags with a hash in href
+	const anchorsWithHash: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('a[href^="/#"]');
+	anchorsWithHash.forEach(anchorWithHash => {
+		// listen for click event
+		anchorWithHash.addEventListener('click', event => {
+			// check if anchor is on the same page
+			if (location.pathname.replace(/^\//, '') === anchorWithHash.pathname.replace(/^\//, '') && location.hostname === anchorWithHash.hostname) {
+				// figure where to scroll to
+				const target: HTMLAnchorElement | null = document.querySelector(anchorWithHash.hash);
+				// check if target exists
+				if (target) {
+					// prevent default anchor click behavior
+					event.preventDefault();
+					// animate scroll to anchor with id
+					window.scrollTo({
+						top: target.offsetTop - 150,
+						behavior: 'smooth'
+					});
+				}
+			}
+		});
+	});
+
 	// add event listeners to expands
 	const navExpand = document.querySelectorAll('.nav-expand');
   
