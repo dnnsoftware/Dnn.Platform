@@ -1,40 +1,3 @@
-@function strip-unit($num) {
-  @return calc($num / ($num * 0 + 1));
-}
-
-// rem font-size with px fallback
-// usage: @include font-size(16)
-@mixin font-size($sizeValue) {
-  font-size: $sizeValue + px;
-  font-size: calc($sizeValue / 16) + rem;
-}
-
-// vertical rhythm
-// usage: @include font-baseline(16,24);
-@mixin font-baseline($font-size, $lineheight){
-  $var-base-font-size: #{map-get($fonts, 'base-font-size')};
-	font-size: $font-size + px;
-	font-size: calc($font-size / $var-base-font-size) + rem;
-	line-height: calc($lineheight / $font-size);
-  margin: 0 0 calc((($lineheight / $font-size) * (1 / ($lineheight / $defaultlineheight))) * .5em ) 0; 
-}
-
-// Shorthand for media queries at px width and lower
-@mixin mq-max-width( $width-in-px ) {
-  $var-base-font-size: #{map-get($fonts, 'base-font-size')};
-  @media only screen and (max-width: calc(($width-in-px / $var-base-font-size) * 1em )) {
-    @content;
-  }
-}
-
-// Shorthand for media queries at px width and higher
-@mixin mq-min-width( $width-in-px ) {
-  $var-base-font-size: #{map-get($fonts, 'base-font-size')};
-  @media only screen and (min-width: calc(($width-in-px / $var-base-font-size) * 1em )) {
-    @content;
-  }
-}
-
 // Regular solid buttons
 @mixin button-variant($color, $hover-alpha: 1) {
   $var-color: color($color);
@@ -43,7 +6,9 @@
   background-color: $var-color;
   border-color: $var-color;
   border-radius: var(--dnn-controls-radius, 0);
-  padding: var(--dnn-controls-padding, .5rem);
+  display: inline-block;
+  font-weight: bold;
+  padding: calc(var(--dnn-controls-padding, .5rem) * 1.25) calc(var(--dnn-controls-padding, .5rem) * 4);
   &:hover, &:focus {
     color: color($color + '-contrast');
     background-color: rgba($var-color-rgb, $hover-alpha);
@@ -59,7 +24,9 @@
   background-color: transparent;
   border-color: $var-color;
   border-radius: var(--dnn-controls-radius, 0);
-  padding: var(--dnn-controls-padding, .5rem);
+  display: inline-block;
+  font-weight: bold;
+  padding: calc(var(--dnn-controls-padding, .5rem) * 1.25) calc(var(--dnn-controls-padding, .5rem) * 4);
   &:hover, &:focus {
     color: $var-color-contrast;
     background-color: $var-color;
@@ -76,7 +43,9 @@
   background-image: none;
   border-color: $var-color;
   border-radius: var(--dnn-controls-radius, 0);
-  padding: var(--dnn-controls-padding, .5rem);
+  display: inline-block;
+  font-weight: bold;
+  padding: calc(var(--dnn-controls-padding, .5rem) * 1.25) calc(var(--dnn-controls-padding, .5rem) * 4);
   &:hover, &:focus {
     color: $var-color;
     background-color: transparent;
@@ -94,10 +63,28 @@
   background-image: none;
   border-color: $var-color-contrast;
   border-radius: var(--dnn-controls-radius, 0);
-  padding: var(--dnn-controls-padding, .5rem);
+  display: inline-block;
+  font-weight: bold;
+  padding: calc(var(--dnn-controls-padding, .5rem) * 1.25) calc(var(--dnn-controls-padding, .5rem) * 4);
   &:hover, &:focus {
     color: $color;
     background-color: rgba($var-color-rgb, $hover-alpha);
     border-color: rgba($var-color-rgb, $hover-alpha);
+  }
+}
+
+// button iterations for each color
+@each $color, $value in $colors {
+  .aperture-btn-#{$color} {
+    @include button-variant($color,.8);
+  }
+  .aperture-btn-outline-#{$color} {
+    @include button-outline-variant($color);
+  }
+  .aperture-btn-reverse-outline-#{$color} {
+    @include button-reverse-outline-variant($color);
+  }
+  .aperture-btn-inverse-#{$color} {
+    @include button-inverse-variant($color,.9);
   }
 }
