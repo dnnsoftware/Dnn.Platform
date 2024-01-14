@@ -4,21 +4,25 @@ export const navFunctions = (() => {
 	anchorsWithHash.forEach(anchorWithHash => {
 		// listen for click event
 		anchorWithHash.addEventListener('click', event => {
+			// prevent default anchor click behavior
+			event.preventDefault();
 			// check if anchor is on the same page
 			if (location.pathname.replace(/^\//, '') === anchorWithHash.pathname.replace(/^\//, '') && location.hostname === anchorWithHash.hostname) {
 				// figure where to scroll to
 				const target: HTMLAnchorElement | null = document.querySelector(anchorWithHash.hash);
 				// check if target exists
-				if (target) {
-					// prevent default anchor click behavior
-					event.preventDefault();
+				if (target !== null) {
+					// get target position
+					const targetTop = target.getBoundingClientRect().top;
+					// get window position
+					const windowTop = window.scrollY;
 					// animate scroll to anchor with id
 					window.scrollTo({
-						top: target.offsetTop - 150,
+						top: targetTop + windowTop - 150,
 						behavior: 'smooth'
 					});
 				}
-			}
+			};
 		});
 	});
 
