@@ -152,14 +152,15 @@ $nav-width: 320px;
 #menuToggle a
 {
   text-decoration: none;
-  color: #232323;
+  color: color('background-light');
   
   transition: color 0.3s ease;
 }
 
 #menuToggle a:hover
 {
-  color: tomato;
+  color: color('tertiary-light');
+  background-color: color('background-dark');
 }
 
 
@@ -249,7 +250,7 @@ $nav-width: 320px;
 		width: $nav-width;
 		max-width: 100%;
 		height: calc(100vh - $nav-height);
-		background-color: color('primary-contrast');
+		background-color: color('tertiary-light');
 		overflow-y: auto;
 		overflow-x: hidden;
 		-webkit-overflow-scrolling: touch;
@@ -273,12 +274,12 @@ $nav-width: 320px;
 		justify-content: space-between;
 
 		&:not(:last-child) {
-			border-bottom: solid 1px color('foreground-light');
+			border-bottom: hidden 1px color('foreground-light');
 		}
 
 		.nav-link {
-			background-color: color('background');
-			color: color('primary');
+			background-color: color('tertiary-light');
+			color: color('tertiary-contrast');
 		}
 
 		&.selected {
@@ -293,7 +294,7 @@ $nav-width: 320px;
 		.nav-back-link {
 			display: flex;
 			align-items: center;
-			background: color('primary');
+			background: color('neutral-dark');
 			color: color('background');
 
 			i {
@@ -324,7 +325,7 @@ $nav-width: 320px;
 			width: 100%;
 			height: 100%;
 			transform: translateX(100%);
-			background-color: color('background');
+			background-color: color('tertiary-light');
 			transition: 0.3s;
 			visibility: hidden;
 		}
