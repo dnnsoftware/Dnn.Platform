@@ -44,7 +44,7 @@ export const navFunctions = (() => {
 	// target hamburger menu
 	const responsiveMenuLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#nav-mobile input[type^="checkbox"], #nav-mobile .nav-link:not(.nav-expand-link, .nav-back-link)');
 	const bodyOverlay: HTMLElement = document.getElementById('body-overlay')!;
-	const hamburgerMenu: HTMLInputElement = document.querySelector('#menuToggle input[type="checkbox"]')!;
+	const hamburgerMenu: HTMLInputElement = document.querySelector('#menuToggle input[type^="checkbox"]')!;
 
 	responsiveMenuLinks.forEach(link => {
 		link.addEventListener('click', () => {
