@@ -48,8 +48,7 @@ export const navFunctions = (() => {
 
 	responsiveMenuLinks.forEach(link => {
 		link.addEventListener('click', () => {
-			// toggle menu
-			console.log('responsiveMenu clicked');
+			// toggle menu and overlay
 			document.body.classList.toggle('nav-is-toggled');
 			bodyOverlay.classList.toggle('aperture-d-none');
 		});
