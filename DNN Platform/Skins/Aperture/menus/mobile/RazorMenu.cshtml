@@ -30,7 +30,7 @@
         var pageDesc = Html.Raw(!string.IsNullOrEmpty(page.Description) ? ("<br/><span class=\"link-description\">" + @page.Description + "</span>") :string.Empty);
         var attrTarget = !string.IsNullOrEmpty(page.Target) ? ("target=\"" + page.Target + "\"") :string.Empty;
 
-        <li class="nav-item @(hasChildren ? "nav-expand " : string.Empty)@(page.Selected ? "selected" : string.Empty)">
+        <li class="nav-item @(hasChildren ? "nav-expand aperture-d-flex aperture-align-items-center" : string.Empty)@(page.Selected ? "selected" : string.Empty)">
             @if (page.Enabled)
             {
                 <a class="nav-link" href="@page.Url" @attrTarget>@page.Text @pageDesc</a>
@@ -42,11 +42,11 @@
 
             @if (hasChildren)
             {
-                <a href="javascript:void(0);" class="nav-link nav-expand-link"><i class="fas fa-chevron-right"></i></a>
+                <a href="javascript:void(0);" class="nav-link nav-expand-link">&gt;</a>
                 <ul class="nav-items nav-expand-content">
                     <li class="nav-item">
-                        <a class="nav-link nav-back-link" href="javascript:;">
-                            <em class="fas fa-chevron-left me-1"></em>Back to @page.Text
+                        <a class="nav-link nav-back-link" href="javascript:void(0);">
+                            &lt;&nbsp; Back to @page.Text
                         </a>
                     </li>
                     @RenderPages(page.Children)
