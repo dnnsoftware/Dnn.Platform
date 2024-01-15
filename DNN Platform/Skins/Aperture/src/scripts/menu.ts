@@ -29,7 +29,7 @@ export const navFunctions = (() => {
 	});
 
 	// add event listeners to expands
-	const navExpand = [].slice.call(document.querySelectorAll('.nav-expand'));
+	const navExpand: HTMLElement[] = Array.from(document.querySelectorAll('.nav-expand'));
 
 	navExpand.forEach((item: HTMLElement) => {
 		item.querySelector('.nav-expand-link')!.addEventListener('click', () => item.classList.add('active'));
