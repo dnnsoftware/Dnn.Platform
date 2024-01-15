@@ -4,10 +4,10 @@ export const navFunctions = (() => {
 	anchorsWithHash.forEach(anchorWithHash => {
 		// listen for click event
 		anchorWithHash.addEventListener('click', event => {
-			// prevent default anchor click behavior
-			event.preventDefault();
 			// check if anchor is on the same page
 			if (location.pathname.replace(/^\//, '') === anchorWithHash.pathname.replace(/^\//, '') && location.hostname === anchorWithHash.hostname) {
+				// prevent default anchor click behavior
+				event.preventDefault();
 				// figure where to scroll to
 				const target: HTMLAnchorElement | null = document.querySelector(anchorWithHash.hash);
 				// check if target exists
