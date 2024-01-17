@@ -200,6 +200,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var fileContent = new MemoryStream(Encoding.ASCII.GetBytes("some data here"));
 
+            this.hostController.Setup(c => c.GetString("FileExtensions")).Returns("");
+
             this.portalController.Setup(pc => pc.HasSpaceAvailable(It.IsAny<int>(), It.IsAny<long>())).Returns(true);
 
             this.globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
@@ -267,6 +269,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
                 this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
                 this.mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
+                this.hostController.Setup(c => c.GetString("FileExtensions")).Returns("");
 
                 this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
             }

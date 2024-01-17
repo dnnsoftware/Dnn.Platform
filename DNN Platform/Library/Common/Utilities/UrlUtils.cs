@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -17,10 +18,15 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Security;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class UrlUtils
+    /// <summary>Provides utilities for dealing with DNN's URLs. Consider using <see cref="System.Uri"/> if applicable.</summary>
+    public static class UrlUtils
     {
         private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
+        /// <summary>Combines two URLs, trimming any slashes between them.</summary>
+        /// <param name="baseUrl">The base URL.</param>
+        /// <param name="relativeUrl">The URL to add to the base URL.</param>
+        /// <returns>A new URL that combines <paramref name="baseUrl"/> and <paramref name="relativeUrl"/>.</returns>
         public static string Combine(string baseUrl, string relativeUrl)
         {
             if (baseUrl.Length == 0)
@@ -33,75 +39,106 @@ namespace DotNetNuke.Common.Utilities
                 return baseUrl;
             }
 
-            return string.Format("{0}/{1}", baseUrl.TrimEnd(new[] { '/', '\\' }), relativeUrl.TrimStart(new[] { '/', '\\' }));
+            baseUrl = baseUrl.TrimEnd('/', '\\');
+            relativeUrl = relativeUrl.TrimStart('/', '\\');
+            return $"{baseUrl}/{relativeUrl}";
         }
 
+        /// <summary>Decodes a base64 encoded value generated via <see cref="EncodeParameter"/>.</summary>
+        /// <param name="value">The encoded value.</param>
+        /// <returns>The decoded value.</returns>
         public static string DecodeParameter(string value)
         {
-            value = value.Replace("-", "+").Replace("_", "/").Replace("$", "=");
+            value = value.Replace('-', '+').Replace('_', '/').Replace('$', '=');
             byte[] arrBytes = Convert.FromBase64String(value);
             return Encoding.UTF8.GetString(arrBytes);
         }
 
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+        /// <param name="value">The encrypted value.</param>
+        /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(string value)
         {
             return DecryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
         }
 
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string,string)"/>.</summary>
+        /// <param name="value">The encrypted value.</param>
+        /// <param name="encryptionKey">The key used to encrypt the value.</param>
+        /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = PortalSecurity.Instance;
-
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
             var toDecrypt = new StringBuilder(value);
-            toDecrypt.Replace("_", "/");
-            toDecrypt.Replace("-", "+");
+            toDecrypt.Replace('_', '/');
+            toDecrypt.Replace('-', '+');
             toDecrypt.Replace("%3d", "=");
-            return objSecurity.Decrypt(encryptionKey, toDecrypt.ToString());
+            return PortalSecurity.Instance.Decrypt(encryptionKey, toDecrypt.ToString());
         }
 
+        /// <summary>Encodes a value (using base64) for placing in a URL.</summary>
+        /// <param name="value">The value to encode.</param>
+        /// <returns>The encoded value.</returns>
         public static string EncodeParameter(string value)
         {
             byte[] arrBytes = Encoding.UTF8.GetBytes(value);
             var toEncode = new StringBuilder(Convert.ToBase64String(arrBytes));
-            toEncode.Replace("+", "-");
-            toEncode.Replace("/", "_");
-            toEncode.Replace("=", "$");
+            toEncode.Replace('+', '-');
+            toEncode.Replace('/', '_');
+            toEncode.Replace('=', '$');
             return toEncode.ToString();
         }
 
+        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+        /// <param name="value">The value to encrypt.</param>
+        /// <returns>The encrypted value.</returns>
         public static string EncryptParameter(string value)
         {
             return EncryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
         }
 
+        /// <summary>Encrypt a parameter for placing in a URL.</summary>
+        /// <param name="value">The value to encrypt.</param>
+        /// <param name="encryptionKey">The key to use when encrypting the value. This key must be used to decrypt the value.</param>
+        /// <returns>The encrypted value.</returns>
         public static string EncryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = PortalSecurity.Instance;
-            var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
+            var encryptedValue = PortalSecurity.Instance.Encrypt(encryptionKey, value);
+            var parameterValue = new StringBuilder(encryptedValue);
 
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
-            parameterValue.Replace("/", "_");
-            parameterValue.Replace("+", "-");
+            parameterValue.Replace('/', '_');
+            parameterValue.Replace('+', '-');
             parameterValue.Replace("=", "%3d");
             return parameterValue.ToString();
         }
 
+        /// <summary>Gets the name from a query string pair.</summary>
+        /// <param name="pair">The pair, e.g. <c>"name=value"</c>.</param>
+        /// <returns>The name.</returns>
         public static string GetParameterName(string pair)
         {
-            string[] nameValues = pair.Split('=');
-            return nameValues[0];
-        }
-
-        public static string GetParameterValue(string pair)
-        {
-            string[] nameValues = pair.Split('=');
-            if (nameValues.Length > 1)
+            var length = pair.IndexOf('=');
+            if (length == -1)
             {
-                return nameValues[1];
+                length = pair.Length;
             }
 
-            return string.Empty;
+            return pair.Substring(0, length);
+        }
+
+        /// <summary>Gets the value from a query string pair.</summary>
+        /// <param name="pair">The pair, e.g. <c>"name=value"</c>.</param>
+        /// <returns>The value.</returns>
+        public static string GetParameterValue(string pair)
+        {
+            var start = pair.IndexOf('=') + 1;
+            if (start == 0)
+            {
+                return string.Empty;
+            }
+
+            return pair.Substring(start);
         }
 
         /// <summary>
@@ -270,44 +307,57 @@ namespace DotNetNuke.Common.Utilities
             return popUpUrl;
         }
 
+        /// <summary>Creates a URL (or script) to close a pop-up.</summary>
+        /// <param name="refresh">Whether to refresh the page when the pop-up is closed.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="onClickEvent">Whether to generate a script for an onClick event (rather than a URL with a <c>javascript:</c> protocol).</param>
+        /// <returns>The URL or script.</returns>
         public static string ClosePopUp(bool refresh, string url, bool onClickEvent)
         {
-            var closePopUpStr = "dnnModal.closePopUp({0}, {1})";
-            closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
-
-            // Removes the javascript txt for onClick scripts)
-            if (onClickEvent && closePopUpStr.StartsWith("javascript:"))
-            {
-                closePopUpStr = closePopUpStr.Replace("javascript:", string.Empty);
-            }
-
-            return closePopUpStr;
+            var protocol = onClickEvent ? string.Empty : "javascript:";
+            var refreshBool = refresh.ToString().ToLowerInvariant();
+            var urlString = HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true);
+            return $"{protocol}dnnModal.closePopUp({refreshBool}, {urlString})";
         }
 
+        /// <summary>Replaces a query string parameter's value in a URL.</summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <param name="newValue">The parameter value.</param>
+        /// <returns>The updated URL.</returns>
         public static string ReplaceQSParam(string url, string param, string newValue)
         {
             if (Host.UseFriendlyUrls)
             {
-                return Regex.Replace(url, "(.*)(" + param + "/)([^/]+)(/.*)", "$1$2" + newValue + "$4", RegexOptions.IgnoreCase);
+                var escapedReplacementValue = newValue.Replace("$1", "$$1").Replace("$2", "$$2").Replace("$3", "$$3").Replace("$4", "$$4");
+                return Regex.Replace(url, $@"(.*)({Regex.Escape(param)}/)([^/]+)(/.*)", $"$1$2{escapedReplacementValue}$4", RegexOptions.IgnoreCase);
             }
             else
             {
-                return Regex.Replace(url, "(.*)(&|\\?)(" + param + "=)([^&\\?]+)(.*)", "$1$2$3" + newValue + "$5", RegexOptions.IgnoreCase);
+                var escapedReplacementValue = newValue.Replace("$1", "$$1").Replace("$2", "$$2").Replace("$3", "$$3").Replace("$4", "$$4").Replace("$5", "$$5");
+                return Regex.Replace(url, $@"(.*)(&|\?)({Regex.Escape(param)}=)([^&\?]+)(.*)", $"$1$2$3{escapedReplacementValue}$5", RegexOptions.IgnoreCase);
             }
         }
 
+        /// <summary>Removes the query string parameter with the given name from the URL.</summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <returns>The updated URL.</returns>
         public static string StripQSParam(string url, string param)
         {
             if (Host.UseFriendlyUrls)
             {
-                return Regex.Replace(url, "(.*)(" + param + "/[^/]+/)(.*)", "$1$3", RegexOptions.IgnoreCase);
+                return Regex.Replace(url, $"(.*)({Regex.Escape(param)}/[^/]+/)(.*)", "$1$3", RegexOptions.IgnoreCase);
             }
             else
             {
-                return Regex.Replace(url, "(.*)(&|\\?)(" + param + "=)([^&\\?]+)([&\\?])?(.*)", "$1$2$6", RegexOptions.IgnoreCase).Replace("(.*)([&\\?]$)", "$1");
+                return Regex.Replace(url, $@"(.*)(&|\?)({Regex.Escape(param)}=)([^&\?]+)([&\?])?(.*)", "$1$2$6", RegexOptions.IgnoreCase).Replace("(.*)([&\\?]$)", "$1");
             }
         }
 
+        /// <summary>Determines whether a <paramref name="url"/> is valid as a return URL.</summary>
+        /// <param name="url">The URL string.</param>
+        /// <returns>The normalized return URL or <see cref="string.Empty"/>.</returns>
         public static string ValidReturnUrl(string url)
         {
             try
@@ -318,8 +368,8 @@ namespace DotNetNuke.Common.Utilities
                     return url;
                 }
 
-                url = url.Replace("\\", "/");
-                if (url.ToLowerInvariant().Contains("data:"))
+                url = url.Replace('\\', '/');
+                if (url.IndexOf("data:", StringComparison.OrdinalIgnoreCase) > -1)
                 {
                     return string.Empty;
                 }
@@ -333,12 +383,12 @@ namespace DotNetNuke.Common.Utilities
 
                 // redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
                 var urlWithNoQuery = url;
-                if (urlWithNoQuery.Contains("?"))
+                if (urlWithNoQuery.IndexOf('?') > -1)
                 {
                     urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
                 }
 
-                if (urlWithNoQuery.Contains("://"))
+                if (urlWithNoQuery.IndexOf(':') > -1)
                 {
                     var portalSettings = PortalSettings.Current;
                     var aliasWithHttp = Globals.AddHTTP(((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias);
@@ -358,12 +408,12 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
 
-                while (url.StartsWith("///"))
+                while (url.StartsWith("///", StringComparison.Ordinal))
                 {
                     url = url.Substring(1);
                 }
 
-                if (url.StartsWith("//"))
+                if (url.StartsWith("//", StringComparison.Ordinal))
                 {
                     var urlWithNoProtocol = url.Substring(2);
                     var portalSettings = PortalSettings.Current;
@@ -383,20 +433,24 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        // Whether current page is show in popup.
+        /// <summary>Determines whether the current page is being shown in a pop-up.</summary>
+        /// <returns><see langword="true"/> if the current page is in a pop-up, otherwise <see langword="false"/>.</returns>
         public static bool InPopUp()
         {
-            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
+            return HttpContext.Current != null && IsPopUp(HttpContext.Current.Request.Url.ToString());
         }
 
+        /// <summary>Determines whether the given URL is for a page being shown in a pop-up.</summary>
+        /// <param name="url">The URL.</param>
+        /// <returns><see langword="true"/> if the URL is for a page in a pop-up, otherwise <see langword="false"/>.</returns>
         public static bool IsPopUp(string url)
         {
             return url.IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>Redirect current response to 404 error page or output 404 content if error page not defined.</summary>
-        /// <param name="response"></param>
-        /// <param name="portalSetting"></param>
+        /// <param name="response">The response.</param>
+        /// <param name="portalSetting">The portal settings.</param>
         public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
