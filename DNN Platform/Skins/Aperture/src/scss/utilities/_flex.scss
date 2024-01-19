@@ -29,61 +29,61 @@
 
 // Mixin for generating other flex properties
 // usage: @include flex-property('flex-wrap', 'flex-wrap', 'wrap');
-@mixin flex-property($property, $class, $value) {
+@mixin flex-property($property, $class-prefix, $class-suffix, $value) {
     @each $breakpoint, $min-width in $breakpoints {
         @media (min-width: $min-width) {
-            .aperture-#{$class}-#{$breakpoint} {
+            .aperture-#{$class-prefix}-#{$breakpoint}-#{$class-suffix} {
                 #{$property}: #{$value} !important;
             }
         }
     }
-    .aperture-#{$class} {
+    .aperture-#{$class-prefix}-#{$class-suffix} {
         #{$property}: #{$value};
     }
 }
 
 // Generate flex-wrap classes
-@include flex-property('flex-wrap', 'flex-wrap', 'wrap');
-@include flex-property('flex-wrap', 'flex-nowrap', 'nowrap');
-@include flex-property('flex-wrap', 'flex-wrap-reverse', 'wrap-reverse');
+@include flex-property('flex-wrap', 'flex', 'wrap', 'wrap');
+@include flex-property('flex-wrap', 'flex', 'nowrap', 'nowrap');
+@include flex-property('flex-wrap', 'flex-wrap', 'reverse', 'wrap-reverse');
 
 // Generate flex-grow classes
-@include flex-property('flex-grow', 'flex-grow-0', 0);
-@include flex-property('flex-grow', 'flex-grow-1', 1);
+@include flex-property('flex-grow', 'flex-grow', '0', 0);
+@include flex-property('flex-grow', 'flex-grow', '1', 1);
 
 // Generate flex-shrink classes
-@include flex-property('flex-shrink', 'flex-shrink-0', 0);
-@include flex-property('flex-shrink', 'flex-shrink-1', 1);
+@include flex-property('flex-shrink', 'flex-shrink', '0', 0);
+@include flex-property('flex-shrink', 'flex-shrink', '1', 1);
 
 // Generate flex-fill classes
-@include flex-property('flex', 'flex-fill', '1 1 auto');
+@include flex-property('flex', 'flex', 'fill', '1 1 auto');
 
 // Generate justify-content classes
-@include flex-property('justify-content', 'justify-content-start', 'flex-start');
-@include flex-property('justify-content', 'justify-content-end', 'flex-end');
-@include flex-property('justify-content', 'justify-content-center', 'center');
-@include flex-property('justify-content', 'justify-content-between', 'space-between');
-@include flex-property('justify-content', 'justify-content-around', 'space-around');
+@include flex-property('justify-content', 'justify-content', 'start', 'flex-start');
+@include flex-property('justify-content', 'justify-content', 'end', 'flex-end');
+@include flex-property('justify-content', 'justify-content', 'center', 'center');
+@include flex-property('justify-content', 'justify-content', 'between', 'space-between');
+@include flex-property('justify-content', 'justify-content', 'around', 'space-around');
 
 // Generate align-items classes
-@include flex-property('align-items', 'align-items-start', 'flex-start');
-@include flex-property('align-items', 'align-items-end', 'flex-end');
-@include flex-property('align-items', 'align-items-center', 'center');
-@include flex-property('align-items', 'align-items-baseline', 'baseline');
-@include flex-property('align-items', 'align-items-stretch', 'stretch');
+@include flex-property('align-items', 'align-items', 'start', 'flex-start');
+@include flex-property('align-items', 'align-items', 'end', 'flex-end');
+@include flex-property('align-items', 'align-items', 'center', 'center');
+@include flex-property('align-items', 'align-items', 'baseline', 'baseline');
+@include flex-property('align-items', 'align-items', 'stretch', 'stretch');
 
 // Generate align-content classes
-@include flex-property('align-content', 'align-content-start', 'flex-start');
-@include flex-property('align-content', 'align-content-end', 'flex-end');
-@include flex-property('align-content', 'align-content-center', 'center');
-@include flex-property('align-content', 'align-content-between', 'space-between');
-@include flex-property('align-content', 'align-content-around', 'space-around');
-@include flex-property('align-content', 'align-content-stretch', 'stretch');
+@include flex-property('align-content', 'align-content', 'start', 'flex-start');
+@include flex-property('align-content', 'align-content', 'end', 'flex-end');
+@include flex-property('align-content', 'align-content', 'center', 'center');
+@include flex-property('align-content', 'align-content', 'between', 'space-between');
+@include flex-property('align-content', 'align-content', 'around', 'space-around');
+@include flex-property('align-content', 'align-content', 'stretch', 'stretch');
 
 // Generate align-self classes
-@include flex-property('align-self', 'align-self-auto', 'auto');
-@include flex-property('align-self', 'align-self-start', 'flex-start');
-@include flex-property('align-self', 'align-self-end', 'flex-end');
-@include flex-property('align-self', 'align-self-center', 'center');
-@include flex-property('align-self', 'align-self-baseline', 'baseline');
-@include flex-property('align-self', 'align-self-stretch', 'stretch');
+@include flex-property('align-self', 'align-self', 'auto', 'auto');
+@include flex-property('align-self', 'align-self', 'start', 'flex-start');
+@include flex-property('align-self', 'align-self', 'end', 'flex-end');
+@include flex-property('align-self', 'align-self', 'center', 'center');
+@include flex-property('align-self', 'align-self', 'baseline', 'baseline');
+@include flex-property('align-self', 'align-self', 'stretch', 'stretch');

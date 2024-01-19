@@ -1,6 +1,7 @@
 :host {
   display: block;
   margin-left: 1em;
+  position: relative;
 }
 
 button{
@@ -12,7 +13,7 @@ button{
 }
 
 dnn-collapsible{
-  position: fixed;
+  position: absolute;
   display: none;
   border: 1px solid lightgray;
   box-shadow: 2px 2px 4px -2px;

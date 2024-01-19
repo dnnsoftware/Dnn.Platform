@@ -435,4 +435,7 @@
   <data name="UserAssets.Text" xml:space="preserve">
     <value>{0} Assets</value>
   </data>
+  <data name="OpenFile.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
 </root>
