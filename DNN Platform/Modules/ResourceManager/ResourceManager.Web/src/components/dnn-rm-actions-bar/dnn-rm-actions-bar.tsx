@@ -124,6 +124,9 @@ export class DnnRmActionsBar {
             <dnn-action-copy-url items={state.selectedItems}/>
           }
           {state.selectedItems.length == 1 && !state.selectedItems[0].isFolder &&
+            <dnn-action-open-file item={state.selectedItems[0]}/>
+          }
+          {state.selectedItems.length == 1 && !state.selectedItems[0].isFolder &&
             <dnn-action-download-item item={state.selectedItems[0]}/>
           }
         </dnn-vertical-overflow-menu>
