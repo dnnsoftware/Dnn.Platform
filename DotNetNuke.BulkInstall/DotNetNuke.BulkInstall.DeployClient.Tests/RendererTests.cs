@@ -10,19 +10,19 @@ using Spectre.Console.Testing;
 
 public class RendererTests
 {
-    public static IEnumerable<object[]> AllLogLevels()
+    public static TheoryData<LogLevel> AllLogLevels()
     {
-        return Enum.GetValues<LogLevel>().Select(logLevel => new object[] { logLevel });
+        return new TheoryData<LogLevel>(Enum.GetValues<LogLevel>());
     }
 
-    public static IEnumerable<object[]> LogLevelsGreaterThanOrEqualTo(LogLevel minimumLevel)
+    public static TheoryData<LogLevel> LogLevelsGreaterThanOrEqualTo(LogLevel minimumLevel)
     {
-        return Enum.GetValues<LogLevel>().Where(logLevel => logLevel >= minimumLevel).Select(logLevel => new object[] { logLevel });
+        return new TheoryData<LogLevel>(Enum.GetValues<LogLevel>().Where(logLevel => logLevel >= minimumLevel));
     }
 
-    public static IEnumerable<object[]> LogLevelsLessThanOrEqualTo(LogLevel maximumLevel)
+    public static TheoryData<LogLevel> LogLevelsLessThanOrEqualTo(LogLevel maximumLevel)
     {
-        return Enum.GetValues<LogLevel>().Where(logLevel => logLevel <= maximumLevel).Select(logLevel => new object[] { logLevel });
+        return new TheoryData<LogLevel>(Enum.GetValues<LogLevel>().Where(logLevel => logLevel <= maximumLevel));
     }
 
     [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
