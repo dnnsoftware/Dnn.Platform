@@ -1,0 +1,174 @@
+// Color Array
+$colors: (
+    "primary": #00a5e0,
+    "primary-light": #1aaee3,
+    "primary-dark": #0091c5,
+    "primary-contrast": #ffffff,
+    "primary-r": 0,
+    "primary-g": 165,
+    "primary-b": 224,
+
+    "secondary": #ed3d46,
+    "secondary-light": #ef5059,
+    "secondary-dark": #d1363e,
+    "secondary-contrast": #ffffff,
+    "secondary-r": 237,
+    "secondary-g": 61,
+    "secondary-b": 70,
+
+    "tertiary": #0e2936,
+    "tertiary-light": #3c7a9a,
+    "tertiary-dark": #0b1c24,
+    "tertiary-contrast": #ffffff,
+    "tertiary-r": 0,
+    "tertiary-g": 165,
+    "tertiary-b": 225,
+
+    "neutral": #ededee,
+    "neutral-light": #ffffff,
+    "neutral-dark": #999999,
+    "neutral-contrast": #000000,
+    "neutral-r": 245,
+    "neutral-g": 245,
+    "neutral-b": 245,
+
+    "background": #ffffff,
+    "background-light": #f5f5f5,
+    "background-dark": #cccccc,
+    "background-contrast": #000000,
+    "background-r": 255,
+    "background-g": 255,
+    "background-b": 255,
+
+    "foreground": #000000,
+    "foreground-light": #333333,
+    "foreground-dark": #000000,
+    "foreground-contrast": #ffffff,
+    "foreground-r": 0,
+    "foreground-g": 0,
+    "foreground-b": 0,
+
+    "info": #17a2b8,
+    "info-light": #23b8cf,
+    "info-dark": #00889e,
+    "info-contrast": #ffffff,
+    "info-r": 23,
+    "info-g": 162,
+    "info-b": 184,
+
+    "success": #28a745,
+    "success-light": #49c25d,
+    "success-dark": #00902f,
+    "success-contrast": #ffffff,
+    "success-r": 40,
+    "success-g": 167,
+    "success-b": 69,
+
+    "warning": #ffc107,
+    "warning-light": #ffd42e,
+    "warning-dark": #e9ad00,
+    "warning-contrast": #ffffff,
+    "warning-r": 255,
+    "warning-g": 193,
+    "warning-b": 7,
+
+    "danger": #dc3545,
+    "danger-light": #f14954,
+    "danger-dark": #c51535,
+    "danger-contrast": #ffffff,
+    "danger-r": 220,
+    "danger-g": 53,
+    "danger-b": 69,
+);
+
+///TODO: Remove these in favor of those injected by DNN 10. The defaults in DNN 10 should match these.
+:root {
+    --dnn-color-primary: #{map-get($colors, 'primary')};
+    --dnn-color-primary-light: #{map-get($colors, 'primary-light')};
+    --dnn-color-primary-dark: #{map-get($colors, 'primary-dark')};
+    --dnn-color-primary-contrast: #{map-get($colors, 'primary-contrast')};
+    --dnn-color-primary-r: #{map-get($colors, 'primary-r')};
+    --dnn-color-primary-g: #{map-get($colors, 'primary-g')};
+    --dnn-color-primary-b: #{map-get($colors, 'primary-b')};
+
+    --dnn-color-secondary: #{map-get($colors, 'secondary')};
+    --dnn-color-secondary-light: #{map-get($colors, 'secondary-light')};
+    --dnn-color-secondary-dark: #{map-get($colors, 'secondary-dark')};
+    --dnn-color-secondary-contrast: #{map-get($colors, 'secondary-contrast')};
+    --dnn-color-secondary-r: #{map-get($colors, 'secondary-r')};
+    --dnn-color-secondary-g: #{map-get($colors, 'secondary-g')};
+    --dnn-color-secondary-b: #{map-get($colors, 'secondary-b')};
+
+    --dnn-color-tertiary: #{map-get($colors, 'tertiary')};
+    --dnn-color-tertiary-light: #{map-get($colors, 'tertiary-light')};
+    --dnn-color-tertiary-dark: #{map-get($colors, 'tertiary-dark')};
+    --dnn-color-tertiary-contrast: #{map-get($colors, 'tertiary-contrast')};
+    --dnn-color-tertiary-r: #{map-get($colors, 'tertiary-r')};
+    --dnn-color-tertiary-g: #{map-get($colors, 'tertiary-g')};
+    --dnn-color-tertiary-b: #{map-get($colors, 'tertiary-b')};
+
+    --dnn-color-neutral: #{map-get($colors, 'neutral')};
+    --dnn-color-neutral-light: #{map-get($colors, 'neutral-light')};
+    --dnn-color-neutral-dark: #{map-get($colors, 'neutral-dark')};
+    --dnn-color-neutral-contrast: #{map-get($colors, 'neutral-contrast')};
+    --dnn-color-neutral-r: #{map-get($colors, 'neutral-r')};
+    --dnn-color-neutral-g: #{map-get($colors, 'neutral-g')};
+    --dnn-color-neutral-b: #{map-get($colors, 'neutral-b')};
+
+    --dnn-color-background: #{map-get($colors, 'background')};
+    --dnn-color-background-light: #{map-get($colors, 'background-light')};
+    --dnn-color-background-dark: #{map-get($colors, 'background-dark')};
+    --dnn-color-background-contrast: #{map-get($colors, 'background-contrast')};
+    --dnn-color-background-r: #{map-get($colors, 'background-r')};
+    --dnn-color-background-g: #{map-get($colors, 'background-g')};
+    --dnn-color-background-b: #{map-get($colors, 'background-b')};
+
+    --dnn-color-foreground: #{map-get($colors, 'foreground')};
+    --dnn-color-foreground-light: #{map-get($colors, 'foreground-light')};
+    --dnn-color-foreground-dark: #{map-get($colors, 'foreground-dark')};
+    --dnn-color-foreground-contrast: #{map-get($colors, 'foreground-contrast')};
+    --dnn-color-foreground-r: #{map-get($colors, 'foreground-r')};
+    --dnn-color-foreground-g: #{map-get($colors, 'foreground-g')};
+    --dnn-color-foreground-b: #{map-get($colors, 'foreground-b')};
+
+    --dnn-color-info: #{map-get($colors, 'info')};
+    --dnn-color-info-light: #{map-get($colors, 'info-light')};
+    --dnn-color-info-dark: #{map-get($colors, 'info-dark')};
+    --dnn-color-info-contrast: #{map-get($colors, 'info-contrast')};
+    --dnn-color-info-r: #{map-get($colors, 'info-r')};
+    --dnn-color-info-g: #{map-get($colors, 'info-g')};
+    --dnn-color-info-b: #{map-get($colors, 'info-b')};
+
+    --dnn-color-success: #{map-get($colors, 'success')};
+    --dnn-color-success-light: #{map-get($colors, 'success-light')};
+    --dnn-color-success-dark: #{map-get($colors, 'success-dark')};
+    --dnn-color-success-contrast: #{map-get($colors, 'success-contrast')};
+    --dnn-color-success-r: #{map-get($colors, 'success-r')};
+    --dnn-color-success-g: #{map-get($colors, 'success-g')};
+    --dnn-color-success-b: #{map-get($colors, 'success-b')};
+
+    --dnn-color-warning: #{map-get($colors, 'warning')};
+    --dnn-color-warning-light: #{map-get($colors, 'warning-light')};
+    --dnn-color-warning-dark: #{map-get($colors, 'warning-dark')};
+    --dnn-color-warning-contrast: #{map-get($colors, 'warning-contrast')};
+    --dnn-color-warning-r: #{map-get($colors, 'warning-r')};
+    --dnn-color-warning-g: #{map-get($colors, 'warning-g')};
+    --dnn-color-warning-b: #{map-get($colors, 'warning-b')};
+
+    --dnn-color-danger: #{map-get($colors, 'danger')};
+    --dnn-color-danger-light: #{map-get($colors, 'danger-light')};
+    --dnn-color-danger-dark: #{map-get($colors, 'danger-dark')};
+    --dnn-color-danger-contrast: #{map-get($colors, 'danger-contrast')};
+    --dnn-color-danger-r: #{map-get($colors, 'danger-r')};
+    --dnn-color-danger-g: #{map-get($colors, 'danger-g')};
+    --dnn-color-danger-b: #{map-get($colors, 'danger-b')};
+}
+
+// Color function
+@function color($color-name, $rgb: false) {
+    @if($rgb) {
+        @return var(--dnn-color-#{$color-name}-r) + ', ' + var(--dnn-color-#{$color-name}-g) + ', ' + var(--dnn-color-#{$color-name}-b);
+    } @else {
+        @return var(--dnn-color-#{$color-name}, map-get($colors, $color-name));
+    }
+}

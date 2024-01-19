@@ -1,0 +1,57 @@
+// Defaine maps for sizes
+$sizes: (
+    0: 0,
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+    auto: auto
+);
+
+// Responsive dimension mixin
+@mixin responsive-dimension($property) {
+    @each $key, $value in $sizes {
+        .aperture-#{$property}-#{$key} {
+            @if ($property == 'w') {
+                width: $value;
+            } @else if($property == 'h') {
+                height: $value;
+            } @else if($property == 'min-w') {
+                min-width: $value;
+            } @else if($property == 'min-h') {
+                min-height: $value;
+            } @else if($property == 'max-w') {
+                max-width: $value;
+            } @else if($property == 'max-h') {
+                max-height: $value;
+            }
+        }
+        @each $breakpoint, $min-width in $breakpoints {
+            @media (min-width: $min-width) {
+                .aperture-#{$property}-#{$breakpoint}-#{$key} {
+                    @if ($property == 'w') {
+                        width: $value !important;
+                    } @else if($property == 'h') {
+                        height: $value !important;
+                    } @else if($property == 'min-w') {
+                        min-width: $value !important;
+                    } @else if($property == 'min-h') {
+                        min-height: $value !important;
+                    } @else if($property == 'max-w') {
+                        max-width: $value !important;
+                    } @else if($property == 'max-h') {
+                        max-height: $value !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Generate dimension classes
+@include responsive-dimension('w');
+@include responsive-dimension('h');
+@include responsive-dimension('min-w');
+@include responsive-dimension('min-h');
+@include responsive-dimension('max-w');
+@include responsive-dimension('max-h');

@@ -1,0 +1,147 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+
+
+// Base Styles
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+body {
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 1.5;
+  font-family: $ubuntu;
+  color: color('foreground');
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: $ubuntu;
+  font-weight: 500;
+}
+
+h1 {
+  @include font-baseline(48, calc(48 * 1.15));
+  margin-bottom: 1rem;
+}
+
+h2 {
+  @include font-baseline(48, calc(48 * 1.15));
+  margin-bottom: 1rem;
+}
+
+h3 {
+  @include font-baseline(42, calc(42 * 1.15));
+  margin-bottom: 1rem;
+}
+
+h4 {
+  @include font-baseline(36, calc(36 * 1.15));
+  margin-bottom: 1.5rem;
+}
+
+h5 {
+  @include font-baseline(30, calc(30 * 1.15));
+  margin-bottom: 1.5rem;
+}
+
+h6 {
+  @include font-baseline(24, calc(24 * 1.15));
+  margin-bottom: 1.5rem;
+}
+
+.lead {
+  @include font-baseline(22, calc(22 * 1.5));
+  margin-bottom: 2rem;
+}
+
+p {
+  @include font-baseline(18, calc(18 * 1.5));
+  margin-bottom: 1.5rem;
+}
+
+ul,
+ol,
+pre,
+table,
+blockquote {
+  margin-bottom: 1.5rem;
+}
+
+
+
+// Sanitation
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  margin:0;
+}
+
+b,
+strong,
+em,
+small,
+code {
+  line-height: 1;
+}
+
+sup,
+sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -.4em;
+}
+
+sub {
+  top: .4em;
+}
+
+
+
+// Links
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+a {
+  color: color('primary');
+  text-decoration:none;
+  transition:.25s ease-in-out all;
+
+  &:hover {
+    color: color('primary-light');
+    text-decoration:none;
+  }
+}
+header a, footer a {
+	color: color('tertiary-contrast');
+	font-weight: 400;
+}
+
+
+
+// hr and pre
+//–––––––––––––––––––––––––––––––––––––––––––––––––
+
+hr {
+  display:block;
+  height:1px;
+  width:25%;
+  border:0;
+  border-top:1px solid color('primary');
+  margin-top:1.5rem;
+  margin-bottom:1.5rem;
+  padding: 0;
+}
+
+pre {
+  background: color('neutral');
+  padding:10px 15px;
+}

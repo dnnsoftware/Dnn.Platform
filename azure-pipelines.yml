@@ -46,6 +46,19 @@ pr:
 
 steps:
 
+- task: PowerShell@2
+  displayName: 'Create Yarn Cache Folder'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $yarnCacheFolder = "$(YARN_CACHE_FOLDER)"
+      if (-not (Test-Path $yarnCacheFolder)) {
+        Write-Host "Creating Yarn cache folder at $yarnCacheFolder"
+        New-Item -ItemType Directory -Path $yarnCacheFolder -Force
+      } else {
+        Write-Host "Yarn cache folder already exists."
+      }
+
 - task: Cache@2
   displayName: Cache Yarn packages
   inputs:
@@ -54,9 +67,9 @@ steps:
     path: $(YARN_CACHE_FOLDER)
   
 - task: UseDotNet@2
-  displayName: 'Use .NET 6.x SDK'
+  displayName: 'Use .NET 8.x SDK'
   inputs:
-    version: 6.x
+    version: 8.x
 
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'

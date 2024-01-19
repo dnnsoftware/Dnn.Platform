@@ -1,0 +1,6 @@
+// border classes from current color scheme
+@each $color, $value in $colors {
+    .aperture-border-#{$color} {
+        border-color: color($color);
+    }
+}

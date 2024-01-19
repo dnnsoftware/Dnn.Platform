@@ -25,7 +25,8 @@
     "Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables",
     "Dnn.AdminExperience/ClientSide/Vocabularies.Web",
     "Dnn.AdminExperience/ClientSide/Styles.Web",
-    "DNN Platform/Modules/ResourceManager/ResourceManager.Web"
+    "DNN Platform/Modules/ResourceManager/ResourceManager.Web",
+    "DNN Platform/Skins/Aperture"
   ],
   "devDependencies": {
     "lerna": "^6.6.2"
@@ -42,5 +43,5 @@
   "resolutions": {
     "@types/ws": "8.5.4"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@4.0.2"
 }
