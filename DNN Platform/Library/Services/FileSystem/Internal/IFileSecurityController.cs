@@ -13,5 +13,12 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// <param name="fileContent">The File Content.</param>
         /// <returns><see langword="true"/> if the file has valid content, otherwise <see langword="false"/>.</returns>
         bool Validate(string fileName, Stream fileContent);
+
+        /// <summary>
+        /// Checks the file content isn't an exectuable file.
+        /// </summary>
+        /// <param name="fileContent">The File Content.</param>
+        /// <returns>Whether the file is an exectuable file.</returns>
+        bool ValidateNotExectuable(Stream fileContent);
     }
 }

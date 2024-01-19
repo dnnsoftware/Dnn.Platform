@@ -94,14 +94,17 @@ export class DnnRmFolderListItem {
 
   private handleContextMenu(e: MouseEvent): void {
     e.preventDefault();
+    this.dismissContextMenu();
+
     this.itemsClient.getFolderItem(Number.parseInt(this.folder.data.key))
     .then(item => {
       const collapsible = document.createElement("dnn-collapsible");
       const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
       collapsible.appendChild(folderContextMenu);
       folderContextMenu.item = item;
-      collapsible.style.left = `${e.pageX}px`;
-      collapsible.style.top = `${e.pageY}px`;
+      const parentPosition = this.el.getBoundingClientRect();
+      collapsible.style.left = `${e.clientX - parentPosition.left}px`;
+      collapsible.style.top = `${e.clientY - parentPosition.top}px`;
       collapsible.style.display = "block";
       this.el.shadowRoot.appendChild(collapsible);
       setTimeout(() => {

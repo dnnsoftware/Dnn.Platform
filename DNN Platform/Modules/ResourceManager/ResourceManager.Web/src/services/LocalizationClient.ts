@@ -142,6 +142,7 @@ export interface LocalizedStrings {
     Unlink: string;
     CopyUrl: string;
     StatusBarMessage: string;
+    OpenFile: string;
     Download: string;
     Upload: string;
 };
