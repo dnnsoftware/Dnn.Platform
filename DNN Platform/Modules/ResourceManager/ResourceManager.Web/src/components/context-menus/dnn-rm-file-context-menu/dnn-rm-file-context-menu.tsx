@@ -24,6 +24,8 @@ export class DnnRmFileContextMenu {
           ,
             <dnn-action-delete-items items={[this.item]} />
           ,
+            <dnn-action-open-file item={this.item}/>
+          ,
             <dnn-action-download-item item={this.item}/>
           ]
         }

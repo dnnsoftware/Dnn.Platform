@@ -37,6 +37,11 @@ export class DnnRmFilesPane {
     this.checkIfMoreItemsNeeded();
   }
 
+  @Listen("dnnRmFileDoubleClicked", {target: "document"})
+  handleFileDoubleClicked(e: CustomEvent<string>) {
+    window.open(e.detail, "_blank");
+  }
+
   componentDidUpdate() {
     const loadedFilesHeight = this.loadedFilesArea.getBoundingClientRect().height;
     const heightPerItem = loadedFilesHeight / state.currentItems.items.length;
