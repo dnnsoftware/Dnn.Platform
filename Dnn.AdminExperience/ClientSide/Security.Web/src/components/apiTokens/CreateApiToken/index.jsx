@@ -13,11 +13,12 @@ class CreateApiToken extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentScope: 0,
+            currentScope: 2,
             apiTokenKeysFiltered: [],
             selectedKeys: [],
             selectedTimespan: props.timespanOptions.length > 0 ? props.timespanOptions[0].value : 0,
             tokenName: "",
+            scopeOptions: (props.apiTokenSettings && props.apiTokenSettings.AllowApiTokens) ? props.scopeOptions : props.scopeOptions.slice(2)
         };
         isHost = util.settings.isHost;
         isAdmin = util.settings.isAdmin;
@@ -66,7 +67,7 @@ class CreateApiToken extends Component {
                             <Dropdown
                                 value={this.state.currentScope}
                                 style={{ width: "100%" }}
-                                options={this.props.scopeOptions}
+                                options={this.state.scopeOptions}
                                 withBorder={false}
                                 onSelect={(value) => {
                                     this.setState({
