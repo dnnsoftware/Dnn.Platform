@@ -102,6 +102,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 if (!res.ContainsKey(k))
                 {
                     var name = DotNetNuke.Services.Localization.Localization.GetString(attr.Key + ".Text", attr.ResourceFile, locale);
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        name = attr.Key;
+                    }
+
                     var description = DotNetNuke.Services.Localization.Localization.GetString(attr.Key + ".Help", attr.ResourceFile, locale);
                     res.Add(k, new ApiTokenAttribute((int)attr.Scope, key, name, description));
                 }
