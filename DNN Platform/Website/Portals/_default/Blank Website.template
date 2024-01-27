@@ -1,21 +1,21 @@
 ﻿<portal version="5.0">
   <description>[PortalDescription.Text]</description>
   <settings>
-    <logofile>Images/Logo.png</logofile>
+    <logofile>Images/dnn-logo-white.svg</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
     <userregistration>0</userregistration>
     <banneradvertising>0</banneradvertising>
     <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
-    <skinsrc>[G]Skins/Xcillion/Inner.ascx</skinsrc>
-    <skinsrcadmin>[G]Skins/Xcillion/Admin.ascx</skinsrcadmin>
-    <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
-    <containersrcadmin>[G]Containers/Xcillion/Title_h2.ascx</containersrcadmin>
+    <skinsrc>[G]Skins/Aperture/default.ascx</skinsrc>
+    <skinsrcadmin>[G]Skins/Aperture/default.ascx</skinsrcadmin>
+    <containersrc>[G]Containers/Aperture/none.ascx</containersrc>
+    <containersrcadmin>[G]Containers/Aperture/title.ascx</containersrcadmin>
     <enableskinwidgets>True</enableskinwidgets>
     <showcookieconsent>False</showcookieconsent>
     <portalaliasmapping>CANONICALURL</portalaliasmapping>
     <contentlocalizationenabled>False</contentlocalizationenabled>
     <timezone>Pacific Standard Time</timezone>
-    <enablepopups>True</enablepopups>
+    <enablepopups>False</enablepopups>
     <inlineeditorenabled>True</inlineeditorenabled>
     <hidefoldersenabled>True</hidefoldersenabled>
     <controlpanelmode>VIEW</controlpanelmode>
@@ -208,29 +208,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Account Login</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Console</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
+        <portalDesktopModule>
       <friendlyname>ViewProfile</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -252,18 +230,7 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Module Creator</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
+        <portalDesktopModule>
       <friendlyname>DDR Menu</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -456,7 +423,7 @@
   </rolegroups>
   <tabs>
     <tab>
-      <content>Home</content>
+      <content>[Tab.Home.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -471,10 +438,10 @@
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
-      <skinsrc>[G]Skins/Xcillion/Home.ascx</skinsrc>
+      <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Home</name>
-      <title>Home</title>
+      <name>[Tab.Home.Name.Text]</name>
+      <title>[Tab.Home.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -523,7 +490,7 @@
         </tabsetting>
         <tabsetting>
           <settingname>CustomStylesheet</settingname>
-          <settingvalue>home.css</settingvalue>
+          <settingvalue></settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
@@ -545,7 +512,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>366</moduleID>
+              <moduleID>1</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -581,76 +548,13 @@
             </module>
           </modules>
         </pane>
-        <pane>
-          <name>HeaderPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>367</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>1200</cachetime>
-              <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>false</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Home Banner</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>b361b2b6-798f-4414-bb37-ed6c53aad219</uniqueId>
-              <visibility>Maximized</visibility>
-              <cultureCode />
-              <modulesettings>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_UseDecorate</settingname>
-                  <settingvalue>True</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>WorkFlowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_SearchDescLength</settingname>
-                  <settingvalue>100</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>AllowIndex</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>DNN_HTML</definition>
-              <moduledefinition>Text/HTML</moduledefinition>
-            </module>
-          </modules>
-        </pane>
       </panes>
       <tabUrls />
     </tab>
     <tab>
-      <content>Activity Feed</content>
+      <content>[Tab.ActivityFeed.Content.Text]</content>
       <contentKey />
-      <containersrc>[G]Containers/Xcillion/Title_h3.ascx</containersrc>
+      <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
       <cultureCode />
       <description />
       <disabled>false</disabled>
@@ -665,8 +569,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Activity Feed</name>
-      <title>Activity Feed</title>
+      <name>[Tab.ActivityFeed.Name.Text]</name>
+      <title>[Tab.ActivityFeed.Content.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -692,18 +596,18 @@
       <tabtype>usertab</tabtype>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>372</moduleID>
+              <moduleID>4</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -720,9 +624,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>4e3a818c-75c9-437f-8cb8-bb6d5a2d41a3</uniqueId>
+              <uniqueId>96e7179e-3103-4149-9783-61d4ecff2b15</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -838,14 +742,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>368</moduleID>
+              <moduleID>5</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -862,9 +766,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>b0a82478-76ee-4a14-978d-d556f3f90288</uniqueId>
+              <uniqueId>8dd24f26-1710-490f-96e7-fa7a0556e90d</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -926,21 +830,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
-            <module>
+                      <module>
               <contentKey />
-              <moduleID>369</moduleID>
+              <moduleID>6</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -957,9 +856,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>112315bd-4b0e-4e74-9a89-c67233d8f7f3</uniqueId>
+              <uniqueId>13dcb617-9d9c-43fe-b1ae-0812c998a57e</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -986,7 +885,7 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>370</moduleID>
+              <moduleID>7</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -1024,7 +923,7 @@
               </modulepermissions>
               <title />
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>ba1870c9-02ea-4e87-a7d8-b93109ca43f2</uniqueId>
+              <uniqueId>bc60f6b1-7329-4648-9805-4390a516ca4f</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -1057,14 +956,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>371</moduleID>
+              <moduleID>8</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1093,9 +992,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Journal</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.Journal.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>87717b03-04bf-4e27-bf3a-bfe2e1cc5625</uniqueId>
+              <uniqueId>5f82807c-5236-47bc-b992-02f0f3ae4c49</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -1139,7 +1038,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>Search Results</content>
+      <content>[Tab.SearchResults.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1156,8 +1055,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Search Results</name>
-      <title>Search Results</title>
+      <name>[Tab.SearchResults.Name.Text]</name>
+      <title>[Tab.SearchResults.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1187,7 +1086,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>374</moduleID>
+              <moduleID>9</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -1223,9 +1122,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Search Results</title>
+              <title>[Tab.SearchResults.ContentPane.Module.SearchResults.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>215e24c2-2f0a-4e91-a776-24995e00bbc8</uniqueId>
+              <uniqueId>75b34449-8c3c-43f9-9016-292e6c93e275</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -1239,7 +1138,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>404 Error Page</content>
+      <content>[Tab.404ErrorPage.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1254,10 +1153,10 @@
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0</sitemappriority>
-      <skinsrc>[G]Skins/Xcillion/404.ascx</skinsrc>
+      <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>404 Error Page</name>
-      <title>404 Error Page</title>
+      <name>[Tab.404ErrorPage.Name.Text]</name>
+      <title>[Tab.404ErrorPage.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1328,7 +1227,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>375</moduleID>
+              <moduleID>10</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -1352,11 +1251,14 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Page cannot be found</title>
+              <title>[Tab.404ErrorPage.Module.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>f346db7d-1dc1-4b0b-87df-09dc62fd82fe</uniqueId>
+              <uniqueId>e117c519-a8c3-4317-bdb9-c1b6aa23bc64</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
+              <content type="DNNHTML" version="10.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[[Tab.404ErrorPage.Module.Content.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              </content>
               <modulesettings>
                 <modulesetting>
                   <settingname>WorkflowID</settingname>
@@ -1382,7 +1284,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>My Profile</content>
+      <content>[Tab.MyProfile.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1399,8 +1301,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>My Profile</name>
-      <title>My Profile</title>
+      <name>[Tab.MyProfile.Name.Text]</name>
+      <title>[Tab.MyProfile.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1423,21 +1325,21 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Activity Feed</parent>
+      <parent>[Tab.ActivityFeed.Name.Text]</parent>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>379</moduleID>
+              <moduleID>11</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1466,9 +1368,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyProfile.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>e3216d03-e61b-418e-b07e-3604858b7c6a</uniqueId>
+              <uniqueId>d8a8d8ad-0faf-44c7-8cea-710803ff4281</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -1568,14 +1470,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>368</moduleID>
+              <moduleID>12</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1592,9 +1494,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.MyProfile.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>81873a98-793a-4cf5-8be4-62cf481a64fa</uniqueId>
+              <uniqueId>93e91541-62cc-4de3-84ba-d53fff715d94</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -1651,21 +1553,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>376</moduleID>
+              <moduleID>13</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1694,9 +1591,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyProfile.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>9b2dbc21-eefa-43eb-b2cf-a76e62b3f4e2</uniqueId>
+              <uniqueId>02fd4f02-eaba-4651-9fc8-d39cda3ae9e3</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -1723,14 +1620,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>377</moduleID>
+              <moduleID>14</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1759,9 +1656,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyProfile.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>ccf030cf-ff0e-419c-b765-f9bfe5c3fb6f</uniqueId>
+              <uniqueId>b985fc51-7369-4a7c-99b5-e91579d35c3c</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -1794,14 +1691,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>378</moduleID>
+              <moduleID>15</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1830,9 +1727,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyProfile.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>03d384c1-07db-4f4b-adb8-56994468c8fa</uniqueId>
+              <uniqueId>b4fbfecc-c54d-4fc8-8ffd-08a3c8e7cc7c</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -1885,7 +1782,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>My Friends</content>
+      <content>[Tab.MyFriends.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1902,8 +1799,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Friends</name>
-      <title>My Friends</title>
+      <name>[Tab.MyFriends.Name.Text]</name>
+      <title>[Tab.MyFriends.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1926,21 +1823,21 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Activity Feed</parent>
+      <parent>[Tab.ActivityFeed.Name.Text]</parent>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>383</moduleID>
+              <moduleID>16</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1969,9 +1866,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyFriends.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>a45686b9-0728-4109-9f36-9b0252dd5881</uniqueId>
+              <uniqueId>1be2eaff-87c5-418e-8873-7a0e09ed02aa</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -2071,14 +1968,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>368</moduleID>
+              <moduleID>17</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2095,9 +1992,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.MyFriends.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>b4713823-4e91-4b66-9b88-7281f3233660</uniqueId>
+              <uniqueId>233b5a51-b7a4-4c22-98ba-34cace7b15eb</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -2154,21 +2051,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>380</moduleID>
+              <moduleID>18</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2197,9 +2089,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyFriends.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>74368905-4f66-47f1-85ec-d692c5b47e93</uniqueId>
+              <uniqueId>69056e6a-c76d-458d-9627-db09215d886e</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -2226,14 +2118,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>381</moduleID>
+              <moduleID>19</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2262,9 +2154,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyFriends.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>6a1fe60f-df22-4cbe-83e4-b8113f50be7f</uniqueId>
+              <uniqueId>ee04434f-d992-463b-8517-a1ccc0862ce1</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -2297,14 +2189,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>382</moduleID>
+              <moduleID>20</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2333,9 +2225,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyFriends.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>486c9371-e321-496a-9629-d56654de297e</uniqueId>
+              <uniqueId>f781785c-f1cb-4b40-8f8b-cd6c316b19f2</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -2387,7 +2279,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>My Messages</content>
+      <content>[Tab.MyMessages.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -2404,8 +2296,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Messages</name>
-      <title>My Messages</title>
+      <name>[Tab.MyMessages.Name.Text]</name>
+      <title>[Tab.MyMessages.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2428,21 +2320,21 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Activity Feed</parent>
+      <parent>[Tab.ActivityFeed.Name.Text]</parent>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>387</moduleID>
+              <moduleID>21</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2471,9 +2363,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyMessages.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>31d3ee95-5805-4c3b-8c31-b05272deb90d</uniqueId>
+              <uniqueId>d27d0c43-df25-4d9d-a7af-452a31826eee</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -2573,14 +2465,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>368</moduleID>
+              <moduleID>22</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2597,9 +2489,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.MyMessages.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>825a402a-1395-4f10-b360-3afcc408d4a5</uniqueId>
+              <uniqueId>872b9f33-a932-4d51-bd8e-8104c61bf208</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings>
@@ -2656,21 +2548,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
-            <module>
+                      <module>
               <contentKey />
-              <moduleID>384</moduleID>
+              <moduleID>23</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2699,9 +2586,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyMessages.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>bf74428f-d035-487c-a0ce-559f741a53c5</uniqueId>
+              <uniqueId>cb17a12b-da76-4e46-b0ff-ab2978797bc5</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -2728,14 +2615,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>385</moduleID>
+              <moduleID>24</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2764,9 +2651,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyMessages.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>ece23c10-c6fd-4bb0-ab51-371707b9cfee</uniqueId>
+              <uniqueId>ad653314-6868-49f4-9c66-dc705f75bcd6</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -2799,14 +2686,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>386</moduleID>
+              <moduleID>25</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2835,9 +2722,9 @@
                   <rolename>Registered Users</rolename>
                 </permission>
               </modulepermissions>
-              <title>Message Center</title>
+              <title>[Tab.MyMessages.ContentPane.Module.MessageCenter.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>2868b561-ffbd-47a2-a240-7a2a3faf05a9</uniqueId>
+              <uniqueId>552378c0-5e34-470e-b691-2e6cff9d300d</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -2860,7 +2747,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>Website Administration</content>
+      <content>[Tab.WebsiteAdministration.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -2877,8 +2764,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Admin</name>
-      <title>Website Administration</title>
+      <name>[Tab.WebsiteAdministration.Name.Text]</name>
+      <title>[Tab.WebsiteAdministration.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2901,7 +2788,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>421</moduleID>
+              <moduleID>26</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -2931,7 +2818,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Basic Features</title>
+              <title>[Tab.WebsiteAdministration.ContentPane.Module.BasicFeatures.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>62592bc6-53da-4115-b97e-fb666aa14953</uniqueId>
               <visibility>Maximized</visibility>
@@ -2981,7 +2868,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>File Management</content>
+      <content>[Tab.FileManagement.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -2998,8 +2885,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>File Management</name>
-      <title>File Management</title>
+      <name>[Tab.FileManagement.Name.Text]</name>
+      <title>[Tab.FileManagement.Title.Text]</title>
       <iconfile>~/Icons/Sigma/Files_16X16_Standard.png</iconfile>
       <iconfilelarge>~/Icons/Sigma/Files_32X32_Standard.png</iconfilelarge>
       <url type="Normal" />
@@ -3025,7 +2912,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>392</moduleID>
+              <moduleID>27</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -3049,9 +2936,9 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Resource Manager</title>
+              <title>[Tab.FileManagement.ContentPane.Module.ResourceManager.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>7cf1c967-f148-4c69-9c71-977044fd389d</uniqueId>
+              <uniqueId>e892a463-366f-436a-a6a6-9438346366ec</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
               <modulesettings />
@@ -3063,95 +2950,6 @@
               </tabmodulesettings>
               <definition>ResourceManager</definition>
               <moduledefinition>ResourceManager</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>User Accounts</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage user accounts for the portal.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>false</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>User Accounts</name>
-      <title>User Accounts</title>
-      <iconfile>~/Icons/Sigma/Users_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>439</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>User Accounts</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
-              <visibility>Maximized</visibility>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Security</definition>
-              <moduledefinition>User Accounts</moduledefinition>
             </module>
           </modules>
         </pane>
@@ -3172,8 +2970,8 @@
         </permission>
         <permission>
           <permissioncode>SYSTEM_FOLDER</permissioncode>
-          <permissionkey>BROWSE</permissionkey>
-          <rolename>All Users</rolename>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
           <allowaccess>true</allowaccess>
         </permission>
         <permission>
@@ -3184,8 +2982,8 @@
         </permission>
         <permission>
           <permissioncode>SYSTEM_FOLDER</permissioncode>
-          <permissionkey>READ</permissionkey>
-          <rolename>Administrators</rolename>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>All Users</rolename>
           <allowaccess>true</allowaccess>
         </permission>
         <permission>
