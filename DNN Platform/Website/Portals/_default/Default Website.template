@@ -3506,12 +3506,12 @@
           <width>241</width>
         </file>
         <file>
-          <contenttype>image/png</contenttype>
-          <extension>png</extension>
-          <filename>dnn-connect-group-photo.png</filename>
-          <height>1015</height>
-          <size>834287</size>
-          <width>410</width>
+          <contenttype>image/jpeg</contenttype>
+          <extension>jpg</extension>
+          <filename>dnn-connect-group-photo.jpg</filename>
+          <height>410</height>
+          <size>164629</size>
+          <width>1015</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
@@ -3562,11 +3562,11 @@
           <width>369</width>
         </file>
         <file>
-          <contenttype>image/png</contenttype>
-          <extension>png</extension>
-          <filename>dnn-summit-group-photo.png</filename>
+          <contenttype>image/jpeg</contenttype>
+          <extension>jpg</extension>
+          <filename>dnn-summit-group-photo.jpg</filename>
           <height>410</height>
-          <size>765701</size>
+          <size>150833</size>
           <width>1015</width>
         </file>
         <file>
