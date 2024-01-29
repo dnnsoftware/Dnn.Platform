@@ -76,19 +76,20 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <inheritdoc cref="IPermissionInfo.RoleId" />
-        [XmlElement("roleid")]
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.RoleId)} instead. Scheduled for removal in v11.0.0.")]
+        /// <inheritdoc cref="RoleId" />
+        [XmlIgnore]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(RoleId)} instead. Scheduled for removal in v11.0.0.")]
+        [CLSCompliant(false)]
         public int RoleID
         {
             get
             {
-                return ((IPermissionInfo)this).RoleId;
+                return this.roleId;
             }
 
             set
             {
-                ((IPermissionInfo)this).RoleId = value;
+                this.roleId = value;
             }
         }
 
@@ -107,19 +108,20 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <inheritdoc cref="IPermissionInfo.UserId" />
-        [XmlElement("userid")]
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.UserId)} instead. Scheduled for removal in v11.0.0.")]
+        /// <inheritdoc cref="UserId"/>
+        [XmlIgnore]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(UserId)} instead. Scheduled for removal in v11.0.0.")]
+        [CLSCompliant(false)]
         public int UserID
         {
             get
             {
-                return ((IPermissionInfo)this).UserId;
+                return this.userId;
             }
 
             set
             {
-                ((IPermissionInfo)this).UserId = value;
+                this.userId = value;
             }
         }
 
@@ -139,14 +141,16 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc />
-        int IPermissionInfo.RoleId
+        [XmlElement("roleid")]
+        public int RoleId
         {
             get => this.roleId;
             set => this.roleId = value;
         }
 
         /// <inheritdoc />
-        int IPermissionInfo.UserId
+        [XmlElement("userid")]
+        public int UserId
         {
             get => this.userId;
             set => this.userId = value;
@@ -159,22 +163,21 @@ namespace DotNetNuke.Security.Permissions
             // Call the base classes fill method to populate base class properties
             base.FillInternal(dr);
 
-            var @this = (IPermissionInfo)this;
-            @this.UserId = Null.SetNullInteger(dr["UserID"]);
-            @this.Username = Null.SetNullString(dr["Username"]);
-            @this.DisplayName = Null.SetNullString(dr["DisplayName"]);
-            if (@this.UserId == Null.NullInteger)
+            this.userId = Null.SetNullInteger(dr["UserID"]);
+            this.username = Null.SetNullString(dr["Username"]);
+            this.displayName = Null.SetNullString(dr["DisplayName"]);
+            if (this.userId == Null.NullInteger)
             {
-                @this.RoleId = Null.SetNullInteger(dr["RoleID"]);
-                @this.RoleName = Null.SetNullString(dr["RoleName"]);
+                this.roleId = Null.SetNullInteger(dr["RoleID"]);
+                this.roleName = Null.SetNullString(dr["RoleName"]);
             }
             else
             {
-                @this.RoleId = int.Parse(Globals.glbRoleNothing);
-                @this.RoleName = string.Empty;
+                this.roleId = int.Parse(Globals.glbRoleNothing);
+                this.roleName = string.Empty;
             }
 
-            @this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
+            this.allowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
     }
 }
