@@ -956,7 +956,7 @@
             &lt;tr&gt;&lt;td&gt;Title&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;My Website Home&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;ParentId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;Container&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;null&lt;/td&gt;&lt;/tr&gt;
-            &lt;tr&gt;&lt;td&gt;Theme&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;[G]Skins/Xcillion/Home.ascx&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Theme&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;[G]Skins/Aperture/default.ascx&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;Path&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;//Home&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;IncludeInMenu&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;
             &lt;tr&gt;&lt;td&gt;Url&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
@@ -1055,7 +1055,7 @@
                     &lt;td&gt;Home&lt;/td&gt;
                     &lt;td&gt;Home 3&lt;/td&gt;
                     &lt;td&gt;-1&lt;/td&gt;
-                    &lt;td&gt;[G]Skins/Xcillion/Home.ascx&lt;/td&gt;
+                    &lt;td&gt;[G]Skins/Aperture/default.ascx&lt;/td&gt;
                     &lt;td&gt;//Home&lt;/td&gt;
                     &lt;td&gt;true&lt;/td&gt;
                     &lt;td&gt;false&lt;/td&gt;
