@@ -1,21 +1,21 @@
 ﻿<portal version="5.0">
   <description>[PortalDescription.Text]</description>
   <settings>
-    <logofile>Images/Logo.png</logofile>
+    <logofile>Images/dnn-logo-white.svg</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
     <userregistration>0</userregistration>
     <banneradvertising>0</banneradvertising>
     <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
-    <skinsrc>[G]Skins/Xcillion/Inner.ascx</skinsrc>
-    <skinsrcadmin>[G]Skins/Xcillion/Admin.ascx</skinsrcadmin>
-    <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
-    <containersrcadmin>[G]Containers/Xcillion/Title_h2.ascx</containersrcadmin>
+    <skinsrc>[G]Skins/Aperture/default.ascx</skinsrc>
+    <skinsrcadmin>[G]Skins/Aperture/default.ascx</skinsrcadmin>
+    <containersrc>[G]Containers/Aperture/none.ascx</containersrc>
+    <containersrcadmin>[G]Containers/Aperture/title.ascx</containersrcadmin>
     <enableskinwidgets>True</enableskinwidgets>
     <showcookieconsent>False</showcookieconsent>
     <portalaliasmapping>CANONICALURL</portalaliasmapping>
     <contentlocalizationenabled>False</contentlocalizationenabled>
     <timezone>Pacific Standard Time</timezone>
-    <enablepopups>True</enablepopups>
+    <enablepopups>False</enablepopups>
     <inlineeditorenabled>True</inlineeditorenabled>
     <hidefoldersenabled>True</hidefoldersenabled>
     <controlpanelmode>VIEW</controlpanelmode>
@@ -231,17 +231,6 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <portalDesktopModule>
-      <friendlyname>Module Creator</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
       <friendlyname>DDR Menu</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -434,7 +423,7 @@
   </rolegroups>
   <tabs>
     <tab>
-      <content>Home</content>
+      <content>[Tab.Home.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -442,17 +431,17 @@
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
-      <visible>true</visible>
+      <visible>false</visible>
       <issystem>false</issystem>
       <keywords />
       <pageheadtext />
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
-      <skinsrc>[G]Skins/Xcillion/Home.ascx</skinsrc>
+      <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Home</name>
-      <title>Home</title>
+      <name>[Tab.Home.Name.Text]</name>
+      <title>[Tab.Home.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -501,7 +490,7 @@
         </tabsetting>
         <tabsetting>
           <settingname>CustomStylesheet</settingname>
-          <settingvalue>home.css</settingvalue>
+          <settingvalue></settingvalue>
         </tabsetting>
         <tabsetting>
           <settingname>CacheIncludeExclude</settingname>
@@ -519,11 +508,11 @@
       <tabtype>hometab</tabtype>
       <panes>
         <pane>
-          <name>ContentPane</name>
+          <name>BannerPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>414</moduleID>
+              <moduleID>1</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -547,96 +536,25 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title />
+              <title>[Tab.Home.BannerPane.Module.HomeBanner.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>ff918211-6ef1-45d8-ab5a-4869e4e14081</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
-              <content type="DNNHTML" version="08.00.00">
-                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;intro-container row&amp;quot;&amp;gt;
-    &amp;lt;div class=&amp;quot;main col-md-12&amp;quot;&amp;gt;
-        &amp;lt;h2&amp;gt;[Tab.Home.Main.Title]&amp;lt;/h2&amp;gt;
-        &amp;lt;ul class=&amp;quot;row&amp;quot;&amp;gt;
-            &amp;lt;li class=&amp;quot;docs col-md-4 col-sm-6&amp;quot;&amp;gt;
-                &amp;lt;a href=&amp;quot;[Tab.Home.Main.Docs.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;nofollow&amp;quot;&amp;gt;
-                    &amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;
-                        &amp;lt;p&amp;gt;[Tab.Home.Main.Docs.Tooltip]&amp;lt;/p&amp;gt;
-                        &amp;lt;label&amp;gt;[Tab.Home.Main.Docs.SubLink.Text]&amp;lt;/label&amp;gt;
-                    &amp;lt;/span&amp;gt; 
-                    &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Docs.Title]&amp;lt;/span&amp;gt; 
-                &amp;lt;/a&amp;gt;
-            &amp;lt;/li&amp;gt;
-            &amp;lt;li class=&amp;quot;community col-md-4 col-sm-6&amp;quot;&amp;gt;
-                &amp;lt;a href=&amp;quot;[Tab.Home.Main.Community.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;nofollow&amp;quot;&amp;gt;
-                    &amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;
-                        &amp;lt;p&amp;gt;[Tab.Home.Main.Community.Tooltip]&amp;lt;/p&amp;gt;
-                        &amp;lt;label&amp;gt;[Tab.Home.Main.Community.SubLink.Text]&amp;lt;/label&amp;gt;
-                    &amp;lt;/span&amp;gt; 
-                    &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Community.Title]&amp;lt;/span&amp;gt; 
-                &amp;lt;/a&amp;gt;
-            &amp;lt;/li&amp;gt;
-            &amp;lt;li class=&amp;quot;code col-md-4 col-sm-6&amp;quot;&amp;gt;
-                &amp;lt;a href=&amp;quot;[Tab.Home.Main.Code.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;nofollow&amp;quot;&amp;gt;
-                    &amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;
-                        &amp;lt;p&amp;gt;[Tab.Home.Main.Code.Tooltip]&amp;lt;/p&amp;gt;
-                        &amp;lt;label&amp;gt;[Tab.Home.Main.Code.SubLink.Text]&amp;lt;/label&amp;gt;
-                    &amp;lt;/span&amp;gt;
-                    &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Code.Title]&amp;lt;/span&amp;gt;
-                &amp;lt;/a&amp;gt;
-            &amp;lt;/li&amp;gt;
-            &amp;lt;li class=&amp;quot;forums col-md-4 col-sm-6&amp;quot;&amp;gt;
-                &amp;lt;a href=&amp;quot;[Tab.Home.Main.Forums.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;nofollow&amp;quot;&amp;gt;
-                    &amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;
-                        &amp;lt;p&amp;gt;[Tab.Home.Main.Forums.Tooltip]&amp;lt;/p&amp;gt;
-                        &amp;lt;label&amp;gt;[Tab.Home.Main.Forums.SubLink.Text]&amp;lt;/label&amp;gt;
-                    &amp;lt;/span&amp;gt; 
-                    &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Forums.Title]&amp;lt;/span&amp;gt; 
-                &amp;lt;/a&amp;gt;
-            &amp;lt;/li&amp;gt;
-            &amp;lt;li class=&amp;quot;blogs col-md-4 col-sm-6&amp;quot;&amp;gt;
-                &amp;lt;a href=&amp;quot;[Tab.Home.Main.Blogs.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;nofollow&amp;quot;&amp;gt;
-                    &amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;
-                        &amp;lt;p&amp;gt;[Tab.Home.Main.Blogs.Tooltip]&amp;lt;/p&amp;gt;
-                        &amp;lt;label&amp;gt;[Tab.Home.Main.Blogs.SubLink.Text]&amp;lt;/label&amp;gt;
-                    &amp;lt;/span&amp;gt; 
-                    &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Blogs.Title]&amp;lt;/span&amp;gt; 
-                &amp;lt;/a&amp;gt;
-            &amp;lt;/li&amp;gt;
-            &amp;lt;li class=&amp;quot;extensions col-md-4 col-sm-6&amp;quot;&amp;gt;
-                &amp;lt;a href=&amp;quot;[Tab.Home.Main.Extensions.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;nofollow&amp;quot;&amp;gt;
-                    &amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;
-                        &amp;lt;p&amp;gt;[Tab.Home.Main.Extensions.Tooltip]&amp;lt;/p&amp;gt;
-                        &amp;lt;label&amp;gt;[Tab.Home.Main.Extensions.SubLink.Text]&amp;lt;/label&amp;gt;
-                    &amp;lt;/span&amp;gt; 
-                    &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Extensions.Title]&amp;lt;/span&amp;gt; 
-                &amp;lt;/a&amp;gt;
-            &amp;lt;/li&amp;gt;
-        &amp;lt;/ul&amp;gt;
-        &amp;lt;div class=&amp;quot;row&amp;quot;&amp;gt;
-            &amp;lt;div class=&amp;quot;col-md-12&amp;quot;&amp;gt;
-                &amp;lt;div class=&amp;quot;col-md-12 platform-intro&amp;quot;&amp;gt;
-                    &amp;lt;p&amp;gt;[Tab.Home.PlatformIntro.Text]&amp;lt;/p&amp;gt;
-                &amp;lt;/div&amp;gt;
-            &amp;lt;/div&amp;gt;
-        &amp;lt;/div&amp;gt;
-        &amp;lt;div class=&amp;quot;row social&amp;quot;&amp;gt;
-            &amp;lt;div class=&amp;quot;col-md-12 social-links text-center&amp;quot;&amp;gt;
-                &amp;lt;h3&amp;gt;[Tab.Home.SocialLinks.Title]&amp;lt;/h3&amp;gt;
-                &amp;lt;ul class=&amp;quot;row&amp;quot;&amp;gt;
-                    &amp;lt;li class=&amp;quot;twitter col-xs-2&amp;quot;&amp;gt;
-                        &amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Twitter.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.Twitter.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
-                    &amp;lt;/li&amp;gt;
-                    &amp;lt;li class=&amp;quot;facebook col-xs-2&amp;quot;&amp;gt;
-                        &amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Facebook.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.Facebook.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
-                    &amp;lt;/li&amp;gt;
-                    &amp;lt;li class=&amp;quot;youtube col-xs-2&amp;quot;&amp;gt;
-                        &amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Youtube.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.Youtube.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
-                    &amp;lt;/li&amp;gt;
-                &amp;lt;/ul&amp;gt;
-            &amp;lt;/div&amp;gt;
-        &amp;lt;/div&amp;gt;
-    &amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>  
+              <content type="DNNHTML" version="10.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;aperture-bg-neutral&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-container&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-align-items-center aperture-d-flex aperture-flex-column aperture-flex-lg-row aperture-my-5&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-me-lg-5 aperture-w-100 aperture-w-lg-75 apeture-me-0&amp;quot;&amp;gt;
+                    &amp;lt;h2&amp;gt;[Tab.Home.BannerPane.Module.HomeBanner.Content.H2.Text]&amp;lt;/h2&amp;gt;
+                    &amp;lt;h5&amp;gt;[Tab.Home.BannerPane.Module.HomeBanner.Content.H5.Text]&amp;lt;/h5&amp;gt;
+                    &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.BannerPane.Module.HomeBanner.Content.Lead.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-justify-content-center aperture-w-100 aperture-w-lg-25&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.BannerPane.Module.HomeBanner.Content.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/DnnSeal.png&amp;quot; title=&amp;quot;[Tab.Home.BannerPane.Module.HomeBanner.Content.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-divider&amp;quot;&amp;gt;&nbsp;&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>  
               </content>
               <modulesettings />
               <tabmodulesettings />
@@ -646,11 +564,11 @@
           </modules>
         </pane>
         <pane>
-          <name>HeaderPane</name>
+          <name>FluidPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>415</moduleID>
+              <moduleID>2</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -674,20 +592,82 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Home Banner</title>
+              <title>[Tab.Home.FluidPane.Module.HomeContent.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>f3fd980e-dd2b-4e17-8ce3-fbb77634a9f7</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
-              <content type="DNNHTML" version="08.00.00">
-                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;banner-container row-fluid&amp;quot;&amp;gt;
-&amp;lt;div class=&amp;quot;col-md-7 col-md-offset-1&amp;quot;&amp;gt;
-&amp;lt;h2&amp;gt;[Tab.Home.Header.Title]&amp;lt;/h2&amp;gt;
-&amp;lt;span&amp;gt;[Tab.Home.Header.Content]&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;
-
-&amp;lt;div class=&amp;quot;col-md-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;&amp;quot; class=&amp;quot;hidden-phone&amp;quot; src=&amp;quot;{{PortalRoot}}Images/logo2.png&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              <content type="DNNHTML" version="10.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;aperture-container&amp;quot; id=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Build.DivId.Text]&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-justify-content-center aperture-my-4&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-justify-content-center aperture-mx-1 aperture-mx-lg-5 aperture-text-center&amp;quot;&amp;gt;
+                    &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Build.H2.Text]&amp;lt;/h2&amp;gt;
+                    &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Build.Lead.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-bg-tertiary-light&amp;quot; id=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.DivId.Text]&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-container&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-lg-row aperture-justify-content-center aperture-my-5&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-1 aperture-mx-lg-5 aperture-text-center aperture-text-tertiary-contrast&amp;quot;&amp;gt;
+                    &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.H2.Text]&amp;lt;/h2&amp;gt;
+                    &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Lead.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-justify-content-center aperture-mt-4 aperture-text-foreground&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-bg-tertiary-contrast aperture-d-flex aperture-flex-column aperture-p-3 aperture-w-100&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/administrators.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.H4.Text]&amp;lt;/h4&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Div.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-3 aperture-mt-auto&amp;quot;&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Button.Text]&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-bg-tertiary-contrast aperture-d-flex aperture-flex-column aperture-p-3 aperture-w-100&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/developers.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.H4.Text]&amp;lt;/h4&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Div.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-3 aperture-mt-auto&amp;quot;&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Button.Text]&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-bg-tertiary-contrast aperture-d-flex aperture-flex-column aperture-p-3 aperture-w-100&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/designers.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.H4.Text]&amp;lt;/h4&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Div.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-3 aperture-mt-auto&amp;quot;&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Button.Text]&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-container&amp;quot; id=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.DivId.Text]&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-justify-content-center aperture-my-4&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-justify-content-center aperture-mx-1 aperture-mx-lg-5 aperture-text-center&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/DnnExtensions.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.H2.Text]&amp;lt;/h2&amp;gt;
+                    &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.H4.Text]&amp;lt;/h4&amp;gt;
+                    &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Lead.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://github.com/topics/dnncms&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.PrimaryButton.Text]&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+                    &amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-secondary&amp;quot; href=&amp;quot;https://store.dnnsoftware.com/&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.SecondaryButton.Text]&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-bg-tertiary-light&amp;quot; id=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DivId.Text]&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-container&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-justify-content-center aperture-mx-1 aperture-mx-lg-5 aperture-text-center&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4 aperture-mt-5 aperture-text-foreground-contrast aperture-w-100&amp;quot; style=&amp;quot;background-image:url(/portals/0/images/dot-wreath.png); background-position:center 23%; background-repeat:no-repeat; background-size:contain; object-fit:cover; width:100%&amp;quot;&amp;gt;
+                    &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.H2.Text]&amp;lt;/h2&amp;gt;
+                    &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.Lead.Text]&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-align-items-center aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-justify-content-xl-center aperture-mb-4 aperture-mt-5&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-gap-xl-0 aperture-justify-content-around aperture-w-xl-100&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;https://dnncommunity.slack.com&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.SlackImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/slack-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.SlackImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://discord.com/invite/Y2Q4uy2N?utm_source=Discord%20Widget&amp;utm_medium=Connect&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DiscordImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/discord-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DiscordImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://github.com/dnnsoftware/Dnn.Platform&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.GitHubImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/github-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.GitHubImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-align-items-center aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-justify-content-xl-center aperture-mb-4&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-gap-xl-0 aperture-justify-content-around aperture-w-xl-100&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;https://dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-community-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://dnncommunity.org/forums&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnForumsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-forums-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnForumsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://dnncommunity.org/blogs&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnBlogsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-blogs-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnBlogsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnDocsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-docs-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnDocsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityAltImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-community-alt-logo.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityAltImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-5&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.EventsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/events.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.EventsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnConnectGroupPhotoImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid aperture-border-radius-4&amp;quot; src=&amp;quot;/portals/0/images/dnn-connect-group-photo.jpg&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnConnectGroupPhotoImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-5&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnSummitGroupPhotoImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid aperture-border-radius-4&amp;quot; src=&amp;quot;/portals/0/images/dnn-summit-group-photo.jpg&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnSummitGroupPhotoImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;
+                    &amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
               </content>
               <modulesettings>
                 <modulesetting>
@@ -718,13 +698,273 @@
             </module>
           </modules>
         </pane>
+        <pane>
+          <name>FooterPane</name>
+          <modules>
+            <module>
+              <contentKey />
+              <moduleID>3</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>1200</cachetime>
+              <color />
+              <containersrc />
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>false</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>[Tab.Home.FooterPane.Module.FooterContent.Title.Text]</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>ff918211-6ef1-45d8-ab5a-4869e4e14081</uniqueId>
+              <visibility>Maximized</visibility>
+              <cultureCode />
+              <content type="DNNHTML" version="10.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;aperture-d-flex aperture-justify-content-md-end aperture-justify-content-start&quot;&gt;&lt;img alt=&quot;[Tab.Home.FooterPane.Module.FooterContent.Content.DnnFooterLogoImage.Alt.Text]&quot; class=&quot;aperture-img-fluid&quot; src=&quot;/portals/0/images/dnn-footer-logo.png&quot; title=&quot;[Tab.Home.FooterPane.Module.FooterContent.Content.DnnFooterLogoImage.Title.Text]&quot; /&gt;&lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>  
+              </content>
+              <modulesettings />
+              <tabmodulesettings />
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
+            </module>
+          </modules>
+        </pane>
       </panes>
       <tabUrls />
     </tab>
     <tab>
-      <content>Activity Feed</content>
+      <content>[Tab.Build.Content.Text]</content>
       <contentKey />
-      <containersrc>[G]Containers/Xcillion/Title_h3.ascx</containersrc>
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>true</issecure>
+      <visible>true</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>[Tab.Build.Name.Text]</name>
+      <title>[Tab.Build.Title.Text]</title>
+      <url type="Url">[Tab.Build.Url.Text]</url>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings>
+        <tabsetting>
+          <settingname>AllowIndex</settingname>
+          <settingvalue>True</settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>LinkNewWindow</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+      </tabsettings>
+      <panes />
+      <tabUrls />
+    </tab>
+    <tab>
+      <content>[Tab.Learn.Content.Text]</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>true</issecure>
+      <visible>true</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>[Tab.Learn.Name.Text]</name>
+      <title>[Tab.Learn.Title.Text]</title>
+      <url type="Url">[Tab.Learn.Url.Text]</url>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings>
+        <tabsetting>
+          <settingname>AllowIndex</settingname>
+          <settingvalue>True</settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>LinkNewWindow</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+      </tabsettings>
+      <panes />
+      <tabUrls />
+    </tab>
+    <tab>
+      <content>[Tab.Extend.Content.Text]</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>true</issecure>
+      <visible>true</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>[Tab.Extend.Name.Text]</name>
+      <title>[Tab.Extend.Title.Text]</title>
+      <url type="Url">[Tab.Extend.Url.Text]</url>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings>
+        <tabsetting>
+          <settingname>AllowIndex</settingname>
+          <settingvalue>True</settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>LinkNewWindow</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+      </tabsettings>
+      <panes />
+      <tabUrls />
+    </tab>
+    <tab>
+      <content>[Tab.Participate.Content.Text]</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>true</issecure>
+      <visible>true</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>[Tab.Participate.Name.Text]</name>
+      <title>[Tab.Participate.Title.Text]</title>
+      <url type="Url">[Tab.Participate.Url.Text]</url>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings>
+        <tabsetting>
+          <settingname>AllowIndex</settingname>
+          <settingvalue>True</settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>LinkNewWindow</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+      </tabsettings>
+      <panes />
+      <tabUrls />
+    </tab>
+    <tab>
+      <content>[Tab.ActivityFeed.Content.Text]</content>
+      <contentKey />
+      <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
       <cultureCode />
       <description />
       <disabled>false</disabled>
@@ -739,8 +979,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Activity Feed</name>
-      <title>Activity Feed</title>
+      <name>[Tab.ActivityFeed.Name.Text]</name>
+      <title>[Tab.ActivityFeed.Content.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -766,18 +1006,18 @@
       <tabtype>usertab</tabtype>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>420</moduleID>
+              <moduleID>4</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -794,7 +1034,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>96e7179e-3103-4149-9783-61d4ecff2b15</uniqueId>
               <visibility>Maximized</visibility>
@@ -912,14 +1152,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>416</moduleID>
+              <moduleID>5</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -936,7 +1176,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>8dd24f26-1710-490f-96e7-fa7a0556e90d</uniqueId>
               <visibility>Maximized</visibility>
@@ -1000,21 +1240,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>417</moduleID>
+              <moduleID>6</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1031,7 +1266,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>13dcb617-9d9c-43fe-b1ae-0812c998a57e</uniqueId>
               <visibility>Maximized</visibility>
@@ -1060,7 +1295,7 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>418</moduleID>
+              <moduleID>7</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -1131,14 +1366,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>419</moduleID>
+              <moduleID>8</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1167,7 +1402,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Journal</title>
+              <title>[Tab.ActivityFeed.ContentPane.Module.Journal.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>5f82807c-5236-47bc-b992-02f0f3ae4c49</uniqueId>
               <visibility>Maximized</visibility>
@@ -1213,7 +1448,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>Search Results</content>
+      <content>[Tab.SearchResults.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1230,8 +1465,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Search Results</name>
-      <title>Search Results</title>
+      <name>[Tab.SearchResults.Name.Text]</name>
+      <title>[Tab.SearchResults.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1261,7 +1496,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>422</moduleID>
+              <moduleID>9</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -1297,7 +1532,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Search Results</title>
+              <title>[Tab.SearchResults.ContentPane.Module.SearchResults.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>75b34449-8c3c-43f9-9016-292e6c93e275</uniqueId>
               <visibility>Maximized</visibility>
@@ -1313,7 +1548,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>404 Error Page</content>
+      <content>[Tab.404ErrorPage.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1328,10 +1563,10 @@
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0</sitemappriority>
-      <skinsrc>[G]Skins/Xcillion/404.ascx</skinsrc>
+      <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>404 Error Page</name>
-      <title>404 Error Page</title>
+      <name>[Tab.404ErrorPage.Name.Text]</name>
+      <title>[Tab.404ErrorPage.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1402,7 +1637,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>423</moduleID>
+              <moduleID>10</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -1426,15 +1661,13 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Page cannot be found</title>
+              <title>[Tab.404ErrorPage.Module.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>e117c519-a8c3-4317-bdb9-c1b6aa23bc64</uniqueId>
               <visibility>Maximized</visibility>
               <cultureCode />
-              <content type="DNNHTML" version="08.00.00">
-                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
-		Sorry, the page you are looking for cannot be found and might have been removed, had its name changed, or is temporarily unavailable. It is recommended that you start again from the homepage. Feel free to contact us if the problem persists or if you cannot find what you’re looking for.
-	]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              <content type="DNNHTML" version="10.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[[Tab.404ErrorPage.Module.Content.Text]]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
               </content>
               <modulesettings>
                 <modulesetting>
@@ -1461,7 +1694,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>My Profile</content>
+      <content>[Tab.MyProfile.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1478,8 +1711,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>My Profile</name>
-      <title>My Profile</title>
+      <name>[Tab.MyProfile.Name.Text]</name>
+      <title>[Tab.MyProfile.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1502,21 +1735,21 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Activity Feed</parent>
+      <parent>[Tab.ActivityFeed.Name.Text]</parent>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>427</moduleID>
+              <moduleID>11</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1545,7 +1778,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyProfile.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>d8a8d8ad-0faf-44c7-8cea-710803ff4281</uniqueId>
               <visibility>Maximized</visibility>
@@ -1647,14 +1880,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>416</moduleID>
+              <moduleID>12</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1671,7 +1904,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.MyProfile.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>93e91541-62cc-4de3-84ba-d53fff715d94</uniqueId>
               <visibility>Maximized</visibility>
@@ -1730,21 +1963,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>424</moduleID>
+              <moduleID>13</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1773,7 +2001,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyProfile.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>02fd4f02-eaba-4651-9fc8-d39cda3ae9e3</uniqueId>
               <visibility>Maximized</visibility>
@@ -1802,14 +2030,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>425</moduleID>
+              <moduleID>14</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1838,7 +2066,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyProfile.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>b985fc51-7369-4a7c-99b5-e91579d35c3c</uniqueId>
               <visibility>Maximized</visibility>
@@ -1873,14 +2101,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>426</moduleID>
+              <moduleID>15</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1909,7 +2137,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyProfile.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>b4fbfecc-c54d-4fc8-8ffd-08a3c8e7cc7c</uniqueId>
               <visibility>Maximized</visibility>
@@ -1964,7 +2192,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>My Friends</content>
+      <content>[Tab.MyFriends.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -1981,8 +2209,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Friends</name>
-      <title>My Friends</title>
+      <name>[Tab.MyFriends.Name.Text]</name>
+      <title>[Tab.MyFriends.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2005,21 +2233,21 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Activity Feed</parent>
+      <parent>[Tab.ActivityFeed.Name.Text]</parent>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>431</moduleID>
+              <moduleID>16</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2048,7 +2276,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyFriends.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>1be2eaff-87c5-418e-8873-7a0e09ed02aa</uniqueId>
               <visibility>Maximized</visibility>
@@ -2150,14 +2378,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>416</moduleID>
+              <moduleID>17</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2174,7 +2402,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.MyFriends.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>233b5a51-b7a4-4c22-98ba-34cace7b15eb</uniqueId>
               <visibility>Maximized</visibility>
@@ -2233,21 +2461,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>428</moduleID>
+              <moduleID>18</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2276,7 +2499,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyFriends.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>69056e6a-c76d-458d-9627-db09215d886e</uniqueId>
               <visibility>Maximized</visibility>
@@ -2305,14 +2528,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>429</moduleID>
+              <moduleID>19</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2341,7 +2564,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyFriends.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>ee04434f-d992-463b-8517-a1ccc0862ce1</uniqueId>
               <visibility>Maximized</visibility>
@@ -2376,14 +2599,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>430</moduleID>
+              <moduleID>20</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2412,7 +2635,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyFriends.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>f781785c-f1cb-4b40-8f8b-cd6c316b19f2</uniqueId>
               <visibility>Maximized</visibility>
@@ -2466,7 +2689,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>My Messages</content>
+      <content>[Tab.MyMessages.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -2483,8 +2706,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Messages</name>
-      <title>My Messages</title>
+      <name>[Tab.MyMessages.Name.Text]</name>
+      <title>[Tab.MyMessages.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2507,21 +2730,21 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Activity Feed</parent>
+      <parent>[Tab.ActivityFeed.Name.Text]</parent>
       <panes>
         <pane>
-          <name>P1_25_2</name>
+          <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>435</moduleID>
+              <moduleID>21</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2550,7 +2773,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>[Tab.MyMessages.ContentPane.Module.MemberDirectory.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>d27d0c43-df25-4d9d-a7af-452a31826eee</uniqueId>
               <visibility>Maximized</visibility>
@@ -2652,14 +2875,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>416</moduleID>
+              <moduleID>22</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Aperture/title.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2676,7 +2899,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Navigation</title>
+              <title>[Tab.MyMessages.ContentPane.Module.Navigation.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>872b9f33-a932-4d51-bd8e-8104c61bf208</uniqueId>
               <visibility>Maximized</visibility>
@@ -2735,21 +2958,16 @@
               <definition>Console</definition>
               <moduledefinition>Console</moduledefinition>
             </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>432</moduleID>
+              <moduleID>23</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2778,7 +2996,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyMessages.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>cb17a12b-da76-4e46-b0ff-ab2978797bc5</uniqueId>
               <visibility>Maximized</visibility>
@@ -2807,14 +3025,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>433</moduleID>
+              <moduleID>24</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2843,7 +3061,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>ViewProfile</title>
+              <title>[Tab.MyMessages.ContentPane.Module.ViewProfile.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>ad653314-6868-49f4-9c66-dc705f75bcd6</uniqueId>
               <visibility>Maximized</visibility>
@@ -2878,14 +3096,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>434</moduleID>
+              <moduleID>25</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <containersrc />
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2914,7 +3132,7 @@
                   <rolename>Registered Users</rolename>
                 </permission>
               </modulepermissions>
-              <title>Message Center</title>
+              <title>[Tab.MyMessages.ContentPane.Module.MessageCenter.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>552378c0-5e34-470e-b691-2e6cff9d300d</uniqueId>
               <visibility>Maximized</visibility>
@@ -2939,7 +3157,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>Website Administration</content>
+      <content>[Tab.WebsiteAdministration.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -2956,8 +3174,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Admin</name>
-      <title>Website Administration</title>
+      <name>[Tab.WebsiteAdministration.Name.Text]</name>
+      <title>[Tab.WebsiteAdministration.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2980,7 +3198,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>421</moduleID>
+              <moduleID>26</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -3010,7 +3228,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Basic Features</title>
+              <title>[Tab.WebsiteAdministration.ContentPane.Module.BasicFeatures.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>62592bc6-53da-4115-b97e-fb666aa14953</uniqueId>
               <visibility>Maximized</visibility>
@@ -3060,7 +3278,7 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>File Management</content>
+      <content>[Tab.FileManagement.Content.Text]</content>
       <contentKey />
       <containersrc />
       <cultureCode />
@@ -3077,8 +3295,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>File Management</name>
-      <title>File Management</title>
+      <name>[Tab.FileManagement.Name.Text]</name>
+      <title>[Tab.FileManagement.Title.Text]</title>
       <iconfile>~/Icons/Sigma/Files_16X16_Standard.png</iconfile>
       <iconfilelarge>~/Icons/Sigma/Files_32X32_Standard.png</iconfilelarge>
       <url type="Normal" />
@@ -3104,7 +3322,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>440</moduleID>
+              <moduleID>27</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -3128,7 +3346,7 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Resource Manager</title>
+              <title>[Tab.FileManagement.ContentPane.Module.ResourceManager.Title.Text]</title>
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>e892a463-366f-436a-a6a6-9438346366ec</uniqueId>
               <visibility>Maximized</visibility>
@@ -3142,95 +3360,6 @@
               </tabmodulesettings>
               <definition>ResourceManager</definition>
               <moduledefinition>ResourceManager</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>User Accounts</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage user accounts for the portal.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>false</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>User Accounts</name>
-      <title>User Accounts</title>
-      <iconfile>~/Icons/Sigma/Users_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>439</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>User Accounts</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
-              <visibility>Maximized</visibility>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Security</definition>
-              <moduledefinition>User Accounts</moduledefinition>
             </module>
           </modules>
         </pane>
@@ -3274,16 +3403,7 @@
           <allowaccess>true</allowaccess>
         </permission>
       </folderpermissions>
-      <files>
-        <file>
-          <contenttype>application/octet-stream</contenttype>
-          <extension>css</extension>
-          <filename>home.css</filename>
-          <height>0</height>
-          <size>12278</size>
-          <width>0</width>
-        </file>
-      </files>
+      <files />
     </folder>
     <folder>
       <folderpath>Images/</folderpath>
@@ -3322,76 +3442,164 @@
       </folderpermissions>
       <files>
         <file>
-          <contenttype>image/gif</contenttype>
-          <extension>gif</extension>
-          <filename>background_header.gif</filename>
-          <height>254</height>
-          <size>4922</size>
-          <width>1089</width>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>administrators.png</filename>
+          <height>106</height>
+          <size>4531</size>
+          <width>106</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon-btn-sm-circle-arrow.png</filename>
-          <height>14</height>
-          <size>1180</size>
-          <width>14</width>
+          <filename>banner-bottom.png</filename>
+          <height>49</height>
+          <size>2574</size>
+          <width>1641</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon-btn-sm-circle-arrow-shadow.png</filename>
-          <height>26</height>
-          <size>1654</size>
-          <width>26</width>
+          <filename>designers.png</filename>
+          <height>106</height>
+          <size>1019</size>
+          <width>106</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon-social-facebook.png</filename>
-          <height>29</height>
-          <size>1715</size>
-          <width>29</width>
+          <filename>developers.png</filename>
+          <height>106</height>
+          <size>830</size>
+          <width>106</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon-social-linkedin.png</filename>
-          <height>29</height>
-          <size>2319</size>
-          <width>29</width>
+          <filename>discord-logo-white.png</filename>
+          <height>44</height>
+          <size>2453</size>
+          <width>233</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon-social-twitter.png</filename>
-          <height>29</height>
-          <size>1966</size>
-          <width>29</width>
+          <filename>dnn-blogs-logo-white.png</filename>
+          <height>55</height>
+          <size>2333</size>
+          <width>166</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>icon-social-youtube.png</filename>
-          <height>29</height>
-          <size>3702</size>
-          <width>29</width>
+          <filename>dnn-community-alt-logo.png</filename>
+          <height>193</height>
+          <size>14695</size>
+          <width>193</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>logo.png</filename>
+          <filename>dnn-community-logo-white.png</filename>
+          <height>51</height>
+          <size>2833</size>
+          <width>241</width>
+        </file>
+        <file>
+          <contenttype>image/jpeg</contenttype>
+          <extension>jpg</extension>
+          <filename>dnn-connect-group-photo.jpg</filename>
+          <height>410</height>
+          <size>164629</size>
+          <width>1015</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>dnn-docs-logo-white.png</filename>
+          <height>51</height>
+          <size>2847</size>
+          <width>171</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>DnnExtensions.png</filename>
+          <height>200</height>
+          <size>13916</size>
+          <width>204</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>dnn-footer-logo.png</filename>
+          <height>131</height>
+          <size>2644</size>
+          <width>131</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>dnn-forums-logo-white.png</filename>
+          <height>51</height>
+          <size>2811</size>
+          <width>198</width>
+        </file>
+        <file>
+          <contenttype>image/svg+xml</contenttype>
+          <extension>svg</extension>
+          <filename>dnn-logo-white.svg</filename>
           <height>62</height>
-          <size>2651</size>
-          <width>167</width>
+          <size>62434</size>
+          <width>155</width>
         </file>
         <file>
           <contenttype>image/png</contenttype>
           <extension>png</extension>
-          <filename>logo2.png</filename>
-          <height>205</height>
-          <size>16595</size>
-          <width>205</width>
+          <filename>DnnSeal.png</filename>
+          <height>369</height>
+          <size>47007</size>
+          <width>369</width>
+        </file>
+        <file>
+          <contenttype>image/jpeg</contenttype>
+          <extension>jpg</extension>
+          <filename>dnn-summit-group-photo.jpg</filename>
+          <height>410</height>
+          <size>150833</size>
+          <width>1015</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>dot-wreath.png</filename>
+          <height>900</height>
+          <size>83167</size>
+          <width>867</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>EVENTS.png</filename>
+          <height>96</height>
+          <size>4154</size>
+          <width>467</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>github-logo-white.png</filename>
+          <height>52</height>
+          <size>3101</size>
+          <width>198</width>
+        </file>
+        <file>
+          <contenttype>image/png</contenttype>
+          <extension>png</extension>
+          <filename>slack-logo-white.png</filename>
+          <height>42</height>
+          <size>2785</size>
+          <width>164</width>
         </file>
       </files>
     </folder>
