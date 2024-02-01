@@ -38,6 +38,7 @@ updates:
       SourceLink:
         patterns:
           - "Microsoft.SourceLink.*"
+          - "Microsoft.Build.Tasks.Git"
       TestStack-Dossier:
         patterns:
           - "TestStack.Dossier"
