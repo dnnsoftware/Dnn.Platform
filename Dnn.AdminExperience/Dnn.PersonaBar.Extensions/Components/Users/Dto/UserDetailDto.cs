@@ -4,13 +4,13 @@
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Text;
 
-    using Dnn.PersonaBar.Library.Common;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -111,15 +111,54 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 return string.Empty;
             }
 
+            var extraParams = new Dictionary<string, string>();
+            var defaultPortalSkin = PortalSettings.Current.DefaultPortalSkin;
+            if (!string.IsNullOrEmpty(defaultPortalSkin))
+            {
+                var skinSrc = string.Empty;
+                int lastSlashIndex = defaultPortalSkin.LastIndexOf("/");
+                if (lastSlashIndex != -1)
+                {
+                    skinSrc += defaultPortalSkin.Substring(0, lastSlashIndex + 1);
+                }
+
+                skinSrc += "popUpSkin";
+                extraParams.Add("SkinSrc", skinSrc);
+            }
+
+            var defaultPortalContainer = PortalSettings.Current.DefaultPortalContainer;
+            var defaultAdminContainer = PortalSettings.Current.DefaultAdminContainer;
+            var containerExists = !string.IsNullOrEmpty(defaultPortalContainer) || !string.IsNullOrEmpty(defaultAdminContainer);
+
+            if (containerExists)
+            {
+                var containerSrc = string.Empty;
+                bool isDefaultContainerNoneOrNoTitle = defaultPortalContainer.Contains("none") || defaultPortalContainer.Contains("NoTitle");
+                if (isDefaultContainerNoneOrNoTitle)
+                {
+                    containerSrc += defaultPortalContainer.Replace(".ascx", string.Empty);
+                }
+
+                bool isAdminContainerNoneOrNoTitle = defaultAdminContainer.Contains("none") || defaultAdminContainer.Contains("NoTitle");
+                if (isAdminContainerNoneOrNoTitle)
+                {
+                    containerSrc += defaultAdminContainer.Replace(".ascx", string.Empty);
+                }
+
+                extraParams.Add("ContainerSrc", containerSrc);
+            }
+
+            extraParams.Add("mid", module.ModuleID.ToString());
+            extraParams.Add("popUp", "true");
+            extraParams.Add("UserId", userId.ToString());
+            extraParams.Add("editprofile", "true");
+
             // ctl/Edit/mid/345/packageid/52
             return NavigationManager.NavigateURL(
                 tabId,
                 PortalSettings.Current,
                 "Edit",
-                "mid=" + module.ModuleID,
-                "popUp=true",
-                "UserId=" + userId,
-                "editprofile=true");
+                extraParams.Select(p => $"{p.Key}={p.Value}").ToArray());
         }
     }
 }
