@@ -51,3 +51,6 @@ updates:
       DependencyInjection:
         patterns:
           - "Microsoft.Extensions.DependencyInjection*"
+      CodeAnalysis:
+        patterns:
+          - "Microsoft.CodeAnalysis.*"
