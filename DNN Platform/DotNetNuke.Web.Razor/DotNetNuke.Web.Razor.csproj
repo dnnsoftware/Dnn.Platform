@@ -133,7 +133,6 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <None Include="app.config" />
     <None Include="Library.build" />
     <None Include="packages.config" />
   </ItemGroup>
