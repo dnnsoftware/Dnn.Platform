@@ -112,42 +112,10 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             }
 
             var extraParams = new Dictionary<string, string>();
-            var defaultPortalSkin = PortalSettings.Current.DefaultPortalSkin;
-            if (!string.IsNullOrEmpty(defaultPortalSkin))
-            {
-                var skinSrc = string.Empty;
-                int lastSlashIndex = defaultPortalSkin.LastIndexOf("/");
-                if (lastSlashIndex != -1)
-                {
-                    skinSrc += defaultPortalSkin.Substring(0, lastSlashIndex + 1);
-                }
-
-                skinSrc += "popUpSkin";
-                extraParams.Add("SkinSrc", skinSrc);
-            }
-
-            var defaultPortalContainer = PortalSettings.Current.DefaultPortalContainer;
-            var defaultAdminContainer = PortalSettings.Current.DefaultAdminContainer;
-            var containerExists = !string.IsNullOrEmpty(defaultPortalContainer) || !string.IsNullOrEmpty(defaultAdminContainer);
-
-            if (containerExists)
-            {
-                var containerSrc = string.Empty;
-                bool isDefaultContainerNoneOrNoTitle = defaultPortalContainer.Contains("none") || defaultPortalContainer.Contains("NoTitle");
-                if (isDefaultContainerNoneOrNoTitle)
-                {
-                    containerSrc += defaultPortalContainer.Replace(".ascx", string.Empty);
-                }
-
-                bool isAdminContainerNoneOrNoTitle = defaultAdminContainer.Contains("none") || defaultAdminContainer.Contains("NoTitle");
-                if (isAdminContainerNoneOrNoTitle)
-                {
-                    containerSrc += defaultAdminContainer.Replace(".ascx", string.Empty);
-                }
-
-                extraParams.Add("ContainerSrc", containerSrc);
-            }
-
+            var skinSrc = Globals.HostPath + "Skins/_default/popUpSkin";
+            var containerSrc = Globals.HostPath + "Containers/_default/popUpContainer";
+            extraParams.Add("SkinSrc", skinSrc);
+            extraParams.Add("ContainerSrc", containerSrc);
             extraParams.Add("mid", module.ModuleID.ToString());
             extraParams.Add("popUp", "true");
             extraParams.Add("UserId", userId.ToString());
