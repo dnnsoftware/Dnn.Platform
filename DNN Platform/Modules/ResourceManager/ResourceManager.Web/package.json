@@ -32,6 +32,7 @@
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.15.2",
     "@stencil/sass": "^2.0.4",
-    "@stencil/store": "^2.0.9"
+    "@stencil/store": "^2.0.9",
+    "@types/node": "^20.11.16"
   }
 }
