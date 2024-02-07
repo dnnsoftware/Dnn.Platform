@@ -23,7 +23,7 @@
     "babel-loader": "^8.3.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "create-react-class": "^15.7.0",
-    "css-loader": "2.1.1",
+    "css-loader": "6.10.0",
     "eslint": "7.32.0",
     "eslint-loader": "4.0.2",
     "eslint-plugin-jest": "^22.21.0",
