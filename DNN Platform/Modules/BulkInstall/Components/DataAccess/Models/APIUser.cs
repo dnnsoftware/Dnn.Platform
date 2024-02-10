@@ -1,4 +1,4 @@
-﻿using Cantarus.Libraries.Encryption;
+﻿using DotNetNuke.BulkInstall.Encryption;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
 

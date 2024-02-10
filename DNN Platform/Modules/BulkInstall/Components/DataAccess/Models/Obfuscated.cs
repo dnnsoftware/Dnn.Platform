@@ -1,4 +1,4 @@
-﻿using Cantarus.Libraries.Encryption;
+﻿using DotNetNuke.BulkInstall.Encryption;
 
 namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
 {
