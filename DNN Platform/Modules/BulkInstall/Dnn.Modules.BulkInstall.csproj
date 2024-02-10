@@ -141,13 +141,6 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\Manage\Manage.ascx.cs">
-      <DependentUpon>Manage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Clients\Manage\Manage.ascx.designer.cs">
-      <DependentUpon>Manage.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Components\APIUserManager.cs" />
     <Compile Include="Components\DataAccess\DataControllers\EventLogDataController.cs" />
     <Compile Include="Components\DataAccess\DataControllers\SettingDataController.cs" />
@@ -182,13 +175,6 @@
     <Compile Include="Components\PolyDeploySettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Clients\Deploy\Deploy.ascx.designer.cs">
-      <DependentUpon>Deploy.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Clients\Deploy\Deploy.ascx.cs">
-      <DependentUpon>Deploy.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\PolyDeployModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -200,60 +186,15 @@
     <Compile Include="Components\WebAPI\IPSpecController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Clients\Core\src\js\app.js" />
-    <Content Include="Clients\Core\src\js\bootstrap.js" />
-    <Content Include="Clients\Core\src\js\controllers\index.js" />
-    <Content Include="Clients\Core\src\js\services\EventLogDataService.js" />
-    <Content Include="Clients\Core\src\js\services\WarnService.js" />
-    <Content Include="Clients\Core\src\js\services\SettingDataService.js" />
-    <Content Include="Clients\Core\src\js\services\IPSpecDataService.js" />
-    <Content Include="Clients\Core\src\js\services\DnnService.js" />
-    <Content Include="Clients\Core\src\js\services\index.js" />
-    <Content Include="Clients\Deploy\src\js\bootstrap.js" />
-    <Content Include="Clients\Deploy\src\js\config.js" />
-    <Content Include="Clients\Deploy\src\js\controllers\index.js" />
-    <Content Include="Clients\Deploy\src\js\directives\index.js" />
-    <Content Include="Clients\Deploy\src\js\services\index.js" />
-    <Content Include="Clients\Manage\Manage.ascx" />
-    <Content Include="Clients\Manage\src\js\app.js" />
-    <Content Include="Clients\Manage\src\js\bootstrap.js" />
-    <Content Include="Clients\Manage\src\js\config.js" />
-    <Content Include="Clients\Core\src\js\controllers\WarningController.js" />
-    <Content Include="Clients\Manage\src\js\controllers\index.js" />
-    <Content Include="Clients\Manage\src\js\controllers\EventsController.js" />
-    <Content Include="Clients\Manage\src\js\controllers\WhitelistController.js" />
-    <Content Include="Clients\Manage\src\js\controllers\UsersController.js" />
-    <Content Include="Clients\Manage\src\js\services\index.js" />
-    <Content Include="Clients\Manage\src\js\templates\events.html" />
-    <Content Include="Clients\Manage\src\js\templates\whitelist.html" />
-    <Content Include="Clients\Manage\src\js\templates\menu.html" />
-    <Content Include="Clients\Manage\src\js\templates\users.html" />
     <Content Include="Images\polydeploy-logo-icon.png" />
-    <Content Include="webpack.base.js" />
-    <Content Include="Clients\Deploy\src\js\app.js" />
-    <Content Include="Clients\Deploy\src\js\controllers\ResultController.js" />
-    <Content Include="Clients\Deploy\src\js\controllers\SummaryController.js" />
-    <Content Include="Clients\Deploy\src\js\controllers\UploadController.js" />
-    <Content Include="Clients\Core\src\js\services\APIUserDataService.js" />
-    <Content Include="Clients\Core\src\js\services\SessionDataService.js" />
-    <Content Include="Clients\Deploy\src\js\services\SessionService.js" />
-    <Content Include="Clients\Deploy\src\js\templates\result.html" />
-    <Content Include="Clients\Deploy\src\js\templates\upload.html" />
-    <Content Include="Clients\Deploy\src\js\templates\summary.html" />
-    <Content Include="Clients\Deploy\src\js\templates\install.html" />
-    <Content Include="gulpfile.js" />
-    <Content Include="package.json" />
-    <Content Include="Clients\Core\src\css\main.less" />
-    <Content Include="Clients\Deploy\src\css\main.less" />
-    <Content Include="Clients\Manage\src\css\main.less" />
     <Content Include="packages.config" />
+    <Content Include="View.html" />
     <None Include="BulkInstall.dnn">
       <SubType>Designer</SubType>
     </None>
     <None Include="module.css" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
-    <Content Include="project.config.js" />
     <Content Include="SqlDataProviders\00.01.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.02.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\Uninstall.SqlDataProvider" />
@@ -267,20 +208,12 @@
     <Content Include="SqlDataProviders\00.09.03.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Clients\Deploy\Deploy.ascx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Encryption\Encryption.csproj">
       <Project>{ab5a3320-f260-42ee-8f19-ccf7546ca511}</Project>
       <Name>Encryption</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Clients\Manage\src\js\directives\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Clients\Deploy\App_LocalResources\Deploy.ascx.resx" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -304,9 +237,11 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>gulp pre-build-$(ConfigurationName)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>gulp post-build-$(ConfigurationName)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
