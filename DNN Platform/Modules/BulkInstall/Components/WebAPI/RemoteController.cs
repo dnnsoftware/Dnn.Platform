@@ -1,4 +1,4 @@
-﻿using Cantarus.Libraries.Encryption;
+﻿using DotNetNuke.BulkInstall.Encryption;
 using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.BulkInstall.Components.Logging;
 using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
