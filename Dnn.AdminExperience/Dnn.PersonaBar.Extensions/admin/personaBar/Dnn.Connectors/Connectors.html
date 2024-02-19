@@ -37,7 +37,7 @@
                     </tr>
                     <tr class="edit-row" data-bind="css: {'in-edit': inEdit()}">
                         <td colspan="4">
-                            <div data-bind="attr: {id: 'connector-' + name.replace(/ /g,''), class: 'edit-form '  + ($parent.isOpen() ? 'open' : '')}">
+                            <div data-bind="attr: {id: wrapperId, class: 'edit-form '  + ($parent.isOpen() ? 'open' : '')}">
                                 <!-- ko if: componentInitialized -->
                                 <div class="edit-items edit-fields" data-bind="component: {name: uniqueNumber + 'component', params: $data}"></div>
                                 <!-- /ko -->

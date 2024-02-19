@@ -44,6 +44,9 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
             var koConnectionObject = {
                 name: conn.name,
                 displayName: ko.observable(conn.displayName),
+                wrapperId: ko.computed(function() {
+                    return 'connector-' + conn.name.replace(/ /g, '');
+                }),
                 previousDisplayName: ko.observable(conn.displayName),
                 icon: conn.icon,
                 supportsMultiple: conn.supportsMultiple,
@@ -178,7 +181,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
 
                         (function (connection) {
                             setTimeout(function () {
-                                var $root = $('#connector-' + connection.displayName().replace(/ /g, ''));
+                                var $root = $('#' + connection.wrapperId());
                                 $root.find('input, select').each(function () {
                                     var $this = $(this);
                                     if (!$this.attr('id') || !$root.find('label[for="' + $this.attr('id') + '"]').length) {
@@ -207,7 +210,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
                     }
 
 
-                    $('#connector-' + koConnectionObject.displayName()).find('.edit-fields').children().each(function () {
+                    $('#' + koConnectionObject.wrapperId()).find('.edit-fields').children().each(function () {
                         ko.applyBindings(koConnectionObject, this);
                     });
                 });
@@ -302,7 +305,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
                 }
             }
 
-            var primaryButtons = $('#connector-' + conn.displayName()).find('a.primarybtn');
+            var primaryButtons = $('#' + conn.wrapperId()).find('a.primarybtn');
             if (!allEmpty && !allFilled && !forceSave) {
                 primaryButtons.addClass('disabledbtn');
                 return;
@@ -335,7 +338,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
         };
 
         var onSaveFailed = function (conn, xhr, status) {
-            var primaryButtons = $('#connector-' + conn.displayName()).find('a.primarybtn');
+            var primaryButtons = $('#' + conn.wrapperId()).find('a.primarybtn');
             primaryButtons.html(viewModel.resx.btn_Save);
             if (xhr.responseJSON) {
                 utility.notifyError(xhr.responseJSON.Message || status || 'Failed...');
@@ -465,7 +468,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
                 var newConn = onAddNew(connectionCategory, true);
                 connections.push(newConn);
                 connectionCategory.connections(connections);
-                $('#connector-' + newConn.name.replace(/ /g, '')).slideUp(200, 'linear', function () {
+                $('#' + newConn.wrapperId()).slideUp(200, 'linear', function () {
                     viewModel.connections().forEach(function (v) {
                         if (v.connections().length === 1) {
                             v.isOpen(false);
