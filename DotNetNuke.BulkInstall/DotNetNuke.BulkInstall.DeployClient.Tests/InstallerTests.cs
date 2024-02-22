@@ -61,7 +61,8 @@ public class InstallerTests
             null);
         var installer = CreateInstaller(handler);
 
-        await installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip");
+        var result = installer.UploadPackage(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip");
+        await result.UploadTask;
 
         handler.Request.ShouldNotBeNull();
         handler.Request.Method.ShouldBe(HttpMethod.Post);
@@ -85,7 +86,8 @@ public class InstallerTests
             null);
         var installer = CreateInstaller(handler);
 
-        await installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), @"modules\Jamestown_install_5.5.7.zip");
+        var result = installer.UploadPackage(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), @"modules\Jamestown_install_5.5.7.zip");
+        await result.UploadTask;
 
         var formContent = handler.Request.ShouldNotBeNull().Content.ShouldBeOfType<MultipartFormDataContent>();
         var innerContent = formContent.ShouldHaveSingleItem();
@@ -105,7 +107,14 @@ public class InstallerTests
             new HttpResponseMessage(HttpStatusCode.InternalServerError));
         var installer = CreateInstaller(handler);
 
-        var exception = await Should.ThrowAsync<InstallerException>(() => installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip"));
+        var exception = await Should.ThrowAsync<InstallerException>(() =>
+        {
+            return installer.UploadPackage(
+                options,
+                sessionId,
+                new MemoryStream("XYZ"u8.ToArray()),
+                "Jamestown_install_5.5.7.zip").UploadTask;
+        });
 
         exception.Message.ShouldBe("An Error Occurred While Uploading the Packages");
     }
@@ -284,8 +293,45 @@ public class InstallerTests
         handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(@"{""Status"":1,""Response"":null}") });
         var installer = CreateInstaller(handler, stopwatch);
 
-        await Should.ThrowAsync<InstallerException>(() => installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip"));
+        await Should.ThrowAsync<InstallerException>(() =>
+        {
+            return installer.UploadPackage(
+                options,
+                sessionId,
+                new MemoryStream("XYZ"u8.ToArray()),
+                "Jamestown_install_5.5.7.zip").UploadTask;
+        });
         handler.Requests.Count.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task UploadPackageAsync_TracksUploadProgress()
+    {
+        var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var targetUri = new Uri("https://polydeploy.example.com/");
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+        var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
+
+        var handler = new FakeMessageHandler(
+            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("""{"Status":1,"Response":null}""") });
+        var installer = CreateInstaller(handler, stopwatch);
+
+        var progressResults = new List<double>();
+
+        var buffer = new byte[500_000];
+
+        var upload = installer.UploadPackage(
+            options,
+            sessionId,
+            new MemoryStream(buffer),
+            "Jamestown_install_5.5.7.zip");
+
+        upload.OnProgress += (_, progress) => { progressResults.Add(progress); };
+        await upload.UploadTask;
+
+        progressResults.Last().ShouldBe(1);
+        progressResults.Count.ShouldBeGreaterThan(1);
     }
 
     [Fact]

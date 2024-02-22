@@ -23,7 +23,7 @@ public interface IRenderer
     /// <param name="level">The current log level.</param>
     /// <param name="uploads">The files to upload.</param>
     /// <returns>A <see cref="Task"/> which completes when the upload tasks have all completed.</returns>
-    Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string File, Task UploadTask)> uploads);
+    Task RenderFileUploadsAsync(LogLevel level, IEnumerable<UploadPackageResult> uploads);
 
     /// <summary>Renders the overview of the packages to be installed.</summary>
     /// <param name="level">The current log level.</param>

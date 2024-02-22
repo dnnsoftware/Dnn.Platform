@@ -26,7 +26,11 @@ public interface IInstaller
     /// <param name="encryptedPackage">The encrypted package contents.</param>
     /// <param name="packageName">The name of the package file.</param>
     /// <returns>A <see cref="Task"/> which resolves upon completion of the upload.</returns>
-    Task UploadPackageAsync(DeployInput options, string sessionId, Stream encryptedPackage, string packageName);
+    UploadPackageResult UploadPackage(
+        DeployInput options,
+        string sessionId,
+        Stream encryptedPackage,
+        string packageName);
 
     /// <summary>Starts the installation of the packages for a session.</summary>
     /// <param name="options">The input options.</param>

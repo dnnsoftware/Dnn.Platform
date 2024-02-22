@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.BulkInstall.DeployClient;
 
+using System.Runtime.InteropServices.ComTypes;
+
 using Spectre.Console;
 
 /// <summary>The <see cref="IRenderer"/> implementation, using <see cref="IAnsiConsole"/> (i.e. Spectre.Console).</summary>
@@ -32,20 +34,21 @@ public class Renderer : IRenderer
     }
 
     /// <inheritdoc/>
-    public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string File, Task UploadTask)> uploads)
+    public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<UploadPackageResult> uploads)
     {
         var shouldLog = level <= LogLevel.Information;
         if (this.console.Profile.Capabilities.Interactive && shouldLog)
         {
-            // TODO: actually show upload progress
             await this.console.Progress()
                 .StartAsync(async context =>
                 {
                     await Task.WhenAll(uploads.Select(async upload =>
                     {
-                        var progressTask = context.AddTask(upload.File);
+                        var progressTask = context.AddTask(upload.PackageName);
+                        progressTask.MaxValue = 1;
+                        upload.OnProgress += (_, progress) => { progressTask.Value = progress; };
                         await upload.UploadTask;
-                        progressTask.Increment(100);
+                        progressTask.Value = progressTask.MaxValue;
                         progressTask.StopTask();
                     }));
                 });
@@ -57,7 +60,7 @@ public class Renderer : IRenderer
                 await upload.UploadTask;
                 if (shouldLog)
                 {
-                    this.console.MarkupLineInterpolated($"{upload.File} upload complete");
+                    this.console.MarkupLineInterpolated($"{upload.PackageName} upload complete");
                 }
             }));
         }

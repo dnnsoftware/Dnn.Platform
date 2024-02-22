@@ -89,14 +89,36 @@ public class Installer : IInstaller
     }
 
     /// <inheritdoc/>
-    public async Task UploadPackageAsync(DeployInput options, string sessionId, Stream encryptedPackage, string packageName)
+    public UploadPackageResult UploadPackage(
+        DeployInput options,
+        string sessionId,
+        Stream encryptedPackage,
+        string packageName)
+    {
+        UploadPackageResult? result = null;
+        var task = this.UploadPackageImplementationAsync(
+            options,
+            sessionId,
+            encryptedPackage,
+            packageName,
+            onProgress: progress => result?.TriggerProgress(progress));
+        result = new UploadPackageResult(task, packageName, encryptedPackage);
+        return result;
+    }
+
+    private async Task UploadPackageImplementationAsync(
+        DeployInput options,
+        string sessionId,
+        Stream encryptedPackage,
+        string packageName,
+        Action<double>? onProgress = null)
     {
         try
         {
             var fileName = Path.GetFileName(packageName);
             var form = new MultipartFormDataContent
             {
-                { new StreamContent(encryptedPackage), "none", fileName },
+                { new StreamContent(new ProgressStream(encryptedPackage, onRead: onProgress)), "none", fileName },
             };
 
             using var response = await this.SendRequestAsync(options, HttpMethod.Post, $"AddPackages?sessionGuid={sessionId}", form);
@@ -182,5 +204,55 @@ public class Installer : IInstaller
         public HttpResponseMessage Response => this.response ?? throw new InvalidOperationException("Response must have a value.");
 
         public HttpRequestException? Exception { get; }
+    }
+
+    private class ProgressStream(Stream innerStream, Action<double>? onRead = null) : Stream
+    {
+        public override bool CanRead => innerStream.CanRead;
+
+        public override bool CanSeek => innerStream.CanSeek;
+
+        public override bool CanWrite => innerStream.CanWrite;
+
+        public override long Length => innerStream.Length;
+
+        public double Percentage => (double)this.Position / this.Length;
+
+        public override long Position
+        {
+            get => innerStream.Position;
+            set => innerStream.Position = value;
+        }
+
+        public override void Flush() => innerStream.Flush();
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            var result = innerStream.Read(buffer, offset, count);
+            if (result > 0)
+            {
+                onRead?.Invoke(this.Percentage);
+            }
+
+            return result;
+        }
+
+        public override long Seek(long offset, SeekOrigin origin) => innerStream.Seek(offset, origin);
+
+        public override void SetLength(long value) => innerStream.SetLength(value);
+
+        public override void Write(byte[] buffer, int offset, int count) => innerStream.Write(buffer, offset, count);
+
+        public override async ValueTask DisposeAsync()
+        {
+            await innerStream.DisposeAsync();
+            await base.DisposeAsync();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            innerStream.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

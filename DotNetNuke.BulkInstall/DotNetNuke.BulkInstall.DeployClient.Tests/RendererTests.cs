@@ -154,7 +154,8 @@ public class RendererTests
         var console = new TestConsole().Interactive();
 
         var renderer = new Renderer(console);
-        await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+        var result = new UploadPackageResult(Task.CompletedTask, "OpenContent_4.5.0_Install.zip", new MemoryStream());
+        await renderer.RenderFileUploadsAsync(logLevel, new[] { result });
 
         console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "100%");
     }
@@ -166,7 +167,8 @@ public class RendererTests
         var console = new TestConsole().Interactive();
 
         var renderer = new Renderer(console);
-        await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+        var result = new UploadPackageResult(Task.CompletedTask, "OpenContent_4.5.0_Install.zip", new MemoryStream());
+        await renderer.RenderFileUploadsAsync(logLevel, new[] { result });
 
         console.Output.ShouldBeEmpty();
     }
@@ -178,7 +180,8 @@ public class RendererTests
         var console = new TestConsole();
 
         var renderer = new Renderer(console);
-        await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+        var result = new UploadPackageResult(Task.CompletedTask, "OpenContent_4.5.0_Install.zip", new MemoryStream());
+        await renderer.RenderFileUploadsAsync(logLevel, new[] { result });
 
         console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "upload", "complete", "\n");
     }
@@ -190,7 +193,8 @@ public class RendererTests
         var console = new TestConsole();
 
         var renderer = new Renderer(console);
-        await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+        var result = new UploadPackageResult(Task.CompletedTask, "OpenContent_4.5.0_Install.zip", new MemoryStream());
+        await renderer.RenderFileUploadsAsync(logLevel, new[] { result });
 
         console.Output.ShouldBeEmpty();
     }
@@ -203,7 +207,9 @@ public class RendererTests
 
         var renderer = new Renderer(console);
 
-        var exception = await Should.ThrowAsync<Exception>(() => renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", UploadFile()), }));
+        var result = new UploadPackageResult(UploadFile(), "OpenContent_4.5.0_Install.zip", new MemoryStream());
+
+        var exception = await Should.ThrowAsync<Exception>(() => renderer.RenderFileUploadsAsync(logLevel, new[] { result }));
 
         exception.Message.ShouldBe("UploadFile() was called!");
 
@@ -221,7 +227,9 @@ public class RendererTests
 
         var renderer = new Renderer(console);
 
-        var exception = await Should.ThrowAsync<Exception>(() => renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", UploadFile()), }));
+        var result = new UploadPackageResult(UploadFile(), "OpenContent_4.5.0_Install.zip", new MemoryStream());
+
+        var exception = await Should.ThrowAsync<Exception>(() => renderer.RenderFileUploadsAsync(logLevel, new[] { result }));
 
         exception.Message.ShouldBe("UploadFile() was called!");
 

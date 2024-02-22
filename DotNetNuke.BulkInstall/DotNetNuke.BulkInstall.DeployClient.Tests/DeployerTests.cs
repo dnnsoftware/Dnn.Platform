@@ -87,7 +87,7 @@ public class DeployerTests
         var actualFiles = new Dictionary<string, string>();
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
-        A.CallTo(() => installer.UploadPackageAsync(A<DeployInput>._, sessionId, A<Stream>._, A<string>._))
+        A.CallTo(() => installer.UploadPackage(A<DeployInput>._, sessionId, A<Stream>._, A<string>._))
             .Invokes((DeployInput _, string _, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
         A.CallTo(() => installer.GetSessionAsync(options, sessionId)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -105,22 +105,24 @@ public class DeployerTests
     [Fact]
     public async Task StartAsync_RendersFileUploadStatus()
     {
-        IEnumerable<(string, Task)>? uploads = null;
+        IEnumerable<UploadPackageResult>? uploads = null;
         var options = A.Dummy<DeployInput>();
         var renderer = A.Fake<IRenderer>();
-        A.CallTo(() => renderer.RenderFileUploadsAsync(A<LogLevel>._, A<IEnumerable<(string, Task)>>._))
-            .Invokes((LogLevel _, IEnumerable<(string, Task)> theUploads) => uploads = theUploads);
+        A.CallTo(() => renderer.RenderFileUploadsAsync(A<LogLevel>._, A<IEnumerable<UploadPackageResult>>._))
+            .Invokes((LogLevel _, IEnumerable<UploadPackageResult> theUploads) => uploads = theUploads);
         var packageFileSource = A.Fake<IPackageFileSource>();
         A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._, A<SearchOption>._)).Returns(new[] { "Install.zip", });
         var installer = A.Fake<IInstaller>();
         A.CallTo(() => installer.GetSessionAsync(options, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
+        A.CallTo(() => installer.UploadPackage(options, A<string>._, A<Stream>._, A<string>._))
+            .ReturnsLazily((DeployInput _, string _, Stream _, string name) => new UploadPackageResult(Task.CompletedTask, name, new MemoryStream()));
 
         var deployer = new Deployer(renderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
         await deployer.StartAsync(options);
 
         uploads.ShouldNotBeNull();
-        var (file, _) = uploads.ShouldHaveSingleItem();
-        file.ShouldBe("Install.zip");
+        var result = uploads.ShouldHaveSingleItem();
+        result.PackageName.ShouldBe("Install.zip");
     }
 
     [Fact]
@@ -138,7 +140,7 @@ public class DeployerTests
         var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
         await deployer.StartAsync(options);
 
-        A.CallTo(() => installer.UploadPackageAsync(options, A<string>._, A<Stream>._, A<string>._)).MustHaveHappened()
+        A.CallTo(() => installer.UploadPackage(options, A<string>._, A<Stream>._, A<string>._)).MustHaveHappened()
             .Then(A.CallTo(() => installer.InstallPackagesAsync(options, sessionId)).MustHaveHappenedOnceExactly());
     }
 
@@ -379,7 +381,7 @@ public class DeployerTests
 
         public Exception? ErrorException { get; private set; }
 
-        public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string File, Task UploadTask)> uploads)
+        public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<UploadPackageResult> uploads)
         {
             await Task.WhenAll(uploads.Select(u => u.UploadTask));
         }

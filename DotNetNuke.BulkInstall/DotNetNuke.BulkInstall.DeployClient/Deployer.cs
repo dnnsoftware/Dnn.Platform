@@ -39,8 +39,19 @@ public class Deployer : IDeployer
 
             var sessionId = await this.installer.StartSessionAsync(options);
 
-            var uploads = packageFiles.Select(file => (file, this.UploadPackage(sessionId, file, options)));
-            await this.renderer.RenderFileUploadsAsync(options.LogLevel, uploads);
+            var uploadTasks = packageFiles.Select(file => this.UploadPackage(sessionId, file, options));
+            var uploads = await Task.WhenAll(uploadTasks);
+            try
+            {
+                await this.renderer.RenderFileUploadsAsync(options.LogLevel, uploads);
+            }
+            finally
+            {
+                foreach (var upload in uploads)
+                {
+                    await upload.DisposeAsync();
+                }
+            }
 
             _ = this.installer.InstallPackagesAsync(options, sessionId);
 
@@ -84,11 +95,11 @@ public class Deployer : IDeployer
         }
     }
 
-    private async Task UploadPackage(string sessionId, string packageFile, DeployInput options)
+    private async Task<UploadPackageResult> UploadPackage(string sessionId, string packageFile, DeployInput options)
     {
-        await using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
-        await using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
+        var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
+        var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
 
-        await this.installer.UploadPackageAsync(options, sessionId, encryptedPackageStream, packageFile);
+        return this.installer.UploadPackage(options, sessionId, encryptedPackageStream, packageFile);
     }
 }
