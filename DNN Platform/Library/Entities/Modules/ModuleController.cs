@@ -243,15 +243,15 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 // remove unwanted elements
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("portalid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("tabid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("tabmoduleid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("moduleorder"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("panename"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("isdeleted"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("versionGuid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("localizedVersionGuid"));
-                moduleNode.RemoveChild(moduleNode.SelectSingleNode("content"));
+                moduleNode.RemoveChildNode("portalid");
+                moduleNode.RemoveChildNode("tabid");
+                moduleNode.RemoveChildNode("tabmoduleid");
+                moduleNode.RemoveChildNode("moduleorder");
+                moduleNode.RemoveChildNode("panename");
+                moduleNode.RemoveChildNode("isdeleted");
+                moduleNode.RemoveChildNode("versionGuid");
+                moduleNode.RemoveChildNode("localizedVersionGuid");
+                moduleNode.RemoveChildNode("content");
 
                 // support for localized templates
                 // moduleNode.RemoveChild(moduleNode.SelectSingleNode("uniqueId"));
@@ -267,13 +267,13 @@ namespace DotNetNuke.Entities.Modules
                 {
                     foreach (XmlNode nodePermission in xmlNodeList)
                     {
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("modulepermissionid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("permissionid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("moduleid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("roleid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("userid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("username"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("displayname"));
+                        nodePermission.RemoveChildNode("modulepermissionid");
+                        nodePermission.RemoveChildNode("permissionid");
+                        nodePermission.RemoveChildNode("moduleid");
+                        nodePermission.RemoveChildNode("roleid");
+                        nodePermission.RemoveChildNode("userid");
+                        nodePermission.RemoveChildNode("username");
+                        nodePermission.RemoveChildNode("displayname");
                     }
                 }
 

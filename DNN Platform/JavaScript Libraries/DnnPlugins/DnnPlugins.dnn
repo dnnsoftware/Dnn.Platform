@@ -24,6 +24,7 @@
           <javaScriptLibrary>
             <libraryName>DnnPlugins</libraryName>
             <fileName>dnn.jquery.js</fileName>
+            <preferredScriptLocation>BodyTop</preferredScriptLocation>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

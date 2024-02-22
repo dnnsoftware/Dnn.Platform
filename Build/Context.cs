@@ -172,7 +172,7 @@ namespace DotNetNuke.Build
         {
             context.SerializeJsonToPrettyFile(settingsFile, this.Settings);
             context.Information(log => log($"Saved settings to {Path.GetFullPath(settingsFile)}"));
-            context.Debug(log => log($"Settings: {context.SerializeJson(this.Settings).Replace("{", "{{")}"));
+            context.Debug(log => log("{0}", $"Settings: {context.SerializeJson(this.Settings)}"));
         }
     }
 }

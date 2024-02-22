@@ -99,5 +99,22 @@ namespace DotNetNuke.Common.Utilities
             node.Attributes.Append(newAttribute);
             return node;
         }
+
+        /// <summary>
+        /// Remove the child node with the provided name.
+        /// </summary>
+        /// <param name="node">The parent node.</param>
+        /// <param name="childNodeName">The child node name.</param>
+        public static void RemoveChildNode(this XmlNode node, string childNodeName)
+        {
+            if (node != null)
+            {
+                var childNode = node.SelectSingleNode(childNodeName);
+                if (childNode != null)
+                {
+                    node.RemoveChild(childNode);
+                }
+            }
+        }
     }
 }
