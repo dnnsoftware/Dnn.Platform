@@ -1,0 +1,38 @@
+{
+  "name": "dnn-bulk-install",
+  "version": "10.0.0",
+  "description": "Bulk Install",
+  "private": true,
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/dnn-bulk-install/dnn-bulk-install.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dnnsoftware/Dnn.Platform.git"
+  },
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "watch": "stencil build --config stencil.dnn.config.ts --watch",
+    "start": "stencil build --dev --watch --serve",
+    "generate": "stencil generate"
+  },
+  "dependencies": {
+    "@dnncommunity/dnn-elements": "^0.23.3",
+    "@stencil/core": "^4.7.0",
+    "@stencil/sass": "^3.0.9",
+    "@stencil/store": "^2.0.13"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.11"
+  },
+  "license": "MIT"
+}
