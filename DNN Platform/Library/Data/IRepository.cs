@@ -96,6 +96,11 @@ namespace DotNetNuke.Data
         /// <param name="item">The item to be inserted.</param>
         void Insert(T item);
 
+        /// <summary>Saves an Item in the repository internally deciding to use Insert or Update.</summary>
+        /// <param name="item">The item to be updated.</param>
+        /// <returns>The item.</returns>
+        T Save(T item);
+
         /// <summary>Updates an Item in the repository.</summary>
         /// <param name="item">The item to be updated.</param>
         void Update(T item);

@@ -1158,6 +1158,20 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
+        public void RepositoryBase_Save_Calls_SaveInternal()
+        {
+            // Arrange
+            var mockRepository = new Mock<RepositoryBase<Dog>>();
+            mockRepository.Protected().Setup("SaveInternal", ItExpr.IsAny<Dog>());
+
+            // Act
+            mockRepository.Object.Save(new Dog());
+
+            // Assert
+            mockRepository.Protected().Verify("SaveInternal", Times.Once(), ItExpr.IsAny<Dog>());
+        }
+
+        [Test]
         public void RepositoryBase_Update_Clears_Cache_If_Cacheable()
         {
             // Arrange
@@ -1170,6 +1184,23 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             mockRepository.Object.Update(new CacheableDog());
+
+            // Assert
+            mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
+        }
+        [Test]
+        public void RepositoryBase_Save_Clears_Cache_If_Cacheable()
+        {
+            // Arrange
+            var cacheKey = CachingProvider.GetCacheKey(Constants.CACHE_DogsKey);
+
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
+            mockCache.Setup(c => c.GetItem(cacheKey)).Returns(new List<CacheableDog>());
+
+            var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
+
+            // Act
+            mockRepository.Object.Save(new CacheableDog());
 
             // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
@@ -1192,6 +1223,23 @@ namespace DotNetNuke.Tests.Data
             // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
+        [Test]
+        public void RepositoryBase_Save_Clears_Cache_If_Cacheable_And_Scoped()
+        {
+            // Arrange
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
+            mockCache.Setup(c => c.GetItem(cacheKey)).Returns(new List<CacheableCat>());
+
+            var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
+
+            // Act
+            mockRepository.Object.Save(new CacheableCat { ModuleId = Constants.MODULE_ValidId });
+
+            // Assert
+            mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
+        }
 
         [Test]
         public void RepositoryBase_Update_Does_Not_Clear_Cache_If_Not_Cacheable()
@@ -1203,6 +1251,20 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             mockRepository.Object.Update(new Dog());
+
+            // Assert
+            mockCache.Verify(c => c.Remove(It.IsAny<string>()), Times.Never());
+        }
+        [Test]
+        public void RepositoryBase_Save_Does_Not_Clear_Cache_If_Not_Cacheable()
+        {
+            // Arrange
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
+
+            var mockRepository = new Mock<RepositoryBase<Dog>>();
+
+            // Act
+            mockRepository.Object.Save(new Dog());
 
             // Assert
             mockCache.Verify(c => c.Remove(It.IsAny<string>()), Times.Never());

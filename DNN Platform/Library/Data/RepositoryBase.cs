@@ -119,6 +119,14 @@ namespace DotNetNuke.Data
         }
 
         /// <inheritdoc/>
+        public T Save(T item)
+        {
+            this.SaveInternal(item);
+            this.ClearCache(item);
+            return item;
+        }
+
+        /// <inheritdoc/>
         public abstract void Update(string sqlCondition, params object[] args);
 
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
@@ -185,6 +193,8 @@ namespace DotNetNuke.Data
         protected abstract void InsertInternal(T item);
 
         protected abstract void UpdateInternal(T item);
+
+        protected abstract T SaveInternal(T item);
 
         private void CheckIfScoped()
         {

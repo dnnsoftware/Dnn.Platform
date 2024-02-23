@@ -108,6 +108,13 @@ namespace DotNetNuke.Data.PetaPoco
             this.database.Update(item);
         }
 
+        /// <inheritdoc/>
+        protected override T SaveInternal(T item)
+        {
+            this.database.Save(item);
+            return item;
+        }
+
         private string GetScopeSql()
         {
             return string.Format("WHERE {0} = @0", DataUtil.GetColumnName(typeof(T), this.Scope));
