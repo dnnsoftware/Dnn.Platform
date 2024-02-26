@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     using System;
     using System.Globalization;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using DotNetNuke.Entities.Modules.Actions;
@@ -55,12 +56,20 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 methodName = this.MethodName;
             }
 
-            var method = GetMethod(type, methodName);
+            var method = GetMethod(type, methodName, controller.IsAsync);
 
-            controller.ModuleActions = method.Invoke(instance, null) as ModuleActionCollection;
+            var result = method.Invoke(instance, null);
+            if (result is ModuleActionCollection moduleActions)
+            {
+                controller.ModuleActions = moduleActions;
+            }
+            else if (result is Task<ModuleActionCollection> taskResult)
+            {
+                controller.ModuleActionsAsync = taskResult;
+            }
         }
 
-        private static MethodInfo GetMethod(Type type, string methodName)
+        private static MethodInfo GetMethod(Type type, string methodName, bool supportsAsync)
         {
             var method = type.GetMethod(methodName);
 
@@ -69,13 +78,13 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new NotImplementedException($"The expected method to get the module actions cannot be found. Type: {type.FullName}, Method: {methodName}");
             }
 
-            var returnType = method.ReturnType.FullName;
-            if (returnType != "DotNetNuke.Entities.Modules.Actions.ModuleActionCollection")
+            var returnType = method.ReturnType;
+            if (returnType == typeof(ModuleActionCollection) || (supportsAsync && returnType == typeof(Task<ModuleActionCollection>)))
             {
-                throw new InvalidOperationException("The method must return an object of type ModuleActionCollection");
+                return method;
             }
 
-            return method;
+            throw new InvalidOperationException("The method must return an object of type ModuleActionCollection");
         }
     }
 }
