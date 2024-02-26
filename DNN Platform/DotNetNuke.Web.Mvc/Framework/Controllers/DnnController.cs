@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Routing;
     using System.Web.UI;
@@ -71,6 +72,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         /// <inheritdoc />
         public ModuleActionCollection ModuleActions { get; set; }
+
+        /// <inheritdoc/>
+        public Task<ModuleActionCollection> ModuleActionsAsync { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsAsync { get; set; }
 
         /// <inheritdoc />
         public ModuleInstanceContext ModuleContext { get; set; }

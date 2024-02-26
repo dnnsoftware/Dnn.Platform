@@ -156,7 +156,14 @@ namespace DotNetNuke.Admin.Containers
                     this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
-                this.Page.RegisterAsyncTask(new PageAsyncTask(this.ProcessActionsAsync));
+                if (this.ModuleControl is IAsyncModuleControl)
+                {
+                    this.Page.RegisterAsyncTask(new PageAsyncTask(this.ProcessActionsAsync));
+                }
+                else
+                {
+                    this.ProcessActions();
+                }
             }
             catch (Exception exc)
             {
@@ -177,11 +184,17 @@ namespace DotNetNuke.Admin.Containers
 
         private Task ProcessActionsAsync(CancellationToken cancellationToken)
         {
+            this.ProcessActions();
+            return Task.CompletedTask;
+        }
+
+        private void ProcessActions()
+        {
             try
             {
                 if (!this.ActionRoot.Visible)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 // Add Menu Items
@@ -245,19 +258,11 @@ namespace DotNetNuke.Admin.Containers
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
-            return Task.CompletedTask;
         }
 
         private void ActionButton_Click(object sender, EventArgs e)
         {
-            this.Page.RegisterAsyncTask(new PageAsyncTask(ct => this.ActionButton_ClickAsync(sender, e, ct)));
-        }
-
-        private Task ActionButton_ClickAsync(object sender, EventArgs e, CancellationToken cancellationToken)
-        {
             this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
-            return Task.CompletedTask;
         }
     }
 }

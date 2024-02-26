@@ -168,6 +168,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             {
                 // Check if the controller supports IDnnController
                 var moduleController = controller as IDnnController;
+                moduleController.IsAsync = true;
 
                 // If we couldn't adapt it, we fail.  We can't support IController implementations directly :(
                 // Because we need to retrieve the ActionResult without executing it, IController won't cut it
@@ -182,24 +183,24 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ModuleContext = context.ModuleContext;
 
-                moduleController.LocalResourceFile = string.Format(
-                    "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                    context.ModuleContext.Configuration.DesktopModule.FolderName,
-                    Localization.LocalResourceDirectory,
-                    controllerName);
+                moduleController.LocalResourceFile =
+                    $"~/DesktopModules/MVC/{context.ModuleContext.Configuration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{controllerName}.resx";
 
                 moduleController.ViewEngineCollectionEx = this.ViewEngines;
+
+                if (controller is not IAsyncController asyncController)
+                {
+                    // the base System.Web.Mvc.Controller class implements IAsyncController so this should normally never happen.
+                    throw new NotSupportedException("Synchronous only Controller implementation is not supported.");
+                }
 
                 // Execute the controller and capture the result
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
-                if (moduleController is IAsyncController asyncController)
+                await Task.Factory.FromAsync(asyncController.BeginExecute, asyncController.EndExecute, this.RequestContext, null);
+                if (moduleController.ModuleActionsAsync != null)
                 {
-                    await Task.Factory.FromAsync(asyncController.BeginExecute, asyncController.EndExecute, this.RequestContext, null);
-                }
-                else
-                {
-                    moduleController.Execute(this.RequestContext);
+                    moduleController.ModuleActions = await moduleController.ModuleActionsAsync;
                 }
 
                 var result = moduleController.ResultOfLastExecute;

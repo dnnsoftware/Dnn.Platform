@@ -61,7 +61,13 @@ namespace DotNetNuke.Web.Mvc.Routing
             string routeNamespace = string.Empty;
             string routeControllerName;
             string routeActionName;
-            if (segments.Length == 3)
+            if (segments.Length == 4)
+            {
+                routeNamespace = segments[0];
+                routeControllerName = segments[1];
+                routeActionName = segments[3];
+            }
+            else if (segments.Length == 3)
             {
                 routeNamespace = segments[0];
                 routeControllerName = segments[1];

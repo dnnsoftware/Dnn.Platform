@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.UI;
 
@@ -23,6 +24,10 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         string LocalResourceFile { get; set; }
 
         ModuleActionCollection ModuleActions { get; set; }
+
+        Task<ModuleActionCollection> ModuleActionsAsync { get; set; }
+
+        bool IsAsync { get; set; }
 
         ModuleInstanceContext ModuleContext { get; set; }
 
