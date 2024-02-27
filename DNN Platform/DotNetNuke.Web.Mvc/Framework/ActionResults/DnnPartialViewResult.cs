@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 
             if (this.View == null)
             {
-                result = this.ViewEngineCollection.FindPartialView(context, this.ViewName);
+                result = this.FindView(context);
                 this.View = result.View;
             }
 
