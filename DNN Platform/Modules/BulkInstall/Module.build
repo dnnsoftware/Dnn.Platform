@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" 
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <RootDirectory>$(MSBuildProjectDirectory)\..\..\..</RootDirectory>
+        <ReactDirectory>$(MSBuildProjectDirectory)\BulkInstall.Web</ReactDirectory>
+    </PropertyGroup>
+    <Import Project="..\..\..\DNN_Platform.build" />
+    <PropertyGroup>
+        <Extension>zip</Extension>
+        <DNNFileName>BulkInstall</DNNFileName>
+        <PackageName>DNN_BulkInstall</PackageName>
+        <ModuleFolderName>$(WebsitePath)\DesktopModules\BulkInstall</ModuleFolderName>
+        <InstallPath>$(WebsiteInstallPath)\Module</InstallPath>
+    </PropertyGroup>
+    <Import Project="$(BuildScriptsPath)\Package.Targets" />
+    <Import Project="$(BuildScriptsPath)\Module.Build"/>
+    <Target Name="CopyScripts" BeforeTargets="UpdateFiles">
+        <PropertyGroup>
+            <ComponentsDestinationFolder>$(MSBuildProjectDirectory)\Scripts\dnn-bulk-install</ComponentsDestinationFolder>
+        </PropertyGroup>
+        <ItemGroup>
+            <ComponentsSource Include="$(MSBuildProjectDirectory)\BulkInstall.Web\dist\dnn-bulk-install\**\*" />
+        </ItemGroup>
+        <RemoveDir Directories="$(ComponentsDestinationFolder)" />
+        <MakeDir Directories="$(ComponentsDestinationFolder)" Condition="!Exists('$(ComponentsDestinationFolder)')"/>
+        <Copy SourceFiles="@(ComponentsSource)" DestinationFolder="$(ComponentsDestinationFolder)" />
+    </Target>
+    <Target Name="UpdateFiles">
+        <ItemGroup>
+            <Scripts Include="$(MSBuildProjectDirectory)\Scripts\**\*.*" />
+            <Resources Include="$(MSBuildProjectDirectory)\Scripts\**\*.*" />
+            <Resources Remove="web.config" />
+            <Resources Remove="web.Debug.config" />
+            <Resources Remove="web.Release.config" />
+        </ItemGroup>
+    </Target>
+</Project>

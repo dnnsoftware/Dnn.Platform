@@ -1,64 +1,51 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="00.09.03">
-      <friendlyName>Cantarus PolyDeploy</friendlyName>
-      <description>Cantarus PolyDeploy module</description>
-      <iconFile>Images/polydeploy-logo-icon.png</iconFile>
+    <package name="BulkInstall" type="Module" version="10.00.00">
+      <friendlyName>Bulk Install</friendlyName>
+      <description>This module allows you to bulk install extensions.</description>
+      <iconFile>Images/bulk-install-icon.png</iconFile>
       <owner>
-        <name>Cantarus</name>
-        <organization>Cantarus</organization>
-        <url>http://www.cantarus.com</url>
-        <email>dotnetnuke@cantarus.com</email>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license></license>
       <releaseNotes></releaseNotes>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">07.00.00</dependency>
+        <dependency type="CoreVersion">10.00.00</dependency>
       </dependencies>
-
       <components>
-
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
+            <basePath>DesktopModules\BulkInstall</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
-
         <component type="Module">
           <desktopModule>
-            <moduleName>PolyDeploy</moduleName>
-            <foldername>/Cantarus/PolyDeploy</foldername>
-            <businessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</businessControllerClass>
+            <moduleName>BulkInstall</moduleName>
+            <foldername>BulkInstall</foldername>
+            <businessControllerClass>Dnn.Modules.BulkInstall.Components.FeatureController</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Upgradeable"/>
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>PolyDeploy</friendlyName>
+                <friendlyName>BulkInstall</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
-                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Clients/Deploy/Deploy.ascx</controlSrc>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/BulkInstall/View.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Manage</controlKey>
-                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Clients/Manage/Manage.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>PolyDeploy Manage</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
@@ -69,17 +56,14 @@
             <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
             <processorCommand>UpgradeModule</processorCommand>
             <attributes>
-              <BusinessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</BusinessControllerClass>
-              <UpgradeVersionsList>00.09.00,00.09.01</UpgradeVersionsList>
+              <BusinessControllerClass>Dnn.Modules.BulkInstall.Components.FeatureController</BusinessControllerClass>
+              <UpgradeVersionsList>00.00.01</UpgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
-
         <component type="Script">
           <scripts>
-
-            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
-
+            <basePath>DesktopModules/BulkInstall</basePath>
             <!-- v0.1.0 -->
             <script type="Install">
               <path>SqlDataProviders</path>
@@ -160,24 +144,23 @@
             <script type="Uninstall">
               <path>SqlDataProviders</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version />
+              <version/>
             </script>
 
           </scripts>
         </component>
-
         <component type="Assembly">
           <assemblies>
-            <basePath>bin</basePath>
             <assembly>
-              <name>Cantarus.Modules.PolyDeploy.dll</name>
+              <name>Dnn.Modules.BulkInstall.dll</name>
+                <path>bin</path>
             </assembly>
             <assembly>
-              <name>Cantarus.Libraries.Encryption.dll</name>
+              <name>DotNetNuke.BulkInstall.Encryption.dll</name>
+              <path>bin</path>
             </assembly>
           </assemblies>
         </component>
-
         <component type="Config">
           <config>
             <configFile>web.config</configFile>
@@ -199,7 +182,6 @@
             </uninstall>
           </config>
         </component>
-
       </components>
     </package>
   </packages>
