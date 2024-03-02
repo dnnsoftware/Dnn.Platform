@@ -11,7 +11,7 @@ export const config : Config = {
   ...originalConfig,
   outputTargets: [
     {
-      // For DNN yarn watch --scope dnn-resource-manager
+      // For DNN yarn watch --scope dnn-bulk-install
       type: 'dist',
       esmLoaderPath: '../loader',
       dir: dnnConfig?.WebsitePath ? outPath : '../Scripts',

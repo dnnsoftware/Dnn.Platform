@@ -25,6 +25,7 @@
     "Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables",
     "Dnn.AdminExperience/ClientSide/Vocabularies.Web",
     "DNN Platform/Modules/ResourceManager/ResourceManager.Web",
+    "DNN Platform/Modules/BulkInstall/BulkInstall.Web",
     "DNN Platform/Skins/Aperture"
   ],
   "devDependencies": {
