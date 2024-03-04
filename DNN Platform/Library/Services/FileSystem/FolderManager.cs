@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
@@ -945,7 +946,10 @@ namespace DotNetNuke.Services.FileSystem
             {
                 var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-                if (folderMapping.MappingName != "Standard" && folderMapping.MappingName != "Secure" && folderMapping.MappingName != "Database")
+                if (folderMapping.MappingName != "Standard" &&
+                    folderMapping.MappingName != "Secure" &&
+                    folderMapping.MappingName != "Database" &&
+                    Host.EnableFileAutoSync)
                 {
                     var type = folderProvider.GetType();
                     MethodInfo method = type.GetMethod("ClearCache");
