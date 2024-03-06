@@ -1,6 +1,6 @@
 {
   "name": "export-bundle",
-  "version": "9.13.0",
+  "version": "9.13.3",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production --progress",
@@ -66,6 +66,6 @@
     "webpack-dev-server": "4.15.1"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "9.13.0"
+    "@dnnsoftware/dnn-react-common": "9.13.3"
   }
 }

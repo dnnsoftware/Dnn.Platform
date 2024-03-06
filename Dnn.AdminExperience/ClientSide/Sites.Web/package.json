@@ -1,6 +1,6 @@
 {
   "name": "sites",
-  "version": "9.13.0",
+  "version": "9.13.3",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -15,7 +15,7 @@
     "@babel/plugin-transform-object-assign": "7.22.5",
     "@babel/preset-env": "7.22.9",
     "@babel/preset-react": "7.22.5",
-    "@dnnsoftware/dnn-react-common": "9.13.0",
+    "@dnnsoftware/dnn-react-common": "9.13.3",
     "babel-loader": "8.3.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-polyfill": "6.26.0",

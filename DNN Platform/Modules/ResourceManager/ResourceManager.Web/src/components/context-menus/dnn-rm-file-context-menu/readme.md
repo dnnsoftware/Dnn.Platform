@@ -24,6 +24,7 @@
 - [dnn-action-edit-item](../../actions/dnn-action-edit-item)
 - [dnn-action-move-items](../../actions/dnn-action-move-items)
 - [dnn-action-delete-items](../../actions/dnn-action-delete-items)
+- [dnn-action-open-file](../../actions/dnn-action-open-file)
 - [dnn-action-download-item](../../actions/dnn-action-download-item)
 - [dnn-action-copy-url](../../actions/dnn-action-copy-url)
 
@@ -33,6 +34,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-delete-items
+  dnn-rm-file-context-menu --> dnn-action-open-file
   dnn-rm-file-context-menu --> dnn-action-download-item
   dnn-rm-file-context-menu --> dnn-action-copy-url
   dnn-action-edit-item --> dnn-modal

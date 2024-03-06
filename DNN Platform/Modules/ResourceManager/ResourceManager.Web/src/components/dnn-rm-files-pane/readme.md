@@ -79,6 +79,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-delete-items
+  dnn-rm-file-context-menu --> dnn-action-open-file
   dnn-rm-file-context-menu --> dnn-action-download-item
   dnn-rm-file-context-menu --> dnn-action-copy-url
   dnn-rm-items-cardview --> dnn-collapsible

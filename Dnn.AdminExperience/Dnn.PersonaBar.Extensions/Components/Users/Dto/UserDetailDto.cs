@@ -4,13 +4,13 @@
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Text;
 
-    using Dnn.PersonaBar.Library.Common;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -111,15 +111,22 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 return string.Empty;
             }
 
+            var extraParams = new Dictionary<string, string>();
+            var skinSrc = Globals.HostPath + "Skins/_default/popUpSkin";
+            var containerSrc = Globals.HostPath + "Containers/_default/popUpContainer";
+            extraParams.Add("SkinSrc", skinSrc);
+            extraParams.Add("ContainerSrc", containerSrc);
+            extraParams.Add("mid", module.ModuleID.ToString());
+            extraParams.Add("popUp", "true");
+            extraParams.Add("UserId", userId.ToString());
+            extraParams.Add("editprofile", "true");
+
             // ctl/Edit/mid/345/packageid/52
             return NavigationManager.NavigateURL(
                 tabId,
                 PortalSettings.Current,
                 "Edit",
-                "mid=" + module.ModuleID,
-                "popUp=true",
-                "UserId=" + userId,
-                "editprofile=true");
+                extraParams.Select(p => $"{p.Key}={p.Value}").ToArray());
         }
     }
 }

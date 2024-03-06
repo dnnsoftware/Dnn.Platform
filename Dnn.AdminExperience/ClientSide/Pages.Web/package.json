@@ -1,6 +1,6 @@
 {
   "name": "pages",
-  "version": "9.13.0",
+  "version": "9.13.3",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -23,7 +23,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
-    "@dnnsoftware/dnn-react-common": "9.13.0",
+    "@dnnsoftware/dnn-react-common": "9.13.3",
     "@types/knockout": "^3.4.72",
     "@types/redux": "3.6.31",
     "babel-eslint": "^10.1.0",
