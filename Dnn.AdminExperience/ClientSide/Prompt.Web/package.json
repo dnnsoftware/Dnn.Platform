@@ -44,7 +44,7 @@
     "jest": "^28.1.3",
     "jwt-decode": "2.2.0",
     "less": "4.1.3",
-    "less-loader": "5.0.0",
+    "less-loader": "12.2.0",
     "localization": "^1.0.2",
     "object-assign": "*",
     "optimize-css-assets-webpack-plugin": "^5.0.8",
