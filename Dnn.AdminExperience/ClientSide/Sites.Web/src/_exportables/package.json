@@ -19,7 +19,7 @@
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-polyfill": "6.26.0",
     "create-react-class": "^15.7.0",
-    "css-loader": "1.0.1",
+    "css-loader": "6.10.0",
     "dayjs": "^1.11.9",
     "eslint": "7.32.0",
     "eslint-import-resolver-webpack": "^0.13.2",
