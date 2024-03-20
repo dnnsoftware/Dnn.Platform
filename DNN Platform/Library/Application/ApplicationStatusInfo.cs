@@ -60,7 +60,11 @@ namespace DotNetNuke.Application
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        if (this.IsInstalled())
+                        {
+                            Logger.Error(ex);
+                        }
+
                         strMessage = "ERROR:" + ex.Message;
                     }
                 }

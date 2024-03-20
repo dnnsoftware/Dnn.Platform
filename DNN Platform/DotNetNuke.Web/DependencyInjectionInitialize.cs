@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web
 {
     using System;
+    using System.IO;
     using System.Linq;
 
     using DotNetNuke.DependencyInjection;
@@ -35,31 +36,42 @@ namespace DotNetNuke.Web
 
         private static void ConfigureAllStartupServices(IServiceCollection services)
         {
-            var allTypes = TypeExtensions.SafeGetTypes();
-            allTypes.LogOtherExceptions(Logger);
-            if (allTypes.LoadExceptions.Any())
+            try
             {
-                var messageBuilder = allTypes.LoadExceptions.BuildLoaderExceptionsMessage();
-                messageBuilder.Insert(0, "While loading IDnnStartup types, the following assemblies had types that could not be loaded. This is only an issue if these types contain DNN startup logic that could not be loaded:");
-                Logger.Warn(messageBuilder.ToString());
+                var allTypes = TypeExtensions.SafeGetTypes();
+                allTypes.LogOtherExceptions(Logger);
+                if (allTypes.LoadExceptions.Any())
+                {
+                    var messageBuilder = allTypes.LoadExceptions.BuildLoaderExceptionsMessage();
+                    messageBuilder.Insert(0, "While loading IDnnStartup types, the following assemblies had types that could not be loaded. This is only an issue if these types contain DNN startup logic that could not be loaded:");
+                    Logger.Warn(messageBuilder.ToString());
+                }
+
+                var startupTypes = allTypes.Types
+                    .Where(
+                        type => typeof(IDnnStartup).IsAssignableFrom(type) &&
+                                type is { IsClass: true, IsAbstract: false });
+
+                var startupInstances = startupTypes.Select(CreateInstance).Where(x => x != null);
+                foreach (var startup in startupInstances)
+                {
+                    try
+                    {
+                        startup.ConfigureServices(services);
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        // do nothing here as it should be errored during install process.
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error($"Unable to configure services for {startup.GetType().FullName}, see exception for details", ex);
+                    }
+                }
             }
-
-            var startupTypes = allTypes.Types
-                .Where(
-                    type => typeof(IDnnStartup).IsAssignableFrom(type) &&
-                            type is { IsClass: true, IsAbstract: false });
-
-            var startupInstances = startupTypes.Select(CreateInstance).Where(x => x != null);
-            foreach (var startup in startupInstances)
+            catch (FileNotFoundException)
             {
-                try
-                {
-                    startup.ConfigureServices(services);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error($"Unable to configure services for {startup.GetType().FullName}, see exception for details", ex);
-                }
+                // do nothing here as it should be errored during install process.
             }
         }
 

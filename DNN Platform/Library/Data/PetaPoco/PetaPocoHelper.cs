@@ -44,7 +44,11 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("[1] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
+                    if (!sql.EndsWith("GetDatabaseVersion"))
+                    {
+                        Logger.Error("[1] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
+                    }
+
                     throw;
                 }
             }
