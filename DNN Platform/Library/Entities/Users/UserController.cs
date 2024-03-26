@@ -543,7 +543,18 @@ namespace DotNetNuke.Entities.Users
             var masterPortalId = GetEffectivePortalId(portalId);
 
             var user = MembershipProvider.Instance().GetUserByUserName(masterPortalId, username);
-            FixMemberPortalId(user, portalId);
+            if (user != null && user.PortalID != portalId)
+            {
+                FixMemberPortalId(user, portalId);
+                var new_roles = RoleController.Instance.GetUserRoles(user, true);
+                user.Roles = (from r in new_roles
+                              where
+                                  r.Status == RoleStatus.Approved &&
+                                  (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
+                                  (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
+                              select r.RoleName)
+                            .ToArray();
+            }
 
             if (user != null)
             {

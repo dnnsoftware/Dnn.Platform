@@ -230,6 +230,7 @@ namespace DotNetNuke.Entities.Users
 
             set
             {
+                this.roles = value;
             }
         }
 
