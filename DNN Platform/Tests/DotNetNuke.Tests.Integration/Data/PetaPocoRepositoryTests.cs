@@ -313,12 +313,9 @@ namespace DotNetNuke.Tests.Data
             };
 
             // Act
-            repository.Insert(dog);
+            int newId = repository.Insert<int>(dog);
 
             // Assert
-            int newId = DataUtil.GetLastAddedRecordID(
-                Constants.PETAPOCO_DatabaseName,
-                Constants.PETAPOCO_DogTableName, Constants.TABLENAME_Key);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, newId);
         }
 

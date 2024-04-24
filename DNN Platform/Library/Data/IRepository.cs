@@ -96,6 +96,12 @@ namespace DotNetNuke.Data
         /// <param name="item">The item to be inserted.</param>
         void Insert(T item);
 
+        /// <summary>Inserts an Item into the repository and returns value of Id field.</summary>
+        /// <typeparam name="TProperty">The type of the Id field.</typeparam>
+        /// <param name="item">The item to be inserted.</param>
+        /// <returns>Primary key of item inserted.</returns>
+        TProperty Insert<TProperty>(T item);
+
         /// <summary>Updates an Item in the repository.</summary>
         /// <param name="item">The item to be updated.</param>
         void Update(T item);

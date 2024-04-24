@@ -112,6 +112,14 @@ namespace DotNetNuke.Data
         }
 
         /// <inheritdoc/>
+        public TProperty Insert<TProperty>(T item)
+        {
+            this.InsertInternal(item);
+            this.ClearCache(item);
+            return this.GetPrimaryKey<TProperty>(item);
+        }
+
+        /// <inheritdoc/>
         public void Update(T item)
         {
             this.UpdateInternal(item);
