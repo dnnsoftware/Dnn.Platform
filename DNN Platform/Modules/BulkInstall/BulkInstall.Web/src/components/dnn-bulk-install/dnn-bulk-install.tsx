@@ -11,7 +11,20 @@ export class DnnBulkInstall {
       <Host>
         <div class="aperture-container">
           <div class="aperture-d-flex aperture-flex-column aperture-flex-lg-row aperture-my-4">
-            Hello, World! I'm a placeholder for the new Bulk Install user interface.
+            <dnn-tabs>
+              <dnn-tab tabTitle="Install">
+                <div class="tab-content">Install UI goes here.</div>
+              </dnn-tab>
+              <dnn-tab tabTitle="Event Log">
+                <div class="tab-content">Event Log UI goes here.</div>
+              </dnn-tab>
+              <dnn-tab tabTitle="API Users">
+                <div class="tab-content">API Users UI goes here.</div>
+              </dnn-tab>
+              <dnn-tab tabTitle="IP Safelist">
+                <div class="tab-content">IP Safelist UI goes here.</div>
+              </dnn-tab>
+            </dnn-tabs>
           </div>
         </div>
       </Host>
