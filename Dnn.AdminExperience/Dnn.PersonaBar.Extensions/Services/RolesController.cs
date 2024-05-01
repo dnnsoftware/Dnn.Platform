@@ -246,7 +246,7 @@ namespace Dnn.PersonaBar.Roles.Services
                         Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
                 }
 
-                var users = RoleController.Instance.GetUserRoles(this.PortalId, Null.NullString, role.RoleName).ToList();
+                var users = RoleController.Instance.GetUserRoles(this.PortalId, Null.NullString, role.RoleName);
                 if (!string.IsNullOrEmpty(keyword))
                 {
                     users =
