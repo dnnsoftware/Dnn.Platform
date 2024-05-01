@@ -246,11 +246,11 @@ namespace Dnn.PersonaBar.Roles.Services
                         Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
                 }
 
-                var users = RoleController.Instance.GetUserRoles(this.PortalId, Null.NullString, role.RoleName);
+                var users = RoleController.Instance.GetUserRoles(this.PortalId, Null.NullString, role.RoleName).OrderBy(x => x.FullName).ToList();
                 if (!string.IsNullOrEmpty(keyword))
                 {
                     users =
-                        users.Where(u => u.FullName.StartsWith(keyword, StringComparison.OrdinalIgnoreCase))
+                        users.Where(u => u.FullName.StartsWith(keyword, StringComparison.OrdinalIgnoreCase)).OrderBy(x => x.FullName)
                             .ToList();
                 }
 
