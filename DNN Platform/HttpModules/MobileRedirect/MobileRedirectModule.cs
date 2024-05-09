@@ -17,7 +17,7 @@ namespace DotNetNuke.HttpModules
     public class MobileRedirectModule : IHttpModule
     {
         private readonly IList<string> specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
-        private readonly Regex mvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
+        private readonly Regex mvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private IRedirectionController redirectionController;
 
         public string ModuleName => "MobileRedirectModule";
