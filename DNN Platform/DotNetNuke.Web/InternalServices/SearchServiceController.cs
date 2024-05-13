@@ -37,6 +37,7 @@ namespace DotNetNuke.Web.InternalServices
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
         private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
         private const int ModuleTitleCacheTimeOut = 20;
+        private const int MaximumPageSize = 100;
 
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -132,6 +133,11 @@ namespace DotNetNuke.Web.InternalServices
             if (portalIds.Any() && searchTypeIds.Any() &&
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
+                if (pageSize > MaximumPageSize)
+                {
+                    pageSize = MaximumPageSize;
+                }
+
                 var query = new SearchQuery
                 {
                     KeyWords = cleanedKeywords,
