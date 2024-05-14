@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Net;
     using System.Text;
     using System.Threading;
     using System.Web.UI;
@@ -386,7 +387,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     this.Module.ModuleID = this.moduleId;
-                    this.Module.ModuleTitle = this.txtTitle.Text;
+                    this.Module.ModuleTitle = WebUtility.HtmlEncode(this.txtTitle.Text);
                     this.Module.Alignment = this.cboAlign.SelectedItem.Value;
                     this.Module.Color = this.txtColor.Text;
                     this.Module.Border = this.txtBorder.Text;
