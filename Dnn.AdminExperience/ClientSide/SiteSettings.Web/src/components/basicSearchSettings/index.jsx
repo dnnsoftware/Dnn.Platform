@@ -21,7 +21,8 @@ class BasicSearchSettingsPanelBody extends Component {
             basicSearchSettings: undefined,
             error: {
                 minlength: false,
-                maxlength: false
+                maxlength: false,
+                maxresult: false
             },
             triedToSubmit: false
         };
@@ -70,6 +71,13 @@ class BasicSearchSettingsPanelBody extends Component {
         }
         else if (re.test(basicSearchSettings[key]) && key === "MinWordLength") {
             error["minlength"] = false;
+        }
+
+        if (!re.test(basicSearchSettings[key]) && key === "MaxResultPerPage") {
+            error["maxresult"] = true;
+        }
+        else if (re.test(basicSearchSettings[key]) && key === "MaxResultPerPage") {
+            error["maxresult"] = false;
         }
 
         if (key === "MaxWordLength" && (!re.test(basicSearchSettings[key])
@@ -153,50 +161,94 @@ class BasicSearchSettingsPanelBody extends Component {
         const {state} = this;
         if (this.isHost()) {
             if (state.basicSearchSettings) {
-                const columnOne = <div className="left-column" key="columnOneSearchSettingsPanel">
-                    <InputGroup>
-                        <Label
-                            tooltipMessage={resx.get("lblIndexWordMinLength.Help")}
-                            label={resx.get("lblIndexWordMinLength")}
-                            extra={
-                                <Tooltip
-                                    messages={[resx.get("GlobalSetting")]}
-                                    type="global"
-                                    style={{ float: "left", position: "static" }}
-                                />}
-                        />
-                        <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
-                            withLabel={false}
-                            error={state.error.minlength && state.triedToSubmit}
-                            errorMessage={resx.get("valIndexWordMinLengthRequired.Error")}
-                            value={state.basicSearchSettings.MinWordLength}
-                            onChange={this.onSettingChange.bind(this, "MinWordLength")}
-                            style={{ width: "100%" }}
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label
-                            tooltipMessage={resx.get("lblIndexWordMaxLength.Help")}
-                            label={resx.get("lblIndexWordMaxLength")}
-                            extra={
-                                <Tooltip
-                                    messages={[resx.get("GlobalSetting")]}
-                                    type="global"
-                                    style={{ float: "left", position: "static" }}
-                                />}
-                        />
-                        <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
-                            withLabel={false}
-                            error={state.error.maxlength && state.triedToSubmit}
-                            errorMessage={resx.get("valIndexWordMaxLengthRequired.Error")}
-                            value={state.basicSearchSettings.MaxWordLength}
-                            onChange={this.onSettingChange.bind(this, "MaxWordLength")}
-                            style={{ width: "100%" }}
-                        />
-                    </InputGroup>
-                </div>;
+                const columnOne = (
+                    <div
+                        className="left-column"
+                        key="columnOneSearchSettingsPanel"
+                    >
+                        <InputGroup>
+                            <Label
+                                tooltipMessage={resx.get("lblIndexWordMinLength.Help")}
+                                label={resx.get("lblIndexWordMinLength")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                    />
+                                }
+                            />
+                            <SingleLineInputWithError
+                                inputStyle={{ margin: "0" }}
+                                withLabel={false}
+                                error={state.error.minlength && state.triedToSubmit}
+                                errorMessage={resx.get(
+                                    "valIndexWordMinLengthRequired.Error"
+                                )}
+                                value={state.basicSearchSettings.MinWordLength}
+                                onChange={this.onSettingChange.bind(
+                                    this,
+                                    "MinWordLength"
+                                )}
+                                style={{ width: "100%" }}
+                            />
+                        </InputGroup>
+                        <InputGroup>
+                            <Label
+                                tooltipMessage={resx.get("lblIndexWordMaxLength.Help")}
+                                label={resx.get("lblIndexWordMaxLength")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                    />
+                                }
+                            />
+                            <SingleLineInputWithError
+                                inputStyle={{ margin: "0" }}
+                                withLabel={false}
+                                error={state.error.maxlength && state.triedToSubmit}
+                                errorMessage={resx.get(
+                                    "valIndexWordMaxLengthRequired.Error"
+                                )}
+                                value={state.basicSearchSettings.MaxWordLength}
+                                onChange={this.onSettingChange.bind(
+                                    this,
+                                    "MaxWordLength"
+                                )}
+                                style={{ width: "100%" }}
+                            />
+                        </InputGroup>
+                        <InputGroup>
+                            <Label
+                                tooltipMessage={resx.get("lblMaxResultPerPage.Help")}
+                                label={resx.get("lblMaxResultPerPage")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                    />
+                                }
+                            />
+                            <SingleLineInputWithError
+                                inputStyle={{ margin: "0" }}
+                                withLabel={false}
+                                error={state.error.maxresult && state.triedToSubmit}
+                                errorMessage={resx.get(
+                                    "valMaxResultPerPageRequired.Error"
+                                )}
+                                value={state.basicSearchSettings.MaxResultPerPage}
+                                onChange={this.onSettingChange.bind(
+                                    this,
+                                    "MaxResultPerPage"
+                                )}
+                                style={{ width: "100%" }}
+                            />
+                        </InputGroup>
+                    </div>
+                );
                 const columnTwo = <div className="right-column" key="columnTwoSearchSettingsPanel">
                     <DropdownWithError
                         style={{ maxWidth: "100%" }}
