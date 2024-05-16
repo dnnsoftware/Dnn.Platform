@@ -347,6 +347,10 @@ INSERT {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFr
 GO
 INSERT {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'CACHE_UNDERUSED', N'Cache Item Underused', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
 GO
+INSERT {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'DATA_CONSENT_SUCCESS', N'Data Consent Success', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+GO
+INSERT {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'DATA_CONSENT_FAILURE', N'Data Consent Failure', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+GO
 INSERT {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'DEBUG', N'Debug Info', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
 GO
 INSERT {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'DESKTOPMODULE_CREATED', N'Desktop module created', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
