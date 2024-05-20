@@ -6,10 +6,18 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface ApiUsers {
+    }
     interface DnnBulkInstall {
     }
 }
 declare global {
+    interface HTMLApiUsersElement extends Components.ApiUsers, HTMLStencilElement {
+    }
+    var HTMLApiUsersElement: {
+        prototype: HTMLApiUsersElement;
+        new (): HTMLApiUsersElement;
+    };
     interface HTMLDnnBulkInstallElement extends Components.DnnBulkInstall, HTMLStencilElement {
     }
     var HTMLDnnBulkInstallElement: {
@@ -17,13 +25,17 @@ declare global {
         new (): HTMLDnnBulkInstallElement;
     };
     interface HTMLElementTagNameMap {
+        "api-users": HTMLApiUsersElement;
         "dnn-bulk-install": HTMLDnnBulkInstallElement;
     }
 }
 declare namespace LocalJSX {
+    interface ApiUsers {
+    }
     interface DnnBulkInstall {
     }
     interface IntrinsicElements {
+        "api-users": ApiUsers;
         "dnn-bulk-install": DnnBulkInstall;
     }
 }
@@ -31,6 +43,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "api-users": LocalJSX.ApiUsers & JSXBase.HTMLAttributes<HTMLApiUsersElement>;
             "dnn-bulk-install": LocalJSX.DnnBulkInstall & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
         }
     }
