@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
@@ -37,7 +38,6 @@ namespace DotNetNuke.Web.InternalServices
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
         private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
         private const int ModuleTitleCacheTimeOut = 20;
-
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly ISearchController searchController;
@@ -128,6 +128,7 @@ namespace DotNetNuke.Web.InternalServices
             var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
             var portalIds = this.GetSearchPortalIds(settings, -1);
             var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+            var maximumPageSize = HostController.Instance.GetInteger("Search_MaxResultPerPage", 100);
 
             var more = false;
             var totalHits = 0;
@@ -135,6 +136,11 @@ namespace DotNetNuke.Web.InternalServices
             if (portalIds.Any() && searchTypeIds.Any() &&
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
+                if (pageSize > maximumPageSize)
+                {
+                    pageSize = maximumPageSize;
+                }
+
                 var query = new SearchQuery
                 {
                     KeyWords = cleanedKeywords,

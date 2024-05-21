@@ -1659,6 +1659,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 settings.DescriptionBoost = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost);
                 settings.AuthorBoost = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost);
                 settings.SearchIndexPath = Path.Combine(Globals.ApplicationMapPath, HostController.Instance.GetString("SearchFolder", @"App_Data\Search"));
+                settings.MaxResultPerPage = HostController.Instance.GetInteger("Search_MaxResultPerPage", 100);
 
                 SearchStatistics searchStatistics = this.GetSearchStatistics();
                 if (searchStatistics != null)
@@ -1714,10 +1715,23 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         string.Format(Localization.GetString("valIndexWordMaxLengthRequired.Error", Components.Constants.Constants.LocalResourcesFile)));
                 }
 
+                if (request.MaxResultPerPage == Null.NullInteger || request.MaxResultPerPage == 0)
+                {
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("valMaxResultPerPageRequired.Error", Components.Constants.Constants.LocalResourcesFile)));
+                }
+
                 var oldMinLength = HostController.Instance.GetInteger("Search_MinKeyWordLength", 3);
                 if (request.MinWordLength != oldMinLength)
                 {
                     HostController.Instance.Update("Search_MinKeyWordLength", request.MinWordLength.ToString());
+                }
+
+                var oldMaxResultPerPage = HostController.Instance.GetInteger("Search_MaxResultPerPage", 100);
+                if (request.MaxResultPerPage != oldMaxResultPerPage)
+                {
+                    HostController.Instance.Update("Search_MaxResultPerPage", request.MaxResultPerPage.ToString());
                 }
 
                 var oldMaxLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
