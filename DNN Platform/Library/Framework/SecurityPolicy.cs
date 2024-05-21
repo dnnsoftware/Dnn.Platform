@@ -30,17 +30,17 @@ namespace DotNetNuke.Framework
                 string strPermissions = string.Empty;
                 if (HasReflectionPermission())
                 {
-                    strPermissions += ", " + reflectionPermission;
+                    strPermissions += ", " + ReflectionPermission;
                 }
 
                 if (HasWebPermission())
                 {
-                    strPermissions += ", " + webPermission;
+                    strPermissions += ", " + WebPermission;
                 }
 
                 if (HasAspNetHostingPermission())
                 {
-                    strPermissions += ", " + aspNetHostingPermission;
+                    strPermissions += ", " + AspNetHostingPermission;
                 }
 
                 if (!string.IsNullOrEmpty(strPermissions))

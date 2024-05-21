@@ -257,7 +257,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 var totalRecords = users.Count;
                 var startIndex = pageIndex * pageSize;
                 var portal = PortalController.Instance.GetPortal(this.PortalId);
-                var pagedData = users.Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
+                var pagedData = users.OrderBy(x => x.FullName).Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
                 {
                     UserId = u.UserID,
                     RoleId = u.RoleID,
