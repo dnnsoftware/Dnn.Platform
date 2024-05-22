@@ -614,7 +614,6 @@ namespace DotNetNuke.Security
         /// <param name="createPersistentCookie">if set to <c>true</c> [create persistent cookie].</param>
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
             {
                 // Create a custom auth cookie
@@ -670,7 +669,7 @@ namespace DotNetNuke.Security
                 if (!string.IsNullOrEmpty(authCookie?.Value))
                 {
                     authCookie.SameSite = SameSiteMode.Strict;
-                    if (settings.SSLEnabled)
+                    if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
                     {
                         authCookie.Secure = true;
                     }
