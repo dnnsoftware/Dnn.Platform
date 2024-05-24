@@ -612,6 +612,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.dgPermissions.InheritViewPermissionsFromTab = this.Module.InheritViewPermissions;
                 }
 
+                this.ltModuleId.Text = this.module.ModuleID.ToString();
                 this.txtFriendlyName.Text = this.Module.DesktopModule.FriendlyName;
                 this.txtTitle.Text = this.Module.ModuleTitle;
                 this.ctlIcon.Url = this.Module.IconFile;

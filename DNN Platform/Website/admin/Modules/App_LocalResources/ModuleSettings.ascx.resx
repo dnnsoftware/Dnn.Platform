@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -399,5 +399,11 @@
   </data>
   <data name="MonikerExists.Text" xml:space="preserve">
     <value>The new value of the moniker already exists; it must be unique in the portal.</value>
+  </data>
+  <data name="plModuleId.Help" xml:space="preserve">
+    <value>Displays the id of the module.</value>
+  </data>
+  <data name="plModuleId.Text" xml:space="preserve">
+    <value>Module Id</value>
   </data>
 </root>
