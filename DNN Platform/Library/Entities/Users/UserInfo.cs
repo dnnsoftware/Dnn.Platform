@@ -33,10 +33,10 @@ namespace DotNetNuke.Entities.Users
     public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo
     {
         private readonly ConcurrentDictionary<int, UserSocial> social = new ConcurrentDictionary<int, UserSocial>();
+        private readonly ConcurrentDictionary<int, string[]> roles = new ConcurrentDictionary<int, string[]>();
         private string administratorRoleName;
         private UserMembership membership;
         private UserProfile profile;
-        private string[] roles;
 
         /// <summary>Initializes a new instance of the <see cref="UserInfo"/> class.</summary>
         public UserInfo()
@@ -206,26 +206,24 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (this.roles == null)
+                return this.roles.GetOrAdd(this.PortalID, i =>
                 {
                     var socialRoles = this.Social.Roles;
                     if (socialRoles.Count == 0)
                     {
-                        this.roles = new string[0];
+                        return new string[0];
                     }
                     else
                     {
-                        this.roles = (from r in this.Social.Roles
-                                where
-                                    r.Status == RoleStatus.Approved &&
-                                    (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
-                                    (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
-                                select r.RoleName)
+                        return (from r in this.Social.Roles
+                                      where
+                                          r.Status == RoleStatus.Approved &&
+                                          (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
+                                          (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
+                                      select r.RoleName)
                             .ToArray();
                     }
-                }
-
-                return this.roles;
+                });
             }
 
             set

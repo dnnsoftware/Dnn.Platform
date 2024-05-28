@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Internals
                 string favIconPath = new FavIcon(portalId).GetRelativeUrl();
                 if (!string.IsNullOrEmpty(favIconPath))
                 {
-                    headerLink = string.Format("<link rel='SHORTCUT ICON' href='{0}' type='image/x-icon' />", favIconPath);
+                    headerLink = string.Format("<link rel='icon' href='{0}' type='image/x-icon' />", favIconPath);
                 }
                 else
                 {
