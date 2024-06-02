@@ -8,37 +8,22 @@
 /*****                                                  *****/
 /************************************************************/
 
-/* update folder permissions view to include default value for portalID GHI:8240*/
+/* update procedure GetFolderPermissionsByPortalAndPath to lookup null values for portalID */
 /*******************************************/
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_FolderPermissions]') and OBJECTPROPERTY(id, N'IsView') = 1)
-	DROP VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]
 GO
 
-CREATE VIEW {databaseOwner}[{objectQualifier}vw_FolderPermissions]
-AS
-SELECT  FP.FolderPermissionID,
-        F.FolderID,
-        F.FolderPath,
-        ISNULL(F.PortalID, - 1) as PortalID,
-        P.PermissionID,
-        FP.RoleID,
-        R.RoleName,
-        FP.AllowAccess,
-        FP.UserID,
-        U.Username,
-        U.DisplayName,
-        P.PermissionCode,
-        P.ModuleDefID,
-        P.PermissionKey,
-        P.PermissionName,
-        FP.CreatedByUserID,
-        FP.CreatedOnDate,
-        FP.LastModifiedByUserID,
-        FP.LastModifiedOnDate
-FROM         {databaseOwner}[{objectQualifier}FolderPermission] AS FP
- INNER JOIN  {databaseOwner}[{objectQualifier}Folders]          AS F ON FP.FolderID     = F.FolderID
- INNER JOIN  {databaseOwner}[{objectQualifier}Permission]       AS P ON FP.PermissionID = P.PermissionID
- LEFT  JOIN  {databaseOwner}[{objectQualifier}Roles]            AS R ON FP.RoleID       = R.RoleID
- LEFT  JOIN  {databaseOwner}[{objectQualifier}Users]            AS U ON FP.UserID       = U.UserID
+  CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]
+    @portalid int,
+    @FolderPath nvarchar(300)
+  AS
+  BEGIN
+
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+    WHERE (PortalID = IsNull(@portalid, -1) OR (@portalid IS NULL AND PortalID IS NULL)) AND (FolderPath = @FolderPath OR @FolderPath IS NULL)
+  END
+
 GO
