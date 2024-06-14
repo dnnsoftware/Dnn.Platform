@@ -37,7 +37,7 @@
     "react-slider": "0.11.2",
     "react-tabs": "3.2.3",
     "react-tooltip": "^4.5.1",
-    "react-widgets": "^4.6.1",
+    "react-widgets": "^5.8.4",
     "redux-undo": "^1.0.0-beta9",
     "scroll": "^3.0.1",
     "shortid": "^2.2.16",
