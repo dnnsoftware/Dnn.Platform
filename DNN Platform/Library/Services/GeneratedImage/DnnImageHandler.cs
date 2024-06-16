@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.GeneratedImage.FilterTransform;
@@ -177,7 +178,12 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         if (!string.IsNullOrEmpty(parameters["Text"]))
                         {
-                            placeHolderTrans.Text = text;
+                            bool dnnImagePlaceholder;
+                            bool.TryParse(Config.GetSetting("DnnImagePlaceholder"), out dnnImagePlaceholder);
+                            if (dnnImagePlaceholder)
+                            {
+                                placeHolderTrans.Text = text;
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(parameters["BackColor"]))
