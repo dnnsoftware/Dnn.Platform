@@ -178,9 +178,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         if (!string.IsNullOrEmpty(parameters["Text"]))
                         {
-                            bool dnnImagePlaceholder;
-                            bool.TryParse(Config.GetSetting("DnnImagePlaceholder"), out dnnImagePlaceholder);
-                            if (dnnImagePlaceholder)
+                            bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out bool allowDnnImagePlaceholderText);
+                            if (allowDnnImagePlaceholderText)
                             {
                                 placeHolderTrans.Text = text;
                             }
