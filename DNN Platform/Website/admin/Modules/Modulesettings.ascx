@@ -23,6 +23,10 @@
         <div class="msmsContent dnnClear">
             <h2 id="dnnPanel-ModuleGeneralDetails" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("GeneralDetails")%></a></h2>
             <fieldset>
+                <div class="dnnFormItem">
+                    <dnn:label id="plModuleId" runat="server" controlname="ltModuleId" />
+                    <span><asp:Literal ID="ltModuleId" runat="server"></asp:Literal></span>
+                </div>
                 <div class="dnnFormItem" id="cultureRow" runat="server">
                     <dnn:label id="cultureLabel" runat="server" controlname="cultureLanguageLabel" />
                     <dnnweb:dnnlanguagelabel id="cultureLanguageLabel" runat="server" />
