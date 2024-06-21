@@ -457,6 +457,23 @@ div#recycleBin-header.socialpanelheader .actions {
     background: #F2F2F2;
 }
 
+    .recycleBinContainer #pages table.dnnRBGrid tr.dnnRBGridHeader td.pagename,
+    .recycleBinContainer #pages table.dnnRBGrid tr.dnnRBGridHeader td.deleteddate {
+        cursor: pointer;
+    }
+
+    .recycleBinContainer #modules table.dnnRBGrid tr.dnnRBGridHeader td.mtitle,
+    .recycleBinContainer #modules table.dnnRBGrid tr.dnnRBGridHeader td.mpage,
+    .recycleBinContainer #modules table.dnnRBGrid tr.dnnRBGridHeader td.deleteddate {
+        cursor: pointer;
+    }
+
+    .recycleBinContainer #users table.dnnRBGrid tr.dnnRBGridHeader td.username,
+    .recycleBinContainer #users table.dnnRBGrid tr.dnnRBGridHeader td.displayname,
+    .recycleBinContainer #users table.dnnRBGrid tr.dnnRBGridHeader td.deleteddate {
+        cursor: pointer;
+    }
+
 .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.thumbnail,
 .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.title,
 .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.pagename,
