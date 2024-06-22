@@ -1,4 +1,4 @@
-﻿/************************************************************/
+/************************************************************/
 /*****              SqlDataProvider                     *****/
 /*****                                                  *****/
 /*****                                                  *****/
@@ -7,6 +7,27 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
+
+/* update procedure GetFolderPermissionsByPortalAndPath to lookup null values for portalID */
+/*******************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]
+GO
+
+  CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]
+    @portalid int,
+    @FolderPath nvarchar(300)
+  AS
+  BEGIN
+
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+    WHERE (PortalID = IsNull(@portalid, -1) OR (@portalid IS NULL AND PortalID IS NULL)) AND (FolderPath = @FolderPath OR @FolderPath IS NULL)
+  END
+
+GO
+
 
 /* Fix Deleted Date for Recycle Bin Items #6074 */
 /**************************************/
@@ -92,7 +113,3 @@ AS
      LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]              AS T  ON TM.TabID = T.TabID
     WHERE (MC.ControlKey IS NULL)
 GO
-
-/************************************************************/
-/*****              SqlDataProvider                     *****/
-/************************************************************/

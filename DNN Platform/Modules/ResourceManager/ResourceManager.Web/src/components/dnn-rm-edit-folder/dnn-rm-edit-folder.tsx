@@ -3,7 +3,7 @@ import { IRole } from '@dnncommunity/dnn-elements/dist/types/components/dnn-perm
 import { Component, Element, Event, EventEmitter, Host, h, State, Prop } from '@stencil/core';
 import state from '../../store/store';
 import { FolderDetails, ItemsClient, SaveFolderDetailsRequest } from '../../services/ItemsClient';
-import { IPermissions, IRolePermission, IUserPermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
+import { IPermissionDefinition, IPermissions,  IRolePermission, IUserPermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
 import { ISearchedUser } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/searched-user-interface';
 @Component({
   tag: 'dnn-rm-edit-folder',
@@ -28,6 +28,7 @@ export class DnnRmEditFolder {
   @State() folderIconUrl: string;
   @State() folderDetails: FolderDetails;
   @State() foundUsers: ISearchedUser[];
+  @State() lastPermissions: IPermissions;
 
   private itemsClient: ItemsClient;
 
@@ -90,6 +91,7 @@ export class DnnRmEditFolder {
             ],
           },
         };
+        this.lastPermissions = {...this.folderDetails.permissions};
       })
       .catch(error => alert(error));
     
@@ -130,126 +132,105 @@ export class DnnRmEditFolder {
   }
 
   private handlePermissionsChanged(newPermissions: IPermissions): void {
-    newPermissions.rolePermissions.forEach(rolePermission => this.adjustRelatedPermissions(rolePermission));
-    newPermissions.userPermissions.forEach(userPermission => this.adjustRelatedPermissions(userPermission));
+    // Get previous role permissions and adjust related permissions
+    newPermissions.rolePermissions.forEach(rolePermission => {
+      const previousPermissions = this.lastPermissions?.rolePermissions?.find(p => p.roleId === rolePermission.roleId).permissions ?? [];
+      this.adjustRelatedPermissions(rolePermission, previousPermissions);
+    });
+  
+    // Get previous user permissions and adjust related permissions
+    newPermissions.userPermissions.forEach(userPermission => {
+      const previousPermissions = this.lastPermissions?.userPermissions?.find(p => p.userId === userPermission.userId).permissions ?? [];
+      this.adjustRelatedPermissions(userPermission, previousPermissions);
+    });
+  
+    // Update the folder details with the new permissions
     this.folderDetails = {
       ...this.folderDetails,
       permissions: newPermissions,
     };
+  
+    // Update the last known permissions state
+    this.lastPermissions = newPermissions;
   }
   
-  private adjustRelatedPermissions(permission: IRolePermission | IUserPermission): void {
-    const permissionId =
-    {
+  private adjustRelatedPermissions(permission: IRolePermission | IUserPermission, previousPermissions: IPermissionDefinition[]): void {
+    const permissionIds = {
       view: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'View Folder').permissionId,
       browse: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Browse Folder').permissionId,
       write: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Write to Folder').permissionId,
     };
+  
+    const viewPermission = permission.permissions.find(p => p.permissionId === permissionIds.view);
+    const browsePermission = permission.permissions.find(p => p.permissionId === permissionIds.browse);
+    const writePermission = permission.permissions.find(p => p.permissionId === permissionIds.write);
 
-    const viewPermission = permission.permissions.find(p => p.permissionId == permissionId.view);
+    // Check if specific permissions have changed from the last known state
+    const viewChanged = viewPermission && this.hasPermissionChanged(previousPermissions, viewPermission, permissionIds.view);
+    const browseChanged = browsePermission && this.hasPermissionChanged(previousPermissions, browsePermission, permissionIds.browse);
+    const writeChanged = writePermission && this.hasPermissionChanged(previousPermissions, writePermission, permissionIds.write);
+
     // If view permission is denied, then deny all other permissions
-    if (viewPermission && viewPermission.allowAccess == false){
-      // Deny all permissions
-      permission.permissions = [
-        {
-          allowAccess: false,
-          fullControl: false,
-          permissionId: permissionId.view,
-          permissionCode: null,
-          permissionKey: null,
-          permissionName: "View Folder",
-          view: false,
-        },
-        {
-          allowAccess: false,
-          fullControl: false,
-          permissionId: permissionId.browse,
-          permissionCode: null,
-          permissionKey: null,
-          permissionName: "Browse Folder",
-          view: false,
-        },
-        {
-          allowAccess: false,
-          fullControl: false,
-          permissionId: permissionId.write,
-          permissionCode: null,
-          permissionKey: null,
-          permissionName: "Write to Folder",
-          view: false,
-        },
-      ]
+    if (viewChanged && !viewPermission.allowAccess) {
+      if (browsePermission) {
+        browsePermission.allowAccess = false;
+      }
+      if (writePermission) {
+        writePermission.allowAccess = false;
+      }
     }
-
+  
     // If browse was denied, then deny write
-    const browsePermission = permission.permissions.find(p => p.permissionId == permissionId.browse);
-    if (browsePermission && browsePermission.allowAccess == false){
-      // Deny write
-      permission.permissions = [
-        ...permission.permissions.filter(p => p.permissionId != permissionId.write),
-        {
-          allowAccess: false,
-          fullControl: false,
-          permissionId: permissionId.write,
-          permissionCode: null,
-          permissionKey: null,
-          permissionName: "Write to Folder",
-          view: false,
-        }
-      ]
+    if (browseChanged && !browsePermission.allowAccess && writePermission) {
+      writePermission.allowAccess = false;
     }
-
+  
     // If browse was allowed, then allow view
-    if (browsePermission && browsePermission.allowAccess == true){
-      // Allow browse
-      permission.permissions = [
-        {
+    if (browseChanged && browsePermission.allowAccess) {
+      if (!viewPermission) {
+        // Create a new list with all existing permissions plus the new view permission
+        permission.permissions = [...permission.permissions, {
+          permissionId: permissionIds.view,
           allowAccess: true,
           fullControl: false,
-          permissionId: permissionId.view,
           permissionCode: null,
           permissionKey: null,
-          permissionName: "Browse Folder",
+          permissionName: "View Folder",
           view: false,
-        },
-        ...permission.permissions.filter(p => p.permissionId != permissionId.view),
-      ];
+        }];
+      } else {
+        viewPermission.allowAccess = true;
+      }
     }
-
+  
     // If write was allowed, then allow all other permissions
-    const writePermission = permission.permissions.find(p => p.permissionId == permissionId.write);
-    if (writePermission && writePermission.allowAccess == true){
-      // Allow all permissions
+    if (writeChanged && writePermission.allowAccess) {
       permission.permissions = [
+        ...permission.permissions.filter(p => ![permissionIds.view, permissionIds.browse].includes(p.permissionId)), 
         {
+          permissionId: permissionIds.view,
           allowAccess: true,
           fullControl: false,
-          permissionId: permissionId.view,
           permissionCode: null,
           permissionKey: null,
           permissionName: "View Folder",
           view: false,
         },
         {
-          allowAccess: true,
-          fullControl: false,
-          permissionId: permissionId.browse,
-          permissionCode: null,
-          permissionKey: null,
-          permissionName: "Browse Folder",
-          view: false,
-        },
-        {
-          allowAccess: true,
-          fullControl: false,
-          permissionId: permissionId.write,
-          permissionCode: null,
-          permissionKey: null,
-          permissionName: "Write to Folder",
-          view: false,
-        },
-      ]
+            permissionId: permissionIds.browse,
+            allowAccess: true,
+            fullControl: false,
+            permissionCode: null,
+            permissionKey: null,
+            permissionName: "Browse Folder",
+            view: false,
+        }];
     }
+  }
+
+  private hasPermissionChanged(lastPermissions: IPermissionDefinition[], currentPermission: IPermissionDefinition, permissionId: number): boolean {
+    const lastPermission = lastPermissions.find(p => p.permissionId === permissionId)
+    return !lastPermission || JSON.stringify(lastPermission) !== JSON.stringify(currentPermission);
   }
 
   private handleUserSearchQueryChanged(detail: string): void {
