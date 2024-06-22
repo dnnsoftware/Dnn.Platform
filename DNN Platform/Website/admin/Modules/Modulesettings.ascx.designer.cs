@@ -27,6 +27,18 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hlSpecificSettings;
+        /// <summary>plModuleId control.</summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plModuleId;
+        /// <summary>ltModuleId control.</summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltModuleId;
         /// <summary>cultureRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
