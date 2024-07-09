@@ -14,7 +14,7 @@
 /***********************/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabModule]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
 BEGIN
-    DROP PROCEDURE {databaseOwner} [{objectQualifier}AddTabModule]
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabModule]
 END
 GO
 
@@ -45,7 +45,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabModule]
     @CreatedByUserID  		int
 
 AS
-    INSERT INTO dbo.TabModules ( 
+    INSERT INTO {databaseOwner}{objectQualifier}TabModules ( 
         TabId,
         ModuleId,
         ModuleTitle,
@@ -143,7 +143,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModule]
     @LastModifiedByUserID	int
 
 AS
-    UPDATE dbo.TabModules
+    UPDATE {databaseOwner}{objectQualifier}TabModules
         SET    
             TabId = @TabId,
             ModuleId = @ModuleId,
@@ -360,9 +360,9 @@ GO
 /***********************/
 /* Update TabModules table to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
-IF OBJECT_ID('{databaseOwner}[DF_abModules_IsWebSlice]', 'D') IS NOT NULL 
+IF OBJECT_ID('{databaseOwner}[DF_{objectQualifier}abModules_IsWebSlice]', 'D') IS NOT NULL 
     ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
-    DROP CONSTRAINT DF_abModules_IsWebSlice
+    DROP CONSTRAINT DF_{objectQualifier}abModules_IsWebSlice
 
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
 DROP COLUMN [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL]
