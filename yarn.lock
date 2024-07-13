@@ -1669,7 +1669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.8.7":
   version: 7.24.8
   resolution: "@babel/runtime@npm:7.24.8"
   dependencies:
@@ -7017,7 +7017,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-runtime@npm:6.x, babel-runtime@npm:^6.18.0, babel-runtime@npm:^6.22.0, babel-runtime@npm:^6.26.0":
+"babel-runtime@npm:^6.18.0, babel-runtime@npm:^6.22.0, babel-runtime@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-runtime@npm:6.26.0"
   dependencies:
@@ -8016,7 +8016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:*, classnames@npm:^2.3.1":
+"classnames@npm:*, classnames@npm:^2.2.6, classnames@npm:^2.3.1":
   version: 2.5.1
   resolution: "classnames@npm:2.5.1"
   checksum: 58eb394e8817021b153bb6e7d782cfb667e4ab390cb2e9dac2fc7c6b979d1cc2b2a733093955fc5c94aa79ef5c8c89f11ab77780894509be6afbb91dddd79d15
@@ -18928,13 +18928,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc-progress@npm:^2.6.1":
-  version: 2.6.1
-  resolution: "rc-progress@npm:2.6.1"
+"rc-progress@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "rc-progress@npm:4.0.0"
   dependencies:
-    babel-runtime: "npm:6.x"
-    prop-types: "npm:^15.5.8"
-  checksum: 9957527939bf42b51420ad2149e50040590a2213cdcde9a8865a963a965e161e5e96ea9f98326b7a22a3c434128c5f98ac93b18f7a7c753a834926678aa1bfd7
+    "@babel/runtime": "npm:^7.10.1"
+    classnames: "npm:^2.2.6"
+    rc-util: "npm:^5.16.1"
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: c65efbc45fced051715647538c1ebe70a6da761ca6691455d72d38dcbba41d5bb5e7f7de38d4bb8e8939645a2cd120e8d5b2b8690b6d6bb4fa4cf6848700a2d8
+  languageName: node
+  linkType: hard
+
+"rc-util@npm:^5.16.1":
+  version: 5.43.0
+  resolution: "rc-util@npm:5.43.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.18.3"
+    react-is: "npm:^18.2.0"
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 6d5be9d79182c6b4c5a033ad6517b2940d3d2ac42a8e77ef5735591d182f8236f61bc7628d61e82a122d2046ec849462f3fe57c08d3a2a20279646785c34ec4a
   languageName: node
   linkType: hard
 
@@ -19266,6 +19283,13 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 73b36281e58eeb27c9cc6031301b6ae19ecdc9f18ae2d518bdb39b0ac564e65c5779405d623f1df9abf378a13858b79442480244bd579968afc1faf9a2ce5e05
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^18.2.0":
+  version: 18.3.1
+  resolution: "react-is@npm:18.3.1"
+  checksum: d5f60c87d285af24b1e1e7eaeb123ec256c3c8bdea7061ab3932e3e14685708221bf234ec50b21e10dd07f008f1b966a2730a0ce4ff67905b3872ff2042aec22
   languageName: node
   linkType: hard
 
@@ -21214,7 +21238,7 @@ __metadata:
     localization: "npm:^1.0.2"
     prop-types: "npm:^15.8.1"
     raw-loader: "npm:^2.0.0"
-    rc-progress: "npm:^2.6.1"
+    rc-progress: "npm:^4.0.0"
     react: "npm:^16.14.0"
     react-click-outside: "npm:^3.0.1"
     react-dom: "npm:^16.14.0"
