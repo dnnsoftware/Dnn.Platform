@@ -36,7 +36,7 @@
     "localization": "^1.0.2",
     "prop-types": "^15.8.1",
     "raw-loader": "^2.0.0",
-    "rc-progress": "^2.6.1",
+    "rc-progress": "^4.0.0",
     "react": "^16.14.0",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.14.0",
