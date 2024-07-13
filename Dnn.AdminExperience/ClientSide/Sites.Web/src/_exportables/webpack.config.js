@@ -52,7 +52,17 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(less|css)$/,
-                    use:["style-loader", "css-loader", "less-loader"],
+                    use:
+                    [
+                        "style-loader",
+                        {
+                            loader: "css-loader",
+                            options: {
+                                modules: "global",
+                            }
+                        },
+                        "less-loader"
+                    ],
                 },
                 {
                     test: /\.(d.ts)$/,

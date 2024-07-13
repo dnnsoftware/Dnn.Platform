@@ -29,7 +29,18 @@ module.exports = {
                 ],
             },
             { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ["babel-loader"] },
-            { test: /\.less$/, use: ["style-loader", "css-loader", "less-loader"] },
+            { test: /\.less$/, use:
+                [
+                    "style-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: "global",
+                        }
+                    },
+                    "less-loader"
+                
+                ] },
             { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
             { test: /\.css$/, use: ["style-loader!css-loader"] },
             { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },

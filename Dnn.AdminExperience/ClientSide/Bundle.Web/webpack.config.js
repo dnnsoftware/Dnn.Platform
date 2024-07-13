@@ -47,7 +47,17 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(less|css)$/,
-                    use: ["style-loader", "css-loader", "less-loader"],
+                    use:
+                    [
+                        "style-loader",
+                        {
+                            loader: "css-loader",
+                            options: {
+                                modules: "global",
+                            }
+                        },
+                        "less-loader"
+                    ],
                 },
                 {
                     test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,

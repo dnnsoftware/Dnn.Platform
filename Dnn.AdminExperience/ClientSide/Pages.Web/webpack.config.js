@@ -45,7 +45,9 @@ module.exports = (env, argv) => {
                         },
                         {
                             loader: "css-loader",
-                            options: { modules: "global" },
+                            options: {
+                                modules: "global",
+                            }
                         },
                         {
                             loader: "less-loader",
@@ -60,7 +62,9 @@ module.exports = (env, argv) => {
                         },
                         {
                             loader: "css-loader",
-                            options: { modules: "global" },
+                            options: {
+                                modules: "global",
+                            }
                         },
                     ],
                 },

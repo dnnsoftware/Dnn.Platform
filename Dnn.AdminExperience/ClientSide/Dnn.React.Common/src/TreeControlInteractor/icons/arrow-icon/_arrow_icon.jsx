@@ -7,7 +7,7 @@ import { global } from "../../global";
 const styles = global.styles;
 const merge = styles.merge;
 
-import * as shortid from "shortid";
+import { nanoid } from "nanoid/non-secure";
 
 const style = (direction) => {
     return {
@@ -23,7 +23,7 @@ export class ArrowIcon extends Component {
     constructor(props) {
         super();
         this.direction = props.direction;
-        this.id = shortid.generate();
+        this.id = nanoId();
         this.state = {};
     }
 
