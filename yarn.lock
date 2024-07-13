@@ -1747,7 +1747,7 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     cpy-cli: "npm:^2.0.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     dayjs: "npm:^1.11.9"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.7"
@@ -5027,7 +5027,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -7716,7 +7716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^5.2.0, camelcase@npm:^5.3.1":
+"camelcase@npm:^5.3.1":
   version: 5.3.1
   resolution: "camelcase@npm:5.3.1"
   checksum: e6effce26b9404e3c0f301498184f243811c30dfe6d0b9051863bd8e4034d09c8c2923794f280d6827e5aa055f6c434115ff97864a16a963366fb35fd673024b
@@ -8928,28 +8928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:2.1.1":
-  version: 2.1.1
-  resolution: "css-loader@npm:2.1.1"
-  dependencies:
-    camelcase: "npm:^5.2.0"
-    icss-utils: "npm:^4.1.0"
-    loader-utils: "npm:^1.2.3"
-    normalize-path: "npm:^3.0.0"
-    postcss: "npm:^7.0.14"
-    postcss-modules-extract-imports: "npm:^2.0.0"
-    postcss-modules-local-by-default: "npm:^2.0.6"
-    postcss-modules-scope: "npm:^2.1.0"
-    postcss-modules-values: "npm:^2.0.0"
-    postcss-value-parser: "npm:^3.3.0"
-    schema-utils: "npm:^1.0.0"
-  peerDependencies:
-    webpack: ^4.0.0
-  checksum: 6500cbb82455d91d5ecc0222a1b0264ce821fe60de6d1731e2f33c5c3a3bbd885b0373b6cd6854064a08d36e9c2ef3f39744ee1541d2f7f2bf5f6f3f13082eda
-  languageName: node
-  linkType: hard
-
-"css-loader@npm:^3.0.0":
+"css-loader@npm:3.6.0, css-loader@npm:^3.0.0":
   version: 3.6.0
   resolution: "css-loader@npm:3.6.0"
   dependencies:
@@ -9614,7 +9593,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
@@ -9650,7 +9629,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     dayjs: "npm:^1.11.9"
     eslint: "npm:7.32.0"
     eslint-import-resolver-webpack: "npm:^0.13.2"
@@ -9685,7 +9664,7 @@ __metadata:
     "@dnnsoftware/dnn-react-common": "npm:9.13.4"
     babel-loader: "npm:8.3.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     dayjs: "npm:^1.11.9"
     eslint: "npm:7.32.0"
     eslint-import-resolver-webpack: "npm:^0.13.2"
@@ -11004,7 +10983,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     dayjs: "npm:^1.11.9"
     es6-object-assign: "npm:1.1.0"
     es6-promise: "npm:4.2.8"
@@ -11137,7 +11116,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
@@ -13050,14 +13029,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"icss-replace-symbols@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "icss-replace-symbols@npm:1.1.0"
-  checksum: 24575b2c2f7e762bfc6f4beee31be9ba98a01cad521b5aa9954090a5de2b5e1bf67814c17e22f9e51b7d798238db8215a173d6c2b4726ce634ce06b68ece8045
-  languageName: node
-  linkType: hard
-
-"icss-utils@npm:^4.0.0, icss-utils@npm:^4.1.0, icss-utils@npm:^4.1.1":
+"icss-utils@npm:^4.0.0, icss-utils@npm:^4.1.1":
   version: 4.1.1
   resolution: "icss-utils@npm:4.1.1"
   dependencies:
@@ -15262,7 +15234,7 @@ __metadata:
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -17823,7 +17795,7 @@ __metadata:
     babel-preset-es2015: "npm:6.24.1"
     babel-preset-react: "npm:6.24.1"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     dayjs: "npm:^1.11.9"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.7"
@@ -18465,17 +18437,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-modules-local-by-default@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "postcss-modules-local-by-default@npm:2.0.6"
-  dependencies:
-    postcss: "npm:^7.0.6"
-    postcss-selector-parser: "npm:^6.0.0"
-    postcss-value-parser: "npm:^3.3.1"
-  checksum: df9a890e6d611b0290ec79a30570537cd136f4d9666eab1854deede6c037301acba2170fa3b6fd55c0e5944077216dd79d4874861e44f1d4127abae2e0155f22
-  languageName: node
-  linkType: hard
-
 "postcss-modules-local-by-default@npm:^3.0.2":
   version: 3.0.3
   resolution: "postcss-modules-local-by-default@npm:3.0.3"
@@ -18488,23 +18449,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-modules-scope@npm:^2.1.0, postcss-modules-scope@npm:^2.2.0":
+"postcss-modules-scope@npm:^2.2.0":
   version: 2.2.0
   resolution: "postcss-modules-scope@npm:2.2.0"
   dependencies:
     postcss: "npm:^7.0.6"
     postcss-selector-parser: "npm:^6.0.0"
   checksum: f6f7365fdd2c87ee108a466692faaee858c7b0213262c12df02e81d4d6a7e76505f0e7b615a0a609baf57d1ebf9870818b497bb23132faf209c441b55af46da0
-  languageName: node
-  linkType: hard
-
-"postcss-modules-values@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "postcss-modules-values@npm:2.0.0"
-  dependencies:
-    icss-replace-symbols: "npm:^1.1.0"
-    postcss: "npm:^7.0.6"
-  checksum: 82070fca871b8d6ac5796b0e7b76a76e97921ef912061edb9fc76581389f715d0dba0545503c53a1eb671444608db6e1f9265d4e085e3f7989284965652ffe55
   languageName: node
   linkType: hard
 
@@ -18695,7 +18646,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-value-parser@npm:^3.0.0, postcss-value-parser@npm:^3.3.0, postcss-value-parser@npm:^3.3.1":
+"postcss-value-parser@npm:^3.0.0":
   version: 3.3.1
   resolution: "postcss-value-parser@npm:3.3.1"
   checksum: e8bc676092ad0c4a628e8d7b06ef1844a157bcce22e489d72ac661d6d47b8e8e7c342e5e0da807056a0a2fced1372fff0f67fbfd6e06fd8509828ac6190b54ae
@@ -18935,7 +18886,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.7"
     es6-object-assign: "npm:1.1.0"
@@ -20775,7 +20726,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     es6-object-assign: "npm:^1.1.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -21023,7 +20974,7 @@ __metadata:
     babel-loader: "npm:8.3.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
@@ -21173,7 +21124,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -21279,7 +21230,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     dayjs: "npm:^1.11.9"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -21598,7 +21549,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
@@ -21649,7 +21600,7 @@ __metadata:
     babel-loader: "npm:^8.3.0"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-jest: "npm:^22.21.0"
@@ -21695,7 +21646,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
@@ -22709,7 +22660,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -22751,7 +22702,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
@@ -22979,7 +22930,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
@@ -23892,7 +23843,7 @@ __metadata:
     "@dnnsoftware/dnn-react-common": "npm:9.13.4"
     babel-loader: "npm:^8.3.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:2.1.1"
+    css-loader: "npm:3.6.0"
     eslint: "npm:7.32.0"
     eslint-loader: "npm:4.0.2"
     eslint-plugin-react: "npm:7.13.0"
