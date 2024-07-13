@@ -47,7 +47,6 @@
     "less-loader": "12.2.0",
     "localization": "^1.0.2",
     "object-assign": "*",
-    "optimize-css-assets-webpack-plugin": "^5.0.8",
     "prop-types": "^15.8.1",
     "raw-loader": "2.0.0",
     "react": "^16.14.0",
