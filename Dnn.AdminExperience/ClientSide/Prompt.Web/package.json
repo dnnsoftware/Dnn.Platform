@@ -19,7 +19,7 @@
     "array.prototype.find": "2.2.1",
     "array.prototype.findindex": "2.2.1",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^8.3.0",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
