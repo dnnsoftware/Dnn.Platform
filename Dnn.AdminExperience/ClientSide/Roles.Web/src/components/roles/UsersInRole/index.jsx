@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import resx from "../../../resources";
 import { SearchBox, GridCell, Checkbox, Pager, IconButton }  from "@dnnsoftware/dnn-react-common";
-import Combobox from "react-widgets/lib/Combobox";
+import Combobox from "react-widgets/Combobox";
 import UserRow from "./UserRow";
 import "./style.less";
 import {
