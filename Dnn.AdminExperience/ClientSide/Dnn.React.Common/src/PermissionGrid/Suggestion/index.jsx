@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {debounce} from "throttle-debounce";
-import Combobox from "react-widgets/lib/Combobox";
+import Combobox from "react-widgets/Combobox";
 import Service from "./Service";
 import IconButton from "../../IconButton";
 
