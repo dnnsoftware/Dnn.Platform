@@ -5,7 +5,7 @@ import Localization from "localization";
 import { CommonUsersActions } from "../../actions";
 import {validateEmail} from "../../helpers";
 import utilities from "utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Password from "../common/Password";
 import { GridCell, GridSystem, SingleLineInputWithError, Button, Switch, Checkbox } from "@dnnsoftware/dnn-react-common";
 

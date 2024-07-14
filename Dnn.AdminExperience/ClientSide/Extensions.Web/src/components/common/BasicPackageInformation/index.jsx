@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { DropdownWithError, GridSystem, SingleLineInputWithError, Dropdown, MultiLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import { getVersionDropdownValues, formatVersionNumber } from "utils/helperFunctions";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 

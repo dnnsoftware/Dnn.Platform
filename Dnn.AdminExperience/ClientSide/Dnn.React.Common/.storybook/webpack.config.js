@@ -7,12 +7,13 @@ module.exports = {
                 test: /\.less$/,
                 use:
                 [
-                    "style-loader",
                     {
                         loader: "css-loader",
                         options: {
-                            modules: "global",
-                        }
+                            importLoaders: 1,
+                            sourceMap: true,
+                            esModule: false,
+                        },
                     },
                     "less-loader"
                 ],

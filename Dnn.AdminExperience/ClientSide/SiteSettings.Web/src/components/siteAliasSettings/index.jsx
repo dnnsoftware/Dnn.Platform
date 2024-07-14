@@ -6,10 +6,9 @@ import {
 } from "../../actions";
 import SiteAliases from "./siteAliases";
 import { InputGroup, Switch, RadioButtons, Label, Button } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class SiteAliasSettingsPanelBody extends Component {
     constructor() {

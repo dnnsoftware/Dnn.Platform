@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "./style.less";
 import { GridSystem as Grid, Label, InputGroup, Button, Switch, Dropdown } from "@dnnsoftware/dnn-react-common";
 import resx from "../../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 let priorityOptions = [];
 

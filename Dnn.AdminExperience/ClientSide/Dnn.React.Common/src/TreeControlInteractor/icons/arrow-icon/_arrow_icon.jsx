@@ -23,7 +23,7 @@ export class ArrowIcon extends Component {
     constructor(props) {
         super();
         this.direction = props.direction;
-        this.id = nanoId();
+        this.id = nanoid();
         this.state = {};
     }
 

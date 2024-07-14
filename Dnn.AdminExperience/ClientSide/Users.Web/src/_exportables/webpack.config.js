@@ -57,8 +57,10 @@ module.exports = (env, argv) => {
                         {
                             loader: "css-loader",
                             options: {
-                                modules: "global",
-                            }
+                                importLoaders: 1,
+                                sourceMap: true,
+                                esModule: false,
+                            },
                         },
                         { loader: "less-loader" },
                     ],

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { ArrowBack } from "@dnnsoftware/dnn-react-common";
 
 /* eslint-disable react/no-danger */

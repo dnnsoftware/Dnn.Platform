@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { GridSystem, GridCell, InputGroup, SingleLineInputWithError, MultiLineInputWithError, Tags, Label, PagePicker } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {

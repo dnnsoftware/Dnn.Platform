@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { GridCell, DropdownWithError, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 class ExtensionLanguagePack extends Component {

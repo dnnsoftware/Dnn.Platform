@@ -8,7 +8,7 @@ import CreateUserBox from "../CreateUserBox";
 import UserSettings from "./UserSettings";
 import EditProfile from "./EditProfile";
 import UsersRoles from "./UsersRoles";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import {sort} from "../../helpers";
 import Localization from "localization";
 import ColumnSizes from "./columnSizes";

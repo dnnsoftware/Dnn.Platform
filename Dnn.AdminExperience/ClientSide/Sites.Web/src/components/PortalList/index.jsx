@@ -14,7 +14,7 @@ import {
     CommonPaginationActions,
     CommonPortalListActions
 } from "dnn-sites-common-actions";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class PortalList extends Component {
     componentWillMount() {

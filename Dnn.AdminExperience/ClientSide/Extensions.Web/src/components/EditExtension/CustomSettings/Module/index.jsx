@@ -5,7 +5,7 @@ import { GridCell, SingleLineInputWithError, DropdownWithError, GridSystem, Swit
 import Localization from "localization";
 import AssignedSelector from "./AssignedSelector";
 import ModuleDefinitions from "./ModuleDefinitions";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 

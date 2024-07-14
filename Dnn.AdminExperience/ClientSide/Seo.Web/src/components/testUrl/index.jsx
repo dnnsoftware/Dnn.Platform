@@ -13,10 +13,9 @@ import {
     PagePicker, 
     SingleLineInputWithError
 } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class TestUrlPanelBody extends Component {
     constructor() {

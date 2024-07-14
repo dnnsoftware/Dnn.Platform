@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell, SingleLineInputWithError, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import { connect } from "react-redux";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 class AuthenticationSystemSettings extends Component {

@@ -7,7 +7,7 @@ import { CommonVisiblePanelActions, CommonPortalListActions } from "actions";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import utilities from "utils";
 import * as dayjs from "dayjs";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class ListView extends Component {
     constructor() {
