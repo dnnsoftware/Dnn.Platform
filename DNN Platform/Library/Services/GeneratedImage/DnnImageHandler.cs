@@ -270,7 +270,6 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
 
                     default:
-
                         string imageTransformClass = ConfigurationManager.AppSettings["DnnImageHandler." + mode];
                         string[] imageTransformClassParts = imageTransformClass.Split(',');
                         var asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +
