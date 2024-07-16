@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
 import { InputGroup, Dropdown, Switch, Label, Button } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 let canEdit = false;
 class BasicSettingsPanelBody extends Component {

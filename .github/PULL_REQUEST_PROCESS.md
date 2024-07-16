@@ -8,7 +8,7 @@ The following items must all be true prior to a pull request being submitted to 
 * Change should represent an entire solution for the issue at hand.  Partial requests will NOT be processed.
 * Change should have a supporting issue logged on the DNN_Platform GitHub account, documenting the issue resolved, following the procedures outlined on the [Contribute Page](/CONTRIBUTING.md)
 * If your change was to an area that already was covered by tests those tests must be updated.  New tests for areas currently un-tested are appreciated
-* **Exception**: Security items can be addressed individually, and should be initially communicated to the security@dnnsoftware.com email address for coordination
+* **Exception**: Security items can be addressed individually, and should be initially communicated via [the GitHub feature for reporting a security vulnerability](https://github.com/dnnsoftware/Dnn.Platform/security/advisories/new)
 * Pull request comment should contain at a minimum the following details (When creating, a default template will also prompt you for the proper information)
   * Issue #, referenced such as “Fixes #24”
   * Release Note: Suggested release note for the change such as “Improvement of user profile to improve performance when searching.”

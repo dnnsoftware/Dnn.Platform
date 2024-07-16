@@ -10,7 +10,7 @@ import CustomSettings from "./CustomSettings";
 import EditSettings from "./EditSettings";
 import Localization from "localization";
 import utilities from "utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 
 class EditExtension extends Component {

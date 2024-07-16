@@ -133,7 +133,7 @@
     <value>Yes</value>
   </data>
   <data name="recyclebin_DeletedDate.Text" xml:space="preserve">
-    <value>Date</value>
+    <value>Deletion Date</value>
   </data>
   <data name="recyclebin_EmptyRecycleBin.Text" xml:space="preserve">
     <value>Empty Recycle Bin</value>

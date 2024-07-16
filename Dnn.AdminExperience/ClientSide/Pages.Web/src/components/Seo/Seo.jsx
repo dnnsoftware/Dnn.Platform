@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { GridSystem, GridCell, Label, Dropdown, MultiLineInputWithError, Switch } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import PageUrls from "./PageUrls/PageUrls";

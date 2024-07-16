@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { GridCell, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
 import util from "utils";

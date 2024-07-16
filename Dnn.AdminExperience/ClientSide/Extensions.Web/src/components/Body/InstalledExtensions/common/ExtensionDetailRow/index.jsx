@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import ColumnSizes from "../ExtensionColumnSizes";
 import InUseModal from "../InUseModal";
 

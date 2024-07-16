@@ -7,10 +7,9 @@ import {
 import ProviderRow from "./providerRow";
 import ProviderEditor from "./providerEditor";
 import { GridCell } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 let tableFields = [];
 

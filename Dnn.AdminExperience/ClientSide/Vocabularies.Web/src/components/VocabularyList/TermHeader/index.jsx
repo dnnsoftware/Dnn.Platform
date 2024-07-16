@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Collapsible as Collapse, TextOverflowWrapper, GridCell, Button } from "@dnnsoftware/dnn-react-common";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import util from "utils";
 import LocalizedResources from "resources";
 

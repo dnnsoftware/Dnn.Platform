@@ -5,7 +5,7 @@ import Localization from "localization";
 import { CommonUsersActions } from "../../../actions";
 import {formatDate, validateEmail} from "../../../helpers";
 import utilities from "utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import ChangePassword from "../ChangePassword";
 import {canManagePassword, canEditSettings} from "../../permissionHelpers.js";
 import { GridCell, GridSystem, SingleLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";

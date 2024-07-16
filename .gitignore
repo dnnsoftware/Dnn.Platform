@@ -148,3 +148,5 @@ yarn-error.log
 
 /DotNetNuke.Internal.SourceGenerators/bin/
 /DNN Platform/Tests/DotNetNuke.Tests.SourceGenerators/Snapshots/*.received.*
+Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Pages/scripts/bundles/
+Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/

@@ -1,4 +1,4 @@
-import * as CommonComponents from "./src/Components";
+import * as CommonComponents from "./src/components";
 import * as CommonActions from "./src/actions";
 import * as CommonReducers from "./src/reducers";
 import * as CommonActionTypes from "./src/actionTypes";

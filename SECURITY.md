@@ -2,9 +2,7 @@
 
 ## Reporting a Vulnerability
 
-We make every effort to ensure speedy analysis of reported issues and, where required, provide workarounds and updated application releases to fix them. If you see suspected issues/security scan results please report them by sending an email to:
-
-[security@dnnsoftware.com](mailto:security@dnnsoftware.com)
+We make every effort to ensure speedy analysis of reported issues and, where required, provide workarounds and updated application releases to fix them. If you see suspected issues/security scan results please report them via [the GitHub feature for reporting a security vulnerability](https://github.com/dnnsoftware/Dnn.Platform/security/advisories/new).
 
 All submitted information is viewed only by members of the DNN Security Task Force, and will not be discussed outside the Task Force without the permission of the person/company who reported the issue. Each confirmed issue is assigned a severity level (critical, moderate, or low) corresponding to its potential impact on the security of DNN installations.
 

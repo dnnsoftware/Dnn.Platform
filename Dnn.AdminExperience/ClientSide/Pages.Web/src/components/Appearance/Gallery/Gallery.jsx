@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
-import style from "./style.less";
+import style from "./style.module.less";
 
 class Gallery extends Component {
 

@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
 import { SearchBox, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class ScannerCheckPanelBody extends Component {
     constructor() {
