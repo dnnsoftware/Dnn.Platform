@@ -52,7 +52,24 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(less|css)$/,
-                    use:["style-loader", "css-loader", "less-loader"],
+                    use:
+                    [
+                        "style-loader",
+                        {
+                            loader: "css-loader",
+                            options: {
+                                importLoaders: 1,
+                                sourceMap: true,
+                                modules: {
+                                    auto: true,
+                                    mode: "global",
+                                    localIdentName: "[name]__[local]___[hash:base64:5]",
+                                },
+                                esModule: false,
+                            },
+                        },
+                        "less-loader"
+                    ],
                 },
                 {
                     test: /\.(d.ts)$/,

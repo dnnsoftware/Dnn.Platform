@@ -3,7 +3,7 @@ import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Resx from "localization";
-import styles from "./AssignedSelector.less";
+import styles from "./AssignedSelector.module.less";
 class AssignedSelector extends React.Component {
     constructor(props) {
         super(props);

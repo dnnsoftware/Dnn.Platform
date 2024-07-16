@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { PermissionGrid as DnnPermissionGrid } from "@dnnsoftware/dnn-react-common";
 import utils from "../../utils";
 import cloneDeep from "lodash/cloneDeep";
-import style from "./style.less";
+import style from "./style.module.less";
 import Localization from "localization";
 
 class PermissionGrid extends Component {

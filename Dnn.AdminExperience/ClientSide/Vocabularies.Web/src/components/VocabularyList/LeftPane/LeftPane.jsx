@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { EditableField as EditableWithLabel} from "@dnnsoftware/dnn-react-common";
 import LocalizedResources from "../../../resources";
 import util from "utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 
 class LeftPane extends Component {

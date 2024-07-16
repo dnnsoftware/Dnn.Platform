@@ -4,7 +4,7 @@ import { GridCell, GridSystem, SingleLineInputWithError, MultiLineInputWithError
 import FolderDropdown from "../common/FolderDropdown";
 import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 function getValidateRequired(key) {

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import localization from "../../../localization";
 
 class Card extends Component {

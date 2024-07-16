@@ -6,7 +6,7 @@ import { ExtensionActions, VisiblePanelActions } from "actions";
 import PackageInformation from "../common/BasicPackageInformation";
 import Localization from "localization";
 import utilities from "utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 class DeleteExtension extends Component {
     constructor() {
         super();

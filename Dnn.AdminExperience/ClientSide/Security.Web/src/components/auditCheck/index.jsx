@@ -3,10 +3,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
-import "./style.less";
 import { ContentLoadWrapper, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class AuditCheckPanelBody extends Component {
     constructor() {

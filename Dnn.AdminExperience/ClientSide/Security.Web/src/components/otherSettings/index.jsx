@@ -11,10 +11,9 @@ import {
     MultiLineInputWithError,
     Tooltip
 } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const re = /^[1-9][0-9]?[0-9]?$|^0$/;
 const re2 = /^([9]\d|\d{3,4})$/;

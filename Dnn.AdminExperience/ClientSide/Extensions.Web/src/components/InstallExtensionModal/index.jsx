@@ -10,7 +10,7 @@ import License from "../EditExtension/License";
 import Localization from "localization";
 import utilities from "utils";
 import FileUpload from "./FileUpload";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class InstallExtensionModal extends Component {
     constructor(props) {

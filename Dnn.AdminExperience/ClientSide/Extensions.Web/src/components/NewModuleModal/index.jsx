@@ -7,7 +7,7 @@ import FromControl from "./FromControl";
 import FromManifest from "./FromManifest";
 import FromNew from "./FromNew";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 

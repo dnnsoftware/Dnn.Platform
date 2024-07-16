@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import {formatDate, sort} from "../../../helpers";
 import UserMenu from "../UserMenu";
 import Localization from "localization";

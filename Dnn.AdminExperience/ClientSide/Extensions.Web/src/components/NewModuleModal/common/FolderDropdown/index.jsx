@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { DropdownWithError, SingleLineInputWithError, Button, GridCell } from "@dnnsoftware/dnn-react-common";
 import Collapsible from "react-collapse";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class FolderDropdown extends Component {
     constructor() {

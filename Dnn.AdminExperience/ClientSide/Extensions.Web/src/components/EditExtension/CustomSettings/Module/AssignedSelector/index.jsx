@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 class AssignedSelector extends Component {
     constructor() {
         super();
