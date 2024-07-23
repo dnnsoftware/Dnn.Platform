@@ -308,7 +308,9 @@ namespace DotNetNuke.Security.Permissions
             => folderPermissions.FirstOrDefault()?.FolderID ?? Null.NullInteger;
 
         private IEnumerable<RoleInfo> GetOrCreateAdvancedRoles(int portalId)
-            => AdvancedRoles.Select(roleName => this.GetOrCreateAdvancedRole(portalId, roleName));
+            => portalId >= 0 ?
+            AdvancedRoles.Select(roleName => this.GetOrCreateAdvancedRole(portalId, roleName)) :
+            [];
 
         private RoleInfo GetOrCreateAdvancedRole(int portalId, string roleName)
         {
