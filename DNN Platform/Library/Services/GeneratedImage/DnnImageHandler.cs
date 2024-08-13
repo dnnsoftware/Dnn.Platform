@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.GeneratedImage.FilterTransform;
@@ -177,7 +178,11 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         if (!string.IsNullOrEmpty(parameters["Text"]))
                         {
-                            placeHolderTrans.Text = text;
+                            bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out bool allowDnnImagePlaceholderText);
+                            if (allowDnnImagePlaceholderText)
+                            {
+                                placeHolderTrans.Text = text;
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(parameters["BackColor"]))
@@ -265,7 +270,6 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
 
                     default:
-
                         string imageTransformClass = ConfigurationManager.AppSettings["DnnImageHandler." + mode];
                         string[] imageTransformClassParts = imageTransformClass.Split(',');
                         var asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +

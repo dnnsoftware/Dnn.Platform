@@ -6,7 +6,7 @@ import Localization from "localization";
 import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
 import CustomSettings from "../EditExtension/CustomSettings";
 import BasicPackageInformation from "../common/BasicPackageInformation";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 

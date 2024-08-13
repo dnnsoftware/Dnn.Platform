@@ -6,9 +6,8 @@ import {
     search as SearchActions
 } from "../../actions";
 import { InputGroup, Dropdown, Flag, Label } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import util from "../../utils";
 
 let isHost = false;

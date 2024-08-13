@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { GridCell, SearchBox } from "@dnnsoftware/dnn-react-common";
 import PageHierarchy from "../PageHierarchy/PageHierarchy";
 import {pageHierarchyActions as PageHierarchyActions} from "../../actions";
-import styles from "./PageList.less";
+import styles from "./PageList.module.less";
 import Localization from "../../localization";
 import { bindActionCreators } from "redux";
 

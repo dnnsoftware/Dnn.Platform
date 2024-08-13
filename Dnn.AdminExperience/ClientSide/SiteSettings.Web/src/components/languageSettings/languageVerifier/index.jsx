@@ -6,9 +6,8 @@ import {
 } from "../../../actions";
 import LanguageVerifierGrid from "./languageVerifierGrid";
 import { PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import resx from "../../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class LanguageVerifierPanelBody extends Component {
     constructor() {

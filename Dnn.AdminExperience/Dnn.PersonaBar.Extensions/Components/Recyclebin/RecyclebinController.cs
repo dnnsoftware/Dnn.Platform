@@ -214,24 +214,49 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         }
 
         /// <inheritdoc/>
-        public List<TabInfo> GetDeletedTabs(out int totalRecords, int pageIndex = -1, int pageSize = -1)
+        public List<TabInfo> GetDeletedTabs(out int totalRecords, int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, true, true, true, true);
             var deletedtabs =
                 tabs.Where(t => t.ParentId != adminTabId && t.IsDeleted && TabPermissionController.CanDeletePage(t));
+            if (sortType == "tab")
+            {
+                deletedtabs = sortDirection == "asc" ? deletedtabs = deletedtabs.OrderBy(tab => tab.TabName) : deletedtabs = deletedtabs.OrderByDescending(tab => tab.TabName);
+            }
+
+            if (sortType == "date")
+            {
+                deletedtabs = sortDirection == "asc" ? deletedtabs = deletedtabs.OrderBy(tab => tab.LastModifiedOnDate) : deletedtabs = deletedtabs.OrderByDescending(tab => tab.LastModifiedOnDate);
+            }
+
             totalRecords = deletedtabs.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedtabs.ToList() : deletedtabs.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
         /// <inheritdoc/>
-        public List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1)
+        public List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var deletedModules = this.moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
                 .Where(module => module.IsDeleted && (
                     TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
                     ModulePermissionController.CanDeleteModule(module)));
+            if (sortType == "title")
+            {
+                deletedModules = sortDirection == "asc" ? deletedModules = deletedModules.OrderBy(module => module.ModuleTitle) : deletedModules = deletedModules.OrderByDescending(module => module.ModuleTitle);
+            }
+
+            if (sortType == "tab")
+            {
+                deletedModules = sortDirection == "asc" ? deletedModules = deletedModules.OrderBy(module => module.ParentTab.TabName) : deletedModules = deletedModules.OrderByDescending(module => module.ParentTab.TabName);
+            }
+
+            if (sortType == "date")
+            {
+                deletedModules = sortDirection == "asc" ? deletedModules = deletedModules.OrderBy(module => module.LastModifiedOnDate) : deletedModules = deletedModules.OrderByDescending(module => module.LastModifiedOnDate);
+            }
+
             totalRecords = deletedModules.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedModules.ToList() : deletedModules.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
@@ -248,9 +273,24 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         }
 
         /// <inheritdoc/>
-        public List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1)
+        public List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(this.CanManageUser);
+            if (sortType == "username")
+            {
+                deletedusers = sortDirection == "asc" ? deletedusers = deletedusers.OrderBy(user => user.Username) : deletedusers = deletedusers.OrderByDescending(user => user.Username);
+            }
+
+            if (sortType == "displayname")
+            {
+                deletedusers = sortDirection == "asc" ? deletedusers = deletedusers.OrderBy(user => user.DisplayName) : deletedusers = deletedusers.OrderByDescending(user => user.DisplayName);
+            }
+
+            if (sortType == "date")
+            {
+                deletedusers = sortDirection == "asc" ? deletedusers = deletedusers.OrderBy(user => user.LastModifiedOnDate) : deletedusers = deletedusers.OrderByDescending(user => user.LastModifiedOnDate);
+            }
+
             totalRecords = deletedusers.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedusers.ToList() : deletedusers.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }

@@ -5,7 +5,18 @@ module.exports = {
         rules: [
             {
                 test: /\.less$/,
-                use: ["style-loader", "css-loader", "less-loader"],
+                use:
+                [
+                    {
+                        loader: "css-loader",
+                        options: {
+                            importLoaders: 1,
+                            sourceMap: true,
+                            esModule: false,
+                        },
+                    },
+                    "less-loader"
+                ],
                 include: path.resolve(__dirname, "../")
             },
             {

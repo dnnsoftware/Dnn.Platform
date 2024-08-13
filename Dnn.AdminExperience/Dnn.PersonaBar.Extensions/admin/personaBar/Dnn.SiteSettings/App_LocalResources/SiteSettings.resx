@@ -1500,4 +1500,13 @@
   <data name="plShowQuickModuleAddMenu.Text" xml:space="preserve">
     <value>Show Quick Module Add Menu</value>
   </data>
+  <data name="lblMaxResultPerPage" xml:space="preserve">
+    <value>Maximum Result Per Page</value>
+  </data>
+  <data name="lblMaxResultPerPage.Help" xml:space="preserve">
+    <value>Maximum result per page in search service</value>
+  </data>
+  <data name="valMaxResultPerPageRequired.Error" xml:space="preserve">
+    <value>Maximum result per page is required. Integer must be greater than 0.</value>
+  </data>
 </root>

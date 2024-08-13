@@ -4,7 +4,7 @@ import Localization from "../../localization";
 import PageDetails from "../PageDetails/PageDetails";
 import PermissionGrid from "../PermissionGrid/PermissionGrid";
 import { Button, DnnTabs } from "@dnnsoftware/dnn-react-common";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Modules from "../Modules/Modules";
 import Seo from "../Seo/Seo";
 import More from "../More/More";

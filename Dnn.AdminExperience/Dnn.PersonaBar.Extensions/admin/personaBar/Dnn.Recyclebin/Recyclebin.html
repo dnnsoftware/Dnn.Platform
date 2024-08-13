@@ -32,8 +32,8 @@
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
                     <td class="first" data-bind="visible:settings.canViewPages && settings.canManagePages"><input type="checkbox" class="page-item" data-bind="checked: selectAllPages" aria-label="Check" /></td>
-                    <td class="thumbnail pagename" data-bind="html: $root.resx.recyclebin_Page"></td>
-                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
+                    <td class="thumbnail pagename" data-bind="html: $root.resx.recyclebin_Page, click: sortDirection() == 'asc' ? sortBy.bind($data,'pages', 'tab', 'desc') : sortBy.bind($data,'pages', 'tab', 'asc')"></td>
+                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate, click: sortDirection() == 'asc' ? sortBy.bind($data,'pages', 'date', 'desc') : sortBy.bind($data,'pages', 'date', 'asc')"></td>
                     <td class="actions" data-bind="visible:settings.canViewPages && settings.canManagePages, html: $root.resx.recyclebin_Actions"></td>
                 </tr>
                 <tbody class="pages-list-container" data-bind="template: { name: 'pages-list-recyclebin', foreach: deletedpagesList }"></tbody>
@@ -54,9 +54,9 @@
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
                     <td class="first" data-bind="visible:settings.canViewModules && settings.canManageModules"><input type="checkbox" class="page-item" data-bind="checked: selectAllModules" aria-label="Check" /></td>
-                    <td class="mtitle" data-bind="html: $root.resx.recyclebin_ModuleTitle"></td>
-                    <td class="mpage" data-bind="html: $root.resx.recyclebin_Page"></td>
-                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
+                    <td class="mtitle" data-bind="html: $root.resx.recyclebin_ModuleTitle, click: sortDirection() == 'asc' ? sortBy.bind($data,'modules', 'title', 'desc') : sortBy.bind($data,'modules', 'title', 'asc')"></td>
+                    <td class="mpage" data-bind="html: $root.resx.recyclebin_Page, click: sortDirection() == 'asc' ? sortBy.bind($data,'modules', 'tab', 'desc') : sortBy.bind($data,'modules', 'tab', 'asc')"></td>
+                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate, click: sortDirection() == 'asc' ? sortBy.bind($data,'modules', 'date', 'desc') : sortBy.bind($data,'modules', 'date', 'asc')"></td>
                     <td class="actions" data-bind="visible:settings.canViewModules && settings.canManageModules, html: $root.resx.recyclebin_Actions"></td>
                 </tr>
                 <tbody class="pages-list-container" data-bind="template: { name: 'modules-list-recyclebin', foreach: deletedmodulesList }"></tbody>
@@ -77,9 +77,9 @@
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
                     <td class="first" data-bind="visible:settings.canViewUsers && settings.canManageUsers"><input type="checkbox" class="page-item" data-bind="checked: selectAllUsers" aria-label="Check" /></td>
-                    <td class="username" data-bind="html: $root.resx.recyclebin_Username"></td>
-                    <td class="displayname" data-bind="html: $root.resx.recyclebin_UserDisplayName"></td>
-                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
+                    <td class="username" data-bind="html: $root.resx.recyclebin_Username, click: sortDirection() == 'asc' ? sortBy.bind($data,'users', 'username', 'desc') : sortBy.bind($data,'users', 'username', 'asc')"></td>
+                    <td class="displayname" data-bind="html: $root.resx.recyclebin_UserDisplayName, click: sortDirection() == 'asc' ? sortBy.bind($data,'users', 'displayname', 'desc') : sortBy.bind($data,'users', 'displayname', 'asc')"></td>
+                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate, click: sortDirection() == 'asc' ? sortBy.bind($data,'users', 'date', 'desc') : sortBy.bind($data,'users', 'date', 'asc')"></td>
                     <td class="actions" data-bind="visible:settings.canViewUsers && settings.canManageUsers, html: $root.resx.recyclebin_Actions"></td>
                 </tr>
                 <tbody class="pages-list-container" data-bind="template: { name: 'users-list-recyclebin', foreach: deletedusersList }"></tbody>

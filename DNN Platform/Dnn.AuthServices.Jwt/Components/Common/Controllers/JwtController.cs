@@ -43,6 +43,8 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
+        private static object hasherLock = new object();
+
         /// <inheritdoc/>
         public string SchemeType => "JWT";
 
@@ -151,7 +153,12 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // save hash values in DB so no one with access can create JWT header from existing data
             var sessionId = NewSessionId;
             var now = DateTime.UtcNow;
-            var renewalToken = EncodeBase64(Hasher.ComputeHash(Guid.NewGuid().ToByteArray()));
+            string renewalToken = string.Empty;
+            lock (hasherLock)
+            {
+                renewalToken = EncodeBase64(Hasher.ComputeHash(Guid.NewGuid().ToByteArray()));
+            }
+
             var ptoken = new PersistedToken
             {
                 TokenId = sessionId,
@@ -381,7 +388,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         private static string GetHashedStr(string data)
         {
-            return EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
+            string hash = string.Empty;
+            lock (hasherLock)
+            {
+                hash = EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
+            }
+
+            return hash;
         }
 
         private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)

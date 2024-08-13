@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { FileUpload, GridSystem, GridCell, Label } from "@dnnsoftware/dnn-react-common";
 import Localization from '../../../localization';
 import util from '../../../utils';
-import styles from './styles.less';
+import styles from './styles.module.less';
 
 export default class PageIcons extends Component {            
     constructor(props) {

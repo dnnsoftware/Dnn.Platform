@@ -45,7 +45,16 @@ module.exports = (env, argv) => {
                         },
                         {
                             loader: "css-loader",
-                            options: { modules: "global" },
+                            options: {
+                                importLoaders: 1,
+                                sourceMap: true,
+                                modules: {
+                                    auto: true,
+                                    mode: "global",
+                                    localIdentName: "[name]__[local]___[hash:base64:5]",
+                                },
+                                esModule: false,
+                            },
                         },
                         {
                             loader: "less-loader",
@@ -60,7 +69,11 @@ module.exports = (env, argv) => {
                         },
                         {
                             loader: "css-loader",
-                            options: { modules: "global" },
+                            options: {
+                                importLoaders: 0,
+                                sourceMap: true,
+                                esModule: false,
+                            },
                         },
                     ],
                 },

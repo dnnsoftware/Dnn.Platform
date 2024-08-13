@@ -5,10 +5,9 @@ import {
     seo as SeoActions
 } from "../../actions";
 import { Dropdown, InputGroup, GridSystem as Grid, Label, RadioButtons, Switch, Button } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class GeneralSettingsPanelBody extends Component {
     constructor() {

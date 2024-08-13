@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import LanguageVerifierRow from "./languageVerifierRow";
-import "./style.less";
 import resx from "../../../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class LanguageVerifierGridPanel extends Component {
     constructor() {

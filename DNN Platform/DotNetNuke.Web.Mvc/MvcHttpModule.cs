@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Mvc
 
     public class MvcHttpModule : IHttpModule
     {
-        public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
+        public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         static MvcHttpModule()
         {
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Mvc
         private static void InitDnn(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
-            if (app != null && MvcServicePath.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
+            if (app != null && MvcServicePath.IsMatch(app.Context.Request.RawUrl))
             {
                 Initialize.Init(app);
             }

@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import resx from "../../../resources";
 import { BackToLink } from "@dnnsoftware/dnn-react-common";
 import util from "utils";
-import styles from "./style.less";
-import "./style.less";
+import styles from "./style.module.less";
 
 class HtmlEditorManagerPanelBody extends Component {
     constructor() {

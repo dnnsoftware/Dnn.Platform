@@ -4,7 +4,7 @@ import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import UrlRow from "./UrlRow";
 import EditUrl from "./EditUrl";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import uniqBy from "lodash/uniqBy";
 
 class Table extends Component {

@@ -5,7 +5,7 @@ import AddTermBox from "./AddTermBox";
 import Term from "./Term";
 import util from "../../../utils";
 import LocalizedResources from "../../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 function findInChildren(list, parentTermId) {

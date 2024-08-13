@@ -16,7 +16,7 @@ import {
 } from "../../actions";
 import LocalizedResources from "../../resources";
 import util from "../../utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class CreateVocabulary extends Component {
     constructor() {
