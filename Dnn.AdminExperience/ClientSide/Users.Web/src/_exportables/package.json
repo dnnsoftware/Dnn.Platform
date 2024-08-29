@@ -42,7 +42,7 @@
     "style-loader": "^0.23.1",
     "throttle-debounce": "^5.0.0",
     "utils": "^0.3.1",
-    "webpack": "5.88.2",
+    "webpack": "5.94.0",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1"
   }
