@@ -387,12 +387,12 @@ namespace DotNetNuke.Common
             {
                 version = "4.8.1";
             }
-            
+
             if (release >= 528040)
             {
                 version = "4.8";
             }
-            
+
             if (release >= 461808)
             {
                 version = "4.7.2";
