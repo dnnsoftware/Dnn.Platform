@@ -385,18 +385,18 @@ namespace DotNetNuke.Common
             var release = GetDotNet4ReleaseNumberFromRegistry();
             if (release >= 533320)
             {
-                version = "4.8.1 or later";
+                version = "4.8.1";
             }
+            
             if (release >= 528040)
             {
                 version = "4.8";
             }
+            
             if (release >= 461808)
             {
                 version = "4.7.2";
             }
-            // This code should never execute
-            version = "No 4.5 or later version detected (or unexpected result)";
 
             return new Version(version);
         }
