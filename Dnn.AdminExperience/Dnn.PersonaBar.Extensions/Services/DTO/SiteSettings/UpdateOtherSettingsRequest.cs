@@ -20,5 +20,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public bool InlineEditorEnabled { get; set; }
 
         public bool ShowQuickModuleAddMenu { get; set; }
+
+        public bool? EnabledVersioning { get; set; }
+
+        public int? MaxNumberOfVersions { get; set; }
+
+        public bool? WorkflowEnabled { get; set; }
+
+        public int? DefaultTabWorkflowId { get; set; }
     }
 }

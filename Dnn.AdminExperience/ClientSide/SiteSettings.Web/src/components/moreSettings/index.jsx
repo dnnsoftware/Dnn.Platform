@@ -44,20 +44,15 @@ class MoreSettingsPanelBody extends Component {
         props.dispatch(
             SiteBehaviorActions.getOtherSettings(props.portalId, (data) => {
                 let whitelistOption = 1;
-                if (
-                    data.Settings.AllowedExtensionsWhitelist ==
-          data.Settings.HostAllowedExtensionsWhitelists
-                ) {
+                if (data.Settings.AllowedExtensionsWhitelist == data.Settings.HostAllowedExtensionsWhitelists) {
                     whitelistOption = 0;
-                } else if (
-                    data.Settings.AllowedExtensionsWhitelist ==
-          data.Settings.ImageExtensionsList
-                ) {
+                } else if (data.Settings.AllowedExtensionsWhitelist == data.Settings.ImageExtensionsList) {
                     whitelistOption = 2;
                 }
                 this.setState({
                     otherSettings: Object.assign({}, data.Settings),
                     whitelistOption: whitelistOption,
+                    workflows: [...data.Workflows],
                 });
             })
         );
@@ -85,7 +80,7 @@ class MoreSettingsPanelBody extends Component {
             let cultureCodeChanged = false;
             if (
                 props.portalId === undefined ||
-        prevProps.portalId === props.portalId
+                prevProps.portalId === props.portalId
             ) {
                 portalIdChanged = false;
             } else {
@@ -93,7 +88,7 @@ class MoreSettingsPanelBody extends Component {
             }
             if (
                 props.cultureCode === undefined ||
-        prevProps.cultureCode === props.cultureCode
+                prevProps.cultureCode === props.cultureCode
             ) {
                 cultureCodeChanged = false;
             } else {
@@ -130,7 +125,7 @@ class MoreSettingsPanelBody extends Component {
         props.dispatch(
             SiteBehaviorActions.updateOtherSettings(
                 state.otherSettings,
-                () => {},
+                () => { },
                 () => {
                     this.setState({
                         errorInSave: true,
@@ -170,7 +165,7 @@ class MoreSettingsPanelBody extends Component {
 
     renderSiteBehaviorExtensions() {
         const SiteBehaviorExtras =
-      window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
+            window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
         if (!SiteBehaviorExtras || SiteBehaviorExtras.length === 0) {
             return;
         }
@@ -185,7 +180,7 @@ class MoreSettingsPanelBody extends Component {
 
     onSaveMoreSettings() {
         const SiteBehaviorExtras =
-      window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
+            window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
         let _errorInSave = false;
 
         if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
@@ -195,11 +190,11 @@ class MoreSettingsPanelBody extends Component {
 
                 if (currentReducer.errors && getError(currentReducer.errors)) {
                     extra.SetTriedToSave &&
-            this.props.dispatch(extra.SetTriedToSave(true));
+                        this.props.dispatch(extra.SetTriedToSave(true));
                     _errorInSave = true;
                 } else {
                     extra.SetTriedToSave &&
-            this.props.dispatch(extra.SetTriedToSave(false));
+                        this.props.dispatch(extra.SetTriedToSave(false));
                 }
             });
 
@@ -216,7 +211,7 @@ class MoreSettingsPanelBody extends Component {
                                     { formDirty: currentReducer.formDirty },
                                     currentReducer.onSavePayload
                                 ),
-                                () => {}, //Save Callback
+                                () => { }, //Save Callback
                                 () => {
                                     this.setState({ errorInSave: true });
                                 } // Error Callback
@@ -247,12 +242,12 @@ class MoreSettingsPanelBody extends Component {
     getOverallFormDirty() {
         let formDirty = false;
         const SiteBehaviorExtras =
-      window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
+            window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
         if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
             SiteBehaviorExtras.forEach((extra) => {
                 if (
                     this.props[extra.ReducerKey] &&
-          this.props[extra.ReducerKey].formDirty
+                    this.props[extra.ReducerKey].formDirty
                 ) {
                     formDirty = true;
                 }
@@ -289,6 +284,40 @@ class MoreSettingsPanelBody extends Component {
         );
     }
 
+    getMaxNumberOfVersionsOptions(maxValue) {
+        const maxNumberOfVersionsOptions = [];
+        for (let i = 0; i <= maxValue; i++) {
+            maxNumberOfVersionsOptions.push({ "value": i, "label": i.toString() });
+        }
+        return maxNumberOfVersionsOptions;
+    }
+
+    getWorkflowsOptions() {
+        let options = [];
+        const { props } = this;
+        if (props.workflows !== undefined) {
+            options = this.props.workflows.map((item) => {
+                return { label: item.label, value: item.value };
+            });
+        }
+        return options;
+    }
+    
+    onDropDownChange(key, option) {
+        let { state, props } = this;
+        let otherSettings = Object.assign({}, state.otherSettings);
+
+        otherSettings[key] = typeof option === "object" ? option.value : option;
+
+        this.setState({
+            otherSettings: otherSettings,
+        });
+
+        props.dispatch(
+            SiteBehaviorActions.otherSettingsClientModified(otherSettings)
+        );
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const { props, state } = this;
@@ -316,7 +345,7 @@ class MoreSettingsPanelBody extends Component {
             return (
                 <div className={styles.moreSettings}>
                     {state.siteBehaviorExtrasRendered &&
-            this.renderSiteBehaviorExtensions()}
+                        this.renderSiteBehaviorExtensions()}
                     {htmlEditor}
                     <div className="sectionTitle">{resx.get("MoreSettings")}</div>
                     <GridSystem numberOfColumns={2}>
@@ -418,6 +447,62 @@ class MoreSettingsPanelBody extends Component {
                             </InputGroup>
                         </div>
                     </GridSystem>
+                    {util.isPlatform() && <>
+                        <div className="sectionTitle">{resx.get("WorkflowSettings")}</div>
+                        <GridSystem numberOfColumns={2}>
+                            <div key="column-one-left" className="left-column">
+                                <InputGroup>
+                                    <Label
+                                        labelType="inline"
+                                        tooltipMessage={resx.get("plEnabledVersioning.Help")}
+                                        label={resx.get("plEnabledVersioning")} />
+                                    <Switch
+                                        onText={resx.get("SwitchOn")}
+                                        offText={resx.get("SwitchOff")}
+                                        value={state.otherSettings.EnabledVersioning}
+                                        onChange={this.onSettingChange.bind(this, "EnabledVersioning")} />
+                                </InputGroup>
+                                {state.otherSettings.EnabledVersioning &&
+                                    <InputGroup>
+                                        <Label
+                                            tooltipMessage={resx.get("plMaxNumberOfVersions.Help")}
+                                            label={resx.get("plMaxNumberOfVersions")} />
+                                        <Dropdown
+                                            options={this.getMaxNumberOfVersionsOptions(20)}
+                                            value={state.otherSettings.MaxNumberOfVersions}
+                                            onSelect={this.onDropDownChange.bind(this, "MaxNumberOfVersions")} />
+                                    </InputGroup>
+                                }
+                            </div>
+                            {state.otherSettings.EnabledVersioning && <>
+                                <div key="column-one-right" className="right-column">
+                                    <InputGroup>
+                                        <Label
+                                            labelType="inline"
+                                            tooltipMessage={resx.get("plWorkflowEnabled.Help")}
+                                            label={resx.get("plWorkflowEnabled")} />
+                                        <Switch
+                                            onText={resx.get("SwitchOn")}
+                                            offText={resx.get("SwitchOff")}
+                                            value={state.otherSettings.WorkflowEnabled}
+                                            onChange={this.onSettingChange.bind(this, "WorkflowEnabled")} />
+                                    </InputGroup>
+                                    {state.otherSettings.WorkflowEnabled &&
+                                        <InputGroup>
+                                            <Label
+                                                tooltipMessage={resx.get("plDefaultTabWorkflowId.Help")}
+                                                label={resx.get("plDefaultTabWorkflowId")} />
+                                            <Dropdown
+                                                options={this.getWorkflowsOptions()}
+                                                value={state.otherSettings.DefaultTabWorkflowId}
+                                                style={{ width: "100%" }}
+                                                onSelect={this.onDropDownChange.bind(this, "DefaultTabWorkflowId")} />
+                                        </InputGroup>
+                                    }
+                                </div></>
+                            }
+                        </GridSystem></>
+                    }
                     <div className="buttons-box">
                         <Button
                             type="secondary"
@@ -447,6 +532,7 @@ MoreSettingsPanelBody.propTypes = {
     otherSettings: PropTypes.object,
     otherSettingsClientModified: PropTypes.bool,
     cultureCode: PropTypes.string,
+    workflows: PropTypes.array,
 };
 
 function mapStateToProps(state) {
@@ -454,6 +540,7 @@ function mapStateToProps(state) {
         ...state,
         otherSettings: state.siteBehavior.otherSettings,
         otherSettingsClientModified: state.siteBehavior.otherSettingsClientModified,
+        workflows: state.siteBehavior.workflows,
     };
 }
 

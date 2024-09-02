@@ -80,5 +80,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "tabOrder")]
         public int TabOrder { get; set; }
+
+        [DataMember(Name = "workflowId")]
+        public int WorkflowId { get; set; }
+
+        [DataMember(Name = "workflowName")]
+        public string WorkflowName { get; set; }
     }
 }

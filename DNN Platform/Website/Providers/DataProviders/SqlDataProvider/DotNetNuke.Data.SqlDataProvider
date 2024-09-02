@@ -6546,6 +6546,12 @@ INSERT {databaseOwner}[{objectQualifier}SearchTypes] ([SearchTypeId], [SearchTyp
 INSERT {databaseOwner}[{objectQualifier}SearchTypes] ([SearchTypeId], [SearchTypeName], [SearchResultClass], [IsPrivate]) VALUES (3, N'user', N'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchTypes] OFF
 GO
+INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'StartWorkflow', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.StartWorkflow, DotNetNuke')
+INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'CompleteWorkflow', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.CompleteWorkflow, DotNetNuke')
+INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'DiscardWorkflow', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.DiscardWorkflow, DotNetNuke')
+INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'CompleteState', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.CompleteState, DotNetNuke')
+INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'DiscardState', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.StateDiscardTabAction, DotNetNuke')
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
