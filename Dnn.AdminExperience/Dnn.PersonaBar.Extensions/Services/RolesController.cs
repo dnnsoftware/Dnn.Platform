@@ -38,12 +38,7 @@ namespace Dnn.PersonaBar.Roles.Services
             {
                 int total;
                 var roles = Components.RolesController.Instance.GetRoles(this.PortalSettings, groupId, keyword, out total, startIndex, pageSize)
-                    .Select(r =>
-                    {
-                        var role = RoleDto.FromRoleInfo(r);
-                        role.LocalizedName = Localization.LocalizeRole(role.Name);
-                        return role;
-                    });
+                    .Select(RoleDto.FromRoleInfo);
                 var loadMore = total > startIndex + pageSize;
                 var rsvpLink = Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)) + "/" + Globals.glbDefaultPage + "?portalid=" + this.PortalId;
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { roles, loadMore, rsvpLink });
