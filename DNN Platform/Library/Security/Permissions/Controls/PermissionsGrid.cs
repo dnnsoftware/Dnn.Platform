@@ -1239,7 +1239,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = new RoleInfo
                 {
                     RoleID = this.AllUsersRoleId,
-                    RoleName = Localization.GetString("AllUsers.Role"),
+                    RoleName = Globals.glbRoleAllUsersName,
                 };
             }
             else if (selectedRoleId == this.UnAuthUsersRoleId)
@@ -1247,7 +1247,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = new RoleInfo
                 {
                     RoleID = this.UnAuthUsersRoleId,
-                    RoleName = Localization.GetString("Unauthorized Users.Role"),
+                    RoleName = Globals.glbRoleUnauthUserName,
                 };
             }
             else
