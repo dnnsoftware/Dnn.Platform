@@ -24,6 +24,9 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "localizedName")]
+        public string LocalizedName { get; set; }
+
         [DataMember(Name = "description")]
         public string Description { get; set; }
 

@@ -1292,17 +1292,11 @@ namespace DotNetNuke.Services.Localization
         public static string LocalizeRole(string role)
         {
             string localRole;
-            switch (role)
+            string roleKey = role + ".Role";
+            localRole = GetString(roleKey, GlobalResourceFile);
+            if (string.IsNullOrEmpty(localRole))
             {
-                case Globals.glbRoleAllUsersName:
-                case Globals.glbRoleSuperUserName:
-                case Globals.glbRoleUnauthUserName:
-                    string roleKey = role.Replace(" ", string.Empty);
-                    localRole = GetString(roleKey);
-                    break;
-                default:
-                    localRole = role;
-                    break;
+                return role;
             }
 
             return localRole;

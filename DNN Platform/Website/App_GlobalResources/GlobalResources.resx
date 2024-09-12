@@ -1458,4 +1458,25 @@ Sincerely,
   <data name="DiscardWorkflowBody.Text" xml:space="preserve">
     <value>Edits for page '{0}' have been discarded.</value>
   </data>
+  <data name="Administrators.Role" xml:space="preserve">
+    <value>Administrators 1</value>
+  </data>
+  <data name="All Users.Role" xml:space="preserve">
+    <value>Everyone 1</value>
+  </data>
+  <data name="Superuser.Role" xml:space="preserve">
+    <value>SuperUsers 1</value>
+  </data>
+  <data name="Unauthenticated Users.Role" xml:space="preserve">
+    <value>Unauthenticated Users 1</value>
+  </data>
+  <data name="Registered Users.Role" xml:space="preserve">
+    <value>Registered Users 1</value>
+  </data>
+  <data name="Unverified Users.Role" xml:space="preserve">
+    <value>Unverified Users 1</value>
+  </data>
+  <data name="Subscribers.Role" xml:space="preserve">
+    <value>Subscribers 1</value>
+  </data>
 </root>

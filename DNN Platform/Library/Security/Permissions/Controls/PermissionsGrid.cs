@@ -1113,6 +1113,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                 groupRoles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
             }
 
+            foreach (var role in groupRoles)
+            {
+                role.RoleName = Localization.LocalizeRole(role.RoleName);
+            }
+
             foreach (var role in groupRoles.OrderBy(r => r.RoleName))
             {
                 this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
@@ -1234,7 +1239,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = new RoleInfo
                 {
                     RoleID = this.AllUsersRoleId,
-                    RoleName = Globals.glbRoleAllUsersName,
+                    RoleName = Localization.GetString("AllUsers.Role"),
                 };
             }
             else if (selectedRoleId == this.UnAuthUsersRoleId)
@@ -1242,7 +1247,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = new RoleInfo
                 {
                     RoleID = this.UnAuthUsersRoleId,
-                    RoleName = Globals.glbRoleUnauthUserName,
+                    RoleName = Localization.GetString("Unauthorized Users.Role"),
                 };
             }
             else
