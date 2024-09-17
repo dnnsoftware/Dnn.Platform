@@ -220,7 +220,9 @@ DetailsRow.propTypes = {
     userMenuAction: PropTypes.func,
     appSettings: PropTypes.object,
     columnSizes: PropTypes.array,
-    filter: PropTypes.number
+    filter: PropTypes.number,
+    addIsOpened: PropTypes.string,
+    children: PropTypes.node
 };
 
 DetailsRow.defaultProps = {
