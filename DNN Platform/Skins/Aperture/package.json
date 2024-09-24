@@ -18,6 +18,7 @@
     "@types/browser-sync": "^2.27.5",
     "@types/node": "^20.10.5",
     "browser-sync": "^2.29.3",
+    "chokidar": "^3.6.0",
     "glob": "^10.3.10",
     "rollup": "^4.5.2",
     "rollup-plugin-cleaner": "^1.0.0",

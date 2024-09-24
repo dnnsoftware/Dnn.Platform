@@ -7,7 +7,7 @@ import {
     validationMapExtensionBeingEdited,
     getVersionDropdownValues
 } from "./helperFunctions";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const inputStyle = { width: "100%" };
 

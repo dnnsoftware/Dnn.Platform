@@ -49,6 +49,7 @@ updates:
       Cake-Issues:
         patterns:
           - "Cake.Issues*"
+          - "Cake.Frosting.Issues*"
       DependencyInjection:
         patterns:
           - "Microsoft.Extensions.DependencyInjection*"

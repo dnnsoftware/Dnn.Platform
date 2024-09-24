@@ -6,7 +6,7 @@ import RoleRow from "./RoleRow";
 import "./style.less";
 import { CommonUsersActions } from "../../../actions";
 import utilities from "utils";
-import Combobox from "react-widgets/lib/Combobox";
+import Combobox from "react-widgets/Combobox";
 import { GridCell, Checkbox, Pager, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class UserRoles extends Component {

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell } from "@dnnsoftware/dnn-react-common";
 import ExtensionHeader from "../common/ExtensionHeader";
 import ExtensionDetailRow from "../common/ExtensionDetailRow";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class ExtensionList extends Component {
     constructor() {

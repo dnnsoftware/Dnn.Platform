@@ -3,7 +3,7 @@ import React from "react";
 import MainLabel from "./MainLabel";
 import Statistic from "./statistic";
 import { GridCell } from "@dnnsoftware/dnn-react-common";
-import styles from "./style.less";
+import styles from "./style.module.less";
 /* eslint-disable react/no-danger */
 const PortalListItem = ({portal, portalStatisticInfo, portalButtons}) => (
     <GridCell className={styles.portalListItem}>

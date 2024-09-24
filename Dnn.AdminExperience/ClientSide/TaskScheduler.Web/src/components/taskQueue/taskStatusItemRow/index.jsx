@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { GridSystem } from "@dnnsoftware/dnn-react-common";
 import LeftPane from "../LeftPane";
 import RightPane from "../RightPane";

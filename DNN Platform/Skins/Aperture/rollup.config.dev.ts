@@ -1,5 +1,6 @@
 import { Plugin, defineConfig } from 'rollup';
 import prodConfig from './rollup.config.prod';
+import chokidarWatch from './rollup-plugin-chokidar';
 import browserSync from './rollup-plugin-browsersync';
 import { glob } from 'glob';
 import localSettings from '../../../settings.local.json' assert { type: 'json' };
@@ -14,30 +15,27 @@ export default defineConfig({
     plugins: [
         ...(prodConfig.plugins as Plugin[])
             .filter((plugin: Plugin) => plugin.name !== 'rollup-plugin-dnn-package'),
-        ,
-        {
-            name: "watch-other-files",
-            async buildStart() {
-                const files = await glob(["**/*"]);
-                for(let file of files){
-                    this.addWatchFile(file);
+            chokidarWatch({
+                paths: await glob(["**/*.*"]),
+                onChange: () => {
+                    console.log('Rebuilding due to file change...');
                 }
-            }
-        },
-        browserSync({
-            proxy: localSettings.WebsiteUrl,
-            rewriteRules: [
-                {
-                    match: /w\[".*"].*/g,
-                    fn: (req, _res, match: string) => {
-                        return match.replace(/(http:\/\/|https:\/\/)[a-zA-Z0-9.-]+\//g, `//${req.headers.host}/`);
-                    }
-                },
-            ],
-            files: [
-                skinDist + '/**/*',
-                containersDist + '/**/*',
-            ],
-        })
+            }),
+            browserSync({
+                proxy: localSettings.WebsiteUrl,
+                rewriteRules: [
+                    {
+                        match: /w\[".*"].*/g,
+                        fn: (req, _res, match: string) => {
+                            return match.replace(/(http:\/\/|https:\/\/)[a-zA-Z0-9.-]+\//g, `//${req.headers.host}/`);
+                        }
+                    },
+                ],
+                files: [
+                    skinDist + '/**/*',
+                    containersDist + '/**/*',
+                ],
+            }),
+    
     ],
 });

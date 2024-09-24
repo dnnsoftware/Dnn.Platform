@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { GridSystem, GridCell, Label, Switch, Dropdown, Button, RadioButtons, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import { pageActions as PageActions } from "../../actions";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class More extends Component {
     componentDidMount() {

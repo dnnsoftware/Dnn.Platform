@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {
     task as TaskActions
 } from "../../actions";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import ModePanel from "./modePanel";
 import util from "../../utils";

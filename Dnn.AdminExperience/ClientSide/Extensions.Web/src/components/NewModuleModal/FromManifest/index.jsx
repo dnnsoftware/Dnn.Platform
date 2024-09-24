@@ -4,7 +4,7 @@ import { GridCell, GridSystem, DropdownWithError, Switch, Button } from "@dnnsof
 import FolderDropdown from "../common/FolderDropdown";
 import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
 import Localization from "localization";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const dropdownStyle = { width: "100%", marginBottom: 64 };
 function getValidateRequired(key) {

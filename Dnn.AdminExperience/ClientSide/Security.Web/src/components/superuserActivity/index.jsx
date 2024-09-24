@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
-import "./style.less";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class SuperuserActivityPanelBody extends Component {
     constructor() {
