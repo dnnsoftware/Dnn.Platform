@@ -5,10 +5,9 @@ import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import { InputGroup, MultiLineInputWithError, PagePicker, GridSystem, Label, Button } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 let isHost = false;
 

@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import {
     licensing as LicensingActions
 } from "../../actions";
-import "./style.less";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 /*eslint-disable quotes*/
 const dnnTechnologyEditorialIcon = require(`!raw-loader!./../svg/dnn_technology_editorial.svg`).default;

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import PageExisting from "./PageExisting/PageExisting";
 import PageFile from "./PageFile/PageFile";
 import PageExternalUrl from "./PageExternalUrl/PageExternalUrl";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class PageUrl extends Component {
 
