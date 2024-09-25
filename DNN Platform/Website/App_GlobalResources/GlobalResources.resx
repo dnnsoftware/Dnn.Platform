@@ -1479,4 +1479,10 @@ Sincerely,
   <data name="Subscribers.Role" xml:space="preserve">
     <value>Subscribers 1</value>
   </data>
+  <data name="Content Editors.Role" xml:space="preserve">
+    <value>Content Editors 1</value>
+  </data>
+  <data name="Content Managers.Role" xml:space="preserve">
+    <value>Content Managers 1</value>
+  </data>
 </root>
