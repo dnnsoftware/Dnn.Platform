@@ -356,7 +356,11 @@ RightPane.propTypes = {
     type: PropTypes.string,
     scopeType: PropTypes.string,
     index: PropTypes.number,
-    selectParentTerm: PropTypes.func
+    selectParentTerm: PropTypes.func,
+    vocabularyId: PropTypes.number,
+    getVocabularyTerms: PropTypes.func,
+    onDeleteTerm: PropTypes.func,
+    onUpdateTerm: PropTypes.func
 };
 
 export default RightPane;

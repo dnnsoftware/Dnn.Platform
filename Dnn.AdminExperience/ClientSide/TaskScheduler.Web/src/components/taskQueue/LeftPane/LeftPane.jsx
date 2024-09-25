@@ -59,7 +59,9 @@ LeftPane.propTypes = {
     overdue: PropTypes.bool,
     remainingTime: PropTypes.string,
     elapsedTime: PropTypes.number,
-    startDate: PropTypes.string
+    startDate: PropTypes.string,
+    onEnter: PropTypes.func,
+    index: PropTypes.number
 };
 
 export default LeftPane;

@@ -133,7 +133,8 @@ class ThemeFile extends Component {
 
 ThemeFile.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    themeFile: PropTypes.object
+    themeFile: PropTypes.object,
+    currentTheme: PropTypes.object
 };
 
 function mapStateToProps(state) {

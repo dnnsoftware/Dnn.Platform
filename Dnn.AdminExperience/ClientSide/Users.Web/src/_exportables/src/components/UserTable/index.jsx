@@ -183,7 +183,8 @@ UserTable.propTypes = {
     userMenuAction: PropTypes.func,
     appSettings: PropTypes.object,
     columnSizes: PropTypes.array,
-    filter: PropTypes.number
+    filter: PropTypes.number,
+    users: PropTypes.array
 };
 function mapStateToProps(state) {
     return {

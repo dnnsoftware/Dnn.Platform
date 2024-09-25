@@ -54,7 +54,8 @@ LeftPane.propTypes = {
     type: PropTypes.string,
     scope: PropTypes.string,
     onEnter: PropTypes.func,
-    index: PropTypes.number
+    index: PropTypes.number,
+    scopeType: PropTypes.string
 };
 
 export default LeftPane;
