@@ -118,16 +118,16 @@ namespace Dnn.PersonaBar.UI.Services
                     matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
                 }
 
-                matchedRoles = matchedRoles.Select(r =>
+                var roleList = new SortedList<string, int>();
+                foreach (var role in matchedRoles)
                 {
-                    r.RoleName = Localization.LocalizeRole(r.RoleName);
-                    return r;
-                }).ToList();
+                    roleList[Localization.LocalizeRole(role.RoleName)] = role.RoleID;
+                }
 
-                var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
+                var data = roleList.Select(r => new SuggestionDto()
                 {
-                    Value = r.RoleID,
-                    Label = r.RoleName,
+                    Value = r.Value,
+                    Label = r.Key,
                 });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
