@@ -60,7 +60,8 @@
     "/bin/Newtonsoft.Json.dll",
     "/Config/DotNetNuke.config",
     "/Install/InstallWizard.aspx",
-    "/bin/WebFormsMvp.dll"
+    "/bin/WebFormsMvp.dll",
+    "/bin/ICSharpCode.SharpZipLib.dll"
   ],
   "symbolsInclude": [
     "/bin/*.pdb",
