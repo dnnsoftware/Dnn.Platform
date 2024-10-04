@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./style.less";
 
 const getOpts = function (enabled) {
+    console.log(enabled);
     let opts = {};
     if (!enabled) {
         opts["disabled"] = "disabled";

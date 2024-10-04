@@ -1283,11 +1283,10 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>Localizes the "Built In" Roles.</summary>
-        /// <remarks>
-        /// Localizes:
-        /// -DesktopTabs
-        /// -BreadCrumbs.
-        /// </remarks>
+        /// <remarks>This function looks for [Rolename.Role] key in GlobalResources.resx to see if this exists and
+        /// if it does, it returns the localized description. Otherwise the role parameter is returned. I.e. it falls back
+        /// to its original value.</remarks>
+        /// <param name="role">The role name to localize.</param>
         /// <returns>The role name, potentially localized.</returns>
         public static string LocalizeRole(string role)
         {
@@ -1300,6 +1299,25 @@ namespace DotNetNuke.Services.Localization
             }
 
             return localRole;
+        }
+
+        /// <summary>Gets the localized description for the "Built In" Roles.</summary>
+        /// <remarks>This function looks for [Rolename.RoleDescription] key in GlobalResources.resx to see if this exists and
+        /// if it does, it returns the localized description.</remarks>
+        /// <param name="role">The role name to localize the description for.</param>
+        /// <param name="fallback">The fallback description to use if the localized description is not found.</param>
+        /// <returns>The localized description or null if not found.</returns>
+        public static string LocalizeRoleDescription(string role, string fallback)
+        {
+            string roleDescription;
+            string roleKey = role + ".RoleDescription";
+            roleDescription = GetString(roleKey, GlobalResourceFile);
+            if (string.IsNullOrEmpty(roleDescription))
+            {
+                return fallback;
+            }
+
+            return roleDescription;
         }
 
         public static void RemoveLanguageFromPortal(int portalID, int languageID)

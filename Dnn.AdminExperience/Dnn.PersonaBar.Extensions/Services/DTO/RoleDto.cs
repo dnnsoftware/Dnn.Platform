@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
                 GroupId = role.RoleGroupID,
                 Name = role.RoleName,
                 LocalizedName = DotNetNuke.Services.Localization.Localization.LocalizeRole(role.RoleName),
-                Description = role.Description,
+                Description = DotNetNuke.Services.Localization.Localization.LocalizeRoleDescription(role.RoleName, role.Description),
                 ServiceFee = role.ServiceFee,
                 BillingPeriod = role.BillingPeriod,
                 BillingFrequency = role.BillingFrequency,
