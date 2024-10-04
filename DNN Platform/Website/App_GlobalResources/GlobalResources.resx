@@ -1486,10 +1486,10 @@ Sincerely,
     <value>Content Managers 1</value>
   </data>
   <data name="Administrators.RoleDescription" xml:space="preserve">
-    <value>Administrators can access and change all content from this website and control all settings. They can manage user access to the site and manage other administrators as well.</value>
+    <value>Administrators can access and change all content of this site and control all site settings. They can manage user access to the site and manage other administrators as well.  This user type cannot make system-level changes or perform privileged administration tasks that Superusers can.</value>
   </data>
   <data name="All Users.RoleDescription" xml:space="preserve">
-    <value>This is a dummy role (i.e. you cannot add or remove users from this role). It means both all the users who have an account on this website but also any unauthenticated user on this site.</value>
+    <value>This is a platform-managed role (i.e. you cannot add or remove users from this role). This role represents ANY visitor to the website regardless of their login/account status.</value>
   </data>
   <data name="Content Editors.RoleDescription" xml:space="preserve">
     <value>Content editors are allowed to add and change content on this site. The exact functionality depends on the what the modules used on this site support.</value>
@@ -1501,10 +1501,10 @@ Sincerely,
     <value>Subscribers allow themselves to be contacted by email from this website. Users can remove themselves from this role so they can control this.</value>
   </data>
   <data name="Superuser.RoleDescription" xml:space="preserve">
-    <value>Superusers (sometimes referred to as host users) have "host" access to the site, meaning they can access and change any content from any of the sites of this installation. Including adding and removing administrators and other superusers. They also have access to configuration files and can run scripts on the SQL database.</value>
+    <value>Superusers (sometimes referred to as host users) have "host" access to the site, meaning they can access and change any content from any of the sites of this installation. Including adding and removing administrators and other superusers. They can also perform system-level tasks such as cache clearing, restarting the application, management of configuration files, and configuration of global settings.</value>
   </data>
   <data name="Unauthenticated Users.RoleDescription" xml:space="preserve">
-    <value>This is a dummy role (i.e. you can't assign users to this role). It is meant to signify users that are not logged in.</value>
+    <value>This is a platform-managed role (i.e. you can't assign users to this role). It is meant to signify users that are not logged in.</value>
   </data>
   <data name="Unverified Users.RoleDescription" xml:space="preserve">
     <value>If this site uses account verification, then any user that registers is first part of this role and not "registered users". As soon as they have been verified (depending on the setting either by clicking an email link or by an administrator) then the user is no longer a member of this role and becomes a regular "registered user".</value>
