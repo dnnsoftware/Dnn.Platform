@@ -256,6 +256,12 @@ namespace Dnn.Modules.ResourceManager.Components
 
             // Sort the permissions
             permissions.RolePermissions = permissions.RolePermissions
+                .Select(
+                    p =>
+                    {
+                        p.RoleName = DotNetNuke.Services.Localization.Localization.LocalizeRole(p.RoleName);
+                        return p;
+                    })
                 .OrderByDescending(p => p.Locked)
                 .ThenByDescending(p => p.IsDefault)
                 .ThenBy(p => p.RoleName)

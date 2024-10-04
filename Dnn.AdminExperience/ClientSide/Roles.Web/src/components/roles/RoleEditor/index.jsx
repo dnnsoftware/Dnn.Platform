@@ -215,6 +215,7 @@ class RolesEditor extends Component {
                     tooltipPlace={"top"} />
                 <MultiLineInput
                     value={state.roleDetails.description}
+                    enabled={!state.roleDetails.isSystem}
                     onChange={this.onTextChange.bind(this, "description")}
                     maxLength={500} />
             </div>
@@ -365,11 +366,13 @@ class RolesEditor extends Component {
                     }
                     <Button
                         type="secondary"
+                        disabled={state.roleDetails.isSystem}
                         onClick={this.props.Collapse.bind(this)}>
                         {resx.get("Cancel")}
                     </Button>
                     <Button
                         type="primary"
+                        disabled={state.roleDetails.isSystem}
                         onClick={this.addUpdateRoleDetails.bind(this)}>
                         {resx.get("Save")}
                     </Button>

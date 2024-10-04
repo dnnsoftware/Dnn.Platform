@@ -949,7 +949,14 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
 
                     permissions.RolePermissions =
-                        permissions.RolePermissions.OrderByDescending(p => p.Locked)
+                        permissions.RolePermissions
+                            .Select(
+                                p =>
+                                {
+                                    p.RoleName = DotNetNuke.Services.Localization.Localization.LocalizeRole(p.RoleName);
+                                    return p;
+                                })
+                            .OrderByDescending(p => p.Locked)
                             .ThenByDescending(p => p.IsDefault)
                             .ThenBy(p => p.RoleName)
                             .ToList();
@@ -1498,14 +1505,14 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         newModule.ModulePermissions.Add(
                             new ModulePermissionInfo
-                        {
-                            ModuleID = newModule.ModuleID,
-                            PermissionID = permission.PermissionID,
-                            RoleID = permission.RoleID,
-                            UserID = permission.UserID,
-                            PermissionKey = permission.PermissionKey,
-                            AllowAccess = permission.AllowAccess,
-                        }, true);
+                            {
+                                ModuleID = newModule.ModuleID,
+                                PermissionID = permission.PermissionID,
+                                RoleID = permission.RoleID,
+                                UserID = permission.UserID,
+                                PermissionKey = permission.PermissionKey,
+                                AllowAccess = permission.AllowAccess,
+                            }, true);
                     }
 
                     ModulePermissionController.SaveModulePermissions(newModule);
