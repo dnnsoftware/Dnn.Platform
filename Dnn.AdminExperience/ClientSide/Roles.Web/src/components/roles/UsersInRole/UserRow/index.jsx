@@ -138,7 +138,9 @@ UserRow.propTypes = {
     userDetails: PropTypes.object.isRequired,
     index: PropTypes.number,
     saveUser: PropTypes.func.isRequired,
-    deleteUser: PropTypes.func.isRequired
+    deleteUser: PropTypes.func.isRequired,
+    roleName: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired
 };
 UserRow.defaultProps = {
     roleUsersList: []
