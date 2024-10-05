@@ -194,6 +194,10 @@ class RolesEditor extends Component {
     render() {
         let { state, props } = this;
         const columnOne = <div key="editor-container-columnOne" className="editor-container">
+            <div className="editor-row divider" style={{marginTop:"-3rem"}}>
+                <Label
+                    label={resx.get("RoleId") + ": " + state.roleDetails.id} />
+            </div>
             <div className="editor-row divider">
                 <SingleLineInputWithError
                     value={state.roleDetails.name}
