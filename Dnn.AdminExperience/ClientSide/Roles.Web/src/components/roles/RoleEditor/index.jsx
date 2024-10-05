@@ -196,8 +196,7 @@ class RolesEditor extends Component {
         const columnOne = <div key="editor-container-columnOne" className="editor-container">
             <div className="editor-row divider" style={{marginTop:"-3rem"}}>
                 <Label
-                    label={resx.get("RoleId") + ": " + state.roleDetails.id}
-                    style={{ fontWeight: "bolder" }} />
+                    label={resx.get("RoleId") + ": " + state.roleDetails.id} />
             </div>
             <div className="editor-row divider">
                 <SingleLineInputWithError
