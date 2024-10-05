@@ -15,6 +15,8 @@ namespace Dnn.PersonaBar.Servers.Components.WebServer
     {
         public string Framework => Environment.Version.ToString();
 
+        public string NetFrameworkVersion => Globals.NETFrameworkVersion.ToString(3);
+
         public string HostName => Dns.GetHostName();
 
         public string Identity => WindowsIdentity.GetCurrent().Name;

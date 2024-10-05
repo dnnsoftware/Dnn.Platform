@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     osVersion = serverInfo.OSVersion,
                     iisVersion = serverInfo.IISVersion,
                     framework = serverInfo.Framework,
+                    netFrameworkVersion = serverInfo.NetFrameworkVersion,
                     identity = serverInfo.Identity,
                     hostName = serverInfo.HostName,
                     physicalPath = serverInfo.PhysicalPath,

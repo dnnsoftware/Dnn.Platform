@@ -17,7 +17,7 @@ const sendTestEmail = function (parameters) {
     return serviceFramework.post(getControllerName(), "SendTestEmail", parameters);
 };
 
-const getOAuthProviders = function(){
+const getOAuthProviders = function () {
     return serviceFramework.get(getControllerName(), "GetSmtpOAuthProviders");
 };
 

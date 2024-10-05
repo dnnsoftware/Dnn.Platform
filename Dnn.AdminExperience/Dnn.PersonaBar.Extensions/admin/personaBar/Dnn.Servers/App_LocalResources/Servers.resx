@@ -148,10 +148,16 @@
     <value>Web</value>
   </data>
   <data name="ServerInfo_Framework.Help" xml:space="preserve">
-    <value>The version of .NET.</value>
+    <value>This is the CLR version. The first two parts (e.g. 4.0) indicates the major version of the CLR, and remaining is the build number.</value>
   </data>
   <data name="ServerInfo_Framework.Text" xml:space="preserve">
-    <value>.NET Framework Version:</value>
+    <value>.NET Framework CLR Version:</value>
+  </data>
+  <data name="ServerInfo_Framework_Product.Help" xml:space="preserve">
+    <value>This is the version number that is typically used to refer to the .NET Framework as a product (e.g. 4.8.1).</value>
+  </data>
+  <data name="ServerInfo_Framework_Product.Text" xml:space="preserve">
+    <value>.NET Framework Product Version:</value>
   </data>
   <data name="ServerInfo_HostName.Help" xml:space="preserve">
     <value>The name of the Host computer.</value>
