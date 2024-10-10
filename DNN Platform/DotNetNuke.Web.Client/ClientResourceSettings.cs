@@ -205,7 +205,7 @@ namespace DotNetNuke.Web.Client
             {
                 if (portalId.HasValue)
                 {
-                    var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary");
+                    var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary", BindingFlags.NonPublic | BindingFlags.Static);
                     var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
                     string value;
                     if (dictionary.TryGetValue(settingKey, out value))

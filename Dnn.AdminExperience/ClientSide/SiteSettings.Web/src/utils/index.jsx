@@ -5,6 +5,10 @@ const utils = {
         }
         this.utilities = utilities;      
     },
-    utilities: null
+    utilities: null,
+
+    isPlatform() {       
+        return window.dnn.utility.getSKU().toLowerCase() === "dnn";
+    }
 };
 export default utils;

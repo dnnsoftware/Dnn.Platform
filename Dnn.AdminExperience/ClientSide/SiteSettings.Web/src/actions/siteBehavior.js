@@ -528,7 +528,8 @@ const siteBehaviorActions = {
                     type: ActionTypes.RETRIEVED_SITESETTINGS_OTHER_SETTINGS,
                     data: {
                         settings: data.Settings,
-                        otherSettingsClientModified: false
+                        otherSettingsClientModified: false,
+                        workflows: data.Workflows,
                     }
                 });
                 if (callback) {

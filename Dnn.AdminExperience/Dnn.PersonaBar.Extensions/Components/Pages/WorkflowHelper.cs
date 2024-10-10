@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
@@ -54,6 +55,11 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return WorkflowEngine.Instance.IsWorkflowCompleted(tab);
+        }
+
+        public static string GetTabWorkflowName(TabInfo tab)
+        {
+            return WorkflowRepository.Instance.GetWorkflow(GetTabWorkflowId(tab)).WorkflowName;
         }
     }
 }

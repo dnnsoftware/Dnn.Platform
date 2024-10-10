@@ -1509,4 +1509,31 @@
   <data name="valMaxResultPerPageRequired.Error" xml:space="preserve">
     <value>Maximum result per page is required. Integer must be greater than 0.</value>
   </data>
+  <data name="WorkflowSettings.Text" xml:space="preserve">
+    <value>Workflow Settings</value>
+  </data>
+  <data name="plEnabledVersioning.Text" xml:space="preserve">
+    <value>Enable Versioning</value>
+  </data>
+  <data name="plEnabledVersioning.Help" xml:space="preserve">
+    <value>When enabled, DNN will create a new version of the published page during editing and retain several older versions in the history.</value>
+  </data>
+  <data name="plMaxNumberOfVersions.Text" xml:space="preserve">
+    <value>Max Number of Versions</value>
+  </data>
+  <data name="plMaxNumberOfVersions.Help" xml:space="preserve">
+    <value>Select the maximum number of page versions to retain in history.</value>
+  </data>
+  <data name="plWorkflowEnabled.Text" xml:space="preserve">
+    <value>Enable Content Workflow</value>
+  </data>
+  <data name="plWorkflowEnabled.Help" xml:space="preserve">
+    <value>When enabled, DNN will enforce the selected content workflow during the publishing process of page edits.</value>
+  </data>
+  <data name="plDefaultTabWorkflowId.Text" xml:space="preserve">
+    <value>Default Content Workflow</value>
+  </data>
+  <data name="plDefaultTabWorkflowId.Help" xml:space="preserve">
+    <value>Select the default content workflow to be applied.</value>
+  </data>
 </root>

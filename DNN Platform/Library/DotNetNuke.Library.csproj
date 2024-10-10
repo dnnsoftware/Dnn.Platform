@@ -235,6 +235,12 @@
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProvider.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProviderExtensions.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\TabActions\CompleteState.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\TabActions\CompleteWorkflow.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\TabActions\DiscardState.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\TabActions\DiscardWorkflow.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\TabActions\StartWorkflow.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\TabActions\TabActionBase.cs" />
     <Compile Include="Entities\Modules\Prompt\AddModule.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />

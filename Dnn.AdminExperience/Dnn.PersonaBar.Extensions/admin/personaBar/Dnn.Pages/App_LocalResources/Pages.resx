@@ -1768,4 +1768,28 @@
   <data name="NoParentTabName.Text" xml:space="preserve">
     <value>No parent page supplied</value>
   </data>
+  <data name="FilterByPublishDateText.Text" xml:space="preserve">
+    <value>Filter by Publish Date</value>
+  </data>
+  <data name="FilterbyWorkflowText.Text" xml:space="preserve">
+    <value>Filter by Workflow</value>
+  </data>
+  <data name="WorkflowTitle.Text" xml:space="preserve">
+    <value>Workflow</value>
+  </data>
+  <data name="WorkflowSettings.Text" xml:space="preserve">
+    <value>Workflow Settings</value>
+  </data>
+  <data name="EnabledVersioning" xml:space="preserve">
+    <value>Enable Versioning</value>
+  </data>
+  <data name="EnabledVersioning_tooltip" xml:space="preserve">
+    <value>When enabled, DNN will create a new version of the published page during editing and retain several older versions in the history.</value>
+  </data>
+  <data name="WorkflowEnabled" xml:space="preserve">
+    <value>Enable Content Workflow</value>
+  </data>
+  <data name="WorkflowEnabled_tooltip" xml:space="preserve">
+    <value>When enabled, DNN will enforce the selected content workflow during the publishing process of page edits.</value>
+  </data>
 </root>
