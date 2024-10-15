@@ -30,6 +30,13 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
             this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
         }
 
+        [OneTimeTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+            this._httpClient?.Dispose();
+        }
+
         [Test]
         [TestCase(GetMonikerQuery)]
         [TestCase(GetModuleDetailsQuery)]

@@ -152,6 +152,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             Globals.DependencyProvider = null;
             this.luceneController.Dispose();
+            this.searchServiceController?.Dispose();
             this.DeleteIndexFolder();
             CBO.ClearInstance();
             TabController.ClearInstance();

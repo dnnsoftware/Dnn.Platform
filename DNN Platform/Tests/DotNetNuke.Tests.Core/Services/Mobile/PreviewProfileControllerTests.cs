@@ -125,6 +125,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void TearDown()
         {
             Globals.DependencyProvider = null;
+            this.dtProfiles?.Dispose();
         }
 
         [Test]

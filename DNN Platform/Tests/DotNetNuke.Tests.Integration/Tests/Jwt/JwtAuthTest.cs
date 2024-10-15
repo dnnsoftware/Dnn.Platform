@@ -66,6 +66,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             }
         }
 
+        [OneTimeTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+            this._httpClient?.Dispose();
+        }
+
         [Test]
         public void InvalidUserLoginShouldFail()
         {

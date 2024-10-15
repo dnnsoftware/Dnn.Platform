@@ -88,6 +88,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
             UserController.ClearInstance();
+            this.dtRelationshipTypes?.Dispose();
+            this.dtRelationships?.Dispose();
+            this.dtUserRelationships?.Dispose();
+            this.dtUserRelationshipPreferences?.Dispose();
         }
 
         [Test]

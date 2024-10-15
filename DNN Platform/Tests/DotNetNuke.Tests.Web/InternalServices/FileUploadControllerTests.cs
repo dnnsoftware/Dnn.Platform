@@ -48,6 +48,12 @@
             this.SetupSynchronizationContext();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            this._testInstance?.Dispose();
+        }
+
         [Test]
         [SetCulture("tr-TR")]
 

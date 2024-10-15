@@ -124,6 +124,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Globals.DependencyProvider = null;
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
+            this._dtMessages?.Dispose();
+            this._dtMessageAttachment?.Dispose();
+            this._dtMessageRecipients?.Dispose();
+            this._dtPortalSettings?.Dispose();
+            this._dtMessageConversationView?.Dispose();
+            this._dtMessageThreadsView?.Dispose();
         }
 
         [Test]

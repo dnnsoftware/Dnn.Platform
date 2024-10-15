@@ -77,6 +77,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         {
             Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
+            this._hostSettingsTable?.Dispose();
         }
 
         [Test]

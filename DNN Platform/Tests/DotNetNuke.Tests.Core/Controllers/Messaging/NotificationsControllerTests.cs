@@ -100,6 +100,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             MessagingController.ClearInstance();
             PortalController.ClearInstance();
             InternalMessagingController.ClearInstance();
+            this._dtNotificationTypes?.Dispose();
+            this._dtNotificationTypeActions?.Dispose();
+            this._dtNotificationActions?.Dispose();
         }
 
         [Test]
