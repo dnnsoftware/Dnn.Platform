@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
 
             var isPasswordInHistory = new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
 
-            Assert.AreEqual(true, isPasswordInHistory);
+            Assert.That(isPasswordInHistory, Is.EqualTo(true));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
 
             var status = UserController.CreateUser(ref user);
 
-            Assert.AreEqual(UserCreateStatus.Success, status);
+            Assert.That(status, Is.EqualTo(UserCreateStatus.Success));
 
             return user;
         }

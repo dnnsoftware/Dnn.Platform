@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 
             // Act / Assert
             var ex = Assert.Throws<InvalidOperationException>(() => sut.OnException(exceptionContext));
-            Assert.AreEqual(expectedMessage, ex.Message);
+            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
         }
 
         [Test]

@@ -117,7 +117,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.subscriptionTypeController.AddSubscriptionType(subscriptionType);
 
             // Assert
-            Assert.AreEqual(expectedSubscriptionTypeId, subscriptionType.SubscriptionTypeId);
+            Assert.That(subscriptionType.SubscriptionTypeId, Is.EqualTo(expectedSubscriptionTypeId));
         }
 
         [Test]

@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             var controller = this.SetupController(httpContextBase);
 
             // Assert
-            Assert.IsNull(controller.ActivePage);
+            Assert.That(controller.ActivePage, Is.Null);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             var controller = this.SetupController(context);
 
             // Assert
-            Assert.IsNull(controller.PortalSettings);
+            Assert.That(controller.PortalSettings, Is.Null);
         }
 
         [Test]
@@ -56,8 +56,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             controller.ActionInvoker.InvokeAction(controller.ControllerContext, "Action1");
 
             // Assert
-            Assert.NotNull(controller.ResultOfLastExecute);
-            Assert.IsInstanceOf<DnnViewResult>(controller.ResultOfLastExecute);
+            Assert.That(controller.ResultOfLastExecute, Is.Not.Null);
+            Assert.That(controller.ResultOfLastExecute, Is.InstanceOf<DnnViewResult>());
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             var controller = this.SetupController(httpContextBase);
 
             // Assert
-            Assert.IsNull(controller.User);
+            Assert.That(controller.User, Is.Null);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             var viewResult = controller.Action1();
 
             // Assert
-            Assert.IsInstanceOf<DnnViewResult>(viewResult);
+            Assert.That(viewResult, Is.InstanceOf<DnnViewResult>());
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
 
             // Assert
             var dnnViewResult = viewResult as DnnViewResult;
-            Assert.NotNull(dnnViewResult);
-            Assert.AreEqual("Action1", dnnViewResult.ViewName);
+            Assert.That(dnnViewResult, Is.Not.Null);
+            Assert.That(dnnViewResult.ViewName, Is.EqualTo("Action1"));
         }
 
         [Test]
@@ -116,9 +116,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
 
             // Assert
             var dnnViewResult = viewResult as DnnViewResult;
-            Assert.NotNull(dnnViewResult);
-            Assert.AreEqual("Action2", dnnViewResult.ViewName);
-            Assert.AreEqual("Master2", dnnViewResult.MasterName);
+            Assert.That(dnnViewResult, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(dnnViewResult.ViewName, Is.EqualTo("Action2"));
+                Assert.That(dnnViewResult.MasterName, Is.EqualTo("Master2"));
+            });
         }
 
         [Test]
@@ -134,8 +137,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
 
             // Assert
             var dnnViewResult = viewResult as DnnViewResult;
-            Assert.NotNull(dnnViewResult);
-            Assert.AreEqual("value", dnnViewResult.ViewData["key"]);
+            Assert.That(dnnViewResult, Is.Not.Null);
+            Assert.That(dnnViewResult.ViewData["key"], Is.EqualTo("value"));
         }
 
         [Test]
@@ -151,8 +154,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
 
             // Assert
             var dnnViewResult = viewResult as DnnViewResult;
-            Assert.NotNull(dnnViewResult);
-            Assert.AreEqual(dog, dnnViewResult.ViewData.Model);
+            Assert.That(dnnViewResult, Is.Not.Null);
+            Assert.That(dnnViewResult.ViewData.Model, Is.EqualTo(dog));
         }
 
         [Test]
@@ -168,8 +171,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
 
             // Assert
             var dnnViewResult = viewResult as DnnViewResult;
-            Assert.NotNull(dnnViewResult);
-            Assert.AreEqual(controller.ViewEngineCollection, dnnViewResult.ViewEngineCollection);
+            Assert.That(dnnViewResult, Is.Not.Null);
+            Assert.That(dnnViewResult.ViewEngineCollection, Is.EqualTo(controller.ViewEngineCollection));
         }
 
         [Test]
@@ -183,7 +186,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             controller.MockInitialize(httpContextBase.Request.RequestContext);
 
             // Assert
-            Assert.NotNull(controller.Url);
+            Assert.That(controller.Url, Is.Not.Null);
         }
 
         private FakeDnnController SetupController(HttpContextBase context)

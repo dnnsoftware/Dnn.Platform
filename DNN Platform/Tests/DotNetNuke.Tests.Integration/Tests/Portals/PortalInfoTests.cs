@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         public void Processor_Password_In_DB_Must_Be_Encrypted()
         {
             var firstPortal = PortalController.Instance.GetPortals().OfType<PortalInfo>().FirstOrDefault();
-            Assert.NotNull(firstPortal);
+            Assert.That(firstPortal, Is.Not.Null);
 
             var newPassword = "StringToEncrypt_" + new Random().Next(1, 100);
             firstPortal.ProcessorPassword = newPassword;
@@ -38,9 +38,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
 
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
-            Assert.AreNotEqual(result, string.Empty);
-            Assert.AreNotEqual(result, decrypted);
-            Assert.AreEqual(decrypted, newPassword);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.EqualTo(string.Empty));
+                Assert.That(decrypted, Is.Not.EqualTo(result));
+                Assert.That(newPassword, Is.EqualTo(decrypted));
+            });
         }
     }
 }

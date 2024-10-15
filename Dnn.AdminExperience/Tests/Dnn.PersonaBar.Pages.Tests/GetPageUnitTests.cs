@@ -58,11 +58,14 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this._getCommand.Run();
 
-            // Assert
-            Assert.IsFalse(result.IsError);
-            Assert.IsNotNull(result.Data);
-            Assert.AreEqual(1, result.Records);
-            Assert.IsFalse(result is ConsoleErrorResultModel);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsError, Is.False);
+                Assert.That(result.Data, Is.Not.Null);
+                Assert.That(result.Records, Is.EqualTo(1));
+                Assert.That(result is ConsoleErrorResultModel, Is.False);
+            });
         }
 
         [Test]
@@ -79,9 +82,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this._getCommand.Run();
 
-            // Assert
-            Assert.IsTrue(result.IsError);
-            Assert.IsTrue(result is ConsoleErrorResultModel);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsError, Is.True);
+                Assert.That(result is ConsoleErrorResultModel, Is.True);
+            });
         }
 
         [Test]
@@ -96,9 +102,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this._getCommand.Run();
 
-            // Assert
-            Assert.IsTrue(result.IsError);
-            Assert.IsTrue(result is ConsoleErrorResultModel);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsError, Is.True);
+                Assert.That(result is ConsoleErrorResultModel, Is.True);
+            });
         }
 
         [Test]
@@ -113,9 +122,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this._getCommand.Run();
 
-            // Assert
-            Assert.IsTrue(result.IsError);
-            Assert.IsTrue(result is ConsoleErrorResultModel);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsError, Is.True);
+                Assert.That(result is ConsoleErrorResultModel, Is.True);
+            });
         }
 
         private void SetupCommand()

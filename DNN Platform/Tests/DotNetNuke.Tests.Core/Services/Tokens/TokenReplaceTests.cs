@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var outputText = tokenReplace.ReplaceEnvironmentTokens(sourceText);
 
             // Assert
-            Assert.AreEqual(outputText, sourceText);
+            Assert.That(sourceText, Is.EqualTo(outputText));
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var outputText = tokenReplace.ReplaceEnvironmentTokens(sourceText);
 
             // Assert
-            Assert.AreEqual(outputText.Trim(), string.Empty);
+            Assert.That(outputText.Trim(), Is.EqualTo(string.Empty));
         }
 
         private void SetupPortalSettings()

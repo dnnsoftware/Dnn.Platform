@@ -17,21 +17,21 @@ namespace DotNetNuke.Tests.Utilities
         {
             var contentLine = ConvertEmailContentFromBase64ToUnicode(GetEmailFileName(toAddress, findByText));
 
-            Assert.IsTrue(contentLine.Contains(expectedValue));
+            Assert.That(contentLine.Contains(expectedValue), Is.True);
         }
 
         public static void ContentLineContains(string expectedValue, string toAddress, string findByText)
         {
             var contentLine = FindContentUsingRegex(expectedValue, GetEmailFileName(toAddress, findByText));
 
-            Assert.IsFalse(string.IsNullOrEmpty(contentLine));
+            Assert.That(string.IsNullOrEmpty(contentLine), Is.False);
         }
 
         public static void FromLineContains(string expectedValue, string toAddress, string findByText)
         {
             string fromLine = FindEmailLineUsingRegex("From", GetEmailFileName(toAddress, findByText));
 
-            Assert.IsTrue(fromLine.Contains(expectedValue));
+            Assert.That(fromLine.Contains(expectedValue), Is.True);
         }
 
         public static void MessageSent(string expectedValue, string toAddress, string message)
@@ -43,21 +43,21 @@ namespace DotNetNuke.Tests.Utilities
         {
             string replyToLine = FindEmailLineUsingRegex("Reply-To", GetEmailFileName(toAddress, findByText));
 
-            Assert.IsTrue(replyToLine.Contains(expectedValue));
+            Assert.That(replyToLine.Contains(expectedValue), Is.True);
         }
 
         public static void SubjectLineContains(string expectedValue, string toAddress, string findByText)
         {
             string subjectLine = FindEmailLineUsingRegex("Subject", GetEmailFileName(toAddress, findByText));
 
-            Assert.IsTrue(subjectLine.Contains(expectedValue));
+            Assert.That(subjectLine.Contains(expectedValue), Is.True);
         }
 
         public static void ToLineContains(string expectedValue, string toAddress, string findByText)
         {
             string toLine = FindEmailLineUsingRegex("To", GetEmailFileName(toAddress, findByText));
 
-            Assert.IsTrue(toLine.Contains(expectedValue));
+            Assert.That(toLine.Contains(expectedValue), Is.True);
         }
 
         private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
@@ -67,7 +67,7 @@ namespace DotNetNuke.Tests.Utilities
             // Separate the content from the EmailAddress information
             const string contentLineRegex = "(base64)(.*(\n)+)+";
             Match match = Regex.Match(@emailContent, contentLineRegex, RegexOptions.Singleline);
-            Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
+            Assert.That(match.Success, Is.True, "Could not find content Line! Looking in file: " + emailFileName);
 
             // Convert the EmailAddress content
             emailContent = match.Groups[2].Value.Replace("\r\n", string.Empty);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Tests.Utilities
             string emailContent = File.ReadAllText(emailFileName);
             string contentLineRegex = @content + ".*";
             Match match = Regex.Match(@emailContent, @contentLineRegex);
-            Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
+            Assert.That(match.Success, Is.True, "Could not find content Line! Looking in file: " + emailFileName);
             string contentLine = match.Value;
             return contentLine;
         }
@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Utilities
             string emailContent = File.ReadAllText(emailFileName);
             string lineRegex = @"^(" + linePrefix + @"): (.+)";
             Match match = Regex.Match(@emailContent, @lineRegex, RegexOptions.Multiline);
-            Assert.IsTrue(match.Success, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
+            Assert.That(match.Success, Is.True, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
             string line = match.Value;
             return line;
         }
@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Utilities
             string emailContent = File.ReadAllText(emailFileName);
             string lineRegex = linePrefix + @": .*";
             Match match = Regex.Match(@emailContent, @lineRegex);
-            Assert.IsTrue(match.Success, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
+            Assert.That(match.Success, Is.True, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
             string line = match.Value;
             return line;
         }
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Utilities
                 }
             }
 
-            Assert.IsTrue(emailFileName != null, message + " The test was searching in: " + emailPath);
+            Assert.That(emailFileName != null, Is.True, message + " The test was searching in: " + emailPath);
 
             return emailFileName;
         }

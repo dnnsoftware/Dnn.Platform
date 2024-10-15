@@ -88,6 +88,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
             UserController.ClearInstance();
+            this.dtRelationshipTypes?.Dispose();
+            this.dtRelationships?.Dispose();
+            this.dtUserRelationships?.Dispose();
+            this.dtUserRelationshipPreferences?.Dispose();
         }
 
         [Test]
@@ -222,7 +226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipType = relationshipController.GetRelationshipType(relationshipTypeId);
 
             // Assert
-            Assert.AreEqual(relationshipTypeId, relationshipType.RelationshipTypeId);
+            Assert.That(relationshipType.RelationshipTypeId, Is.EqualTo(relationshipTypeId));
         }
 
         [Test]
@@ -237,7 +241,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipType = relationshipController.GetRelationshipType(Constants.SOCIAL_InValidRelationshipType);
 
             // Assert
-            Assert.IsNull(relationshipType);
+            Assert.That(relationshipType, Is.Null);
         }
 
         [Test]
@@ -398,7 +402,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationship = relationshipController.GetRelationship(relationshipId);
 
             // Assert
-            Assert.AreEqual(relationshipId, relationship.RelationshipId);
+            Assert.That(relationship.RelationshipId, Is.EqualTo(relationshipId));
         }
 
         [Test]
@@ -415,7 +419,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationship = relationshipController.GetRelationship(Constants.SOCIAL_InValidRelationship);
 
             // Assert
-            Assert.IsNull(relationship);
+            Assert.That(relationship, Is.Null);
         }
 
         [Test]
@@ -441,8 +445,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationships = relationshipController.GetRelationshipsByUserId(Constants.USER_ValidId);
 
             // Assert
-            Assert.IsInstanceOf<IList<Relationship>>(relationships);
-            Assert.AreEqual(5, relationships.Count);
+            Assert.That(relationships, Is.InstanceOf<IList<Relationship>>());
+            Assert.That(relationships, Has.Count.EqualTo(5));
         }
 
         [Test]
@@ -459,8 +463,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationships = relationshipController.GetRelationshipsByUserId(Constants.USER_InValidId);
 
             // Assert
-            Assert.IsInstanceOf<IList<Relationship>>(relationships);
-            Assert.AreEqual(0, relationships.Count);
+            Assert.That(relationships, Is.InstanceOf<IList<Relationship>>());
+            Assert.That(relationships, Is.Empty);
         }
 
         [Test]
@@ -489,8 +493,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Zero);
 
             // Assert
-            Assert.IsInstanceOf<IList<Relationship>>(relationships);
-            Assert.AreEqual(5, relationships.Count);
+            Assert.That(relationships, Is.InstanceOf<IList<Relationship>>());
+            Assert.That(relationships, Has.Count.EqualTo(5));
         }
 
         [Test]
@@ -522,8 +526,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Zero);
 
             // Assert
-            Assert.IsInstanceOf<IList<Relationship>>(relationships);
-            Assert.AreEqual(5, relationships.Count);
+            Assert.That(relationships, Is.InstanceOf<IList<Relationship>>());
+            Assert.That(relationships, Has.Count.EqualTo(5));
         }
 
         [Test]
@@ -543,8 +547,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Null);
 
             // Assert
-            Assert.IsInstanceOf<IList<Relationship>>(relationships);
-            Assert.AreEqual(0, relationships.Count);
+            Assert.That(relationships, Is.InstanceOf<IList<Relationship>>());
+            Assert.That(relationships, Is.Empty);
         }
 
         [Test]
@@ -688,7 +692,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationship = relationshipController.GetUserRelationship(userRelationshipId);
 
             // Assert
-            Assert.AreEqual(userRelationshipId, userRelationship.UserRelationshipId);
+            Assert.That(userRelationship.UserRelationshipId, Is.EqualTo(userRelationshipId));
         }
 
         [Test]
@@ -705,7 +709,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationship = relationshipController.GetUserRelationship(Constants.SOCIAL_InValidUserRelationship);
 
             // Assert
-            Assert.IsNull(userRelationship);
+            Assert.That(userRelationship, Is.Null);
         }
 
         [Test]
@@ -729,8 +733,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationships = relationshipController.GetUserRelationships(user);
 
             // Assert
-            Assert.IsInstanceOf<IList<UserRelationship>>(userRelationships);
-            Assert.AreEqual(5, userRelationships.Count);
+            Assert.That(userRelationships, Is.InstanceOf<IList<UserRelationship>>());
+            Assert.That(userRelationships, Has.Count.EqualTo(5));
         }
 
         [Test]
@@ -749,8 +753,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationships = relationshipController.GetUserRelationships(user);
 
             // Assert
-            Assert.IsInstanceOf<IList<UserRelationship>>(userRelationships);
-            Assert.AreEqual(0, userRelationships.Count);
+            Assert.That(userRelationships, Is.InstanceOf<IList<UserRelationship>>());
+            Assert.That(userRelationships, Is.Empty);
         }
 
         [Test]
@@ -992,7 +996,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationship = relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
 
             // Assert
-            Assert.AreEqual(userRelationship.Status, RelationshipStatus.Accepted);
+            Assert.That(userRelationship.Status, Is.EqualTo(RelationshipStatus.Accepted));
         }
 
         [Test]
@@ -1019,7 +1023,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationship = relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
 
             // Assert
-            Assert.AreEqual(userRelationship.Status, RelationshipStatus.Pending);
+            Assert.That(userRelationship.Status, Is.EqualTo(RelationshipStatus.Pending));
         }
 
         [Test]
@@ -1047,7 +1051,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationship = relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
 
             // Assert
-            Assert.AreEqual(userRelationship.Status, RelationshipStatus.Accepted);
+            Assert.That(userRelationship.Status, Is.EqualTo(RelationshipStatus.Accepted));
         }
 
         [Test]
@@ -1075,7 +1079,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var userRelationship = relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
 
             // Assert
-            Assert.AreEqual(userRelationship.Status, RelationshipStatus.Pending);
+            Assert.That(userRelationship.Status, Is.EqualTo(RelationshipStatus.Pending));
         }
 
         [Test]

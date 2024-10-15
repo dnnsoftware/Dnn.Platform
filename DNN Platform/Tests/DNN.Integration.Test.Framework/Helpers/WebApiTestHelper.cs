@@ -131,7 +131,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             if (!connector.IsLoggedIn)
             {
                 var loggedIn = connector.Login(AppConfigHelper.HostPassword);
-                Assert.IsTrue(loggedIn);
+                Assert.That(loggedIn, Is.True);
             }
 
             return connector;
@@ -159,7 +159,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             if (!connector.IsLoggedIn)
             {
                 var loggedIn = connector.Login(AppConfigHelper.HostPassword);
-                Assert.IsTrue(loggedIn);
+                Assert.That(loggedIn, Is.True);
             }
 
             return connector;
@@ -188,7 +188,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             if (!connector.IsLoggedIn)
             {
                 var loggedIn = connector.Login(AppConfigHelper.HostPassword);
-                Assert.IsTrue(loggedIn);
+                Assert.That(loggedIn, Is.True);
             }
 
             return connector;

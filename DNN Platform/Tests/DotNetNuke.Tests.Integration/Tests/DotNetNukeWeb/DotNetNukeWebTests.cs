@@ -30,6 +30,13 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
             this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
         }
 
+        [OneTimeTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+            this._httpClient?.Dispose();
+        }
+
         [Test]
         [TestCase(GetMonikerQuery)]
         [TestCase(GetModuleDetailsQuery)]
@@ -38,7 +45,7 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
             var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
     }
 }

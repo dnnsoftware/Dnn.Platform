@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         private void SetupUserControllerWrapperMock(UserInfo userInfo)

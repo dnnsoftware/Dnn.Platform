@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
                         // assert that read thread has terminated
                         Console.WriteLine(t.ThreadState.ToString());
-                        Assert.IsTrue(t.ThreadState == ThreadState.Stopped);
+                        Assert.That(t.ThreadState == ThreadState.Stopped, Is.True);
                     }
                 }
             }
@@ -120,13 +120,13 @@ namespace DotNetNuke.Tests.Core.Collections
                     Thread.Sleep(50);
 
                     // assert that write thread has not terminated
-                    Assert.IsTrue(t.IsAlive);
+                    Assert.That(t.IsAlive, Is.True);
                 } // release write lock
 
                 Thread.Sleep(50);
 
                 // assert that getwritelock did complete once first writelock was released it's call
-                Assert.IsFalse(t.IsAlive);
+                Assert.That(t.IsAlive, Is.False);
             }
         }
 
@@ -176,14 +176,14 @@ namespace DotNetNuke.Tests.Core.Collections
                     Thread.Sleep(100);
 
                     // assert that write thread is still waiting
-                    Assert.IsTrue(t.IsAlive);
+                    Assert.That(t.IsAlive, Is.True);
                 }
 
                 // release read lock
 
                 // sleep and let write thread finish up
                 Thread.Sleep(100);
-                Assert.IsFalse(t.IsAlive);
+                Assert.That(t.IsAlive, Is.False);
             }
 
             // release controller
@@ -205,13 +205,13 @@ namespace DotNetNuke.Tests.Core.Collections
                     Thread.Sleep(100);
 
                     // assert that write thread is still waiting
-                    Assert.IsTrue(t.IsAlive);
+                    Assert.That(t.IsAlive, Is.True);
                 }
 
                 // release write lock
                 // sleep and let write thread finish up
                 Thread.Sleep(100);
-                Assert.IsFalse(t.IsAlive);
+                Assert.That(t.IsAlive, Is.False);
             }
         }
 
@@ -233,12 +233,12 @@ namespace DotNetNuke.Tests.Core.Collections
                         Thread.Sleep(100);
 
                         // assert that read thread has terminated
-                        Assert.IsFalse(t.IsAlive);
+                        Assert.That(t.IsAlive, Is.False);
                     }
                 }
                 else
                 {
-                    Assert.IsTrue(true);
+                    Assert.Pass();
                 }
             }
         }

@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Services
                 HtmlUtils.IsHtml(
                     @"'New Event: <a href=\""http://localhost/dnn540/Home/tabid/40/ModuleID/389/ItemID/8/mctl/EventDetails/Default.aspx"">Test</a> on Saturday, May 08, 2010 2:00 AM to Saturday, May 08, 2010 2:30 AM  - One time event - has been added");
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Core.Services
         {
             var result = HtmlUtils.IsHtml("this is a test of dnnmail: <a href='https://www.dnnsoftware.com'>DotNetNuke</a>");
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [TearDown]
@@ -60,7 +60,7 @@ namespace DotNetNuke.Tests.Core.Services
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
 
             // Assert
-            Assert.AreEqual(this._expected, retValue);
+            Assert.That(retValue, Is.EqualTo(this._expected));
 
             // TearDown
             this.TearDown();
@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Services
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
 
             // Assert
-            Assert.AreEqual(this._expected, retValue);
+            Assert.That(retValue, Is.EqualTo(this._expected));
 
             // TearDown
             this.TearDown();
@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Services
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
 
             // Assert
-            Assert.AreEqual(this._expected, retValue);
+            Assert.That(retValue, Is.EqualTo(this._expected));
 
             // TearDown
             this.TearDown();
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Services
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
 
             // Assert
-            Assert.AreEqual(this._expected, retValue);
+            Assert.That(retValue, Is.EqualTo(this._expected));
 
             // TearDown
             this.TearDown();
