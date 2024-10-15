@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
-            Assert.AreEqual(expected, propertyNotFound);
+            Assert.That(propertyNotFound, Is.EqualTo(expected));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
-            Assert.AreEqual(expected.ToString(CultureInfo.InvariantCulture), propertyValue);
+            Assert.That(propertyValue, Is.EqualTo(expected.ToString(CultureInfo.InvariantCulture)));
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
-            Assert.AreEqual(expected, propertyNotFound);
+            Assert.That(propertyNotFound, Is.EqualTo(expected));
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
-            Assert.AreEqual(expected, propertyValue);
+            Assert.That(propertyValue, Is.EqualTo(expected));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
-            Assert.AreEqual(expected, propertyValue);
+            Assert.That(propertyValue, Is.EqualTo(expected));
         }
 
         [Test]
@@ -224,7 +224,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
-            Assert.AreEqual(expected, propertyValue);
+            Assert.That(propertyValue, Is.EqualTo(expected));
         }
     }
 }

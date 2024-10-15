@@ -51,10 +51,13 @@
                 unexpectedException = ex;
             }
 
-            // assert
-            Assert.IsNull(unexpectedException);
-            Assert.IsNotNull(argumentNullException);
-            Assert.AreEqual(nullParamName, argumentNullException.ParamName);
+            Assert.Multiple(() =>
+            {
+                // assert
+                Assert.That(unexpectedException, Is.Null);
+                Assert.That(argumentNullException, Is.Not.Null);
+            });
+            Assert.That(argumentNullException.ParamName, Is.EqualTo(nullParamName));
         }
 
         [Test]
@@ -74,7 +77,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(SeverityEnum.Pass, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
         }
 
         [Test]
@@ -96,7 +99,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(SeverityEnum.Pass, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
         }
 
         [Test]
@@ -120,7 +123,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(SeverityEnum.Warning, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Warning));
         }
 
         [Test]
@@ -144,7 +147,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(SeverityEnum.Pass, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
         }
 
         [Test]
@@ -168,7 +171,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(SeverityEnum.Pass, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
         }
 
         [Test]
@@ -193,7 +196,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(SeverityEnum.Pass, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
         }
 
         [Test]
@@ -221,7 +224,7 @@
             var result = sut.Execute();
 
             // assert
-            Assert.AreEqual(expectedSeverity, result.Severity);
+            Assert.That(result.Severity, Is.EqualTo(expectedSeverity));
         }
 
         private static TabInfo BuildActivityFeedTabInfo(bool deleted = false) => new TabInfo

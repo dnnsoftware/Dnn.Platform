@@ -63,7 +63,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = clientCapability.IsMobile;
 
             // Assert
-            Assert.IsTrue(bIsMobile);
+            Assert.That(bIsMobile, Is.True);
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = clientCapability.IsMobile;
 
             // Assert
-            Assert.IsTrue(bIsMobile);
+            Assert.That(bIsMobile, Is.True);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = clientCapability.IsMobile;
 
             // Assert
-            Assert.IsTrue(bIsMobile);
+            Assert.That(bIsMobile, Is.True);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = clientCapability.IsMobile;
 
             // Assert
-            Assert.IsTrue(bIsMobile);
+            Assert.That(bIsMobile, Is.True);
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var isMobile = clientCapability.IsMobile;
 
             // Assert
-            Assert.IsTrue(isMobile);
+            Assert.That(isMobile, Is.True);
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMmobile = clientCapability.IsMobile;
 
             // Assert
-            Assert.IsFalse(bIsMmobile);
+            Assert.That(bIsMmobile, Is.False);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = AspNetClientCapability.IsMobile;
 
             // Assert
-            Assert.IsFalse(bIsMobile);
+            Assert.That(bIsMobile, Is.False);
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = AspNetClientCapability.IsMobile;
 
             // Assert
-            Assert.IsTrue(bIsMobile);
+            Assert.That(bIsMobile, Is.True);
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = AspNetClientCapability.IsMobile;
 
             // Assert
-            Assert.IsFalse(bIsMobile);
+            Assert.That(bIsMobile, Is.False);
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = AspNetClientCapability.IsMobile;
 
             // Assert
-            Assert.IsFalse(bIsMobile);
+            Assert.That(bIsMobile, Is.False);
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = AspNetClientCapability.IsMobile;
 
             // Assert
-            Assert.IsFalse(bIsMobile);
+            Assert.That(bIsMobile, Is.False);
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsMobile = AspNetClientCapability.IsMobile;
 
             // Assert
-            Assert.IsFalse(bIsMobile);
+            Assert.That(bIsMobile, Is.False);
         }
 
         [Test]
@@ -225,7 +225,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsTablet = clientCapability.IsTablet;
 
             // Assert
-            Assert.IsFalse(bIsTablet);
+            Assert.That(bIsTablet, Is.False);
         }
 
         [Test]
@@ -238,7 +238,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsTablet = clientCapability.IsTablet;
 
             // Assert
-            Assert.IsTrue(bIsTablet);
+            Assert.That(bIsTablet, Is.True);
         }
 
         [Test]
@@ -251,7 +251,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bSupportsFlash = clientCapability.SupportsFlash;
 
             // Assert
-            Assert.IsFalse(bSupportsFlash);
+            Assert.That(bSupportsFlash, Is.False);
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             var bIsTablet = clientCapability.IsTablet;
 
             // Assert
-            Assert.IsFalse(bIsTablet);
+            Assert.That(bIsTablet, Is.False);
         }
     }
 }

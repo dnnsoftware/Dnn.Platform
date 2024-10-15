@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
 
             // Assert
             var retreivedComponent = ComponentFactory.GetComponent<IList>();
-            Assert.AreEqual(testComp1, retreivedComponent);
+            Assert.That(retreivedComponent, Is.EqualTo(testComp1));
         }
     }
 }

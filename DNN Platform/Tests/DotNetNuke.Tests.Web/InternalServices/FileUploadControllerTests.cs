@@ -61,7 +61,7 @@
             this._testInstance.Request = request;
             await this._testInstance.UploadFromLocal(-1);
 
-            Assert.IsTrue(_synchronizationContext.IsUploadFileCalled());
+            Assert.That(_synchronizationContext.IsUploadFileCalled(), Is.True);
         }
 
         private void SetupPortalSettings()

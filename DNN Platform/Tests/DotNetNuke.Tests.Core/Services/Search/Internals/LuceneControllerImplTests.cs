@@ -50,7 +50,7 @@
             var analyzer = luceneController.GetCustomAnalyzer();
 
             // Assert
-            Assert.IsInstanceOf<CzechAnalyzer>(analyzer);
+            Assert.That(analyzer, Is.InstanceOf<CzechAnalyzer>());
         }
     }
 }

@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Content
             int contentTypeId = contentTypeController.AddContentType(contentType);
 
             // Assert
-            Assert.AreEqual(Constants.CONTENTTYPE_AddContentTypeId, contentTypeId);
+            Assert.That(contentTypeId, Is.EqualTo(Constants.CONTENTTYPE_AddContentTypeId));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace DotNetNuke.Tests.Content
             contentTypeController.AddContentType(contentType);
 
             // Assert
-            Assert.AreEqual(Constants.CONTENTTYPE_AddContentTypeId, contentType.ContentTypeId);
+            Assert.That(contentType.ContentTypeId, Is.EqualTo(Constants.CONTENTTYPE_AddContentTypeId));
         }
 
         [Test]
@@ -185,8 +185,8 @@ namespace DotNetNuke.Tests.Content
             var contentTypes = contentTypeController.GetContentTypes();
 
             // Assert
-            Assert.IsNotNull(contentTypes);
-            Assert.AreEqual(0, contentTypes.Count());
+            Assert.That(contentTypes, Is.Not.Null);
+            Assert.That(contentTypes.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -202,7 +202,7 @@ namespace DotNetNuke.Tests.Content
             var contentTypes = contentTypeController.GetContentTypes();
 
             // Assert
-            Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());
+            Assert.That(contentTypes.Count(), Is.EqualTo(Constants.CONTENTTYPE_ValidContentTypeCount));
         }
 
         [Test]

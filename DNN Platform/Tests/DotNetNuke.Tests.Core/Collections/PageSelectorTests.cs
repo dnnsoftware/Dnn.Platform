@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Core.Collections
             IPagedList<int> pagedList = selector.GetPage(index);
 
             // Assert
-            Assert.AreEqual(index, pagedList.PageIndex);
+            Assert.That(pagedList.PageIndex, Is.EqualTo(index));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Core.Collections
             IPagedList<int> pagedList = selector.GetPage(Constants.PAGE_First);
 
             // Assert
-            Assert.AreEqual(pageSize, pagedList.PageSize);
+            Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Assert
             for (int i = 0; i < pageSize; i++)
             {
-                Assert.AreEqual((index * pageSize) + i, pagedList[i]);
+                Assert.That(pagedList[i], Is.EqualTo((index * pageSize) + i));
             }
         }
 

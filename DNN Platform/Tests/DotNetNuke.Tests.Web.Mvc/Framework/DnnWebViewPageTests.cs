@@ -33,8 +33,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             mockViewPage.Object.InitHelpers();
 
             // Assert
-            Assert.NotNull(mockViewPage.Object.Dnn);
-            Assert.IsInstanceOf<DnnHelper>(mockViewPage.Object.Dnn);
+            Assert.That(mockViewPage.Object.Dnn, Is.Not.Null);
+            Assert.That(mockViewPage.Object.Dnn, Is.InstanceOf<DnnHelper>());
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             mockViewPage.Object.InitHelpers();
 
             // Assert
-            Assert.NotNull(mockViewPage.Object.Html);
-            Assert.IsInstanceOf<DnnHtmlHelper>(mockViewPage.Object.Html);
+            Assert.That(mockViewPage.Object.Html, Is.Not.Null);
+            Assert.That(mockViewPage.Object.Html, Is.InstanceOf<DnnHtmlHelper>());
         }
 
         [Test]
@@ -75,8 +75,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             mockViewPage.Object.InitHelpers();
 
             // Assert
-            Assert.NotNull(mockViewPage.Object.Html);
-            Assert.IsInstanceOf<DnnHtmlHelper<Dog>>(mockViewPage.Object.Html);
+            Assert.That(mockViewPage.Object.Html, Is.Not.Null);
+            Assert.That(mockViewPage.Object.Html, Is.InstanceOf<DnnHtmlHelper<Dog>>());
         }
 
         [Test]
@@ -96,8 +96,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             mockViewPage.Object.InitHelpers();
 
             // Assert
-            Assert.NotNull(mockViewPage.Object.Url);
-            Assert.IsInstanceOf<DnnUrlHelper>(mockViewPage.Object.Url);
+            Assert.That(mockViewPage.Object.Url, Is.Not.Null);
+            Assert.That(mockViewPage.Object.Url, Is.InstanceOf<DnnUrlHelper>());
         }
     }
 }

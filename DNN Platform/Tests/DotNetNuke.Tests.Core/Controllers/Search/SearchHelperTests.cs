@@ -78,9 +78,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermDNN).ToArray();
 
-            // Assert
-            Assert.AreEqual(1, synonyms.Count());
-            Assert.AreEqual(TermDotNetNuke.ToLowerInvariant(), synonyms[0]);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(synonyms.Count(), Is.EqualTo(1));
+                Assert.That(synonyms[0], Is.EqualTo(TermDotNetNuke.ToLowerInvariant()));
+            });
         }
 
         [Test]
@@ -92,10 +95,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermHop).ToArray();
 
-            // Assert
-            Assert.AreEqual(2, synonyms.Count());
-            Assert.AreEqual(TermJump.ToLowerInvariant(), synonyms[0]);
-            Assert.AreEqual(TermLeap.ToLowerInvariant(), synonyms[1]);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(synonyms.Count(), Is.EqualTo(2));
+                Assert.That(synonyms[0], Is.EqualTo(TermJump.ToLowerInvariant()));
+                Assert.That(synonyms[1], Is.EqualTo(TermLeap.ToLowerInvariant()));
+            });
         }
 
         [Test]
@@ -109,7 +115,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -123,7 +129,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -137,7 +143,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -151,7 +157,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -165,7 +171,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -179,7 +185,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -193,7 +199,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -207,7 +213,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -221,7 +227,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -235,7 +241,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -249,7 +255,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -263,7 +269,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -277,7 +283,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -291,7 +297,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -305,7 +311,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -319,7 +325,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         [Test]
@@ -334,7 +340,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
-            Assert.AreEqual(expected, analyzed);
+            Assert.That(analyzed, Is.EqualTo(expected));
         }
 
         private void SetupDataProvider()

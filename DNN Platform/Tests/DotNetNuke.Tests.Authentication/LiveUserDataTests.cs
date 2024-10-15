@@ -27,9 +27,12 @@ namespace DotNetNuke.Tests.Authentication
             // Act
             UserData dukesUser = Json.Deserialize<LiveUserData>(SampleUserJson);
 
-            // Assert
-            Assert.AreEqual("Frederick", dukesUser.FirstName, "Should correctly pull first name from first_name field, not by parsing name");
-            Assert.AreEqual("Franklin", dukesUser.LastName, "Should correctly pull first name from last_name field, not by parsing name");
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(dukesUser.FirstName, Is.EqualTo("Frederick"), "Should correctly pull first name from first_name field, not by parsing name");
+                Assert.That(dukesUser.LastName, Is.EqualTo("Franklin"), "Should correctly pull first name from last_name field, not by parsing name");
+            });
         }
     }
 }

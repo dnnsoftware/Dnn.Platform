@@ -91,9 +91,12 @@ namespace DotNetNuke.Tests.Web.Api
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.True);
+                Assert.That(returnedModuleInfo, Is.SameAs(this._moduleInfo));
+            });
         }
 
         [Test]
@@ -107,9 +110,12 @@ namespace DotNetNuke.Tests.Web.Api
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.True);
+                Assert.That(returnedModuleInfo, Is.SameAs(this._moduleInfo));
+            });
         }
 
         [Test]
@@ -124,9 +130,12 @@ namespace DotNetNuke.Tests.Web.Api
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.True);
+                Assert.That(returnedModuleInfo, Is.SameAs(this._moduleInfo));
+            });
         }
 
         [Test]
@@ -140,9 +149,12 @@ namespace DotNetNuke.Tests.Web.Api
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsNull(returnedModuleInfo);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.False);
+                Assert.That(returnedModuleInfo, Is.Null);
+            });
         }
 
         [Test]
@@ -155,9 +167,12 @@ namespace DotNetNuke.Tests.Web.Api
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsNull(returnedModuleInfo);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.False);
+                Assert.That(returnedModuleInfo, Is.Null);
+            });
         }
 
         [Test]
@@ -175,8 +190,11 @@ namespace DotNetNuke.Tests.Web.Api
             // Assert
             this._mockTabController.Verify(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
             this._mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never());
-            Assert.IsNull(returnedModuleInfo);
-            Assert.IsFalse(result);
+            Assert.Multiple(() =>
+            {
+                Assert.That(returnedModuleInfo, Is.Null);
+                Assert.That(result, Is.False);
+            });
         }
 
         [Test]
@@ -193,8 +211,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             this._mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never());
-            Assert.IsNull(returnedModuleInfo);
-            Assert.IsFalse(result);
+            Assert.Multiple(() =>
+            {
+                Assert.That(returnedModuleInfo, Is.Null);
+                Assert.That(result, Is.False);
+            });
         }
 
         [Test]
@@ -209,9 +230,12 @@ namespace DotNetNuke.Tests.Web.Api
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);
 
-            // Assert
-            Assert.AreEqual(ValidTabId, tabId);
-            Assert.IsTrue(result);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(tabId, Is.EqualTo(ValidTabId));
+                Assert.That(result, Is.True);
+            });
         }
 
         [Test]
@@ -226,9 +250,12 @@ namespace DotNetNuke.Tests.Web.Api
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            // Assert
-            Assert.AreEqual(ValidTabId, moduleId);
-            Assert.IsTrue(result);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(moduleId, Is.EqualTo(ValidTabId));
+                Assert.That(result, Is.True);
+            });
         }
 
         [Test]
@@ -245,9 +272,12 @@ namespace DotNetNuke.Tests.Web.Api
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);
 
-            // Assert
-            Assert.AreEqual(ValidTabId, tabId);
-            Assert.IsTrue(result);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(tabId, Is.EqualTo(ValidTabId));
+                Assert.That(result, Is.True);
+            });
         }
 
         [Test]
@@ -264,9 +294,12 @@ namespace DotNetNuke.Tests.Web.Api
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            // Assert
-            Assert.AreEqual(ValidModuleId, moduleId);
-            Assert.IsTrue(result);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(moduleId, Is.EqualTo(ValidModuleId));
+                Assert.That(result, Is.True);
+            });
         }
 
         [Test]
@@ -283,9 +316,12 @@ namespace DotNetNuke.Tests.Web.Api
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(ValidModuleId, moduleId);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.True);
+                Assert.That(moduleId, Is.EqualTo(ValidModuleId));
+            });
         }
 
         [Test]
@@ -304,9 +340,12 @@ namespace DotNetNuke.Tests.Web.Api
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);
 
-            // Assert
-            Assert.AreEqual(ValidTabId, tabId);
-            Assert.IsTrue(result);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(tabId, Is.EqualTo(ValidTabId));
+                Assert.That(result, Is.True);
+            });
         }
 
         [Test]
@@ -325,9 +364,12 @@ namespace DotNetNuke.Tests.Web.Api
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            // Assert
-            Assert.AreEqual(ValidModuleId, moduleId);
-            Assert.IsTrue(result);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(moduleId, Is.EqualTo(ValidModuleId));
+                Assert.That(result, Is.True);
+            });
         }
 
         [Test]
@@ -339,9 +381,12 @@ namespace DotNetNuke.Tests.Web.Api
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(new HttpRequestMessage(), out tabId);
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.AreEqual(-1, tabId);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.False);
+                Assert.That(tabId, Is.EqualTo(-1));
+            });
         }
 
         [Test]
@@ -353,9 +398,12 @@ namespace DotNetNuke.Tests.Web.Api
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(new HttpRequestMessage(), out moduleId);
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.AreEqual(-1, moduleId);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.False);
+                Assert.That(moduleId, Is.EqualTo(-1));
+            });
         }
 
         private static IDataReader GetPortalsCallBack(string culture)

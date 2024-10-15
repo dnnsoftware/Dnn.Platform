@@ -12,19 +12,19 @@ namespace DotNetNuke.Tests.Data
         {
             var value = DataUtil.GetFieldValue<T>(databaseName, tableName, field, primaryKeyField, id.ToString());
 
-            Assert.AreEqual(expectedValue, value);
+            Assert.That(value, Is.EqualTo(expectedValue));
         }
 
         public static void RecordWithIdPresent(string databaseName, string tableName, string primaryKeyField, int id)
         {
             var count = DataUtil.GetRecordCount(databaseName, tableName, primaryKeyField, id.ToString());
-            Assert.IsTrue(count == 1);
+            Assert.That(count == 1, Is.True);
         }
 
         public static void RecordWithIdNotPresent(string databaseName, string tableName, string primaryKeyField, int id)
         {
             var count = DataUtil.GetRecordCount(databaseName, tableName, primaryKeyField, id.ToString());
-            Assert.IsTrue(count == 0);
+            Assert.That(count == 0, Is.True);
         }
     }
 }

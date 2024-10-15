@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             const string roles = "";
             var portalSettings = SetupPortalSettings();
 
-            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.True);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             const string roles = Globals.glbRoleAllUsersName;
             var portalSettings = SetupPortalSettings();
 
-            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.True);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             const string roles = "SomeRoleName";
             var portalSettings = SetupPortalSettings();
-            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.True);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.True);
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.True);
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.True);
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert
-            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             const string roles = "!SomeRoleName";
             var portalSettings = SetupPortalSettings();
-            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+            Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
         // [Test]

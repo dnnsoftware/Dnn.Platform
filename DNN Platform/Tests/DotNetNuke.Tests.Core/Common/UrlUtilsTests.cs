@@ -46,21 +46,21 @@ public class UrlUtilsTests
     public void CombineEmptyBase()
     {
         var result = UrlUtils.Combine(string.Empty, "a/b/c");
-        Assert.AreEqual("a/b/c", result);
+        Assert.That(result, Is.EqualTo("a/b/c"));
     }
 
     [Test]
     public void CombineEmptyRelative()
     {
         var result = UrlUtils.Combine("/a/b/c", string.Empty);
-        Assert.AreEqual("/a/b/c", result);
+        Assert.That(result, Is.EqualTo("/a/b/c"));
     }
 
     [Test]
     public void CombineRelativeWithBaseTrimsSlashes()
     {
         var result = UrlUtils.Combine("/a/b/c/", "/d/e/f/");
-        Assert.AreEqual("/a/b/c/d/e/f/", result);
+        Assert.That(result, Is.EqualTo("/a/b/c/d/e/f/"));
     }
 
     [Test]
@@ -69,14 +69,14 @@ public class UrlUtilsTests
         const string input = "DNN Platform!";
         var encodedValue = UrlUtils.EncodeParameter(input);
         var result = UrlUtils.DecodeParameter(encodedValue);
-        Assert.AreEqual(input, result);
+        Assert.That(result, Is.EqualTo(input));
     }
 
     [Test]
     public void DecodeParameterHandlesSpecialCharacters()
     {
         var result = UrlUtils.DecodeParameter("RE5_O1-$");
-        Assert.AreEqual("DN;_", result);
+        Assert.That(result, Is.EqualTo("DN;_"));
     }
 
     [Test]
@@ -86,87 +86,87 @@ public class UrlUtilsTests
         var key = Guid.NewGuid().ToString();
         var encodedValue = UrlUtils.EncryptParameter(input, key);
         var result = UrlUtils.DecryptParameter(encodedValue, key);
-        Assert.AreEqual(input, result);
+        Assert.That(result, Is.EqualTo(input));
     }
 
     [Test]
     public void EncodeParameterReplacesPaddingSymbols()
     {
         var result = UrlUtils.EncodeParameter("D");
-        Assert.AreEqual("RA$$", result);
+        Assert.That(result, Is.EqualTo("RA$$"));
     }
 
     [Test]
     public void EncryptParameterReplacesPaddingSymbols()
     {
         var result = UrlUtils.EncryptParameter("D", "key");
-        Assert.IsTrue(result.EndsWith("%3d"));
+        Assert.That(result.EndsWith("%3d"), Is.True);
     }
 
     [Test]
     public void GetParameterNameReturnsName()
     {
         var result = UrlUtils.GetParameterName("key=value");
-        Assert.AreEqual("key", result);
+        Assert.That(result, Is.EqualTo("key"));
     }
 
     [Test]
     public void GetParameterNameReturnsEntireStringIfNoEqualsSign()
     {
         var result = UrlUtils.GetParameterName("just-a-key");
-        Assert.AreEqual("just-a-key", result);
+        Assert.That(result, Is.EqualTo("just-a-key"));
     }
 
     [Test]
     public void GetParameterNameReturnsEmptyIfStartsWithEqualsSign()
     {
         var result = UrlUtils.GetParameterName("=just-a-value");
-        Assert.AreEqual(string.Empty, result);
+        Assert.That(result, Is.EqualTo(string.Empty));
     }
 
     [Test]
     public void GetParameterValueReturnsName()
     {
         var result = UrlUtils.GetParameterValue("key=value");
-        Assert.AreEqual("value", result);
+        Assert.That(result, Is.EqualTo("value"));
     }
 
     [Test]
     public void GetParameterValueReturnsEmptyStringIfNoEqualsSign()
     {
         var result = UrlUtils.GetParameterValue("just-a-key");
-        Assert.AreEqual(string.Empty, result);
+        Assert.That(result, Is.EqualTo(string.Empty));
     }
 
     [Test]
     public void GetParameterValueReturnsEntireStringIfStartsWithEqualsSign()
     {
         var result = UrlUtils.GetParameterValue("=just-a-value");
-        Assert.AreEqual("just-a-value", result);
+        Assert.That(result, Is.EqualTo("just-a-value"));
     }
 
     [Test]
     public void ClosePopUpGeneratesAJavaScriptUrlWithValues()
     {
         var result = UrlUtils.ClosePopUp(false, "/hello",  false);
-        Assert.AreEqual("""javascript:dnnModal.closePopUp(false, "/hello")""", result);
+        Assert.That(result, Is.EqualTo("""javascript:dnnModal.closePopUp(false, "/hello")"""));
 
         result = UrlUtils.ClosePopUp(true, "blah", false);
-        Assert.AreEqual("""javascript:dnnModal.closePopUp(true, "blah")""", result);
+        Assert.That(result, Is.EqualTo("""javascript:dnnModal.closePopUp(true, "blah")"""));
     }
 
     [Test]
     public void ClosePopUpGeneratesAScriptWhenOnClickEventIsTrue()
     {
         var result = UrlUtils.ClosePopUp(false, "/somewhere",  true);
-        Assert.AreEqual("""dnnModal.closePopUp(false, "/somewhere")""", result);
+        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, "/somewhere")"""));
     }
 
     [Test]
     public void ClosePopUpEncodesUrlParameter()
     {
         var result = UrlUtils.ClosePopUp(false, "/somewhere?value=%20hi&two='hey'",  true);
-        Assert.AreEqual("""dnnModal.closePopUp(false, "/somewhere?value=%20hi\u0026two=\u0027hey\u0027")""", result);
+        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, "/somewhere?value=%20hi\u0026two=\u0027hey\u0027")"""));
     }
 
     [Test]
@@ -175,7 +175,7 @@ public class UrlUtilsTests
         HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
 
         var result = UrlUtils.ReplaceQSParam("/somewhere?value=hi&two=hey", "two", "what");
-        Assert.AreEqual("/somewhere?value=hi&two=what", result);
+        Assert.That(result, Is.EqualTo("/somewhere?value=hi&two=what"));
     }
 
     [Test]
@@ -184,7 +184,7 @@ public class UrlUtilsTests
         HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "true", };
 
         var result = UrlUtils.ReplaceQSParam("/somewhere/value/hi/two/hey/", "two", "what");
-        Assert.AreEqual("/somewhere/value/hi/two/what/", result);
+        Assert.That(result, Is.EqualTo("/somewhere/value/hi/two/what/"));
     }
 
     [Test]
@@ -193,7 +193,7 @@ public class UrlUtilsTests
         HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
 
         var result = UrlUtils.ReplaceQSParam("/somewhere?one.two=three$four&one_two=123", "one.two", "four$3");
-        Assert.AreEqual("/somewhere?one.two=four$3&one_two=123", result);
+        Assert.That(result, Is.EqualTo("/somewhere?one.two=four$3&one_two=123"));
     }
 
     [Test]
@@ -202,7 +202,7 @@ public class UrlUtilsTests
         HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
 
         var result = UrlUtils.StripQSParam("/somewhere?value=hi&two=hey&three=x", "two");
-        Assert.AreEqual("/somewhere?value=hi&three=x", result);
+        Assert.That(result, Is.EqualTo("/somewhere?value=hi&three=x"));
     }
 
     [Test]
@@ -211,7 +211,7 @@ public class UrlUtilsTests
         HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "true", };
 
         var result = UrlUtils.StripQSParam("/somewhere/value/hi/two/hey/", "two");
-        Assert.AreEqual("/somewhere/value/hi/", result);
+        Assert.That(result, Is.EqualTo("/somewhere/value/hi/"));
     }
 
     [Test]
@@ -220,35 +220,35 @@ public class UrlUtilsTests
         HostSettings["UseFriendlyUrls"] = new ConfigurationSetting { Key = "UseFriendlyUrls", Value = "false", };
 
         var result = UrlUtils.StripQSParam("/somewhere?one.two=three$four&one_two=123", "one.two");
-        Assert.AreEqual("/somewhere?one_two=123", result);
+        Assert.That(result, Is.EqualTo("/somewhere?one_two=123"));
     }
 
     [Test]
     public void ValidateReturnUrlReturnsNullWhenInputIsNull()
     {
         var result = UrlUtils.ValidReturnUrl(null);
-        Assert.IsNull(result);
+        Assert.That(result, Is.Null);
     }
 
     [Test]
     public void ValidateReturnUrlReturnsEmptyWhenInputIsEmpty()
     {
         var result = UrlUtils.ValidReturnUrl(string.Empty);
-        Assert.IsEmpty(result);
+        Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void ValidateReturnUrlDoesNotAcceptDataUrl()
     {
         var result = UrlUtils.ValidReturnUrl("data:text/plain,I am text file");
-        Assert.IsEmpty(result);
+        Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void ValidateReturnUrlDoesNotAcceptXssAttack()
     {
         var result = UrlUtils.ValidReturnUrl("/return?onclick=alert()");
-        Assert.IsEmpty(result);
+        Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -263,7 +263,7 @@ public class UrlUtilsTests
         PortalController.SetTestableInstance(portalControllerMock.Object);
 
         var result = UrlUtils.ValidReturnUrl("https://another.evil/return");
-        Assert.IsEmpty(result);
+        Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -278,7 +278,7 @@ public class UrlUtilsTests
         PortalController.SetTestableInstance(portalControllerMock.Object);
 
         var result = UrlUtils.ValidReturnUrl("https://dnncommunity.org/return");
-        Assert.AreEqual("https://dnncommunity.org/return", result);
+        Assert.That(result, Is.EqualTo("https://dnncommunity.org/return"));
     }
 
     [Test]
@@ -293,7 +293,7 @@ public class UrlUtilsTests
         PortalController.SetTestableInstance(portalControllerMock.Object);
 
         var result = UrlUtils.ValidReturnUrl("/////dnncommunity.net/return");
-        Assert.IsEmpty(result);
+        Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -308,20 +308,20 @@ public class UrlUtilsTests
         PortalController.SetTestableInstance(portalControllerMock.Object);
 
         var result = UrlUtils.ValidReturnUrl("/////dnncommunity.org/return");
-        Assert.AreEqual("//dnncommunity.org/return", result);
+        Assert.That(result, Is.EqualTo("//dnncommunity.org/return"));
     }
 
     [Test]
     public void IsPopUpIsTrueWhenPopUpParameterIsOnUrl()
     {
         var result = UrlUtils.IsPopUp("/page?popUp=true");
-        Assert.IsTrue(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
     public void IsPopUpIsFalseWhenPopUpParameterIsNotOnUrl()
     {
         var result = UrlUtils.IsPopUp("/page");
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 }

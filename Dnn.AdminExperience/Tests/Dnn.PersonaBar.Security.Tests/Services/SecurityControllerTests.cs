@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             var alias = sut.AddPortalAlias(SslUrl, PortalId);
 
             // assert
-            Assert.AreEqual(SomeAlias, alias);
+            Assert.That(alias, Is.EqualTo(SomeAlias));
         }
 
         [Test]
