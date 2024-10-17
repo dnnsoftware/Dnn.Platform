@@ -63,7 +63,7 @@ namespace DotNetNuke.Tests.Web.Api
             string result = new PortalAliasRouteManager().GetRouteUrl(moduleFolderName, url, count);
 
             // Assert
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace DotNetNuke.Tests.Web.Api
             List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
 
             // Assert
-            CollectionAssert.AreEquivalent(new[] { 0 }, prefixes);
+            Assert.That(prefixes, Is.EquivalentTo(new[] { 0 }));
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Web.Api
             List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
 
             // Assert
-            CollectionAssert.AreEquivalent(new[] { 0 }, prefixes);
+            Assert.That(prefixes, Is.EquivalentTo(new[] { 0 }));
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Web.Api
             List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(new[] { 1, 0 }, prefixes);
+            Assert.That(prefixes, Is.EqualTo(new[] { 1, 0 }).AsCollection);
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, count);
 
             // Assert
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -265,7 +265,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, new PortalAliasInfo { HTTPAlias = httpAlias });
 
             // Assert
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -318,7 +318,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             var expected = new Dictionary<string, object> { { "value1", 1 }, { "value2", 2 } };
-            CollectionAssert.AreEquivalent(expected, result);
+            Assert.That(result, Is.EquivalentTo(expected));
         }
 
         [Test]
@@ -335,7 +335,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             var expected = new Dictionary<string, object> { { "prefix0", "child" } };
-            CollectionAssert.AreEquivalent(expected, result);
+            Assert.That(result, Is.EquivalentTo(expected));
         }
 
         [Test]
@@ -352,7 +352,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             var expected = new Dictionary<string, object> { { "prefix0", "child0" }, { "prefix1", "child1" }, { "prefix2", "child2" }, { "prefix3", "child3" }, { "value1", 1 }, { "value2", 2 } };
-            CollectionAssert.AreEquivalent(expected, result);
+            Assert.That(result, Is.EquivalentTo(expected));
         }
     }
 }

@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.AreEqual(hasNext, pagedList.HasNextPage);
+            Assert.That(pagedList.HasNextPage, Is.EqualTo(hasNext));
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.AreEqual(hasPrevious, pagedList.HasPreviousPage);
+            Assert.That(pagedList.HasPreviousPage, Is.EqualTo(hasPrevious));
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.AreEqual(isFirst, pagedList.IsFirstPage);
+            Assert.That(pagedList.IsFirstPage, Is.EqualTo(isFirst));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.AreEqual(isLast, pagedList.IsLastPage);
+            Assert.That(pagedList.IsLastPage, Is.EqualTo(isLast));
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.AreEqual(index, pagedList.PageIndex);
+            Assert.That(pagedList.PageIndex, Is.EqualTo(index));
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, Constants.PAGE_First, pageSize);
 
             // Assert
-            Assert.AreEqual(pageSize, pagedList.PageSize);
+            Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Assert
             for (int i = 0; i < pageSize; i++)
             {
-                Assert.AreEqual((index * pageSize) + i, pagedList[i]);
+                Assert.That(pagedList[i], Is.EqualTo((index * pageSize) + i));
             }
         }
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, pageSize);
 
             // Assert
-            Assert.AreEqual(pageCount, pagedList.PageCount);
+            Assert.That(pagedList.PageCount, Is.EqualTo(pageCount));
         }
 
         [Test]
@@ -262,7 +262,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var pagedList = new PagedList<int>(list, index, pageSize);
 
             // Assert
-            Assert.AreEqual(Constants.PAGE_TotalCount, pagedList.TotalCount);
+            Assert.That(pagedList.TotalCount, Is.EqualTo(Constants.PAGE_TotalCount));
         }
     }
 }

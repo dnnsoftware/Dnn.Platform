@@ -207,14 +207,15 @@ ListView.propTypes = {
     onPreviewPortal: PropTypes.func,
     sitesModule: PropTypes.string,
     culture: PropTypes.string,
-    siteImportExportModule: PropTypes.string
+    siteImportExportModule: PropTypes.string,
+    className: PropTypes.string
 };
 
 ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
     sitesModule: "Dnn.Sites",
     siteImportExportModule: "Dnn.SiteImportExport",
-    culture: "en-US"
+    culture: "en-US",
 };
 
 function mapStateToProps(state) {

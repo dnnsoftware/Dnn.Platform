@@ -44,8 +44,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             this._actionInvoker.InvokeAction(controller.ControllerContext, "Index");
 
             // Assert
-            Assert.IsNotNull(this._actionInvoker.ResultOfLastInvoke);
-            Assert.IsInstanceOf<ViewResult>(this._actionInvoker.ResultOfLastInvoke);
+            Assert.That(this._actionInvoker.ResultOfLastInvoke, Is.Not.Null);
+            Assert.That(this._actionInvoker.ResultOfLastInvoke, Is.InstanceOf<ViewResult>());
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithExceptionFilter));
 
             // Assert
-            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
+            Assert.That(this._actionInvoker.ResultOfLastInvoke, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             Assert.Throws<Exception>(() => this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithExceptionFilter)));
 
             // Assert
-            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
+            Assert.That(this._actionInvoker.ResultOfLastInvoke, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithOnExecutingFilter));
 
             // Assert
-            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
+            Assert.That(this._actionInvoker.ResultOfLastInvoke, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithOnExecutedFilter));
 
             // Assert
-            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
+            Assert.That(this._actionInvoker.ResultOfLastInvoke, Is.EqualTo(expectedResult));
         }
 
         private FakeDnnController SetupController(HttpContextBase context)

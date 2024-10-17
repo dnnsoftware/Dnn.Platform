@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             app.Object.ExecuteRequest(CreateModuleContext(ControllerName, ActionName));
 
             // Assert
-            Assert.AreEqual(1, initCounter);
+            Assert.That(initCounter, Is.EqualTo(1));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             // Assert
             controllerFactory.Verify(f => f.CreateController(It.IsAny<RequestContext>(), ControllerName));
-            Assert.AreSame(moduleRequestContext.HttpContext, actualRequestContext.HttpContext);
+            Assert.That(actualRequestContext.HttpContext, Is.SameAs(moduleRequestContext.HttpContext));
         }
 
         [Test]
@@ -169,9 +169,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Act
             ModuleRequestResult result = app.ExecuteRequest(moduleRequestContext);
 
-            // Assert
-            Assert.AreSame(actionResult, result.ActionResult);
-            Assert.AreSame(controllerContext, result.ControllerContext);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.ActionResult, Is.SameAs(actionResult));
+                Assert.That(result.ControllerContext, Is.SameAs(controllerContext));
+            });
         }
 
         [Test]

@@ -30,7 +30,7 @@ namespace DotNetNuke.Tests.Core
 
             retryable.TryIt();
 
-            Assert.AreEqual(1, monitor.TimesCalled);
+            Assert.That(monitor.TimesCalled, Is.EqualTo(1));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Core
 
             retryable.TryIt();
 
-            Assert.AreEqual(3, monitor.TimesCalled);
+            Assert.That(monitor.TimesCalled, Is.EqualTo(3));
         }
 
         [Test]
@@ -56,9 +56,12 @@ namespace DotNetNuke.Tests.Core
             var secondRetry = this._sleepMonitor.SleepPeriod[1];
             var thirdRetry = this._sleepMonitor.SleepPeriod[2];
 
-            Assert.AreEqual(5, firstRetry);
-            Assert.AreEqual(50, secondRetry);
-            Assert.AreEqual(500, thirdRetry);
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstRetry, Is.EqualTo(5));
+                Assert.That(secondRetry, Is.EqualTo(50));
+                Assert.That(thirdRetry, Is.EqualTo(500));
+            });
         }
 
         [Test]

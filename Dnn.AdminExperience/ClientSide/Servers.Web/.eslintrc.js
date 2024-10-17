@@ -38,6 +38,7 @@ module.exports = {
       "space-before-blocks": "warn",
       "no-multiple-empty-lines":  "warn",
       "react/jsx-equals-spacing": ["warn", "never"],
+      "react/prop-types": "warn",
       "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}]
     }
 };

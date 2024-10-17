@@ -145,7 +145,7 @@ namespace DotNetNuke.Tests.Content
             int termId = termController.AddTerm(term);
 
             // Assert
-            Assert.AreEqual(Constants.TERM_AddTermId, termId);
+            Assert.That(termId, Is.EqualTo(Constants.TERM_AddTermId));
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Content
             termController.AddTerm(term);
 
             // Assert
-            Assert.AreEqual(Constants.TERM_AddTermId, term.TermId);
+            Assert.That(term.TermId, Is.EqualTo(Constants.TERM_AddTermId));
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace DotNetNuke.Tests.Content
             int termId = termController.AddTerm(term);
 
             // Assert
-            Assert.AreEqual(Constants.TERM_AddTermId, termId);
+            Assert.That(termId, Is.EqualTo(Constants.TERM_AddTermId));
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace DotNetNuke.Tests.Content
             termController.AddTerm(term);
 
             // Assert
-            Assert.AreEqual(Constants.TERM_AddTermId, term.TermId);
+            Assert.That(term.TermId, Is.EqualTo(Constants.TERM_AddTermId));
         }
 
         [Test]
@@ -369,7 +369,7 @@ namespace DotNetNuke.Tests.Content
             Term term = termController.GetTerm(Constants.TERM_InValidTermId);
 
             // Assert
-            Assert.IsNull(term);
+            Assert.That(term, Is.Null);
         }
 
         [Test]
@@ -401,9 +401,12 @@ namespace DotNetNuke.Tests.Content
             // Act
             var term = termController.GetTerm(Constants.TERM_ValidTermId);
 
-            // Assert
-            Assert.AreEqual(Constants.TERM_ValidTermId, term.TermId);
-            Assert.AreEqual(Constants.TERM_ValidName, term.Name);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(term.TermId, Is.EqualTo(Constants.TERM_ValidTermId));
+                Assert.That(term.Name, Is.EqualTo(Constants.TERM_ValidName));
+            });
         }
 
         [Test]
@@ -454,12 +457,15 @@ namespace DotNetNuke.Tests.Content
             var terms = termController.GetTermsByContent(Constants.TERM_ValidContent1).ToList();
 
             // Assert
-            Assert.AreEqual(Constants.TERM_ValidCountForContent1, terms.Count);
+            Assert.That(terms, Has.Count.EqualTo(Constants.TERM_ValidCountForContent1));
 
             for (int i = 0; i < Constants.TERM_ValidCountForContent1; i++)
             {
-                Assert.AreEqual(i + Constants.TERM_ValidTermId, terms[i].TermId);
-                Assert.AreEqual(ContentTestHelper.GetTermName(i + Constants.TERM_ValidTermId), terms[i].Name);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(terms[i].TermId, Is.EqualTo(i + Constants.TERM_ValidTermId));
+                    Assert.That(terms[i].Name, Is.EqualTo(ContentTestHelper.GetTermName(i + Constants.TERM_ValidTermId)));
+                });
             }
         }
 
@@ -494,12 +500,15 @@ namespace DotNetNuke.Tests.Content
             var terms = termController.GetTermsByVocabulary(Constants.TERM_ValidVocabulary1).ToList();
 
             // Assert
-            Assert.AreEqual(Constants.TERM_ValidCountForVocabulary1, terms.Count);
+            Assert.That(terms, Has.Count.EqualTo(Constants.TERM_ValidCountForVocabulary1));
 
             for (int i = 0; i < Constants.TERM_ValidCountForVocabulary1; i++)
             {
-                Assert.AreEqual(i + Constants.TERM_ValidTermId, terms[i].TermId);
-                Assert.AreEqual(ContentTestHelper.GetTermName(i + Constants.TERM_ValidTermId), terms[i].Name);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(terms[i].TermId, Is.EqualTo(i + Constants.TERM_ValidTermId));
+                    Assert.That(terms[i].Name, Is.EqualTo(ContentTestHelper.GetTermName(i + Constants.TERM_ValidTermId)));
+                });
             }
         }
 

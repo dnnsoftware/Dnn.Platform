@@ -109,6 +109,7 @@ class FullEditor extends Component {
 FullEditor.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
+    onCancel: PropTypes.func,
     className: PropTypes.string
 };
 

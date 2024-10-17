@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand("--username", "testusername", "--firstname", "testfirstname", "--lastname", "testlastname");
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [TestCase("--email", "user@gm.com")]
@@ -64,9 +64,12 @@ namespace Dnn.PersonaBar.Users.Tests
             // Act
             var result = this.RunCommand(userId.ToString(), "--firstname", "user4", "--lastname", "user4", attributeName, attributeValue);
 
-            // Assert
-            Assert.IsFalse(result.IsError);
-            Assert.AreEqual(1, result.Records);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsError, Is.False);
+                Assert.That(result.Records, Is.EqualTo(1));
+            });
         }
 
         protected override void ChildSetup()

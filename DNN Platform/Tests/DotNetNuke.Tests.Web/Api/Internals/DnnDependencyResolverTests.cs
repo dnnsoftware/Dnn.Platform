@@ -36,6 +36,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [OneTimeTearDown]
         public void FixtureTearDown()
         {
+            this.dependencyResolver?.Dispose();
             this.dependencyResolver = null;
 
             if (this.serviceProvider is IDisposable disposable)
@@ -49,13 +50,13 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void NotNull()
         {
-            Assert.NotNull(this.dependencyResolver);
+            Assert.That(this.dependencyResolver, Is.Not.Null);
         }
 
         [Test]
         public void IsOfTypeDnnDependencyResolver()
         {
-            Assert.IsInstanceOf<DnnDependencyResolver>(this.dependencyResolver);
+            Assert.That(this.dependencyResolver, Is.InstanceOf<DnnDependencyResolver>());
         }
 
         [Test]
@@ -64,8 +65,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var expected = new TestService();
             var actual = this.dependencyResolver.GetService(typeof(ITestService));
 
-            Assert.NotNull(actual);
-            Assert.AreEqual(expected.GetType(), actual.GetType());
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.GetType(), Is.EqualTo(expected.GetType()));
         }
 
         [Test]
@@ -74,9 +75,9 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var expected = new TestService();
             var actual = this.dependencyResolver.GetServices(typeof(ITestService)).ToArray();
 
-            Assert.NotNull(actual);
-            Assert.AreEqual(1, actual.Length);
-            Assert.AreEqual(expected.GetType(), actual[0].GetType());
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Has.Length.EqualTo(1));
+            Assert.That(actual[0].GetType(), Is.EqualTo(expected.GetType()));
         }
 
         [Test]
@@ -84,8 +85,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         {
             var actual = this.dependencyResolver.BeginScope();
 
-            Assert.NotNull(actual);
-            Assert.IsInstanceOf<DnnDependencyResolver>(actual);
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Is.InstanceOf<DnnDependencyResolver>());
         }
 
         [Test]
@@ -96,8 +97,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var expected = new TestService();
             var actual = scope.GetService(typeof(ITestService));
 
-            Assert.NotNull(actual);
-            Assert.AreEqual(expected.GetType(), actual.GetType());
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.GetType(), Is.EqualTo(expected.GetType()));
         }
 
         [Test]
@@ -108,9 +109,9 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var expected = new TestService();
             var actual = scope.GetServices(typeof(ITestService)).ToArray();
 
-            Assert.NotNull(actual);
-            Assert.AreEqual(1, actual.Length);
-            Assert.AreEqual(expected.GetType(), actual[0].GetType());
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Has.Length.EqualTo(1));
+            Assert.That(actual[0].GetType(), Is.EqualTo(expected.GetType()));
         }
 
         private class TestService : ITestService

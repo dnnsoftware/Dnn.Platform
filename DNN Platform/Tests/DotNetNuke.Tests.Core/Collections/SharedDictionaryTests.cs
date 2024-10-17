@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
 
-            CollectionAssert.AreEqual(new Dictionary<string, string> { { KEY, VALUE } }, sharedDictionary.BackingDictionary);
+            Assert.That(sharedDictionary.BackingDictionary, Is.EqualTo(new Dictionary<string, string> { { KEY, VALUE } }).AsCollection);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 actualValue = d["key"];
             }
 
-            Assert.AreEqual("value", actualValue);
+            Assert.That(actualValue, Is.EqualTo("value"));
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
                 catch (Exception exception)
                 {
-                    Assert.Fail("Expected LockRecursionException, got {0}", exception);
+                    Assert.Fail($"Expected LockRecursionException, got {exception}");
                 }
                 finally
                 {

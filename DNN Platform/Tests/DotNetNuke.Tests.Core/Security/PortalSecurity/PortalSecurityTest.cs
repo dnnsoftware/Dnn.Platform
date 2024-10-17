@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             var filterOutput = portalSecurity.InputFilter(html, markup);
 
             // Assert
-            Assert.AreEqual(filterOutput, expectedOutput);
+            Assert.That(expectedOutput, Is.EqualTo(filterOutput));
         }
 
         [TestCase("User\0name", "Username",
@@ -153,7 +153,7 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             var filterOutput = portalSecurity.InputFilter(html, markup);
 
             // Assert
-            Assert.AreEqual(filterOutput, expectedOutput);
+            Assert.That(expectedOutput, Is.EqualTo(filterOutput));
         }
     }
 }

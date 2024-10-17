@@ -51,7 +51,8 @@ SynonymsGroupRow.propTypes = {
     onDelete: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    visible: PropTypes.bool
+    visible: PropTypes.bool,
+    children: PropTypes.node
 };
 
 SynonymsGroupRow.defaultProps = {

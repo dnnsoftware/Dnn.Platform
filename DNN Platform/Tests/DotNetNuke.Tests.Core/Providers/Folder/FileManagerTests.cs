@@ -596,7 +596,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -616,7 +616,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -1098,7 +1098,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var inputStream = new MemoryStream();
             var seekableStream = this.fileManager.GetSeekableStream(inputStream);
 
-            Assert.AreEqual(inputStream, seekableStream);
+            Assert.That(seekableStream, Is.EqualTo(inputStream));
         }
 
         [Test]

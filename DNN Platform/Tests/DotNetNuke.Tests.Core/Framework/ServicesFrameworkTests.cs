@@ -38,14 +38,14 @@ namespace DotNetNuke.Tests.Core.Framework
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             // Assert
-            Assert.IsTrue(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired);
+            Assert.That(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired, Is.True);
         }
 
         [Test]
         public void NoAjaxAntiForgeryRequestMeansNotRequired()
         {
             // Assert
-            Assert.IsFalse(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired);
+            Assert.That(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired, Is.False);
         }
     }
 }

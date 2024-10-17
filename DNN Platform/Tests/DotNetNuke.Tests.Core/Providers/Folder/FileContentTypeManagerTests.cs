@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var contentType = FileContentTypeManager.Instance.GetContentType(notManagedExtension);
 
-            Assert.AreEqual("application/octet-stream", contentType);
+            Assert.That(contentType, Is.EqualTo("application/octet-stream"));
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var contentType = FileContentTypeManager.Instance.GetContentType(notManagedExtension);
 
-            Assert.AreEqual("text/html", contentType);
+            Assert.That(contentType, Is.EqualTo("text/html"));
         }
     }
 }

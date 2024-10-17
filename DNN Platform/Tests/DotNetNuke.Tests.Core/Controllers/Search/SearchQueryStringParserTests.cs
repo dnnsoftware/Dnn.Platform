@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var date = SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(DateTime.UtcNow.AddDays(-1).Date, date.Date);
+            Assert.That(date.Date, Is.EqualTo(DateTime.UtcNow.AddDays(-1).Date));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var date = SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(DateTime.UtcNow.AddDays(-7).Date, date.Date);
+            Assert.That(date.Date, Is.EqualTo(DateTime.UtcNow.AddDays(-7).Date));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var date = SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(DateTime.UtcNow.AddMonths(-1).Date, date.Date);
+            Assert.That(date.Date, Is.EqualTo(DateTime.UtcNow.AddMonths(-1).Date));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var date = SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(DateTime.UtcNow.AddMonths(-3).Date, date.Date);
+            Assert.That(date.Date, Is.EqualTo(DateTime.UtcNow.AddMonths(-3).Date));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var date = SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(DateTime.UtcNow.AddYears(-1).Date, date.Date);
+            Assert.That(date.Date, Is.EqualTo(DateTime.UtcNow.AddYears(-1).Date));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var date = SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(DateTime.MinValue, date);
+            Assert.That(date, Is.EqualTo(DateTime.MinValue));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedOutputKeywords, outputKeywords);
+            Assert.That(outputKeywords, Is.EqualTo(expectedOutputKeywords));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchQueryStringParser.Instance.GetLastModifiedDate(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedOutputKeywords, outputKeywords);
+            Assert.That(outputKeywords, Is.EqualTo(expectedOutputKeywords));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var searchTypeList = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedSearchTypeList, searchTypeList);
+            Assert.That(searchTypeList, Is.EqualTo(expectedSearchTypeList));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var searchTypeList = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(0, searchTypeList.Count);
+            Assert.That(searchTypeList, Is.Empty);
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedOutputKeywords, outputKeywords);
+            Assert.That(outputKeywords, Is.EqualTo(expectedOutputKeywords));
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedOutputKeywords, outputKeywords);
+            Assert.That(outputKeywords, Is.EqualTo(expectedOutputKeywords));
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var tagsList = SearchQueryStringParser.Instance.GetTags(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedTagsList, tagsList);
+            Assert.That(tagsList, Is.EqualTo(expectedTagsList));
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var tagsList = SearchQueryStringParser.Instance.GetTags(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(0, tagsList.Count);
+            Assert.That(tagsList, Is.Empty);
         }
 
         [Test]
@@ -226,7 +226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchQueryStringParser.Instance.GetTags(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedOutputKeywords, outputKeywords);
+            Assert.That(outputKeywords, Is.EqualTo(expectedOutputKeywords));
         }
 
         [Test]
@@ -241,7 +241,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchQueryStringParser.Instance.GetTags(keywords, out outputKeywords);
 
             // Assert
-            Assert.AreEqual(expectedOutputKeywords, outputKeywords);
+            Assert.That(outputKeywords, Is.EqualTo(expectedOutputKeywords));
         }
     }
 }

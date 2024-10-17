@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             // reset changes
             ResetChanges(connector, isEnglishEnabled, languageSettings);
 
-            Assert.IsTrue(bool.Parse(result.Success.ToString()));
+            Assert.That(bool.Parse(result.Success.ToString()), Is.True);
         }
 
         private static IWebApiConnector PrepareTest(out bool isEnglishEnabled, out dynamic languageSettings)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             var pageSettingsBuilder = new PageSettingsBuilder();
             pageSettingsBuilder.WithPermission(new TabPermissionsBuilder().Build());
             var pageDetail = pagesExecuter.SavePageDetails(pageSettingsBuilder.Build());
-            Assert.NotNull(pageDetail.Page, "The system must create the page and return its details in the response");
+            Assert.That(pageDetail.Page, Is.Not.Null, "The system must create the page and return its details in the response");
             return (int)pageDetail.Page.id;
         }
     }

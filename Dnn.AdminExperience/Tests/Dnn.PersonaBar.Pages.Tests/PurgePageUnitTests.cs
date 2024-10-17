@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             var result = purgeCommand.Run();
 
             // Assert
-            Assert.IsFalse(result.IsError);
+            Assert.That(result.IsError, Is.False);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             var result = purgeCommand.Run();
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             var result = purgeCommand.Run();
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
             this.tabControllerMock.Verify(t => t.GetTab(tabId, portalSettings.PortalId));
         }
     }

@@ -249,10 +249,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("hello");
 
-            // Assert
-            Assert.AreEqual(1, result.Results.Count);
-            Assert.AreEqual(result.Results[0].UniqueKey, doc.UniqueKey);
-            Assert.AreEqual(result.Results[0].Title, doc.Title);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.Results, Has.Count.EqualTo(1));
+                Assert.That(doc.UniqueKey, Is.EqualTo(result.Results[0].UniqueKey));
+                Assert.That(doc.Title, Is.EqualTo(result.Results[0].Title));
+            });
         }
 
         [Test]
@@ -277,7 +280,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search1 = this.searchController.SiteSearch(query1);
 
             // Assert
-            Assert.AreEqual(1, search1.Results.Count);
+            Assert.That(search1.Results, Has.Count.EqualTo(1));
 
             // Add second document
             var doc2 = new SearchDocument { Title = docs[1], UniqueKey = Guid.NewGuid().ToString(), SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
@@ -289,7 +292,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search2 = this.searchController.SiteSearch(query2);
 
             // Assert
-            Assert.AreEqual(2, search2.Results.Count);
+            Assert.That(search2.Results, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -312,7 +315,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeyword("fox jumps");
 
             // Assert
-            Assert.AreEqual(docs.Length, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(docs.Length));
 
             // Assert.AreEqual("brown <b>fox jumps</b> over the lazy dog ", search.Results[0].Snippet);
             // Assert.AreEqual("quick <b>fox jumps</b> over the black dog ", search.Results[1].Snippet);
@@ -338,7 +341,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeyword("fox jumps");
 
             // Assert
-            Assert.AreEqual(docs.Length, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(docs.Length));
 
             // Assert.AreEqual("brown <b>fox jumps</b> over the lazy dog ", search.Results[0].Snippet);
             // Assert.AreEqual("quick <b>fox jumps</b> over the black dog ", search.Results[1].Snippet);
@@ -356,7 +359,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
         }
 
         [Test]
@@ -371,7 +374,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
         }
 
         [Test]
@@ -398,9 +401,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery { KeyWords = veryLongWord, SearchTypeIds = new List<int> { ModuleSearchTypeId } };
             var search = this.searchController.SiteSearch(query);
 
-            // Assert
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual("<b>" + veryLongWord + "</b>", this.StipEllipses(search.Results[0].Snippet).Trim());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(search.Results, Has.Count.EqualTo(1));
+                Assert.That(this.StipEllipses(search.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + veryLongWord + "</b>"));
+            });
         }
 
         [Test]
@@ -415,7 +421,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             // by default AuthorUserId = 0 which have no permission, so this passes
-            Assert.AreEqual(0, result.Results.Count);
+            Assert.That(result.Results, Is.Empty);
         }
 
         [Test]
@@ -439,10 +445,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(new[] { 6, 7, 8, 9 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
+                Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9 }));
+            });
         }
 
         [Test]
@@ -466,10 +475,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
+                Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9, 16, 17 }));
+            });
         }
 
         [Test]
@@ -493,10 +505,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17, 18, 19 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
+                Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9, 16, 17, 18, 19 }));
+            });
         }
 
         [Test]
@@ -520,10 +535,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(4 * 3, result.TotalHits);
-            Assert.AreEqual(4 * 3, result.Results.Count);
-            Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(4 * 3));
+                Assert.That(result.Results, Has.Count.EqualTo(4 * 3));
+                Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29 }));
+            });
         }
 
         [Test]
@@ -547,10 +565,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).Skip(1).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs, result.TotalHits);
-            Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(Enumerable.Range(1, 9).ToArray(), ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs));
+                Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
+                Assert.That(ids, Is.EqualTo(Enumerable.Range(1, 9).ToArray()));
+            });
         }
 
         [Test]
@@ -574,10 +595,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs, result.TotalHits);
-            Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(Enumerable.Range(90, 10).ToArray(), ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs));
+                Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
+                Assert.That(ids, Is.EqualTo(Enumerable.Range(90, 10).ToArray()));
+            });
         }
 
         [Test]
@@ -601,10 +625,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(5, result.Results.Count);
-            Assert.AreEqual(new[] { 17, 18, 19, 26, 27 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(5));
+                Assert.That(ids, Is.EqualTo(new[] { 17, 18, 19, 26, 27 }));
+            });
         }
 
         [Test]
@@ -628,10 +655,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(6, result.Results.Count);
-            Assert.AreEqual(new[] { 18, 19, 26, 27, 28, 29 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(6));
+                Assert.That(ids, Is.EqualTo(new[] { 18, 19, 26, 27, 28, 29 }));
+            });
         }
 
         [Test]
@@ -655,10 +685,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(4, result.Results.Count);
-            Assert.AreEqual(new[] { 26, 27, 28, 29 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(4));
+                Assert.That(ids, Is.EqualTo(new[] { 26, 27, 28, 29 }));
+            });
         }
 
         [Test]
@@ -682,10 +715,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
-            Assert.AreEqual(new[] { 26, 27, 28, 29 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(queryPg3.PageSize));
+                Assert.That(ids, Is.EqualTo(new[] { 26, 27, 28, 29 }));
+            });
         }
 
         [Test]
@@ -709,10 +745,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(2, result.Results.Count);
-            Assert.AreEqual(new[] { 28, 29 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Has.Count.EqualTo(2));
+                Assert.That(ids, Is.EqualTo(new[] { 28, 29 }));
+            });
         }
 
         [Test]
@@ -736,10 +775,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(0, result.Results.Count);
-            Assert.AreEqual(new int[] { }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
+                Assert.That(result.Results, Is.Empty);
+                Assert.That(ids, Is.EqualTo(new int[] { }));
+            });
         }
 
         [Test]
@@ -763,10 +805,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            // Assert
-            Assert.AreEqual(maxDocs - (10 * 6), result.TotalHits);
-            Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
-            Assert.AreEqual(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }, ids);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(maxDocs - (10 * 6)));
+                Assert.That(result.Results, Has.Count.EqualTo(queryPg3.PageSize));
+                Assert.That(ids, Is.EqualTo(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }));
+            });
         }
 
         [Test]
@@ -804,29 +849,38 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeywordInModule("Title");
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(PortalId12, search.Results[0].PortalId);
-            Assert.AreEqual(StandardTabId, search.Results[0].TabId);
-            Assert.AreEqual(HtmlModuleDefId, search.Results[0].ModuleDefId);
-            Assert.AreEqual(HtmlModuleId, search.Results[0].ModuleId);
-            Assert.AreEqual(ModuleSearchTypeId, search.Results[0].SearchTypeId);
-            Assert.AreEqual("Description", search.Results[0].Description);
-            Assert.AreEqual("Body", search.Results[0].Body);
-            Assert.AreEqual(StandardAuthorId, search.Results[0].AuthorUserId);
-            Assert.AreEqual(StandardRoleId, search.Results[0].RoleId);
-            Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
-            Assert.AreEqual(StandardPermission, search.Results[0].Permissions);
-            Assert.AreEqual(StandardQueryString, search.Results[0].QueryString);
-            Assert.AreEqual(StandardAuthorDisplayName, search.Results[0].AuthorName);
-            Assert.AreEqual(tags.Count, search.Results[0].Tags.Count());
-            Assert.AreEqual(tags[0], search.Results[0].Tags.ElementAt(0));
-            Assert.AreEqual(tags[1], search.Results[0].Tags.ElementAt(1));
-            Assert.AreEqual(numericKeys.Count, search.Results[0].NumericKeys.Count);
-            Assert.AreEqual(numericKeys[NumericKey1], search.Results[0].NumericKeys[NumericKey1]);
-            Assert.AreEqual(numericKeys[NumericKey2], search.Results[0].NumericKeys[NumericKey2]);
-            Assert.AreEqual(keywords.Count, search.Results[0].Keywords.Count);
-            Assert.AreEqual(keywords[KeyWord1Name], search.Results[0].Keywords[KeyWord1Name]);
-            Assert.AreEqual(keywords[KeyWord2Name], search.Results[0].Keywords[KeyWord2Name]);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].PortalId, Is.EqualTo(PortalId12));
+                Assert.That(search.Results[0].TabId, Is.EqualTo(StandardTabId));
+                Assert.That(search.Results[0].ModuleDefId, Is.EqualTo(HtmlModuleDefId));
+                Assert.That(search.Results[0].ModuleId, Is.EqualTo(HtmlModuleId));
+                Assert.That(search.Results[0].SearchTypeId, Is.EqualTo(ModuleSearchTypeId));
+                Assert.That(search.Results[0].Description, Is.EqualTo("Description"));
+                Assert.That(search.Results[0].Body, Is.EqualTo("Body"));
+                Assert.That(search.Results[0].AuthorUserId, Is.EqualTo(StandardAuthorId));
+                Assert.That(search.Results[0].RoleId, Is.EqualTo(StandardRoleId));
+                Assert.That(search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat), Is.EqualTo(modifiedDateTime.ToString(Constants.DateTimeFormat)));
+                Assert.That(search.Results[0].Permissions, Is.EqualTo(StandardPermission));
+                Assert.That(search.Results[0].QueryString, Is.EqualTo(StandardQueryString));
+                Assert.That(search.Results[0].AuthorName, Is.EqualTo(StandardAuthorDisplayName));
+                Assert.That(search.Results[0].Tags.Count(), Is.EqualTo(tags.Count));
+                Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(tags[0]));
+                Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(tags[1]));
+                Assert.That(search.Results[0].NumericKeys, Has.Count.EqualTo(numericKeys.Count));
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].NumericKeys[NumericKey1], Is.EqualTo(numericKeys[NumericKey1]));
+                Assert.That(search.Results[0].NumericKeys[NumericKey2], Is.EqualTo(numericKeys[NumericKey2]));
+                Assert.That(search.Results[0].Keywords, Has.Count.EqualTo(keywords.Count));
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Keywords[KeyWord1Name], Is.EqualTo(keywords[KeyWord1Name]));
+                Assert.That(search.Results[0].Keywords[KeyWord2Name], Is.EqualTo(keywords[KeyWord2Name]));
+            });
         }
 
         [Test]
@@ -848,23 +902,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeyword("Title");
 
             // Assert -
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(PortalId0, search.Results[0].PortalId);
-            Assert.AreEqual(0, search.Results[0].TabId);
-            Assert.AreEqual(0, search.Results[0].ModuleDefId);
-            Assert.AreEqual(0, search.Results[0].ModuleId);
-            Assert.AreEqual(OtherSearchTypeId, search.Results[0].SearchTypeId);
-            Assert.AreEqual(null, search.Results[0].Description);
-            Assert.AreEqual(null, search.Results[0].Body);
-            Assert.AreEqual(0, search.Results[0].AuthorUserId);
-            Assert.AreEqual(-1, search.Results[0].RoleId);
-            Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
-            Assert.AreEqual(null, search.Results[0].Permissions);
-            Assert.AreEqual(null, search.Results[0].QueryString);
-            Assert.AreEqual(null, search.Results[0].AuthorName);
-            Assert.AreEqual(0, search.Results[0].Tags.Count());
-            Assert.AreEqual(0, search.Results[0].NumericKeys.Count);
-            Assert.AreEqual(0, search.Results[0].Keywords.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].PortalId, Is.EqualTo(PortalId0));
+                Assert.That(search.Results[0].TabId, Is.EqualTo(0));
+                Assert.That(search.Results[0].ModuleDefId, Is.EqualTo(0));
+                Assert.That(search.Results[0].ModuleId, Is.EqualTo(0));
+                Assert.That(search.Results[0].SearchTypeId, Is.EqualTo(OtherSearchTypeId));
+                Assert.That(search.Results[0].Description, Is.EqualTo(null));
+                Assert.That(search.Results[0].Body, Is.EqualTo(null));
+                Assert.That(search.Results[0].AuthorUserId, Is.EqualTo(0));
+                Assert.That(search.Results[0].RoleId, Is.EqualTo(-1));
+                Assert.That(search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat), Is.EqualTo(modifiedDateTime.ToString(Constants.DateTimeFormat)));
+                Assert.That(search.Results[0].Permissions, Is.EqualTo(null));
+                Assert.That(search.Results[0].QueryString, Is.EqualTo(null));
+                Assert.That(search.Results[0].AuthorName, Is.EqualTo(null));
+                Assert.That(search.Results[0].Tags.Count(), Is.EqualTo(0));
+                Assert.That(search.Results[0].NumericKeys, Is.Empty);
+                Assert.That(search.Results[0].Keywords, Is.Empty);
+            });
         }
 
         [Test]
@@ -885,18 +942,22 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var search = this.SearchForKeyword("fox");
 
-            // Assert
-            Assert.AreEqual(docs.Length, search.Results.Count);
-            Assert.IsTrue(
-                new[]
-                {
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(search.Results, Has.Count.EqualTo(docs.Length));
+                Assert.That(
+                    new[]
+                    {
                   "brown <b>fox</b> jumps over the lazy dog",
                   "quick <b>fox</b> jumps over the black dog - Italian",
                   "gold <b>fox</b> jumped over the lazy black dog",
                   "e red <b>fox</b> jumped over the lazy dark gray dog",
                   "quick <b>fox</b> jumps over the white dog - los de el Espana",
-                }.SequenceEqual(search.Results.Select(r => this.StipEllipses(r.Snippet))),
-                "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
+                    }.SequenceEqual(search.Results.Select(r => this.StipEllipses(r.Snippet))),
+                    Is.True,
+                    "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
+            });
         }
 
         [Test]
@@ -935,9 +996,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var searches = this.SearchForKeyword(searchWord);
 
-            // Assert
-            Assert.AreEqual(1, searches.TotalHits);
-            Assert.AreEqual(cultureCode, searches.Results[0].CultureCode);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(searches.TotalHits, Is.EqualTo(1));
+                Assert.That(searches.Results[0].CultureCode, Is.EqualTo(cultureCode));
+            });
         }
 
         [Test]
@@ -952,7 +1016,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
         }
 
         [Test]
@@ -972,7 +1036,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
         }
 
         [Test]
@@ -988,43 +1052,52 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act and Assert - just a bit later
             var query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddSeconds(1), EndModifiedTimeUtc = utcNow.AddDays(1) };
             var search = this.searchController.SiteSearch(query);
-            Assert.AreEqual(0, search.Results.Count);
+            Assert.That(search.Results, Is.Empty);
 
             // Act and Assert - 10 day
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-10), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(Line5, search.Results[0].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
 
             // Act and Assert - 1 year or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-368), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
-            Assert.AreEqual(2, search.Results.Count);
-            Assert.AreEqual(Line5, search.Results[0].Title);
-            Assert.AreEqual(Line4, search.Results[1].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
+                Assert.That(search.Results[1].Title, Is.EqualTo(Line4));
+            });
 
             // Act and Assert - 2 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-800), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
-            Assert.AreEqual(3, search.Results.Count);
-            Assert.AreEqual(Line5, search.Results[0].Title);
-            Assert.AreEqual(Line4, search.Results[1].Title);
-            Assert.AreEqual(Line3, search.Results[2].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(3));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
+                Assert.That(search.Results[1].Title, Is.EqualTo(Line4));
+                Assert.That(search.Results[2].Title, Is.EqualTo(Line3));
+            });
 
             // Act and Assert - 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
-            Assert.AreEqual(4, search.Results.Count);
-            Assert.AreEqual(Line5, search.Results[0].Title);
-            Assert.AreEqual(Line4, search.Results[1].Title);
-            Assert.AreEqual(Line3, search.Results[2].Title);
-            Assert.AreEqual(Line2, search.Results[3].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(4));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
+                Assert.That(search.Results[1].Title, Is.EqualTo(Line4));
+                Assert.That(search.Results[2].Title, Is.EqualTo(Line3));
+                Assert.That(search.Results[3].Title, Is.EqualTo(Line2));
+            });
 
             // Act and Assert - 2 to 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(-800) };
             search = this.searchController.SiteSearch(query);
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(Line2, search.Results[0].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.That(search.Results[0].Title, Is.EqualTo(Line2));
         }
 
         [Test]
@@ -1039,7 +1112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -1054,7 +1127,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -1069,7 +1142,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -1084,11 +1157,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(2, search.Results.Count);
-            Assert.AreEqual(Tag0, search.Results[0].Tags.ElementAt(0));
-            Assert.AreEqual(Tag1, search.Results[0].Tags.ElementAt(1));
-            Assert.AreEqual(Tag1, search.Results[1].Tags.ElementAt(0));
-            Assert.AreEqual(Tag2, search.Results[1].Tags.ElementAt(1));
+            Assert.That(search.Results, Has.Count.EqualTo(2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag0));
+                Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag1));
+                Assert.That(search.Results[1].Tags.ElementAt(0), Is.EqualTo(Tag1));
+                Assert.That(search.Results[1].Tags.ElementAt(1), Is.EqualTo(Tag2));
+            });
         }
 
         [Test]
@@ -1103,7 +1179,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(0, search.Results.Count);
+            Assert.That(search.Results, Is.Empty);
         }
 
         [Test]
@@ -1118,9 +1194,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(Tag1, search.Results[0].Tags.ElementAt(0));
-            Assert.AreEqual(Tag2, search.Results[0].Tags.ElementAt(1));
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag1));
+                Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag2));
+            });
         }
 
         [Test]
@@ -1137,7 +1216,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -1212,15 +1291,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+            Assert.That(search.Results, Has.Count.EqualTo(added), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
 
-            Assert.AreEqual(Tag3, search.Results[1].Tags.ElementAt(0));
-            Assert.AreEqual(Tag4, search.Results[1].Tags.ElementAt(1));
-            Assert.AreEqual(TagLatest, search.Results[1].Tags.ElementAt(2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[1].Tags.ElementAt(0), Is.EqualTo(Tag3));
+                Assert.That(search.Results[1].Tags.ElementAt(1), Is.EqualTo(Tag4));
+                Assert.That(search.Results[1].Tags.ElementAt(2), Is.EqualTo(TagLatest));
 
-            Assert.AreEqual(Tag2, search.Results[0].Tags.ElementAt(0));
-            Assert.AreEqual(Tag3, search.Results[0].Tags.ElementAt(1));
-            Assert.AreEqual(TagIt.ToLowerInvariant(), search.Results[0].Tags.ElementAt(2));
+                Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag2));
+                Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag3));
+                Assert.That(search.Results[0].Tags.ElementAt(2), Is.EqualTo(TagIt.ToLowerInvariant()));
+            });
         }
 
         [Test]
@@ -1240,14 +1322,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.Greater(search.Results[1].DisplayModifiedTime, search.Results[0].DisplayModifiedTime);
-            Assert.Greater(search.Results[2].DisplayModifiedTime, search.Results[1].DisplayModifiedTime);
-            Assert.Greater(search.Results[3].DisplayModifiedTime, search.Results[2].DisplayModifiedTime);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[1].DisplayModifiedTime, Is.GreaterThan(search.Results[0].DisplayModifiedTime));
+                Assert.That(search.Results[2].DisplayModifiedTime, Is.GreaterThan(search.Results[1].DisplayModifiedTime));
+                Assert.That(search.Results[3].DisplayModifiedTime, Is.GreaterThan(search.Results[2].DisplayModifiedTime));
+            });
 
-            Assert.AreEqual(Tag0, search.Results[0].Tags.ElementAt(0));
-            Assert.AreEqual(Tag1, search.Results[0].Tags.ElementAt(1));
-            Assert.AreEqual(TagOldest, search.Results[0].Tags.ElementAt(2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag0));
+                Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag1));
+                Assert.That(search.Results[0].Tags.ElementAt(2), Is.EqualTo(TagOldest));
+            });
         }
 
         [Test]
@@ -1268,9 +1356,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.Greater(search.Results[1].NumericKeys[NumericKey1], search.Results[0].NumericKeys[NumericKey1]);
-            Assert.Greater(search.Results[2].NumericKeys[NumericKey1], search.Results[1].NumericKeys[NumericKey1]);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[1].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[0].NumericKeys[NumericKey1]));
+                Assert.That(search.Results[2].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[1].NumericKeys[NumericKey1]));
+            });
         }
 
         [Test]
@@ -1291,9 +1382,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.Greater(search.Results[0].NumericKeys[NumericKey1], search.Results[1].NumericKeys[NumericKey1]);
-            Assert.Greater(search.Results[1].NumericKeys[NumericKey1], search.Results[2].NumericKeys[NumericKey1]);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[1].NumericKeys[NumericKey1]));
+                Assert.That(search.Results[1].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[2].NumericKeys[NumericKey1]));
+            });
         }
 
         [Test]
@@ -1315,12 +1409,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
 
             var count = 0;
             foreach (var title in titles.OrderBy(s => s))
             {
-                Assert.AreEqual(title, search.Results[count++].Title);
+                Assert.That(search.Results[count++].Title, Is.EqualTo(title));
             }
         }
 
@@ -1343,12 +1437,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
 
             var count = 0;
             foreach (var title in titles.OrderByDescending(s => s))
             {
-                Assert.AreEqual(title, search.Results[count++].Title);
+                Assert.That(search.Results[count++].Title, Is.EqualTo(title));
             }
         }
 
@@ -1372,12 +1466,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
 
             var count = 0;
             foreach (var title in titles.OrderBy(s => s))
             {
-                Assert.AreEqual(title, search.Results[count++].Keywords[KeyWord1Name]);
+                Assert.That(search.Results[count++].Keywords[KeyWord1Name], Is.EqualTo(title));
             }
         }
 
@@ -1401,12 +1495,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
+            Assert.That(search.Results, Has.Count.EqualTo(added));
 
             var count = 0;
             foreach (var title in titles.OrderByDescending(s => s))
             {
-                Assert.AreEqual(title, search.Results[count++].Keywords[KeyWord1Name]);
+                Assert.That(search.Results[count++].Keywords[KeyWord1Name], Is.EqualTo(title));
             }
         }
 
@@ -1499,8 +1593,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(true, search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"));
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.That(search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"), Is.EqualTo(true));
         }
 
         [Test]
@@ -1523,8 +1617,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello1"));
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.That(search.Results[0].Body.Contains("Hello1"), Is.EqualTo(true));
         }
 
         [Test]
@@ -1547,8 +1641,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello2"));
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.That(search.Results[0].Body.Contains("Hello2"), Is.EqualTo(true));
         }
 
         [Test]
@@ -1571,8 +1665,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello3"));
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.That(search.Results[0].Body.Contains("Hello3"), Is.EqualTo(true));
         }
 
         [Test]
@@ -1595,8 +1689,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello4"));
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.That(search.Results[0].Body.Contains("Hello4"), Is.EqualTo(true));
         }
 
         [Test]
@@ -1617,8 +1711,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(true, search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"));
+            Assert.That(search.Results, Has.Count.EqualTo(added));
+            Assert.That(search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"), Is.EqualTo(true));
         }
 
         [Test]
@@ -1638,9 +1732,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(2, search.Results.Count, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
-            Assert.AreEqual(Line3, search.Results[0].Title);
-            Assert.AreEqual(Line1, search.Results[1].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(2), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+            Assert.Multiple(() =>
+            {
+                Assert.That(search.Results[0].Title, Is.EqualTo(Line3));
+                Assert.That(search.Results[1].Title, Is.EqualTo(Line1));
+            });
         }
 
         [Test]
@@ -1669,8 +1766,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeyword("fox");
 
             // Assert - there should just be one entry - first one must have been removed.
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(docs[1], search.Results[0].Title);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.That(search.Results[0].Title, Is.EqualTo(docs[1]));
         }
 
         [Test]
@@ -1727,7 +1824,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeyword("fox");
 
             // Assert - there should not be any record.
-            Assert.AreEqual(0, search.Results.Count);
+            Assert.That(search.Results, Is.Empty);
         }
 
         // Note: these tests needs to pass through the analyzer which is utilized
@@ -1750,14 +1847,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var searches1 = this.SearchForKeyword("zèbre");
             var searches2 = this.SearchForKeyword("zebre");
 
-            // Assert
-            Assert.AreEqual(2, searches1.TotalHits);
-            Assert.AreEqual("<b>z&#232;bre</b> or panth&#232;re", this.StipEllipses(searches1.Results[0].Snippet).Trim());
-            Assert.AreEqual("<b>zebre</b> without accent", this.StipEllipses(searches1.Results[1].Snippet).Trim());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(searches1.TotalHits, Is.EqualTo(2));
+                Assert.That(this.StipEllipses(searches1.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
+                Assert.That(this.StipEllipses(searches1.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
 
-            Assert.AreEqual(2, searches2.TotalHits);
-            Assert.AreEqual("<b>z&#232;bre</b> or panth&#232;re", this.StipEllipses(searches2.Results[0].Snippet).Trim());
-            Assert.AreEqual("<b>zebre</b> without accent", this.StipEllipses(searches2.Results[1].Snippet).Trim());
+                Assert.That(searches2.TotalHits, Is.EqualTo(2));
+                Assert.That(this.StipEllipses(searches2.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
+                Assert.That(this.StipEllipses(searches2.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
+            });
         }
 
         [Test]
@@ -1777,12 +1877,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search1 = this.SearchForKeyword(lines[0]);
             var search2 = this.SearchForKeyword("\"" + lines[1] + "\"");
 
-            // Assert
-            Assert.AreEqual(1, search1.TotalHits);
-            Assert.AreEqual(1, search2.TotalHits);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(search1.TotalHits, Is.EqualTo(1));
+                Assert.That(search2.TotalHits, Is.EqualTo(1));
 
-            Assert.AreEqual("<b>" + lines[0] + "</b>", this.StipEllipses(search1.Results[0].Snippet).Trim());
-            Assert.AreEqual("<b>" + lines[1] + "</b>", this.StipEllipses(search2.Results[0].Snippet).Trim());
+                Assert.That(this.StipEllipses(search1.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[0] + "</b>"));
+                Assert.That(this.StipEllipses(search2.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[1] + "</b>"));
+            });
         }
 
         [Test]
@@ -1803,11 +1906,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var search = this.SearchForKeyword("ride");
 
-            // Assert
-            Assert.AreEqual(3, search.TotalHits);
-            Assert.AreEqual("I <b>ride</b> my bike to work", this.StipEllipses(search.Results[0].Snippet));
-            Assert.AreEqual("m are <b>riding</b> their bikes", this.StipEllipses(search.Results[1].Snippet));
-            Assert.AreEqual("e boy <b>rides</b> his bike to school", this.StipEllipses(search.Results[2].Snippet));
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(search.TotalHits, Is.EqualTo(3));
+                Assert.That(this.StipEllipses(search.Results[0].Snippet), Is.EqualTo("I <b>ride</b> my bike to work"));
+                Assert.That(this.StipEllipses(search.Results[1].Snippet), Is.EqualTo("m are <b>riding</b> their bikes"));
+                Assert.That(this.StipEllipses(search.Results[2].Snippet), Is.EqualTo("e boy <b>rides</b> his bike to school"));
+            });
         }
 
         [Test]
@@ -1821,13 +1927,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.SearchForKeywordInModule("wolf");
 
             // Assert
-            Assert.AreEqual(added, search.TotalHits);
+            Assert.That(search.TotalHits, Is.EqualTo(added));
 
             var snippets = search.Results.Select(result => this.StipEllipses(result.Snippet)).OrderBy(s => s).ToArray();
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", snippets[0]);
-            Assert.AreEqual("e red <b>fox</b> jumped over the lazy dark gray dog", snippets[1]);
-            Assert.AreEqual("gold <b>fox</b> jumped over the lazy black dog", snippets[2]);
-            Assert.AreEqual("quick <b>fox</b> jumps over the black dog - Italian", snippets[3]);
+            Assert.Multiple(() =>
+            {
+                Assert.That(snippets[0], Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
+                Assert.That(snippets[1], Is.EqualTo("e red <b>fox</b> jumped over the lazy dark gray dog"));
+                Assert.That(snippets[2], Is.EqualTo("gold <b>fox</b> jumped over the lazy black dog"));
+                Assert.That(snippets[3], Is.EqualTo("quick <b>fox</b> jumps over the black dog - Italian"));
+            });
         }
 
         [Test]
@@ -1847,10 +1956,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("cow");
 
-            // Assert
-            Assert.AreEqual(result.TotalHits, 2);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(2));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+            });
         }
 
         [Test]
@@ -1870,10 +1982,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("cow");
 
-            // Assert
-            Assert.AreEqual(result.TotalHits, 2);
-            Assert.AreEqual(doc3.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[1].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(2));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc3.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+            });
         }
 
         [Test]
@@ -1893,11 +2008,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.SearchForKeyword("cow");
 
             // Assert
-            Assert.AreEqual(result.TotalHits, 2);
+            Assert.That(result.TotalHits, Is.EqualTo(2));
             Console.WriteLine("first score: {0}  {1}", result.Results[0].UniqueKey, result.Results[0].DisplayScore);
             Console.WriteLine("second score: {0}  {1}", result.Results[1].UniqueKey, result.Results[1].DisplayScore);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+            });
         }
 
         [Test]
@@ -1923,16 +2041,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.SearchForKeyword("tootsie");
 
             // Assert
-            Assert.AreEqual(5, result.TotalHits);
+            Assert.That(result.TotalHits, Is.EqualTo(5));
             foreach (var searchResult in result.Results)
             {
                 Console.WriteLine("{0} score: {1}", searchResult.UniqueKey, searchResult.DisplayScore);
             }
 
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
-            Assert.AreEqual(doc3.UniqueKey, result.Results[2].UniqueKey);
-            Assert.AreEqual(doc4.UniqueKey, result.Results[3].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+                Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc3.UniqueKey));
+                Assert.That(result.Results[3].UniqueKey, Is.EqualTo(doc4.UniqueKey));
+            });
         }
 
         [Test]
@@ -1949,9 +2070,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeywordWithWildCard("file");
 
-            // Assert
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+            });
         }
 
         [Test]
@@ -1968,9 +2092,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeywordWithWildCard("file.ext");
 
-            // Assert
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+            });
         }
 
         [Test]
@@ -1987,9 +2114,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("file.ext");
 
-            // Assert
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+            });
         }
 
         [Test]
@@ -2004,10 +2134,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result2 = this.SearchForKeyword("kw-folderName:Images/DNN/*");
             var result3 = this.SearchForKeywordWithWildCard("kw-folderName:Images/* AND spacer");
 
-            // Assert
-            Assert.AreEqual(5, result1.TotalHits);
-            Assert.AreEqual(2, result2.TotalHits);
-            Assert.AreEqual(1, result3.TotalHits);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result1.TotalHits, Is.EqualTo(5));
+                Assert.That(result2.TotalHits, Is.EqualTo(2));
+                Assert.That(result3.TotalHits, Is.EqualTo(1));
+            });
         }
 
         [Test]
@@ -2025,10 +2158,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result2 = this.searchController.SiteSearch(query2);
             var result3 = this.searchController.SiteSearch(query3);
 
-            // Assert
-            Assert.AreEqual(5, result1.TotalHits);
-            Assert.AreEqual(5, result2.TotalHits);
-            Assert.AreEqual(2, result3.TotalHits);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result1.TotalHits, Is.EqualTo(5));
+                Assert.That(result2.TotalHits, Is.EqualTo(5));
+                Assert.That(result3.TotalHits, Is.EqualTo(2));
+            });
         }
 
         [Test]
@@ -2045,9 +2181,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeywordWithWildCard("email@");
 
-            // Assert
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+            });
         }
 
         [Test]
@@ -2130,8 +2269,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.AreEqual(0, result.TotalHits); // 0 due to security trimming
-            Assert.AreEqual(0, result.Results.Count);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.TotalHits, Is.EqualTo(0)); // 0 due to security trimming
+                Assert.That(result.Results, Is.Empty);
+            });
         }
 
         [Test]
@@ -2150,7 +2292,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.AreEqual(2, result.TotalHits);
+            Assert.That(result.TotalHits, Is.EqualTo(2));
         }
 
         [Test]
@@ -2169,8 +2311,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(RoleId731, result.Results[0].RoleId);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].RoleId, Is.EqualTo(RoleId731));
+            });
         }
 
         [Test]
@@ -2192,8 +2337,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(RoleId731, result.Results[0].RoleId);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].RoleId, Is.EqualTo(RoleId731));
+            });
         }
 
         [Test]
@@ -2216,10 +2364,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            // Assert
-            Assert.AreEqual(2, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(2));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+            });
         }
 
         [Test]
@@ -2244,10 +2395,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            // Assert
-            Assert.AreEqual(2, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(2));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+            });
         }
 
         [Test]
@@ -2272,11 +2426,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            // Assert
-            Assert.AreEqual(3, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
-            Assert.AreEqual(doc3.UniqueKey, result.Results[2].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(3));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+                Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc3.UniqueKey));
+            });
         }
 
         [Test]
@@ -2303,12 +2460,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            // Assert
-            Assert.AreEqual(4, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
-            Assert.AreEqual(doc3.UniqueKey, result.Results[2].UniqueKey);
-            Assert.AreEqual(doc5.UniqueKey, result.Results[3].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(4));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+                Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc3.UniqueKey));
+                Assert.That(result.Results[3].UniqueKey, Is.EqualTo(doc5.UniqueKey));
+            });
         }
 
         [Test]
@@ -2335,11 +2495,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            // Assert
-            Assert.AreEqual(3, result.TotalHits);
-            Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
-            Assert.AreEqual(doc5.UniqueKey, result.Results[2].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(3));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
+                Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+                Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc5.UniqueKey));
+            });
         }
 
         [Test]
@@ -2358,8 +2521,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(NumericValue50, search.Results[0].NumericKeys[NumericKey1]);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.That(search.Results[0].NumericKeys[NumericKey1], Is.EqualTo(NumericValue50));
         }
 
         [Test]
@@ -2378,8 +2541,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = this.searchController.SiteSearch(query);
 
             // Assert
-            Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(KeyWord1Value, search.Results[0].Keywords[KeyWord1Name]);
+            Assert.That(search.Results, Has.Count.EqualTo(1));
+            Assert.That(search.Results[0].Keywords[KeyWord1Name], Is.EqualTo(KeyWord1Value));
         }
 
         [Test]
@@ -2402,7 +2565,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 
             // Assert
-            Assert.AreEqual(0, result.TotalHits);
+            Assert.That(result.TotalHits, Is.EqualTo(0));
         }
 
         [Test]
@@ -2424,9 +2587,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, true);
 
-            // Assert
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+            });
         }
 
         [Test]
@@ -2448,9 +2614,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 
-            // Assert
-            Assert.AreEqual(1, result.TotalHits);
-            Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalHits, Is.EqualTo(1));
+                Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc2.UniqueKey));
+            });
         }
 
         [Test]
@@ -2466,21 +2635,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             // the word "the" is ignored in all languages except es-ES
-            Assert.AreEqual(1, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+            Assert.That(search.TotalHits, Is.EqualTo(1), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
 
             // Act
             search = this.SearchForKeywordInModule("over");
 
             // Assert
             // we won't find "over" in neutral, en-US, and en-CA documents, but will find it in the es-ES and it-IT documents.
-            Assert.AreEqual(2, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+            Assert.That(search.TotalHits, Is.EqualTo(2), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
 
             // Act
             search = this.SearchForKeywordInModule("los");
 
             // Assert
             // we won't find "los" in the es-ES document.
-            Assert.AreEqual(0, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+            Assert.That(search.TotalHits, Is.EqualTo(0), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
         }
 
         /// <summary>Executes function proc on a separate thread respecting the given timeout value.</summary>

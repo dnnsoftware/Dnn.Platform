@@ -48,7 +48,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             var makeAdminItem = new { RoleId = 0, UserId = this._userIds[userIdx] };
             var response = hostConnector.PostJson(MakeAdminApi, makeAdminItem).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
-            Assert.AreEqual(this._userNames[userIdx], result.displayName.ToString());
+            Assert.That(result.displayName.ToString(), Is.EqualTo(this._userNames[userIdx]));
 
             // Unauthorize the next 2 new users
             for (userIdx = 1; userIdx <= 2; userIdx++)
@@ -56,14 +56,14 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
                 var unauthorizeLink = string.Format(UnauthorizeApi, this._userIds[userIdx]);
                 response = hostConnector.PostJson(unauthorizeLink, string.Empty).Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject<dynamic>(response);
-                Assert.IsTrue(bool.Parse(result.Success.ToString()));
+                Assert.That(bool.Parse(result.Success.ToString()), Is.True);
             }
 
             // soft delete the next new user
             var deleteLink = string.Format(DeleteApi, this._userIds[userIdx]);
             response = hostConnector.PostJson(deleteLink, string.Empty).Content.ReadAsStringAsync().Result;
             result = JsonConvert.DeserializeObject<dynamic>(response);
-            Assert.IsTrue(bool.Parse(result.Success.ToString()));
+            Assert.That(bool.Parse(result.Success.ToString()), Is.True);
         }
 
         [TestCase("All", MaxUsers, "/API/PersonaBar/Users/GetUsers?searchText=&filter=5&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
@@ -82,7 +82,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
 
             // Assert
             var totalResults = int.Parse(result.TotalResults.ToString());
-            Assert.AreEqual(expectedTotal, totalResults, $"Total results {totalResults} is incorrect for action [{actionName}]");
+            Assert.That(totalResults, Is.EqualTo(expectedTotal), $"Total results {totalResults} is incorrect for action [{actionName}]");
         }
 
         [TestCase("All", MaxUsers, "/API/PersonaBar/Users/GetUsers?searchText=&filter=5&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
 
             // Assert
             var totalResults = int.Parse(result.TotalResults.ToString());
-            Assert.AreEqual(expectedTotal, totalResults, $"Total results {totalResults} is incorrect for action [{actionName}]");
+            Assert.That(totalResults, Is.EqualTo(expectedTotal), $"Total results {totalResults} is incorrect for action [{actionName}]");
         }
     }
 }

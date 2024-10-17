@@ -46,10 +46,13 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            // assert
-            Assert.AreEqual(SeverityEnum.Unverified, result.Severity);
-            Assert.AreEqual(1, result.Notes.Count());
-            Assert.IsTrue(result.Notes.First() == "An internal error occurred. See logs for details.");
+            Assert.Multiple(() =>
+            {
+                // assert
+                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Unverified));
+                Assert.That(result.Notes.Count(), Is.EqualTo(1));
+                Assert.That(result.Notes.First() == "An internal error occurred. See logs for details.", Is.True);
+            });
         }
 
         [Test]
@@ -75,10 +78,13 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            // assert
-            Assert.AreEqual(SeverityEnum.Failure, result.Severity);
-            Assert.AreEqual(1, result.Notes.Count());
-            Assert.IsTrue(result.Notes.First().Contains("* DotNetNuke.Modules.Mod3.dll"));
+            Assert.Multiple(() =>
+            {
+                // assert
+                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
+                Assert.That(result.Notes.Count(), Is.EqualTo(1));
+                Assert.That(result.Notes.First().Contains("* DotNetNuke.Modules.Mod3.dll"), Is.True);
+            });
         }
 
         [Test]
@@ -100,9 +106,12 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            // assert
-            Assert.AreEqual(SeverityEnum.Failure, result.Severity);
-            Assert.AreEqual(1, result.Notes.Count());
+            Assert.Multiple(() =>
+            {
+                // assert
+                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
+                Assert.That(result.Notes.Count(), Is.EqualTo(1));
+            });
         }
 
         [Test]
@@ -120,9 +129,12 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            // assert
-            Assert.AreEqual(SeverityEnum.Pass, result.Severity);
-            Assert.AreEqual(0, result.Notes.Count());
+            Assert.Multiple(() =>
+            {
+                // assert
+                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
+                Assert.That(result.Notes.Count(), Is.EqualTo(0));
+            });
         }
     }
 }

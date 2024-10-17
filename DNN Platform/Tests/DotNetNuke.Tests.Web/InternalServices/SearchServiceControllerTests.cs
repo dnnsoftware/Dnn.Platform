@@ -168,6 +168,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             this.serviceProvider.Dispose();
             this.luceneController.Dispose();
+            this.searchServiceController?.Dispose();
             this.DeleteIndexFolder();
             CBO.ClearInstance();
             TabController.ClearInstance();
@@ -218,17 +219,20 @@ namespace DotNetNuke.Tests.Web.InternalServices
             // Assert
             var groupedDetailViews = search as List<GroupedDetailView> ?? search.ToList();
 
-            // Overall 3 groups - tab1, tab2 and user
-            Assert.AreEqual(3, groupedDetailViews.Count());
+            Assert.Multiple(() =>
+            {
+                // Overall 3 groups - tab1, tab2 and user
+                Assert.That(groupedDetailViews.Count(), Is.EqualTo(3));
 
-            // Tab 1 has 2 DetailViews
-            Assert.AreEqual(2, groupedDetailViews.Single(x => x.DocumentUrl == tabUrl1).Results.Count());
+                // Tab 1 has 2 DetailViews
+                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == tabUrl1).Results.Count(), Is.EqualTo(2));
 
-            // Tab 2 has 1 DetailViews
-            Assert.AreEqual(1, groupedDetailViews.Single(x => x.DocumentUrl == tabUrl2).Results.Count());
+                // Tab 2 has 1 DetailViews
+                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == tabUrl2).Results.Count(), Is.EqualTo(1));
 
-            // UserUrl has 1 DetailViews
-            Assert.AreEqual(1, groupedDetailViews.Single(x => x.DocumentUrl == userUrl).Results.Count());
+                // UserUrl has 1 DetailViews
+                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == userUrl).Results.Count(), Is.EqualTo(1));
+            });
         }
 
         [Test]
@@ -270,16 +274,19 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             // Assert - overall 2 groups: tabs and users
             var groupedBasicViews = search as List<GroupedBasicView> ?? search.ToList();
-            Assert.AreEqual(2, groupedBasicViews.Count());
+            Assert.Multiple(() =>
+            {
+                Assert.That(groupedBasicViews.Count(), Is.EqualTo(2));
 
-            // 1 User results
-            Assert.AreEqual(1, groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.Count());
+                // 1 User results
+                Assert.That(groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.Count(), Is.EqualTo(1));
 
-            // User result should have 1 attribute(avatar)
-            Assert.AreEqual(1, groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.ElementAt(0).Attributes.Count());
+                // User result should have 1 attribute(avatar)
+                Assert.That(groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.ElementAt(0).Attributes.Count(), Is.EqualTo(1));
 
-            // 2 Tabs results
-            Assert.AreEqual(2, groupedBasicViews.Single(x => x.DocumentTypeName == "tab").Results.Count());
+                // 2 Tabs results
+                Assert.That(groupedBasicViews.Single(x => x.DocumentTypeName == "tab").Results.Count(), Is.EqualTo(2));
+            });
         }
 
         [Test]
@@ -348,11 +355,17 @@ namespace DotNetNuke.Tests.Web.InternalServices
             // Run
             var searchResults = this.GetGroupedDetailViewResults(query).ToList();
 
-            // Assert
-            Assert.AreEqual(1, searchResults.Count());
-            Assert.AreEqual(1, searchResults.First().Results.Count);
-            Assert.AreEqual(tabUrl, searchResults.First().Results.First().DocumentUrl);
-            Assert.AreEqual(titleModified, searchResults.First().Results.First().Title);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(searchResults.Count(), Is.EqualTo(1));
+                Assert.That(searchResults.First().Results, Has.Count.EqualTo(1));
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(searchResults.First().Results.First().DocumentUrl, Is.EqualTo(tabUrl));
+                Assert.That(searchResults.First().Results.First().Title, Is.EqualTo(titleModified));
+            });
         }
 
         private void CreateNewLuceneControllerInstance()

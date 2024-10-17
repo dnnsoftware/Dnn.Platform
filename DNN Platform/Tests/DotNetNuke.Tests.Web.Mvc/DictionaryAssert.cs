@@ -20,8 +20,11 @@ namespace DotNetNuke.Tests.Web.Mvc
         {
             foreach (KeyValuePair<string, object> pair in expected)
             {
-                Assert.IsTrue(actual.ContainsKey(pair.Key));
-                Assert.AreEqual(pair.Value, actual[pair.Key]);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(actual.ContainsKey(pair.Key), Is.True);
+                    Assert.That(actual[pair.Key], Is.EqualTo(pair.Value));
+                });
             }
         }
     }

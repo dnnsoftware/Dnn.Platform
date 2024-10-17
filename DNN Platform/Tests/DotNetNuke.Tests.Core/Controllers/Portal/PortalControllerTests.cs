@@ -117,7 +117,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(0, templates.Count);
+            Assert.That(templates, Is.Empty);
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(0, templates.Count);
+            Assert.That(templates, Is.Empty);
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(1, templates.Count);
+            Assert.That(templates, Has.Count.EqualTo(1));
             AssertTemplateInfo(StaticExpectations, templates[0]);
         }
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(2, templates.Count);
+            Assert.That(templates, Has.Count.EqualTo(2));
             AssertTemplateInfo(DefaultExpectationsDe, templates[0]);
             AssertTemplateInfo(DefaultExpectationsUs, templates[1]);
         }
@@ -185,7 +185,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(3, templates.Count);
+            Assert.That(templates, Has.Count.EqualTo(3));
             AssertTemplateInfo(DefaultExpectationsDe, templates[0]);
             AssertTemplateInfo(DefaultExpectationsUs, templates[1]);
             AssertTemplateInfo(AlternateExpectationsDe, templates[2]);
@@ -202,7 +202,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(1, templates.Count);
+            Assert.That(templates, Has.Count.EqualTo(1));
             AssertTemplateInfo(ResourceExpectations, templates[0]);
         }
 
@@ -219,7 +219,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var templates = CreateController().GetPortalTemplates();
 
             // Assert
-            Assert.AreEqual(1, templates.Count);
+            Assert.That(templates, Has.Count.EqualTo(1));
             AssertTemplateInfo(DefaultExpectationsDe, templates[0]);
         }
 
@@ -252,7 +252,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var template = CreateController().GetPortalTemplate(DefaultPath, "de");
 
             // Assert
-            Assert.IsNull(template);
+            Assert.That(template, Is.Null);
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             }
             else
             {
-                Assert.AreEqual(expected, value, string.Format("Checking value of " + key));
+                Assert.That(value, Is.EqualTo(expected), string.Format("Checking value of " + key));
             }
         }
 

@@ -66,9 +66,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             // Assert
             mockEngines.Verify(e => e.FindPartialView(context, viewName));
-            Assert.AreEqual("foo", engineResult.SearchedLocations.ElementAt(0));
-            Assert.AreEqual("bar", engineResult.SearchedLocations.ElementAt(1));
-            Assert.AreEqual("baz", engineResult.SearchedLocations.ElementAt(2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(engineResult.SearchedLocations.ElementAt(0), Is.EqualTo("foo"));
+                Assert.That(engineResult.SearchedLocations.ElementAt(1), Is.EqualTo("bar"));
+                Assert.That(engineResult.SearchedLocations.ElementAt(2), Is.EqualTo("baz"));
+            });
         }
 
         [Test]
@@ -99,9 +102,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             // Assert
             mockEngines.Verify(e => e.FindView(context, viewName, masterName));
-            Assert.AreEqual("foo", engineResult.SearchedLocations.ElementAt(0));
-            Assert.AreEqual("bar", engineResult.SearchedLocations.ElementAt(1));
-            Assert.AreEqual("baz", engineResult.SearchedLocations.ElementAt(2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(engineResult.SearchedLocations.ElementAt(0), Is.EqualTo("foo"));
+                Assert.That(engineResult.SearchedLocations.ElementAt(1), Is.EqualTo("bar"));
+                Assert.That(engineResult.SearchedLocations.ElementAt(2), Is.EqualTo("baz"));
+            });
         }
 
         [Test]
@@ -184,9 +190,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var engineResult = viewEngine.FindView(context, "Foo", "Bar", true);
 
             // Assert
-            Assert.IsNotNull(engineResult);
-            Assert.IsNull(engineResult.View);
-            Assert.AreEqual(0, engineResult.SearchedLocations.Count());
+            Assert.That(engineResult, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(engineResult.View, Is.Null);
+                Assert.That(engineResult.SearchedLocations.Count(), Is.EqualTo(0));
+            });
         }
 
         [Test]
@@ -204,9 +213,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var engineResult = viewEngine.FindPartialView(context, "Foo", true);
 
             // Assert
-            Assert.IsNotNull(engineResult);
-            Assert.IsNull(engineResult.View);
-            Assert.AreEqual(0, engineResult.SearchedLocations.Count());
+            Assert.That(engineResult, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(engineResult.View, Is.Null);
+                Assert.That(engineResult.SearchedLocations.Count(), Is.EqualTo(0));
+            });
         }
 
         private static void SetupMockModuleApplication(ControllerContext context, ViewEngineCollection engines)

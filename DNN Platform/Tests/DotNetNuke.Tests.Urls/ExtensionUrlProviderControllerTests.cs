@@ -46,8 +46,8 @@ namespace DotNetNuke.Tests.Urls
 
             var providers = ExtensionUrlProviderController.GetModuleProviders(Constants.PORTAL_ValidPortalId);
 
-            Assert.IsNotNull(providers, "Providers list should be empty, not null");
-            Assert.IsEmpty(providers, "Providers list should be empty, since there is only an invalid entry");
+            Assert.That(providers, Is.Not.Null, "Providers list should be empty, not null");
+            Assert.That(providers, Is.Empty, "Providers list should be empty, since there is only an invalid entry");
         }
 
         [Test]
@@ -62,9 +62,9 @@ namespace DotNetNuke.Tests.Urls
 
             var providers = ExtensionUrlProviderController.GetModuleProviders(Constants.PORTAL_ValidPortalId);
 
-            Assert.IsNotNull(providers, "Providers list should be empty, not null");
-            Assert.AreEqual(1, providers.Count, "Providers list should have the one valid entry, but not the invalid entry");
-            Assert.AreEqual("Working Provider", providers[0].ProviderConfig.ProviderName, "Providers list should have the valid entry");
+            Assert.That(providers, Is.Not.Null, "Providers list should be empty, not null");
+            Assert.That(providers, Has.Count.EqualTo(1), "Providers list should have the one valid entry, but not the invalid entry");
+            Assert.That(providers[0].ProviderConfig.ProviderName, Is.EqualTo("Working Provider"), "Providers list should have the valid entry");
         }
 
         private static void SetupGetModuleProvidersCall(IDataReader getExtensionUrlProvidersReader)

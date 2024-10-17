@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Services.Installer
 
             installer.Install();
 
-            Assert.IsTrue(installer.Log.Valid);
+            Assert.That(installer.Log.Valid, Is.True);
         }
 
         private static XPathNavigator GetUnRegisterAssemblyManifest()

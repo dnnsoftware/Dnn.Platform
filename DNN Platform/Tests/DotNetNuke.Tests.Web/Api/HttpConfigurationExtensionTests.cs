@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Web.Api
             var providers = configuration.GetTabAndModuleInfoProviders();
 
             // Assert
-            CollectionAssert.IsEmpty(providers);
+            Assert.That(providers, Is.Empty);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
 
             // Assert
-            Assert.AreEqual(1, ((IEnumerable<ITabAndModuleInfoProvider>)configuration.Properties["TabAndModuleInfoProvider"]).Count());
+            Assert.That(((IEnumerable<ITabAndModuleInfoProvider>)configuration.Properties["TabAndModuleInfoProvider"]).Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
 
             // Assert
-            Assert.AreEqual(3, ((IEnumerable<ITabAndModuleInfoProvider>)configuration.Properties["TabAndModuleInfoProvider"]).Count());
+            Assert.That(((IEnumerable<ITabAndModuleInfoProvider>)configuration.Properties["TabAndModuleInfoProvider"]).Count(), Is.EqualTo(3));
         }
     }
 }

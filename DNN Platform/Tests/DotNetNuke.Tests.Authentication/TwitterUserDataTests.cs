@@ -78,7 +78,7 @@ namespace DotNetNuke.Tests.Authentication
             UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
             // Assert
-            Assert.AreEqual("themattharris", sampleUser.DisplayName);
+            Assert.That(sampleUser.DisplayName, Is.EqualTo("themattharris"));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace DotNetNuke.Tests.Authentication
             UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
             // Assert
-            Assert.AreEqual("en", sampleUser.Locale);
+            Assert.That(sampleUser.Locale, Is.EqualTo("en"));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace DotNetNuke.Tests.Authentication
             UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
             // Assert
-            Assert.AreEqual("http://a1.twimg.com/profile_images/554181350/matt_normal.jpg", sampleUser.ProfileImage);
+            Assert.That(sampleUser.ProfileImage, Is.EqualTo("http://a1.twimg.com/profile_images/554181350/matt_normal.jpg"));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace DotNetNuke.Tests.Authentication
             UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
             // Assert
-            Assert.AreEqual("http://themattharris.com", sampleUser.Website);
+            Assert.That(sampleUser.Website, Is.EqualTo("http://themattharris.com"));
         }
     }
 }

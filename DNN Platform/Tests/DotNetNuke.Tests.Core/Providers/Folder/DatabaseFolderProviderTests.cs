@@ -107,7 +107,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var result = this._dfp.GetFileAttributes(It.IsAny<IFileInfo>());
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var files = this._dfp.GetFiles(this._folderInfo.Object);
 
-            Assert.AreEqual(expectedFiles.Length, files.Length);
+            Assert.That(files, Has.Length.EqualTo(expectedFiles.Length));
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var files = this._dfp.GetFiles(this._folderInfo.Object);
 
-            CollectionAssert.AreEqual(expectedFiles, files);
+            Assert.That(files, Is.EqualTo(expectedFiles).AsCollection);
         }
 
         [Test]
@@ -292,7 +292,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 resultBytes = ms.ToArray();
             }
 
-            Assert.AreEqual(validFileBytes, resultBytes);
+            Assert.That(resultBytes, Is.EqualTo(validFileBytes));
         }
 
         [Test]
@@ -306,7 +306,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.GetFileStream(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -327,7 +327,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.GetLastModificationTime(this._fileInfo.Object);
 
-            Assert.AreEqual(expectedResult, result);
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -375,7 +375,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            Assert.AreEqual(subFolders.Count, result.Count);
+            Assert.That(result, Has.Count.EqualTo(subFolders.Count));
         }
 
         [Test]
@@ -401,7 +401,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._dfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            CollectionAssert.AreEqual(expectedResult, result);
+            Assert.That(result, Is.EqualTo(expectedResult).AsCollection);
         }
 
         [Test]
@@ -409,7 +409,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var result = this._dfp.IsInSync(It.IsAny<IFileInfo>());
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -417,7 +417,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var result = this._dfp.SupportsFileAttributes();
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]

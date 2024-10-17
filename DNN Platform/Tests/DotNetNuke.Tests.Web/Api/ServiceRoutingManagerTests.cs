@@ -84,14 +84,14 @@ namespace DotNetNuke.Tests.Web.Api
             List<Type> types = locator.GetAllMatchingTypes(ServicesRoutingManager.IsValidServiceRouteMapper).ToList();
 
             // if new ServiceRouteMapper classes are added to the assembly they will likely need to be added here
-            CollectionAssert.AreEquivalent(
-                new[]
+            Assert.That(
+                types, Is.EquivalentTo(new[]
                     {
                         typeof(FakeServiceRouteMapper),
                         typeof(ReflectedServiceRouteMappers.EmbeddedServiceRouteMapper),
                         typeof(ExceptionOnCreateInstanceServiceRouteMapper),
                         typeof(ExceptionOnRegisterServiceRouteMapper),
-                    }, types);
+                    }));
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             srm.RegisterRoutes();
 
-            Assert.AreEqual(1, FakeServiceRouteMapper.RegistrationCalls);
+            Assert.That(FakeServiceRouteMapper.RegistrationCalls, Is.EqualTo(1));
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             srm.RegisterRoutes();
 
-            Assert.AreEqual(1, FakeServiceRouteMapper.RegistrationCalls);
+            Assert.That(FakeServiceRouteMapper.RegistrationCalls, Is.EqualTo(1));
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             var route = (Route)routeCollection[0];
-            Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
+            Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0"));
         }
 
         [Test]
@@ -209,9 +209,9 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             var route = (Route)routeCollection[0];
-            Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
+            Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0"));
             route = (Route)routeCollection[1];
-            Assert.AreEqual("folder-default-0-old", route.DataTokens["Name"]);
+            Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0-old"));
         }
 
         [Test]
@@ -233,10 +233,13 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             var route = (Route)routeCollection[0];
-            Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
+            Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0"));
             route = (Route)routeCollection[1];
-            Assert.AreEqual("folder-default-0-old", route.DataTokens["Name"]);
-            Assert.IsTrue(route.Url.StartsWith("DesktopModules"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0-old"));
+                Assert.That(route.Url.StartsWith("DesktopModules"), Is.True);
+            });
         }
     }
 }

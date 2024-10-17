@@ -25,9 +25,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new BasicAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            // Assert
-            Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
-            Assert.AreEqual("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Basic"));
+                Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Is.EqualTo("realm=\"DNNAPI\""));
+            });
         }
 
         [Test]
@@ -43,7 +46,7 @@ namespace DotNetNuke.Tests.Web.Api
             handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
-            CollectionAssert.IsEmpty(response.Headers.WwwAuthenticate);
+            Assert.That(response.Headers.WwwAuthenticate, Is.Empty);
         }
 
         [Test]
@@ -57,9 +60,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new BasicAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            // Assert
-            Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
-            Assert.AreEqual("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Basic"));
+                Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Is.EqualTo("realm=\"DNNAPI\""));
+            });
         }
 
         [Test]
@@ -72,9 +78,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new BasicAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            // Assert
-            Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
-            Assert.AreEqual("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Basic"));
+                Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Is.EqualTo("realm=\"DNNAPI\""));
+            });
         }
 
         // todo unit test actual authentication code

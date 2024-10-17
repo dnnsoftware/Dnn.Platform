@@ -111,6 +111,7 @@ class ResourceList extends Component {
 
 ResourceList.propTypes = {
     list: PropTypes.array,
-    onResxChange: PropTypes.func
+    onResxChange: PropTypes.func,
+    highlightPendingTranslations: PropTypes.bool
 };
 export default ResourceList;

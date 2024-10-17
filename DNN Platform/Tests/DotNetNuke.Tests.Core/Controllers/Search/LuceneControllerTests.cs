@@ -132,7 +132,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
             var inf1 = new DirectoryInfo(searchIndexFolder);
             var inf2 = new DirectoryInfo(this.luceneController.IndexFolder);
-            Assert.AreEqual(inf1.Name, inf2.Name);
+            Assert.That(inf2.Name, Is.EqualTo(inf1.Name));
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var numFiles = 0;
             this.DeleteIndexFolder();
 
-            Assert.AreEqual(0, numFiles);
+            Assert.That(numFiles, Is.EqualTo(0));
         }
 
         [Test]
@@ -187,9 +187,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
-            // Assert
-            Assert.AreEqual(1, hits.Results.Count());
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.Results.Count(), Is.EqualTo(1));
+                Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
+            });
         }
 
         [Test]
@@ -213,9 +216,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
-            // Assert
-            Assert.AreEqual(1, hits.Results.Count());
-            Assert.AreEqual(expectedResult, hits.Results.ElementAt(0).ContentSnippet);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.Results.Count(), Is.EqualTo(1));
+                Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo(expectedResult));
+            });
         }
 
         [Test]
@@ -237,7 +243,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
-            Assert.AreEqual(1, hits.Results.Count());
+            Assert.That(hits.Results.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -249,9 +255,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }));
 
-            // Assert
-            Assert.AreEqual(4, hits.TotalHits);
-            Assert.AreEqual(4, hits.Results.Count());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.TotalHits, Is.EqualTo(4));
+                Assert.That(hits.Results.Count(), Is.EqualTo(4));
+            });
         }
 
         [Test]
@@ -263,9 +272,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 1 }));
 
-            // Assert
-            Assert.AreEqual(4, hits.TotalHits);
-            Assert.AreEqual(1, hits.Results.Count());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.TotalHits, Is.EqualTo(4));
+                Assert.That(hits.Results.Count(), Is.EqualTo(1));
+            });
         }
 
         [Test]
@@ -277,9 +289,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
-            // Assert
-            Assert.AreEqual(4, hits.TotalHits);
-            Assert.AreEqual(4, hits.Results.Count());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.TotalHits, Is.EqualTo(4));
+                Assert.That(hits.Results.Count(), Is.EqualTo(4));
+            });
         }
 
         [Test]
@@ -291,9 +306,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
-            // Assert
-            Assert.AreEqual(4, hits.TotalHits);
-            Assert.AreEqual(4, hits.Results.Count());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.TotalHits, Is.EqualTo(4));
+                Assert.That(hits.Results.Count(), Is.EqualTo(4));
+            });
         }
 
         [Test]
@@ -311,9 +329,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     PageSize = 10,
                 }));
 
-            // Assert
-            Assert.AreEqual(4, hits.TotalHits);
-            Assert.AreEqual(0, hits.Results.Count());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.TotalHits, Is.EqualTo(4));
+                Assert.That(hits.Results.Count(), Is.EqualTo(0));
+            });
         }
 
         [Test]
@@ -332,13 +353,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(query));
 
-            // Assert
-            Assert.AreEqual(3, hits.TotalHits);
-            Assert.AreEqual(1, hits.Results.Count());
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.TotalHits, Is.EqualTo(3));
+                Assert.That(hits.Results.Count(), Is.EqualTo(1));
 
-            // for some reason, this search's docs have scoring as
-            // Line1=0.3125, Line1=0.3125, Line2=0.3125, Line2=0.3750
-            Assert.AreEqual(Line1, hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue);
+                // for some reason, this search's docs have scoring as
+                // Line1=0.3125, Line1=0.3125, Line2=0.3125, Line2=0.3750
+                Assert.That(hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue, Is.EqualTo(Line1));
+            });
         }
 
         [Test]
@@ -374,7 +398,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var query = NumericRangeQuery.NewIntRange(fieldName, 2, 3, true, true);
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
-            Assert.AreEqual(2, hits.Results.Count());
+            Assert.That(hits.Results.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -399,15 +423,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(futureTime), long.Parse(futureTime), true, true);
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
-            Assert.AreEqual(0, hits.Results.Count());
+            Assert.That(hits.Results.Count(), Is.EqualTo(0));
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-1).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
             hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
-            Assert.AreEqual(1, hits.Results.Count());
+            Assert.That(hits.Results.Count(), Is.EqualTo(1));
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
             hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
-            Assert.AreEqual(2, hits.Results.Count());
+            Assert.That(hits.Results.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -466,12 +490,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             if (customAlalyzer == ValidCustomAnalyzer)
             {
-                Assert.AreEqual(1, hits.Results.Count());
-                Assert.AreEqual(Line_Chinese.Replace(SearchKeyword_Chinese, string.Format("<b>{0}</b>", SearchKeyword_Chinese)), hits.Results.ElementAt(0).ContentSnippet);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(hits.Results.Count(), Is.EqualTo(1));
+                    Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo(Line_Chinese.Replace(SearchKeyword_Chinese, string.Format("<b>{0}</b>", SearchKeyword_Chinese))));
+                });
             }
             else
             {
-                Assert.AreEqual(0, hits.Results.Count());
+                Assert.That(hits.Results.Count(), Is.EqualTo(0));
             }
         }
 
@@ -504,9 +531,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
 
-            // Assert
-            Assert.AreEqual(1, hits.Results.Count());
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(hits.Results.Count(), Is.EqualTo(1));
+                Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
+            });
         }
 
         [Test]
@@ -528,7 +558,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var previews = this.luceneController.Search(this.CreateSearchContext(luceneQuery));
 
             // Assert
-            Assert.AreEqual(2, previews.Results.Count());
+            Assert.That(previews.Results.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -563,7 +593,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var previews = this.luceneController.Search(this.CreateSearchContext(luceneQuery));
 
             // Assert
-            Assert.AreEqual(3, previews.Results.Count());
+            Assert.That(previews.Results.Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -590,7 +620,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var reader = this.luceneController.GetSearcher();
             Thread.Sleep(TimeSpan.FromSeconds(this.readerStaleTimeSpan / 2));
 
-            Assert.AreSame(reader, this.luceneController.GetSearcher());
+            Assert.That(this.luceneController.GetSearcher(), Is.SameAs(reader));
         }
 
         [Test]
@@ -611,7 +641,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var reader = this.luceneController.GetSearcher();
             Thread.Sleep(TimeSpan.FromSeconds(this.readerStaleTimeSpan * 1.1));
 
-            Assert.AreSame(reader, this.luceneController.GetSearcher());
+            Assert.That(this.luceneController.GetSearcher(), Is.SameAs(reader));
         }
 
         [Test]
@@ -639,7 +669,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // var lastAcccess = Directory.GetLastWriteTime(_luceneController.IndexFolder);
             // Directory.SetLastWriteTime(_luceneController.IndexFolder, lastAcccess + TimeSpan.FromSeconds(1));
-            Assert.AreNotSame(reader, this.luceneController.GetSearcher());
+            Assert.That(this.luceneController.GetSearcher(), Is.Not.SameAs(reader));
         }
 
         [Test]
@@ -665,7 +695,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
 
             // Assert
-            Assert.True(File.Exists(lockFile));
+            Assert.That(File.Exists(lockFile), Is.True);
             Assert.DoesNotThrow(() => this.luceneController.Add(doc1));
         }
 
@@ -686,7 +716,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var secondController = new LuceneControllerImpl();
 
             // Assert
-            Assert.True(File.Exists(lockFile));
+            Assert.That(File.Exists(lockFile), Is.True);
             Assert.Throws<SearchException>(() => secondController.Add(doc1));
         }
 
@@ -696,8 +726,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this.AddTestDocs();
 
-            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.SearchbleDocsCount());
+            Assert.Multiple(() =>
+            {
+                Assert.That(this.luceneController.MaxDocsCount(), Is.EqualTo(TotalTestDocs2Create));
+                Assert.That(this.luceneController.SearchbleDocsCount(), Is.EqualTo(TotalTestDocs2Create));
+            });
         }
 
         [Test]
@@ -708,9 +741,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddTestDocs();
             var delCount = this.DeleteTestDocs();
 
-            Assert.IsTrue(this.luceneController.HasDeletions());
-            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create - delCount, this.luceneController.SearchbleDocsCount());
+            Assert.Multiple(() =>
+            {
+                Assert.That(this.luceneController.HasDeletions(), Is.True);
+                Assert.That(this.luceneController.MaxDocsCount(), Is.EqualTo(TotalTestDocs2Create));
+                Assert.That(this.luceneController.SearchbleDocsCount(), Is.EqualTo(TotalTestDocs2Create - delCount));
+            });
         }
 
         [Test]
@@ -723,8 +759,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             this.luceneController.OptimizeSearchIndex(true);
 
-            Assert.AreEqual(TotalTestDocs2Create, this.luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create - delCount, this.luceneController.SearchbleDocsCount());
+            Assert.Multiple(() =>
+            {
+                Assert.That(this.luceneController.MaxDocsCount(), Is.EqualTo(TotalTestDocs2Create));
+                Assert.That(this.luceneController.SearchbleDocsCount(), Is.EqualTo(TotalTestDocs2Create - delCount));
+            });
         }
 
         [Test]
@@ -736,9 +775,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var delCount = this.DeleteTestDocs();
             var statistics = this.luceneController.GetSearchStatistics();
 
-            Assert.IsNotNull(statistics);
-            Assert.AreEqual(statistics.TotalDeletedDocuments, delCount);
-            Assert.AreEqual(statistics.TotalActiveDocuments, addedCount - delCount);
+            Assert.Multiple(() =>
+            {
+                Assert.That(statistics, Is.Not.Null);
+                Assert.That(delCount, Is.EqualTo(statistics.TotalDeletedDocuments));
+                Assert.That(addedCount - delCount, Is.EqualTo(statistics.TotalActiveDocuments));
+            });
         }
 
         [Test]
@@ -750,7 +792,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.CreateNewLuceneControllerInstance(); // to force a new reader for the next assertion
 
             // Assert
-            Assert.IsNotNull(this.luceneController.GetSearcher());
+            Assert.That(this.luceneController.GetSearcher(), Is.Not.Null);
         }
 
         private void CreateNewLuceneControllerInstance()

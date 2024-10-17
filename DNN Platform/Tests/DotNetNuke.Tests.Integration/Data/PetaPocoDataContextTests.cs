@@ -60,7 +60,7 @@ namespace DotNetNuke.Tests.Data
             var context = new PetaPocoDataContext(connectionStringName);
 
             // Assert
-            Assert.IsInstanceOf<Database>(Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database"));
+            Assert.That(Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database"), Is.InstanceOf<Database>());
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Data
             var context = new PetaPocoDataContext(connectionStringName, tablePrefix);
 
             // Assert
-            Assert.AreEqual(tablePrefix, context.TablePrefix);
+            Assert.That(context.TablePrefix, Is.EqualTo(tablePrefix));
         }
 
         [Test]
@@ -83,9 +83,12 @@ namespace DotNetNuke.Tests.Data
             // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            // Assert
-            Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoDataContext, IMapper>(context, "_mapper"));
-            Assert.IsInstanceOf<PetaPocoMapper>(Util.GetPrivateMember<PetaPocoDataContext, PetaPocoMapper>(context, "_mapper"));
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(Util.GetPrivateMember<PetaPocoDataContext, IMapper>(context, "_mapper"), Is.InstanceOf<IMapper>());
+                Assert.That(Util.GetPrivateMember<PetaPocoDataContext, PetaPocoMapper>(context, "_mapper"), Is.InstanceOf<PetaPocoMapper>());
+            });
         }
 
         [Test]
@@ -97,8 +100,8 @@ namespace DotNetNuke.Tests.Data
             var context = new PetaPocoDataContext(connectionStringName);
 
             // Assert
-            Assert.IsInstanceOf<Dictionary<Type, IMapper>>(context.FluentMappers);
-            Assert.AreEqual(0, context.FluentMappers.Count);
+            Assert.That(context.FluentMappers, Is.InstanceOf<Dictionary<Type, IMapper>>());
+            Assert.That(context.FluentMappers, Is.Empty);
         }
 
         [Test]
@@ -113,7 +116,7 @@ namespace DotNetNuke.Tests.Data
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
 
-            Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
+            Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
         }
 
         [Test]
@@ -129,7 +132,7 @@ namespace DotNetNuke.Tests.Data
             context.BeginTransaction();
 
             // Assert
-            Assert.AreEqual(transactionDepth + 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
+            Assert.That(Util.GetPrivateMember<Database, int>(db, "_transactionDepth"), Is.EqualTo(transactionDepth + 1));
         }
 
         [Test]
@@ -145,7 +148,7 @@ namespace DotNetNuke.Tests.Data
             context.Commit();
 
             // Assert
-            Assert.AreEqual(transactionDepth - 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
+            Assert.That(Util.GetPrivateMember<Database, int>(db, "_transactionDepth"), Is.EqualTo(transactionDepth - 1));
         }
 
         [Test]
@@ -161,7 +164,7 @@ namespace DotNetNuke.Tests.Data
             context.Commit();
 
             // Assert
-            Assert.AreEqual(false, Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"));
+            Assert.That(Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"), Is.EqualTo(false));
         }
 
         [Test]
@@ -177,7 +180,7 @@ namespace DotNetNuke.Tests.Data
             context.RollbackTransaction();
 
             // Assert
-            Assert.AreEqual(transactionDepth - 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
+            Assert.That(Util.GetPrivateMember<Database, int>(db, "_transactionDepth"), Is.EqualTo(transactionDepth - 1));
         }
 
         [Test]
@@ -193,7 +196,7 @@ namespace DotNetNuke.Tests.Data
             context.RollbackTransaction();
 
             // Assert
-            Assert.AreEqual(true, Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"));
+            Assert.That(Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"), Is.EqualTo(true));
         }
 
         [Test]
@@ -206,8 +209,8 @@ namespace DotNetNuke.Tests.Data
             var repo = context.GetRepository<Dog>();
 
             // Assert
-            Assert.IsInstanceOf<IRepository<Dog>>(repo);
-            Assert.IsInstanceOf<PetaPocoRepository<Dog>>(repo);
+            Assert.That(repo, Is.InstanceOf<IRepository<Dog>>());
+            Assert.That(repo, Is.InstanceOf<PetaPocoRepository<Dog>>());
         }
 
         [Test]
@@ -220,7 +223,7 @@ namespace DotNetNuke.Tests.Data
             var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
 
             // Assert
-            Assert.IsInstanceOf<Database>(Util.GetPrivateMember<PetaPocoRepository<Dog>, Database>(repo, "_database"));
+            Assert.That(Util.GetPrivateMember<PetaPocoRepository<Dog>, Database>(repo, "_database"), Is.InstanceOf<Database>());
         }
 
         [Test]
@@ -233,8 +236,8 @@ namespace DotNetNuke.Tests.Data
             var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
 
             // Assert
-            Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
-            Assert.IsInstanceOf<PetaPocoMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
+            Assert.That(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"), Is.InstanceOf<IMapper>());
+            Assert.That(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"), Is.InstanceOf<PetaPocoMapper>());
         }
 
         [Test]
@@ -248,8 +251,8 @@ namespace DotNetNuke.Tests.Data
             var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
 
             // Assert
-            Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
-            Assert.IsInstanceOf<FluentMapper<Dog>>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
+            Assert.That(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"), Is.InstanceOf<IMapper>());
+            Assert.That(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"), Is.InstanceOf<FluentMapper<Dog>>());
         }
 
         // ReSharper restore InconsistentNaming
