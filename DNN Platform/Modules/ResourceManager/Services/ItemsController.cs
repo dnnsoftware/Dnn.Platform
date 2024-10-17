@@ -30,6 +30,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Assets;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Api;
 
@@ -566,6 +567,11 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var matchedRoles = RoleController.Instance.GetRoles(this.PortalSettings.PortalId)
                 .Where(r => r.Status == RoleStatus.Approved)
+                .Select(r =>
+                {
+                    r.RoleName = Localization.LocalizeRole(r.RoleName);
+                    return r;
+                })
                 .OrderBy(r => r.RoleName)
                 .Select(r => new
                 {

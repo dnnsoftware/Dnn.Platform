@@ -2991,9 +2991,9 @@ namespace DotNetNuke.Common
             switch (Convert.ToString(roleId))
             {
                 case glbRoleAllUsers:
-                    return glbRoleAllUsersName;
+                    return Localization.LocalizeRole(glbRoleAllUsersName);
                 case glbRoleUnauthUser:
-                    return glbRoleUnauthUserName;
+                    return Localization.LocalizeRole(glbRoleUnauthUserName);
             }
 
             Hashtable htRoles = null;
