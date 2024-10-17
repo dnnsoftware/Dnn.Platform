@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Data
             var mapper = new FluentMapper<Dog>(Constants.TABLENAME_Prefix);
 
             // Assert
-            Assert.AreEqual(Constants.TABLENAME_Prefix, Util.GetPrivateMember<FluentMapper<Dog>, string>(mapper, "_tablePrefix"));
+            Assert.That(Util.GetPrivateMember<FluentMapper<Dog>, string>(mapper, "_tablePrefix"), Is.EqualTo(Constants.TABLENAME_Prefix));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Dog));
 
             // Assert
-            Assert.IsInstanceOf<TableInfo>(ti);
+            Assert.That(ti, Is.InstanceOf<TableInfo>());
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Dog));
 
             // Assert
-            Assert.AreEqual(Constants.TABLENAME_Dog, ti.TableName);
+            Assert.That(ti.TableName, Is.EqualTo(Constants.TABLENAME_Dog));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Dog));
 
             // Assert
-            Assert.AreEqual(Constants.TABLENAME_Prefix + Constants.TABLENAME_Dog, ti.TableName);
+            Assert.That(ti.TableName, Is.EqualTo(Constants.TABLENAME_Prefix + Constants.TABLENAME_Dog));
         }
 
         [Test]
@@ -79,8 +79,8 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.AreNotEqual(Constants.TABLENAME_Person, ti.TableName);
-            Assert.AreEqual(Constants.TABLENAME_Dog, ti.TableName);
+            Assert.That(ti.TableName, Is.Not.EqualTo(Constants.TABLENAME_Person));
+            Assert.That(ti.TableName, Is.EqualTo(Constants.TABLENAME_Dog));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.IsNull(ti.TableName);
+            Assert.That(ti.TableName, Is.Null);
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.AreEqual(Constants.TABLENAME_Key, ti.PrimaryKey);
+            Assert.That(ti.PrimaryKey, Is.EqualTo(Constants.TABLENAME_Key));
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.AreNotEqual(Constants.TABLENAME_Person_Key, ti.PrimaryKey);
+            Assert.That(ti.PrimaryKey, Is.Not.EqualTo(Constants.TABLENAME_Person_Key));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.IsNull(ti.PrimaryKey);
+            Assert.That(ti.PrimaryKey, Is.Null);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.IsFalse(ti.AutoIncrement);
+            Assert.That(ti.AutoIncrement, Is.False);
         }
 
         [TestCase(true)]
@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Data
             var ti = mapper.GetTableInfo(typeof(Person));
 
             // Assert
-            Assert.AreEqual(autoIncrement, ti.AutoIncrement);
+            Assert.That(ti.AutoIncrement, Is.EqualTo(autoIncrement));
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace DotNetNuke.Tests.Data
             var ci = mapper.GetColumnInfo(dogProperty);
 
             // Assert
-            Assert.IsNull(ci);
+            Assert.That(ci, Is.Null);
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace DotNetNuke.Tests.Data
             var ci = mapper.GetColumnInfo(dogProperty);
 
             // Assert
-            Assert.IsInstanceOf<ColumnInfo>(ci);
+            Assert.That(ci, Is.InstanceOf<ColumnInfo>());
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.Data
             var ci = mapper.GetColumnInfo(personProperty);
 
             // Assert
-            Assert.AreEqual(Constants.COLUMNNAME_Name, ci.ColumnName);
+            Assert.That(ci.ColumnName, Is.EqualTo(Constants.COLUMNNAME_Name));
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace DotNetNuke.Tests.Data
             var ci = mapper.GetColumnInfo(personProperty);
 
             // Assert
-            Assert.AreNotEqual(Constants.COLUMNNAME_PersonName, ci.ColumnName);
+            Assert.That(ci.ColumnName, Is.Not.EqualTo(Constants.COLUMNNAME_PersonName));
         }
     }
 }

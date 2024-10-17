@@ -234,7 +234,8 @@ LanguageRow.propTypes = {
     openId: PropTypes.string,
     onOpenEditor: PropTypes.func,
     onOpenPageList: PropTypes.func,
-    onLocalizePages: PropTypes.func
+    onLocalizePages: PropTypes.func,
+    children: PropTypes.node
 };
 
 LanguageRow.defaultProps = {

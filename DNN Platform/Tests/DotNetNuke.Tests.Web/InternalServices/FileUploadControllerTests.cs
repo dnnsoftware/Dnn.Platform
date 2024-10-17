@@ -48,6 +48,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         public void TearDown()
         {
             this.serviceProvider.Dispose();
+            this.testInstance?.Dispose();
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.testInstance.Request = request;
             await this.testInstance.UploadFromLocal(-1);
 
-            Assert.IsTrue(this.synchronizationContext.IsUploadFileCalled());
+            Assert.That(this.synchronizationContext.IsUploadFileCalled(), Is.True);
         }
 
         private void SetupPortalSettings()

@@ -26,7 +26,7 @@ namespace DotNetNuke.Tests.Core
         {
             string result = EscapedString.Combine(new[] { "first", "second" }, ';');
 
-            Assert.AreEqual("first;second", result);
+            Assert.That(result, Is.EqualTo("first;second"));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Core
         {
             IEnumerable<string> result = EscapedString.Seperate("first]second", ']');
 
-            CollectionAssert.AreEqual(new[] { "first", "second" }, result);
+            Assert.That(result, Is.EqualTo(new[] { "first", "second" }).AsCollection);
         }
 
         [Test]
@@ -139,14 +139,14 @@ namespace DotNetNuke.Tests.Core
         {
             var result = EscapedString.Seperate(data, trimWhitespaces);
 
-            CollectionAssert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected).AsCollection);
         }
 
         private void CombineTest(IEnumerable data, string expected)
         {
             string result = EscapedString.Combine(data);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }

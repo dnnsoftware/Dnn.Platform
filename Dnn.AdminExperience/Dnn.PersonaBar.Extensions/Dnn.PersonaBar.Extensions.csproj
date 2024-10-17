@@ -667,7 +667,9 @@
     <Content Include="admin\personaBar\Dnn.Licensing\App_LocalResources\Licensing.resx" />
     <Content Include="admin\personaBar\Dnn.Security\App_LocalResources\Security.resx" />
     <Content Include="admin\personaBar\Dnn.Seo\App_LocalResources\Seo.resx" />
-    <Content Include="admin\personaBar\Dnn.Servers\App_LocalResources\Servers.resx" />
+    <Content Include="admin\personaBar\Dnn.Servers\App_LocalResources\Servers.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\personaBar\Dnn.SiteImportExport\App_LocalResources\SiteImportExport.resx" />
     <Content Include="admin\personaBar\Dnn.SiteSettings\App_LocalResources\SiteSettings.resx" />
     <Content Include="admin\personaBar\Dnn.SqlConsole\App_LocalResources\SqlConsole.resx" />

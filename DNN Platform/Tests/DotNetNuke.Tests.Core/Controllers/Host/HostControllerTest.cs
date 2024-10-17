@@ -78,6 +78,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         {
             this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
+            this._hostSettingsTable?.Dispose();
         }
 
         [Test]
@@ -104,9 +105,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Assert
             foreach (var currentConfig in settingsDic)
             {
-                Assert.AreEqual(currentConfig.Key, currentConfig.Value.Key);
-                Assert.AreEqual(expectedDic[currentConfig.Key].Value, currentConfig.Value.Value);
-                Assert.AreEqual(expectedDic[currentConfig.Key].IsSecure, currentConfig.Value.IsSecure);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(currentConfig.Value.Key, Is.EqualTo(currentConfig.Key));
+                    Assert.That(currentConfig.Value.Value, Is.EqualTo(expectedDic[currentConfig.Key].Value));
+                    Assert.That(currentConfig.Value.IsSecure, Is.EqualTo(expectedDic[currentConfig.Key].IsSecure));
+                });
             }
         }
 
@@ -122,7 +126,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             var settingsDic = HostController.Instance.GetSettingsDictionary();
 
             // Assert
-            CollectionAssert.AreEquivalent(expectedDic.Values, settingsDic.Values);
+            Assert.That(settingsDic.Values, Is.EquivalentTo(expectedDic.Values));
         }
 
         [Test]
@@ -289,8 +293,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetString_If_Key_Exists(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetString(key), this.GetValue(key));
-            Assert.AreEqual(HostController.Instance.GetString(key, "Hello Default"), this.GetValue(key));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetString(key)));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetString(key, "Hello Default")));
         }
 
         [Test]
@@ -299,7 +303,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetString_InvalidKey_Returns_Null_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetString(key), Null.NullString);
+            Assert.That(Null.NullString, Is.EqualTo(HostController.Instance.GetString(key)));
         }
 
         [Test]
@@ -308,7 +312,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetString_InvalidKey_Returns_Default_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetString(key, "Hello Default"), "Hello Default");
+            Assert.That(HostController.Instance.GetString(key, "Hello Default"), Is.EqualTo("Hello Default"));
         }
 
         [Test]
@@ -327,8 +331,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         public void HostController_GetInteger_If_Key_Exists(string key)
         {
             int s = HostController.Instance.GetInteger(key);
-            Assert.AreEqual(s.ToString(), this.GetValue(key));
-            Assert.AreEqual(HostController.Instance.GetInteger(key, 12).ToString(), this.GetValue(key));
+            Assert.That(this.GetValue(key), Is.EqualTo(s.ToString()));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetInteger(key, 12).ToString()));
         }
 
         [Test]
@@ -337,7 +341,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetInteger_InvalidKey_Returns_Null_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetInteger(key), Null.NullInteger);
+            Assert.That(Null.NullInteger, Is.EqualTo(HostController.Instance.GetInteger(key)));
         }
 
         [Test]
@@ -346,7 +350,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetInteger_InvalidKey_Returns_Default_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetInteger(key, 6969), 6969);
+            Assert.That(HostController.Instance.GetInteger(key, 6969), Is.EqualTo(6969));
         }
 
         [Test]
@@ -364,9 +368,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetBoolean_If_Key_Exists(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetBoolean(key).ToString(), this.GetValue(key));
-            Assert.AreEqual(HostController.Instance.GetBoolean(key, false).ToString(), this.GetValue(key));
-            Assert.AreEqual(HostController.Instance.GetBoolean(key, true).ToString(), this.GetValue(key));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetBoolean(key).ToString()));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetBoolean(key, false).ToString()));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetBoolean(key, true).ToString()));
         }
 
         [Test]
@@ -375,7 +379,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetBoolean_InvalidKey_Returns_Null_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetBoolean(key), Null.NullBoolean);
+            Assert.That(Null.NullBoolean, Is.EqualTo(HostController.Instance.GetBoolean(key)));
         }
 
         [Test]
@@ -384,8 +388,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetBoolean_InvalidKey_Returns_Default_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetBoolean(key, true), true);
-            Assert.AreEqual(HostController.Instance.GetBoolean(key, false), false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(HostController.Instance.GetBoolean(key, true), Is.EqualTo(true));
+                Assert.That(HostController.Instance.GetBoolean(key, false), Is.EqualTo(false));
+            });
         }
 
         [Test]
@@ -404,8 +411,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         public void HostController_GetDouble_If_Key_Exists(string key)
         {
             double s = HostController.Instance.GetDouble(key);
-            Assert.AreEqual(s.ToString(), this.GetValue(key));
-            Assert.AreEqual(HostController.Instance.GetDouble(key, 54.54).ToString(), this.GetValue(key));
+            Assert.That(this.GetValue(key), Is.EqualTo(s.ToString()));
+            Assert.That(this.GetValue(key), Is.EqualTo(HostController.Instance.GetDouble(key, 54.54).ToString()));
         }
 
         [Test]
@@ -414,7 +421,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetDouble_InvalidKey_Returns_Null_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetDouble(key), Null.NullDouble);
+            Assert.That(Null.NullDouble, Is.EqualTo(HostController.Instance.GetDouble(key)));
         }
 
         [Test]
@@ -423,7 +430,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         public void HostController_GetDouble_InvalidKey_Returns_Default_Value(string key)
         {
-            Assert.AreEqual(HostController.Instance.GetDouble(key, 21.58), 21.58);
+            Assert.That(HostController.Instance.GetDouble(key, 21.58), Is.EqualTo(21.58));
         }
 
         [Test]

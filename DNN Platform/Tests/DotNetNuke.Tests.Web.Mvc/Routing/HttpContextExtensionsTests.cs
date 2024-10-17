@@ -26,7 +26,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
             var result = httpContext.GetModuleRequestResult();
 
             // Assert
-            Assert.AreSame(expectedResult, result);
+            Assert.That(result, Is.SameAs(expectedResult));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
             var result = httpContext.GetModuleRequestResult();
 
             // Assert
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
             httpContext.Items[HttpContextExtensions.ModuleRequestResultKey] = expectedResult;
 
             // Act and Assert
-            Assert.IsTrue(httpContext.HasModuleRequestResult());
+            Assert.That(httpContext.HasModuleRequestResult(), Is.True);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
             HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
 
             // Act and Assert
-            Assert.IsFalse(httpContext.HasModuleRequestResult());
+            Assert.That(httpContext.HasModuleRequestResult(), Is.False);
         }
 
         [Test]
@@ -76,8 +76,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
 
             // Assert
             var actual = context.Items[HttpContextExtensions.ModuleRequestResultKey];
-            Assert.IsNotNull(actual);
-            Assert.IsInstanceOf<ModuleRequestResult>(actual);
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Is.InstanceOf<ModuleRequestResult>());
         }
     }
 }

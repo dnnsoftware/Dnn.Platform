@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
 
             var pageDetail = pagesExecuter.SavePageDetails(pageSettingsBuilder.Build());
 
-            Assert.NotNull(pageDetail.Page, "The system must create the page and return its details in the response");
+            Assert.That(pageDetail.Page, Is.Not.Null, "The system must create the page and return its details in the response");
 
             tabId = (int)pageDetail.Page.id;
 

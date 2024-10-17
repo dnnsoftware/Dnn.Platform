@@ -26,7 +26,7 @@
 
             // Act & Assert
             var exception = Assert.Throws<InvalidOperationException>(() => tabChangeTracker.TrackModuleModification(null, 1, 0));
-            Assert.AreEqual(true, exception.Data?[TabChangeTracker.IsModuleDoesNotBelongToPage]);
+            Assert.That(exception.Data?[TabChangeTracker.IsModuleDoesNotBelongToPage], Is.EqualTo(true));
         }
     }
 }

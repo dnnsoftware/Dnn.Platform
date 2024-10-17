@@ -77,7 +77,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(userId.ToString(), "--roles", "Tester");
 
             // Assert
-            Assert.IsFalse(result.IsError);
+            Assert.That(result.IsError, Is.False);
         }
 
         [TestCase]
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(userId.ToString());
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [TestCase]

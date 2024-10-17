@@ -36,48 +36,51 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request_String()
         {
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Empty"]);
-            Assert.IsNull(request);
+            Assert.That(request, Is.Null);
         }
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Invalid_Request_String()
         {
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Invalid"]);
-            Assert.IsNull(request);
+            Assert.That(request, Is.Null);
         }
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String()
         {
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Valid"]);
-            Assert.AreEqual(true, request.IsValid);
+            Assert.That(request.IsValid, Is.EqualTo(true));
         }
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String_ForAPage()
         {
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["ValidForAPage"]);
-            Assert.AreEqual(true, request.IsValid);
-            Assert.AreEqual("HMAC-SHA256", request.Algorithm);
-            Assert.AreEqual(ConvertToTimestamp(1319488107), request.IssuedAt);
+            Assert.Multiple(() =>
+            {
+                Assert.That(request.IsValid, Is.EqualTo(true));
+                Assert.That(request.Algorithm, Is.EqualTo("HMAC-SHA256"));
+                Assert.That(request.IssuedAt, Is.EqualTo(ConvertToTimestamp(1319488107)));
 
-            // user stuff
-            Assert.AreEqual("ca", request.UserCountry);
-            Assert.AreEqual("en_US", request.UserLocale);
-            Assert.AreEqual(21, request.UserMinAge);
-            Assert.AreEqual(0, request.UserMaxAge);
+                // user stuff
+                Assert.That(request.UserCountry, Is.EqualTo("ca"));
+                Assert.That(request.UserLocale, Is.EqualTo("en_US"));
+                Assert.That(request.UserMinAge, Is.EqualTo(21));
+                Assert.That(request.UserMaxAge, Is.EqualTo(0));
 
-            // page
-            Assert.AreEqual("130634540372728", request.PageId);
-            Assert.AreEqual(false, request.PageLiked);
-            Assert.AreEqual(true, request.PageUserAdmin);
+                // page
+                Assert.That(request.PageId, Is.EqualTo("130634540372728"));
+                Assert.That(request.PageLiked, Is.EqualTo(false));
+                Assert.That(request.PageUserAdmin, Is.EqualTo(true));
+            });
         }
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request()
         {
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(null as HttpRequest);
-            Assert.IsNull(request);
+            Assert.That(request, Is.Null);
         }
 
         [Test]
@@ -87,7 +90,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             httpRequest.RequestType = "GET";
 
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
-            Assert.IsNull(request);
+            Assert.That(request, Is.Null);
         }
 
         [Test]
@@ -99,7 +102,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             httpRequest.Form.Add("signed_request", this._requestDics["Invalid"]);
 
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
-            Assert.IsNull(request);
+            Assert.That(request, Is.Null);
         }
 
         [Test]
@@ -111,7 +114,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             httpRequest.Form.Add("signed_request", this._requestDics["Valid"]);
 
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
-            Assert.AreEqual(true, request.IsValid);
+            Assert.That(request.IsValid, Is.EqualTo(true));
         }
 
         /// <summary>method for converting a System.DateTime value to a UNIX Timestamp.</summary>

@@ -32,7 +32,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Act
             var tab = tabCollection.WithTabName("TestName");
 
-            Assert.IsNull(tab);
+            Assert.That(tab, Is.Null);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var tab = tabCollection.WithTabName("TestName2");
 
             // Assert
-            Assert.AreEqual("TestName2", tab.TabName);
+            Assert.That(tab.TabName, Is.EqualTo("TestName2"));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var tab = tabCollection.WithTabName("NO_MATCH");
 
             // Assert
-            Assert.IsNull(tab);
+            Assert.That(tab, Is.Null);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var tab = tabCollection.WithTabName(string.Empty);
 
             // Assert
-            Assert.IsNull(tab);
+            Assert.That(tab, Is.Null);
         }
     }
 }

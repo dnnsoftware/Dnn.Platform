@@ -70,7 +70,9 @@ ListEntryRow.propTypes = {
     onDelete: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    enableSortOrder: PropTypes.bool
+    enableSortOrder: PropTypes.bool,
+    children: PropTypes.node,
+    name: PropTypes.string
 };
 
 ListEntryRow.defaultProps = {

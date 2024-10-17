@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
 
-            CollectionAssert.AreEqual(new List<string> { value }, sharedList.BackingList);
+            Assert.That(sharedList.BackingList, Is.EqualTo(new List<string> { value }).AsCollection);
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 actualValue = sharedList[0];
             }
 
-            Assert.AreEqual("value", actualValue);
+            Assert.That(actualValue, Is.EqualTo("value"));
         }
 
         [Test]

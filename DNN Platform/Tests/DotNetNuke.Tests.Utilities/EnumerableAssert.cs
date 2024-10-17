@@ -43,8 +43,11 @@ namespace DotNetNuke.Tests.Utilities
 
             while (actualEnumerator.MoveNext())
             {
-                Assert.IsTrue(expectedEnumerator.MoveNext());
-                Assert.IsTrue(matcher(expectedEnumerator.Current, actualEnumerator.Current), message, args);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(expectedEnumerator.MoveNext(), Is.True);
+                    Assert.That(matcher(expectedEnumerator.Current, actualEnumerator.Current), Is.True, () => string.Format(message, args));
+                });
             }
         }
     }

@@ -128,7 +128,8 @@ RolesPanel.propTypes = {
     rolesList: PropTypes.array,
     roleGroups: PropTypes.array,
     cultureCode: PropTypes.string,
-    onSelectChange: PropTypes.func
+    onSelectChange: PropTypes.func,
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {

@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             bool result = this.pagesController.ValidatePageUrlSettings(portalSettings, pageSettings, tab, ref inValidField, ref errorMessage);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
             this.urlRewriterUtilsWrapperMock.VerifyAll();
             this.friendlyUrlWrapperMock.Verify(d => d.CleanNameForUrl(expected, friendlyOptions, out modified), Times.Once());
         }

@@ -85,7 +85,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount + 1));
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount + 1));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount - 1));
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount - 1));
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount - 1));
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace DotNetNuke.Tests.Data
             }
 
             // Assert
-            Assert.AreEqual(count, dogs.Count());
+            Assert.That(dogs.Count(), Is.EqualTo(count));
         }
 
         [Test]
@@ -233,7 +233,7 @@ namespace DotNetNuke.Tests.Data
             }
 
             // Assert
-            Assert.AreEqual(count, dogs.Count());
+            Assert.That(dogs.Count(), Is.EqualTo(count));
         }
 
         [Test]
@@ -255,7 +255,7 @@ namespace DotNetNuke.Tests.Data
             }
 
             // Assert
-            Assert.AreEqual(pageSize, dogs.PageSize);
+            Assert.That(dogs.PageSize, Is.EqualTo(pageSize));
         }
 
         [Test]
@@ -274,9 +274,12 @@ namespace DotNetNuke.Tests.Data
             }
 
             // Assert
-            Assert.IsInstanceOf<Dog>(dog);
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogAge, dog.Age);
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogName, dog.Name);
+            Assert.That(dog, Is.InstanceOf<Dog>());
+            Assert.Multiple(() =>
+            {
+                Assert.That(dog.Age, Is.EqualTo(Constants.PETAPOCO_ValidDogAge));
+                Assert.That(dog.Name, Is.EqualTo(Constants.PETAPOCO_ValidDogName));
+            });
         }
 
         [Test]
@@ -295,9 +298,12 @@ namespace DotNetNuke.Tests.Data
             }
 
             // Assert
-            Assert.IsInstanceOf<Dog>(dog);
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogAge, dog.Age);
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogName, dog.Name);
+            Assert.That(dog, Is.InstanceOf<Dog>());
+            Assert.Multiple(() =>
+            {
+                Assert.That(dog.Age, Is.EqualTo(Constants.PETAPOCO_ValidDogAge));
+                Assert.That(dog.Name, Is.EqualTo(Constants.PETAPOCO_ValidDogName));
+            });
         }
 
         [Test]
@@ -325,14 +331,17 @@ namespace DotNetNuke.Tests.Data
             // Assert
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
 
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, table.Rows.Count);
+            Assert.That(table.Rows, Has.Count.EqualTo(Constants.PETAPOCO_RecordCount));
 
             foreach (DataRow row in table.Rows)
             {
                 if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.AreEqual(row["Age"], Constants.PETAPOCO_UpdateDogAge);
-                    Assert.AreEqual(row["Name"], Constants.PETAPOCO_UpdateDogName);
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
+                        Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
+                    });
                 }
             }
         }
@@ -362,14 +371,17 @@ namespace DotNetNuke.Tests.Data
             // Assert
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
 
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, table.Rows.Count);
+            Assert.That(table.Rows, Has.Count.EqualTo(Constants.PETAPOCO_RecordCount));
 
             foreach (DataRow row in table.Rows)
             {
                 if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.AreEqual(row["Age"], Constants.PETAPOCO_UpdateDogAge);
-                    Assert.AreEqual(row["Name"], Constants.PETAPOCO_UpdateDogName);
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
+                        Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
+                    });
                 }
             }
         }
@@ -392,14 +404,17 @@ namespace DotNetNuke.Tests.Data
             // Assert
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
 
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, table.Rows.Count);
+            Assert.That(table.Rows, Has.Count.EqualTo(Constants.PETAPOCO_RecordCount));
 
             foreach (DataRow row in table.Rows)
             {
                 if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.AreEqual(row["Age"], Constants.PETAPOCO_UpdateDogAge);
-                    Assert.AreEqual(row["Name"], Constants.PETAPOCO_UpdateDogName);
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
+                        Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
+                    });
                 }
             }
         }

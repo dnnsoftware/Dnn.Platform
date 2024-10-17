@@ -41,6 +41,9 @@ class Folder extends Component {
 Folder.propTypes = {
     ChildFolders: PropTypes.array,
     getChildFolders: PropTypes.func,
-    folder: PropTypes.object
+    folder: PropTypes.object,
+    children: PropTypes.node,
+    onClick: PropTypes.func,
+    isSelected: PropTypes.bool
 };
 export default Folder;
