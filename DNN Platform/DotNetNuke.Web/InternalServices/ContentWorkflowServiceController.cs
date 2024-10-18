@@ -10,8 +10,10 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Dto;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
@@ -99,6 +101,92 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CompleteState()
+        {
+            try
+            {
+                this.workflowEngine.CompleteState(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DiscardState()
+        {
+            try
+            {
+                this.workflowEngine.DiscardState(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CompleteWorkflow()
+        {
+            try
+            {
+                this.workflowEngine.CompleteWorkflow(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DiscardWorkflow()
+        {
+            try
+            {
+                this.workflowEngine.DiscardWorkflow(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        private StateTransaction BuildStateTransaction()
+        {
+            var portalId = this.PortalSettings.PortalId;
+            var tabId = this.Request.FindTabId();
+            var currentPage = TabController.Instance.GetTab(tabId, portalId);
+            var contentItemId = currentPage.ContentItemId;
+            var contentController = Util.GetContentController();
+            var contentItem = contentController.GetContentItem(contentItemId);
+            var stateTransaction = new StateTransaction
+            {
+                ContentItemId = contentItem.ContentItemId,
+                CurrentStateId = contentItem.StateID,
+                Message = new StateTransactionMessage(),
+                UserId = this.UserInfo.UserID,
+            };
+            return stateTransaction;
         }
     }
 }

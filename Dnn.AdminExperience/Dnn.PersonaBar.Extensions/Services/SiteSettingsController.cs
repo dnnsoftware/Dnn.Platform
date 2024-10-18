@@ -26,6 +26,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Icons;
@@ -33,6 +34,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
@@ -3112,7 +3114,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         InjectModuleHyperLink = portalSettings.InjectModuleHyperLink,
                         InlineEditorEnabled = portalSettings.InlineEditorEnabled,
                         ShowQuickModuleAddMenu = portalSettings.ShowQuickModuleAddMenu,
+                        EnabledVersioning = TabVersionSettings.Instance.IsVersioningEnabled(pid),
+                        MaxNumberOfVersions = TabVersionSettings.Instance.GetMaxNumberOfVersions(pid),
+                        WorkflowEnabled = TabWorkflowSettings.Instance.IsWorkflowEnabled(pid),
+                        DefaultTabWorkflowId = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(pid),
                     },
+                    Workflows = WorkflowManager.Instance.GetWorkflows(pid).Select(w => new { label = w.WorkflowName, value = w.WorkflowID }).ToList(),
                 });
             }
             catch (Exception exc)
@@ -3147,6 +3154,26 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     var whitelist = new FileExtensionWhitelist(request.AllowedExtensionsWhitelist);
                     whitelist = whitelist.RestrictBy(Host.AllowedExtensionWhitelist);
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", whitelist.ToStorageString(), false, null, false);
+                }
+
+                if (request.EnabledVersioning.HasValue)
+                {
+                    TabVersionSettings.Instance.SetEnabledVersioningForPortal(pid, request.EnabledVersioning.Value);
+                }
+
+                if (request.MaxNumberOfVersions.HasValue)
+                {
+                    TabVersionSettings.Instance.SetMaxNumberOfVersions(pid, request.MaxNumberOfVersions.Value);
+                }
+
+                if (request.WorkflowEnabled.HasValue)
+                {
+                    TabWorkflowSettings.Instance.SetWorkflowEnabled(pid, request.WorkflowEnabled.Value);
+                }
+
+                if (request.DefaultTabWorkflowId.HasValue)
+                {
+                    TabWorkflowSettings.Instance.SetDefaultTabWorkflowId(pid, request.DefaultTabWorkflowId.Value);
                 }
 
                 DataCache.ClearCache();

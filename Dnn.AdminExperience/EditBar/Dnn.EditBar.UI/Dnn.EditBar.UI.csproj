@@ -96,6 +96,12 @@
     <Compile Include="HttpModules\EditBarModule.cs" />
     <Compile Include="Items\AddExistingModuleMenu.cs" />
     <Compile Include="Items\AddModuleMenu.cs" />
+    <Compile Include="Items\WorkflowBaseMenuItem.cs" />
+    <Compile Include="Items\WorkflowStateMenu.cs" />
+    <Compile Include="Items\CompleteWorkflowMenu.cs" />
+    <Compile Include="Items\DiscardWorkflowMenu.cs" />
+    <Compile Include="Items\DiscardStateMenu.cs" />
+    <Compile Include="Items\CompleteStateMenu.cs" />
     <Compile Include="Items\QuickAddModuleMenu.cs" />
     <Compile Include="Items\ExitEditModeMenu.cs" />
     <Compile Include="Items\PageSettingsMenu.cs" />
@@ -123,9 +129,19 @@
     <None Include="editBar\css\SourceCodePro-Regular.ttf.woff" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
+    <Content Include="editBar\css\WorkflowState.css" />
+    <Content Include="editBar\css\CompleteWorkflow.css" />
+    <Content Include="editBar\css\DiscardWorkflow.css" />
+    <Content Include="editBar\css\DiscardState.css" />
+    <Content Include="editBar\css\CompleteState.css" />
     <Content Include="editBar\css\QuickAddModule.css" />
     <Content Include="editBar\css\theme.css" />
     <Content Include="editBar\QuickAddModule.html" />
+    <Content Include="editBar\scripts\WorkflowState.js" />
+    <Content Include="editBar\scripts\CompleteWorkflow.js" />
+    <Content Include="editBar\scripts\DiscardWorkflow.js" />
+    <Content Include="editBar\scripts\DiscardState.js" />
+    <Content Include="editBar\scripts\CompleteState.js" />
     <Content Include="editBar\scripts\QuickAddModule.js" />
     <Content Include="Module.build">
       <SubType>Designer</SubType>
@@ -235,6 +251,10 @@
     <ProjectReference Include="..\..\..\DNN Platform\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
+      <Project>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</Project>
+      <Name>Dnn.PersonaBar.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>

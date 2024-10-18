@@ -1428,4 +1428,34 @@ Sincerely,
   <data name="cc_message.Text" xml:space="preserve">
     <value>This website uses cookies to ensure you get the best experience on our website.</value>
   </data>
+  <data name="StartWorkflowSubject.Text" xml:space="preserve">
+    <value>Page Submitted</value>
+  </data>
+  <data name="StartWorkflowBody.Text" xml:space="preserve">
+    <value>Page '{0}' is in the '{1}' state and waiting to be submitted.</value>
+  </data>
+  <data name="CompleteStateSubject.Text" xml:space="preserve">
+    <value>Page Approval</value>
+  </data>
+  <data name="CompleteStateBody.Text" xml:space="preserve">
+    <value>Page '{0}' is in the '{1}' state and awaits review and approval.</value>
+  </data>
+  <data name="DiscardStateSubject.Text" xml:space="preserve">
+    <value>Page Rejected</value>
+  </data>
+  <data name="DiscardStateBody.Text" xml:space="preserve">
+    <value>The edits for page '{0}' were rejected, and it is now in '{1}' state.</value>
+  </data>
+  <data name="CompleteWorkflowSubject.Text" xml:space="preserve">
+    <value>Page Published</value>
+  </data>
+  <data name="CompleteWorkflowBody.Text" xml:space="preserve">
+    <value>Page '{0}' has been published and is now live.</value>
+  </data>
+  <data name="DiscardWorkflowSubject.Text" xml:space="preserve">
+    <value>Page Discarded</value>
+  </data>
+  <data name="DiscardWorkflowBody.Text" xml:space="preserve">
+    <value>Edits for page '{0}' have been discarded.</value>
+  </data>
 </root>
