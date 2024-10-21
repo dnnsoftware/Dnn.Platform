@@ -1459,31 +1459,31 @@ Sincerely,
     <value>Edits for page '{0}' have been discarded.</value>
   </data>
   <data name="Administrators.Role" xml:space="preserve">
-    <value>Administrators 1</value>
+    <value>Administrators</value>
   </data>
   <data name="All Users.Role" xml:space="preserve">
-    <value>Everyone 1</value>
+    <value>Everyone</value>
   </data>
   <data name="Superuser.Role" xml:space="preserve">
-    <value>SuperUsers 1</value>
+    <value>SuperUsers</value>
   </data>
   <data name="Unauthenticated Users.Role" xml:space="preserve">
-    <value>Unauthenticated Users 1</value>
+    <value>Unauthenticated Users</value>
   </data>
   <data name="Registered Users.Role" xml:space="preserve">
-    <value>Registered Users 1</value>
+    <value>Registered Users</value>
   </data>
   <data name="Unverified Users.Role" xml:space="preserve">
-    <value>Unverified Users 1</value>
+    <value>Unverified Users</value>
   </data>
   <data name="Subscribers.Role" xml:space="preserve">
-    <value>Subscribers 1</value>
+    <value>Subscribers</value>
   </data>
   <data name="Content Editors.Role" xml:space="preserve">
-    <value>Content Editors 1</value>
+    <value>Content Editors</value>
   </data>
   <data name="Content Managers.Role" xml:space="preserve">
-    <value>Content Managers 1</value>
+    <value>Content Managers</value>
   </data>
   <data name="Administrators.RoleDescription" xml:space="preserve">
     <value>Administrators can access and change all content of this site and control all site settings. They can manage user access to the site and manage other administrators as well.  This user type cannot make system-level changes or perform privileged administration tasks that Superusers can.</value>
