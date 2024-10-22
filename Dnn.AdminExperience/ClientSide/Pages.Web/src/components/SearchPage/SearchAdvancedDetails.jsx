@@ -24,9 +24,8 @@ class SearchAdvancedDetails extends Component {
     }
 
     getDateLabel() {
-        let filterByDateText = utils.isPlatform() ? "FilterByModifiedDateText" : "FilterByPublishDateText";
         const { startDate, endDate, startAndEndDateDirty } = this.props;
-        let label = Localization.get(filterByDateText);
+        let label = Localization.get("FilterByPublishDateText");
         if (startAndEndDateDirty) {
             const fullStartDate = utils.formatDate(startDate);
             const fullEndDate = utils.formatDate(endDate);
@@ -122,17 +121,15 @@ class SearchAdvancedDetails extends Component {
                                 label={this.getDateLabel()}
                             />
                         </GridCell>
-                        {!utils.isPlatform() &&
-                            <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
-                                <Dropdown
-                                    className="more-dropdown"
-                                    options={this.props.getFilterByWorkflowOptions()}
-                                    label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
-                                    value={this.props.filterByWorkflow !== "" && this.props.filterByWorkflow}
-                                    onSelect={data=>this.props.updateFilterByWorkflowOptions(data)}
-                                    withBorder={true} />
-                            </GridCell>
-                        }
+                        <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
+                            <Dropdown
+                                className="more-dropdown"
+                                options={this.props.getFilterByWorkflowOptions()}
+                                label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
+                                value={this.props.filterByWorkflow !== "" && this.props.filterByWorkflow}
+                                onSelect={data=>this.props.updateFilterByWorkflowOptions(data)}
+                                withBorder={true} />
+                        </GridCell>
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
