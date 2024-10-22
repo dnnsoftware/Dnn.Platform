@@ -1,0 +1,39 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ContentWorkflowActions] WHERE [ContentTypeId] = 1 AND [ActionType] = N'StartWorkflow' AND [ActionSource] = N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.StartWorkflow, DotNetNuke')
+BEGIN
+    INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'StartWorkflow', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.StartWorkflow, DotNetNuke')
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ContentWorkflowActions] WHERE [ContentTypeId] = 1 AND [ActionType] = N'CompleteWorkflow' AND [ActionSource] = N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.CompleteWorkflow, DotNetNuke')
+BEGIN
+    INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'CompleteWorkflow', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.CompleteWorkflow, DotNetNuke')
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ContentWorkflowActions] WHERE [ContentTypeId] = 1 AND [ActionType] = N'DiscardWorkflow' AND [ActionSource] = N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.DiscardWorkflow, DotNetNuke')
+BEGIN
+    INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'DiscardWorkflow', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.DiscardWorkflow, DotNetNuke')
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ContentWorkflowActions] WHERE [ContentTypeId] = 1 AND [ActionType] = N'CompleteState' AND [ActionSource] = N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.CompleteState, DotNetNuke')
+BEGIN
+    INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'CompleteState', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.CompleteState, DotNetNuke')
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ContentWorkflowActions] WHERE [ContentTypeId] = 1 AND [ActionType] = N'DiscardState' AND [ActionSource] = N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.StateDiscardTabAction, DotNetNuke')
+BEGIN
+    INSERT {databaseOwner}[{objectQualifier}ContentWorkflowActions] ([ContentTypeId], [ActionType], [ActionSource]) VALUES (1, N'DiscardState', N'DotNetNuke.Entities.Content.Workflow.Actions.TabActions.StateDiscardTabAction, DotNetNuke')
+END
+GO

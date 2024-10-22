@@ -57,6 +57,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
                 TabOrder = tab.TabOrder,
+                WorkflowId = WorkflowHelper.GetTabWorkflowId(tab),
+                WorkflowName = WorkflowHelper.GetTabWorkflowName(tab),
             };
         }
 
