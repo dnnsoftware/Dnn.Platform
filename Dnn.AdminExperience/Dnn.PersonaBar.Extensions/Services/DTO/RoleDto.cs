@@ -24,6 +24,9 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "localizedName")]
+        public string LocalizedName { get; set; }
+
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
@@ -84,7 +87,8 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
                 Id = role.RoleID,
                 GroupId = role.RoleGroupID,
                 Name = role.RoleName,
-                Description = role.Description,
+                LocalizedName = DotNetNuke.Services.Localization.Localization.LocalizeRole(role.RoleName),
+                Description = DotNetNuke.Services.Localization.Localization.LocalizeRoleDescription(role.RoleName, role.Description),
                 ServiceFee = role.ServiceFee,
                 BillingPeriod = role.BillingPeriod,
                 BillingFrequency = role.BillingFrequency,
