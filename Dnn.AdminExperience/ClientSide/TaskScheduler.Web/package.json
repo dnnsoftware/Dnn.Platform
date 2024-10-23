@@ -10,10 +10,10 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.9",
+    "@babel/core": "^7.25.8",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/preset-env": "^7.22.9",
-    "@babel/preset-react": "^7.22.5",
+    "@babel/preset-env": "^7.25.8",
+    "@babel/preset-react": "^7.25.7",
     "@dnnsoftware/dnn-react-common": "9.13.4",
     "array.prototype.find": "2.2.1",
     "array.prototype.findindex": "2.2.1",
