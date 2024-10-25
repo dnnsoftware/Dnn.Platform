@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
-    using System.Diagnostics;
     using System.Linq;
     using System.Xml;
 
@@ -20,7 +19,7 @@ namespace DotNetNuke.Build.Tasks
         {
             var binDir = context.WebsiteDir.Path.Combine("bin");
             var mainAssemblyPath = binDir.CombineWithFilePath("ICSharpCode.SharpZipLib.dll");
-            var packageVersion = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(mainAssemblyPath).FullPath).FileVersion;
+            var packageVersion = context.GetAssemblyFileVersion(mainAssemblyPath);
 
             var packageZip = context.WebsiteDir.Path.CombineWithFilePath($"Install/Library/SharpZipLib_{packageVersion}_Install.zip");
             var packageDir = context.Directory("DNN Platform/Components/SharpZipLib");
@@ -55,7 +54,7 @@ namespace DotNetNuke.Build.Tasks
                                                   .SingleOrDefault(childNode => childNode.LocalName.Equals("version"));
                 if (versionNode != null)
                 {
-                    versionNode.InnerText = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(assemblyPath).FullPath).FileVersion;
+                    versionNode.InnerText = context.GetAssemblyFileVersion(assemblyPath);
                     context.Information($"Set {assemblyPath} version to {versionNode.InnerText}");
                 }
             }

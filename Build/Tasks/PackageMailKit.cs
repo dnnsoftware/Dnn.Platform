@@ -21,7 +21,7 @@ namespace DotNetNuke.Build.Tasks
         {
             var binDir = context.WebsiteDir.Path.Combine("bin");
             var mailKitPath = binDir.CombineWithFilePath("MailKit.dll");
-            var packageVersion = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(mailKitPath).FullPath).FileVersion;
+            var packageVersion = context.GetAssemblyFileVersion(mailKitPath);
 
             var packageZip = context.WebsiteDir.Path.CombineWithFilePath($"Install/Library/MailKit_{packageVersion}_Install.zip");
             var packageDir = context.Directory("DNN Platform/Components/MailKit");
@@ -56,7 +56,7 @@ namespace DotNetNuke.Build.Tasks
                     .SingleOrDefault(childNode => childNode.LocalName.Equals("version"));
                 if (versionNode != null)
                 {
-                    versionNode.InnerText = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(assemblyPath).FullPath).FileVersion;
+                    versionNode.InnerText = context.GetAssemblyFileVersion(assemblyPath);
                     context.Information($"Set {assemblyPath} version to {versionNode.InnerText}");
                 }
             }
