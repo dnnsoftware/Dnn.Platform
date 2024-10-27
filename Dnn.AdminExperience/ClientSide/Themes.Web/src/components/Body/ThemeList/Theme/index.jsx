@@ -114,7 +114,8 @@ class Theme extends Component {
 
 Theme.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    theme: PropTypes.object
+    theme: PropTypes.object,
+    currentTheme: PropTypes.object
 };
 
 function mapStateToProps(state) {

@@ -37,9 +37,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.IntProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.IntProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -54,9 +54,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.StringProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.StringProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -72,9 +72,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.DateTimeProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.DateTimeProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -90,9 +90,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.ByteArrayProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ByteArrayProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -107,9 +107,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.ArrayProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ArrayProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -124,9 +124,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.BitProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.BitProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -141,9 +141,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(colValue, result.DecimalProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.DecimalProp, Is.EqualTo(colValue));
         }
 
         [Test]
@@ -158,9 +158,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(true, result.BitProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.BitProp, Is.EqualTo(true));
         }
 
         [Test]
@@ -175,9 +175,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
-            Assert.IsInstanceOf<IntPoco>(result);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(false, result.BitProp);
+            Assert.That(result, Is.InstanceOf<IntPoco>());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.BitProp, Is.EqualTo(false));
         }
     }
 

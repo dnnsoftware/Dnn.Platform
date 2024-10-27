@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
             var encryptedValue = _provider.EncryptParameter(message, encryptionKey);
 
             // Assert
-            Assert.AreNotEqual(message, encryptedValue);
+            Assert.That(encryptedValue, Is.Not.EqualTo(message));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
             var decryptedValue = _provider.DecryptParameter(message, encryptionKey);
 
             // Assert
-            Assert.AreEqual(string.Empty, decryptedValue);
+            Assert.That(decryptedValue, Is.EqualTo(string.Empty));
         }
     }
 }

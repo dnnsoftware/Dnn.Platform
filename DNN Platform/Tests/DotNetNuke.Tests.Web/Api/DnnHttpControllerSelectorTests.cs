@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Web.Api
             HttpControllerDescriptor descriptor = selector.SelectController(request);
 
             // Assert
-            Assert.AreEqual(controllerType, descriptor.ControllerType);
+            Assert.That(descriptor.ControllerType, Is.EqualTo(controllerType));
         }
 
         [Test]

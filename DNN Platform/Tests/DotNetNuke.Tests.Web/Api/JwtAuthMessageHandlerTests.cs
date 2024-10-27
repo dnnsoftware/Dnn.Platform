@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response2 = handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
-            Assert.AreEqual(response, response2);
+            Assert.That(response2, Is.EqualTo(response));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
-            Assert.IsNull(response);
+            Assert.That(response, Is.Null);
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
-            Assert.IsNull(response);
+            Assert.That(response, Is.Null);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
-            Assert.IsNull(response);
+            Assert.That(response, Is.Null);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
-            Assert.IsNull(response);
+            Assert.That(response, Is.Null);
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
-            Assert.IsNull(response);
+            Assert.That(response, Is.Null);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
-            Assert.IsNull(response);
+            Assert.That(response, Is.Null);
         }
 
         private static IDataReader GetUser()

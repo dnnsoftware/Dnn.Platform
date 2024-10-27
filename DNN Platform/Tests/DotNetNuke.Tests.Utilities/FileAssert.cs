@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Utilities
         {
             string expectedContent = File.ReadAllText(expectedFile);
             string actualContent = File.ReadAllText(actualFile);
-            Assert.AreEqual(expectedContent, actualContent, message);
+            Assert.That(actualContent, Is.EqualTo(expectedContent), message);
         }
 
         public static void BinaryFilesAreEqual(string expectedFile, string actualFile)
@@ -32,7 +32,7 @@ namespace DotNetNuke.Tests.Utilities
         {
             byte[] expectedContent = File.ReadAllBytes(expectedFile);
             byte[] actualContent = File.ReadAllBytes(actualFile);
-            CollectionAssert.AreEqual(expectedContent, actualContent, message);
+            Assert.That(actualContent, Is.EqualTo(expectedContent).AsCollection, message);
         }
     }
 }

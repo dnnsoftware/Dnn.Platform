@@ -18,7 +18,7 @@
             var result = (StringBuilder)Reflection.CreateInstance(typeToCreate, argToPass);
 
             // Assert
-            Assert.AreEqual("one", result.ToString());
+            Assert.That(result.ToString(), Is.EqualTo("one"));
         }
 
         [Test]
@@ -31,7 +31,7 @@
             var result = (StringBuilder)Reflection.CreateInstance(typeToCreate);
 
             // Assert
-            Assert.AreEqual(string.Empty, result.ToString());
+            Assert.That(result.ToString(), Is.EqualTo(string.Empty));
         }
     }
 }

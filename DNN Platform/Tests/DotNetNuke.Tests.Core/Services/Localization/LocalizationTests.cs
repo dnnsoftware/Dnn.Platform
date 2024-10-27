@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], fallback);
 
             // Assert
-            Assert.AreEqual(ret, fallback);
+            Assert.That(ret, Is.EqualTo(fallback));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(this._standardCultureCodes);
 
             // Assert
-            Assert.AreEqual(ret, "de-DE");
+            Assert.That(ret, Is.EqualTo("de-DE"));
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(this._standardCultureCodes);
 
             // Assert
-            Assert.AreEqual(ret, "de-DE");
+            Assert.That(ret, Is.EqualTo("de-DE"));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(this._standardCultureCodes);
 
             // Assert
-            Assert.AreEqual(ret, "fr-CA");
+            Assert.That(ret, Is.EqualTo("fr-CA"));
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new[] { "fr-CA", "fr-FR" });
 
             // Assert
-            Assert.AreEqual(ret, "fr-FR");
+            Assert.That(ret, Is.EqualTo("fr-FR"));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             foreach (var standardCultureCode in this._standardCultureCodes)
             {
                 var f = fileName + "." + standardCultureCode + ".resx";
-                Assert.AreEqual(f.GetLocaleCodeFromFileName(), standardCultureCode);
+                Assert.That(standardCultureCode, Is.EqualTo(f.GetLocaleCodeFromFileName()));
             }
         }
 
@@ -135,7 +135,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             foreach (var standardCultureCode in this._standardCultureCodes)
             {
                 var f = fileName + "." + standardCultureCode + ".resx";
-                Assert.AreEqual(f.GetFileNameFromLocalizedResxFile(), fileName);
+                Assert.That(fileName, Is.EqualTo(f.GetFileNameFromLocalizedResxFile()));
             }
         }
     }

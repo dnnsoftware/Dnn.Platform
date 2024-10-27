@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var defaultProviders = DefaultFolderProviders.GetDefaultProviders();
 
-            CollectionAssert.AreEqual(expectedValues, defaultProviders);
+            Assert.That(defaultProviders, Is.EqualTo(expectedValues).AsCollection);
         }
     }
 }

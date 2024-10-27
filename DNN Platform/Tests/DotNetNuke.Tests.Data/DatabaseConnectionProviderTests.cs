@@ -23,8 +23,8 @@ namespace DotNetNuke.Tests.Data
             var provider = DatabaseConnectionProvider.Instance();
 
             // Assert
-            Assert.IsInstanceOf<DatabaseConnectionProvider>(provider);
-            Assert.IsInstanceOf<FakeDbConnectionProvider>(provider);
+            Assert.That(provider, Is.InstanceOf<DatabaseConnectionProvider>());
+            Assert.That(provider, Is.InstanceOf<FakeDbConnectionProvider>());
         }
 
         [Test]
@@ -38,10 +38,13 @@ namespace DotNetNuke.Tests.Data
             var provider1 = DatabaseConnectionProvider.Instance();
             var provider2 = DatabaseConnectionProvider.Instance();
 
-            // Assert
-            Assert.IsInstanceOf<DatabaseConnectionProvider>(provider1);
-            Assert.IsInstanceOf<DatabaseConnectionProvider>(provider2);
-            Assert.AreSame(provider1, provider2);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(provider1, Is.InstanceOf<DatabaseConnectionProvider>());
+                Assert.That(provider2, Is.InstanceOf<DatabaseConnectionProvider>());
+            });
+            Assert.That(provider2, Is.SameAs(provider1));
         }
     }
 }

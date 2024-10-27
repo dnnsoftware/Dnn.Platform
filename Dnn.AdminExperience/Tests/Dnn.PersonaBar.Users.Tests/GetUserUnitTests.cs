@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand("--email", "user1@g.com");
 
             // Assert
-            Assert.IsFalse(result.IsError);
+            Assert.That(result.IsError, Is.False);
         }
 
         [TestCase]
@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand("--username", "user1");
 
             // Assert
-            Assert.IsFalse(result.IsError);
+            Assert.That(result.IsError, Is.False);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(this._userId.ToString());
 
             // Assert
-            Assert.IsFalse(result.IsError);
+            Assert.That(result.IsError, Is.False);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(this._userId.ToString());
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         protected override void ChildSetup()

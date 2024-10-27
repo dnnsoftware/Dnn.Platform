@@ -31,9 +31,12 @@ namespace DotNetNuke.Tests.Authentication
             // Act
             UserData sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
 
-            // Assert
-            Assert.AreEqual("Bret", sampleUser.FirstName, "Should correctly pull first name from first_name field, not by parsing name");
-            Assert.AreEqual("Taylor", sampleUser.LastName, "Should correctly pull first name from first_name field, not by parsing name");
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(sampleUser.FirstName, Is.EqualTo("Bret"), "Should correctly pull first name from first_name field, not by parsing name");
+                Assert.That(sampleUser.LastName, Is.EqualTo("Taylor"), "Should correctly pull first name from first_name field, not by parsing name");
+            });
         }
 
         [Test]
@@ -43,7 +46,7 @@ namespace DotNetNuke.Tests.Authentication
             var sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
 
             // Assert
-            Assert.AreEqual(new Uri("https://www.facebook.com/btaylor", UriKind.Absolute), sampleUser.Link);
+            Assert.That(sampleUser.Link, Is.EqualTo(new Uri("https://www.facebook.com/btaylor", UriKind.Absolute)));
         }
     }
 }

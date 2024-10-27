@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnUrlHelper(viewContext);
 
             // Assert
-            Assert.AreEqual(expectedContext, helper.ModuleContext);
+            Assert.That(helper.ModuleContext, Is.EqualTo(expectedContext));
         }
 
         [Test]
@@ -92,8 +92,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnUrlHelper(requestContext, mockController.Object);
 
             // Assert
-            Assert.NotNull(helper);
-            Assert.AreEqual(expectedContext, helper.ModuleContext);
+            Assert.That(helper, Is.Not.Null);
+            Assert.That(helper.ModuleContext, Is.EqualTo(expectedContext));
         }
 
         [Test]
@@ -108,8 +108,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var result = helper.Action();
 
             // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual(rawUrl, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(rawUrl));
         }
 
         [Test]
@@ -124,8 +124,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var result = helper.Action();
 
             // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual(rawUrl, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(rawUrl));
         }
 
         [Test]
@@ -241,9 +241,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             // Act
             var url = helper.Content("~/test.css");
 
-            // Assert
-            Assert.IsNotNull(url);
-            Assert.True(expectedResult.Equals(url));
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(url, Is.Not.Null);
+                Assert.That(expectedResult.Equals(url), Is.True);
+            });
         }
 
         [Test]
@@ -257,9 +260,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var withOuterUrl = helper.IsLocalUrl("http://dnnsoftware.com");
             var withLocalUrl = helper.IsLocalUrl("~/foo/foo.html");
 
-            // Assert
-            Assert.IsFalse(withOuterUrl);
-            Assert.IsTrue(withLocalUrl);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(withOuterUrl, Is.False);
+                Assert.That(withLocalUrl, Is.True);
+            });
         }
 
         [Test]
@@ -279,14 +285,17 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             // Act
             helper.Action("foo", "bar", new { id = 5 });
 
-            // Assert
-            Assert.AreEqual(3, routeValues.Values.Count);
-            Assert.IsTrue(routeValues.ContainsKey("action"));
-            Assert.IsTrue(routeValues.ContainsKey("controller"));
-            Assert.IsTrue(routeValues.ContainsKey("id"));
-            Assert.AreEqual("foo", (string)routeValues["action"]);
-            Assert.AreEqual("bar", (string)routeValues["controller"]);
-            Assert.AreEqual(5, (int)routeValues["id"]);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(routeValues.Values, Has.Count.EqualTo(3));
+                Assert.That(routeValues.ContainsKey("action"), Is.True);
+                Assert.That(routeValues.ContainsKey("controller"), Is.True);
+                Assert.That(routeValues.ContainsKey("id"), Is.True);
+                Assert.That((string)routeValues["action"], Is.EqualTo("foo"));
+                Assert.That((string)routeValues["controller"], Is.EqualTo("bar"));
+                Assert.That((int)routeValues["id"], Is.EqualTo(5));
+            });
         }
 
         private static DnnUrlHelper ArrangeHelper(ModuleInstanceContext expectedContext, string url = null, bool isViewContext = true)

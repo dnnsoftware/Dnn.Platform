@@ -47,7 +47,9 @@ RightPane.propTypes = {
     servers: PropTypes.string,
     objectDependencies: PropTypes.string,
     threadId: PropTypes.number,
-    scheduleSource: PropTypes.string
+    scheduleSource: PropTypes.string,
+    onEnter: PropTypes.func,
+    index: PropTypes.number
 };
 
 export default RightPane;

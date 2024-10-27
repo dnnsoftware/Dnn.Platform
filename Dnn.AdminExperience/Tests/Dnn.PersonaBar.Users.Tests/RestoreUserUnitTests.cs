@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(userId.ToString());
 
             // Assert
-            Assert.IsFalse(result.IsError);
+            Assert.That(result.IsError, Is.False);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(userId.ToString());
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand(userId.ToString());
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var result = this.RunCommand();
 
             // Assert
-            Assert.IsTrue(result.IsError);
+            Assert.That(result.IsError, Is.True);
         }
 
         protected override RestoreUser CreateCommand()

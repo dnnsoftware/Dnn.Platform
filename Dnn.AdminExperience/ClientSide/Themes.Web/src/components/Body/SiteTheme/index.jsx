@@ -69,7 +69,9 @@ class SiteTheme extends Component {
 }
 
 SiteTheme.propTypes = {
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    themes: PropTypes.object,
+    currentTheme: PropTypes.object
 };
 
 function mapStateToProps(state) {

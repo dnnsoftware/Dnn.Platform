@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Data
 #pragma warning restore 168
 
             // Assert
-            Assert.AreSame(mockMapper.Object, Mappers.GetMapper(typeof(Dog), mockMapper.Object));
+            Assert.That(Mappers.GetMapper(typeof(Dog), mockMapper.Object), Is.SameAs(mockMapper.Object));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace DotNetNuke.Tests.Data
             IEnumerable<Dog> dogs = repository.Get();
 
             // Assert
-            Assert.AreEqual(count, dogs.Count());
+            Assert.That(dogs.Count(), Is.EqualTo(count));
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             for (int i = 0; i < dogs.Count(); i++)
             {
-                Assert.IsInstanceOf<Dog>(dogs[i]);
+                Assert.That(dogs[i], Is.InstanceOf<Dog>());
             }
         }
 
@@ -135,8 +135,11 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var dog = dogs.First();
-            Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
-            Assert.AreEqual(this._dogNames[0], dog.Name);
+            Assert.Multiple(() =>
+            {
+                Assert.That(dog.Age.ToString(), Is.EqualTo(this._dogAges[0]));
+                Assert.That(dog.Name, Is.EqualTo(this._dogNames[0]));
+            });
         }
 
         [Test]
@@ -159,8 +162,11 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var dog = dogs.First();
-            Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
-            Assert.AreEqual(this._dogNames[0], dog.Name);
+            Assert.Multiple(() =>
+            {
+                Assert.That(dog.Age.ToString(), Is.EqualTo(this._dogAges[0]));
+                Assert.That(dog.Name, Is.EqualTo(this._dogNames[0]));
+            });
         }
 
         [Test]
@@ -179,7 +185,7 @@ namespace DotNetNuke.Tests.Data
             var dog = repository.GetById(Constants.PETAPOCO_ValidDogId);
 
             // Assert
-            Assert.IsInstanceOf<Dog>(dog);
+            Assert.That(dog, Is.InstanceOf<Dog>());
         }
 
         [Test]
@@ -198,7 +204,7 @@ namespace DotNetNuke.Tests.Data
             var dog = repository.GetById(Constants.PETAPOCO_InvalidDogId);
 
             // Assert
-            Assert.IsNull(dog);
+            Assert.That(dog, Is.Null);
         }
 
         [Test]
@@ -222,7 +228,7 @@ namespace DotNetNuke.Tests.Data
             var dog = repository.GetById(Constants.PETAPOCO_InvalidDogId);
 
             // Assert
-            Assert.IsNull(dog);
+            Assert.That(dog, Is.Null);
         }
 
         [Test]
@@ -240,9 +246,12 @@ namespace DotNetNuke.Tests.Data
             // Act
             var dog = repository.GetById(Constants.PETAPOCO_ValidDogId);
 
-            // Assert
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogAge, dog.Age);
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogName, dog.Name);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(dog.Age, Is.EqualTo(Constants.PETAPOCO_ValidDogAge));
+                Assert.That(dog.Name, Is.EqualTo(Constants.PETAPOCO_ValidDogName));
+            });
         }
 
         [Test]
@@ -265,9 +274,12 @@ namespace DotNetNuke.Tests.Data
             // Act
             var dog = repository.GetById(Constants.PETAPOCO_ValidDogId);
 
-            // Assert
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogAge, dog.Age);
-            Assert.AreEqual(Constants.PETAPOCO_ValidDogName, dog.Name);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(dog.Age, Is.EqualTo(Constants.PETAPOCO_ValidDogAge));
+                Assert.That(dog.Name, Is.EqualTo(Constants.PETAPOCO_ValidDogName));
+            });
         }
 
         [Test]
@@ -293,7 +305,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount + 1));
         }
 
         [Test]
@@ -319,7 +331,7 @@ namespace DotNetNuke.Tests.Data
             int newId = DataUtil.GetLastAddedRecordID(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName, Constants.TABLENAME_Key);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, newId);
+            Assert.That(newId, Is.EqualTo(Constants.PETAPOCO_RecordCount + 1));
         }
 
         [Test]
@@ -345,8 +357,11 @@ namespace DotNetNuke.Tests.Data
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
             DataRow row = table.Rows[table.Rows.Count - 1];
 
-            Assert.AreEqual(Constants.PETAPOCO_InsertDogAge, row["Age"]);
-            Assert.AreEqual(Constants.PETAPOCO_InsertDogName, row["Name"]);
+            Assert.Multiple(() =>
+            {
+                Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_InsertDogAge));
+                Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_InsertDogName));
+            });
         }
 
         [Test]
@@ -377,8 +392,11 @@ namespace DotNetNuke.Tests.Data
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
             DataRow row = table.Rows[table.Rows.Count - 1];
 
-            Assert.AreEqual(Constants.PETAPOCO_InsertDogAge, row["Age"]);
-            Assert.AreEqual(Constants.PETAPOCO_InsertDogName, row["Name"]);
+            Assert.Multiple(() =>
+            {
+                Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_InsertDogAge));
+                Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_InsertDogName));
+            });
         }
 
         [Test]
@@ -405,7 +423,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount - 1));
         }
 
         [Test]
@@ -432,7 +450,7 @@ namespace DotNetNuke.Tests.Data
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
             foreach (DataRow row in table.Rows)
             {
-                Assert.IsFalse((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_DeleteDogId);
+                Assert.That((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_DeleteDogId, Is.False);
             }
         }
 
@@ -465,7 +483,7 @@ namespace DotNetNuke.Tests.Data
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
             foreach (DataRow row in table.Rows)
             {
-                Assert.IsFalse((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_DeleteDogId);
+                Assert.That((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_DeleteDogId, Is.False);
             }
         }
 
@@ -494,7 +512,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount));
         }
 
         [Test]
@@ -527,7 +545,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount));
         }
 
         [Test]
@@ -548,7 +566,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount - 1));
         }
 
         [Test]
@@ -569,7 +587,7 @@ namespace DotNetNuke.Tests.Data
             DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
             foreach (DataRow row in table.Rows)
             {
-                Assert.IsFalse((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_DeleteDogId);
+                Assert.That((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_DeleteDogId, Is.False);
             }
         }
 
@@ -591,7 +609,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount));
         }
 
         [Test]
@@ -612,7 +630,7 @@ namespace DotNetNuke.Tests.Data
             IEnumerable<Dog> dogs = repository.Find(sqlCondition, arg);
 
             // Assert
-            Assert.AreEqual(count, dogs.Count());
+            Assert.That(dogs.Count(), Is.EqualTo(count));
         }
 
         [Test]
@@ -634,7 +652,7 @@ namespace DotNetNuke.Tests.Data
             var dogs = repository.GetPage(pageIndex, pageSize);
 
             // Assert
-            Assert.AreEqual(pageSize, dogs.PageSize);
+            Assert.That(dogs.PageSize, Is.EqualTo(pageSize));
         }
 
         [Test]
@@ -655,7 +673,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             for (int i = 0; i < dogs.Count(); i++)
             {
-                Assert.IsInstanceOf<Dog>(dogs[i]);
+                Assert.That(dogs[i], Is.InstanceOf<Dog>());
             }
         }
 
@@ -676,8 +694,11 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var dog = dogs.First();
-            Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
-            Assert.AreEqual(this._dogNames[0], dog.Name);
+            Assert.Multiple(() =>
+            {
+                Assert.That(dog.Age.ToString(), Is.EqualTo(this._dogAges[0]));
+                Assert.That(dog.Name, Is.EqualTo(this._dogNames[0]));
+            });
         }
 
         [Test]
@@ -700,7 +721,7 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var dog = dogs.First();
-            Assert.AreEqual(firstId, dog.ID);
+            Assert.That(dog.ID, Is.EqualTo(firstId));
         }
 
         [Test]
@@ -727,7 +748,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount));
         }
 
         [Test]
@@ -756,8 +777,11 @@ namespace DotNetNuke.Tests.Data
             {
                 if ((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.AreEqual(Constants.PETAPOCO_UpdateDogAge, row["Age"]);
-                    Assert.AreEqual(Constants.PETAPOCO_UpdateDogName, row["Name"]);
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
+                        Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
+                    });
                 }
             }
         }
@@ -793,8 +817,11 @@ namespace DotNetNuke.Tests.Data
             {
                 if ((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.AreEqual(Constants.PETAPOCO_UpdateDogAge, row["Age"]);
-                    Assert.AreEqual(Constants.PETAPOCO_UpdateDogName, row["Name"]);
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
+                        Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
+                    });
                 }
             }
         }
@@ -817,7 +844,7 @@ namespace DotNetNuke.Tests.Data
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
                 Constants.PETAPOCO_DogTableName);
-            Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
+            Assert.That(actualCount, Is.EqualTo(Constants.PETAPOCO_RecordCount));
         }
 
         [Test]
@@ -840,8 +867,11 @@ namespace DotNetNuke.Tests.Data
             {
                 if ((int)row[Constants.TABLENAME_Key] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.AreEqual(Constants.PETAPOCO_UpdateDogAge, row["Age"]);
-                    Assert.AreEqual(Constants.PETAPOCO_UpdateDogName, row["Name"]);
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
+                        Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
+                    });
                 }
             }
         }

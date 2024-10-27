@@ -29,8 +29,8 @@ namespace DotNetNuke.Tests.Data
             var provider = DataProvider.Instance();
 
             // Assert
-            Assert.IsInstanceOf<DataProvider>(provider);
-            Assert.IsInstanceOf<FakeDataProvider>(provider);
+            Assert.That(provider, Is.InstanceOf<DataProvider>());
+            Assert.That(provider, Is.InstanceOf<FakeDataProvider>());
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace DotNetNuke.Tests.Data
             var provider = DataProvider.Instance();
 
             // Assert
-            Assert.AreEqual(connectionString, provider.ConnectionString);
+            Assert.That(provider.ConnectionString, Is.EqualTo(connectionString));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Data
             var provider = DataProvider.Instance();
 
             // Assert
-            Assert.AreEqual(databaseOwner, provider.DatabaseOwner);
+            Assert.That(provider.DatabaseOwner, Is.EqualTo(databaseOwner));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.Data
             var provider = DataProvider.Instance();
 
             // Assert
-            Assert.AreEqual(objectQualifier, provider.ObjectQualifier);
+            Assert.That(provider.ObjectQualifier, Is.EqualTo(objectQualifier));
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace DotNetNuke.Tests.Data
             var provider = DataProvider.Instance();
 
             // Assert
-            Assert.AreEqual(providerName, provider.ProviderName);
+            Assert.That(provider.ProviderName, Is.EqualTo(providerName));
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Data
             var provider = DataProvider.Instance();
 
             // Assert
-            Assert.AreEqual(providerPath, provider.ProviderPath);
+            Assert.That(provider.ProviderPath, Is.EqualTo(providerPath));
         }
     }
 }
