@@ -1790,7 +1790,7 @@ __metadata:
     react-modal: "npm:^3.16.1"
     react-motion: "npm:^0.5.2"
     react-scrollbar: "npm:^0.5.6"
-    react-slider: "npm:0.11.2"
+    react-slider: "npm:2.0.6"
     react-tabs: "npm:3.2.3"
     react-test-renderer: "npm:^17.0.2"
     react-tooltip: "npm:^4.5.1"
@@ -19792,14 +19792,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-slider@npm:0.11.2":
-  version: 0.11.2
-  resolution: "react-slider@npm:0.11.2"
+"react-slider@npm:2.0.6":
+  version: 2.0.6
+  resolution: "react-slider@npm:2.0.6"
+  dependencies:
+    prop-types: "npm:^15.8.1"
   peerDependencies:
-    create-react-class: ^15.6
-    prop-types: ^15.6
-    react: ^16.2
-  checksum: 10/fc2394b732acef42548473128a84f4b24f4d49d6fedd82307fc4d3de66a0af1a6318c185b39bcadde2d5ad7fcce1cc0204b91ec3d5620cd20859ba85a45dafad
+    react: ^16 || ^17 || ^18
+  checksum: 9ee7f9073207f559a37e10aa52cfebc3d54925d23906bc2902ba8cb55f3607d867c5b3d77614f46a48204de47a4adb11254b52f6ead458ab6b409e3d5be9144e
   languageName: node
   linkType: hard
 
