@@ -10070,8 +10070,8 @@ __metadata:
   linkType: hard
 
 "elliptic@npm:^6.5.3, elliptic@npm:^6.5.4":
-  version: 6.5.7
-  resolution: "elliptic@npm:6.5.7"
+  version: 6.6.0
+  resolution: "elliptic@npm:6.6.0"
   dependencies:
     bn.js: "npm:^4.11.9"
     brorand: "npm:^1.1.0"
@@ -10080,7 +10080,7 @@ __metadata:
     inherits: "npm:^2.0.4"
     minimalistic-assert: "npm:^1.0.1"
     minimalistic-crypto-utils: "npm:^1.0.1"
-  checksum: 10/fbad1fad0a5cc07df83f80cc1f7a784247ef59075194d3e340eaeb2f4dd594825ee24c7e9b0cf279c9f1982efe610503bb3139737926428c4821d4fca1bcf348
+  checksum: 10/27575b0403e010e5d7e7a131fcadce6a7dd1ae82ccb24cc7c20b275d32ab1cb7ecb6a070225795df08407441dc8c7a32efd986596d48d1d6846f64ff8f094af7
   languageName: node
   linkType: hard
 
@@ -19799,7 +19799,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
   peerDependencies:
     react: ^16 || ^17 || ^18
-  checksum: 9ee7f9073207f559a37e10aa52cfebc3d54925d23906bc2902ba8cb55f3607d867c5b3d77614f46a48204de47a4adb11254b52f6ead458ab6b409e3d5be9144e
+  checksum: 10/9ee7f9073207f559a37e10aa52cfebc3d54925d23906bc2902ba8cb55f3607d867c5b3d77614f46a48204de47a4adb11254b52f6ead458ab6b409e3d5be9144e
   languageName: node
   linkType: hard
 
