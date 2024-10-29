@@ -87,7 +87,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                     };
 
         private Mock<IPortalTemplateIO> mockPortalTemplateIO;
+
+#pragma warning disable NUnit1032 // Dispose in TearDown
         private FakeServiceProvider serviceProvider;
+#pragma warning restore NUnit1032
 
         [SetUp]
         public void SetUp()
@@ -106,6 +109,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         public void TearDown()
         {
             PortalTemplateIO.ClearInstance();
+
+            // NOTE: not sure why, but disposing here causes other unrelated tests to fail
+            ////this.serviceProvider.Dispose();
         }
 
         [Test]
