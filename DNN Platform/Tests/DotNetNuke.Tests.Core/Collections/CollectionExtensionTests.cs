@@ -17,7 +17,7 @@ namespace DotNetNuke.Tests.Core.Collections
     using NUnit.Framework;
 
     [TestFixture]
-    public class CollectionExtensionTests : AssertionHelper
+    public class CollectionExtensionTests
     {
         [Test]
         public void get_null_string_from_hashtable_for_missing_value()
@@ -26,7 +26,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<string>("cat id");
 
-            Expect(value, Is.Null);
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<string>("app id");
 
-            Expect(value, Is.EqualTo("abc123"));
+            Assert.That(value, Is.EqualTo("abc123"));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault("app id", "abracadabra");
 
-            Expect(value, Is.EqualTo("abc123"));
+            Assert.That(value, Is.EqualTo("abc123"));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault("cat id", "Frank");
 
-            Expect(value, Is.EqualTo("Frank"));
+            Assert.That(value, Is.EqualTo("Frank"));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<bool>("app id");
 
-            Expect(value, Is.True);
+            Assert.That(value, Is.True);
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault("app id", false);
 
-            Expect(value, Is.True);
+            Assert.That(value, Is.True);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             value = table.GetValueOrDefault("Allow Windows Live Writer", value);
 
-            Expect(value, Is.True);
+            Assert.That(value, Is.True);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<bool>("Allow Windows Live Writer");
 
-            Expect(value, Is.False);
+            Assert.That(value, Is.False);
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace DotNetNuke.Tests.Core.Collections
                     return allowed;
                 });
 
-            Expect(value, Is.True);
+            Assert.That(value, Is.True);
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<int>("appId");
 
-            Expect(value, Is.EqualTo(123));
+            Assert.That(value, Is.EqualTo(123));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<decimal>("appId");
 
-            Expect(value, Is.EqualTo(1.23m));
+            Assert.That(value, Is.EqualTo(1.23m));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<decimal>("appId");
 
-            Expect(value, Is.EqualTo(1.23m));
+            Assert.That(value, Is.EqualTo(1.23m));
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<DateTime>("startDate");
 
-            Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+            Assert.That(value, Is.EqualTo(new DateTime(2012, 5, 4)));
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<string>("app id");
 
-            Expect(value, Is.Null);
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("app id", "a default value");
 
-            Expect(value, Is.Null);
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<DateTime?>("startDate");
 
-            Expect(value, Is.Null);
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -200,7 +200,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<DateTime>("startDate");
 
-            Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+            Assert.That(value, Is.EqualTo(new DateTime(2012, 5, 4)));
         }
 
         [Test]
@@ -210,7 +210,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<string>("appId");
 
-            Expect(value, Is.EqualTo("123"));
+            Assert.That(value, Is.EqualTo("123"));
         }
 
         [Test]
@@ -222,7 +222,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = node.GetValueOrDefault<int>("id");
 
-            Expect(value, Is.EqualTo(14));
+            Assert.That(value, Is.EqualTo(14));
         }
 
         [Test]
@@ -236,7 +236,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = doc.DocumentElement.GetValueOrDefault<int>("id");
 
-            Expect(value, Is.EqualTo(13));
+            Assert.That(value, Is.EqualTo(13));
         }
 
         [Test]
@@ -246,7 +246,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("length", TimeSpan.Parse);
 
-            Expect(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
+            Assert.That(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
-            Expect(value, Is.False);
+            Assert.That(value, Is.False);
         }
 
         [Test]
@@ -266,7 +266,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
-            Expect(value, Is.True);
+            Assert.That(value, Is.True);
         }
 
         [Test]
@@ -276,7 +276,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
 
-            Expect(value, Is.True);
+            Assert.That(value, Is.True);
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var lookup = collection.ToLookup();
 
-            Expect(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
+            Assert.That(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var lookup = collection.ToLookup();
 
-            Expect(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
+            Assert.That(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
         }
 
         [Test]
@@ -306,7 +306,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValueOrDefault("question", "yes");
 
-            Expect(value, Is.Null);
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -316,7 +316,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValueOrDefault("question", "yes");
 
-            Expect(value, Is.Empty);
+            Assert.That(value, Is.Empty);
         }
 
         [Test]
@@ -326,7 +326,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what is it"));
+            Assert.That(value, Is.EqualTo("what is it"));
         }
 
         [Test]
@@ -336,7 +336,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValue("question", (object v) => v is string ? 10 : 20);
 
-            Expect(value, Is.EqualTo(10));
+            Assert.That(value, Is.EqualTo(10));
         }
 
         [Test]
@@ -346,7 +346,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what is it"));
+            Assert.That(value, Is.EqualTo("what is it"));
         }
 
         [Test]
@@ -356,7 +356,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what, is it?"));
+            Assert.That(value, Is.EqualTo("what, is it?"));
         }
 
         [Test]
@@ -366,7 +366,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues<string>("state");
 
-            Expect(value, Is.EquivalentTo(new[] { "CA", "BC", }));
+            Assert.That(value, Is.EquivalentTo(new[] { "CA", "BC", }));
         }
 
         [Test]
@@ -376,7 +376,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues<string>("state");
 
-            Expect(value, Is.EquivalentTo(new[] { "CA" }));
+            Assert.That(value, Is.EquivalentTo(new[] { "CA" }));
         }
 
         [Test]
@@ -386,7 +386,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues<string>("cat");
 
-            Expect(value, Is.Empty);
+            Assert.That(value, Is.Empty);
         }
 
         [Test]
@@ -396,7 +396,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues("state", v => int.Parse(v, CultureInfo.InvariantCulture) + 10);
 
-            Expect(value, Is.EquivalentTo(new[] { 22, 11 }));
+            Assert.That(value, Is.EquivalentTo(new[] { 22, 11 }));
         }
 
         [Test]
@@ -406,7 +406,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what is it"));
+            Assert.That(value, Is.EqualTo("what is it"));
         }
 
         [Test]
@@ -418,7 +418,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = node.GetValue<int>("id");
 
-            Expect(value, Is.EqualTo(21));
+            Assert.That(value, Is.EqualTo(21));
         }
 
         [Test]
@@ -432,7 +432,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = doc.DocumentElement.GetValue<int>("id");
 
-            Expect(value, Is.EqualTo(123));
+            Assert.That(value, Is.EqualTo(123));
         }
 
         [Test]
@@ -440,7 +440,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var dictionary = new Hashtable { { "question", "what is it" } };
 
-            Expect(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
+            Assert.That(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
         }
 
         [Test]
@@ -448,7 +448,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
 
-            Expect(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
+            Assert.That(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
         }
 
         [Test]
@@ -456,7 +456,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             IDictionary dictionary = null;
 
-            Expect(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
+            Assert.That(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
         }
 
         [Test]
@@ -464,7 +464,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             XElement node = null;
 
-            Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+            Assert.That(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
         }
 
         [Test]
@@ -472,7 +472,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             XmlNode node = null;
 
-            Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+            Assert.That(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
         }
 
         [Test]
@@ -482,7 +482,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValueOrDefault<ApplicationException>("length");
 
-            Expect(value, Is.Null);
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -490,7 +490,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             NameValueCollection col = null;
 
-            Expect(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
+            Assert.That(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
         }
     }
 }

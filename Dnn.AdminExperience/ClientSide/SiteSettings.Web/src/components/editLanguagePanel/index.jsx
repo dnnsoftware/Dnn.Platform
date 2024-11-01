@@ -172,7 +172,12 @@ EditLanguagePanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     languageFolders: PropTypes.array,
     portalId: PropTypes.number,
-    resxBeingEdited: PropTypes.string
+    resxBeingEdited: PropTypes.string,
+    languageBeingEdited: PropTypes.object,
+    portalName: PropTypes.string,
+    languageFiles: PropTypes.array,
+    translations: PropTypes.object,
+    resxBeingEditedDisplay: PropTypes.string
 };
 
 function mapStateToProps(state) {

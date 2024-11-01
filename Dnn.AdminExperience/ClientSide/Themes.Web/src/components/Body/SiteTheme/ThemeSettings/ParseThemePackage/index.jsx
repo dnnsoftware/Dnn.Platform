@@ -68,7 +68,8 @@ class ParseThemePackage extends Component {
 }
 
 ParseThemePackage.propTypes = {
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    currentTheme: PropTypes.object
 };
 
 function mapStateToProps(state) {

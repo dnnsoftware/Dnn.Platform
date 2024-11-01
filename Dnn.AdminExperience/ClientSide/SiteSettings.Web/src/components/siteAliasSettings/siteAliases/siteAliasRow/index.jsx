@@ -81,7 +81,9 @@ SiteAliasRow.propTypes = {
     Collapse: PropTypes.func,
     onDelete: PropTypes.func,
     id: PropTypes.string,
-    openId: PropTypes.string
+    openId: PropTypes.string,
+    children: PropTypes.node,
+    name: PropTypes.string
 };
 
 SiteAliasRow.defaultProps = {

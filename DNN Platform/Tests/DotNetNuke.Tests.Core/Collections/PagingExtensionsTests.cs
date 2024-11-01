@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.Collections
             PageSelector<int> pageSelector = queryable.InPagesOf(Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.IsInstanceOf<PageSelector<int>>(pageSelector);
+            Assert.That(pageSelector, Is.InstanceOf<PageSelector<int>>());
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Core.Collections
             IPagedList<int> pagedList = enumerable.ToPagedList(index, pageSize);
 
             // Assert
-            Assert.IsInstanceOf<IPagedList<int>>(pagedList);
+            Assert.That(pagedList, Is.InstanceOf<IPagedList<int>>());
         }
 
         [Test]
@@ -57,9 +57,12 @@ namespace DotNetNuke.Tests.Core.Collections
             // Act
             IPagedList<int> pagedList = enumerable.ToPagedList(index, pageSize);
 
-            // Assert
-            Assert.AreEqual(index, pagedList.PageIndex);
-            Assert.AreEqual(pageSize, pagedList.PageSize);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(pagedList.PageIndex, Is.EqualTo(index));
+                Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
+            });
         }
 
         [Test]
@@ -76,7 +79,7 @@ namespace DotNetNuke.Tests.Core.Collections
             IPagedList<int> pagedList = queryable.ToPagedList(index, pageSize);
 
             // Assert
-            Assert.IsInstanceOf<IPagedList<int>>(pagedList);
+            Assert.That(pagedList, Is.InstanceOf<IPagedList<int>>());
         }
 
         [Test]
@@ -93,9 +96,12 @@ namespace DotNetNuke.Tests.Core.Collections
             // Act
             IPagedList<int> pagedList = queryable.ToPagedList(index, pageSize);
 
-            // Assert
-            Assert.AreEqual(index, pagedList.PageIndex);
-            Assert.AreEqual(pageSize, pagedList.PageSize);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(pagedList.PageIndex, Is.EqualTo(index));
+                Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
+            });
         }
     }
 }

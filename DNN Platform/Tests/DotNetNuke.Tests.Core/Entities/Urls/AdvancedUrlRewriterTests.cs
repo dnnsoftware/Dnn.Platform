@@ -170,7 +170,7 @@
                 });
 
             // Assert
-            Assert.AreEqual(false, isRedirected);
+            Assert.That(isRedirected, Is.EqualTo(false));
         }
 
         private void FillTabsTable(DataTable tabsTable)

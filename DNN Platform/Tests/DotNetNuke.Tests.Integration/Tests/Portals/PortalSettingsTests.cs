@@ -40,8 +40,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
             var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, string.Empty);
 
             // Assert
-            Assert.AreNotEqual(result, string.Empty);
-            Assert.AreEqual(this._settingValue, result);
+            Assert.That(result, Is.Not.EqualTo(string.Empty));
+            Assert.That(result, Is.EqualTo(this._settingValue));
         }
 
         [Test]
@@ -55,9 +55,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
             // Assert
-            Assert.AreNotEqual(result, string.Empty);
-            Assert.AreNotEqual(this._settingValue, result);
-            Assert.AreEqual(decrypted, this._settingValue);
+            Assert.That(result, Is.Not.EqualTo(string.Empty));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.EqualTo(this._settingValue));
+                Assert.That(this._settingValue, Is.EqualTo(decrypted));
+            });
         }
     }
 }

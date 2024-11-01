@@ -73,9 +73,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
                 exception = ex;
             }
 
-            // assert
-            Assert.AreEqual(shouldThrow, exception != null);
-            Assert.AreEqual(expectedErrorCount, errors.Count());
+            Assert.Multiple(() =>
+            {
+                // assert
+                Assert.That(exception != null, Is.EqualTo(shouldThrow));
+                Assert.That(errors.Count(), Is.EqualTo(expectedErrorCount));
+            });
         }
     }
 }

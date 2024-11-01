@@ -38,11 +38,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -53,11 +53,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -68,11 +68,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -83,11 +83,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -98,11 +98,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -113,11 +113,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -128,11 +128,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -145,20 +145,20 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             // first location/updateme has updated node
             XmlNode root = targetDoc.SelectSingleNode("/configuration/location[1]");
             XmlNodeList nodes = root.SelectNodes("updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // second location/updateme still empty
             root = targetDoc.SelectSingleNode("/configuration/location[2]");
             nodes = root.SelectNodes("updateme/children/child");
-            Assert.AreEqual(0, nodes.Count);
+            Assert.That(nodes, Is.Empty);
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // two instances of location/updateme exist
             nodes = targetDoc.SelectNodes("//configuration/location/updateme");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -180,20 +180,20 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // second location/updateme still empty
             var root = targetDoc.SelectSingleNode("/configuration/location[2]");
             nodes = root.SelectNodes("updateme/children/child");
-            Assert.AreEqual(0, nodes.Count);
+            Assert.That(nodes, Is.Empty);
 
             // children only inserted once
             nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // 1 instance of location/updateme exist
             nodes = targetDoc.SelectNodes("//configuration/location/updateme");
-            Assert.AreEqual(1, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -204,11 +204,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // inserted before node2
             XmlNode node = targetDoc.SelectSingleNode("/configuration/updateme");
-            Assert.AreEqual("node2", node.NextSibling.Name);
+            Assert.That(node.NextSibling.Name, Is.EqualTo("node2"));
         }
 
         [Test]
@@ -219,11 +219,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // inserted before node2
             XmlNode node = targetDoc.SelectSingleNode("/configuration/location/updateme");
-            Assert.AreEqual("node2", node.NextSibling.Name);
+            Assert.That(node.NextSibling.Name, Is.EqualTo("node2"));
         }
 
         [Test]
@@ -234,11 +234,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // inserted before node2
             XmlNode node = targetDoc.SelectSingleNode("/configuration/updateme");
-            Assert.AreEqual("node1", node.PreviousSibling.Name);
+            Assert.That(node.PreviousSibling.Name, Is.EqualTo("node1"));
         }
 
         [Test]
@@ -249,11 +249,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(2));
 
             // inserted before node2
             XmlNode node = targetDoc.SelectSingleNode("/configuration/location/updateme");
-            Assert.AreEqual("node2", node.NextSibling.Name);
+            Assert.That(node.NextSibling.Name, Is.EqualTo("node2"));
         }
 
         [Test]
@@ -264,11 +264,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // node is gone
             var nodes = targetDoc.SelectNodes("//removeme");
-            Assert.AreEqual(0, nodes.Count);
+            Assert.That(nodes, Is.Empty);
 
             // other nodes still present
             nodes = targetDoc.SelectNodes("/configuration/distraction");
-            Assert.AreEqual(1, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -279,11 +279,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // node is gone
             var nodes = targetDoc.SelectNodes("//removeme");
-            Assert.AreEqual(0, nodes.Count);
+            Assert.That(nodes, Is.Empty);
 
             // other nodes still present
             nodes = targetDoc.SelectNodes("/configuration/distraction");
-            Assert.AreEqual(1, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -293,7 +293,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var targetDoc = this.ExecuteMerge();
 
             var node = targetDoc.SelectSingleNode("/configuration/updateme");
-            Assert.AreEqual(0, node.Attributes.Count);
+            Assert.That(node.Attributes, Is.Empty);
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var targetDoc = this.ExecuteMerge("SimpleRemoveAttribute");
 
             var node = targetDoc.SelectSingleNode("/configuration/location/updateme");
-            Assert.AreEqual(0, node.Attributes.Count);
+            Assert.That(node.Attributes, Is.Empty);
         }
 
         [Test]
@@ -313,8 +313,8 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var targetDoc = this.ExecuteMerge();
 
             var node = targetDoc.SelectSingleNode("/configuration/updateme");
-            Assert.AreEqual(2, node.Attributes.Count);
-            Assert.AreEqual("fee", node.Attributes["attrib2"].Value);
+            Assert.That(node.Attributes, Has.Count.EqualTo(2));
+            Assert.That(node.Attributes["attrib2"].Value, Is.EqualTo("fee"));
         }
 
         [Test]
@@ -324,8 +324,8 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var targetDoc = this.ExecuteMerge("SimpleInsertAttribute");
 
             var node = targetDoc.SelectSingleNode("/configuration/location/updateme");
-            Assert.AreEqual(2, node.Attributes.Count);
-            Assert.AreEqual("fee", node.Attributes["attrib2"].Value);
+            Assert.That(node.Attributes, Has.Count.EqualTo(2));
+            Assert.That(node.Attributes["attrib2"].Value, Is.EqualTo("fee"));
         }
 
         [Test]
@@ -335,8 +335,8 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var targetDoc = this.ExecuteMerge("SimpleInsertAttribute");
 
             var node = targetDoc.SelectSingleNode("/configuration/location/updateme");
-            Assert.AreEqual(2, node.Attributes.Count);
-            Assert.AreEqual("fee", node.Attributes["attrib2"].Value);
+            Assert.That(node.Attributes, Has.Count.EqualTo(2));
+            Assert.That(node.Attributes["attrib2"].Value, Is.EqualTo("fee"));
         }
 
         [Test]
@@ -347,11 +347,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // a key was added
             var nodes = targetDoc.SelectNodes("/configuration/updateme/add");
-            Assert.AreEqual(1, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(1));
 
             // test attribute is set
             var node = nodes[0];
-            Assert.AreEqual("foo", node.Attributes["test"].Value);
+            Assert.That(node.Attributes["test"].Value, Is.EqualTo("foo"));
         }
 
         [Test]
@@ -362,11 +362,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // a key was added
             var nodes = targetDoc.SelectNodes("/configuration/location/updateme/add");
-            Assert.AreEqual(1, nodes.Count);
+            Assert.That(nodes, Has.Count.EqualTo(1));
 
             // test attribute is set
             var node = nodes[0];
-            Assert.AreEqual("foo", node.Attributes["test"].Value);
+            Assert.That(node.Attributes["test"].Value, Is.EqualTo("foo"));
         }
 
         [Test]
@@ -381,9 +381,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
-            Assert.AreEqual(3, nodes.Count);
+            Assert.Multiple(() =>
+            {
+                Assert.That(nodes, Has.Count.EqualTo(3));
 
-            Assert.False(merge.ConfigUpdateChangedNodes);
+                Assert.That(merge.ConfigUpdateChangedNodes, Is.False);
+            });
         }
 
         [Test]
@@ -398,9 +401,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
-            Assert.AreEqual(3, nodes.Count);
+            Assert.Multiple(() =>
+            {
+                Assert.That(nodes, Has.Count.EqualTo(3));
 
-            Assert.True(merge.ConfigUpdateChangedNodes);
+                Assert.That(merge.ConfigUpdateChangedNodes, Is.True);
+            });
         }
 
         [Test]
@@ -414,16 +420,16 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             // removed the existing node, since it matched targetpath attribute
             var nodesWithNamespace = targetDoc.SelectNodes("/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly", ns);
-            Assert.AreEqual(0, nodesWithNamespace.Count);
+            Assert.That(nodesWithNamespace, Is.Empty);
 
             // added a new node with xmlns=""
             var nodesWithoutNamespace = targetDoc.SelectNodes("/configuration/runtime/ab:assemblyBinding/dependentAssembly", ns);
-            Assert.AreEqual(1, nodesWithoutNamespace.Count);
+            Assert.That(nodesWithoutNamespace, Has.Count.EqualTo(1));
 
             // non-namespaced node has newVersion from merge
             var dependentAssembly = nodesWithoutNamespace[0];
             var bindingRedirect = dependentAssembly.SelectSingleNode("bindingRedirect", ns);
-            Assert.AreEqual("4.1.0.0", bindingRedirect.Attributes["newVersion"].Value);
+            Assert.That(bindingRedirect.Attributes["newVersion"].Value, Is.EqualTo("4.1.0.0"));
         }
 
         /// <summary>Merges the Merge and Target files based on the name of the calling method.</summary>

@@ -15,12 +15,12 @@ namespace DotNetNuke.Tests.Web.Mvc
     {
         public static void IsEmpty(ActionResult result)
         {
-            Assert.IsInstanceOf<EmptyResult>(result);
+            Assert.That(result, Is.InstanceOf<EmptyResult>());
         }
 
         public static void IsUnauthorized(ActionResult result)
         {
-            Assert.IsInstanceOf<HttpUnauthorizedResult>(result);
+            Assert.That(result, Is.InstanceOf<HttpUnauthorizedResult>());
         }
 
         public static void IsView(ActionResult result, string viewName)
@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Web.Mvc
             where TCast : class
         {
             var castResult = result as TCast;
-            Assert.IsNotNull(castResult);
+            Assert.That(castResult, Is.Not.Null);
             return castResult;
         }
 
@@ -49,11 +49,11 @@ namespace DotNetNuke.Tests.Web.Mvc
         {
             if (string.IsNullOrEmpty(expected))
             {
-                Assert.IsTrue(string.IsNullOrEmpty(actual));
+                Assert.That(string.IsNullOrEmpty(actual), Is.True);
             }
             else
             {
-                Assert.AreEqual(expected, actual);
+                Assert.That(actual, Is.EqualTo(expected));
             }
         }
     }

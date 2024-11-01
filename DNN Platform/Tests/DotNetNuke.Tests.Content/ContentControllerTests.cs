@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Content
             int contentId = controller.AddContentItem(content);
 
             // Assert
-            Assert.AreEqual(Constants.CONTENT_AddContentItemId, contentId);
+            Assert.That(contentId, Is.EqualTo(Constants.CONTENT_AddContentItemId));
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace DotNetNuke.Tests.Content
             int contentId = controller.AddContentItem(content);
 
             // Assert
-            Assert.AreEqual(Constants.CONTENT_AddContentItemId, content.ContentItemId);
+            Assert.That(content.ContentItemId, Is.EqualTo(Constants.CONTENT_AddContentItemId));
         }
 
         [Test]
@@ -269,7 +269,7 @@ namespace DotNetNuke.Tests.Content
             ContentItem content = controller.GetContentItem(Constants.CONTENT_InValidContentItemId);
 
             // Assert
-            Assert.IsNull(content);
+            Assert.That(content, Is.Null);
         }
 
         [Test]
@@ -300,10 +300,13 @@ namespace DotNetNuke.Tests.Content
             // Act
             ContentItem content = controller.GetContentItem(Constants.CONTENT_ValidContentItemId);
 
-            // Assert
-            Assert.AreEqual(Constants.CONTENT_ValidContentItemId, content.ContentItemId);
-            Assert.AreEqual(ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId), content.Content);
-            Assert.AreEqual(ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId), content.ContentKey);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(content.ContentItemId, Is.EqualTo(Constants.CONTENT_ValidContentItemId));
+                Assert.That(content.Content, Is.EqualTo(ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId)));
+                Assert.That(content.ContentKey, Is.EqualTo(ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId)));
+            });
         }
 
         [Test]
@@ -347,7 +350,7 @@ namespace DotNetNuke.Tests.Content
             IQueryable<ContentItem> contentItems = controller.GetContentItemsByTerm(Constants.TERM_UnusedName);
 
             // Assert
-            Assert.AreEqual(0, contentItems.Count());
+            Assert.That(contentItems.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -367,7 +370,7 @@ namespace DotNetNuke.Tests.Content
             IQueryable<ContentItem> contentItems = controller.GetContentItemsByTerm(Constants.TERM_ValidName);
 
             // Assert
-            Assert.AreEqual(Constants.CONTENT_TaggedItemCount, contentItems.Count());
+            Assert.That(contentItems.Count(), Is.EqualTo(Constants.CONTENT_TaggedItemCount));
         }
 
         [Test]
@@ -382,7 +385,7 @@ namespace DotNetNuke.Tests.Content
 
             var items = controller.GetContentItemsByContentType(10).ToArray();
 
-            Assert.AreEqual(items.Length, 10);
+            Assert.That(items, Has.Length.EqualTo(10));
         }
 
         [Test]
@@ -396,7 +399,7 @@ namespace DotNetNuke.Tests.Content
 
             var items = controller.GetContentItemsByContentType(-1).ToArray();
 
-            Assert.IsEmpty(items);
+            Assert.That(items, Is.Empty);
         }
 
         [Test]
@@ -412,8 +415,11 @@ namespace DotNetNuke.Tests.Content
             var negative = controller.GetContentItemsByModuleId(-1).ToArray();
             var positive = controller.GetContentItemsByModuleId(0).ToArray();
 
-            Assert.AreEqual(negative.Length, 10);
-            Assert.AreEqual(positive.Length, 1);
+            Assert.Multiple(() =>
+            {
+                Assert.That(negative, Has.Length.EqualTo(10));
+                Assert.That(positive, Has.Length.EqualTo(1));
+            });
         }
 
         [Test]
@@ -446,7 +452,7 @@ namespace DotNetNuke.Tests.Content
             IQueryable<ContentItem> contentItems = controller.GetUnIndexedContentItems();
 
             // Assert
-            Assert.AreEqual(0, contentItems.Count());
+            Assert.That(contentItems.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -467,10 +473,10 @@ namespace DotNetNuke.Tests.Content
             IQueryable<ContentItem> contentItems = controller.GetUnIndexedContentItems();
 
             // Assert
-            Assert.AreEqual(Constants.CONTENT_IndexedFalseItemCount, contentItems.Count());
+            Assert.That(contentItems.Count(), Is.EqualTo(Constants.CONTENT_IndexedFalseItemCount));
             foreach (ContentItem content in contentItems)
             {
-                Assert.IsFalse(content.Indexed);
+                Assert.That(content.Indexed, Is.False);
             }
         }
 
@@ -683,7 +689,7 @@ namespace DotNetNuke.Tests.Content
             var metaData = controller.GetMetaData(Constants.CONTENT_ValidContentItemId);
 
             // Assert
-            Assert.AreEqual(Constants.CONTENT_MetaDataCount, metaData.Count);
+            Assert.That(metaData, Has.Count.EqualTo(Constants.CONTENT_MetaDataCount));
         }
 
         [Test]

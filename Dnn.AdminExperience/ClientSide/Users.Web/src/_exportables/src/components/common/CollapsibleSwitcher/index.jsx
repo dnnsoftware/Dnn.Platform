@@ -13,7 +13,7 @@ class CollapsibleSwitcher extends Component {
 }
 CollapsibleSwitcher.propTypes = {
     renderIndex: PropTypes.number,
-    children: PropTypes.array
+    children: PropTypes.node
 };
 CollapsibleSwitcher.defaultProps = {
     renderIndex: 0

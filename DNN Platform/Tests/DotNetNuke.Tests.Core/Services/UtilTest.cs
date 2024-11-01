@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Core.Services
                 f.Flush();
             }, tryRewriteFileFor);
 
-            Assert.AreEqual(isRewritten, result);
+            Assert.That(result, Is.EqualTo(isRewritten));
             task.Wait();
         }
     }

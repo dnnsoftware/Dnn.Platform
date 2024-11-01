@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnHtmlHelper(viewContext, viewDataContainer.Object);
 
             // Assert
-            Assert.AreEqual(expectedContext, helper.ModuleContext);
+            Assert.That(helper.ModuleContext, Is.EqualTo(expectedContext));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnHtmlHelper<Dog>(viewContext, mockViewDataContainer.Object);
 
             // Assert
-            Assert.AreEqual(expectedContext, helper.ModuleContext);
+            Assert.That(helper.ModuleContext, Is.EqualTo(expectedContext));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnHtmlHelper(viewContext, mockViewDataContainer.Object);
 
             // Assert
-            Assert.AreEqual(viewContext, helper.ViewContext);
+            Assert.That(helper.ViewContext, Is.EqualTo(viewContext));
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnHtmlHelper(viewContext, mockViewDataContainer.Object);
 
             // Assert
-            Assert.AreEqual(expectedViewData, helper.ViewData);
+            Assert.That(helper.ViewData, Is.EqualTo(expectedViewData));
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnHtmlHelper<Dog>(viewContext, mockViewDataContainer.Object);
 
             // Assert
-            Assert.AreEqual(expectedModel, helper.ViewData.Model);
+            Assert.That(helper.ViewData.Model, Is.EqualTo(expectedModel));
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             mockViewPage.Object.Html.EnableClientValidation(true);
 
             // Assert
-            Assert.IsTrue(mockViewPage.Object.ViewContext.ClientValidationEnabled);
+            Assert.That(mockViewPage.Object.ViewContext.ClientValidationEnabled, Is.True);
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             mockViewPage.Object.Html.EnableUnobtrusiveJavaScript(true);
 
             // Assert
-            Assert.IsTrue(mockViewPage.Object.ViewContext.UnobtrusiveJavaScriptEnabled);
+            Assert.That(mockViewPage.Object.ViewContext.UnobtrusiveJavaScriptEnabled, Is.True);
         }
     }
 }

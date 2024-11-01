@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     ProductName = DotNetNukeContext.Current.Application.Description,
                     ProductVersion = "v. " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, true),
-                    FrameworkVersion = isHost ? Globals.NETFrameworkVersion.ToString(2) : string.Empty,
+                    FrameworkVersion = isHost ? Globals.NETFrameworkVersion.ToString(3) : string.Empty,
                     ServerName = isHost ? Globals.ServerName : string.Empty,
                     LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
                     DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),

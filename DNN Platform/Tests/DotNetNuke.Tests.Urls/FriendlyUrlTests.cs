@@ -460,7 +460,7 @@ namespace DotNetNuke.Tests.Urls
                     Guid.Empty);
             }
 
-            Assert.IsTrue(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase));
+            Assert.That(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase), Is.True);
         }
 
         private void UpdateTabName(int tabId, string newName)

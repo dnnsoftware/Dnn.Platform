@@ -27,10 +27,8 @@ export default class NumberSlider extends Component {
                     step={step}
                     onChange={this.props.onChange}
                     disabled={!!this.props.disabled}
-                    withBars={true}>
-                    {!this.props.hideValue && <div>{value}</div>}
+                    renderThumb={(props, _state) => !this.props.hideValue && <div {...props}><div>{value}</div></div>}>
                 </ReactSlider>
-                    
                 {this.props.withMinMax && <span>{maximum}</span>}
             </div>
         );

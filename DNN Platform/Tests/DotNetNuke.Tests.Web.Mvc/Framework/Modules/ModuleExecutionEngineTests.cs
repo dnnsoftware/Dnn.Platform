@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             ModuleRequestResult result = engine.ExecuteModule(requestContext);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             ModuleRequestResult actual = engine.ExecuteModule(requestContext);
 
             // Assert
-            Assert.AreSame(expected, actual);
+            Assert.That(actual, Is.SameAs(expected));
         }
 
         [Test]

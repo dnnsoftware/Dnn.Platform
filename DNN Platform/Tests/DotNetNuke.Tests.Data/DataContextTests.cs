@@ -47,8 +47,8 @@ namespace DotNetNuke.Tests.Data
             var context = DataContext.Instance();
 
             // Assert
-            Assert.IsInstanceOf<IDataContext>(context);
-            Assert.IsInstanceOf<PetaPocoDataContext>(context);
+            Assert.That(context, Is.InstanceOf<IDataContext>());
+            Assert.That(context, Is.InstanceOf<PetaPocoDataContext>());
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
-            Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
+            Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
-            Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
+            Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
         }
 
         // ReSharper restore InconsistentNaming

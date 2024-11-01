@@ -39,11 +39,14 @@ namespace DotNetNuke.Tests.Web.Mvp
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
             // Assert
-            Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.ModuleSettings);
-            Assert.AreEqual(0, view.Object.Model.ModuleSettings.Count);
+            Assert.That(view.Object.Model.ModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
+            Assert.Multiple(() =>
+            {
+                Assert.That(view.Object.Model.ModuleSettings, Is.Empty);
 
-            Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.TabModuleSettings);
-            Assert.AreEqual(0, view.Object.Model.TabModuleSettings.Count);
+                Assert.That(view.Object.Model.TabModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
+            });
+            Assert.That(view.Object.Model.TabModuleSettings, Is.Empty);
         }
 
         [Test]
@@ -60,9 +63,12 @@ namespace DotNetNuke.Tests.Web.Mvp
             // Act
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            // Assert
-            Assert.IsNull(view.Object.Model.ModuleSettings);
-            Assert.IsNull(view.Object.Model.TabModuleSettings);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(view.Object.Model.ModuleSettings, Is.Null);
+                Assert.That(view.Object.Model.TabModuleSettings, Is.Null);
+            });
         }
 
         [Test]
@@ -82,11 +88,14 @@ namespace DotNetNuke.Tests.Web.Mvp
             view.Raise(v => v.OnLoadSettings += null, EventArgs.Empty);
 
             // Assert
-            Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.ModuleSettings);
-            Assert.AreEqual(_moduleSettingCount, view.Object.Model.ModuleSettings.Count);
+            Assert.That(view.Object.Model.ModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
+            Assert.Multiple(() =>
+            {
+                Assert.That(view.Object.Model.ModuleSettings, Has.Count.EqualTo(_moduleSettingCount));
 
-            Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.TabModuleSettings);
-            Assert.AreEqual(_tabModuleSettingCount, view.Object.Model.TabModuleSettings.Count);
+                Assert.That(view.Object.Model.TabModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
+            });
+            Assert.That(view.Object.Model.TabModuleSettings, Has.Count.EqualTo(_tabModuleSettingCount));
         }
 
         [Test]
