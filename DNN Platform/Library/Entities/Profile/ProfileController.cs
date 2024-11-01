@@ -274,6 +274,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.ValidationExpression,
                 definition.ViewOrder,
                 definition.Visible,
+                definition.Encrypted,
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
@@ -324,6 +325,13 @@ namespace DotNetNuke.Entities.Profile
                 {
                     string propertyName = propertyDefinition.PropertyName;
                     string propertyValue = propertyDefinition.PropertyValue;
+
+                    // this is a stupid trick to make it dirty and allways saved encrypted when property is set to do so.
+                    if (propertyDefinition.Encrypted)
+                    {
+                        user.Profile.SetProfileProperty(propertyName, propertyValue + " ");
+                    }
+
                     if (propertyDefinition.IsDirty)
                     {
                         if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.InvariantCultureIgnoreCase))
@@ -491,6 +499,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
                 definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
                 definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible));
+                definition.Encrypted = Convert.ToBoolean(Null.SetNull(dr["Encrypted"], definition.Encrypted));
                 definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
                 definition.ProfileVisibility = new ProfileVisibility
                 {

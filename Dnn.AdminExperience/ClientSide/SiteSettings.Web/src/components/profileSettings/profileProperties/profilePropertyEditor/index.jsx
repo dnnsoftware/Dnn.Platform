@@ -23,6 +23,7 @@ class ProfilePropertyEditor extends Component {
                 PropertyCategory: "",
                 DataType: "",
                 DefaultVisibility: 2,
+                Encrypted: false,
                 Length: 0,
                 DefaultValue: "",
                 PropertyValidation: ""
@@ -551,6 +552,21 @@ class ProfilePropertyEditor extends Component {
                             offText={resx.get("SwitchOff")}
                             value={profileProperty.ReadOnly}
                             onChange={this.onSettingChange.bind(this, "ReadOnly")}
+                        />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="profileProperty-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("ProfilePropertyDefinition_PropertyEncryption.Help")}
+                            label="Encryption"
+                        />
+                        <Switch
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
+                            value={profileProperty.Encrypted}
+                            onChange={this.onSettingChange.bind(this, "Encrypted")}
                         />
                     </div>
                 </InputGroup>

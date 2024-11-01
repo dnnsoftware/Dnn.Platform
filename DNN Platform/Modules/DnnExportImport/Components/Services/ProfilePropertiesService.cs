@@ -173,6 +173,7 @@ namespace Dnn.ExportImport.Components.Services
                     profileProperty.ValidationExpression,
                     profileProperty.ViewOrder,
                     profileProperty.Visible,
+                    profileProperty.Encrypted,
                     profileProperty.Length,
                     profileProperty.DefaultVisibility,
                     modifiedById);

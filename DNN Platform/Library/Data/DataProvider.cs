@@ -2408,7 +2408,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetUserProfile", userId);
         }
 
-        public virtual void UpdateProfileProperty(int profileId, int userId, int propertyDefinitionID, string propertyValue, int visibility, string extendedVisibility, DateTime lastUpdatedDate)
+        public virtual void UpdateProfileProperty(int profileId, int userId, int propertyDefinitionID, string propertyValue, int visibility, bool propertyIsSecure, string extendedVisibility, DateTime lastUpdatedDate)
         {
             this.ExecuteNonQuery(
                 "UpdateUserProfileProperty",
@@ -2417,11 +2417,12 @@ namespace DotNetNuke.Data
                 propertyDefinitionID,
                 propertyValue,
                 visibility,
+                propertyIsSecure,
                 extendedVisibility,
                 lastUpdatedDate);
         }
 
-        public virtual void UpdatePropertyDefinition(int propertyDefinitionId, int dataType, string defaultValue, string propertyCategory, string propertyName, bool readOnly, bool required, string validation, int viewOrder, bool visible, int length, int defaultVisibility, int lastModifiedByUserId)
+        public virtual void UpdatePropertyDefinition(int propertyDefinitionId, int dataType, string defaultValue, string propertyCategory, string propertyName, bool readOnly, bool required, string validation, int viewOrder, bool visible, bool encrypted, int length, int defaultVisibility, int lastModifiedByUserId)
         {
             this.ExecuteNonQuery(
                 "UpdatePropertyDefinition",
@@ -2435,6 +2436,7 @@ namespace DotNetNuke.Data
                 validation,
                 viewOrder,
                 visible,
+                encrypted,
                 length,
                 defaultVisibility,
                 lastModifiedByUserId);

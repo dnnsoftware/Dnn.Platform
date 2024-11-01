@@ -41,11 +41,13 @@ namespace DotNetNuke.Entities.Profile
         private string propertyCategory;
         private string propertyName;
         private string propertyValue;
+
         private bool readOnly;
         private bool required;
         private string validationExpression;
         private int viewOrder;
         private bool visible;
+        private bool encrypted;
 
         /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.</summary>
         public ProfilePropertyDefinition()
@@ -149,6 +151,23 @@ namespace DotNetNuke.Entities.Profile
             set
             {
                 this.deleted = value;
+            }
+        }
+
+        /// <summary>Gets or sets a value indicating whether gets and sets the Deleted.</summary>
+        [Browsable(false)]
+        [XmlIgnore]
+        [JsonIgnore]
+        public bool Encrypted
+        {
+            get
+            {
+                return this.encrypted;
+            }
+
+            set
+            {
+                this.encrypted = value;
             }
         }
 
@@ -470,6 +489,7 @@ namespace DotNetNuke.Entities.Profile
                 ProfileVisibility = this.ProfileVisibility.Clone(),
                 Visible = this.Visible,
                 Deleted = this.Deleted,
+                Encrypted = this.Encrypted,
             };
             clone.ClearIsDirty();
             return clone;

@@ -32,6 +32,8 @@ namespace Dnn.ExportImport.Dto.ProfileProperties
 
         public bool Visible { get; set; }
 
+        public bool Encrypted { get; set; }
+
         public int? CreatedByUserId { get; set; }
 
         public string CreatedByUserName { get; set; } // This could be used to find "CreatedByUserId"
