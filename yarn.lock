@@ -1819,7 +1819,7 @@ __metadata:
     react-modal: "npm:^3.16.1"
     react-motion: "npm:^0.5.2"
     react-scrollbar: "npm:^0.5.6"
-    react-slider: "npm:0.11.2"
+    react-slider: "npm:2.0.6"
     react-tabs: "npm:3.2.3"
     react-test-renderer: "npm:^17.0.2"
     react-tooltip: "npm:^4.5.1"
@@ -13713,8 +13713,8 @@ __metadata:
   linkType: hard
 
 "http-proxy-middleware@npm:^2.0.3":
-  version: 2.0.6
-  resolution: "http-proxy-middleware@npm:2.0.6"
+  version: 2.0.7
+  resolution: "http-proxy-middleware@npm:2.0.7"
   dependencies:
     "@types/http-proxy": "npm:^1.17.8"
     http-proxy: "npm:^1.18.1"
@@ -13726,7 +13726,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/express":
       optional: true
-  checksum: 10/768e7ae5a422bbf4b866b64105b4c2d1f468916b7b0e9c96750551c7732383069b411aa7753eb7b34eab113e4f77fb770122cb7fb9c8ec87d138d5ddaafda891
+  checksum: 10/4a51bf612b752ad945701995c1c029e9501c97e7224c0cf3f8bf6d48d172d6a8f2b57c20fec469534fdcac3aa8a6f332224a33c6b0d7f387aa2cfff9b67216fd
   languageName: node
   linkType: hard
 
@@ -20581,14 +20581,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-slider@npm:0.11.2":
-  version: 0.11.2
-  resolution: "react-slider@npm:0.11.2"
+"react-slider@npm:2.0.6":
+  version: 2.0.6
+  resolution: "react-slider@npm:2.0.6"
+  dependencies:
+    prop-types: "npm:^15.8.1"
   peerDependencies:
-    create-react-class: ^15.6
-    prop-types: ^15.6
-    react: ^16.2
-  checksum: 10/fc2394b732acef42548473128a84f4b24f4d49d6fedd82307fc4d3de66a0af1a6318c185b39bcadde2d5ad7fcce1cc0204b91ec3d5620cd20859ba85a45dafad
+    react: ^16 || ^17 || ^18
+  checksum: 9ee7f9073207f559a37e10aa52cfebc3d54925d23906bc2902ba8cb55f3607d867c5b3d77614f46a48204de47a4adb11254b52f6ead458ab6b409e3d5be9144e
   languageName: node
   linkType: hard
 
