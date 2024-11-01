@@ -24,7 +24,7 @@ public class ContainerWithServiceProviderFallbackTests
 
         var retrieved = container.GetComponentList(typeof(IList));
 
-        CollectionAssert.AreEqual(new List<string> { "payload" }, retrieved);
+        Assert.That(retrieved, Is.EqualTo(new List<string> { "payload" }).AsCollection);
     }
 
     [Test]
@@ -35,7 +35,7 @@ public class ContainerWithServiceProviderFallbackTests
 
         container.RegisterComponentInstance("test", typeof(IList<string>), new List<string>());
 
-        Assert.Contains("test", ComponentFactory.GetComponents<IList<string>>().Keys);
+        Assert.That(ComponentFactory.GetComponents<IList<string>>().Keys, Contains.Item("test"));
     }
 
     [Test]
@@ -46,7 +46,7 @@ public class ContainerWithServiceProviderFallbackTests
 
         container.RegisterComponent<IDictionary, Dictionary<bool, bool>>();
 
-        Assert.IsAssignableFrom<Dictionary<bool, bool>>(container.GetComponent<IDictionary>());
+        Assert.That(container.GetComponent<IDictionary>(), Is.AssignableFrom<Dictionary<bool, bool>>());
     }
 
     [Test]
@@ -55,7 +55,7 @@ public class ContainerWithServiceProviderFallbackTests
         var serviceProvider = FakeServiceProvider.Setup(services => services.AddTransient<IDictionary, Dictionary<int, int>>());
         var container = new ContainerWithServiceProviderFallback(new SimpleContainer(), serviceProvider);
 
-        Assert.IsAssignableFrom<Dictionary<int, int>>(container.GetComponent<IDictionary>());
+        Assert.That(container.GetComponent<IDictionary>(), Is.AssignableFrom<Dictionary<int, int>>());
     }
 
     [Test]
@@ -64,7 +64,7 @@ public class ContainerWithServiceProviderFallbackTests
         var serviceProvider = FakeServiceProvider.Setup(services => services.AddTransient<IDictionary, Dictionary<int, int>>());
         var container = new ContainerWithServiceProviderFallback(new SimpleContainer(), serviceProvider);
 
-        Assert.IsNull(container.GetComponent<IDictionary>("Dictionary"));
+        Assert.That(container.GetComponent<IDictionary>("Dictionary"), Is.Null);
     }
 
     [Test]
@@ -75,7 +75,7 @@ public class ContainerWithServiceProviderFallbackTests
 
         container.RegisterComponent(typeof(IDictionary), typeof(Dictionary<bool, bool>));
 
-        Assert.IsAssignableFrom<Dictionary<bool, bool>>(container.GetComponent(typeof(IDictionary)));
+        Assert.That(container.GetComponent(typeof(IDictionary)), Is.AssignableFrom<Dictionary<bool, bool>>());
     }
 
     [Test]
@@ -84,7 +84,7 @@ public class ContainerWithServiceProviderFallbackTests
         var serviceProvider = FakeServiceProvider.Setup(services => services.AddTransient<IDictionary, Dictionary<int, int>>());
         var container = new ContainerWithServiceProviderFallback(new SimpleContainer(), serviceProvider);
 
-        Assert.IsAssignableFrom<Dictionary<int, int>>(container.GetComponent(typeof(IDictionary)));
+        Assert.That(container.GetComponent(typeof(IDictionary)), Is.AssignableFrom<Dictionary<int, int>>());
     }
 
     [Test]
@@ -93,6 +93,6 @@ public class ContainerWithServiceProviderFallbackTests
         var serviceProvider = FakeServiceProvider.Setup(services => services.AddTransient<IDictionary, Dictionary<int, int>>());
         var container = new ContainerWithServiceProviderFallback(new SimpleContainer(), serviceProvider);
 
-        Assert.IsNull(container.GetComponent("Dictionary", typeof(IDictionary)));
+        Assert.That(container.GetComponent("Dictionary", typeof(IDictionary)), Is.Null);
     }
 }

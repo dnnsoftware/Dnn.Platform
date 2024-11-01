@@ -48,12 +48,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
 
             if (implementsPortable)
             {
-                Assert.IsNotNull(portable);
-                Assert.IsInstanceOf<IPortable>(portable);
+                Assert.That(portable, Is.Not.Null);
+                Assert.That(portable, Is.InstanceOf<IPortable>());
             }
             else
             {
-                Assert.IsNull(portable);
+                Assert.That(portable, Is.Null);
             }
         }
 
@@ -67,12 +67,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
 
             if (implementsPortable)
             {
-                Assert.IsNotNull(portable);
-                Assert.IsInstanceOf<IPortable>(portable);
+                Assert.That(portable, Is.Not.Null);
+                Assert.That(portable, Is.InstanceOf<IPortable>());
             }
             else
             {
-                Assert.IsNull(portable);
+                Assert.That(portable, Is.Null);
             }
         }
 
@@ -86,12 +86,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
 
             if (implementsSearchable)
             {
-                Assert.IsNotNull(searchable);
-                Assert.IsInstanceOf<ModuleSearchBase>(searchable);
+                Assert.That(searchable, Is.Not.Null);
+                Assert.That(searchable, Is.InstanceOf<ModuleSearchBase>());
             }
             else
             {
-                Assert.IsNull(searchable);
+                Assert.That(searchable, Is.Null);
             }
         }
 
@@ -105,12 +105,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
 
             if (implementsSearchable)
             {
-                Assert.IsNotNull(searchable);
-                Assert.IsInstanceOf<ModuleSearchBase>(searchable);
+                Assert.That(searchable, Is.Not.Null);
+                Assert.That(searchable, Is.InstanceOf<ModuleSearchBase>());
             }
             else
             {
-                Assert.IsNull(searchable);
+                Assert.That(searchable, Is.Null);
             }
         }
 
@@ -122,8 +122,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
             var provider = CreateProvider();
             var controller = provider.GetInstance(businessControllerType);
 
-            Assert.NotNull(controller);
-            Assert.AreEqual(businessControllerType, controller.GetType());
+            Assert.That(controller, Is.Not.Null);
+            Assert.That(controller.GetType(), Is.EqualTo(businessControllerType));
         }
 
         [TestCase(typeof(PortableControllerClass))]
@@ -134,8 +134,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules
             var provider = CreateProvider();
             var controller = provider.GetInstance(businessControllerType.AssemblyQualifiedName);
 
-            Assert.NotNull(controller);
-            Assert.AreEqual(businessControllerType, controller.GetType());
+            Assert.That(controller, Is.Not.Null);
+            Assert.That(controller.GetType(), Is.EqualTo(businessControllerType));
         }
 
         private static BusinessControllerProvider CreateProvider()

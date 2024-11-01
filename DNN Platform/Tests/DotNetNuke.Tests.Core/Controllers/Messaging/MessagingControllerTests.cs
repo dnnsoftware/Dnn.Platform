@@ -128,12 +128,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.serviceProvider.Dispose();
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
-            this._dtMessages?.Dispose();
-            this._dtMessageAttachment?.Dispose();
-            this._dtMessageRecipients?.Dispose();
-            this._dtPortalSettings?.Dispose();
-            this._dtMessageConversationView?.Dispose();
-            this._dtMessageThreadsView?.Dispose();
+            this.dtMessages?.Dispose();
+            this.dtMessageAttachment?.Dispose();
+            this.dtMessageRecipients?.Dispose();
+            this.dtPortalSettings?.Dispose();
+            this.dtMessageConversationView?.Dispose();
+            this.dtMessageThreadsView?.Dispose();
         }
 
         [Test]
@@ -148,8 +148,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void AttachmentsAllowed_Returns_True_When_MessagingAllowAttachments_Setting_Is_YES()
         {
-            this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
-            var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
+            this.mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
+            var result = this.mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
             Assert.That(result, Is.True);
         }
 

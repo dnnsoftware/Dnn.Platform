@@ -115,6 +115,7 @@ class ApiTokenDetails extends Component {
                                 if (k.length > 0) {
                                     return (
                                         <Label
+                                            key={item}
                                             label={k[0].Name}
                                             tooltipMessage={k[0].Description}
                                             tooltipPlace={"top"} />
