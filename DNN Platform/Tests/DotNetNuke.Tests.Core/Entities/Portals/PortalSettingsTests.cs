@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings();
 
             // Assert
-            Assert.IsNotNull(settings.Registration);
+            Assert.That(settings.Registration, Is.Not.Null);
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
             // Assert
-            Assert.AreEqual(ValidPortalId, settings.PortalId);
+            Assert.That(settings.PortalId, Is.EqualTo(ValidPortalId));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
             // Assert
-            Assert.AreEqual(ValidPortalId, settings.PortalId);
+            Assert.That(settings.PortalId, Is.EqualTo(ValidPortalId));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
             // Assert
-            Assert.AreEqual(portalAlias, settings.PortalAlias);
+            Assert.That(settings.PortalAlias, Is.EqualTo(portalAlias));
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, portal);
 
             // Assert
-            Assert.AreEqual(ValidPortalId, settings.PortalId);
+            Assert.That(settings.PortalId, Is.EqualTo(ValidPortalId));
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, (PortalInfo)null);
 
             // Assert
-            Assert.AreEqual(InValidPortalId, settings.PortalId);
+            Assert.That(settings.PortalId, Is.EqualTo(InValidPortalId));
         }
 
         [Test]
@@ -373,7 +373,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
             // Assert
-            Assert.NotNull(settings.ActiveTab);
+            Assert.That(settings.ActiveTab, Is.Not.Null);
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
             // Assert
-            Assert.Null(settings.ActiveTab);
+            Assert.That(settings.ActiveTab, Is.Null);
         }
 
         [Test]
@@ -412,7 +412,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, portal);
 
             // Assert
-            Assert.NotNull(settings.ActiveTab);
+            Assert.That(settings.ActiveTab, Is.Not.Null);
         }
 
         [Test]
@@ -435,7 +435,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
             // Assert
-            Assert.NotNull(settings.ActiveTab);
+            Assert.That(settings.ActiveTab, Is.Not.Null);
         }
 
         private PortalInfo CreatePortal(int portalId)

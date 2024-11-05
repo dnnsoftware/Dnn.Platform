@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             // Try to request the GetLocalization API
             var response = connector.GetContent($"API/PersonaBar/Pages/GetTabLocalization?pageId={tabId}", null, true, false);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         private void UpdateContentLocalization(bool enabled)
@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             var pageDetail = pagesExecuter.SavePageDetails(pageSettingsBuilder.Build());
 
-            Assert.NotNull(pageDetail.Page, "The system must create the page and return its details in the response");
+            Assert.That(pageDetail.Page, Is.Not.Null, "The system must create the page and return its details in the response");
 
             tabId = (int)pageDetail.Page.id;
 

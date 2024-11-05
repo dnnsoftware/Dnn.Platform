@@ -624,7 +624,7 @@ namespace DotNetNuke.Tests.Urls
             this.ProcessRequest(settings, testHelper);
 
             // Test expected response status
-            Assert.AreEqual(expectedStatus, testHelper.Response.StatusCode);
+            Assert.That(testHelper.Response.StatusCode, Is.EqualTo(expectedStatus));
 
             switch (expectedStatus)
             {
@@ -632,15 +632,15 @@ namespace DotNetNuke.Tests.Urls
                     // Test expected rewrite path
                     if (!string.IsNullOrEmpty(expectedResult))
                     {
-                        Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
+                        Assert.That(testHelper.Result.RewritePath.TrimStart('/'), Is.EqualTo(expectedResult));
                     }
 
                     break;
                 case 301:
                 case 302:
                     // Test for final Url if redirected
-                    Assert.IsTrue(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase));
-                    Assert.AreEqual(redirectReason, testHelper.Result.Reason.ToString(), "Redirect reason incorrect");
+                    Assert.That(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase), Is.True);
+                    Assert.That(testHelper.Result.Reason.ToString(), Is.EqualTo(redirectReason), "Redirect reason incorrect");
                     break;
             }
         }

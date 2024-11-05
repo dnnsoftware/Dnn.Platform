@@ -17,7 +17,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("<p>Hello</p>", actual);
+            Assert.That(actual, Is.EqualTo("<p>Hello</p>"));
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("<img src=\"/portals/0/image.jpg\"/>", actual);
+            Assert.That(actual, Is.EqualTo("<img src=\"/portals/0/image.jpg\"/>"));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("<img src=\"/portals/0/image.jpg\"/>", actual);
+            Assert.That(actual, Is.EqualTo("<img src=\"/portals/0/image.jpg\"/>"));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("<img src=\"https://example.com/image.jpg\"/>", actual);
+            Assert.That(actual, Is.EqualTo("<img src=\"https://example.com/image.jpg\"/>"));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("src=\"https://example.com/image.jpg\" is how you indicate a URL", actual);
+            Assert.That(actual, Is.EqualTo("src=\"https://example.com/image.jpg\" is how you indicate a URL"));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("src=\"image.jpg\"", actual);
+            Assert.That(actual, Is.EqualTo("src=\"image.jpg\""));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("src=\"image.jpg", actual);
+            Assert.That(actual, Is.EqualTo("src=\"image.jpg"));
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("src=\"/portals/0/image.jpg\" is how you indicate a URL", actual);
+            Assert.That(actual, Is.EqualTo("src=\"/portals/0/image.jpg\" is how you indicate a URL"));
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Modules.Html
                 "/portals/0/",
                 "src",
                 0);
-            Assert.AreEqual("<img src=\"data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7\"/>", actual);
+            Assert.That(actual, Is.EqualTo("<img src=\"data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7\"/>"));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Modules.Html
 <img alt=""another rooted relative path"" src=""/images/image2.png"" />
 <img alt=""another absolute path"" src=""https://dnncommunity.org/DesktopModules/ActiveForums/images/feedicon.gif"" />
 ";
-            Assert.AreEqual(Expected, actual);
+            Assert.That(actual, Is.EqualTo(Expected));
         }
     }
 }

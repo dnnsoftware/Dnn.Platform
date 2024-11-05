@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Mail
         {
             var provider = CreateSmtpOAuthController().GetOAuthProvider("GoogleMail");
 
-            Assert.NotNull(provider);
+            Assert.That(provider, Is.Not.Null);
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Mail
         {
             var provider = CreateSmtpOAuthController().GetOAuthProvider("ExchangeOnline");
 
-            Assert.NotNull(provider);
+            Assert.That(provider, Is.Not.Null);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Mail
         {
             var provider = CreateSmtpOAuthController().GetOAuthProvider("AnotherProvider");
 
-            Assert.Null(provider);
+            Assert.That(provider, Is.Null);
         }
 
         private static SmtpOAuthController CreateSmtpOAuthController()

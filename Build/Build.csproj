@@ -18,8 +18,8 @@
     <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
     <PackageReference Include="Cake.Frosting" Version="4.0.0" />
     <PackageReference Include="Cake.Frosting.Git" Version="4.0.0" />
-    <PackageReference Include="Cake.Issues" Version="4.6.0" />
-    <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="4.6.0" />
+    <PackageReference Include="Cake.Issues" Version="4.10.1" />
+    <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="4.10.1" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />

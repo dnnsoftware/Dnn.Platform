@@ -82,7 +82,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             string userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
 
             // Assert
-            Assert.AreEqual(expectedIp, userRequestIPAddress);
+            Assert.That(userRequestIPAddress, Is.EqualTo(expectedIp));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
 
             // Assert
-            Assert.AreSame(expectedIp, userRequestIPAddress);
+            Assert.That(userRequestIPAddress, Is.SameAs(expectedIp));
             this.mockRequest.VerifyGet(r => r.ServerVariables);
             this.mockRequest.VerifyGet(r => r.Headers);
             this.mockHostController.Verify(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>()));
@@ -120,7 +120,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
 
             // Assert
-            Assert.AreSame(expectedIp, userRequestIPAddress);
+            Assert.That(userRequestIPAddress, Is.SameAs(expectedIp));
             this.mockRequest.VerifyGet(r => r.UserHostAddress);
         }
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockhttpContext.Object.Request);
 
             // Assert
-            Assert.AreSame(string.Empty, userRequestIPAddress);
+            Assert.That(userRequestIPAddress, Is.SameAs(string.Empty));
         }
     }
 }

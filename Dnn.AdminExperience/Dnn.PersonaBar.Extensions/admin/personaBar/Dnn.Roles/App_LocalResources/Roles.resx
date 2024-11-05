@@ -189,6 +189,9 @@
   <data name="RoleName.Text" xml:space="preserve">
     <value>Role Name</value>
   </data>
+  <data name="RoleId.Text" xml:space="preserve">
+    <value>Role ID</value>
+  </data>
   <data name="securityModeListLabel.Text" xml:space="preserve">
     <value>Security Mode</value>
   </data>

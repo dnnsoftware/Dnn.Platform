@@ -93,7 +93,7 @@ namespace DotNetNuke.Tests.Content
             int scopeTypeId = scopeTypeController.AddScopeType(scopeType);
 
             // Assert
-            Assert.AreEqual(Constants.SCOPETYPE_AddScopeTypeId, scopeTypeId);
+            Assert.That(scopeTypeId, Is.EqualTo(Constants.SCOPETYPE_AddScopeTypeId));
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace DotNetNuke.Tests.Content
             scopeTypeController.AddScopeType(scopeType);
 
             // Assert
-            Assert.AreEqual(Constants.SCOPETYPE_AddScopeTypeId, scopeType.ScopeTypeId);
+            Assert.That(scopeType.ScopeTypeId, Is.EqualTo(Constants.SCOPETYPE_AddScopeTypeId));
         }
 
         [Test]
@@ -182,8 +182,8 @@ namespace DotNetNuke.Tests.Content
             var scopeTypes = scopeTypeController.GetScopeTypes();
 
             // Assert
-            Assert.IsNotNull(scopeTypes);
-            Assert.AreEqual(0, scopeTypes.Count());
+            Assert.That(scopeTypes, Is.Not.Null);
+            Assert.That(scopeTypes.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace DotNetNuke.Tests.Content
             var scopeTypes = scopeTypeController.GetScopeTypes();
 
             // Assert
-            Assert.AreEqual(Constants.SCOPETYPE_ValidScopeTypeCount, scopeTypes.Count());
+            Assert.That(scopeTypes.Count(), Is.EqualTo(Constants.SCOPETYPE_ValidScopeTypeCount));
         }
 
         [Test]

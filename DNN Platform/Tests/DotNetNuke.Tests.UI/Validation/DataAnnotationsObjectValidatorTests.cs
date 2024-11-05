@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.UI.Validation
             ValidationResult result = validator.ValidateObject(cls);
 
             // Assert
-            Assert.IsTrue(result.IsValid);
+            Assert.That(result.IsValid, Is.True);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.UI.Validation
             ValidationResult result = validator.ValidateObject(cls);
 
             // Assert
-            Assert.IsFalse(result.IsValid);
+            Assert.That(result.IsValid, Is.False);
         }
 
         [Test]
@@ -63,10 +63,13 @@ namespace DotNetNuke.Tests.UI.Validation
             // Act
             ValidationResult result = validator.ValidateObject(cls);
 
-            // Assert
-            Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("Dude, you forgot to enter a Foo", result.Errors.Where(e => e.PropertyName == "Foo").Single().ErrorMessage);
-            Assert.AreEqual("Yo, you have to specify 5 characters for Bar", result.Errors.Where(e => e.PropertyName == "Bar").Single().ErrorMessage);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsValid, Is.False);
+                Assert.That(result.Errors.Where(e => e.PropertyName == "Foo").Single().ErrorMessage, Is.EqualTo("Dude, you forgot to enter a Foo"));
+                Assert.That(result.Errors.Where(e => e.PropertyName == "Bar").Single().ErrorMessage, Is.EqualTo("Yo, you have to specify 5 characters for Bar"));
+            });
         }
 
         [Test]
@@ -79,10 +82,13 @@ namespace DotNetNuke.Tests.UI.Validation
             // Act
             ValidationResult result = validator.ValidateObject(cls);
 
-            // Assert
-            Assert.IsFalse(result.IsValid);
-            Assert.IsInstanceOf<RequiredAttribute>(result.Errors.Single(e => e.PropertyName == "Foo").Validator);
-            Assert.IsInstanceOf<StringLengthAttribute>(result.Errors.Single(e => e.PropertyName == "Bar").Validator);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.IsValid, Is.False);
+                Assert.That(result.Errors.Single(e => e.PropertyName == "Foo").Validator, Is.InstanceOf<RequiredAttribute>());
+                Assert.That(result.Errors.Single(e => e.PropertyName == "Bar").Validator, Is.InstanceOf<StringLengthAttribute>());
+            });
         }
 
         public class TestClass

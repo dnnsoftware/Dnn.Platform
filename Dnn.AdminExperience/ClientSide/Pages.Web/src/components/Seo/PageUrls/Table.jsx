@@ -50,7 +50,7 @@ class Table extends Component {
         /* eslint-disable react/no-danger */
         return (
             <div>
-                <div className={styles.AddItemRow}>
+                <div className={styles.addItemRow}>
                     <div className="link-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
                     <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
                     <div className={"AddItemBox" + (newFormOpened ? " active" : "")} onClick={onOpenNewForm}>

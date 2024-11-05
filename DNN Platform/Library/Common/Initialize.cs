@@ -383,13 +383,19 @@ namespace DotNetNuke.Common
             // Otherwise utilize release DWORD from registry to determine version
             // Reference List: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
             var release = GetDotNet4ReleaseNumberFromRegistry();
+            if (release >= 533320)
+            {
+                return new Version("4.8.1");
+            }
+
             if (release >= 528040)
             {
-                version = "4.8";
+                return new Version("4.8");
             }
-            else
+
+            if (release >= 461808)
             {
-                version = "4.7.2";
+                return new Version("4.7.2");
             }
 
             return new Version(version);

@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
                 Version = "v." + Globals.FormatVersion(application.Version, true),
                 Product = application.Description,
                 UpgradeAvailable = upgradeIndicator != null,
-                Framework = isHost ? Globals.NETFrameworkVersion.ToString(2) : string.Empty,
+                Framework = isHost ? Globals.NETFrameworkVersion.ToString(3) : string.Empty,
                 IpAddress = System.Net.Dns.GetHostEntry(hostName).AddressList[0].ToString(),
                 Permissions = DotNetNuke.Framework.SecurityPolicy.Permissions,
                 Site = hostPortal.PortalName,

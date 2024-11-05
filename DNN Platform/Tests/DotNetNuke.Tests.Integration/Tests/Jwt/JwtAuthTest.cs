@@ -66,6 +66,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             }
         }
 
+        [OneTimeTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+            this._httpClient?.Dispose();
+        }
+
         [Test]
         public void InvalidUserLoginShouldFail()
         {
@@ -73,25 +80,30 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
         public void ValidUserLoginShouldPass()
         {
             var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
-            Assert.IsNotNull(token.UserId);
-            Assert.IsNotNull(token.AccessToken);
-            Assert.IsNotNull(token.DisplayName);
-            Assert.IsNotNull(token.RenewalToken);
+            Assert.Multiple(() =>
+            {
+                Assert.That(token.AccessToken, Is.Not.Null);
+                Assert.That(token.DisplayName, Is.Not.Null);
+                Assert.That(token.RenewalToken, Is.Not.Null);
+            });
 
             var parts = token.AccessToken.Split('.');
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
             long claimExpiry = claims.exp;
             var expiryInToken = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(claimExpiry);
-            Assert.Less(DateTime.UtcNow, expiryInToken);
-            Assert.LessOrEqual(expiryInToken, DateTime.UtcNow.AddHours(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(DateTime.UtcNow, Is.LessThan(expiryInToken));
+                Assert.That(expiryInToken, Is.LessThanOrEqualTo(DateTime.UtcNow.AddHours(1)));
+            });
         }
 
         [Test]
@@ -103,7 +115,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result1 = this._httpClient.GetAsync(TestGetQuery).Result;
             var content1 = result1.Content.ReadAsStringAsync().Result;
             LogText(@"content1 => " + content1);
-            Assert.AreEqual(HttpStatusCode.OK, result1.StatusCode);
+            Assert.That(result1.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             this.LogoutUser(token.AccessToken);
 
@@ -111,7 +123,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result2 = this._httpClient.GetAsync(TestGetQuery).Result;
             var content2 = result2.Content.ReadAsStringAsync().Result;
             LogText(@"content2 => " + content2);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result2.StatusCode);
+            Assert.That(result2.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -120,7 +132,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -131,8 +143,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.Less(0, content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal), Is.GreaterThanOrEqualTo(0));
+            });
         }
 
         [Test]
@@ -143,9 +158,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.PostAsJsonAsync(TestPostQuery, new { text = "Integraton Testing Rocks!" }).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.Less(0, content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal));
-            Assert.Less(0, content.IndexOf("You said: (Integraton Testing Rocks!)", StringComparison.Ordinal));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal), Is.GreaterThanOrEqualTo(0));
+                Assert.That(content.IndexOf("You said: (Integraton Testing Rocks!)", StringComparison.Ordinal), Is.GreaterThanOrEqualTo(0));
+            });
         }
 
         [Test]
@@ -153,9 +171,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var token2 = this.RenewAuthorizationToken(token1);
-            Assert.AreNotEqual(token1.AccessToken, token2.AccessToken);
-            Assert.AreEqual(token1.RenewalToken, token2.RenewalToken);
-            Assert.AreEqual(token1.DisplayName, token2.DisplayName);
+            Assert.Multiple(() =>
+            {
+                Assert.That(token2.AccessToken, Is.Not.EqualTo(token1.AccessToken));
+                Assert.That(token2.RenewalToken, Is.EqualTo(token1.RenewalToken));
+                Assert.That(token2.DisplayName, Is.EqualTo(token1.DisplayName));
+            });
         }
 
         [Test]
@@ -163,15 +184,18 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var token2 = this.RenewAuthorizationToken(token1);
-            Assert.AreNotEqual(token1.AccessToken, token2.AccessToken);
-            Assert.AreEqual(token1.RenewalToken, token2.RenewalToken);
-            Assert.AreEqual(token1.DisplayName, token2.DisplayName);
+            Assert.Multiple(() =>
+            {
+                Assert.That(token2.AccessToken, Is.Not.EqualTo(token1.AccessToken));
+                Assert.That(token2.RenewalToken, Is.EqualTo(token1.RenewalToken));
+                Assert.That(token2.DisplayName, Is.EqualTo(token1.DisplayName));
+            });
 
             this.SetAuthHeaderToken(token1.AccessToken);
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -182,7 +206,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
             this.SetAuthHeaderToken(token1.AccessToken);
             var result = this._httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -199,15 +223,18 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var token2 = this.RenewAuthorizationToken(token1);
-            Assert.AreNotEqual(token1.AccessToken, token2.AccessToken);
-            Assert.AreEqual(token1.RenewalToken, token2.RenewalToken);
-            Assert.AreEqual(token1.DisplayName, token2.DisplayName);
+            Assert.Multiple(() =>
+            {
+                Assert.That(token2.AccessToken, Is.Not.EqualTo(token1.AccessToken));
+                Assert.That(token2.RenewalToken, Is.EqualTo(token1.RenewalToken));
+                Assert.That(token2.DisplayName, Is.EqualTo(token1.DisplayName));
+            });
 
             this.SetAuthHeaderToken(token2.AccessToken);
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Test]
@@ -220,14 +247,14 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
             // tampered signature
             this.SetAuthHeaderToken(token1.AccessToken + "y");
             result = this._httpClient.GetAsync(TestGetQuery).Result;
             content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
 
             // tampered claims
             var idx = token1.AccessToken.IndexOf('.');
@@ -236,7 +263,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             result = this._httpClient.GetAsync(TestGetQuery).Result;
             content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -258,16 +285,22 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             claims = JsonConvert.DeserializeObject(decoded);
             long claimExpiry = claims.exp;
             var expiryInToken = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(claimExpiry);
-            Assert.Less(DateTime.UtcNow, expiryInToken);
-            Assert.LessOrEqual(expiryInToken, DateTime.UtcNow.AddMinutes(31)); // appears the library rounds the time
+            Assert.Multiple(() =>
+            {
+                Assert.That(DateTime.UtcNow, Is.LessThan(expiryInToken));
+                Assert.That(expiryInToken, Is.LessThanOrEqualTo(DateTime.UtcNow.AddMinutes(31))); // appears the library rounds the time
+            });
 
             var record = DatabaseHelper.GetRecordById("JsonWebTokens", "TokenId", sessionId);
             var accessExpiry = (DateTime)record["TokenExpiry"];
             var renewalExpiry = (DateTime)record["RenewalExpiry"];
-            Assert.AreEqual(accessExpiry, renewalExpiry);
-            Assert.Less(DateTime.UtcNow, renewalExpiry);
-            Assert.LessOrEqual(renewalExpiry, DateTime.UtcNow.AddMinutes(31));
-            Assert.AreEqual(accessExpiry, expiryInToken);
+            Assert.Multiple(() =>
+            {
+                Assert.That(renewalExpiry, Is.EqualTo(accessExpiry));
+                Assert.That(DateTime.UtcNow, Is.LessThan(renewalExpiry));
+            });
+            Assert.That(renewalExpiry, Is.LessThanOrEqualTo(DateTime.UtcNow.AddMinutes(31)));
+            Assert.That(expiryInToken, Is.EqualTo(accessExpiry));
         }
 
         [Test]
@@ -287,7 +320,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -307,7 +340,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -325,7 +358,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
             this.SetAuthHeaderToken(token1.AccessToken);
             var result = this._httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         [Test]
@@ -338,8 +371,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.NotNull(content);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.Multiple(() =>
+            {
+                Assert.That(content, Is.Not.Null);
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            });
         }
 
         [Test]
@@ -351,7 +387,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
 	                  AND ModuleTitle='Journal';";
             var tabModuleId = DatabaseHelper.ExecuteScalar<int>(query1);
-            Assert.Greater(tabModuleId, 0);
+            Assert.That(tabModuleId, Is.GreaterThan(0));
 
             // These will set a moniker for the Activity Feed module of the user profile
             DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
@@ -367,7 +403,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Test]
@@ -379,7 +415,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
 	                  AND ModuleTitle='Journal';";
             var tabModuleId = DatabaseHelper.ExecuteScalar<int>(query1);
-            Assert.Greater(tabModuleId, 0);
+            Assert.That(tabModuleId, Is.GreaterThan(0));
 
             // These will set a moniker for the Activity Feed module of the user profile
             DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
@@ -394,7 +430,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
         }
 
         private static string DecodeBase64(string b64Str)
@@ -422,9 +458,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var credentials = new { u = uname, p = upass };
             var result = this._httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
-            Assert.IsNotNull(token);
+            Assert.That(token, Is.Not.Null);
             LogText(@"AuthToken => " + JsonConvert.SerializeObject(token));
             this._httpClient.DefaultRequestHeaders.Clear();
             return token;
@@ -435,9 +471,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             Thread.Sleep(1000); // must delay at least 1 second so the expiry time is different
             this.SetAuthHeaderToken(currentToken.AccessToken);
             var result = this._httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = currentToken.RenewalToken }).Result;
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
-            Assert.IsNotNull(token);
+            Assert.That(token, Is.Not.Null);
             LogText(@"RenewedToken => " + JsonConvert.SerializeObject(token));
             return token;
         }
@@ -446,10 +482,10 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             this.SetAuthHeaderToken(accessToken);
             var result = this._httpClient.GetAsync(LogoutQuery).Result;
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             var content = result.Content.ReadAsStringAsync().Result;
             dynamic response = !string.IsNullOrEmpty(content) ? JsonConvert.DeserializeObject(content) : null;
-            Assert.IsTrue(Convert.ToBoolean(response?.success));
+            Assert.That(Convert.ToBoolean(response?.success), Is.True);
         }
 
         private void SetAuthHeaderToken(string token, string scheme = "Bearer")

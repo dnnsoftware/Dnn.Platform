@@ -127,7 +127,7 @@ namespace DotNetNuke.Tests.Content
             int vocabularyId = vocabularyController.AddVocabulary(vocabulary);
 
             // Assert
-            Assert.AreEqual(Constants.VOCABULARY_AddVocabularyId, vocabularyId);
+            Assert.That(vocabularyId, Is.EqualTo(Constants.VOCABULARY_AddVocabularyId));
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace DotNetNuke.Tests.Content
             vocabularyController.AddVocabulary(vocabulary);
 
             // Assert
-            Assert.AreEqual(Constants.VOCABULARY_AddVocabularyId, vocabulary.VocabularyId);
+            Assert.That(vocabulary.VocabularyId, Is.EqualTo(Constants.VOCABULARY_AddVocabularyId));
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace DotNetNuke.Tests.Content
             IQueryable<Vocabulary> vocabularys = vocabularyController.GetVocabularies();
 
             // Assert
-            Assert.AreEqual(Constants.VOCABULARY_ValidCount, vocabularys.Count());
+            Assert.That(vocabularys.Count(), Is.EqualTo(Constants.VOCABULARY_ValidCount));
         }
 
         [Test]

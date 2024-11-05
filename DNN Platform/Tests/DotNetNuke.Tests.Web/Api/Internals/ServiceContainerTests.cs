@@ -38,11 +38,11 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void CreateScopeWhenRequestDoesNotExists()
         {
-            Assert.Null(HttpContextSource.Current?.GetScope());
+            Assert.That(HttpContextSource.Current?.GetScope(), Is.Null);
 
             var container = ServiceScopeContainer.GetRequestOrCreateScope();
 
-            Assert.True(container.ShouldDispose);
+            Assert.That(container.ShouldDispose, Is.True);
         }
 
         [Test]
@@ -53,12 +53,15 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             HttpContextHelper.RegisterMockHttpContext();
             HttpContextSource.Current.SetScope(scope);
 
-            Assert.NotNull(HttpContextSource.Current?.GetScope());
+            Assert.That(HttpContextSource.Current?.GetScope(), Is.Not.Null);
 
             var container = ServiceScopeContainer.GetRequestOrCreateScope();
 
-            Assert.False(container.ShouldDispose);
-            Assert.AreEqual(scope, container.ServiceScope);
+            Assert.Multiple(() =>
+            {
+                Assert.That(container.ShouldDispose, Is.False);
+                Assert.That(container.ServiceScope, Is.EqualTo(scope));
+            });
         }
     }
 }

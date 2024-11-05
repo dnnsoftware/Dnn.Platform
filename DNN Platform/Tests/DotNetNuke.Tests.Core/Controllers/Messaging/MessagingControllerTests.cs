@@ -124,6 +124,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Globals.DependencyProvider = null;
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
+            this._dtMessages?.Dispose();
+            this._dtMessageAttachment?.Dispose();
+            this._dtMessageRecipients?.Dispose();
+            this._dtPortalSettings?.Dispose();
+            this._dtMessageConversationView?.Dispose();
+            this._dtMessageThreadsView?.Dispose();
         }
 
         [Test]
@@ -140,7 +146,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
             var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -148,7 +154,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
             var result = this._mockInternalMessagingController.Object.IncludeAttachments(Constants.CONTENT_ValidPortalId);
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -156,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._mockInternalMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("NO");
             var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -344,7 +350,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actual = this._mockInternalMessagingController.Object.RecipientLimit(Constants.CONTENT_ValidPortalId);
 
-            Assert.AreEqual(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [Test]
@@ -566,9 +572,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Act
             this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
-            // Assert
-            Assert.AreEqual("subject_filtered", message.Subject);
-            Assert.AreEqual("body_filtered", message.Body);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(message.Subject, Is.EqualTo("subject_filtered"));
+                Assert.That(message.Body, Is.EqualTo("body_filtered"));
+            });
         }
 
         [Test]
@@ -634,7 +643,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user }, null, sender);
 
             // Assert
-            Assert.AreEqual(message.To, Constants.USER_TenName);
+            Assert.That(message.To, Is.EqualTo(Constants.USER_TenName));
         }
 
         [Test]
@@ -666,7 +675,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user10, user11 }, null, sender);
 
             // Assert
-            Assert.AreEqual(message.To, Constants.USER_TenName + "," + Constants.USER_ElevenName);
+            Assert.That(message.To, Is.EqualTo(Constants.USER_TenName + "," + Constants.USER_ElevenName));
         }
 
         [Test]
@@ -686,7 +695,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo>(), null, this._adminUserInfo);
 
             // Assert
-            Assert.AreEqual(message.To, Constants.RoleName_Administrators);
+            Assert.That(message.To, Is.EqualTo(Constants.RoleName_Administrators));
         }
 
         [Test]
@@ -707,7 +716,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role1, role2 }, new List<UserInfo>(), null, this._adminUserInfo);
 
             // Assert
-            Assert.AreEqual(message.To, Constants.RoleName_Administrators + "," + Constants.RoleName_Subscribers);
+            Assert.That(message.To, Is.EqualTo(Constants.RoleName_Administrators + "," + Constants.RoleName_Subscribers));
         }
 
         [Test]
@@ -909,7 +918,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             // Assert
-            Assert.AreEqual(message.ReplyAllAllowed, false);
+            Assert.That(message.ReplyAllAllowed, Is.EqualTo(false));
         }
 
         [Test]
@@ -937,7 +946,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             // Assert
-            Assert.AreEqual(message.ReplyAllAllowed, true);
+            Assert.That(message.ReplyAllAllowed, Is.EqualTo(true));
         }
 
         [Test]
@@ -1265,7 +1274,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 
-            Assert.AreEqual(0, result);
+            Assert.That(result, Is.EqualTo(0));
         }
 
         [Test]
@@ -1279,7 +1288,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._adminUserInfo);
 
-            Assert.AreEqual(0, result);
+            Assert.That(result, Is.EqualTo(0));
         }
 
         [Test]
@@ -1295,7 +1304,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 
-            Assert.AreEqual(0, result);
+            Assert.That(result, Is.EqualTo(0));
         }
 
         [Test]
@@ -1319,7 +1328,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Setup(mc => mc.GetDateTimeNow()).Returns(actualDate);
             var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]

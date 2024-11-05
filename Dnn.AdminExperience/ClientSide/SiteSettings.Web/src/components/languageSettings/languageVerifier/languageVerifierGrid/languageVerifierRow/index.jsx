@@ -46,7 +46,8 @@ LanguageVerifierRow.propTypes = {
     OpenCollapse: PropTypes.func,
     Collapse: PropTypes.func,
     id: PropTypes.string,
-    openId: PropTypes.string
+    openId: PropTypes.string,
+    children: PropTypes.node
 };
 
 LanguageVerifierRow.defaultProps = {

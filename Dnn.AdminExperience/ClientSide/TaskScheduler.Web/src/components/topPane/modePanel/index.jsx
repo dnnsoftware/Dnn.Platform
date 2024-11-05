@@ -156,7 +156,8 @@ ModePanel.propTypes = {
     schedulerMode: PropTypes.string.isRequired,
     schedulerDelay: PropTypes.number.isRequired,
     schedulerModeOptions: PropTypes.array.isRequired,
-    clientModified: PropTypes.bool
+    clientModified: PropTypes.bool,
+    dispatch: PropTypes.func
 };
 
 function mapStateToProps(state) {
