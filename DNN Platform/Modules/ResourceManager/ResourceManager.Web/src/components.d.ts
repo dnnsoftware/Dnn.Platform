@@ -7,6 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { GetFolderContentResponse, Item } from "./services/ItemsClient";
 import { FolderTreeItem } from "./services/InternalServicesClient";
+export { GetFolderContentResponse, Item } from "./services/ItemsClient";
+export { FolderTreeItem } from "./services/InternalServicesClient";
 export namespace Components {
     interface DnnActionCopyUrl {
         "items": Item[];
@@ -267,7 +269,18 @@ declare global {
         prototype: HTMLDnnActionUnlinkItemsElement;
         new (): HTMLDnnActionUnlinkItemsElement;
     };
+    interface HTMLDnnActionUploadFileElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnActionUploadFileElement extends Components.DnnActionUploadFile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnActionUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnActionUploadFileElement, ev: DnnActionUploadFileCustomEvent<HTMLDnnActionUploadFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnActionUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnActionUploadFileElement, ev: DnnActionUploadFileCustomEvent<HTMLDnnActionUploadFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnActionUploadFileElement: {
         prototype: HTMLDnnActionUploadFileElement;
@@ -285,25 +298,69 @@ declare global {
         prototype: HTMLDnnRmActionsBarElement;
         new (): HTMLDnnRmActionsBarElement;
     };
+    interface HTMLDnnRmCreateFolderElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmCreateFolderElement extends Components.DnnRmCreateFolder, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmCreateFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmCreateFolderElement, ev: DnnRmCreateFolderCustomEvent<HTMLDnnRmCreateFolderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmCreateFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmCreateFolderElement, ev: DnnRmCreateFolderCustomEvent<HTMLDnnRmCreateFolderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmCreateFolderElement: {
         prototype: HTMLDnnRmCreateFolderElement;
         new (): HTMLDnnRmCreateFolderElement;
     };
+    interface HTMLDnnRmDeleteItemsElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmDeleteItemsElement extends Components.DnnRmDeleteItems, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmDeleteItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmDeleteItemsElement, ev: DnnRmDeleteItemsCustomEvent<HTMLDnnRmDeleteItemsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmDeleteItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmDeleteItemsElement, ev: DnnRmDeleteItemsCustomEvent<HTMLDnnRmDeleteItemsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmDeleteItemsElement: {
         prototype: HTMLDnnRmDeleteItemsElement;
         new (): HTMLDnnRmDeleteItemsElement;
     };
+    interface HTMLDnnRmEditFileElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmEditFileElement extends Components.DnnRmEditFile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmEditFileElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFileElement, ev: DnnRmEditFileCustomEvent<HTMLDnnRmEditFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmEditFileElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFileElement, ev: DnnRmEditFileCustomEvent<HTMLDnnRmEditFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmEditFileElement: {
         prototype: HTMLDnnRmEditFileElement;
         new (): HTMLDnnRmEditFileElement;
     };
+    interface HTMLDnnRmEditFolderElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmEditFolderElement extends Components.DnnRmEditFolder, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmEditFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFolderElement, ev: DnnRmEditFolderCustomEvent<HTMLDnnRmEditFolderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmEditFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFolderElement, ev: DnnRmEditFolderCustomEvent<HTMLDnnRmEditFolderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmEditFolderElement: {
         prototype: HTMLDnnRmEditFolderElement;
@@ -327,13 +384,37 @@ declare global {
         prototype: HTMLDnnRmFolderContextMenuElement;
         new (): HTMLDnnRmFolderContextMenuElement;
     };
+    interface HTMLDnnRmFolderListElementEventMap {
+        "dnnRmFolderListFolderPicked": FolderTreeItem;
+        "dnnRmcontextMenuOpened": number;
+    }
     interface HTMLDnnRmFolderListElement extends Components.DnnRmFolderList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmFolderListElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListElement, ev: DnnRmFolderListCustomEvent<HTMLDnnRmFolderListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmFolderListElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListElement, ev: DnnRmFolderListCustomEvent<HTMLDnnRmFolderListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmFolderListElement: {
         prototype: HTMLDnnRmFolderListElement;
         new (): HTMLDnnRmFolderListElement;
     };
+    interface HTMLDnnRmFolderListItemElementEventMap {
+        "dnnRmcontextMenuOpened": number;
+        "dnnRmFolderListItemClicked": FolderTreeItem;
+    }
     interface HTMLDnnRmFolderListItemElement extends Components.DnnRmFolderListItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmFolderListItemElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListItemElement, ev: DnnRmFolderListItemCustomEvent<HTMLDnnRmFolderListItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmFolderListItemElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListItemElement, ev: DnnRmFolderListItemCustomEvent<HTMLDnnRmFolderListItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmFolderListItemElement: {
         prototype: HTMLDnnRmFolderListItemElement;
@@ -345,13 +426,37 @@ declare global {
         prototype: HTMLDnnRmFolderMappingsElement;
         new (): HTMLDnnRmFolderMappingsElement;
     };
+    interface HTMLDnnRmItemsCardviewElementEventMap {
+        "dnnRmFolderDoubleClicked": number;
+        "dnnRmFileDoubleClicked": string;
+    }
     interface HTMLDnnRmItemsCardviewElement extends Components.DnnRmItemsCardview, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmItemsCardviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsCardviewElement, ev: DnnRmItemsCardviewCustomEvent<HTMLDnnRmItemsCardviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmItemsCardviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsCardviewElement, ev: DnnRmItemsCardviewCustomEvent<HTMLDnnRmItemsCardviewElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmItemsCardviewElement: {
         prototype: HTMLDnnRmItemsCardviewElement;
         new (): HTMLDnnRmItemsCardviewElement;
     };
+    interface HTMLDnnRmItemsListviewElementEventMap {
+        "dnnRmFolderDoubleClicked": number;
+        "dnnRmFileDoubleClicked": string;
+    }
     interface HTMLDnnRmItemsListviewElement extends Components.DnnRmItemsListview, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmItemsListviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsListviewElement, ev: DnnRmItemsListviewCustomEvent<HTMLDnnRmItemsListviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmItemsListviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsListviewElement, ev: DnnRmItemsListviewCustomEvent<HTMLDnnRmItemsListviewElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmItemsListviewElement: {
         prototype: HTMLDnnRmItemsListviewElement;
@@ -363,7 +468,18 @@ declare global {
         prototype: HTMLDnnRmLeftPaneElement;
         new (): HTMLDnnRmLeftPaneElement;
     };
+    interface HTMLDnnRmMoveItemsElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmMoveItemsElement extends Components.DnnRmMoveItems, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmMoveItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmMoveItemsElement, ev: DnnRmMoveItemsCustomEvent<HTMLDnnRmMoveItemsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmMoveItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmMoveItemsElement, ev: DnnRmMoveItemsCustomEvent<HTMLDnnRmMoveItemsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmMoveItemsElement: {
         prototype: HTMLDnnRmMoveItemsElement;
@@ -399,13 +515,35 @@ declare global {
         prototype: HTMLDnnRmTopBarElement;
         new (): HTMLDnnRmTopBarElement;
     };
+    interface HTMLDnnRmUnlinkItemsElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmUnlinkItemsElement extends Components.DnnRmUnlinkItems, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmUnlinkItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmUnlinkItemsElement, ev: DnnRmUnlinkItemsCustomEvent<HTMLDnnRmUnlinkItemsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmUnlinkItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmUnlinkItemsElement, ev: DnnRmUnlinkItemsCustomEvent<HTMLDnnRmUnlinkItemsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmUnlinkItemsElement: {
         prototype: HTMLDnnRmUnlinkItemsElement;
         new (): HTMLDnnRmUnlinkItemsElement;
     };
+    interface HTMLDnnRmUploadFileElementEventMap {
+        "dnnRmFoldersChanged": void;
+    }
     interface HTMLDnnRmUploadFileElement extends Components.DnnRmUploadFile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnRmUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnRmUploadFileElement, ev: DnnRmUploadFileCustomEvent<HTMLDnnRmUploadFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnRmUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnRmUploadFileElement, ev: DnnRmUploadFileCustomEvent<HTMLDnnRmUploadFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDnnRmUploadFileElement: {
         prototype: HTMLDnnRmUploadFileElement;

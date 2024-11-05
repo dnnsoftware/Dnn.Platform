@@ -248,7 +248,7 @@ export class DnnRmEditFolder {
             <div class="general">
               <div class="left">
                 {this.folderIconUrl &&
-                  <img src={this.folderIconUrl} />
+                  <img src={this.folderIconUrl} alt={this.folderDetails?.folderName} />
                 }
                 {this.folderDetails &&
                   <div class="form">
@@ -271,8 +271,9 @@ export class DnnRmEditFolder {
               </div>
               <div class="right">
                 <div class="form">
-                  <label>{state.localization?.Name}</label>
-                  <input type="text"
+                  <dnn-input
+                    label={state.localization?.Name}
+                    type="text"
                     value={this.folderDetails?.folderName}
                     onInput={e =>
                       this.folderDetails = {
@@ -300,14 +301,14 @@ export class DnnRmEditFolder {
         </dnn-tabs>
         <div class="controls">
           <dnn-button
-            type="primary"
+            appearance="primary"
             reversed
             onClick={() => this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
-            type="primary"
+            appearance="primary"
             onClick={() => this.handleSave()}
           >
             {state.localization.Save}
