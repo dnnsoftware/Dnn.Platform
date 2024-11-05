@@ -69,7 +69,7 @@
     "dayjs": "^1.11.9",
     "promise": "^8.3.0",
     "prop-types": "^15.8.1",
-    "react": "^16.14.0",
+    "react": "^18.3.1",
     "react-day-picker": "^7.4.10",
     "url-parse": "^1.5.10"
   }
