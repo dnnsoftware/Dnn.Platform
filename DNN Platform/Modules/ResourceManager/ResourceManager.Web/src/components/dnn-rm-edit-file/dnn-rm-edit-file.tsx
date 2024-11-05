@@ -65,7 +65,7 @@ export class DnnRmEditFile {
             <div class="general">
               <div class="left">
                 {this.fileDetails && this.fileDetails.iconUrl &&
-                  <img src={this.fileDetails.iconUrl} />
+                  <img src={this.fileDetails.iconUrl} alt={this.fileDetails.fileName} />
                 }
                 {this.fileDetails &&
                   <div class="form">
@@ -88,35 +88,36 @@ export class DnnRmEditFile {
               </div>
               <div class="right">
                 <div class="form">
-                  <label>{state.localization?.Name}</label>
-                  <input type="text"
+                  <dnn-input
+                    label={state.localization?.Name}
+                    required
+                    type="text"
                     value={this.fileDetails?.fileName}
-                    onInput={e =>
+                    onValueInput={e =>
                       this.fileDetails = {
                         ...this.fileDetails,
-                        fileName: (e.target as HTMLInputElement).value,
+                        fileName: (e.detail as string),
                       }
                     }
                   />
-                  
-                  <label>{state.localization?.Title}</label>
-                  <input type="text"
+                  <dnn-input
+                    label={state.localization?.Title}
+                    type="text"
                     value={this.fileDetails?.title}
-                    onInput={e =>
+                    onValueInput={e =>
                       this.fileDetails = {
                         ...this.fileDetails,
-                        title: (e.target as HTMLInputElement).value.substring(0, 255),
+                        title: (e.detail as string).substring(0, 255),
                       }
                     }
                   />
-
-                  <label>{state.localization?.Description}</label>
-                  <textarea
+                  <dnn-textarea
+                    label={state.localization?.Description}
                     value={this.fileDetails?.description}
-                    onInput={e =>
+                    onValueInput={e =>
                       this.fileDetails = {
                         ...this.fileDetails,
-                        description: (e.target as HTMLTextAreaElement).value.substring(0, 499),
+                        description: (e.detail as string).substring(0, 499),
                       }
                     }
                   />
@@ -127,14 +128,14 @@ export class DnnRmEditFile {
         </dnn-tabs>
         <div class="controls">
           <dnn-button
-            type="primary"
+            appearance="primary"
             reversed
             onClick={() => this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
-            type="primary"
+            appearance="primary"
             onClick={() => this.handleSave()}
           >
             {state.localization.Save}
