@@ -1113,9 +1113,16 @@ namespace DotNetNuke.Security.Permissions.Controls
                 groupRoles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
             }
 
-            foreach (var role in groupRoles.OrderBy(r => r.RoleName))
+            var roleList = new SortedList<string, int>();
+
+            foreach (var role in groupRoles)
             {
-                this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
+                roleList[Localization.LocalizeRole(role.RoleName)] = role.RoleID;
+            }
+
+            foreach (var role in roleList)
+            {
+                this.cboSelectRole.Items.Add(new ListItem(role.Key, role.Value.ToString(CultureInfo.InvariantCulture)));
             }
 
             int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId };

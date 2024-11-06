@@ -796,7 +796,7 @@
     <value>EndJob</value>
   </data>
   <data name="AllUsers.Text" xml:space="preserve">
-    <value>All Users</value>
+    <value>Everyone</value>
   </data>
   <data name="Superuser.Text" xml:space="preserve">
     <value>SuperUser</value>
