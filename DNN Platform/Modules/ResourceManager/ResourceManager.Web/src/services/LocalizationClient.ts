@@ -50,11 +50,13 @@ export interface LocalizedStrings {
     AssetsPanelEmpty_Title: string;
     Cancel: string;
     Close: string;
+    CollapseFolders: string;
     Database: string;
     Delete: string;
     DeleteItems: string;
     Edit: string;
     EditFolderMappings: string;
+    ExpandFolders: string;
     ExtractUploads: string;
     FileAlreadyExistsMessage: string;
     FileId: string;
