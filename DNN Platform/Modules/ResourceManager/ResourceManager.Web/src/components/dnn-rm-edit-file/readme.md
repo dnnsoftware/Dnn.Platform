@@ -29,6 +29,8 @@
 
 - dnn-tabs
 - dnn-tab
+- dnn-input
+- dnn-textarea
 - dnn-button
 
 ### Graph
@@ -36,7 +38,11 @@
 graph TD;
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
+  dnn-rm-edit-file --> dnn-input
+  dnn-rm-edit-file --> dnn-textarea
   dnn-rm-edit-file --> dnn-button
+  dnn-input --> dnn-fieldset
+  dnn-textarea --> dnn-fieldset
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-action-edit-item --> dnn-rm-edit-file
