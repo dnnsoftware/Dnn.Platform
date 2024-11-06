@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -695,7 +695,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var defaultLanguage = toUser.Profile.PreferredLocale;
             var portalSettings = new PortalSettings(message.PortalID);
 
-            var emailSubjectTemplate = GetEmailSubjectTemplate(portalSettings, defaultLanguage);
             var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
             var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
 
@@ -709,7 +708,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
                 var senderAddress = GetSenderAddress(senderName, portalSettings.Email);
                 var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
-                var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
+                var subject = InternalMessagingController.Instance.GetMessage(message.MessageID).Subject;
                 var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
                 body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
 
