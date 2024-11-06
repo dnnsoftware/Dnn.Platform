@@ -100,7 +100,7 @@ export class DnnRmMoveItems {
         }
         <div class="controls">
           <dnn-button
-            type="primary"
+            appearance="primary"
             reversed
             disabled={this.moving}
             onClick={() => this.closeModal()}
@@ -108,7 +108,7 @@ export class DnnRmMoveItems {
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
-            type="primary"
+            appearance="primary"
             onConfirmed={() =>this.handleMove()}
             confirm
             confirmMessage={state.localization?.ConfirmMoveMessage}

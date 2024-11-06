@@ -26,7 +26,7 @@ export class DnnRmCreateFolder {
   }
 
   private readonly itemsClient: ItemsClient;
-  private nameField: HTMLInputElement;
+  private nameField: HTMLDnnInputElement;
 
   constructor(){
     this.itemsClient = new ItemsClient(state.moduleId);
@@ -60,17 +60,8 @@ export class DnnRmCreateFolder {
     });
   }
 
-  private handleTypeChanged(e: Event): void {
-    const select = e.target as HTMLSelectElement;
-    const option = select.options[select.selectedIndex] as HTMLOptionElement;
-    const newValue = Number.parseInt(option.value);
-    this.newFolderRequest = {
-      ...this.newFolderRequest,
-      FolderMappingId: newValue,
-    };
-  }
-
-  private handleSave(): void {
+  private handleSave(e: Event): void {
+    e.preventDefault();
     this.itemsClient.createNewFolder(this.newFolderRequest)
     .then(() => {
       this.dnnRmFoldersChanged.emit();
@@ -97,69 +88,70 @@ export class DnnRmCreateFolder {
     return (
       <Host>
         <h2>{state.localization.AddFolder}</h2>
-        <div class="form">
-          {state.currentItems.folder.folderName.length > 0 &&[
-            <label>{state.localization.FolderParent}</label>,
-            <span>{state.currentItems.folder.folderName}</span>
-          ]}
-          <label>{state.localization.Name}</label>
-          <input
-            type="text" required
-            ref={el => this.nameField = el}
-            value={this.newFolderRequest.FolderName}
-            onInput={e => this.newFolderRequest = {
-              ...this.newFolderRequest,
-              FolderName: (e.target as HTMLInputElement).value,
-            }}
-          />
-          {!this.newFolderRequest.FolderName &&
-            <span>{state.localization.FolderNameRequiredMessage}</span>
-          }
-          {this.canChooseFolderProvider() &&
-            [
-              <label>{state.localization.Type}</label>,
-              <select onChange={e => this.handleTypeChanged(e)}>
-                {this.folderMappings?.map((folderMapping, index) => 
-                  <option
-                    value={folderMapping.FolderMappingID}
-                    selected={index == 0}>
-                    {folderMapping.MappingName}
-                  </option>
-                )}
-              </select>
-            ]
-          }
-          {this.canChooseFolderProvider() && this.folderMappings.find(m => m.FolderMappingID == this.newFolderRequest.FolderMappingId).IsDefault == false &&[
-            <label>{state.localization.MappedPath}</label>,
-            <input 
+        <form
+          onSubmit={e => this.handleSave(e)}
+        >
+          <div class="form">
+            {state.currentItems.folder.folderName.length > 0 &&[
+              <label>{state.localization.FolderParent}</label>,
+              <span>{state.currentItems.folder.folderName}</span>
+            ]}
+            <dnn-input
               type="text"
-              value={this.newFolderRequest.MappedName}
+              label={state.localization.Name}
+              required
+              ref={el => this.nameField = el}
+              value={this.newFolderRequest.FolderName}
               onInput={e => this.newFolderRequest = {
                 ...this.newFolderRequest,
-                MappedName: (e.target as HTMLInputElement).value,
+                FolderName: (e.target as HTMLInputElement).value,
               }}
             />
-          ]}
-        </div>
-        <div class="controls">
-          <dnn-button
-            type="primary"
-            reversed
-            onClick={() => this.handleCancel()}
-          >
-            {state.localization.Cancel}
-          </dnn-button>
-          <dnn-button
-            type="primary"
-            disabled={
-              this.newFolderRequest.FolderMappingId < 0 ||
-              this.newFolderRequest.FolderName.length < 1
+            {this.canChooseFolderProvider() &&
+              [
+                <label>{state.localization.Type}</label>,
+                <dnn-select onValueChange={e => this.newFolderRequest = {
+                  ...this.newFolderRequest,
+                  FolderMappingId: Number.parseInt(e.detail),
+                }}>
+                  {this.folderMappings?.map((folderMapping, index) => 
+                    <option
+                      value={folderMapping.FolderMappingID}
+                      selected={index == 0}>
+                      {folderMapping.MappingName}
+                    </option>
+                  )}
+                </dnn-select>
+              ]
             }
-            onClick={() => this.handleSave()}
-          >
-            {state.localization.Save}
-          </dnn-button>
-        </div>
+            {this.canChooseFolderProvider() && this.folderMappings.find(m => m.FolderMappingID == this.newFolderRequest.FolderMappingId).IsDefault == false &&[
+              <dnn-input 
+              type="text"
+                label={state.localization.MappedPath}
+                value={this.newFolderRequest.MappedName}
+                onInput={e => this.newFolderRequest = {
+                  ...this.newFolderRequest,
+                  MappedName: (e.target as HTMLInputElement).value,
+                }}
+              />
+            ]}
+          </div>
+          <div class="controls">
+            <dnn-button
+              appearance="primary"
+              reversed
+              onClick={() => this.handleCancel()}
+            >
+              {state.localization.Cancel}
+            </dnn-button>
+            <dnn-button
+              appearance="primary"
+              formButtonType="submit"
+            >
+              {state.localization.Save}
+            </dnn-button>
+          </div>
+        </form>
       </Host>
     );
   }

@@ -1,5 +1,6 @@
 :host {
   display: block;
+  margin: 0.25rem;
 }
 .general{
   display: flex;
@@ -17,9 +18,8 @@
 }
 
 .form{
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
   label{
     font-weight: bold;
     text-align: right;
