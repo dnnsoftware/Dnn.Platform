@@ -18,6 +18,7 @@ function ensureEmptyDirectory(dirPath: string): void {
     if (!fs.existsSync(dirPath)) {
         // Directory does not exist, create it
         fs.mkdirSync(dirPath, { recursive: true });
+        return;
     }
 
     // Directory exists, empty it
@@ -29,7 +30,7 @@ function ensureEmptyDirectory(dirPath: string): void {
             // Recursive call for directories
             ensureEmptyDirectory(currentPath);
             // After emptying the subdirectory, remove it
-            fs.rmdirSync(currentPath);
+            deleteDirectoryWithRetry(currentPath);
         } else {
             // Delete file
             fs.unlinkSync(currentPath);
@@ -46,6 +47,18 @@ function copyFileToPath(src: string, dest: string): void {
 
     // Now that we know the directory exists, copy the file
     fs.copyFileSync(src, dest);
+}
+
+function deleteDirectoryWithRetry(path: string, retries = 5, delay = 1000) {
+    try {
+        fs.rmSync(path, { recursive: true, force: true });
+    } catch (err: any) {
+        if (retries > 0 && err.code === 'EBUSY') {
+            setTimeout(() => deleteDirectoryWithRetry(path, retries - 1, delay), delay);
+        } else {
+            throw err; // Rethrow the error if retries are exhausted or it's another error
+        }
+    }
 }
 
 const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
@@ -83,7 +96,7 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
             let zip = new Zip();
             zip.addFolder(`${stagingDir}/skinResources`);
             await zip.archive(`${stagingDir}/skin.zip`)
-            fs.rmSync(`${stagingDir}/skinResources`, { recursive: true, force: true });
+            deleteDirectoryWithRetry(`${stagingDir}/skinResources`);
 
             // Container resources
             var containerResources = await glob(
@@ -100,7 +113,7 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
             zip = new Zip();
             zip.addFolder(`${stagingDir}/containerResources`);
             await zip.archive(`${stagingDir}/container.zip`);
-            fs.rmSync(`${stagingDir}/containerResources`, { recursive: true, force: true });
+            deleteDirectoryWithRetry(`${stagingDir}/containerResources`);
 
             // Root files
             var rootResources = await glob(
@@ -124,14 +137,14 @@ const dnnPackage: RollupPluginDnnPackage = (dnnPackageOptions) =>
             var packageName = `${dnnPackageOptions.name}_${dnnPackageOptions.version}_install.zip`;
             var packagePath = `${artifactsDir}/${packageName}`;
             await zip.archive(packagePath);
-            fs.rmSync(stagingDir, { recursive: true, force: true });
+            deleteDirectoryWithRetry(stagingDir);
 
             var skinInstallPath = `${path.resolve(dnnPackageOptions.destinationDirectory)}`;
             console.log(`Copying ${packageName} to ${skinInstallPath}`);
             fs.copyFileSync(
                 packagePath,
                 `${skinInstallPath}/${packageName}`);
-            fs.rmSync(artifactsDir, { recursive: true, force: true });
+            deleteDirectoryWithRetry(artifactsDir);
         },
     };
 }
