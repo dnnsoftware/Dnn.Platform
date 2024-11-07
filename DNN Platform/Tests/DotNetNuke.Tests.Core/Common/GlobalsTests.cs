@@ -34,7 +34,7 @@ public class GlobalsTests
     [Test]
     public void FormatVersion_WhenTwoDigitVersion_DisplaysThreePartsWithLeadingZeroes_InABrokenWay()
     {
-        Assert.That(Globals.FormatVersion(new Version("4.8")), Is.EqualTo("04.00.-01"));
+        Assert.That(Globals.FormatVersion(new Version("4.8")), Is.EqualTo("04.08.-01"));
     }
 
     [Test]
