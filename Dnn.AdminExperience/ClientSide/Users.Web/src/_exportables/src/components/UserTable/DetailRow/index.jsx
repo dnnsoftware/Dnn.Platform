@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import {formatDate, sort} from "../../../helpers";
 import UserMenu from "../UserMenu";
 import Localization from "localization";
@@ -220,7 +220,9 @@ DetailsRow.propTypes = {
     userMenuAction: PropTypes.func,
     appSettings: PropTypes.object,
     columnSizes: PropTypes.array,
-    filter: PropTypes.number
+    filter: PropTypes.number,
+    addIsOpened: PropTypes.string,
+    children: PropTypes.node
 };
 
 DetailsRow.defaultProps = {

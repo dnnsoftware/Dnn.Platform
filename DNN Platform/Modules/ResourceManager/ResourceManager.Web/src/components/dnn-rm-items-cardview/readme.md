@@ -16,6 +16,7 @@
 
 | Event                      | Description                                                                         | Type                  |
 | -------------------------- | ----------------------------------------------------------------------------------- | --------------------- |
+| `dnnRmFileDoubleClicked`   | Fires when a file is double-clicked and emits the file ID into the event.detail     | `CustomEvent<string>` |
 | `dnnRmFolderDoubleClicked` | Fires when a folder is double-clicked and emits the folder ID into the event.detail | `CustomEvent<number>` |
 
 
@@ -44,7 +45,11 @@ graph TD;
   dnn-rm-folder-context-menu --> dnn-action-unlink-items
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
+  dnn-rm-create-folder --> dnn-input
+  dnn-rm-create-folder --> dnn-select
   dnn-rm-create-folder --> dnn-button
+  dnn-input --> dnn-fieldset
+  dnn-select --> dnn-fieldset
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-action-edit-item --> dnn-modal
@@ -52,6 +57,7 @@ graph TD;
   dnn-action-edit-item --> dnn-rm-edit-file
   dnn-rm-edit-folder --> dnn-tabs
   dnn-rm-edit-folder --> dnn-tab
+  dnn-rm-edit-folder --> dnn-input
   dnn-rm-edit-folder --> dnn-permissions-grid
   dnn-rm-edit-folder --> dnn-button
   dnn-permissions-grid --> dnn-checkbox
@@ -60,7 +66,10 @@ graph TD;
   dnn-permissions-grid --> dnn-collapsible
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
+  dnn-rm-edit-file --> dnn-input
+  dnn-rm-edit-file --> dnn-textarea
   dnn-rm-edit-file --> dnn-button
+  dnn-textarea --> dnn-fieldset
   dnn-action-move-items --> dnn-modal
   dnn-action-move-items --> dnn-rm-move-items
   dnn-rm-move-items --> dnn-rm-folder-list
@@ -85,6 +94,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-delete-items
+  dnn-rm-file-context-menu --> dnn-action-open-file
   dnn-rm-file-context-menu --> dnn-action-download-item
   dnn-rm-file-context-menu --> dnn-action-copy-url
   dnn-rm-files-pane --> dnn-rm-items-cardview

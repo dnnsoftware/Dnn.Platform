@@ -9,7 +9,7 @@ import ThemeSelector from "./ThemeSelector/ThemeSelector";
 import LayoutSelector from "./LayoutSelector/LayoutSelector";
 import ContainerSelector from "./ContainerSelector/ContainerSelector";
 import ThemeActions from "../../actions/themeActions";
-import style from "./style.less";
+import style from "./style.module.less";
 
 class Appearance extends Component {
 

@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Admin.Users
             get
             {
                 object setting = GetSetting(this.PortalId, "Profile_ManageServices");
-                return Convert.ToBoolean(setting) && !(this.IsEdit || this.User.IsSuperUser);
+                return Convert.ToBoolean(setting) && !(this.IsEdit || this.UserInfo.IsSuperUser);
             }
         }
 
@@ -174,22 +174,22 @@ namespace DotNetNuke.Modules.Admin.Users
             // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
             this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlMembership.UserId = this.UserId;
+            this.ctlMembership.UserId = this.UserInfo.UserID;
 
             // Set the Password Control Properties
             this.ctlPassword.ID = "Password";
             this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlPassword.UserId = this.UserId;
+            this.ctlPassword.UserId = this.UserInfo.UserID;
 
             // Set the Profile Control Properties
             this.ctlProfile.ID = "Profile";
             this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlProfile.UserId = this.UserId;
+            this.ctlProfile.UserId = this.UserInfo.UserID;
 
             // Set the Services Control Properties
             this.ctlServices.ID = "MemberServices";
             this.ctlServices.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlServices.UserId = this.UserId;
+            this.ctlServices.UserId = this.UserInfo.UserID;
 
             // Define DisplayName filed Enabled Property:
             object setting = GetSetting(this.UserPortalID, "Security_DisplayNameFormat");
@@ -220,9 +220,9 @@ namespace DotNetNuke.Modules.Admin.Users
         // ReSharper disable once InconsistentNaming
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
-            UserInfo user = this.User;
+            UserInfo user = this.UserInfo;
             var success = false;
-            if (this.PortalSettings.DataConsentActive && user.UserID == this.UserInfo.UserID)
+            if (this.PortalSettings.DataConsentActive)
             {
                 switch (this.PortalSettings.DataConsentUserDeleteAction)
                 {
@@ -264,16 +264,16 @@ namespace DotNetNuke.Modules.Admin.Users
         // ReSharper disable once InconsistentNaming
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
-            if (this.userForm.IsValid && (this.User != null))
+            if (this.userForm.IsValid && (this.UserInfo != null))
             {
-                if (this.User.UserID == this.PortalSettings.AdministratorId)
+                if (this.UserInfo.UserID == this.PortalSettings.AdministratorId)
                 {
                     // Clear the Portal Cache
                     DataCache.ClearPortalCache(this.UserPortalID, true);
                 }
                 else
                 {
-                    DataCache.ClearUserCache(this.PortalId, this.User.Username);
+                    DataCache.ClearUserCache(this.PortalId, this.UserInfo.Username);
                 }
 
                 try
@@ -284,34 +284,34 @@ namespace DotNetNuke.Modules.Admin.Users
                     // DNN-5874 Check if unique display name is required
                     if (this.PortalSettings.Registration.RequireUniqueDisplayName)
                     {
-                        var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
-                        if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
+                        var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.UserInfo.DisplayName);
+                        if (usersWithSameDisplayName.Any(user => user.UserID != this.UserInfo.UserID))
                         {
                             throw new Exception("Display Name must be unique");
                         }
                     }
 
-                    var prevUserEmail = UserController.Instance.GetUserById(this.PortalId, this.UserId)?.Email;
+                    var prevUserEmail = UserController.Instance.GetUserById(this.PortalId, this.UserInfo.UserID)?.Email;
 
-                    if (!string.IsNullOrWhiteSpace(prevUserEmail) && !prevUserEmail.Equals(this.User.Email, StringComparison.OrdinalIgnoreCase))
+                    if (!string.IsNullOrWhiteSpace(prevUserEmail) && !prevUserEmail.Equals(this.UserInfo.Email, StringComparison.OrdinalIgnoreCase))
                     {
                         // on email address change need to invalidate existing 'reset password' link
-                        this.User.PasswordResetExpiration = Null.NullDate;
+                        this.UserInfo.PasswordResetExpiration = Null.NullDate;
                     }
 
-                    UserController.UpdateUser(this.UserPortalID, this.User);
+                    UserController.UpdateUser(this.UserPortalID, this.UserInfo);
 
                     // make sure username matches possibly changed email address
                     if (this.PortalSettings.Registration.UseEmailAsUserName)
                     {
-                        if (this.User.Username.ToLower() != this.User.Email.ToLower())
+                        if (this.UserInfo.Username.ToLower() != this.UserInfo.Email.ToLower())
                         {
-                            UserController.ChangeUsername(this.User.UserID, this.User.Email);
+                            UserController.ChangeUsername(this.UserInfo.UserID, this.UserInfo.Email);
 
                             // after username changed, should redirect to login page to let user authenticate again.
                             var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(this.Request.RawUrl), false);
                             var spliter = loginUrl.Contains("?") ? "&" : "?";
-                            loginUrl = $"{loginUrl}{spliter}username={this.User.Email}&usernameChanged=true";
+                            loginUrl = $"{loginUrl}{spliter}username={this.UserInfo.Email}&usernameChanged=true";
                             this.Response.Redirect(loginUrl, true);
                         }
                     }
@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void BindData()
         {
-            if (this.User != null)
+            if (this.UserInfo != null)
             {
                 // If trying to add a SuperUser - check that user is a SuperUser
                 if (this.VerifyUserPermissions() == false)
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
 
-                this.userForm.DataSource = this.User;
+                this.userForm.DataSource = this.UserInfo;
 
                 // hide username field in UseEmailAsUserName mode
                 bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.userForm.DataBind();
                 }
 
-                this.ctlPassword.User = this.User;
+                this.ctlPassword.User = this.UserInfo;
                 this.ctlPassword.DataBind();
 
                 if (!this.DisplayServices)
@@ -378,27 +378,27 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-                    this.ctlServices.User = this.User;
+                    this.ctlServices.User = this.UserInfo;
                     this.ctlServices.DataBind();
                 }
 
                 this.BindUser();
-                this.ctlProfile.User = this.User;
+                this.ctlProfile.User = this.UserInfo;
                 this.ctlProfile.DataBind();
 
                 this.dnnServicesDetails.Visible = this.DisplayServices;
 
                 var urlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(this.PortalSettings.PortalId);
-                var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !this.User.IsSuperUser;
+                var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !this.UserInfo.IsSuperUser;
                 if (showVanityUrl)
                 {
                     this.VanityUrlRow.Visible = true;
-                    if (string.IsNullOrEmpty(this.User.VanityUrl))
+                    if (string.IsNullOrEmpty(this.UserInfo.VanityUrl))
                     {
                         // Clean Display Name
                         bool modified;
                         var options = UrlRewriterUtils.GetOptionsFromSettings(urlSettings);
-                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.User.DisplayName, options, out modified);
+                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.UserInfo.DisplayName, options, out modified);
                         var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified).ToLowerInvariant();
 
                         this.VanityUrlAlias.Text = string.Format("{0}/{1}/", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix);
@@ -407,7 +407,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     else
                     {
-                        this.VanityUrl.Text = string.Format("{0}/{1}/{2}", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, this.User.VanityUrl);
+                        this.VanityUrl.Text = string.Format("{0}/{1}/{2}", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, this.UserInfo.VanityUrl);
                         this.ShowVanityUrl = false;
                     }
                 }
@@ -429,7 +429,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             // Check if User is a member of the Current Portal (or a member of the MasterPortal if PortalGroups enabled)
-            if (this.User.PortalID != Null.NullInteger && this.User.PortalID != this.PortalId)
+            if (this.UserInfo.PortalID != Null.NullInteger && this.UserInfo.PortalID != this.PortalId)
             {
                 this.AddModuleMessage("InvalidUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
                 this.DisableForm();
@@ -437,7 +437,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             // Check if User is a SuperUser and that the current User is a SuperUser
-            if (this.User.IsSuperUser && !this.UserInfo.IsSuperUser)
+            if (this.UserInfo.IsSuperUser && !this.UserInfo.IsSuperUser)
             {
                 this.AddModuleMessage("NoUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
                 this.DisableForm();
@@ -447,7 +447,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (this.IsEdit)
             {
                 // Check if user has admin rights
-                if (!this.IsAdmin || (this.User.IsInRole(this.PortalSettings.AdministratorRoleName) && !PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName)))
+                if (!this.IsAdmin || (this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName) && !PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName)))
                 {
                     this.AddModuleMessage("NotAuthorized", ModuleMessage.ModuleMessageType.YellowWarning, true);
                     this.DisableForm();
@@ -468,7 +468,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     else
                     {
-                        if (this.User.UserID > Null.NullInteger)
+                        if (this.UserInfo.UserID > Null.NullInteger)
                         {
                             this.AddModuleMessage("NotAuthorized", ModuleMessage.ModuleMessageType.YellowWarning, true);
                             this.DisableForm();
@@ -483,7 +483,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void BindMembership()
         {
-            this.ctlMembership.User = this.User;
+            this.ctlMembership.User = this.UserInfo;
             this.ctlMembership.DataBind();
             this.AddModuleMessage("UserLockedOut", ModuleMessage.ModuleMessageType.YellowWarning, this.ctlMembership.UserMembership.LockedOut && (!this.Page.IsPostBack));
         }
@@ -507,18 +507,13 @@ namespace DotNetNuke.Modules.Admin.Users
             // Update DisplayName to conform to Format
             if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
             {
-                this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
+                this.UserInfo.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
             }
         }
 
         /// <summary>PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.</summary>
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
-            {
-                return;
-            }
-
             PasswordUpdateStatus status = e.UpdateStatus;
             if (status == PasswordUpdateStatus.Success)
             {
@@ -533,11 +528,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>PasswordUpdated runs when the Password has been updated or reset.</summary>
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
-            {
-                return;
-            }
-
             PasswordUpdateStatus status = e.UpdateStatus;
 
             if (status == PasswordUpdateStatus.Success)
@@ -546,16 +536,16 @@ namespace DotNetNuke.Modules.Admin.Users
                 try
                 {
                     var accessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
-                    if (accessingUser.UserID != this.User.UserID)
+                    if (accessingUser.UserID != this.UserInfo.UserID)
                     {
                         // The password was changed by someone else
-                        Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings);
+                        Mail.SendMail(this.UserInfo, MessageType.PasswordReminder, this.PortalSettings);
                     }
                     else
                     {
                         // The User changed his own password
-                        Mail.SendMail(this.User, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
-                        PortalSecurity.Instance.SignIn(this.User, false);
+                        Mail.SendMail(this.UserInfo, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
+                        PortalSecurity.Instance.SignIn(this.UserInfo, false);
                     }
 
                     this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -575,28 +565,20 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>ProfileUpdateCompleted runs when the Profile has been updated.</summary>
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
-            {
-                return;
-            }
+            // Notify the user that his/her profile was updated
+            Mail.SendMail(this.UserInfo, MessageType.ProfileUpdated, this.PortalSettings);
 
-            if (this.IsUser)
+            ProfilePropertyDefinition localeProperty = this.UserInfo.Profile.GetProperty("PreferredLocale");
+            if (localeProperty.IsDirty)
             {
-                // Notify the user that his/her profile was updated
-                Mail.SendMail(this.User, MessageType.ProfileUpdated, this.PortalSettings);
-
-                ProfilePropertyDefinition localeProperty = this.User.Profile.GetProperty("PreferredLocale");
-                if (localeProperty.IsDirty)
+                // store preferredlocale in cookie, if none specified set to portal default.
+                if (this.UserInfo.Profile.PreferredLocale == string.Empty)
                 {
-                    // store preferredlocale in cookie, if none specified set to portal default.
-                    if (this.User.Profile.PreferredLocale == string.Empty)
-                    {
-                        Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.User.PortalID));
-                    }
-                    else
-                    {
-                        Localization.SetLanguage(this.User.Profile.PreferredLocale);
-                    }
+                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.UserInfo.PortalID));
+                }
+                else
+                {
+                    Localization.SetLanguage(this.UserInfo.Profile.PreferredLocale);
                 }
             }
 

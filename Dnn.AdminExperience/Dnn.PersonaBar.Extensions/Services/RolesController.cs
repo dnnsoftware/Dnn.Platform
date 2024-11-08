@@ -37,7 +37,8 @@ namespace Dnn.PersonaBar.Roles.Services
             try
             {
                 int total;
-                var roles = Components.RolesController.Instance.GetRoles(this.PortalSettings, groupId, keyword, out total, startIndex, pageSize).Select(RoleDto.FromRoleInfo);
+                var roles = Components.RolesController.Instance.GetRoles(this.PortalSettings, groupId, keyword, out total, startIndex, pageSize)
+                    .Select(RoleDto.FromRoleInfo);
                 var loadMore = total > startIndex + pageSize;
                 var rsvpLink = Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)) + "/" + Globals.glbDefaultPage + "?portalid=" + this.PortalId;
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { roles, loadMore, rsvpLink });
@@ -257,7 +258,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 var totalRecords = users.Count;
                 var startIndex = pageIndex * pageSize;
                 var portal = PortalController.Instance.GetPortal(this.PortalId);
-                var pagedData = users.Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
+                var pagedData = users.OrderBy(x => x.FullName).Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
                 {
                     UserId = u.UserID,
                     RoleId = u.RoleID,

@@ -687,19 +687,19 @@ namespace DotNetNuke.Entities.Tabs
 
                 // remove unwanted elements
                 // ReSharper disable AssignNullToNotNullAttribute
-                tabNode.RemoveChild(tabNode.SelectSingleNode("tabid"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("moduleID"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("taborder"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("portalid"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("parentid"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("isdeleted"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("tabpath"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("haschildren"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("skindoctype"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("uniqueid"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("versionguid"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("defaultLanguageGuid"));
-                tabNode.RemoveChild(tabNode.SelectSingleNode("localizedVersionGuid"));
+                tabNode.RemoveChildNode("tabid");
+                tabNode.RemoveChildNode("moduleID");
+                tabNode.RemoveChildNode("taborder");
+                tabNode.RemoveChildNode("portalid");
+                tabNode.RemoveChildNode("parentid");
+                tabNode.RemoveChildNode("isdeleted");
+                tabNode.RemoveChildNode("tabpath");
+                tabNode.RemoveChildNode("haschildren");
+                tabNode.RemoveChildNode("skindoctype");
+                tabNode.RemoveChildNode("uniqueid");
+                tabNode.RemoveChildNode("versionguid");
+                tabNode.RemoveChildNode("defaultLanguageGuid");
+                tabNode.RemoveChildNode("localizedVersionGuid");
                 XmlNodeList xmlNodeList = tabNode.SelectNodes("tabpermissions/permission");
                 if (xmlNodeList != null && xmlNodeList.Count == 0)
                 {
@@ -731,13 +731,13 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     foreach (XmlNode nodePermission in xmlNodeList)
                     {
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("tabpermissionid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("permissionid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("tabid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("roleid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("userid"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("username"));
-                        nodePermission.RemoveChild(nodePermission.SelectSingleNode("displayname"));
+                        nodePermission.RemoveChildNode("tabpermissionid");
+                        nodePermission.RemoveChildNode("permissionid");
+                        nodePermission.RemoveChildNode("tabid");
+                        nodePermission.RemoveChildNode("roleid");
+                        nodePermission.RemoveChildNode("userid");
+                        nodePermission.RemoveChildNode("username");
+                        nodePermission.RemoveChildNode("displayname");
                     }
                 }
 

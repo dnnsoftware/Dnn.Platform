@@ -82,7 +82,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var localizedDate = TimeZoneInfo.ConvertTime(tabVersion.CreatedOnDate, DateUtilsTestable.GetDatabaseDateTimeOffset(), userTimeZone);
 
             // Assert
-            Assert.AreEqual(localizedDate, expectedDateTime);
+            Assert.That(expectedDateTime, Is.EqualTo(localizedDate));
         }
 
         private void SetupCBO()

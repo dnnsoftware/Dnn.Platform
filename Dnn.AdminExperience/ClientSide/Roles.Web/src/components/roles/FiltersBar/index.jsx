@@ -2,7 +2,7 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import "react-widgets/lib/less/react-widgets.less";
+import "react-widgets/styles.css";
 import "./style.less";
 import resx from "../../../resources";
 import { GridCell, SearchBox, Dropdown, IconButton }  from "@dnnsoftware/dnn-react-common";

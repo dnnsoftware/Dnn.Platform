@@ -58,8 +58,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var instance = provider.GetService(typeof(IScopedService));
 
             // Assert
-            Assert.NotNull(instance);
-            Assert.AreEqual(scope.ServiceProvider.GetRequiredService<IScopedService>(), instance);
+            Assert.That(instance, Is.Not.Null);
+            Assert.That(instance, Is.EqualTo(scope.ServiceProvider.GetRequiredService<IScopedService>()));
         }
 
         [Test]
@@ -77,8 +77,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var instance = provider.GetService(typeof(PageHandlerFactory));
 
             // Assert
-            Assert.NotNull(instance);
-            Assert.IsInstanceOf<PageHandlerFactory>(instance);
+            Assert.That(instance, Is.Not.Null);
+            Assert.That(instance, Is.InstanceOf<PageHandlerFactory>());
         }
 
         [Test]
@@ -97,9 +97,9 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var module = provider.GetService<TestModule<SingletonService>>();
 
             // Assert
-            Assert.NotNull(module);
-            Assert.AreEqual(module.ConstructorService, module.DependencyService);
-            Assert.AreEqual(module.ConstructorService, service);
+            Assert.That(module, Is.Not.Null);
+            Assert.That(module.DependencyService, Is.EqualTo(module.ConstructorService));
+            Assert.That(service, Is.EqualTo(module.ConstructorService));
         }
 
         [Test]
@@ -119,10 +119,13 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var module = provider.GetService<TestModule<IScopedService>>();
 
             // Assert
-            Assert.NotNull(module);
-            Assert.AreEqual(module.ConstructorService, module.DependencyService);
-            Assert.AreEqual(module.ConstructorService, serviceFromRequestScope);
-            Assert.AreNotEqual(module.ConstructorService, serviceFromGlobalScope);
+            Assert.Multiple(() =>
+            {
+                Assert.That(module, Is.Not.Null);
+                Assert.That(module.DependencyService, Is.EqualTo(module.ConstructorService));
+                Assert.That(serviceFromRequestScope, Is.EqualTo(module.ConstructorService));
+                Assert.That(serviceFromGlobalScope, Is.Not.EqualTo(module.ConstructorService));
+            });
         }
 
         private class ScopedService : IScopedService

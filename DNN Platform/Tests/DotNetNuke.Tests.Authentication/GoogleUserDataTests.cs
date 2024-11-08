@@ -29,9 +29,12 @@ namespace DotNetNuke.Tests.Authentication
             // Act
             UserData dukesUser = Json.Deserialize<GoogleUserData>(SampleUserJson);
 
-            // Assert
-            Assert.AreEqual("Frederick", dukesUser.FirstName, "Should correctly pull first name from given_name field, not by parsing name");
-            Assert.AreEqual("Franklin", dukesUser.LastName, "Should correctly pull first name from family_name field, not by parsing name");
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(dukesUser.FirstName, Is.EqualTo("Frederick"), "Should correctly pull first name from given_name field, not by parsing name");
+                Assert.That(dukesUser.LastName, Is.EqualTo("Franklin"), "Should correctly pull first name from family_name field, not by parsing name");
+            });
         }
 
         [Test]
@@ -41,7 +44,7 @@ namespace DotNetNuke.Tests.Authentication
             UserData dukesUser = Json.Deserialize<GoogleUserData>(SampleUserJson);
 
             // Assert
-            Assert.AreEqual("https://lh3.googleusercontent.com/-aii-uOqdr1M/AAAAAAAAAAI/AAAAAAAAADg/dNL75Dg7lbc/photo.jpg", dukesUser.ProfileImage);
+            Assert.That(dukesUser.ProfileImage, Is.EqualTo("https://lh3.googleusercontent.com/-aii-uOqdr1M/AAAAAAAAAAI/AAAAAAAAADg/dNL75Dg7lbc/photo.jpg"));
         }
     }
 }

@@ -54,8 +54,8 @@ namespace DotNetNuke.Tests.Web.Api
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
-            Assert.AreEqual(1, filters.Count);
-            Assert.IsInstanceOf<RequireHostAttribute>(filters.First().Instance);
+            Assert.That(filters, Has.Count.EqualTo(1));
+            Assert.That(filters.First().Instance, Is.InstanceOf<RequireHostAttribute>());
         }
 
         [Test]
@@ -78,8 +78,8 @@ namespace DotNetNuke.Tests.Web.Api
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
-            Assert.AreEqual(1, filters.Count);
-            Assert.IsInstanceOf<DnnAuthorizeAttribute>(filters.First().Instance);
+            Assert.That(filters, Has.Count.EqualTo(1));
+            Assert.That(filters.First().Instance, Is.InstanceOf<DnnAuthorizeAttribute>());
         }
 
         [Test]
@@ -102,8 +102,8 @@ namespace DotNetNuke.Tests.Web.Api
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
-            Assert.AreEqual(2, filters.Count);
-            Assert.IsInstanceOf<RequireHostAttribute>(filters.Last().Instance);
+            Assert.That(filters, Has.Count.EqualTo(2));
+            Assert.That(filters.Last().Instance, Is.InstanceOf<RequireHostAttribute>());
         }
     }
 }

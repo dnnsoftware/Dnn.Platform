@@ -233,7 +233,7 @@ define(['jquery', 'knockout',
                 restorePageHandler, removePageHandler, restoreModuleHandler, removeModuleHandler, emptyRecycleBinHandler,
                 restoreUserHandler, removeUserHandler, restoreSelectedUsersHandler, removeSelectedUsersHandler, userRestoreRevomeOperationsCallback,
                 Paginate, getDeletedPageList, getDeletedModuleList, getDeletedUserList,
-                getService, getViewModel, tabActivated;
+                getService, getViewModel, tabActivated, sortBy;
 
             /* Class properties */
             DnnPageRecycleBin.class = 'DnnPageRecycleBin';
@@ -671,7 +671,7 @@ define(['jquery', 'knockout',
 
             var TotalResults = {}
             var timeout = null;
-            var pageSize=15;
+            var pageSize=20;
 
             Paginate = function(API_METHOD, viewModelProp, elementId){
                 var element = $(elementId).jScrollPane();
@@ -697,7 +697,7 @@ define(['jquery', 'knockout',
 
                             TotalResults[viewModelProp].paginationRequestCount = TotalResults[viewModelProp].paginationRequestCount || 1;
 
-                            getService().get(API_METHOD, {pageIndex: TotalResults[viewModelProp].paginationRequestCount++, pageSize: pageSize }, function (data) {
+                            getService().get(API_METHOD, {pageIndex: TotalResults[viewModelProp].paginationRequestCount++, pageSize: pageSize, sortType: viewModel.sortType(), sortDirection: viewModel.sortDirection() }, function (data) {
 
                                 var results = data.Results;
                                 var conditional = TotalResults[viewModelProp].remainingPages-results.length > 0;
@@ -713,29 +713,29 @@ define(['jquery', 'knockout',
                                         var treeOfPages = getTreesOfPages(temp);
                                         treeOfPages.forEach(function(pageTemp) {
                                             viewModel[viewModelProp].push(pageTemp);
-                                         });
-                                    break;
+                                        });
+                                        break;
 
                                     case 'deletedusersList':
                                         results.forEach(function(tempUser){
                                             var user = new UserInfo(tempUser);
                                             viewModel[viewModelProp].push(user)
                                         });
-                                    break;
+                                        break;
 
                                     case 'deletedtemplatesList':
                                         results.forEach(function(tempTemplate){
                                             var template = new TemplateInfo(tempTemplate);
                                             viewModel[viewModelProp].push(template);
                                         });
-                                    break;
+                                        break;
 
                                     case 'deletedmodulesList':
                                         results.forEach(function(tempModule){
                                             var module = new ModuleInfo(tempModule);
                                             viewModel[viewModelProp].push(module);
                                         });
-                                    break;
+                                        break;
 
                                 }
                                 api.reinitialise();
@@ -772,7 +772,7 @@ define(['jquery', 'knockout',
                     viewModel.deletedpagesList.removeAll();
 
 
-                    getService().get('GetDeletedPageList', {pageIndex:0, pageSize:pageSize}, function (data) {
+                    getService().get('GetDeletedPageList', {pageIndex:0, pageSize:pageSize, sortType:viewModel.sortType(), sortDirection:viewModel.sortDirection() }, function (data) {
                         var results = data.Results;
                         var viewModelProp = "deletedpagesList";
                         TotalResults[viewModelProp]={};
@@ -807,7 +807,7 @@ define(['jquery', 'knockout',
                     viewModel.deletedmodulesList.removeAll();
 
 
-                    getService().get('GetDeletedModuleList', {pageIndex:0, pageSize:pageSize}, function (data) {
+                    getService().get('GetDeletedModuleList', {pageIndex:0, pageSize:pageSize, sortType:viewModel.sortType(), sortDirection:viewModel.sortDirection()}, function (data) {
                         var results = data.Results;
                         var viewModelPropName = 'deletedmodulesList';
 
@@ -841,7 +841,7 @@ define(['jquery', 'knockout',
                     viewModel.deletedUsersReady(false);
                     viewModel.deletedusersList.removeAll();
 
-                    getService().get('GetDeletedUserList', {pageIndex:0, pageSize:pageSize}, function (data) {
+                    getService().get('GetDeletedUserList', {pageIndex:0, pageSize:pageSize, sortType:viewModel.sortType(), sortDirection:viewModel.sortDirection()}, function (data) {
                         var results = data.Results;
                         var viewModelPropName = "deletedusersList";
                         TotalResults[viewModelPropName]={};
@@ -879,11 +879,30 @@ define(['jquery', 'knockout',
                 getViewModel().activeTab(activeTab);
             };
 
+            sortBy = function (section, type, direction) {
+                getViewModel().sortDirection(direction);
+                getViewModel().sortType(type);
+                switch (section) {
+                    case "pages":
+                        getDeletedPageList(false);
+                        break;
+                    case "modules":
+                        getDeletedModuleList(false);
+                        break;
+                    case "users":
+                        getDeletedUserList(false);
+                        break;
+                }
+            }
+
             getViewModel = function () {
                 if (!_viewModel) {
                     _viewModel = {
                         resx: _resx,
                         settings: _settings,
+
+                        sortType: ko.observable(""),
+                        sortDirection: ko.observable(""),
 
                         activeTab: ko.observable(0),
                         deletedPagesReady: ko.observable(false),
@@ -922,7 +941,10 @@ define(['jquery', 'knockout',
 
                         emptyRecycleBin: emptyRecycleBinHandler,
 
-                        tabActivated: tabActivated
+                        tabActivated: tabActivated,
+
+                        sortBy: sortBy
+
                     };
                     if (_settings.canViewPages && _settings.canManagePages) {
                         _viewModel.selectAllPages.subscribe(function (newValue) {
@@ -955,7 +977,7 @@ define(['jquery', 'knockout',
                 _options = $.extend({}, RECYCLE_BIN_DEFAULT_OPTIONS, _options);
                 var viewModel = getViewModel();
                 ko.applyBindings(viewModel, wrapper[0]);
-                 initPagination();
+                initPagination();
             };
 
             DnnPageRecycleBin.prototype.show = function () {

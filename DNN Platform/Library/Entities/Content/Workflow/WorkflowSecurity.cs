@@ -18,6 +18,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     {
         private const string ReviewPermissionKey = "REVIEW";
         private const string ReviewPermissionCode = "SYSTEM_CONTENTWORKFLOWSTATE";
+        private const string ContentManagers = "Content Managers";
         private readonly IUserController userController = UserController.Instance;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly IWorkflowStatePermissionsRepository statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             return user.IsSuperUser ||
                 PortalSecurity.IsInRoles(user, settings, settings.AdministratorRoleName) ||
+                PortalSecurity.IsInRoles(user, settings, ContentManagers) ||
                 PortalSecurity.IsInRoles(user, settings, PermissionController.BuildPermissions(permissions.ToList(), ReviewPermissionKey));
         }
 

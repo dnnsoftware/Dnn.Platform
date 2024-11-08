@@ -26,7 +26,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             var types = typeLocator.GetAllMatchingTypes(x => true).ToList();
 
-            CollectionAssert.AreEquivalent(new[] { typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests) }, types);
+            Assert.That(types, Is.EquivalentTo(new[] { typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests) }));
             assembly.Verify(x => x.GetTypes(), Times.Once());
             assemblyLocator.Verify(x => x.Assemblies, Times.Once());
         }

@@ -7,7 +7,7 @@ import { CommonVisiblePanelActions, CommonPortalListActions } from "actions";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import utilities from "utils";
 import * as dayjs from "dayjs";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class ListView extends Component {
     constructor() {
@@ -207,14 +207,15 @@ ListView.propTypes = {
     onPreviewPortal: PropTypes.func,
     sitesModule: PropTypes.string,
     culture: PropTypes.string,
-    siteImportExportModule: PropTypes.string
+    siteImportExportModule: PropTypes.string,
+    className: PropTypes.string
 };
 
 ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
     sitesModule: "Dnn.Sites",
     siteImportExportModule: "Dnn.SiteImportExport",
-    culture: "en-US"
+    culture: "en-US",
 };
 
 function mapStateToProps(state) {

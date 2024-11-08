@@ -1,5 +1,6 @@
 :host {
   display: block;
+  margin: 0.25rem;
 }
 .general{
   display: flex;
@@ -17,17 +18,8 @@
 }
 
 .form{
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  align-items: flex-end;
-  label{
-    font-weight: bold;
-    text-align: right;
-    margin-right: 0.5em;
-    &::after{
-      content: ':';
-    }
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 .controls{
@@ -35,4 +27,8 @@
   display: flex;
   justify-content: flex-end;
   gap: 1em;
+}
+
+dnn-permissions-grid{
+  padding: 1rem;
 }

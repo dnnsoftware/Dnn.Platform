@@ -122,7 +122,9 @@ SchedulerRow.propTypes = {
     id: PropTypes.string,
     openId: PropTypes.string,
     panelIndex: PropTypes.number,
-    settingsClientModified: PropTypes.bool
+    settingsClientModified: PropTypes.bool,
+    dispatch: PropTypes.func,
+    children: PropTypes.node
 };
 
 function mapStateToProps(state) {
@@ -133,7 +135,7 @@ function mapStateToProps(state) {
 }
 
 SchedulerRow.defaultProps = {
-    collapsed: true
+    collapsed: true,
 };
 
 export default connect(mapStateToProps)(SchedulerRow);

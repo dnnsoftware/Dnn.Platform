@@ -6,10 +6,9 @@ import {
 } from "../../actions";
 import ProfileProperties from "./profileProperties";
 import { InputGroup, SingleLineInputWithError, GridSystem, Switch, Dropdown, Label, Button } from "@dnnsoftware/dnn-react-common";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class ProfileSettingsPanelBody extends Component {
     constructor() {

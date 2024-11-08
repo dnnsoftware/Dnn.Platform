@@ -34,9 +34,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            // Assert
-            Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
-            StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Digest"));
+                Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Does.Contain("realm=\"DNNAPI\""));
+            });
         }
 
         [Test]
@@ -51,7 +54,7 @@ namespace DotNetNuke.Tests.Web.Api
             handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
-            CollectionAssert.IsEmpty(response.Headers.WwwAuthenticate);
+            Assert.That(response.Headers.WwwAuthenticate, Is.Empty);
         }
 
         [Test]
@@ -65,9 +68,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            // Assert
-            Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
-            StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Digest"));
+                Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Does.Contain("realm=\"DNNAPI\""));
+            });
         }
 
         [Test]
@@ -80,9 +86,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            // Assert
-            Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
-            StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Digest"));
+                Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Does.Contain("realm=\"DNNAPI\""));
+            });
         }
 
         // todo unit test actual authentication code

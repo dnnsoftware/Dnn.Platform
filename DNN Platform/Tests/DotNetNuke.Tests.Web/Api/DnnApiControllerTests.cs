@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result = controller.ActiveModule;
 
             // Assert
-            Assert.AreEqual(expectedModule, result);
+            Assert.That(result, Is.EqualTo(expectedModule));
             provider.Verify(x => x.TryFindModuleInfo(request, out expectedModule), Times.Once());
         }
 
@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Assert
             mockPortalController.Verify(x => x.GetCurrentPortalSettings(), Times.Once());
-            Assert.AreEqual(expectedPortalSettings, result);
+            Assert.That(result, Is.EqualTo(expectedPortalSettings));
         }
 
         internal class DnnApiControllerHelper : DnnApiController

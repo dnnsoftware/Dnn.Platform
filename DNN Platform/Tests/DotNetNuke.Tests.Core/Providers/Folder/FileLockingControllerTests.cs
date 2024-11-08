@@ -63,9 +63,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someReason;
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(someReason, "FileLockedOutOfPublishPeriodError");
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.True);
+                Assert.That(someReason, Is.EqualTo("FileLockedOutOfPublishPeriodError"));
+            });
         }
 
         [Test]
@@ -85,9 +88,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someReason;
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(someReason, "FileLockedRunningWorkflowError");
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result, Is.True);
+                Assert.That(someReason, Is.EqualTo("FileLockedRunningWorkflowError"));
+            });
         }
 
         [Test]
@@ -106,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -124,7 +130,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -142,7 +148,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -157,7 +163,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -175,7 +181,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -193,7 +199,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -210,7 +216,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -227,7 +233,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -241,7 +247,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
     }
 }

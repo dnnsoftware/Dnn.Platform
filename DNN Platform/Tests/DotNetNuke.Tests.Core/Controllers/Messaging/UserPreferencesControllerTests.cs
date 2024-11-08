@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
-            Assert.IsNull(userPreference);
+            Assert.That(userPreference, Is.Null);
         }
 
         [Test]
@@ -116,11 +116,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
-            Assert.IsNotNull(userPreference);
-            Assert.AreEqual(expectedUserPreference.MessagesEmailFrequency, userPreference.MessagesEmailFrequency);
-            Assert.AreEqual(expectedUserPreference.NotificationsEmailFrequency, userPreference.NotificationsEmailFrequency);
-            Assert.AreEqual(user.PortalID, userPreference.PortalId);
-            Assert.AreEqual(user.UserID, userPreference.UserId);
+            Assert.That(userPreference, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(userPreference.MessagesEmailFrequency, Is.EqualTo(expectedUserPreference.MessagesEmailFrequency));
+                Assert.That(userPreference.NotificationsEmailFrequency, Is.EqualTo(expectedUserPreference.NotificationsEmailFrequency));
+                Assert.That(userPreference.PortalId, Is.EqualTo(user.PortalID));
+                Assert.That(userPreference.UserId, Is.EqualTo(user.UserID));
+            });
         }
 
         private static UserInfo GetValidUser()

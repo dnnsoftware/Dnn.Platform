@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "./style.less";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 class ProviderEditor extends Component {
     constructor() {

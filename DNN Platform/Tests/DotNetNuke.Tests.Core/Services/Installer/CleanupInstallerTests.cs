@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             sut.Install();
 
             // assert
-            Assert.IsTrue(sut.Completed);
+            Assert.That(sut.Completed, Is.True);
             fileSystemUtilsMock.Verify(x => x.DeleteEmptyFoldersRecursive(It.IsAny<string>()), Times.Never);
         }
 
@@ -72,9 +72,9 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             sut.Install();
 
             // assert
-            Assert.IsTrue(sut.Completed);
+            Assert.That(sut.Completed, Is.True);
             fileSystemUtilsMock.Verify();
-            Assert.AreEqual(expectedPath, actualPath);
+            Assert.That(actualPath, Is.EqualTo(expectedPath));
         }
 
         private static IEnumerable<string> InvalidPathsTestCaseSource()

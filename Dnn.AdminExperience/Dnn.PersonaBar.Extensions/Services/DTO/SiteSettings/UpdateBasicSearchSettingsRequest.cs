@@ -11,6 +11,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public int MaxWordLength { get; set; }
 
+        public int MaxResultPerPage { get; set; }
+
         public bool AllowLeadingWildcard { get; set; }
 
         public string SearchCustomAnalyzer { get; set; }

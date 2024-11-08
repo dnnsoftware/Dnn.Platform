@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Localization from "../../localization";
 import { RadioButtons } from "@dnnsoftware/dnn-react-common";
 import utils from "../../utils";
@@ -106,6 +106,30 @@ class PageTypeSelector extends Component {
                             </span>
                             <span className="page-info-item-value">
                                 {page.tabId}
+                            </span>
+                        </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                                {Localization.get("PublishStatus") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.publishStatus}
+                            </span>
+                        </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                                {Localization.get("Versioning") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.enabledVersioning ? Localization.get("On") : Localization.get("Off")}
+                            </span>
+                        </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                                {Localization.get("Workflow") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.enabledVersioning && page.workflowEnabled ? page.workflowName + " (" + page.stateName + ")" : Localization.get("Off")}                    
                             </span>
                         </div>
                     </div>

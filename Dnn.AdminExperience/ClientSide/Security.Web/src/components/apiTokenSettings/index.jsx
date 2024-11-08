@@ -140,6 +140,7 @@ class ApiTokenSettingsPanelBody extends Component {
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.apiTokenSettings.AllowApiTokens}
+                                readOnly={!state.apiTokenSettings.ApiTokensEnabled}
                                 onChange={this.onSettingChange.bind(this, "AllowApiTokens")}
                             />
                         </div>
@@ -161,7 +162,7 @@ class ApiTokenSettingsPanelBody extends Component {
                                 onSelect={(newVal) => {
                                     this.onSettingChange("MaximumSiteTimespan", newVal.value);
                                 }}
-                                enabled={true}
+                                enabled={state.apiTokenSettings.ApiTokensEnabled}
                             />
                         </InputGroup>
                     )}

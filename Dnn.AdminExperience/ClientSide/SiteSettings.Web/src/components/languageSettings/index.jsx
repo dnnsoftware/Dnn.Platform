@@ -5,10 +5,9 @@ import {
     languages as LanguagesActions
 } from "../../actions";
 import Languages from "./languages";
-import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { InputGroup, GridSystem, Dropdown, Flag, RadioButtons, Switch, Tooltip, Label, Button } from "@dnnsoftware/dnn-react-common";
 
 class LanguageSettingsPanelBody extends Component {

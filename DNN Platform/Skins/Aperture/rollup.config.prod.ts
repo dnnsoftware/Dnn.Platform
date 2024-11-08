@@ -1,4 +1,4 @@
-import {defineConfig } from 'rollup';
+import { defineConfig } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import cleaner from 'rollup-plugin-cleaner';
 import copy from 'rollup-plugin-copy';
@@ -14,6 +14,7 @@ const containersDist = localSettings.WebsitePath + '/Portals/_default/Containers
 const skinDist = localSettings.WebsitePath + '/Portals/_default/Skins/' + packageName;
 
 export default defineConfig({
+    cache: false,
     input: 'src/scripts/main.ts',
     output: {
         dir: skinDist,
@@ -23,6 +24,9 @@ export default defineConfig({
             var assetFileName = assetInfo?.name;
             if (!assetFileName) {
                 return '';
+            }
+            if (assetFileName?.endsWith('.js')) {
+                return 'js/skin.min.js';
             }
             if (assetFileName?.endsWith('.css')) {
                 return 'css/skin.min.css';

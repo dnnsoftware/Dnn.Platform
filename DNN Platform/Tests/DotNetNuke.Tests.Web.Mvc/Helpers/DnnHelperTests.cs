@@ -67,7 +67,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var helper = new DnnHelper(this._viewContext, this._mockViewDataContainer.Object);
 
             // Assert
-            Assert.AreEqual(expectedContext, helper.ModuleContext);
+            Assert.That(helper.ModuleContext, Is.EqualTo(expectedContext));
         }
     }
 }

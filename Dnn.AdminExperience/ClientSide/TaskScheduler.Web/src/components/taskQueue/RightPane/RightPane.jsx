@@ -1,6 +1,6 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import resx from "../../../resources";
 
 class RightPane extends Component {
@@ -47,7 +47,9 @@ RightPane.propTypes = {
     servers: PropTypes.string,
     objectDependencies: PropTypes.string,
     threadId: PropTypes.number,
-    scheduleSource: PropTypes.string
+    scheduleSource: PropTypes.string,
+    onEnter: PropTypes.func,
+    index: PropTypes.number
 };
 
 export default RightPane;

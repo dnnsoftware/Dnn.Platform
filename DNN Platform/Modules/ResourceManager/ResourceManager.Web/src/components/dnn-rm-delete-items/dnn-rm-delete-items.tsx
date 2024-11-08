@@ -95,7 +95,7 @@ export class DnnRmDeleteItems {
         }
         <div class="controls">
           <dnn-button
-            type="primary"
+            appearance="primary"
             reversed
             disabled={this.deleting}
             onClick={() => this.closeModal()}
@@ -103,7 +103,7 @@ export class DnnRmDeleteItems {
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
-            type="primary"
+            appearance="primary"
             onClick={() =>this.handleDelete()}
             disabled={this.deleting}
           >

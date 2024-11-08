@@ -216,7 +216,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             int portalGroupId = controller.AddPortalGroup(portalGroup);
 
             // Assert
-            Assert.AreEqual(Constants.PORTALGROUP_AddPortalGroupId, portalGroupId);
+            Assert.That(portalGroupId, Is.EqualTo(Constants.PORTALGROUP_AddPortalGroupId));
         }
 
         [Test]
@@ -237,7 +237,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             controller.AddPortalGroup(portalGroup);
 
             // Assert
-            Assert.AreEqual(Constants.PORTALGROUP_AddPortalGroupId, portalGroup.PortalGroupId);
+            Assert.That(portalGroup.PortalGroupId, Is.EqualTo(Constants.PORTALGROUP_AddPortalGroupId));
         }
 
         [Test]
@@ -328,7 +328,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             IEnumerable<PortalGroupInfo> portalGroups = controller.GetPortalGroups();
 
             // Assert
-            Assert.AreEqual(0, portalGroups.Count());
+            Assert.That(portalGroups.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -351,7 +351,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             IEnumerable<PortalGroupInfo> portalGroups = controller.GetPortalGroups();
 
             // Assert
-            Assert.AreEqual(Constants.PORTALGROUP_ValidPortalGroupCount, portalGroups.Count());
+            Assert.That(portalGroups.Count(), Is.EqualTo(Constants.PORTALGROUP_ValidPortalGroupCount));
         }
 
         [Test]

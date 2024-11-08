@@ -122,6 +122,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         public void TearDown()
         {
             this.serviceProvider.Dispose();
+            this.dtProfiles?.Dispose();
         }
 
         [Test]
@@ -138,7 +139,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 affectedCount++;
             }
 
-            Assert.AreEqual(1, affectedCount);
+            Assert.That(affectedCount, Is.EqualTo(1));
         }
 
         [Test]
@@ -149,7 +150,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             IList<IPreviewProfile> list = new PreviewProfileController().GetProfilesByPortal(0);
 
-            Assert.AreEqual(3, list.Count);
+            Assert.That(list, Has.Count.EqualTo(3));
         }
 
         [Test]
@@ -161,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             IList<IPreviewProfile> list = new PreviewProfileController().GetProfilesByPortal(0);
 
-            Assert.AreEqual(2, list.Count);
+            Assert.That(list, Has.Count.EqualTo(2));
         }
 
         private IDataReader GetProfilesCallBack(int portalId)

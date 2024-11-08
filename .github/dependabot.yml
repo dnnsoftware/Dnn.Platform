@@ -38,6 +38,7 @@ updates:
       SourceLink:
         patterns:
           - "Microsoft.SourceLink.*"
+          - "Microsoft.Build.Tasks.Git"
       TestStack-Dossier:
         patterns:
           - "TestStack.Dossier"
@@ -48,6 +49,10 @@ updates:
       Cake-Issues:
         patterns:
           - "Cake.Issues*"
+          - "Cake.Frosting.Issues*"
       DependencyInjection:
         patterns:
           - "Microsoft.Extensions.DependencyInjection*"
+      CodeAnalysis:
+        patterns:
+          - "Microsoft.CodeAnalysis.*"

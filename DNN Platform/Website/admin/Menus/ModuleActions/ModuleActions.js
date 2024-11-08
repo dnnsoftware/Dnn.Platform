@@ -313,7 +313,7 @@
             if (!rootText || rootText.length == 0) {
                 return;                
             }
-            root.append("<li class=\"" + rootClass + "\"><div>" + rootText + "</div>");
+            root.append("<li class=\"" + rootClass + "\"><div>" + moduleId + ":" + rootText + "</div>");
         }
 
         function buildQuickSettings(root, rootText, rootClass, rootIcon) {

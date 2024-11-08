@@ -271,7 +271,12 @@ class EditThemeAttributes extends Component {
 }
 
 EditThemeAttributes.propTypes = {
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    themes: PropTypes.object,
+    themeFiles: PropTypes.array,
+    tokens: PropTypes.array,
+    settings: PropTypes.array,
+    value: PropTypes.string
 };
 
 function mapStateToProps(state) {

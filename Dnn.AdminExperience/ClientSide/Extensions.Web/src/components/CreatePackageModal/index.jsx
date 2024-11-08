@@ -11,7 +11,7 @@ import StepFive from "./StepFive";
 import StepSix from "./StepSix";
 import Localization from "localization";
 import utilities from "utils";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 function mapToManifestPayload(payload, manifest) {
     return Object.assign(manifest, {

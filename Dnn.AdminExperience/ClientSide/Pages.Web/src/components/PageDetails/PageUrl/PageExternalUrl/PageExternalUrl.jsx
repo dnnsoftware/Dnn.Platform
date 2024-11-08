@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { SingleLineInputWithError, InputGroup } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../../localization";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";

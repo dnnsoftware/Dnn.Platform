@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             result.ExecuteResult(context, new StringWriter());
 
             // Assert
-            Assert.AreSame(mockView.Object, result.View);
+            Assert.That(result.View, Is.SameAs(mockView.Object));
         }
     }
 }

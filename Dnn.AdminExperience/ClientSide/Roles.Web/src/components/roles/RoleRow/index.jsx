@@ -119,7 +119,9 @@ RoleRow.propTypes = {
     openId: PropTypes.string,
     currentIndex: PropTypes.number,
     visible: PropTypes.bool,
-    roleIsApproved: PropTypes.bool
+    roleIsApproved: PropTypes.bool,
+    addIsClosed: PropTypes.bool,
+    children: PropTypes.node
 };
 RoleRow.defaultProps = {
     collapsed: true,

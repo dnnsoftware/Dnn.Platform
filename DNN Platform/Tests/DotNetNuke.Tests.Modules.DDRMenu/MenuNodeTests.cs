@@ -29,10 +29,10 @@ namespace DotNetNuke.Tests.Modules.DDRMenu
             var found = root.FindAllByNameOrId(dupeName).ToArray();
 
             // assert
-            Assert.IsNotNull(found);
-            Assert.AreEqual(2, found.Length);
-            Assert.AreSame(dupe1, found[0]);
-            Assert.AreSame(dupe2, found[1]);
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found.Length, Is.EqualTo(2));
+            Assert.That(found[0], Is.SameAs(dupe1));
+            Assert.That(found[1], Is.SameAs(dupe2));
         }
 
         private static MenuNode CreateMenuNode(string text, int tabId, MenuNode parent = null)

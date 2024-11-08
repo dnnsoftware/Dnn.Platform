@@ -35,7 +35,7 @@ namespace DotNetNuke.Framework
         /// </remarks>
         public const string DefaultHostedUrl = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
 
-        public const string DefaultUIHostedUrl = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js";
+        public const string DefaultUIHostedUrl = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js";
         private const string JQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
         private const string JQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
         private const string JQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";

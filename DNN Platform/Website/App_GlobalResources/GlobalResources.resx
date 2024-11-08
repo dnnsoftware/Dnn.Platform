@@ -1428,4 +1428,88 @@ Sincerely,
   <data name="cc_message.Text" xml:space="preserve">
     <value>This website uses cookies to ensure you get the best experience on our website.</value>
   </data>
+  <data name="StartWorkflowSubject.Text" xml:space="preserve">
+    <value>Page Submitted</value>
+  </data>
+  <data name="StartWorkflowBody.Text" xml:space="preserve">
+    <value>Page '{0}' is in the '{1}' state and waiting to be submitted.</value>
+  </data>
+  <data name="CompleteStateSubject.Text" xml:space="preserve">
+    <value>Page Approval</value>
+  </data>
+  <data name="CompleteStateBody.Text" xml:space="preserve">
+    <value>Page '{0}' is in the '{1}' state and awaits review and approval.</value>
+  </data>
+  <data name="DiscardStateSubject.Text" xml:space="preserve">
+    <value>Page Rejected</value>
+  </data>
+  <data name="DiscardStateBody.Text" xml:space="preserve">
+    <value>The edits for page '{0}' were rejected, and it is now in '{1}' state.</value>
+  </data>
+  <data name="CompleteWorkflowSubject.Text" xml:space="preserve">
+    <value>Page Published</value>
+  </data>
+  <data name="CompleteWorkflowBody.Text" xml:space="preserve">
+    <value>Page '{0}' has been published and is now live.</value>
+  </data>
+  <data name="DiscardWorkflowSubject.Text" xml:space="preserve">
+    <value>Page Discarded</value>
+  </data>
+  <data name="DiscardWorkflowBody.Text" xml:space="preserve">
+    <value>Edits for page '{0}' have been discarded.</value>
+  </data>
+  <data name="Administrators.Role" xml:space="preserve">
+    <value>Administrators</value>
+  </data>
+  <data name="All Users.Role" xml:space="preserve">
+    <value>Everyone</value>
+  </data>
+  <data name="Superuser.Role" xml:space="preserve">
+    <value>SuperUsers</value>
+  </data>
+  <data name="Unauthenticated Users.Role" xml:space="preserve">
+    <value>Unauthenticated Users</value>
+  </data>
+  <data name="Registered Users.Role" xml:space="preserve">
+    <value>Registered Users</value>
+  </data>
+  <data name="Unverified Users.Role" xml:space="preserve">
+    <value>Unverified Users</value>
+  </data>
+  <data name="Subscribers.Role" xml:space="preserve">
+    <value>Subscribers</value>
+  </data>
+  <data name="Content Editors.Role" xml:space="preserve">
+    <value>Content Editors</value>
+  </data>
+  <data name="Content Managers.Role" xml:space="preserve">
+    <value>Content Managers</value>
+  </data>
+  <data name="Administrators.RoleDescription" xml:space="preserve">
+    <value>Administrators can access and change all content of this site and control all site settings. They can manage user access to the site and manage other administrators as well.  This user type cannot make system-level changes or perform privileged administration tasks that Superusers can.</value>
+  </data>
+  <data name="All Users.RoleDescription" xml:space="preserve">
+    <value>This is a platform-managed role (i.e. you cannot add or remove users from this role). This role represents ANY visitor to the website regardless of their login/account status.</value>
+  </data>
+  <data name="Content Editors.RoleDescription" xml:space="preserve">
+    <value>Content editors are allowed to add and change content on this site. The exact functionality depends on the what the modules used on this site support.</value>
+  </data>
+  <data name="Content Managers.RoleDescription" xml:space="preserve">
+    <value>Content managers can decide what gets displayed on the website. They can change what content editors have contributed and decide if this gets published or not. The exact functionality depends on what the modules used on this site support.</value>
+  </data>
+  <data name="Subscribers.RoleDescription" xml:space="preserve">
+    <value>Subscribers allow themselves to be contacted by email from this website. Users can remove themselves from this role so they can control this.</value>
+  </data>
+  <data name="Superuser.RoleDescription" xml:space="preserve">
+    <value>Superusers (sometimes referred to as host users) have "host" access to the site, meaning they can access and change any content from any of the sites of this installation. Including adding and removing administrators and other superusers. They can also perform system-level tasks such as cache clearing, restarting the application, management of configuration files, and configuration of global settings.</value>
+  </data>
+  <data name="Unauthenticated Users.RoleDescription" xml:space="preserve">
+    <value>This is a platform-managed role (i.e. you can't assign users to this role). It is meant to signify users that are not logged in.</value>
+  </data>
+  <data name="Unverified Users.RoleDescription" xml:space="preserve">
+    <value>If this site uses account verification, then any user that registers is first part of this role and not "registered users". As soon as they have been verified (depending on the setting either by clicking an email link or by an administrator) then the user is no longer a member of this role and becomes a regular "registered user".</value>
+  </data>
+  <data name="Registered Users.RoleDescription" xml:space="preserve">
+    <value>All users that have an account on this site and (in case verification has been activated) have been verified.</value>
+  </data>
 </root>

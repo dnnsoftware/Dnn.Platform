@@ -11,7 +11,7 @@ import PackagesList from "./PackagesList";
 import PackageCard from "./PackageCard";
 import FiltersBar from "./FiltersBar";
 import ProgressBar from "./ProgressBar";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import util from "utils";
 
 import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";

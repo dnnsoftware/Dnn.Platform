@@ -9,7 +9,7 @@ import {
 } from "@dnnsoftware/dnn-react-common";
 import Collapsible from "react-collapse";
 import LocalizedResources from "../../../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const parentTermTreeStyle = {
     width: "100%",

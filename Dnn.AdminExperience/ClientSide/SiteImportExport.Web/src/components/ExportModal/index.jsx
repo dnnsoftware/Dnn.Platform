@@ -6,9 +6,9 @@ import {
     visiblePanel as VisiblePanelActions
 } from "../../actions";
 import Localization from "localization";
-import styles from "./style.less";
 import utilities from "utils";
 import itemsToExportService from "../../services/itemsToExportService";
+import styles from "./style.module.less";
 
 import {
     InputGroup,

@@ -5,7 +5,7 @@ import AddTermBox from "./AddTermBox";
 import Term from "./Term";
 import util from "../../../utils";
 import LocalizedResources from "../../../resources";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 function findInChildren(list, parentTermId) {
@@ -356,7 +356,11 @@ RightPane.propTypes = {
     type: PropTypes.string,
     scopeType: PropTypes.string,
     index: PropTypes.number,
-    selectParentTerm: PropTypes.func
+    selectParentTerm: PropTypes.func,
+    vocabularyId: PropTypes.number,
+    getVocabularyTerms: PropTypes.func,
+    onDeleteTerm: PropTypes.func,
+    onUpdateTerm: PropTypes.func
 };
 
 export default RightPane;

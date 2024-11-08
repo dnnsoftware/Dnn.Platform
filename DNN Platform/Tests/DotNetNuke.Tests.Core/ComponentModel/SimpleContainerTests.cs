@@ -21,7 +21,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
 
             var retrieved = container.GetComponentList(typeof(IList));
 
-            CollectionAssert.AreEqual(new List<string> { "payload" }, retrieved);
+            Assert.That(retrieved, Is.EqualTo(new List<string> { "payload" }).AsCollection);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
 
             container.RegisterComponentInstance("test", typeof(IList<string>), new List<string>());
 
-            Assert.Contains("test", ComponentFactory.GetComponents<IList<string>>().Keys);
+            Assert.That(ComponentFactory.GetComponents<IList<string>>().Keys, Does.Contain("test"));
         }
     }
 }

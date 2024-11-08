@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Label, Switch, SingleLineInputWithError, MultiLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Localization from "../../localization";
 import {
     templateActions as TemplateActions

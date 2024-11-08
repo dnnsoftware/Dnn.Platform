@@ -180,7 +180,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -246,7 +246,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.GetFileAttributes(this.fileInfo.Object);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var files = this.sfp.GetFiles(this.folderInfo.Object);
 
-            Assert.AreEqual(filesReturned.Length, files.Length);
+            Assert.That(files, Has.Length.EqualTo(filesReturned.Length));
         }
 
         [Test]
@@ -332,7 +332,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var files = this.sfp.GetFiles(this.folderInfo.Object);
 
-            CollectionAssert.AreEqual(expectedValues, files);
+            Assert.That(files, Is.EqualTo(expectedValues).AsCollection);
         }
 
         [Test]
@@ -382,7 +382,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 resultBytes = ms.ToArray();
             }
 
-            Assert.AreEqual(validFileBytes, resultBytes);
+            Assert.That(resultBytes, Is.EqualTo(validFileBytes));
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.GetFileStream(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -448,7 +448,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.GetLastModificationTime(this.fileInfo.Object);
 
-            Assert.AreEqual(expectedDate, result);
+            Assert.That(result, Is.EqualTo(expectedDate));
         }
 
         [Test]
@@ -496,7 +496,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            Assert.AreEqual(subFolders.Length, result.Count);
+            Assert.That(result, Has.Count.EqualTo(subFolders.Length));
         }
 
         [Test]
@@ -524,7 +524,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this.sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            CollectionAssert.AreEqual(expectedSubFolders, result);
+            Assert.That(result, Is.EqualTo(expectedSubFolders).AsCollection);
         }
 
         [Test]
@@ -555,7 +555,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             // assert
             Assert.DoesNotThrow(action);
-            Assert.IsNotNull(fileUrl);
+            Assert.That(fileUrl, Is.Not.Null);
         }
 
         [Test]
@@ -576,7 +576,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var fileUrl = sfp.Object.GetFileUrl(this.fileInfo.Object);
 
             // Assert
-            Assert.IsFalse(fileUrl.ToLowerInvariant().Contains("linkclick"));
+            Assert.That(fileUrl.ToLowerInvariant().Contains("linkclick"), Is.False);
         }
 
         [Test]
@@ -604,7 +604,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var fileUrl = sfp.Object.GetFileUrl(this.fileInfo.Object);
 
             // Assert
-            Assert.IsTrue(fileUrl.ToLowerInvariant().Contains("linkclick"));
+            Assert.That(fileUrl.ToLowerInvariant().Contains("linkclick"), Is.True);
         }
 
         [Test]
@@ -623,7 +623,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = sfp.Object.IsInSync(this.fileInfo.Object);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -636,7 +636,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = sfp.Object.IsInSync(this.fileInfo.Object);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -700,7 +700,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var result = this.sfp.SupportsFileAttributes();
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]

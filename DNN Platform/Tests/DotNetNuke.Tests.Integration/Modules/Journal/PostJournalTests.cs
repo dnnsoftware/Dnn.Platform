@@ -99,8 +99,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
 
-            Assert.IsTrue(exceptionThrown, "Should throw out exception");
-            Assert.AreEqual("you have no permission to attach files not belongs to you.", exceptionMessage);
+            Assert.Multiple(() =>
+            {
+                Assert.That(exceptionThrown, Is.True, "Should throw out exception");
+                Assert.That(exceptionMessage, Is.EqualTo("you have no permission to attach files not belongs to you."));
+            });
         }
 
         [Test]
@@ -133,8 +136,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
 
-            Assert.IsTrue(exceptionThrown, "Should throw out exception");
-            Assert.AreEqual("you have no permission to post journal on current profile page.", exceptionMessage);
+            Assert.Multiple(() =>
+            {
+                Assert.That(exceptionThrown, Is.True, "Should throw out exception");
+                Assert.That(exceptionMessage, Is.EqualTo("you have no permission to post journal on current profile page."));
+            });
         }
 
         [Test]
@@ -219,8 +225,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
 
-            Assert.IsTrue(exceptionThrown, "Should throw out exception");
-            Assert.AreEqual("you have no permission to post journal on current group.", exceptionMessage);
+            Assert.Multiple(() =>
+            {
+                Assert.That(exceptionThrown, Is.True, "Should throw out exception");
+                Assert.That(exceptionMessage, Is.EqualTo("you have no permission to post journal on current group."));
+            });
         }
 
         [Test]
@@ -246,9 +255,9 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var itemData = DatabaseHelper.ExecuteScalar<string>($"SELECT ItemData FROM {{objectQualifier}}Journal WHERE UserId = {userId}");
             var imageUrl = Json.Deserialize<dynamic>(itemData).ImageUrl.ToString();
 
-            Assert.AreEqual(-1, imageUrl.IndexOf("javascript"));
-            Assert.AreEqual(-1, imageUrl.IndexOf("onerror"));
-            Assert.AreEqual(-1, imageUrl.IndexOf("alert"));
+            Assert.That(imageUrl.IndexOf("javascript"), Is.EqualTo(-1));
+            Assert.That(imageUrl.IndexOf("onerror"), Is.EqualTo(-1));
+            Assert.That(imageUrl.IndexOf("alert"), Is.EqualTo(-1));
         }
 
         [Test]
@@ -274,7 +283,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var itemData = DatabaseHelper.ExecuteScalar<string>($"SELECT ItemData FROM {{objectQualifier}}Journal WHERE UserId = {userId}");
             var url = Json.Deserialize<dynamic>(itemData).Url.ToString();
 
-            Assert.AreEqual(-1, url.IndexOf("javascript"));
+            Assert.That(url.IndexOf("javascript"), Is.EqualTo(-1));
         }
 
         [Test]
@@ -300,7 +309,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var itemData = DatabaseHelper.ExecuteScalar<string>($"SELECT ItemData FROM {{objectQualifier}}Journal WHERE UserId = {userId}");
             var url = Json.Deserialize<dynamic>(itemData).Url.ToString();
 
-            Assert.AreEqual(-1, url.IndexOf("www.dnnsoftware.com"));
+            Assert.That(url.IndexOf("www.dnnsoftware.com"), Is.EqualTo(-1));
         }
 
         [Test]
@@ -325,11 +334,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
 
             var response = connector.GetContent($"/Activity-Feed/userId/{userId}").Content.ReadAsStringAsync().Result;
-            Assert.Greater(response.IndexOf(journalText), 0);
+            Assert.That(response.IndexOf(journalText), Is.GreaterThan(0));
 
             connector.Logout();
             response = connector.GetContent($"/Activity-Feed/userId/{userId}").Content.ReadAsStringAsync().Result;
-            Assert.Greater(response.IndexOf(journalText), 0);
+            Assert.That(response.IndexOf(journalText), Is.GreaterThan(0));
         }
 
         [Test]
@@ -355,11 +364,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
 
             var response = connector2.GetContent($"/Activity-Feed/userId/{userId1}").Content.ReadAsStringAsync().Result;
-            Assert.Greater(response.IndexOf(journalText), 0);
+            Assert.That(response.IndexOf(journalText), Is.GreaterThan(0));
 
             connector2.Logout();
             response = connector2.GetContent($"/Activity-Feed/userId/{userId1}").Content.ReadAsStringAsync().Result;
-            Assert.AreEqual(response.IndexOf(journalText), -1);
+            Assert.That(response.IndexOf(journalText), Is.EqualTo(-1));
         }
 
         [Test]
@@ -392,10 +401,10 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
 
             var response = connector2.GetContent($"/Activity-Feed/userId/{userId1}").Content.ReadAsStringAsync().Result;
-            Assert.Greater(response.IndexOf(journalText), 0);
+            Assert.That(response.IndexOf(journalText), Is.GreaterThan(0));
 
             response = connector3.GetContent($"/Activity-Feed/userId/{userId1}").Content.ReadAsStringAsync().Result;
-            Assert.AreEqual(response.IndexOf(journalText), -1);
+            Assert.That(response.IndexOf(journalText), Is.EqualTo(-1));
         }
 
         [Test]
@@ -420,11 +429,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
 
             var response = connector.GetContent($"/Activity-Feed/userId/{userId}").Content.ReadAsStringAsync().Result;
-            Assert.Greater(response.IndexOf(journalText), 0);
+            Assert.That(response.IndexOf(journalText), Is.GreaterThan(0));
 
             var hostConnector = WebApiTestHelper.LoginHost();
             response = hostConnector.GetContent($"/Activity-Feed/userId/{userId}").Content.ReadAsStringAsync().Result;
-            Assert.AreEqual(response.IndexOf(journalText), -1);
+            Assert.That(response.IndexOf(journalText), Is.EqualTo(-1));
         }
 
         private IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId)

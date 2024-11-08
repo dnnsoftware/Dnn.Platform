@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Core
             FileSystemUtils.DeleteFiles(new string[] { path });
 
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.AllDirectories);
-            Assert.Greater(files.Length, 0);
+            Assert.That(files.Length, Is.GreaterThan(0));
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace DotNetNuke.Tests.Core
                 }
 
                 var unZippedFiles = Directory.GetFiles(destPath, "*.*", SearchOption.TopDirectoryOnly);
-                Assert.AreEqual(files.Length, unZippedFiles.Length);
+                Assert.That(unZippedFiles, Has.Length.EqualTo(files.Length));
             }
             finally
             {
@@ -128,7 +128,7 @@ namespace DotNetNuke.Tests.Core
 
             // Assert
             bool res = File.Exists(testPath.Replace("/", "\\"));
-            Assert.IsFalse(res);
+            Assert.That(res, Is.False);
         }
 
         [TestCase(null)]
@@ -144,16 +144,19 @@ namespace DotNetNuke.Tests.Core
             // Assert
             if (string.IsNullOrEmpty(input))
             {
-                Assert.IsTrue(input == result);
+                Assert.That(input == result, Is.True);
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
-                Assert.IsTrue(result == string.Empty);
+                Assert.That(result == string.Empty, Is.True);
             }
             else
             {
-                Assert.IsFalse(result.Contains(" "));
-                Assert.IsFalse(result.Contains("/"));
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.Contains(" "), Is.False);
+                    Assert.That(result.Contains("/"), Is.False);
+                });
             }
         }
 

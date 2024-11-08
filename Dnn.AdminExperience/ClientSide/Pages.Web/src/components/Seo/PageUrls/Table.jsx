@@ -4,7 +4,7 @@ import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import UrlRow from "./UrlRow";
 import EditUrl from "./EditUrl";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import uniqBy from "lodash/uniqBy";
 
 class Table extends Component {
@@ -50,7 +50,7 @@ class Table extends Component {
         /* eslint-disable react/no-danger */
         return (
             <div>
-                <div className={styles.AddItemRow}>
+                <div className={styles.addItemRow}>
                     <div className="link-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
                     <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
                     <div className={"AddItemBox" + (newFormOpened ? " active" : "")} onClick={onOpenNewForm}>

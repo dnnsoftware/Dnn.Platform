@@ -68,7 +68,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var isSubscribed = this.subscriptionController.IsSubscribed(subscription);
 
             // Assert
-            Assert.AreEqual(false, isSubscribed);
+            Assert.That(isSubscribed, Is.EqualTo(false));
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var isSubscribed = this.subscriptionController.IsSubscribed(subscription);
 
             // Assert
-            Assert.AreEqual(false, isSubscribed);
+            Assert.That(isSubscribed, Is.EqualTo(false));
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var isSubscribed = this.subscriptionController.IsSubscribed(subscription);
 
             // Assert
-            Assert.AreEqual(true, isSubscribed);
+            Assert.That(isSubscribed, Is.EqualTo(true));
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.subscriptionController.AddSubscription(subscription);
 
             // Assert
-            Assert.AreEqual(expectedSubscriptionId, subscription.SubscriptionId);
+            Assert.That(subscription.SubscriptionId, Is.EqualTo(expectedSubscriptionId));
         }
 
         [Test]

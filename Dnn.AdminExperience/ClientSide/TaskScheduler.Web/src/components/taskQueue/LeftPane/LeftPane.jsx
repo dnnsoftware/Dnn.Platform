@@ -1,6 +1,6 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import resx from "../../../resources";
 
 /*eslint-disable quotes*/
@@ -59,7 +59,9 @@ LeftPane.propTypes = {
     overdue: PropTypes.bool,
     remainingTime: PropTypes.string,
     elapsedTime: PropTypes.number,
-    startDate: PropTypes.string
+    startDate: PropTypes.string,
+    onEnter: PropTypes.func,
+    index: PropTypes.number
 };
 
 export default LeftPane;

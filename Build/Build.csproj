@@ -14,12 +14,12 @@
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.BuildSystems.Module" Version="6.1.0" />
-    <PackageReference Include="Cake.FileHelpers" Version="6.1.3" />
+    <PackageReference Include="Cake.BuildSystems.Module" Version="7.0.0" />
+    <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
     <PackageReference Include="Cake.Frosting" Version="4.0.0" />
-    <PackageReference Include="Cake.Git" Version="3.0.0" />
-    <PackageReference Include="Cake.Issues" Version="3.0.0" />
-    <PackageReference Include="Cake.Issues.MsBuild" Version="3.0.0" />
+    <PackageReference Include="Cake.Frosting.Git" Version="4.0.0" />
+    <PackageReference Include="Cake.Issues" Version="4.11.0" />
+    <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="4.11.0" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />

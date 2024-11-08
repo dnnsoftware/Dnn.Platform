@@ -90,7 +90,8 @@ ProfilePropertyRow.propTypes = {
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
     id: PropTypes.string,
-    openId: PropTypes.string
+    openId: PropTypes.string,
+    children: PropTypes.node
 };
 
 ProfilePropertyRow.defaultProps = {

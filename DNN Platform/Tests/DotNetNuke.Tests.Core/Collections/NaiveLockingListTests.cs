@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             list.Add("sumthin");
 
-            CollectionAssert.AreEqual(new[] { "sumthin" }, list);
+            Assert.That(list, Is.EqualTo(new[] { "sumthin" }).AsCollection);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var list = new NaiveLockingList<int> { 0, 1, 2, 3 };
             list.Clear();
 
-            CollectionAssert.AreEqual(new int[] { }, list);
+            Assert.That(list, Is.EqualTo(new int[] { }).AsCollection);
         }
 
         [Test]
@@ -44,8 +44,11 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var list = new NaiveLockingList<int> { 0, 1, 2, 3 };
 
-            Assert.IsTrue(list.Contains(2));
-            Assert.IsFalse(list.Contains(9999));
+            Assert.Multiple(() =>
+            {
+                Assert.That(list.Contains(2), Is.True);
+                Assert.That(list.Contains(9999), Is.False);
+            });
         }
 
         [Test]
@@ -56,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var dest = new int[4];
             list.CopyTo(dest, 0);
 
-            CollectionAssert.AreEqual(list, dest);
+            Assert.That(dest, Is.EqualTo(list).AsCollection);
         }
 
         [Test]
@@ -66,7 +69,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             list.Remove(2);
 
-            CollectionAssert.AreEqual(new[] { 0, 1, 3 }, list);
+            Assert.That(list, Is.EqualTo(new[] { 0, 1, 3 }).AsCollection);
         }
 
         [Test]
@@ -74,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var list = new NaiveLockingList<int> { 0, 1, 2, 3 };
 
-            Assert.AreEqual(4, list.Count);
+            Assert.That(list, Has.Count.EqualTo(4));
         }
 
         [Test]
@@ -82,7 +85,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var list = new NaiveLockingList<int> { 0, 1, 2, 3 };
 
-            Assert.AreEqual(2, list.IndexOf(2));
+            Assert.That(list.IndexOf(2), Is.EqualTo(2));
         }
 
         [Test]
@@ -92,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             list.Insert(2, 999);
 
-            CollectionAssert.AreEqual(new[] { 0, 1, 999, 2, 3 }, list);
+            Assert.That(list, Is.EqualTo(new[] { 0, 1, 999, 2, 3 }).AsCollection);
         }
 
         [Test]
@@ -102,7 +105,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             list.RemoveAt(2);
 
-            CollectionAssert.AreEqual(new[] { 0, 1, 2, 3 }, list);
+            Assert.That(list, Is.EqualTo(new[] { 0, 1, 2, 3 }).AsCollection);
         }
 
         [Test]
@@ -112,7 +115,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             list[2] = 999;
 
-            Assert.AreEqual(999, list[2]);
+            Assert.That(list[2], Is.EqualTo(999));
         }
 
         [Test]

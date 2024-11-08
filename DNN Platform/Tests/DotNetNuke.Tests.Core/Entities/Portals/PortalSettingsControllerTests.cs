@@ -120,11 +120,11 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var actualValue = property.GetValue(settings, null);
             if (actualValue is bool)
             {
-                Assert.AreEqual(defaultValue, actualValue.ToString().ToLowerInvariant());
+                Assert.That(actualValue.ToString().ToLowerInvariant(), Is.EqualTo(defaultValue));
             }
             else
             {
-                Assert.AreEqual(defaultValue, actualValue.ToString());
+                Assert.That(actualValue.ToString(), Is.EqualTo(defaultValue));
             }
         }
 
@@ -168,11 +168,11 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var actualValue = property.GetValue(settings, null);
             if (actualValue is bool)
             {
-                Assert.AreEqual(propertyValue, actualValue.ToString().ToLowerInvariant());
+                Assert.That(actualValue.ToString().ToLowerInvariant(), Is.EqualTo(propertyValue));
             }
             else
             {
-                Assert.AreEqual(propertyValue, actualValue.ToString());
+                Assert.That(actualValue.ToString(), Is.EqualTo(propertyValue));
             }
         }
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.LoadPortalSettings(settings);
 
             // Assert
-            Assert.AreEqual(TimeZoneInfo.Local, settings.TimeZone);
+            Assert.That(settings.TimeZone, Is.EqualTo(TimeZoneInfo.Local));
         }
 
         [Test]
@@ -228,48 +228,51 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Act
             controller.LoadPortal(portal, settings);
 
-            // Assert
-            Assert.AreEqual(portal.AdminTabId, settings.AdminTabId);
-            Assert.AreEqual(portal.AdministratorId, settings.AdministratorId);
-            Assert.AreEqual(portal.AdministratorRoleId, settings.AdministratorRoleId);
-            Assert.AreEqual(portal.AdministratorRoleName, settings.AdministratorRoleName);
-            Assert.AreEqual(portal.BackgroundFile, settings.BackgroundFile);
-            Assert.AreEqual(portal.BannerAdvertising, settings.BannerAdvertising);
-            Assert.AreEqual(portal.CultureCode, settings.CultureCode);
-            Assert.AreEqual(portal.Currency, settings.Currency);
-            Assert.AreEqual(portal.Custom404TabId, settings.ErrorPage404);
-            Assert.AreEqual(portal.Custom500TabId, settings.ErrorPage500);
-            Assert.AreEqual(portal.TermsTabId, settings.TermsTabId);
-            Assert.AreEqual(portal.PrivacyTabId, settings.PrivacyTabId);
-            Assert.AreEqual(portal.DefaultLanguage, settings.DefaultLanguage);
-            Assert.AreEqual(portal.Description, settings.Description);
-            Assert.AreEqual(portal.Email, settings.Email);
-            Assert.AreEqual(portal.ExpiryDate, settings.ExpiryDate);
-            Assert.AreEqual(portal.FooterText, settings.FooterText);
-            Assert.AreEqual(portal.GUID, settings.GUID);
-            Assert.AreEqual(Globals.ApplicationPath + "/" + portal.HomeDirectory + "/", settings.HomeDirectory);
-            Assert.AreEqual(portal.HomeDirectoryMapPath, settings.HomeDirectoryMapPath);
-            Assert.AreEqual(Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/", settings.HomeSystemDirectory);
-            Assert.AreEqual(portal.HomeSystemDirectoryMapPath, settings.HomeSystemDirectoryMapPath);
-            Assert.AreEqual(portal.HomeTabId, settings.HomeTabId);
-            Assert.AreEqual(portal.HostFee, settings.HostFee);
-            Assert.AreEqual(portal.HostSpace, settings.HostSpace);
-            Assert.AreEqual(portal.KeyWords, settings.KeyWords);
-            Assert.AreEqual(portal.LoginTabId, settings.LoginTabId);
-            Assert.AreEqual(portal.LogoFile, settings.LogoFile);
-            Assert.AreEqual(portal.PageQuota, settings.PageQuota);
-            Assert.AreEqual(portal.Pages, settings.Pages);
-            Assert.AreEqual(portal.PortalName, settings.PortalName);
-            Assert.AreEqual(portal.RegisterTabId, settings.RegisterTabId);
-            Assert.AreEqual(portal.RegisteredRoleId, settings.RegisteredRoleId);
-            Assert.AreEqual(portal.RegisteredRoleName, settings.RegisteredRoleName);
-            Assert.AreEqual(portal.SearchTabId, settings.SearchTabId);
-            Assert.AreEqual(portal.SplashTabId, settings.SplashTabId);
-            Assert.AreEqual(portal.SuperTabId, settings.SuperTabId);
-            Assert.AreEqual(portal.UserQuota, settings.UserQuota);
-            Assert.AreEqual(portal.UserRegistration, settings.UserRegistration);
-            Assert.AreEqual(portal.UserTabId, settings.UserTabId);
-            Assert.AreEqual(portal.Users, settings.Users);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(settings.AdminTabId, Is.EqualTo(portal.AdminTabId));
+                Assert.That(settings.AdministratorId, Is.EqualTo(portal.AdministratorId));
+                Assert.That(settings.AdministratorRoleId, Is.EqualTo(portal.AdministratorRoleId));
+                Assert.That(settings.AdministratorRoleName, Is.EqualTo(portal.AdministratorRoleName));
+                Assert.That(settings.BackgroundFile, Is.EqualTo(portal.BackgroundFile));
+                Assert.That(settings.BannerAdvertising, Is.EqualTo(portal.BannerAdvertising));
+                Assert.That(settings.CultureCode, Is.EqualTo(portal.CultureCode));
+                Assert.That(settings.Currency, Is.EqualTo(portal.Currency));
+                Assert.That(settings.ErrorPage404, Is.EqualTo(portal.Custom404TabId));
+                Assert.That(settings.ErrorPage500, Is.EqualTo(portal.Custom500TabId));
+                Assert.That(settings.TermsTabId, Is.EqualTo(portal.TermsTabId));
+                Assert.That(settings.PrivacyTabId, Is.EqualTo(portal.PrivacyTabId));
+                Assert.That(settings.DefaultLanguage, Is.EqualTo(portal.DefaultLanguage));
+                Assert.That(settings.Description, Is.EqualTo(portal.Description));
+                Assert.That(settings.Email, Is.EqualTo(portal.Email));
+                Assert.That(settings.ExpiryDate, Is.EqualTo(portal.ExpiryDate));
+                Assert.That(settings.FooterText, Is.EqualTo(portal.FooterText));
+                Assert.That(settings.GUID, Is.EqualTo(portal.GUID));
+                Assert.That(settings.HomeDirectory, Is.EqualTo(Globals.ApplicationPath + "/" + portal.HomeDirectory + "/"));
+                Assert.That(settings.HomeDirectoryMapPath, Is.EqualTo(portal.HomeDirectoryMapPath));
+                Assert.That(settings.HomeSystemDirectory, Is.EqualTo(Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/"));
+                Assert.That(settings.HomeSystemDirectoryMapPath, Is.EqualTo(portal.HomeSystemDirectoryMapPath));
+                Assert.That(settings.HomeTabId, Is.EqualTo(portal.HomeTabId));
+                Assert.That(settings.HostFee, Is.EqualTo(portal.HostFee));
+                Assert.That(settings.HostSpace, Is.EqualTo(portal.HostSpace));
+                Assert.That(settings.KeyWords, Is.EqualTo(portal.KeyWords));
+                Assert.That(settings.LoginTabId, Is.EqualTo(portal.LoginTabId));
+                Assert.That(settings.LogoFile, Is.EqualTo(portal.LogoFile));
+                Assert.That(settings.PageQuota, Is.EqualTo(portal.PageQuota));
+                Assert.That(settings.Pages, Is.EqualTo(portal.Pages));
+                Assert.That(settings.PortalName, Is.EqualTo(portal.PortalName));
+                Assert.That(settings.RegisterTabId, Is.EqualTo(portal.RegisterTabId));
+                Assert.That(settings.RegisteredRoleId, Is.EqualTo(portal.RegisteredRoleId));
+                Assert.That(settings.RegisteredRoleName, Is.EqualTo(portal.RegisteredRoleName));
+                Assert.That(settings.SearchTabId, Is.EqualTo(portal.SearchTabId));
+                Assert.That(settings.SplashTabId, Is.EqualTo(portal.SplashTabId));
+                Assert.That(settings.SuperTabId, Is.EqualTo(portal.SuperTabId));
+                Assert.That(settings.UserQuota, Is.EqualTo(portal.UserQuota));
+                Assert.That(settings.UserRegistration, Is.EqualTo(portal.UserRegistration));
+                Assert.That(settings.UserTabId, Is.EqualTo(portal.UserTabId));
+                Assert.That(settings.Users, Is.EqualTo(portal.Users));
+            });
         }
 
         [Test]
@@ -294,7 +297,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var tab = controller.GetActiveTab(ValidTabId, settings);
 
             // Assert
-            Assert.AreEqual(validTab.TabID, tab.TabID);
+            Assert.That(tab.TabID, Is.EqualTo(validTab.TabID));
         }
 
         [Test]
@@ -319,7 +322,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var tab = controller.GetActiveTab(HostTabId, settings);
 
             // Assert
-            Assert.AreEqual(validTab.TabID, tab.TabID);
+            Assert.That(tab.TabID, Is.EqualTo(validTab.TabID));
         }
 
         [Test]
@@ -343,7 +346,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var tab = controller.GetActiveTab(InValidTabId, settings);
 
             // Assert
-            Assert.AreEqual(SplashTabId, tab.TabID);
+            Assert.That(tab.TabID, Is.EqualTo(SplashTabId));
         }
 
         [Test]
@@ -367,7 +370,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var tab = controller.GetActiveTab(InValidTabId, settings);
 
             // Assert
-            Assert.AreEqual(HomeTabId, tab.TabID);
+            Assert.That(tab.TabID, Is.EqualTo(HomeTabId));
         }
 
         [Test]
@@ -392,7 +395,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var tab = controller.GetActiveTab(InValidTabId, settings);
 
             // Assert
-            Assert.AreEqual(SplashTabId, tab.TabID);
+            Assert.That(tab.TabID, Is.EqualTo(SplashTabId));
         }
 
         [Test]
@@ -416,9 +419,12 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Act
             var tab = controller.GetActiveTab(ValidTabId, settings);
 
-            // Assert
-            Assert.AreEqual(DateTime.MinValue, tab.StartDate);
-            Assert.AreEqual(DateTime.MaxValue, tab.EndDate);
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(tab.StartDate, Is.EqualTo(DateTime.MinValue));
+                Assert.That(tab.EndDate, Is.EqualTo(DateTime.MaxValue));
+            });
         }
 
         [Test]
@@ -447,7 +453,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.AreEqual(DefaultSkin, settings.ActiveTab.SkinSrc);
+            Assert.That(settings.ActiveTab.SkinSrc, Is.EqualTo(DefaultSkin));
         }
 
         [Test]
@@ -475,7 +481,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.AreEqual(TabSkin, settings.ActiveTab.SkinSrc);
+            Assert.That(settings.ActiveTab.SkinSrc, Is.EqualTo(TabSkin));
         }
 
         [Test]
@@ -503,7 +509,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.AreEqual(SkinController.FormatSkinSrc(GlobalTabSkin, settings), settings.ActiveTab.SkinSrc);
+            Assert.That(settings.ActiveTab.SkinSrc, Is.EqualTo(SkinController.FormatSkinSrc(GlobalTabSkin, settings)));
         }
 
         [Test]
@@ -532,7 +538,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.AreEqual(DefaultContainer, settings.ActiveTab.ContainerSrc);
+            Assert.That(settings.ActiveTab.ContainerSrc, Is.EqualTo(DefaultContainer));
         }
 
         [Test]
@@ -559,7 +565,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.AreEqual(TabContainer, settings.ActiveTab.ContainerSrc);
+            Assert.That(settings.ActiveTab.ContainerSrc, Is.EqualTo(TabContainer));
         }
 
         [Test]
@@ -586,7 +592,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.AreEqual(SkinController.FormatSkinSrc(GlobalTabContainer, settings), settings.ActiveTab.ContainerSrc);
+            Assert.That(settings.ActiveTab.ContainerSrc, Is.EqualTo(SkinController.FormatSkinSrc(GlobalTabContainer, settings)));
         }
 
         [Test]
@@ -614,8 +620,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             controller.ConfigureActiveTab(settings);
 
             // Assert
-            Assert.NotNull(settings.ActiveTab.BreadCrumbs);
-            Assert.AreEqual(1, settings.ActiveTab.BreadCrumbs.Count);
+            Assert.That(settings.ActiveTab.BreadCrumbs, Is.Not.Null);
+            Assert.That(settings.ActiveTab.BreadCrumbs, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -647,9 +653,12 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Assert
             var actualParent = settings.ActiveTab.BreadCrumbs[0] as TabInfo;
             var actualTab = settings.ActiveTab.BreadCrumbs[1] as TabInfo;
-            Assert.AreEqual(2, settings.ActiveTab.BreadCrumbs.Count);
-            Assert.AreEqual(ValidTabId, actualTab.TabID);
-            Assert.AreEqual(ParentTabId, actualParent.TabID);
+            Assert.Multiple(() =>
+            {
+                Assert.That(settings.ActiveTab.BreadCrumbs, Has.Count.EqualTo(2));
+                Assert.That(actualTab.TabID, Is.EqualTo(ValidTabId));
+                Assert.That(actualParent.TabID, Is.EqualTo(ParentTabId));
+            });
         }
     }
 }

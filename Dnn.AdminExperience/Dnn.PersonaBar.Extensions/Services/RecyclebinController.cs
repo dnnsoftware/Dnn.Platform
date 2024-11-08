@@ -34,10 +34,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView)]
 
-        public HttpResponseMessage GetDeletedPageList(int pageIndex = -1, int pageSize = -1)
+        public HttpResponseMessage GetDeletedPageList(int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var totalRecords = 0;
-            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs(out totalRecords, pageIndex, pageSize);
+            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs(out totalRecords, pageIndex, pageSize, sortType, sortDirection);
             var deletedtabs = from t in tabs
                               select this.ConvertToPageItem(t, tabs);
             var response = new
@@ -52,10 +52,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView)]
 
-        public HttpResponseMessage GetDeletedModuleList(int pageIndex = -1, int pageSize = -1)
+        public HttpResponseMessage GetDeletedModuleList(int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var totalRecords = 0;
-            var mods = Components.RecyclebinController.Instance.GetDeletedModules(out totalRecords, pageIndex, pageSize);
+            var mods = Components.RecyclebinController.Instance.GetDeletedModules(out totalRecords, pageIndex, pageSize, sortType, sortDirection);
             var deletedmodules = from t in mods select this.ConvertToModuleItem(t);
             var response = new
             {
@@ -69,10 +69,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView)]
 
-        public HttpResponseMessage GetDeletedUserList(int pageIndex = -1, int pageSize = -1)
+        public HttpResponseMessage GetDeletedUserList(int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var totalRecords = 0;
-            var users = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords, pageIndex, pageSize);
+            var users = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords, pageIndex, pageSize, sortType, sortDirection);
             var deletedusers = from t in users select this.ConvertToUserItem(t);
             var response = new
             {

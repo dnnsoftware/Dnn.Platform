@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -204,7 +204,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetFileAttributes(this._fileInfo.Object);
 
-            Assert.AreEqual(expectedFileAttributes, result);
+            Assert.That(result, Is.EqualTo(expectedFileAttributes));
         }
 
         [Test]
@@ -246,7 +246,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetFileAttributes(this._fileInfo.Object);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -276,7 +276,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var files = this._sfp.GetFiles(this._folderInfo.Object);
 
-            Assert.AreEqual(filesReturned.Length, files.Length);
+            Assert.That(files, Has.Length.EqualTo(filesReturned.Length));
         }
 
         [Test]
@@ -291,7 +291,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var files = this._sfp.GetFiles(this._folderInfo.Object);
 
-            CollectionAssert.AreEqual(expectedValues, files);
+            Assert.That(files, Is.EqualTo(expectedValues).AsCollection);
         }
 
         [Test]
@@ -341,7 +341,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 resultBytes = ms.ToArray();
             }
 
-            Assert.AreEqual(validFileBytes, resultBytes);
+            Assert.That(resultBytes, Is.EqualTo(validFileBytes));
         }
 
         [Test]
@@ -353,7 +353,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetFileStream(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetLastModificationTime(this._fileInfo.Object);
 
-            Assert.AreEqual(expectedDate, result);
+            Assert.That(result, Is.EqualTo(expectedDate));
         }
 
         [Test]
@@ -408,7 +408,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetLastModificationTime(this._fileInfo.Object);
 
-            Assert.AreEqual(expectedDate, result);
+            Assert.That(result, Is.EqualTo(expectedDate));
         }
 
         [Test]
@@ -456,7 +456,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            Assert.AreEqual(subFolders.Length, result.Count);
+            Assert.That(result, Has.Count.EqualTo(subFolders.Length));
         }
 
         [Test]
@@ -484,7 +484,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            CollectionAssert.AreEqual(expectedSubFolders, result);
+            Assert.That(result, Is.EqualTo(expectedSubFolders).AsCollection);
         }
 
         [Test]
@@ -503,7 +503,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = sfp.Object.IsInSync(this._fileInfo.Object);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -516,7 +516,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var result = sfp.Object.IsInSync(this._fileInfo.Object);
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -581,7 +581,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var result = this._sfp.SupportsFileAttributes();
 
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]

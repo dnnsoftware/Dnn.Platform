@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import ModulesRow from "./ModuleRow/ModuleRow";
-import styles from "./style.less";
+import styles from "./style.module.less";
 import { GridCell, SvgIcons, Modal } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import utils from "../../utils";
