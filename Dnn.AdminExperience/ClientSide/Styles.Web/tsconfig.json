@@ -4,6 +4,7 @@
     "allowUnreachableCode": false,
     "declaration": false,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": [
       "dom",
       "es2017"
@@ -14,7 +15,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "strict": true,
   },
   "include": [
     "src"

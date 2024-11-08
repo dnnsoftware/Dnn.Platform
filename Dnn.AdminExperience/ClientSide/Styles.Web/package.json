@@ -22,11 +22,12 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@stencil/core": "^4.7.0"
+    "@stencil/core": "^4.22.2"
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^16.18.11",
+    "@stencil/sass": "^3.0.12",
+    "@types/node": "^22.9.0",
     "cpy-cli": "^5.0.0"
   }
 }
