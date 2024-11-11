@@ -17,6 +17,7 @@
     "jsx": "react",
     "jsxFactory": "h",
     "strict": true,
+    "strictPropertyInitialization": false,
   },
   "include": [
     "src"

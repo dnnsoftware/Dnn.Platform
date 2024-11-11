@@ -1,0 +1,29 @@
+:host
+{
+  display: block;
+  --columns: 1;
+}
+
+:host(.medium),
+:host(.large)
+{
+  --columns: 2;
+}
+
+.sections
+{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  .section
+  {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.controls{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

@@ -1,11 +1,7 @@
 declare global {
-    interface Window {
-        dnn: IDnn;
+    interface IDnnWrapper {
+        initStyles: () => IInitStylesConfig;
     }
-}
-
-interface IDnn {
-    initStyles: () => IInitStylesConfig;
 }
 
 export interface IInitStylesConfig {
@@ -43,7 +39,47 @@ interface IResx {
 }
 
 interface IStylesResx {
+    ActionColors: string;
+    BackgroundColor: string;
+    BackgroundColorHelp: string;
+    BaseFontSize: string;
+    BaseFontSizeHelp: string;
+    BrandColors: string;
+    ColorVariationOpacity: string;
+    ColorVariationOpacityHelp: string;
+    Contrast: string;
+    Controls: string;
+    ControlsPadding: string;
+    ControlsPaddingHelp: string;
+    ControlsRadius: string;
+    ControlsRadiusHelp: string;
+    DangerColor: string;
+    DangerColorHelp: string;
+    ForegroundColor: string;
+    ForegroundColorHelp: string;
+    General: string;
+    InformationColor: string;
+    InformationColorHelp: string;
+    ModuleDescription: string;
     nav_Styles: string;
+    NeutralColor: string;
+    NeutralColorHelp: string;
+    PrimaryColor: string;
+    PrimaryColorHelp: string;
+    RestoreDefault: string;
+    RestoreDefaultMessage: string;
+    Save: string;
+    SecondaryColor: string;
+    SecondaryColorHelp: string;
+    SuccessColor: string;
+    SuccessColorHelp: string;
+    SurfaceColor: string;
+    SurfaceColorHelp: string;
+    TertiaryColor: string;
+    TertiaryColorHelp: string;
+    Typography: string;
+    WarningColor: string;
+    WarningColorHelp: string;
 }
 
 interface IServicesFramework {
