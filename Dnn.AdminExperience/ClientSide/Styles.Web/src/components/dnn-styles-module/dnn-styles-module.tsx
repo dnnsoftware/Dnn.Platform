@@ -65,43 +65,47 @@ export class DnnStylesModule {
           <p>{this.resx?.ModuleDescription}</p>
           {this.styles && this.resx &&
             <div class="sections">
-              <div class="section">
-                <h3>{this.resx?.BrandColors}</h3>
+                            <div class="section">
+                <h3>{this.resx?.GeneralColors}</h3>
                 <dnn-color-input
-                  label={this.resx?.PrimaryColor}
-                  helpText={this.resx?.PrimaryColorHelp}
-                  color={this.styles?.ColorPrimary.HexValue}
-                  contrastColor={this.styles?.ColorPrimaryContrast.HexValue}
-                  lightColor={this.styles?.ColorPrimaryLight.HexValue}
-                  darkColor={this.styles?.ColorPrimaryDark.HexValue}
+                  label={this.resx?.BackgroundColor}
+                  helpText={this.resx?.BackgroundColorHelp}
+                  color={this.styles?.ColorBackground.HexValue}
+                  contrastColor={this.styles?.ColorBackgroundContrast.HexValue}
+                  lightColor={this.styles?.ColorBackgroundLight.HexValue}
+                  darkColor={this.styles?.ColorBackgroundDark.HexValue}
                   useContrastColor
                   useLightColor
                   useDarkColor
                   onColorChange={e => console.log(e.detail)}
                 />
                 <dnn-color-input
-                  label={this.resx?.SecondaryColor}
-                  helpText={this.resx?.PrimaryColorHelp}
-                  color={this.styles?.ColorSecondary.HexValue}
-                  contrastColor={this.styles?.ColorSecondaryContrast.HexValue}
-                  lightColor={this.styles?.ColorSecondaryLight.HexValue}
-                  darkColor={this.styles?.ColorSecondaryDark.HexValue}
+                  label={this.resx?.ForegroundColor}
+                  helpText={this.resx?.ForegroundColorHelp}
+                  color={this.styles?.ColorForeground.HexValue}
+                  contrastColor={this.styles?.ColorForegroundContrast.HexValue}
+                  lightColor={this.styles?.ColorForegroundLight.HexValue}
+                  darkColor={this.styles?.ColorForegroundDark.HexValue}
                   useContrastColor
                   useLightColor
                   useDarkColor
                   onColorChange={e => console.log(e.detail)}
                 />
                 <dnn-color-input
-                  label={this.resx?.TertiaryColor}
-                  helpText={this.resx?.TertiaryColorHelp}
-                  color={this.styles?.ColorTertiary.HexValue}
-                  contrastColor={this.styles?.ColorTertiaryContrast.HexValue}
-                  lightColor={this.styles?.ColorTertiaryLight.HexValue}
-                  darkColor={this.styles?.ColorTertiaryDark.HexValue}
+                  label={this.resx?.NeutralColor}
+                  helpText={this.resx?.NeutralColorHelp}
+                  color={this.styles?.ColorNeutral.HexValue}
+                  contrastColor={this.styles?.ColorNeutralContrast.HexValue}
+                  lightColor={this.styles?.ColorNeutralLight.HexValue}
+                  darkColor={this.styles?.ColorNeutralDark.HexValue}
                   useContrastColor
                   useLightColor
                   useDarkColor
                   onColorChange={e => console.log(e.detail)}
+                />
+                <dnn-color-input
+                  label={this.resx?.SurfaceColor}
+                  helpText={this.resx.SurfaceColorHelp + "(Not implemented yet...)"}
                 />
               </div>
               <div class="section">
@@ -156,54 +160,42 @@ export class DnnStylesModule {
                 />
               </div>
               <div class="section">
-                <h3>{this.resx?.General}</h3>
+                <h3>{this.resx?.BrandColors}</h3>
                 <dnn-color-input
-                  label={this.resx?.BackgroundColor}
-                  helpText={this.resx?.BackgroundColorHelp}
-                  color={this.styles?.ColorBackground.HexValue}
-                  contrastColor={this.styles?.ColorBackgroundContrast.HexValue}
-                  lightColor={this.styles?.ColorBackgroundLight.HexValue}
-                  darkColor={this.styles?.ColorBackgroundDark.HexValue}
+                  label={this.resx?.PrimaryColor}
+                  helpText={this.resx?.PrimaryColorHelp}
+                  color={this.styles?.ColorPrimary.HexValue}
+                  contrastColor={this.styles?.ColorPrimaryContrast.HexValue}
+                  lightColor={this.styles?.ColorPrimaryLight.HexValue}
+                  darkColor={this.styles?.ColorPrimaryDark.HexValue}
                   useContrastColor
                   useLightColor
                   useDarkColor
                   onColorChange={e => console.log(e.detail)}
                 />
                 <dnn-color-input
-                  label={this.resx?.ForegroundColor}
-                  helpText={this.resx?.ForegroundColorHelp}
-                  color={this.styles?.ColorForeground.HexValue}
-                  contrastColor={this.styles?.ColorForegroundContrast.HexValue}
-                  lightColor={this.styles?.ColorForegroundLight.HexValue}
-                  darkColor={this.styles?.ColorForegroundDark.HexValue}
+                  label={this.resx?.SecondaryColor}
+                  helpText={this.resx?.PrimaryColorHelp}
+                  color={this.styles?.ColorSecondary.HexValue}
+                  contrastColor={this.styles?.ColorSecondaryContrast.HexValue}
+                  lightColor={this.styles?.ColorSecondaryLight.HexValue}
+                  darkColor={this.styles?.ColorSecondaryDark.HexValue}
                   useContrastColor
                   useLightColor
                   useDarkColor
                   onColorChange={e => console.log(e.detail)}
                 />
                 <dnn-color-input
-                  label={this.resx?.NeutralColor}
-                  helpText={this.resx?.NeutralColorHelp}
-                  color={this.styles?.ColorNeutral.HexValue}
-                  contrastColor={this.styles?.ColorNeutralContrast.HexValue}
-                  lightColor={this.styles?.ColorNeutralLight.HexValue}
-                  darkColor={this.styles?.ColorNeutralDark.HexValue}
+                  label={this.resx?.TertiaryColor}
+                  helpText={this.resx?.TertiaryColorHelp}
+                  color={this.styles?.ColorTertiary.HexValue}
+                  contrastColor={this.styles?.ColorTertiaryContrast.HexValue}
+                  lightColor={this.styles?.ColorTertiaryLight.HexValue}
+                  darkColor={this.styles?.ColorTertiaryDark.HexValue}
                   useContrastColor
                   useLightColor
                   useDarkColor
                   onColorChange={e => console.log(e.detail)}
-                />
-                <dnn-color-input
-                  label={this.resx?.SurfaceColor}
-                  helpText={"Not implemented yet..."}
-                />
-                <dnn-input
-                  type="number"
-                  min={0}
-                  max={100}
-                  required
-                  label={this.resx?.ColorVariationOpacity}
-                  helpText={"not implemented yet..."}
                 />
               </div>
               <div class="section">
@@ -224,15 +216,28 @@ export class DnnStylesModule {
                   helpText={this.resx?.ControlsPaddingHelp}
                   value={this.styles.ControlsPadding}
                 />
-                <h3>{this.resx.Typography}</h3>
+              </div>
+              <div class="section">
+                <h3>{this.resx?.Colors}</h3>
                 <dnn-input
                   type="number"
                   min={0}
+                  max={100}
                   required
-                  label={this.resx?.BaseFontSize}
-                  helpText={this.resx?.BaseFontSizeHelp}
-                  value={this.styles.BaseFontSize}
+                  label={this.resx?.ColorVariationOpacity}
+                  helpText={this.resx?.ColorVariationOpacityHelp + "(Not implemented yet)"}
                 />
+              </div>
+              <div class="section">
+                  <h3>{this.resx.Typography}</h3>
+                  <dnn-input
+                    type="number"
+                    min={0}
+                    required
+                    label={this.resx?.BaseFontSize}
+                    helpText={this.resx?.BaseFontSizeHelp}
+                    value={this.styles.BaseFontSize}
+                  />
               </div>
             </div>
           }

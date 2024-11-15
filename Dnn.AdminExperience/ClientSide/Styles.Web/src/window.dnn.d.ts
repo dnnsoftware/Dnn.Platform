@@ -45,6 +45,7 @@ interface IStylesResx {
     BaseFontSize: string;
     BaseFontSizeHelp: string;
     BrandColors: string;
+    Colors: string;
     ColorVariationOpacity: string;
     ColorVariationOpacityHelp: string;
     Contrast: string;
@@ -57,7 +58,7 @@ interface IStylesResx {
     DangerColorHelp: string;
     ForegroundColor: string;
     ForegroundColorHelp: string;
-    General: string;
+    GeneralColors: string;
     InformationColor: string;
     InformationColorHelp: string;
     ModuleDescription: string;

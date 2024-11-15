@@ -1,28 +1,32 @@
-:host
-{
+:host {
   display: block;
   --columns: 1;
 }
 
 :host(.medium),
-:host(.large)
-{
-  --columns: 2;
+:host(.large) {
+  --columns: 3;
 }
 
-.sections
-{
+.sections {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(var(--columns), 1fr);
-  .section
-  {
+  .section {
     display: flex;
     flex-direction: column;
+    h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #666;
+    }
+    dnn-color-input{
+      height: 6rem;
+    }
   }
 }
 
-.controls{
+.controls {
   display: flex;
   justify-content: center;
   gap: 1rem;

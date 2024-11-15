@@ -129,8 +129,11 @@
   <data name="ActionColors" xml:space="preserve">
     <value>Action Colors</value>
   </data>
-  <data name="General" xml:space="preserve">
-    <value>General</value>
+  <data name="GeneralColors" xml:space="preserve">
+    <value>General Colors</value>
+  </data>
+  <data name="Colors" xml:space="preserve">
+    <value>Colors</value>
   </data>
   <data name="Controls" xml:space="preserve">
     <value>Controls</value>
