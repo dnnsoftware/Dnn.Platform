@@ -479,6 +479,10 @@ namespace DotNetNuke.Common
         /// </value>
         public static Version NETFrameworkVersion { get; set; }
 
+        /// <summary>Gets the .Net framework version text.</summary>
+        /// <value>The .Net framework version text.</value>
+        public static string FormattedNetFrameworkVersion => FormatVersion(NETFrameworkVersion, "0", 3, ".");
+
         /// <summary>Gets or sets the database engine version.</summary>
         /// <value>
         /// The database engine version.
