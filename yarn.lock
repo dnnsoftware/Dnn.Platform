@@ -5273,7 +5273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array.prototype.find@npm:2.2.3":
+"array.prototype.find@npm:2.2.3, array.prototype.find@npm:^2.1.1, array.prototype.find@npm:^2.2.2, array.prototype.find@npm:^2.2.3":
   version: 2.2.3
   resolution: "array.prototype.find@npm:2.2.3"
   dependencies:
@@ -5283,18 +5283,6 @@ __metadata:
     es-object-atoms: "npm:^1.0.0"
     es-shim-unscopables: "npm:^1.0.2"
   checksum: 10/8ee81d37de9c8574a94f4773dffa40b4d200deca11b00f7176dcb328a9ddcf75fef117c97ccce1ab8345b7184c107553156908e7dcaf0d42f1a395a04bbe803e
-  languageName: node
-  linkType: hard
-
-"array.prototype.find@npm:^2.1.1, array.prototype.find@npm:^2.2.1, array.prototype.find@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "array.prototype.find@npm:2.2.2"
-  dependencies:
-    call-bind: "npm:^1.0.2"
-    define-properties: "npm:^1.2.0"
-    es-abstract: "npm:^1.22.1"
-    es-shim-unscopables: "npm:^1.0.0"
-  checksum: 10/d6b88bdbbc84851061e3689617748781c85228282ee923b556b70a3ac664bdb016803dc6aaf58666b47b5cdfc52cdb2395114fdc5bac08b69be25504c276840d
   languageName: node
   linkType: hard
 
@@ -20410,7 +20398,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.26.0"
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:9.13.6"
-    array.prototype.find: "npm:^2.2.1"
+    array.prototype.find: "npm:^2.2.3"
     array.prototype.findindex: "npm:^2.2.1"
     babel-loader: "npm:^8.3.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
