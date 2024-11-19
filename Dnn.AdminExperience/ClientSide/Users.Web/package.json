@@ -12,11 +12,11 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.9",
+    "@babel/core": "^7.26.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-transform-react-jsx": "^7.22.5",
-    "@babel/preset-env": "^7.22.9",
-    "@babel/preset-react": "^7.22.5",
+    "@babel/plugin-transform-react-jsx": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9",
     "babel-loader": "^8.3.0",
     "create-react-class": "^15.7.0",
     "css-loader": "^7.1.2",
