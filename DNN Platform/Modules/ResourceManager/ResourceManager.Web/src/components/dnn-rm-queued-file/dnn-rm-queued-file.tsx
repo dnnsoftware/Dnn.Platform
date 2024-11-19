@@ -162,7 +162,7 @@ export class DnnRmQueuedFile {
                 <div class="container">
                     <div class="preview">
                         {this.fileUploadResults && this.fileUploadResults.fileIconUrl &&
-                            <img src={this.fileUploadResults.fileIconUrl} />
+                            <img src={this.fileUploadResults.fileIconUrl} alt={this.fileUploadResults.fileName} />
                         }
                     </div>
                     <div class="file">
@@ -178,14 +178,14 @@ export class DnnRmQueuedFile {
                                 {this.fileUploadResults.alreadyExists &&
                                     [
                                     <dnn-button
-                                        type="primary"
+                                        appearance="primary"
                                         onClick={() => this.handleOvewrite()}
                                     >
                                         {state.localization.Overwrite}
                                     </dnn-button>
                                     ,
                                     <dnn-button
-                                        type="primary"
+                                        appearance="primary"
                                         reversed
                                         onClick={() => this.dismiss()}
                                     >

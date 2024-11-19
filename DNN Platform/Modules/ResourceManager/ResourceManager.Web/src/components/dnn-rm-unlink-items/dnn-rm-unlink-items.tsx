@@ -84,7 +84,7 @@ export class DnnRmUnlinkItems {
         }
         <div class="controls">
           <dnn-button
-            type="primary"
+            appearance="primary"
             reversed
             disabled={this.unlinking}
             onClick={() => this.closeModal()}
@@ -92,7 +92,7 @@ export class DnnRmUnlinkItems {
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
-            type="primary"
+            appearance="primary"
             onClick={() =>this.handleUnlink()}
             disabled={this.unlinking}
           >

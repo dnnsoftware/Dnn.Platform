@@ -6,24 +6,24 @@ ignore:
   commits-before: 2023-01-01T00:00:00
 branches:
   future:
-    regex: future?[/-]
+    regex: ^future?[/-]
     tag: 'alpha'
     increment: Major
     source-branches: []
   development:
-    regex: development
+    regex: ^development$
     tag: 'alpha'
     increment: Major
     source-branches: []
   develop:
-    regex: develop
+    regex: ^develop$
     tag: 'alpha'
     increment: Patch
     is-mainline: true
     source-branches: []
     tracks-release-branches: false
   release:
-    regex: release?[/-]
+    regex: ^release?[/-]
     mode: ContinuousDelivery
     tag: 'rc'
     increment: Patch
