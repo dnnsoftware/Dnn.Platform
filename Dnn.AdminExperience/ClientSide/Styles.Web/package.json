@@ -15,8 +15,13 @@
     "dist/",
     "loader/"
   ],
+  "license": "MIT",
+  "resolutions": {
+    "@timkendrick/monaco-editor": "external"
+  },
   "scripts": {
-    "build": "stencil build --docs && cpy ./dist/**/* ../../Dnn.PersonaBar.Extensions/admin/PersonaBar/Dnn.Styles/scripts",
+    "build": "stencil build --docs",
+    "postbuild": "cpy ./dist/**/* ../../Dnn.PersonaBar.Extensions/admin/PersonaBar/Dnn.Styles/scripts",
     "watch": "stencil build --config stencil.dnn.config.ts --watch",
     "start": "stencil build --dev --watch --serve",
     "generate": "stencil generate"
@@ -24,7 +29,6 @@
   "dependencies": {
     "@stencil/core": "^4.22.2"
   },
-  "license": "MIT",
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.24.1",
     "@stencil/sass": "^3.0.12",
