@@ -2159,20 +2159,23 @@ table.dnnPermissionsGrid tr.dnnGridHeader td.permissionHeader {
 
 .dnnPermissionsGrid>.dnnFormItem>.leftGroup {
     margin-right: 35px;
-    float: left;
+    display: flex;
+    align-items: center;
 }
 
 .dnnPermissionsGrid>.dnnFormItem>.rightGroup {
-    float: left;
+    display: flex;
+    align-items: center;
 }
 
 .dnnPermissionsGrid>.dnnFormItem>.rightGroup>.dnnSecondaryAction {
-    position: absolute;
+    position: relative;
 }
 
 .dnnPermissionsGrid>.dnnFormItem {
     margin-bottom: 18px;
     overflow: auto;
+    display: flex;
 }
 
 .dnnGridHeader td,
