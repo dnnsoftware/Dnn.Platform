@@ -513,12 +513,12 @@ ul.dnnAdminTabNav li a {
 }
 
 ul.dnnAdminTabNav li.ui-tabs-tab a {
-    background: color('tertiary-light');
+    background: color('tertiary');
 }
 
 ul.dnnAdminTabNav li.ui-tabs-active a {
     margin-top: 10px;
-    background: color('primary');
+    background: color('tertiary-light');
 }
 
 /* Panels */
