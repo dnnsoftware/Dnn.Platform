@@ -20,8 +20,7 @@
     "@timkendrick/monaco-editor": "external"
   },
   "scripts": {
-    "build": "stencil build --docs",
-    "postbuild": "cpy ./dist/**/* ../../Dnn.PersonaBar.Extensions/admin/PersonaBar/Dnn.Styles/scripts",
+    "build": "stencil build --docs && node clean-and-copy.js",
     "watch": "stencil build --config stencil.dnn.config.ts --watch",
     "start": "stencil build --dev --watch --serve",
     "generate": "stencil generate"
@@ -32,7 +31,6 @@
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.24.1",
     "@stencil/sass": "^3.0.12",
-    "@types/node": "^22.9.0",
-    "cpy-cli": "^5.0.0"
+    "@types/node": "^22.9.0"
   }
 }
