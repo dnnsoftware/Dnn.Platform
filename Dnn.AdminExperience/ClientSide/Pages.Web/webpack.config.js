@@ -1,6 +1,7 @@
 ﻿const packageJson = require("./package.json");
 const path = require("path");
 const webpack = require("webpack");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
 const settings = require("../../../settings.local.json");
 
@@ -26,12 +27,6 @@ module.exports = (env, argv) => {
         },
         module: {
             rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    use: { loader: "eslint-loader", options: { fix: true } },
-                    enforce: "pre",
-                },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
@@ -114,6 +109,7 @@ module.exports = (env, argv) => {
                 filename: "pages.bundle.js.map",
                 append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Pages/scripts/bundles/pages.bundle.js.map",
             }),
+            new ESLintPlugin({fix: true}),
             ],
         devtool: false,
     };
