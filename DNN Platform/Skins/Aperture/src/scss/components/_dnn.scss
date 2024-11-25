@@ -373,8 +373,8 @@ ul.dnnAdminTabNav li a,
 .dnnSecondaryAction:active,
 a.dnnSecondaryAction:active,
 ul.dnnAdminTabNav li a:active {
-    border-color: color('secondary-contrast');
-    background: color('secondary'); 
+    border-color: color('tertiary-contrast');
+    background: color('tertiary'); 
 }
 
 /* Fix some old forge modules use .dnnPrimaryAction and .dnnSecondaryAction in wrong way */
@@ -512,10 +512,13 @@ ul.dnnAdminTabNav li a {
     border-radius: 3px 3px 0px 0px;
 }
 
+ul.dnnAdminTabNav li.ui-tabs-tab a {
+    background: color('tertiary-light');
+}
+
 ul.dnnAdminTabNav li.ui-tabs-active a {
-    margin-top: -3px;
-    padding: 12px 9px 10px 9px;
-    background: #fff;
+    margin-top: 10px;
+    background: color('tertiary');
 }
 
 /* Panels */
@@ -2159,20 +2162,23 @@ table.dnnPermissionsGrid tr.dnnGridHeader td.permissionHeader {
 
 .dnnPermissionsGrid>.dnnFormItem>.leftGroup {
     margin-right: 35px;
-    float: left;
+    display: flex;
+    align-items: center;
 }
 
 .dnnPermissionsGrid>.dnnFormItem>.rightGroup {
-    float: left;
+    display: flex;
+    align-items: center;
 }
 
 .dnnPermissionsGrid>.dnnFormItem>.rightGroup>.dnnSecondaryAction {
-    position: absolute;
+    position: relative;
 }
 
 .dnnPermissionsGrid>.dnnFormItem {
     margin-bottom: 18px;
     overflow: auto;
+    display: flex;
 }
 
 .dnnGridHeader td,

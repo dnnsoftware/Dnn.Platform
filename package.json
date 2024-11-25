@@ -29,7 +29,7 @@
     "DNN Platform/Skins/Aperture"
   ],
   "devDependencies": {
-    "lerna": "^6.6.2"
+    "lerna": "^8.1.9"
   },
   "scripts": {
     "build": "lerna run build --stream",
