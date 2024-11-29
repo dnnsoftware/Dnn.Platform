@@ -1,0 +1,97 @@
+:host {
+  display: block;
+
+  /* Grid layout */
+  .row {
+    display: block;
+    margin: 0;
+  }
+
+  .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: .5em;
+  }
+
+  /* Panel styling */
+  .panel {
+    border: 1px solid var(--dnn-color-neutral, #ededee);
+    border-radius: 4px;
+  }
+
+  .panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
+    background-color: var(--dnn-color-neutral, #ededee);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  .panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .panel-body {
+    padding: 15px;
+  }
+
+  /* Form styling */
+  .form-horizontal {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  .label {
+    flex: 0 0 20%;
+    max-width: 20%;
+    padding-right: 1em;
+    text-align: right;
+  }
+
+  .input {
+    flex: 1;
+    max-width: 80%;
+  }
+
+  .button {
+    padding: 10px 20px;
+    background-color: var(--dnn-color-primary, #1aaee3);
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  .button-danger {
+    background-color: var(--dnn-color-danger, #d9534f);
+  }
+
+  /* Table styling */
+  .table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  /* Utility */
+  .clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+}

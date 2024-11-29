@@ -2,16 +2,27 @@
   display: block;
 }
 
-dnn-tabs {
-  --color-background: var(--dnn-color-neutral, #ededee);
-  --color-visible: var(--dnn-color-tertiary-light, #1aaee3);
-  // TODO: This should be renamed when this fix is merged into dnn-elements
-  --color-bisible-text: var(--dnn-color-tertiary-contrast, #ffffff);
-  --color-visible-text: var(--dnn-color-tertiary-contrast, #ffffff);
-  --color-text: var(--dnn-color-neutral-contrast, #000000);
-  .tabTitles {
-  }
-  .tab-content {
-    padding: 1rem;
+.container {
+  display: flex;
+  margin: 0 auto;
+  padding: 2rem 0;
+  width: 100%;
+  max-width: 1280px;
+  
+  dnn-tabs {
+    --color-background: var(--dnn-color-neutral, #ededee);
+    --color-visible: var(--dnn-color-tertiary-light, #1aaee3);
+    // TODO: This should be renamed when this fix is merged into dnn-elements
+    --color-bisible-text: var(--dnn-color-tertiary-contrast, #ffffff);
+    --color-visible-text: var(--dnn-color-tertiary-contrast, #ffffff);
+    --color-text: var(--dnn-color-neutral-contrast, #000000);
+
+    width: 100%;
+  
+    .tabTitles {}
+  
+    .tab-content {
+      padding: 1rem;
+    }
   }
 }
