@@ -37,11 +37,11 @@ namespace DotNetNuke.Services.GeneratedImage
             IEnumerable<string> hostAliases =
                 this.portalAliasController
                     .GetPortalAliases().Values.Cast<IPortalAliasInfo>()
-                    .Select(alias => alias.HttpAlias.ToLowerInvariant());
+                    .Select(alias => alias.HttpAlias);
 
             // Extract the host and normalize the path from the incoming URI
-            string uriHost = uri.DnsSafeHost.ToLowerInvariant(); // Just the host (e.g., "mysite.com")
-            string uriPath = uri.LocalPath.TrimEnd('/').ToLowerInvariant(); // Path (e.g., "/siteB")
+            string uriHost = uri.DnsSafeHost; // Just the host (e.g., "mysite.com")
+            string uriPath = uri.LocalPath.TrimEnd('/'); // Path (e.g., "/siteB")
 
             // Split the alias into host and optional path (e.g., "mysite.com/siteB")
             foreach (var alias in hostAliases)
