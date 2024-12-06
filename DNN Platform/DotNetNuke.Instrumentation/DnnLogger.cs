@@ -10,13 +10,15 @@ namespace DotNetNuke.Instrumentation
     using System.Web.Compilation;
     using System.Web.UI;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using log4net;
     using log4net.Core;
     using log4net.Repository;
     using log4net.Util;
 
-    /// <summary>Please use LoggerSource.Instance as a more unit testable way to create loggers.</summary>
-    public sealed class DnnLogger : LoggerWrapperImpl
+    /// <summary>Obsolete, use <see cref="LoggerSource"/> instead.</summary>
+    [DnnDeprecated(9, 13, 7, "Use LoggerSource.Instance", RemovalVersion = 11)]
+    public sealed partial class DnnLogger : LoggerWrapperImpl
     {
         // add custom logging levels (below trace value of 20000)
         private static Level levelLogInfo = new Level(10001, "LogInfo");

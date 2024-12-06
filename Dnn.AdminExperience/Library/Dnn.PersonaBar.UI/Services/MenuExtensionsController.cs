@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class MenuExtensionsController : PersonaBarApiController
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuExtensionsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuExtensionsController));
 
         /// <summary>Retrieve a list of extensions for menu.</summary>
         /// <returns>A response with a collection of extension info.</returns>
