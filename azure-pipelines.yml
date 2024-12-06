@@ -67,9 +67,9 @@ steps:
     path: $(YARN_CACHE_FOLDER)
   
 - task: UseDotNet@2
-  displayName: 'Use .NET 8.x SDK'
+  displayName: 'Use .NET SDK'
   inputs:
-    version: 8.x
+    useGlobalJson: true
 
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'

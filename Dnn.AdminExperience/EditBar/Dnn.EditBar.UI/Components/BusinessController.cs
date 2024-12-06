@@ -4,15 +4,10 @@
 
 namespace Dnn.EditBar.UI.Components
 {
-    using System;
-
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Instrumentation;
 
     public class BusinessController : IUpgradeable
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
-
         /// <inheritdoc/>
         public string UpgradeModule(string version)
         {

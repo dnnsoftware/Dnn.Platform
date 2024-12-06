@@ -17,7 +17,7 @@ namespace DotNetNuke.Entities.Tabs
 
     internal class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(TabWorkflowTracker));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabWorkflowTracker));
         private readonly ITabController tabController;
         private readonly IWorkflowEngine workflowEngine;
         private readonly IWorkflowManager workflowManager;

@@ -5,12 +5,10 @@
 namespace DotNetNuke.Instrumentation
 {
     using System;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
-    using System.Security;
-    using System.Web;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using log4net;
     using log4net.Config;
     using log4net.Core;
@@ -47,7 +45,7 @@ namespace DotNetNuke.Instrumentation
             // add custom logging levels (below trace value of 20000)
             //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
             //            internal static Level LevelLogError = new Level(10002, "LogError");
-            private readonly Type stackBoundary = typeof(DnnLogger);
+            private readonly Type stackBoundary = typeof(Logger);
 
             internal Logger(ILogger logger, Type type)
                 : base(logger)
