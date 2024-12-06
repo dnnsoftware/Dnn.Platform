@@ -16,6 +16,15 @@ updates:
       - "javascript"
       - "Type: Maintenance"
 
+  - package-ecosystem: "dotnet-sdk"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    labels:
+      - ".NET"
+      - "Type: Maintenance"
+
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:

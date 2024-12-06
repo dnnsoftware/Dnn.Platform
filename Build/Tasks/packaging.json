@@ -47,7 +47,11 @@
     "/bin/WebMatrix.WebData.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
     "/bin/WebFormsMvp.dll",
-    "/bin/Microsoft.Web.Infrastructure.dll"
+    "/bin/Microsoft.Web.Infrastructure.dll",
+    "/bin/Newtonsoft.Json.Bson.dll",
+    "/bin/System.Memory.dll",
+    "/bin/System.Threading.Tasks.Extensions",
+    "/bin/System.Runtime.CompilerServices.Unsafe.dll"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],
   "upgradeExclude": [
@@ -61,7 +65,10 @@
     "/Config/DotNetNuke.config",
     "/Install/InstallWizard.aspx",
     "/bin/WebFormsMvp.dll",
-    "/bin/ICSharpCode.SharpZipLib.dll"
+    "/bin/ICSharpCode.SharpZipLib.dll",
+    "/bin/System.Memory.dll",
+    "/bin/System.Threading.Tasks.Extensions.dll",
+    "/bin/System.Runtime.CompilerServices.Unsafe.dll"
   ],
   "symbolsInclude": [
     "/bin/*.pdb",
