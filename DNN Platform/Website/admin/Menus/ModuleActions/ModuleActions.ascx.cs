@@ -113,7 +113,12 @@ namespace DotNetNuke.Admin.Containers
                     this.quickSettings.Controls.Add(control);
 
                     this.DisplayQuickSettings = this.ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
-                    ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "QS_FirstLoad", "False");
+
+                    // If we are displaying settings due to first load, then we need to update the setting to false, this WILL trigger a cache clear for the tab
+                    if (this.DisplayQuickSettings)
+                    {
+                        ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "QS_FirstLoad", "False");
+                    }
 
                     ClientResourceManager.RegisterScript(this.Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
