@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
     public class PersonaBarController : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(PersonaBarController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarController));
 
         private readonly IPersonaBarRepository personaBarRepository;
 
