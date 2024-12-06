@@ -30,7 +30,6 @@ namespace DotNetNuke.Instrumentation
             return new Logger(LogManager.GetLogger(name).Logger, null);
         }
 
-        [DnnDeprecated(9, 13, 7, "Use LoggerSource.Instance", RemovalVersion = 11)]
         private class Logger : LoggerWrapperImpl, ILog
         {
             private const string ConfigFile = "DotNetNuke.log4net.config";
