@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private const string ViewPermissionKey = "VIEW";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetClassLogger(typeof(MenuPermissionController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuPermissionController));
 
         private static readonly IDataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
