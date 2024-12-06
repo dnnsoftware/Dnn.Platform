@@ -1,4 +1,5 @@
 ﻿const webpack = require("webpack");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
@@ -38,12 +39,6 @@ module.exports = (env, argv) => {
         },
         module: {
             rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    enforce: "pre",
-                    use: ["eslint-loader"],
-                },
                 {
                     test: /\.less$/,
                     use: [
@@ -104,6 +99,7 @@ module.exports = (env, argv) => {
                     filename: "licensing.bundle.js.map",
                     append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Licensing/scripts/bundles/licensing.bundle.js.map",
                 }),
+                new ESLintPlugin({fix: true}),
             ],
         devtool: false,
     };
