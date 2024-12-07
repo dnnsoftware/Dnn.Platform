@@ -10,6 +10,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Abstractions.Skins;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -22,6 +23,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
+    using DotNetNuke.UI.Skins;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -41,6 +43,8 @@ namespace DotNetNuke
             services.AddScoped<IEventLogger, EventLogController>();
             services.AddScoped<IEventLogConfigService, EventLogController>();
             services.AddScoped<IEventLogService, EventLogController>();
+
+            services.AddScoped<ISkinService, SkinController>();
 
             services.AddTransient(x => PortalController.Instance);
             services.AddScoped<IHostSettingsService, HostController>();
