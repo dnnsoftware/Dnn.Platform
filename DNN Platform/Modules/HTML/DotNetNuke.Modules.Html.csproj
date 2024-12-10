@@ -143,8 +143,6 @@
     <Compile Include="Components\HtmlTextLogInfo.cs" />
     <Compile Include="Components\HtmlTextUserController.cs" />
     <Compile Include="Components\HtmlTextUserInfo.cs" />
-    <Compile Include="Components\WorkflowStateController.cs" />
-    <Compile Include="Components\WorkflowStateInfo.cs" />
     <Compile Include="Components\WorkflowStatePermissionCollection.cs" />
     <Compile Include="Components\WorkflowStatePermissionController.cs" />
     <Compile Include="Components\WorkflowStatePermissionInfo.cs" />
@@ -222,6 +220,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.05.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\07.02.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />
