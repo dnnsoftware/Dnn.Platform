@@ -1,0 +1,203 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-- Drop Foreign Key FK_HtmlText_WorkflowStates if it exists
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlText_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
+    BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}HtmlText DROP CONSTRAINT FK_HtmlText_WorkflowStates;
+    END
+GO
+
+-- Drop Foreign Key FK_HtmlTextLog_WorkflowStates if it exists
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlTextLog_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
+    BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog DROP CONSTRAINT FK_HtmlTextLog_WorkflowStates;
+    END
+GO
+
+-- Drop Foreign Key FK_WorkflowStates_Workflow if it exists
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_WorkflowStates_Workflow') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}WorkflowStates'))
+    BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WorkflowStates DROP CONSTRAINT FK_WorkflowStates_Workflow;
+    END
+GO
+
+-- Drop Table Workflow if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Workflow') AND type in (N'U'))
+    BEGIN
+        DROP TABLE {databaseOwner}{objectQualifier}Workflow;
+    END
+GO
+
+-- Drop Table WorkflowStates if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}WorkflowStates') AND type in (N'U'))
+    BEGIN
+        DROP TABLE {databaseOwner}{objectQualifier}WorkflowStates;
+    END
+GO
+
+-- Create Foreign Key FK_HtmlText_WorkflowStates if it does not exist
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlText_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
+    BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH NOCHECK
+            ADD CONSTRAINT FK_HtmlText_WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
+    END
+GO
+
+-- Create Foreign Key FK_HtmlTextLog_WorkflowStates if it does not exist
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlTextLog_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
+    BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK
+            ADD CONSTRAINT FK_HtmlTextLog_WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
+    END
+GO
+
+-- Drop Procedure GetAllHtmlText if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetAllHtmlText') AND type in (N'P', N'PC'))
+    BEGIN
+        DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllHtmlText;
+    END
+GO
+
+-- Create Procedure GetAllHtmlText
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAllHtmlText
+    @ModuleID INT
+AS
+BEGIN
+    SELECT dbo.HtmlText.*,
+           dbo.ContentWorkflowStates.*,
+           dbo.ContentWorkflows.WorkflowName,
+           dbo.Users.DisplayName,
+           dbo.Modules.PortalID
+    FROM dbo.HtmlText
+    INNER JOIN dbo.Modules ON dbo.Modules.ModuleID = dbo.HtmlText.ModuleID
+    INNER JOIN dbo.ContentWorkflowStates ON dbo.ContentWorkflowStates.StateID = dbo.HtmlText.StateID
+    INNER JOIN dbo.ContentWorkflows ON dbo.ContentWorkflowStates.WorkflowID = dbo.ContentWorkflows.WorkflowID
+    LEFT OUTER JOIN dbo.Users ON dbo.HtmlText.LastModifiedByUserID = dbo.Users.UserID
+    WHERE dbo.HtmlText.ModuleID = @ModuleID
+    ORDER BY dbo.HtmlText.LastModifiedOnDate DESC
+END
+GO
+
+-- Drop Procedure GetHtmlText if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetHtmlText') AND type in (N'P', N'PC'))
+    BEGIN
+        DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlText;
+    END
+GO
+
+-- Create Procedure GetHtmlText
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetHtmlText
+    @ModuleID INT,
+    @ItemID INT
+AS
+BEGIN
+    SELECT dbo.HtmlText.*,
+           dbo.ContentWorkflowStates.*,
+           dbo.ContentWorkflows.WorkflowName,
+           dbo.Users.DisplayName,
+           dbo.Modules.PortalID
+    FROM dbo.HtmlText
+    INNER JOIN dbo.Modules ON dbo.Modules.ModuleID = dbo.HtmlText.ModuleID
+    INNER JOIN dbo.ContentWorkflowStates ON dbo.ContentWorkflowStates.StateID = dbo.HtmlText.StateID
+    INNER JOIN dbo.ContentWorkflows ON dbo.ContentWorkflowStates.WorkflowID = dbo.ContentWorkflows.WorkflowID
+    LEFT OUTER JOIN dbo.Users ON dbo.HtmlText.LastModifiedByUserID = dbo.Users.UserID
+    WHERE dbo.HtmlText.ModuleID = @ModuleID
+      AND ItemID = @ItemID
+END
+GO
+
+-- Drop Procedure GetHtmlTextLog if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetHtmlTextLog') AND type in (N'P', N'PC'))
+    BEGIN
+        DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextLog;
+    END
+GO
+
+-- Create Procedure GetHtmlTextLog
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextLog
+    @ItemID INT
+AS
+BEGIN
+    SELECT HtmlTextLog.ItemID,
+           HtmlTextLog.StateID,
+           ContentWorkflowStates.StateName,
+           HtmlTextLog.Comment,
+           HtmlTextLog.Approved,
+           HtmlTextLog.CreatedByUserID,
+           Users.DisplayName,
+           HtmlTextLog.CreatedOnDate
+    FROM dbo.HtmlTextLog
+    INNER JOIN dbo.ContentWorkflowStates ON dbo.HtmlTextLog.StateID = dbo.ContentWorkflowStates.StateID
+    LEFT OUTER JOIN dbo.Users ON dbo.HtmlTextLog.CreatedByUserID = dbo.Users.UserID
+    WHERE ItemID = @ItemID
+    ORDER BY HtmlTextLog.CreatedOnDate DESC
+END
+GO
+
+-- Drop Procedure GetHtmlTextUser if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetHtmlTextUser') AND type in (N'P', N'PC'))
+    BEGIN
+        DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextUser;
+    END
+GO
+
+-- Create Procedure GetHtmlTextUser
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextUser
+    @UserID INT
+AS
+BEGIN
+    SELECT HtmlTextUsers.*,
+           ContentWorkflowStates.StateName
+    FROM dbo.HtmlTextUsers
+    INNER JOIN dbo.ContentWorkflowStates ON dbo.HtmlTextUsers.StateID = dbo.ContentWorkflowStates.StateID
+    WHERE HtmlTextUsers.UserID = @UserID
+    ORDER BY HtmlTextUsers.CreatedOnDate ASC
+END
+GO
+
+-- Drop Procedure GetTopHtmlText if it exists
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetTopHtmlText') AND type in (N'P', N'PC'))
+    BEGIN
+        DROP PROCEDURE {databaseOwner}{objectQualifier}GetTopHtmlText;
+    END
+GO
+
+-- Create Procedure GetTopHtmlText
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetTopHtmlText
+    @ModuleID INT,
+    @IsPublished BIT
+AS
+BEGIN
+    SELECT TOP 1 dbo.HtmlText.*,
+                 dbo.ContentWorkflowStates.*,
+                 dbo.ContentWorkflows.WorkflowName,
+                 dbo.Users.DisplayName,
+                 dbo.Modules.PortalID
+    FROM dbo.HtmlText
+    INNER JOIN dbo.Modules ON dbo.Modules.ModuleID = dbo.HtmlText.ModuleID
+    INNER JOIN dbo.ContentWorkflowStates ON dbo.ContentWorkflowStates.StateID = dbo.HtmlText.StateID
+    INNER JOIN dbo.ContentWorkflows ON dbo.ContentWorkflowStates.WorkflowID = dbo.ContentWorkflows.WorkflowID
+    LEFT OUTER JOIN dbo.Users ON dbo.HtmlText.LastModifiedByUserID = dbo.Users.UserID
+    WHERE dbo.HtmlText.ModuleID = @ModuleID
+      AND (IsPublished = @IsPublished OR @IsPublished = 0)
+    ORDER BY dbo.HtmlText.LastModifiedOnDate DESC
+END
+GO
+
+-- Enable constraints after checking existing data
+ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH CHECK CHECK CONSTRAINT FK_HtmlText_WorkflowStates;
+ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH CHECK CHECK CONSTRAINT FK_HtmlTextLog_WorkflowStates;
+GO
