@@ -11,8 +11,12 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Security;
@@ -26,10 +30,9 @@ namespace DotNetNuke.Modules.Html
     public partial class EditHtml : HtmlModuleBase
     {
         private readonly INavigationManager navigationManager;
-
         private readonly HtmlTextController htmlTextController;
         private readonly HtmlTextLogController htmlTextLogController = new HtmlTextLogController();
-        private readonly WorkflowStateController workflowStateController = new WorkflowStateController();
+        private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
 
         public EditHtml()
         {
@@ -40,7 +43,8 @@ namespace DotNetNuke.Modules.Html
         private enum WorkflowType
         {
             DirectPublish = 1,
-            ContentStaging = 2,
+            SaveDraft = 2,
+            ContentApproval = 3,
         }
 
         protected string CurrentView
@@ -125,6 +129,10 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
+        private bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
+
+        private bool IsWorkflowEnabled => this.IsVersioningEnabled && TabWorkflowSettings.Instance.IsWorkflowEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
+
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
@@ -151,7 +159,7 @@ namespace DotNetNuke.Modules.Html
 
             try
             {
-                var htmlContentItemID = -1;
+                var htmlContentItemID = Null.NullInteger;
                 var htmlContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
 
                 if (htmlContent != null)
@@ -161,20 +169,24 @@ namespace DotNetNuke.Modules.Html
 
                 if (!this.Page.IsPostBack)
                 {
-                    var workflowStates = this.workflowStateController.GetWorkflowStates(this.WorkflowID);
+                    var workflow = this.workflowManager.GetWorkflow(this.WorkflowID);
+                    var workflowStates = workflow.States.ToList();
                     var maxVersions = this.htmlTextController.GetMaximumVersionHistory(this.PortalId);
                     var userCanEdit = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
                     this.lblMaxVersions.Text = maxVersions.ToString();
                     this.dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); // min 5, max 10
 
-                    switch (workflowStates.Count)
+                    switch (workflow.WorkflowKey)
                     {
-                        case 1:
+                        case SystemWorkflowManager.DirectPublishWorkflowKey:
                             this.CurrentWorkflowType = WorkflowType.DirectPublish;
                             break;
-                        case 2:
-                            this.CurrentWorkflowType = WorkflowType.ContentStaging;
+                        case SystemWorkflowManager.SaveDraftWorkflowKey:
+                            this.CurrentWorkflowType = WorkflowType.SaveDraft;
+                            break;
+                        case SystemWorkflowManager.ContentAprovalWorkflowKey:
+                            this.CurrentWorkflowType = WorkflowType.ContentApproval;
                             break;
                     }
 
@@ -187,10 +199,9 @@ namespace DotNetNuke.Modules.Html
                     }
                     else
                     {
-                        this.DisplayInitialContent(workflowStates[0] as WorkflowStateInfo);
+                        this.DisplayInitialContent(workflowStates[0]);
                     }
 
-                    this.divPublish.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phCurrentVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phPreviewVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
 
@@ -232,9 +243,9 @@ namespace DotNetNuke.Modules.Html
                 }
 
                 htmlContent.Content = content;
-
-                var draftStateID = this.workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
-                var publishedStateID = this.workflowStateController.GetLastWorkflowStateID(this.WorkflowID);
+                var workflow = this.workflowManager.GetWorkflow(this.WorkflowID);
+                var draftStateID = workflow.FirstState.StateID;
+                var publishedStateID = workflow.LastState.StateID;
 
                 switch (this.CurrentWorkflowType)
                 {
@@ -242,28 +253,12 @@ namespace DotNetNuke.Modules.Html
                         this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
 
                         break;
-                    case WorkflowType.ContentStaging:
-                        if (this.chkPublish.Checked)
+                    case WorkflowType.SaveDraft:
+                    case WorkflowType.ContentApproval:
+                        // if it's already published set it back to draft
+                        if (htmlContent.StateID == publishedStateID)
                         {
-                            // if it's already published set it to draft
-                            if (htmlContent.StateID == publishedStateID)
-                            {
-                                htmlContent.StateID = draftStateID;
-                            }
-                            else
-                            {
-                                htmlContent.StateID = publishedStateID;
-
-                                // here it's in published mode
-                            }
-                        }
-                        else
-                        {
-                            // if it's already published set it back to draft
-                            if (htmlContent.StateID != draftStateID)
-                            {
-                                htmlContent.StateID = draftStateID;
-                            }
+                            htmlContent.StateID = draftStateID;
                         }
 
                         this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
@@ -348,7 +343,7 @@ namespace DotNetNuke.Modules.Html
                         htmlContent.ItemID = -1;
                         htmlContent.ModuleID = this.ModuleId;
                         htmlContent.WorkflowID = this.WorkflowID;
-                        htmlContent.StateID = this.workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
+                        htmlContent.StateID = this.workflowManager.GetWorkflow(this.WorkflowID).FirstState.StateID;
                         this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
                         break;
                     case "preview":
@@ -362,7 +357,7 @@ namespace DotNetNuke.Modules.Html
                     var latestContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
                     if (latestContent == null)
                     {
-                        this.DisplayInitialContent(this.workflowStateController.GetWorkflowStates(this.WorkflowID)[0] as WorkflowStateInfo);
+                        this.DisplayInitialContent(this.workflowManager.GetWorkflow(this.WorkflowID).FirstState);
                     }
                     else
                     {
@@ -604,8 +599,6 @@ namespace DotNetNuke.Modules.Html
             this.cmdSave.Visible = false;
 
             // cmdPreview.Enabled = false;
-            this.divPublish.Visible = false;
-
             this.divSubmittedContent.Visible = true;
 
             this.lblCurrentWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
@@ -631,14 +624,14 @@ namespace DotNetNuke.Modules.Html
 
         /// <summary>Displays the initial content when a module is first added to the page.</summary>
         /// <param name="firstState">The first state.</param>
-        private void DisplayInitialContent(WorkflowStateInfo firstState)
+        private void DisplayInitialContent(WorkflowState firstState)
         {
             this.cmdHistory.Enabled = false;
 
             this.txtContent.Text = this.GetLocalizedString("AddContent");
             this.litPreview.Text = this.GetLocalizedString("AddContent");
-            this.lblCurrentWorkflowInUse.Text = firstState.WorkflowName;
-            this.lblPreviewWorkflowInUse.Text = firstState.WorkflowName;
+            this.lblCurrentWorkflowInUse.Text = this.workflowManager.GetWorkflow(firstState.WorkflowID).WorkflowName;
+            this.lblPreviewWorkflowInUse.Text = this.workflowManager.GetWorkflow(firstState.WorkflowID).WorkflowName;
             this.divPreviewVersion.Visible = false;
 
             this.dnnSitePanelEditHTMLHistory.Visible = false;
@@ -680,7 +673,7 @@ namespace DotNetNuke.Modules.Html
             {
                 htmlContent = new HtmlTextInfo();
                 htmlContent.ItemID = -1;
-                htmlContent.StateID = this.workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
+                htmlContent.StateID = this.workflowManager.GetWorkflow(this.WorkflowID).FirstState.StateID;
                 htmlContent.WorkflowID = this.WorkflowID;
                 htmlContent.ModuleID = this.ModuleId;
             }
