@@ -373,7 +373,9 @@ namespace Dnn.PersonaBar.Themes.Components
             var imageFileName = Path.GetFileName(strImage);
             if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
             {
-                strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
+                // Fix #6263
+                // strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
+                strImage = strImage.Substring(Globals.ApplicationMapPath.Length);
                 strImage = strImage.Replace("\\", "/");
                 return strImage;
             }
@@ -439,7 +441,9 @@ namespace Dnn.PersonaBar.Themes.Components
                 }
             }
 
-            strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
+            // Fix #6263
+            // strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
+            strThumbnail = strThumbnail.Substring(Globals.ApplicationMapPath.Length);
             strThumbnail = strThumbnail.Replace("\\", "/");
 
             // return thumbnail filename
