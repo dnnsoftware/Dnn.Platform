@@ -53,6 +53,11 @@ namespace DotNetNuke.Services.Localization
         /// <inheritdoc/>
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys)
         {
+            return this.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys, out _);
+        }
+
+        public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys, out bool keyFound)
+        {
             // make the default translation property ".Text"
             if (key.IndexOf(".", StringComparison.Ordinal) < 1)
             {
@@ -60,7 +65,7 @@ namespace DotNetNuke.Services.Localization
             }
 
             string resourceValue = Null.NullString;
-            bool keyFound = TryGetStringInternal(key, language, resourceFileRoot, portalSettings, ref resourceValue);
+            keyFound = TryGetStringInternal(key, language, resourceFileRoot, portalSettings, ref resourceValue);
 
             // If the key can't be found then it doesn't exist in the Localization Resources
             if (Localization.ShowMissingKeys && !disableShowMissingKeys)
