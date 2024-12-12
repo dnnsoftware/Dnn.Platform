@@ -22,6 +22,8 @@ namespace DotNetNuke.Services.Localization
 
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys);
 
+        string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys, out bool keyFound);
+
         /// <summary>Saves a string to a resource file.</summary>
         /// <param name="key">The key to save (e.g. "MyWidget.Text").</param>
         /// <param name="value">The text value for the key.</param>

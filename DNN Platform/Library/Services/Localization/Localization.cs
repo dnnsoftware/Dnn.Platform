@@ -780,6 +780,20 @@ namespace DotNetNuke.Services.Localization
             return LocalizationProvider.Instance.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys);
         }
 
+        /// <overloads>One of six overloads.</overloads>
+        /// <summary>GetString gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <param name="resourceFileRoot">The Local Resource root.</param>
+        /// <param name="portalSettings">The current portals Portal Settings.</param>
+        /// <param name="language">A specific language to lookup the string.</param>
+        /// <param name="disableShowMissingKeys">Disables the show missing keys flag.</param>
+        /// <param name="keyFound">Returns whether a ResourceKey exists in the ResourceFile.</param>
+        /// <returns>The localized Text.</returns>
+        public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language, bool disableShowMissingKeys, out bool keyFound)
+        {
+            return LocalizationProvider.Instance.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys, out keyFound);
+        }
+
         /// <summary>GetStringUrl gets the localized string corresponding to the <paramref name="key"/>.</summary>
         /// <param name="key">The resource key to find.</param>
         /// <param name="resourceFileRoot">The Local Resource root.</param>

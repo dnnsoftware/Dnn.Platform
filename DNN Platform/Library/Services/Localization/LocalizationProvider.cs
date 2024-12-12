@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Localization
             return this.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys, out _);
         }
 
+        /// <inheritdoc/>
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys, out bool keyFound)
         {
             // make the default translation property ".Text"
