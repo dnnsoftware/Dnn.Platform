@@ -1048,9 +1048,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 foreach (string key in objProvider.Attributes)
                 {
-                    if(key.Equals("ckeversion", StringComparison.OrdinalIgnoreCase))
+                    if (key.Equals("ckeversion", StringComparison.OrdinalIgnoreCase))
                     {
-                        ckeVersion = objProvider.Attributes[key];
+                        this.ckeVersion = objProvider.Attributes[key];
                     }
 
                     if (key.IndexOf("ck_", StringComparison.OrdinalIgnoreCase) == 0)
