@@ -55,6 +55,7 @@ namespace DNNConnect.CKEditorProvider.Web
         private string toolBarNameOverride;
         private PortalModuleBase portalModule;
         private int parentModulId;
+        private string ckeVersion = "4.18.0";
 
         /// <summary>Initializes a new instance of the <see cref="EditorControl"/> class.</summary>
         public EditorControl()
@@ -1047,6 +1048,11 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 foreach (string key in objProvider.Attributes)
                 {
+                    if(key.Equals("ckeversion", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ckeVersion = objProvider.Attributes[key];
+                    }
+
                     if (key.IndexOf("ck_", StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         string sAdjustedKey = key.Substring(3, key.Length - 3);
@@ -1161,7 +1167,7 @@ namespace DNNConnect.CKEditorProvider.Web
         {
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl($"~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/{this.ckeVersion}/editor.css"));
 
             ClientScriptManager cs = this.Page.ClientScript;
 
@@ -1179,11 +1185,11 @@ namespace DNNConnect.CKEditorProvider.Web
                     this, csType, "jquery_registered", Globals.ResolveUrl(JavaScript.GetJQueryScriptReference()));
             }
 
-            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js"))
+            if (File.Exists(this.Context.Server.MapPath($"~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/{this.ckeVersion}/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {
                 cs.RegisterClientScriptInclude(
-                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js"));
+                    csType, CsName, Globals.ResolveUrl($"~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/{this.ckeVersion}/ckeditor.js"));
             }
 
             if (
