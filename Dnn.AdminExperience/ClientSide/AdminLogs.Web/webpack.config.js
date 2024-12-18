@@ -1,4 +1,5 @@
 ﻿const webpack = require("webpack");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
@@ -28,17 +29,6 @@ module.exports = (env, argv) => {
         },
         module: {
             rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    enforce: "pre",
-                    exclude: /node_modules/,
-                    use: [
-                        {
-                            loader: "eslint-loader",
-                            options: { fix: true },
-                        },
-                    ],
-                },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
@@ -93,7 +83,8 @@ module.exports = (env, argv) => {
             new webpack.SourceMapDevToolPlugin({
                 filename: "adminLogs-bundle.js.map",
                 append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.AdminLogs/scripts/bundles/adminLogs-bundle.js.map"
-            })
+            }),
+            new ESLintPlugin({fix: true}),
             ],
         devtool: false,
     };
