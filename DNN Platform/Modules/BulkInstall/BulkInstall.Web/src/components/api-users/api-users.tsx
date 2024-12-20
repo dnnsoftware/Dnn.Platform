@@ -39,21 +39,16 @@ export class ApiUsers {
               <div class="panel-body">
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <label class="label">Name</label>
-                    <div class="input">
-                      <input type="text" title="Name" placeholder="Enter API User name" value={this.newUser.name} />
-                    </div>
+                    <dnn-input type="text" label="Name" helpText="Enter API User name" required></dnn-input>
                   </div>
                   <div class="form-group">
-                    <label class="label">Bypass IP Allow List</label>
-                    <div class="input">
-                      <input type="checkbox" title="Bypass IP Allow List" checked={this.newUser.bypassIPWhitelist} />
-                    </div>
+                    <label class="label">
+                      <dnn-checkbox checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}></dnn-checkbox>
+                      Bypass IP Allow List
+                    </label>
                   </div>
                   <div class="form-group form-group-last">
-                    <div class="input offset-by-label">
-                      <button type="button" class="button" onClick={() => this.createUser(this.newUser)}>Create</button>
-                    </div>
+                    <dnn-button appearance="primary" onClick={() => this.createUser(this.newUser)}>Create</dnn-button>
                   </div>
                 </div>
   
@@ -85,7 +80,7 @@ export class ApiUsers {
                         <td>{user.apiKey}</td>
                         <td>{user.encryptionKey}</td>
                         <td>{String(user.bypassIPWhitelist)}</td>
-                        <td><button type="button" class="button button-danger" onClick={() => this.deleteUser(user)}>Delete</button></td>
+                        <td><dnn-button appearance="danger" size="small" onClick={() => this.deleteUser(user)}>Delete</dnn-button></td>
                       </tr>
                     ))}
                   </tbody>

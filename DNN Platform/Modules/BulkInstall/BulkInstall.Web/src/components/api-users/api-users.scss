@@ -50,10 +50,10 @@
   }
 
   .label {
-    flex: 0 0 20%;
-    max-width: 20%;
+    display: flex;
     padding-right: 1em;
     text-align: right;
+    align-items: center;
   }
 
   .input {

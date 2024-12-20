@@ -26,7 +26,7 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@dnncommunity/dnn-elements": "^0.23.3",
+    "@dnncommunity/dnn-elements": "^0.24.3",
     "@stencil/core": "^4.7.0",
     "@stencil/sass": "^3.0.9",
     "@stencil/store": "^2.0.13"
