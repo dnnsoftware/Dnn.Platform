@@ -751,10 +751,16 @@ namespace DotNetNuke.Framework
                                      --dnn-color-danger-r: {{styles.ColorDanger.Red}};
                                      --dnn-color-danger-g: {{styles.ColorDanger.Green}};
                                      --dnn-color-danger-b: {{styles.ColorDanger.Blue}};
+
+                                     --dnn-color-surface: #{{styles.ColorSurface.MinifiedHex}};
+                                     --dnn-color-surface-light: #{{styles.ColorSurfaceLight.MinifiedHex}};
+                                     --dnn-color-surface-dark: #{{styles.ColorSurfaceDark.MinifiedHex}};
+                                     --dnn-color-surface-contrast: #{{styles.ColorSurfaceContrast.MinifiedHex}};
              
                                      --dnn-controls-radius: {{styles.ControlsRadius}}px;
                                      --dnn-controls-padding: {{styles.ControlsPadding}}px;
                                      --dnn-base-font-size: {{styles.BaseFontSize}}px;
+                                     --variation-opacity: {{styles.VariationOpacity}};
                                  }
                              </style>
                              """;

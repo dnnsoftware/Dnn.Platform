@@ -174,6 +174,10 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
+        public StyleColor ColorSurface { get; set; } = new StyleColor("DDDDDD");
+
+        /// <inheritdoc/>
+        [PortalSetting]
         public double ControlsRadius { get; set; } = 5;
 
         /// <inheritdoc/>
@@ -183,5 +187,9 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         [PortalSetting]
         public double BaseFontSize { get; set; } = 16;
+
+        /// <inheritdoc/>
+        [PortalSetting]
+        public double VariationOpacity { get; set; } = 0.8;
     }
 }

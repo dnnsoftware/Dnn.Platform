@@ -210,6 +210,27 @@ namespace DotNetNuke.Abstractions.Portals
         StyleColor ColorDangerContrast { get; set; }
 
         /// <summary>
+        /// Gets or sets the color of the surface.
+        /// A surface is an area that is overlaid over the main background (menus, popovers, etc).
+        /// </summary>
+        StyleColor ColorSurface { get; set; }
+
+        /// <summary>
+        /// Gets or sets the light variation of surface color.
+        /// </summary>
+        StyleColor ColorSurfaceLight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dark variation of surface color.
+        /// </summary>
+        StyleColor ColorSurfaceDark { get; set; }
+
+        /// <summary>
+        /// Gets or sets a color that contrasts well over the surface color.
+        /// </summary>
+        StyleColor ColorSurfaceContrast { get; set; }
+
+        /// <summary>
         /// Gets or sets the controls border radius in pixels.
         /// </summary>
         double ControlsRadius { get; set; }
@@ -223,5 +244,11 @@ namespace DotNetNuke.Abstractions.Portals
         /// Gets or sets the base font size in pixels.
         /// </summary>
         double BaseFontSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color variation opacity.
+        /// This can be used to define how opaque a contrasting color should look over another.
+        /// </summary>
+        double VariationOpacity { get; set; }
     }
 }
