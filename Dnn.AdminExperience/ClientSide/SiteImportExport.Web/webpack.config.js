@@ -1,4 +1,5 @@
 ﻿const webpack = require("webpack");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
@@ -36,7 +37,6 @@ module.exports = (env, argv) => {
         },
         module: {
             rules: [
-                //{ test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
@@ -44,9 +44,6 @@ module.exports = (env, argv) => {
                     use: [
                         {
                             loader: "babel-loader",
-                        },
-                        {
-                            loader: "eslint-loader",
                         },
                     ],
                 },
@@ -116,7 +113,8 @@ module.exports = (env, argv) => {
                 new webpack.SourceMapDevToolPlugin({
                     filename: "siteimportexport-bundle.js.map",
                     append: "\r\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.SiteImportExport/scripts/bundles/siteimportexport-bundle.js.map",
-                })
+                }),
+                new ESLintPlugin({fix: true}),
             ],
         devtool: false,
     };

@@ -30,6 +30,26 @@
               <name>System.Web.Http.WebHost.dll</name>
               <version>5.2.8</version>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Newtonsoft.Json.Bson.dll</name>
+              <version>5.2.8</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Newtonsoft.Json.dll</name>
+              <version>13.0.1</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Memory.dll</name>
+              <version>4.5.5</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+              <version>4.5.4</version>
+            </assembly>
           </assemblies>
         </component>
       </components>

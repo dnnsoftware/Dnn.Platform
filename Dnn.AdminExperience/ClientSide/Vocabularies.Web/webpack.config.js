@@ -1,4 +1,5 @@
 ﻿const webpack = require("webpack");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const path = require("path");
 const packageJson = require("./package.json");
 const moduleName = "vocabulary";
@@ -38,12 +39,6 @@ module.exports = (env, argv) => {
 
         module: {
             rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    enforce: "pre",
-                    use: ["eslint-loader"],
-                },
                 {
                     test: /\.less$/,
                     use: [
@@ -104,7 +99,8 @@ module.exports = (env, argv) => {
                 new webpack.SourceMapDevToolPlugin({
                     filename: "vocabulary-bundle.js.map",
                     append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Vocabularies/scripts/bundles/vocabulary-bundle.js.map",
-                })
+                }),
+                new ESLintPlugin({fix: true}),
             ],
         devtool: false,
     };

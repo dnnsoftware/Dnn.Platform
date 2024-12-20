@@ -1,4 +1,5 @@
 const path = require("path");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const settings = require("../../../../../settings.local.json");
 
 module.exports = (env, argv) => {
@@ -23,17 +24,6 @@ module.exports = (env, argv) => {
         },
         module: {
             rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    enforce: "pre",
-                    exclude: /node_modules/,
-                    use: [
-                        {
-                            loader: "eslint-loader",
-                            options: { fix: true },
-                        },
-                    ],
-                },
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
@@ -95,6 +85,9 @@ module.exports = (env, argv) => {
                 fs: false,
             }
         },
+        plugins: [
+            new ESLintPlugin({fix: true}),
+        ],
         devtool: "source-map",
     };
 };
