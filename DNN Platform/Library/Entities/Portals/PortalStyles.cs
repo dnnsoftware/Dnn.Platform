@@ -14,167 +14,179 @@ namespace DotNetNuke.Entities.Portals
     {
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorPrimary { get; set; } = new StyleColor("3792ED");
+        public string ColorPrimary { get; set; } = "3792ED";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorPrimaryLight { get; set; } = new StyleColor("6CB6F3");
+        public string ColorPrimaryLight { get; set; } = "6CB6F3";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorPrimaryDark { get; set; } = new StyleColor("0D569E");
+        public string ColorPrimaryDark { get; set; } = "0D569E";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorPrimaryContrast { get; set; } = new StyleColor("FFFFFF");
+        public string ColorPrimaryContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSecondary { get; set; } = new StyleColor("CCCCCC");
+        public string ColorSecondary { get; set; } = "CCCCCC";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSecondaryLight { get; set; } = new StyleColor("EEEEEE");
+        public string ColorSecondaryLight { get; set; } = "EEEEEE";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSecondaryDark { get; set; } = new StyleColor("AAAAAA");
+        public string ColorSecondaryDark { get; set; } = "AAAAAA";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSecondaryContrast { get; set; } = new StyleColor("222222");
+        public string ColorSecondaryContrast { get; set; } = "222222";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorTertiary { get; set; } = new StyleColor("EAEAEA");
+        public string ColorTertiary { get; set; } = "EAEAEA";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorTertiaryLight { get; set; } = new StyleColor("F2F2F2");
+        public string ColorTertiaryLight { get; set; } = "F2F2F2";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorTertiaryDark { get; set; } = new StyleColor("D8D8D8");
+        public string ColorTertiaryDark { get; set; } = "D8D8D8";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorTertiaryContrast { get; set; } = new StyleColor("333333");
+        public string ColorTertiaryContrast { get; set; } = "333333";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorNeutral { get; set; } = new StyleColor("B2B2B2");
+        public string ColorNeutral { get; set; } = "B2B2B2";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorNeutralLight { get; set; } = new StyleColor("E5E5E5");
+        public string ColorNeutralLight { get; set; } = "E5E5E5";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorNeutralDark { get; set; } = new StyleColor("999999");
+        public string ColorNeutralDark { get; set; } = "999999";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorNeutralContrast { get; set; } = new StyleColor("000000");
+        public string ColorNeutralContrast { get; set; } = "000000";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorBackground { get; set; } = new StyleColor("FFFFFF");
+        public string ColorBackground { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorBackgroundLight { get; set; } = new StyleColor("FFFFFF");
+        public string ColorBackgroundLight { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorBackgroundDark { get; set; } = new StyleColor("999999");
+        public string ColorBackgroundDark { get; set; } = "999999";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorBackgroundContrast { get; set; } = new StyleColor("000000");
+        public string ColorBackgroundContrast { get; set; } = "000000";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorForeground { get; set; } = new StyleColor("000000");
+        public string ColorForeground { get; set; } = "000000";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorForegroundLight { get; set; } = new StyleColor("333333");
+        public string ColorForegroundLight { get; set; } = "333333";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorForegroundDark { get; set; } = new StyleColor("000000");
+        public string ColorForegroundDark { get; set; } = "000000";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorForegroundContrast { get; set; } = new StyleColor("FFFFFF");
+        public string ColorForegroundContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorInfo { get; set; } = new StyleColor("17A2B8");
+        public string ColorInfo { get; set; } = "17A2B8";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorInfoLight { get; set; } = new StyleColor("23B8CF");
+        public string ColorInfoLight { get; set; } = "23B8CF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorInfoDark { get; set; } = new StyleColor("00889E");
+        public string ColorInfoDark { get; set; } = "00889E";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorInfoContrast { get; set; } = new StyleColor("FFFFFF");
+        public string ColorInfoContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSuccess { get; set; } = new StyleColor("28A745");
+        public string ColorSuccess { get; set; } = "28A745";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSuccessLight { get; set; } = new StyleColor("49C25D");
+        public string ColorSuccessLight { get; set; } = "49C25D";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSuccessDark { get; set; } = new StyleColor("00902F");
+        public string ColorSuccessDark { get; set; } = "00902F";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSuccessContrast { get; set; } = new StyleColor("FFFFFF");
+        public string ColorSuccessContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorWarning { get; set; } = new StyleColor("FFC107");
+        public string ColorWarning { get; set; } = "FFC107";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorWarningLight { get; set; } = new StyleColor("FFD42E");
+        public string ColorWarningLight { get; set; } = "FFD42E";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorWarningDark { get; set; } = new StyleColor("E9AD00");
+        public string ColorWarningDark { get; set; } = "E9AD00";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorWarningContrast { get; set; } = new StyleColor("FFFFFF");
+        public string ColorWarningContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorDanger { get; set; } = new StyleColor("DC3545");
+        public string ColorDanger { get; set; } = "DC3545";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorDangerLight { get; set; } = new StyleColor("F14954");
+        public string ColorDangerLight { get; set; } = "F14954";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorDangerDark { get; set; } = new StyleColor("C51535");
+        public string ColorDangerDark { get; set; } = "C51535";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorDangerContrast { get; set; } = new StyleColor("FFFFFF");
+        public string ColorDangerContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public StyleColor ColorSurface { get; set; } = new StyleColor("DDDDDD");
+        public string ColorSurface { get; set; } = "DDDDDD";
+
+        /// <inheritdoc/>
+        [PortalSetting]
+        public string ColorSurfaceLight { get; set; } = "F2F2F2";
+
+        /// <inheritdoc/>
+        [PortalSetting]
+        public string ColorSurfaceDark { get; set; } = "C2C2C2";
+
+        /// <inheritdoc/>
+        [PortalSetting]
+        public string ColorSurfaceContrast { get; set; } = "000000";
 
         /// <inheritdoc/>
         [PortalSetting]

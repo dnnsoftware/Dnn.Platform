@@ -1,28 +1,43 @@
+import { IInitStylesConfig, INotifyOptions } from "../window.dnn";
+
 export default class StylesClient {
     private serviceRoot: string;
+    private headers: Headers;
+    private config: IInitStylesConfig;
 
     constructor() {
         const dnnStyles = window.dnn as unknown as IDnnWrapper;
-        const config = dnnStyles.initStyles();
-        if (!config) {
+        this.config = dnnStyles.initStyles();
+        if (!this.config) {
             throw new Error("dnn.initStyles() is not defined.");
         }
-        if (!config.utility) {
+        if (!this.config.utility) {
             throw new Error("dnn.initStyles().utility is not defined.");
         }
 
-        const sf = config.utility.sf;
+        const sf = this.config.utility.sf;
         sf.moduleRoot = "PersonaBar";
         this.serviceRoot = sf.getServiceRoot();
         this.serviceRoot += "Styles/";
+
+        const headers = new Headers();
+        headers.append("RequestVerificationToken", sf.antiForgeryToken);
+        headers.append("Content-Type", "application/json");
+
+        this.headers = headers;
     }
 
     getStyles(){
-        return new Promise<IDnnStyles>((resolve, reject) => {
+        return new Promise<IPortalStyles>((resolve, reject) => {
             fetch(`${this.serviceRoot}GetStyles`, {
                 method: "GET",
             })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
             .then((response) => {
                 resolve(response);
             })
@@ -31,57 +46,112 @@ export default class StylesClient {
             });
         });
     }
+
+    saveStyles(styles: IPortalStyles){
+        return new Promise<void>((resolve, reject) => {
+            fetch(`${this.serviceRoot}SaveStyles`, {
+                method: "POST",
+                headers: this.headers,
+                body: JSON.stringify(styles),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                resolve();
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        });
+    }
+
+    restoreStyles(){
+        return new Promise<IPortalStyles>((resolve, reject) => {
+            fetch(`${this.serviceRoot}RestoreStyles`, {
+                method: "POST",
+                headers: this.headers,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((response) => {
+                resolve(response);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        });
+    }
+
+    notify(message: string, options?: INotifyOptions){
+        this.config.utility.notify(message, options);
+    }
+
+    notifyError(message: string, options?: INotifyOptions){
+        if (options == undefined) {
+            options = {
+                clickToClose: true,
+            };
+        }
+
+        if (options.clickToClose == undefined) {
+            options.clickToClose = true;
+        }
+
+        this.config.utility.notifyError(message, options);
+    }
 }
-export interface IDnnStyles {
-    ColorPrimary: IDnnColorInfo;
-    ColorPrimaryLight: IDnnColorInfo;
-    ColorPrimaryDark: IDnnColorInfo;
-    ColorPrimaryContrast: IDnnColorInfo;
-    ColorSecondary: IDnnColorInfo;
-    ColorSecondaryLight: IDnnColorInfo;
-    ColorSecondaryDark: IDnnColorInfo;
-    ColorSecondaryContrast: IDnnColorInfo;
-    ColorTertiary: IDnnColorInfo;
-    ColorTertiaryLight: IDnnColorInfo;
-    ColorTertiaryDark: IDnnColorInfo;
-    ColorTertiaryContrast: IDnnColorInfo;
-    ColorNeutral: IDnnColorInfo;
-    ColorNeutralLight: IDnnColorInfo;
-    ColorNeutralDark: IDnnColorInfo;
-    ColorNeutralContrast: IDnnColorInfo;
-    ColorBackground: IDnnColorInfo;
-    ColorBackgroundLight: IDnnColorInfo;
-    ColorBackgroundDark: IDnnColorInfo;
-    ColorBackgroundContrast: IDnnColorInfo;
-    ColorForeground: IDnnColorInfo;
-    ColorForegroundLight: IDnnColorInfo;
-    ColorForegroundDark: IDnnColorInfo;
-    ColorForegroundContrast: IDnnColorInfo;
-    ColorInfo: IDnnColorInfo;
-    ColorInfoLight: IDnnColorInfo;
-    ColorInfoDark: IDnnColorInfo;
-    ColorInfoContrast: IDnnColorInfo;
-    ColorSuccess: IDnnColorInfo;
-    ColorSuccessLight: IDnnColorInfo;
-    ColorSuccessDark: IDnnColorInfo;
-    ColorSuccessContrast: IDnnColorInfo;
-    ColorWarning: IDnnColorInfo;
-    ColorWarningLight: IDnnColorInfo;
-    ColorWarningDark: IDnnColorInfo;
-    ColorWarningContrast: IDnnColorInfo;
-    ColorDanger: IDnnColorInfo;
-    ColorDangerLight: IDnnColorInfo;
-    ColorDangerDark: IDnnColorInfo;
-    ColorDangerContrast: IDnnColorInfo;
+export interface IPortalStyles {
+    ColorPrimary: string;
+    ColorPrimaryLight: string;
+    ColorPrimaryDark: string;
+    ColorPrimaryContrast: string;
+    ColorSecondary: string;
+    ColorSecondaryLight: string;
+    ColorSecondaryDark: string;
+    ColorSecondaryContrast: string;
+    ColorTertiary: string;
+    ColorTertiaryLight: string;
+    ColorTertiaryDark: string;
+    ColorTertiaryContrast: string;
+    ColorNeutral: string;
+    ColorNeutralLight: string;
+    ColorNeutralDark: string;
+    ColorNeutralContrast: string;
+    ColorBackground: string;
+    ColorBackgroundLight: string;
+    ColorBackgroundDark: string;
+    ColorBackgroundContrast: string;
+    ColorForeground: string;
+    ColorForegroundLight: string;
+    ColorForegroundDark: string;
+    ColorForegroundContrast: string;
+    ColorSurface: string;
+    ColorSurfaceLight: string;
+    ColorSurfaceDark: string;
+    ColorSurfaceContrast: string;
+    ColorInfo: string;
+    ColorInfoLight: string;
+    ColorInfoDark: string;
+    ColorInfoContrast: string;
+    ColorSuccess: string;
+    ColorSuccessLight: string;
+    ColorSuccessDark: string;
+    ColorSuccessContrast: string;
+    ColorWarning: string;
+    ColorWarningLight: string;
+    ColorWarningDark: string;
+    ColorWarningContrast: string;
+    ColorDanger: string;
+    ColorDangerLight: string;
+    ColorDangerDark: string;
+    ColorDangerContrast: string;
     ControlsRadius: number;
     ControlsPadding: number;
     BaseFontSize: number;
-}
-
-export interface IDnnColorInfo {
-    Red: number;
-    Green: number;
-    Blue: number;
-    HexValue: string;
-    MinifiedHex: string;
+    VariationOpacity: number;
 }

@@ -11,12 +11,12 @@ namespace Dnn.PersonaBar.Styles.Services
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Api;
 
     /// <summary>
     /// REST API Controller for the Styles module.
     /// </summary>
-    /// <seealso cref="Dnn.PersonaBar.Library.PersonaBarApiController" />
-    [MenuPermission(MenuName = Components.Constants.MenuName)]
+    [MenuPermission(MenuName = Components.Constants.MenuName, Scope = ServiceScope.Admin)]
     public class StylesController : PersonaBarApiController
     {
         /// <summary>
@@ -29,6 +29,34 @@ namespace Dnn.PersonaBar.Styles.Services
             var repo = new PortalStylesRepository();
             var settings = repo.GetSettings(this.PortalId);
             return this.Ok(settings);
+        }
+
+        /// <summary>
+        /// Saves the styles.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <returns>OK.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult SaveStyles(PortalStyles settings)
+        {
+            var repo = new PortalStylesRepository();
+            repo.SaveSettings(this.PortalId, settings);
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Restores the styles to their out-of-box defaults.
+        /// </summary>
+        /// <returns><see cref="PortalStyles"/>.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult RestoreStyles()
+        {
+            var repo = new PortalStylesRepository();
+            var styles = new PortalStyles();
+            repo.SaveSettings(this.PortalId, styles);
+            return this.Ok(styles);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace DotNetNuke.Abstractions.Portals
         {
             AssertIsValidCssColor(hexValue);
 
-            this.HexValue = ExpandColor(hexValue);
+            this.HexValue = hexValue;
             this.red = byte.Parse(this.HexValue.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
             this.green = byte.Parse(this.HexValue.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             this.blue = byte.Parse(this.HexValue.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
@@ -88,43 +88,8 @@ namespace DotNetNuke.Abstractions.Portals
             set
             {
                 AssertIsValidCssColor(value);
-                this.hex = ExpandColor(value);
+                this.hex = value;
             }
-        }
-
-        /// <summary>
-        /// Gets a minified hexadecimal value for the color.
-        /// </summary>
-        /// <example>If the color is 0088FF, it should return 08F.</example>
-        public string MinifiedHex
-        {
-            get
-            {
-                if (
-                    this.hex[0] == this.hex[1] &&
-                    this.hex[2] == this.hex[3] &&
-                    this.hex[4] == this.hex[5])
-                {
-                    return $"{this.hex[0]}{this.hex[2]}{this.hex[4]}";
-                }
-
-                return this.hex;
-            }
-        }
-
-        private static string ExpandColor(string hexValue)
-        {
-            if (hexValue.Length == 6)
-            {
-                return hexValue.ToUpperInvariant();
-            }
-
-            string value;
-            var r = hexValue[0];
-            var g = hexValue[1];
-            var b = hexValue[2];
-            value = string.Concat(r, r, g, g, b, b);
-            return value.ToUpperInvariant();
         }
 
         private static void AssertIsValidCssColor(string hexValue)

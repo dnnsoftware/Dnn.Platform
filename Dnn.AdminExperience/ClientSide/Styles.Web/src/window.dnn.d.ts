@@ -5,9 +5,9 @@ declare global {
 }
 
 export interface IInitStylesConfig {
-    moduleName?: string;
-    params?: IParams;
-    utility?: IUtility;
+    moduleName: string;
+    params: IParams;
+    utility: IUtility;
 }
 
 interface IParams {
@@ -32,6 +32,8 @@ interface IPermissionsDictionary{
 interface IUtility {
     resx: IResx;
     sf: IServicesFramework;
+    notify: (message: string, options?: INotifyOptions) => void;
+    notifyError: (message: string, options?: INotifyOptions) => void;
 }
 
 interface IResx {
@@ -59,17 +61,22 @@ interface IStylesResx {
     ForegroundColor: string;
     ForegroundColorHelp: string;
     GeneralColors: string;
+    GetStylesError: string;
     InformationColor: string;
     InformationColorHelp: string;
     ModuleDescription: string;
     nav_Styles: string;
     NeutralColor: string;
     NeutralColorHelp: string;
+    No: string;
     PrimaryColor: string;
     PrimaryColorHelp: string;
+    Reset: any;
     RestoreDefault: string;
     RestoreDefaultMessage: string;
     Save: string;
+    SaveError: any;
+    SaveSuccess: any;
     SecondaryColor: string;
     SecondaryColorHelp: string;
     SuccessColor: string;
@@ -81,10 +88,19 @@ interface IStylesResx {
     Typography: string;
     WarningColor: string;
     WarningColorHelp: string;
+    Yes: string;
 }
 
 interface IServicesFramework {
+    antiForgeryToken: string;
     getServiceRoot(): string;
     moduleRoot: string;
     controller: string;
+}
+
+interface INotifyOptions {
+    timeout?: number;
+    clickToClose?: boolean;
+    closeButtonText?: string;
+    type?: "notify" | "error";
 }
