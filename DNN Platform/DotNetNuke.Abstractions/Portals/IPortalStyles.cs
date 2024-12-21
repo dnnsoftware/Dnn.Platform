@@ -10,6 +10,11 @@ namespace DotNetNuke.Abstractions.Portals
     public interface IPortalStyles
     {
         /// <summary>
+        /// Gets or sets a value indicating whether the site admins can edit the styles.
+        /// </summary>
+        bool AllowAdminEdits { get; set; }
+
+        /// <summary>
         /// Gets or sets the main shade of the primary color.
         /// </summary>
         string ColorPrimary { get; set; }

@@ -14,6 +14,10 @@ namespace DotNetNuke.Entities.Portals
     {
         /// <inheritdoc/>
         [PortalSetting]
+        public bool AllowAdminEdits { get; set; } = false;
+
+        /// <inheritdoc/>
+        [PortalSetting]
         public string ColorPrimary { get; set; } = "3792ED";
 
         /// <inheritdoc/>

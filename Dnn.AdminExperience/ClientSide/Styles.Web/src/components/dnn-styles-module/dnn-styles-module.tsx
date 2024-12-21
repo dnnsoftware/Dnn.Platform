@@ -12,6 +12,7 @@ export class DnnStylesModule {
   @State() resx: IStylesResx;
   @State() originalStyles: IPortalStyles;
   @State() styles: IPortalStyles;
+  @State() isHost: boolean = false;
 
   @Element() el!: HTMLDnnStylesModuleElement;
 
@@ -64,6 +65,7 @@ export class DnnStylesModule {
         alert(this.resx?.GetStylesError);
         console.error(error);
       });
+    this.isHost = this.stylesClient.isHostUser;
   }
 
   private handleColorChange(colorName: ColorNames, detail: DnnColorInfo): void {
@@ -295,6 +297,19 @@ export class DnnStylesModule {
                     onValueChange={e => this.styles={...this.styles, BaseFontSize: e.detail as number}}
                   />
               </div>
+            </div>
+          }
+          {this.isHost &&
+            <div class="permissions-section">
+              <h3>{this.resx?.Permissions}</h3>
+              <label>
+                <dnn-toggle
+                  checked={this.styles?.AllowAdminEdits}
+                  onCheckChanged={e => this.styles={...this.styles, AllowAdminEdits: e.detail.checked}}
+                />
+                {this.resx?.AllowAdminEdits}
+              </label>
+              <em>{this.resx.AllowAdminEditsHelp}</em>
             </div>
           }
           <div class="controls">

@@ -11,6 +11,7 @@
 
 - dnn-color-input
 - dnn-input
+- dnn-toggle
 - dnn-button
 
 ### Graph
@@ -18,6 +19,7 @@
 graph TD;
   dnn-styles-module --> dnn-color-input
   dnn-styles-module --> dnn-input
+  dnn-styles-module --> dnn-toggle
   dnn-styles-module --> dnn-button
   dnn-color-input --> dnn-fieldset
   dnn-color-input --> dnn-modal

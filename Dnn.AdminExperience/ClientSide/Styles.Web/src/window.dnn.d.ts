@@ -42,6 +42,8 @@ interface IResx {
 
 interface IStylesResx {
     ActionColors: string;
+    AllowAdminEdits: any;
+    AllowAdminEditsHelp: any;
     BackgroundColor: string;
     BackgroundColorHelp: string;
     BaseFontSize: string;
@@ -69,6 +71,7 @@ interface IStylesResx {
     NeutralColor: string;
     NeutralColorHelp: string;
     No: string;
+    Permissions: any;
     PrimaryColor: string;
     PrimaryColorHelp: string;
     Reset: any;

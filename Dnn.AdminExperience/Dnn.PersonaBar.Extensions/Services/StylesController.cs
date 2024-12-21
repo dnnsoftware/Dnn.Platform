@@ -4,13 +4,12 @@
 
 namespace Dnn.PersonaBar.Styles.Services
 {
-    using System.Threading;
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -26,6 +25,11 @@ namespace Dnn.PersonaBar.Styles.Services
         [HttpGet]
         public IHttpActionResult GetStyles()
         {
+            if (!this.CanEdit())
+            {
+                return this.Unauthorized();
+            }
+
             var repo = new PortalStylesRepository();
             var settings = repo.GetSettings(this.PortalId);
             return this.Ok(settings);
@@ -40,6 +44,11 @@ namespace Dnn.PersonaBar.Styles.Services
         [ValidateAntiForgeryToken]
         public IHttpActionResult SaveStyles(PortalStyles settings)
         {
+            if (!this.CanEdit())
+            {
+                return this.Unauthorized();
+            }
+
             var repo = new PortalStylesRepository();
             repo.SaveSettings(this.PortalId, settings);
             return this.Ok();
@@ -53,10 +62,31 @@ namespace Dnn.PersonaBar.Styles.Services
         [ValidateAntiForgeryToken]
         public IHttpActionResult RestoreStyles()
         {
+            if (!this.CanEdit())
+            {
+                return this.Unauthorized();
+            }
+
             var repo = new PortalStylesRepository();
             var styles = new PortalStyles();
             repo.SaveSettings(this.PortalId, styles);
             return this.Ok(styles);
+        }
+
+        private bool CanEdit()
+        {
+            if (this.UserInfo.IsSuperUser)
+            {
+                return true;
+            }
+
+            var allowAdminEdits = PortalController.Instance.GetCurrentSettings().GetStyles().AllowAdminEdits;
+            if (this.UserInfo.IsAdmin && allowAdminEdits)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

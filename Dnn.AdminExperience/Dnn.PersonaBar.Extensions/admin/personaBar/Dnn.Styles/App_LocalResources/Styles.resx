@@ -261,4 +261,13 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="AllowAdminEdits" xml:space="preserve">
+    <value>Allow Admin Edits</value>
+  </data>
+  <data name="AllowAdminEditsHelp" xml:space="preserve">
+    <value>If enabled, administrators of the site will be able to edit the styles for their site.</value>
+  </data>
 </root>

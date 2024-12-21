@@ -8,6 +8,16 @@
   --columns: 3;
 }
 
+p {
+  margin-top: 0;
+}
+
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #666;
+}
+
 .sections {
   display: grid;
   gap: 1rem;
@@ -15,14 +25,17 @@
   .section {
     display: flex;
     flex-direction: column;
-    h3 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid #666;
-    }
     dnn-color-input{
       height: 6rem;
     }
+  }
+}
+
+.permissions-section{
+  label{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 
@@ -30,4 +43,5 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 1rem;
 }

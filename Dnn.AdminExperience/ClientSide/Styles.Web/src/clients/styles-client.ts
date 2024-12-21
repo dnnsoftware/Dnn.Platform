@@ -4,6 +4,7 @@ export default class StylesClient {
     private serviceRoot: string;
     private headers: Headers;
     private config: IInitStylesConfig;
+    private isHost: boolean = false;
 
     constructor() {
         const dnnStyles = window.dnn as unknown as IDnnWrapper;
@@ -25,6 +26,12 @@ export default class StylesClient {
         headers.append("Content-Type", "application/json");
 
         this.headers = headers;
+
+        this.isHost = this.config?.params?.settings?.isHost ?? false;
+    }
+
+    public get isHostUser(): boolean {
+        return this.isHost;
     }
 
     getStyles(){
@@ -106,6 +113,7 @@ export default class StylesClient {
     }
 }
 export interface IPortalStyles {
+    AllowAdminEdits: boolean;
     ColorPrimary: string;
     ColorPrimaryLight: string;
     ColorPrimaryDark: string;
