@@ -7,7 +7,7 @@ namespace Dnn.PersonaBar.Library
     using Dnn.PersonaBar.Library.Controllers;
 
     using DotNetNuke.DependencyInjection;
-
+    using DotNetNuke.Entities.Users;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Register services used by the Persona Bar library.</summary>
