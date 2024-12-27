@@ -1,4 +1,4 @@
-# api-users
+# ip-safelist
 
 
 
@@ -14,20 +14,20 @@
 ### Depends on
 
 - dnn-input
-- dnn-checkbox
 - dnn-button
+- dnn-toggle
 
 ### Graph
 ```mermaid
 graph TD;
-  api-users --> dnn-input
-  api-users --> dnn-checkbox
-  api-users --> dnn-button
+  ip-safelist --> dnn-input
+  ip-safelist --> dnn-button
+  ip-safelist --> dnn-toggle
   dnn-input --> dnn-fieldset
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
-  dnn-bulk-install --> api-users
-  style api-users fill:#f9f,stroke:#333,stroke-width:4px
+  dnn-bulk-install --> ip-safelist
+  style ip-safelist fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

@@ -40,18 +40,13 @@ export class ApiUsers {
                 <div class="form-horizontal">
                   <div class="form-group">
                     <dnn-input type="text" label="Name" helpText="Enter API User name" required></dnn-input>
-                  </div>
-                  <div class="form-group">
-                    <label class="label">
+                    <label>
                       <dnn-checkbox checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}></dnn-checkbox>
                       Bypass IP Allow List
                     </label>
-                  </div>
-                  <div class="form-group form-group-last">
                     <dnn-button appearance="primary" onClick={() => this.createUser(this.newUser)}>Create</dnn-button>
                   </div>
                 </div>
-  
                 <div class="clearfix"></div>
               </div>
             </div>
@@ -70,7 +65,7 @@ export class ApiUsers {
                       <th>API Key</th>
                       <th>Encryption Key</th>
                       <th>Bypass IP Allow List</th>
-                      <th></th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
