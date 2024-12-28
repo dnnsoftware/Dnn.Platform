@@ -255,5 +255,10 @@ namespace DotNetNuke.Abstractions.Portals
         /// This can be used to define how opaque a contrasting color should look over another.
         /// </summary>
         double VariationOpacity { get; set; }
+
+        /// <summary>
+        /// Gets the name of the css file.
+        /// </summary>
+        string FileName { get; }
     }
 }

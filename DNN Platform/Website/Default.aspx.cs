@@ -377,21 +377,6 @@ namespace DotNetNuke.Framework
             base.Render(writer);
         }
 
-        private static string GetRed(string hexValue)
-        {
-            return int.Parse(hexValue.Substring(0, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
-        }
-
-        private static string GetGreen(string hexValue)
-        {
-            return int.Parse(hexValue.Substring(2, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
-        }
-
-        private static string GetBlue(string hexValue)
-        {
-            return int.Parse(hexValue.Substring(4, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
-        }
-
         /// <summary>
         /// Initializes the page.
         /// </summary>
@@ -630,8 +615,6 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            this.CssCustomProperties.Text = this.GenerateCssCustomProperties();
-
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
@@ -639,6 +622,10 @@ namespace DotNetNuke.Framework
                     $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
                 this.Title += versionString;
             }
+
+            // register css variables
+            var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
+            ClientResourceManager.RegisterStyleSheet(this, cssVariablesStyleSheet, FileOrder.Css.DefaultCss);
 
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
@@ -669,120 +656,6 @@ namespace DotNetNuke.Framework
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
                 ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
             }
-        }
-
-        private string GenerateCssCustomProperties()
-        {
-            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
-            var cacheArgs = new CacheItemArgs(
-                cacheKey,
-                DataCache.PortalStylesCacheTimeOut,
-                DataCache.PortalStylesCachePriority,
-                this.PortalSettings.GetStyles());
-            return DataCache.GetCachedData<string>(
-                cacheArgs,
-                static args =>
-                {
-                    var styles = (IPortalStyles)args.Params[0];
-                    return $$"""
-                             <style type="text/css">
-                                 :root {
-                                     --dnn-color-primary: #{{styles.ColorPrimary}};
-                                     --dnn-color-primary-light: #{{styles.ColorPrimaryLight}};
-                                     --dnn-color-primary-dark: #{{styles.ColorPrimaryDark}};
-                                     --dnn-color-primary-contrast: #{{styles.ColorPrimaryContrast}};
-                                     --dnn-color-primary-r: {{GetRed(styles.ColorPrimary)}};
-                                     --dnn-color-primary-g: {{GetGreen(styles.ColorPrimary)}};
-                                     --dnn-color-primary-b: {{GetBlue(styles.ColorPrimary)}};
-                                     
-                                     --dnn-color-secondary: #{{styles.ColorSecondary}};
-                                     --dnn-color-secondary-light: #{{styles.ColorSecondaryLight}};
-                                     --dnn-color-secondary-dark: #{{styles.ColorSecondaryDark}};
-                                     --dnn-color-secondary-contrast: #{{styles.ColorSecondaryContrast}};
-                                     --dnn-color-secondary-r: {{GetRed(styles.ColorSecondary)}};
-                                     --dnn-color-secondary-g: {{GetGreen(styles.ColorSecondary)}};
-                                     --dnn-color-secondary-b: {{GetBlue(styles.ColorSecondary)}};
-                                     
-                                     --dnn-color-tertiary: #{{styles.ColorTertiary}};
-                                     --dnn-color-tertiary-light: #{{styles.ColorTertiaryLight}};
-                                     --dnn-color-tertiary-dark: #{{styles.ColorTertiaryDark}};
-                                     --dnn-color-tertiary-contrast: #{{styles.ColorTertiaryContrast}};
-                                     --dnn-color-tertiary-r: {{GetRed(styles.ColorTertiary)}};
-                                     --dnn-color-tertiary-g: {{GetGreen(styles.ColorTertiary)}};
-                                     --dnn-color-tertiary-b: {{GetBlue(styles.ColorTertiary)}};
-                                     
-                                     --dnn-color-neutral: #{{styles.ColorNeutral}};
-                                     --dnn-color-neutral-light: #{{styles.ColorNeutralLight}};
-                                     --dnn-color-neutral-dark: #{{styles.ColorNeutralDark}};
-                                     --dnn-color-neutral-contrast: #{{styles.ColorNeutralContrast}};
-                                     --dnn-color-neutral-r: {{GetRed(styles.ColorNeutral)}};
-                                     --dnn-color-neutral-g: {{GetGreen(styles.ColorNeutral)}};
-                                     --dnn-color-neutral-b: {{GetBlue(styles.ColorNeutral)}};
-                                     
-                                     --dnn-color-background: #{{styles.ColorBackground}};
-                                     --dnn-color-background-light: #{{styles.ColorBackgroundLight}};
-                                     --dnn-color-background-dark: #{{styles.ColorBackgroundDark}};
-                                     --dnn-color-background-contrast: #{{styles.ColorBackgroundContrast}};
-                                     --dnn-color-background-r: {{GetRed(styles.ColorBackground)}};
-                                     --dnn-color-background-g: {{GetGreen(styles.ColorBackground)}};
-                                     --dnn-color-background-b: {{GetBlue(styles.ColorBackground)}};
-                                     
-                                     --dnn-color-foreground: #{{styles.ColorForeground}};
-                                     --dnn-color-foreground-light: #{{styles.ColorForegroundLight}};
-                                     --dnn-color-foreground-dark: #{{styles.ColorForegroundDark}};
-                                     --dnn-color-foreground-contrast: #{{styles.ColorForegroundContrast}};
-                                     --dnn-color-foreground-r: {{GetRed(styles.ColorForeground)}};
-                                     --dnn-color-foreground-g: {{GetGreen(styles.ColorForeground)}};
-                                     --dnn-color-foreground-b: {{GetBlue(styles.ColorForeground)}};
-             
-                                     --dnn-color-info: #{{styles.ColorInfo}};
-                                     --dnn-color-info-light: #{{styles.ColorInfoLight}};
-                                     --dnn-color-info-dark: #{{styles.ColorInfoDark}};
-                                     --dnn-color-info-contrast: #{{styles.ColorInfoContrast}};
-                                     --dnn-color-info-r: {{GetRed(styles.ColorInfo)}};
-                                     --dnn-color-info-g: {{GetGreen(styles.ColorInfo)}};
-                                     --dnn-color-info-b: {{GetBlue(styles.ColorInfo)}};
-             
-                                     --dnn-color-success: #{{styles.ColorSuccess}};
-                                     --dnn-color-success-light: #{{styles.ColorSuccessLight}};
-                                     --dnn-color-success-dark: #{{styles.ColorSuccessDark}};
-                                     --dnn-color-success-contrast: #{{styles.ColorSuccessContrast}};
-                                     --dnn-color-success-r: {{GetRed(styles.ColorSuccess)}};
-                                     --dnn-color-success-g: {{GetGreen(styles.ColorSuccess)}};
-                                     --dnn-color-success-b: {{GetBlue(styles.ColorSuccess)}};
-             
-                                     --dnn-color-warning: #{{styles.ColorWarning}};
-                                     --dnn-color-warning-light: #{{styles.ColorWarningLight}};
-                                     --dnn-color-warning-dark: #{{styles.ColorWarningDark}};
-                                     --dnn-color-warning-contrast: #{{styles.ColorWarningContrast}};
-                                     --dnn-color-warning-r: {{GetRed(styles.ColorWarning)}};
-                                     --dnn-color-warning-g: {{GetGreen(styles.ColorWarning)}};
-                                     --dnn-color-warning-b: {{GetBlue(styles.ColorWarning)}};
-             
-                                     --dnn-color-danger: #{{styles.ColorDanger}};
-                                     --dnn-color-danger-light: #{{styles.ColorDangerLight}};
-                                     --dnn-color-danger-dark: #{{styles.ColorDangerDark}};
-                                     --dnn-color-danger-contrast: #{{styles.ColorDangerContrast}};
-                                     --dnn-color-danger-r: {{GetRed(styles.ColorDanger)}};
-                                     --dnn-color-danger-g: {{GetGreen(styles.ColorDanger)}};
-                                     --dnn-color-danger-b: {{GetBlue(styles.ColorDanger)}};
-
-                                     --dnn-color-surface: #{{styles.ColorSurface}};
-                                     --dnn-color-surface-light: #{{styles.ColorSurfaceLight}};
-                                     --dnn-color-surface-dark: #{{styles.ColorSurfaceDark}};
-                                     --dnn-color-surface-contrast: #{{styles.ColorSurfaceContrast}};
-                                     --dnn-color-surface-r: {{GetRed(styles.ColorSurface)}};
-                                     --dnn-color-surface-g: {{GetGreen(styles.ColorSurface)}};
-                                     --dnn-color-surface-b: {{GetBlue(styles.ColorSurface)}};
-             
-                                     --dnn-controls-radius: {{styles.ControlsRadius}}px;
-                                     --dnn-controls-padding: {{styles.ControlsPadding}}px;
-                                     --dnn-base-font-size: {{styles.BaseFontSize}}px;
-                                     --variation-opacity: {{styles.VariationOpacity}};
-                                 }
-                             </style>
-                             """;
-                });
         }
 
         /// <summary>
@@ -885,6 +758,42 @@ namespace DotNetNuke.Framework
         {
             var styleSheet = itemArgs.Params[0].ToString();
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, styleSheet);
+        }
+
+        private string GetCssVariablesStylesheet()
+        {
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheArgs = new CacheItemArgs(
+                cacheKey,
+                DataCache.PortalCacheTimeOut,
+                DataCache.PortalCachePriority,
+                this.PortalSettings.GetStyles());
+            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            return filePath;
+        }
+
+        private string GetCssVariablesStylesheetCallback(CacheItemArgs args)
+        {
+            var portalStyles = (PortalStyles)args.Params[0];
+
+            var directory = this.PortalSettings.HomeSystemDirectoryMapPath;
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var webPath = $"{this.PortalSettings.HomeSystemDirectory}{portalStyles.FileName}";
+
+            var physicalPath = $"{directory}{portalStyles.FileName}";
+            if (File.Exists(physicalPath))
+            {
+                return webPath;
+            }
+
+            var styles = portalStyles.ToString();
+            File.WriteAllText(physicalPath, styles);
+
+            return webPath;
         }
     }
 }

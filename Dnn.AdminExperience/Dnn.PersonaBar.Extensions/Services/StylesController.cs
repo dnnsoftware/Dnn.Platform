@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Styles.Services
 {
+    using System.IO;
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library;
@@ -50,10 +51,19 @@ namespace Dnn.PersonaBar.Styles.Services
                 return this.Unauthorized();
             }
 
+            // Save to database
             var repo = new PortalStylesRepository();
             repo.SaveSettings(this.PortalId, settings);
+
+            // Clear cache
             var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalId);
             DataCache.RemoveCache(cacheKey);
+
+            // Overwrite the file
+            var path = $"{this.PortalSettings.HomeSystemDirectoryMapPath}{settings.FileName}";
+            var styles = settings.ToString();
+            File.WriteAllText(path, styles);
+
             return this.Ok();
         }
 

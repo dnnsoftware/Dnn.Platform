@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Entities.Portals
 {
+    using System.Globalization;
+
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules.Settings;
 
@@ -207,5 +209,129 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         [PortalSetting]
         public double VariationOpacity { get; set; } = 0.8;
+
+        /// <inheritdoc/>
+        public string FileName => "dnn-css-variables.css";
+
+        /// <summary>
+        /// Converts the styles into a css string.
+        /// </summary>
+        /// <returns>
+        /// A string representing the css properties.
+        /// </returns>
+        public override string ToString()
+        {
+            return $$"""
+                :root {
+                    --dnn-color-primary: #{{this.ColorPrimary}};
+                    --dnn-color-primary-light: #{{this.ColorPrimaryLight}};
+                    --dnn-color-primary-dark: #{{this.ColorPrimaryDark}};
+                    --dnn-color-primary-contrast: #{{this.ColorPrimaryContrast}};
+                    --dnn-color-primary-r: {{GetRed(this.ColorPrimary)}};
+                    --dnn-color-primary-g: {{GetGreen(this.ColorPrimary)}};
+                    --dnn-color-primary-b: {{GetBlue(this.ColorPrimary)}};
+                        
+                    --dnn-color-secondary: #{{this.ColorSecondary}};
+                    --dnn-color-secondary-light: #{{this.ColorSecondaryLight}};
+                    --dnn-color-secondary-dark: #{{this.ColorSecondaryDark}};
+                    --dnn-color-secondary-contrast: #{{this.ColorSecondaryContrast}};
+                    --dnn-color-secondary-r: {{GetRed(this.ColorSecondary)}};
+                    --dnn-color-secondary-g: {{GetGreen(this.ColorSecondary)}};
+                    --dnn-color-secondary-b: {{GetBlue(this.ColorSecondary)}};
+                        
+                    --dnn-color-tertiary: #{{this.ColorTertiary}};
+                    --dnn-color-tertiary-light: #{{this.ColorTertiaryLight}};
+                    --dnn-color-tertiary-dark: #{{this.ColorTertiaryDark}};
+                    --dnn-color-tertiary-contrast: #{{this.ColorTertiaryContrast}};
+                    --dnn-color-tertiary-r: {{GetRed(this.ColorTertiary)}};
+                    --dnn-color-tertiary-g: {{GetGreen(this.ColorTertiary)}};
+                    --dnn-color-tertiary-b: {{GetBlue(this.ColorTertiary)}};
+                        
+                    --dnn-color-neutral: #{{this.ColorNeutral}};
+                    --dnn-color-neutral-light: #{{this.ColorNeutralLight}};
+                    --dnn-color-neutral-dark: #{{this.ColorNeutralDark}};
+                    --dnn-color-neutral-contrast: #{{this.ColorNeutralContrast}};
+                    --dnn-color-neutral-r: {{GetRed(this.ColorNeutral)}};
+                    --dnn-color-neutral-g: {{GetGreen(this.ColorNeutral)}};
+                    --dnn-color-neutral-b: {{GetBlue(this.ColorNeutral)}};
+                        
+                    --dnn-color-background: #{{this.ColorBackground}};
+                    --dnn-color-background-light: #{{this.ColorBackgroundLight}};
+                    --dnn-color-background-dark: #{{this.ColorBackgroundDark}};
+                    --dnn-color-background-contrast: #{{this.ColorBackgroundContrast}};
+                    --dnn-color-background-r: {{GetRed(this.ColorBackground)}};
+                    --dnn-color-background-g: {{GetGreen(this.ColorBackground)}};
+                    --dnn-color-background-b: {{GetBlue(this.ColorBackground)}};
+                        
+                    --dnn-color-foreground: #{{this.ColorForeground}};
+                    --dnn-color-foreground-light: #{{this.ColorForegroundLight}};
+                    --dnn-color-foreground-dark: #{{this.ColorForegroundDark}};
+                    --dnn-color-foreground-contrast: #{{this.ColorForegroundContrast}};
+                    --dnn-color-foreground-r: {{GetRed(this.ColorForeground)}};
+                    --dnn-color-foreground-g: {{GetGreen(this.ColorForeground)}};
+                    --dnn-color-foreground-b: {{GetBlue(this.ColorForeground)}};
+                
+                    --dnn-color-info: #{{this.ColorInfo}};
+                    --dnn-color-info-light: #{{this.ColorInfoLight}};
+                    --dnn-color-info-dark: #{{this.ColorInfoDark}};
+                    --dnn-color-info-contrast: #{{this.ColorInfoContrast}};
+                    --dnn-color-info-r: {{GetRed(this.ColorInfo)}};
+                    --dnn-color-info-g: {{GetGreen(this.ColorInfo)}};
+                    --dnn-color-info-b: {{GetBlue(this.ColorInfo)}};
+                
+                    --dnn-color-success: #{{this.ColorSuccess}};
+                    --dnn-color-success-light: #{{this.ColorSuccessLight}};
+                    --dnn-color-success-dark: #{{this.ColorSuccessDark}};
+                    --dnn-color-success-contrast: #{{this.ColorSuccessContrast}};
+                    --dnn-color-success-r: {{GetRed(this.ColorSuccess)}};
+                    --dnn-color-success-g: {{GetGreen(this.ColorSuccess)}};
+                    --dnn-color-success-b: {{GetBlue(this.ColorSuccess)}};
+                
+                    --dnn-color-warning: #{{this.ColorWarning}};
+                    --dnn-color-warning-light: #{{this.ColorWarningLight}};
+                    --dnn-color-warning-dark: #{{this.ColorWarningDark}};
+                    --dnn-color-warning-contrast: #{{this.ColorWarningContrast}};
+                    --dnn-color-warning-r: {{GetRed(this.ColorWarning)}};
+                    --dnn-color-warning-g: {{GetGreen(this.ColorWarning)}};
+                    --dnn-color-warning-b: {{GetBlue(this.ColorWarning)}};
+                
+                    --dnn-color-danger: #{{this.ColorDanger}};
+                    --dnn-color-danger-light: #{{this.ColorDangerLight}};
+                    --dnn-color-danger-dark: #{{this.ColorDangerDark}};
+                    --dnn-color-danger-contrast: #{{this.ColorDangerContrast}};
+                    --dnn-color-danger-r: {{GetRed(this.ColorDanger)}};
+                    --dnn-color-danger-g: {{GetGreen(this.ColorDanger)}};
+                    --dnn-color-danger-b: {{GetBlue(this.ColorDanger)}};
+                
+                    --dnn-color-surface: #{{this.ColorSurface}};
+                    --dnn-color-surface-light: #{{this.ColorSurfaceLight}};
+                    --dnn-color-surface-dark: #{{this.ColorSurfaceDark}};
+                    --dnn-color-surface-contrast: #{{this.ColorSurfaceContrast}};
+                    --dnn-color-surface-r: {{GetRed(this.ColorSurface)}};
+                    --dnn-color-surface-g: {{GetGreen(this.ColorSurface)}};
+                    --dnn-color-surface-b: {{GetBlue(this.ColorSurface)}};
+                
+                    --dnn-controls-radius: {{this.ControlsRadius}}px;
+                    --dnn-controls-padding: {{this.ControlsPadding}}px;
+                    --dnn-base-font-size: {{this.BaseFontSize}}px;
+                    --variation-opacity: {{this.VariationOpacity}};
+                }
+             """;
+        }
+
+        private static string GetRed(string hexValue)
+        {
+            return int.Parse(hexValue.Substring(0, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
+        }
+
+        private static string GetGreen(string hexValue)
+        {
+            return int.Parse(hexValue.Substring(2, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
+        }
+
+        private static string GetBlue(string hexValue)
+        {
+            return int.Parse(hexValue.Substring(4, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
+        }
     }
 }
