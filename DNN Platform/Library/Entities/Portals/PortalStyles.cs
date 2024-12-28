@@ -18,15 +18,15 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorPrimary { get; set; } = "3792ED";
+        public string ColorPrimary { get; set; } = "00A5E0";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorPrimaryLight { get; set; } = "6CB6F3";
+        public string ColorPrimaryLight { get; set; } = "1AAEE3";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorPrimaryDark { get; set; } = "0D569E";
+        public string ColorPrimaryDark { get; set; } = "0091C5";
 
         /// <inheritdoc/>
         [PortalSetting]
@@ -34,43 +34,43 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSecondary { get; set; } = "CCCCCC";
+        public string ColorSecondary { get; set; } = "ED3D46";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSecondaryLight { get; set; } = "EEEEEE";
+        public string ColorSecondaryLight { get; set; } = "EF5059";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSecondaryDark { get; set; } = "AAAAAA";
+        public string ColorSecondaryDark { get; set; } = "D1363E";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSecondaryContrast { get; set; } = "222222";
+        public string ColorSecondaryContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorTertiary { get; set; } = "EAEAEA";
+        public string ColorTertiary { get; set; } = "0E2936";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorTertiaryLight { get; set; } = "F2F2F2";
+        public string ColorTertiaryLight { get; set; } = "3C7A9A";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorTertiaryDark { get; set; } = "D8D8D8";
+        public string ColorTertiaryDark { get; set; } = "0B1C24";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorTertiaryContrast { get; set; } = "333333";
+        public string ColorTertiaryContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorNeutral { get; set; } = "B2B2B2";
+        public string ColorNeutral { get; set; } = "EDEDED";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorNeutralLight { get; set; } = "E5E5E5";
+        public string ColorNeutralLight { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
         [PortalSetting]
@@ -86,11 +86,11 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorBackgroundLight { get; set; } = "FFFFFF";
+        public string ColorBackgroundLight { get; set; } = "F5F5F5";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorBackgroundDark { get; set; } = "999999";
+        public string ColorBackgroundDark { get; set; } = "CCCCCC";
 
         /// <inheritdoc/>
         [PortalSetting]
@@ -178,15 +178,15 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSurface { get; set; } = "DDDDDD";
+        public string ColorSurface { get; set; } = "EEEEEE";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSurfaceLight { get; set; } = "F2F2F2";
+        public string ColorSurfaceLight { get; set; } = "F5F5F5";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSurfaceDark { get; set; } = "C2C2C2";
+        public string ColorSurfaceDark { get; set; } = "CCCCCC";
 
         /// <inheritdoc/>
         [PortalSetting]
@@ -194,11 +194,11 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public double ControlsRadius { get; set; } = 5;
+        public double ControlsRadius { get; set; } = 0;
 
         /// <inheritdoc/>
         [PortalSetting]
-        public double ControlsPadding { get; set; } = 5;
+        public double ControlsPadding { get; set; } = 9;
 
         /// <inheritdoc/>
         [PortalSetting]

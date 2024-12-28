@@ -8,6 +8,7 @@ namespace Dnn.PersonaBar.Styles.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Web.Api;
@@ -51,6 +52,8 @@ namespace Dnn.PersonaBar.Styles.Services
 
             var repo = new PortalStylesRepository();
             repo.SaveSettings(this.PortalId, settings);
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalId);
+            DataCache.RemoveCache(cacheKey);
             return this.Ok();
         }
 
