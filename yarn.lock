@@ -22662,6 +22662,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"styles@workspace:Dnn.AdminExperience/ClientSide/Styles.Web":
+  version: 0.0.0-use.local
+  resolution: "styles@workspace:Dnn.AdminExperience/ClientSide/Styles.Web"
+  dependencies:
+    "@dnncommunity/dnn-elements": "npm:^0.24.1"
+    "@stencil/core": "npm:^4.22.2"
+    "@stencil/sass": "npm:^3.0.12"
+    "@types/node": "npm:^22.9.0"
+  languageName: unknown
+  linkType: soft
+
 "supports-color@npm:^2.0.0":
   version: 2.0.0
   resolution: "supports-color@npm:2.0.0"

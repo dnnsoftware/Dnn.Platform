@@ -10,204 +10,230 @@ namespace DotNetNuke.Abstractions.Portals
     public interface IPortalStyles
     {
         /// <summary>
+        /// Gets or sets a value indicating whether the site admins can edit the styles.
+        /// </summary>
+        bool AllowAdminEdits { get; set; }
+
+        /// <summary>
         /// Gets or sets the main shade of the primary color.
         /// </summary>
-        StyleColor ColorPrimary { get; set; }
+        string ColorPrimary { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the primary color.
         /// </summary>
-        StyleColor ColorPrimaryLight { get; set; }
+        string ColorPrimaryLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the primary color.
         /// </summary>
-        StyleColor ColorPrimaryDark { get; set; }
+        string ColorPrimaryDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the primary color shades.
         /// </summary>
-        StyleColor ColorPrimaryContrast { get; set; }
+        string ColorPrimaryContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the secondary color.
         /// </summary>
-        StyleColor ColorSecondary { get; set; }
+        string ColorSecondary { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the secondary color.
         /// </summary>
-        StyleColor ColorSecondaryLight { get; set; }
+        string ColorSecondaryLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the secondary color.
         /// </summary>
-        StyleColor ColorSecondaryDark { get; set; }
+        string ColorSecondaryDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the secondary color shades.
         /// </summary>
-        StyleColor ColorSecondaryContrast { get; set; }
+        string ColorSecondaryContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Tertiary color.
         /// </summary>
-        StyleColor ColorTertiary { get; set; }
+        string ColorTertiary { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Tertiary color.
         /// </summary>
-        StyleColor ColorTertiaryLight { get; set; }
+        string ColorTertiaryLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Tertiary color.
         /// </summary>
-        StyleColor ColorTertiaryDark { get; set; }
+        string ColorTertiaryDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Tertiary color shades.
         /// </summary>
-        StyleColor ColorTertiaryContrast { get; set; }
+        string ColorTertiaryContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Neutral color.
         /// </summary>
-        StyleColor ColorNeutral { get; set; }
+        string ColorNeutral { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Neutral color.
         /// </summary>
-        StyleColor ColorNeutralLight { get; set; }
+        string ColorNeutralLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Neutral color.
         /// </summary>
-        StyleColor ColorNeutralDark { get; set; }
+        string ColorNeutralDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Neutral color shades.
         /// </summary>
-        StyleColor ColorNeutralContrast { get; set; }
+        string ColorNeutralContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Background color.
         /// </summary>
-        StyleColor ColorBackground { get; set; }
+        string ColorBackground { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Background color.
         /// </summary>
-        StyleColor ColorBackgroundLight { get; set; }
+        string ColorBackgroundLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Background color.
         /// </summary>
-        StyleColor ColorBackgroundDark { get; set; }
+        string ColorBackgroundDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Background color shades.
         /// </summary>
-        StyleColor ColorBackgroundContrast { get; set; }
+        string ColorBackgroundContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Foreground color.
         /// </summary>
-        StyleColor ColorForeground { get; set; }
+        string ColorForeground { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Foreground color.
         /// </summary>
-        StyleColor ColorForegroundLight { get; set; }
+        string ColorForegroundLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Foreground color.
         /// </summary>
-        StyleColor ColorForegroundDark { get; set; }
+        string ColorForegroundDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Foreground color shades.
         /// </summary>
-        StyleColor ColorForegroundContrast { get; set; }
+        string ColorForegroundContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Info color.
         /// </summary>
-        StyleColor ColorInfo { get; set; }
+        string ColorInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Info color.
         /// </summary>
-        StyleColor ColorInfoLight { get; set; }
+        string ColorInfoLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Info color.
         /// </summary>
-        StyleColor ColorInfoDark { get; set; }
+        string ColorInfoDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Info color shades.
         /// </summary>
-        StyleColor ColorInfoContrast { get; set; }
+        string ColorInfoContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Success color.
         /// </summary>
-        StyleColor ColorSuccess { get; set; }
+        string ColorSuccess { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Success color.
         /// </summary>
-        StyleColor ColorSuccessLight { get; set; }
+        string ColorSuccessLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Success color.
         /// </summary>
-        StyleColor ColorSuccessDark { get; set; }
+        string ColorSuccessDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Success color shades.
         /// </summary>
-        StyleColor ColorSuccessContrast { get; set; }
+        string ColorSuccessContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Warning color.
         /// </summary>
-        StyleColor ColorWarning { get; set; }
+        string ColorWarning { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Warning color.
         /// </summary>
-        StyleColor ColorWarningLight { get; set; }
+        string ColorWarningLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Warning color.
         /// </summary>
-        StyleColor ColorWarningDark { get; set; }
+        string ColorWarningDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Warning color shades.
         /// </summary>
-        StyleColor ColorWarningContrast { get; set; }
+        string ColorWarningContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the main shade of the Danger color.
         /// </summary>
-        StyleColor ColorDanger { get; set; }
+        string ColorDanger { get; set; }
 
         /// <summary>
         /// Gets or sets the light shade of the Danger color.
         /// </summary>
-        StyleColor ColorDangerLight { get; set; }
+        string ColorDangerLight { get; set; }
 
         /// <summary>
         /// Gets or sets the dark shade of the Danger color.
         /// </summary>
-        StyleColor ColorDangerDark { get; set; }
+        string ColorDangerDark { get; set; }
 
         /// <summary>
         /// Gets or sets a color that contrasts well over the Danger color shades.
         /// </summary>
-        StyleColor ColorDangerContrast { get; set; }
+        string ColorDangerContrast { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the surface.
+        /// A surface is an area that is overlaid over the main background (menus, popovers, etc).
+        /// </summary>
+        string ColorSurface { get; set; }
+
+        /// <summary>
+        /// Gets or sets the light variation of surface color.
+        /// </summary>
+        string ColorSurfaceLight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dark variation of surface color.
+        /// </summary>
+        string ColorSurfaceDark { get; set; }
+
+        /// <summary>
+        /// Gets or sets a color that contrasts well over the surface color.
+        /// </summary>
+        string ColorSurfaceContrast { get; set; }
 
         /// <summary>
         /// Gets or sets the controls border radius in pixels.
@@ -223,5 +249,16 @@ namespace DotNetNuke.Abstractions.Portals
         /// Gets or sets the base font size in pixels.
         /// </summary>
         double BaseFontSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color variation opacity.
+        /// This can be used to define how opaque a contrasting color should look over another.
+        /// </summary>
+        double VariationOpacity { get; set; }
+
+        /// <summary>
+        /// Gets the name of the css file.
+        /// </summary>
+        string FileName { get; }
     }
 }
