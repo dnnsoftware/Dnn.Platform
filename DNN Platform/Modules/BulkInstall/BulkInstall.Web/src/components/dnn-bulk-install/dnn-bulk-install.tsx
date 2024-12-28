@@ -23,7 +23,9 @@ export class DnnBulkInstall {
               </div>
             </dnn-tab>
             <dnn-tab tabTitle="IP Safelist">
-              <div class="tab-content">IP Safelist UI goes here.</div>
+              <div class="tab-content">
+                <ip-safelist></ip-safelist>
+              </div>
             </dnn-tab>
           </dnn-tabs>
         </div>
