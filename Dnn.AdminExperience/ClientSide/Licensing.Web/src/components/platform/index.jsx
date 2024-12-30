@@ -31,7 +31,7 @@ class Platform extends Component {
     }
 
     onDocsClick() {
-        window.open("https://dnndocs.com", "_blank");
+        window.open("https://docs.dnncommunity.org", "_blank");
     }
 
     /* eslint-disable react/no-danger */

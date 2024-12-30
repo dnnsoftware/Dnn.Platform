@@ -125,7 +125,7 @@
                     <controlTitle/>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
@@ -135,7 +135,7 @@
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -146,7 +146,7 @@
                     <controlTitle>My Work</controlTitle>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -157,7 +157,7 @@
                     <controlTitle>Settings</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

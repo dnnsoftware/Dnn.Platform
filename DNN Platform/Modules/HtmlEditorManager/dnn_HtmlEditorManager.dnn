@@ -36,7 +36,7 @@
                     <controlTitle>Html Editor Management</controlTitle>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

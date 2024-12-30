@@ -55,7 +55,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return "https://dnndocs.com/";
+                return "https://docs.dnncommunity.org/";
             }
         }
 
