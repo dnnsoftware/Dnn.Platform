@@ -221,7 +221,7 @@ a.plainbtn {
     display: block;
     margin: 0 auto 10px;
     width: 22px;
-    height: 30px
+    height: 30px;
 }
 
 #notification-dialog > .notify-error {
