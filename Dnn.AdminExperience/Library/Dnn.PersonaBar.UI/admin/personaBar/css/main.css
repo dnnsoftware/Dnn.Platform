@@ -124,7 +124,7 @@ a.secondarybtn {
     a.secondarybtn.disabledbtn, a.secondarybtn.disabled {
         color: var(--dnn-color-neutral, #c8c8c8);
         border-color: var(--dnn-color-neutral, #c8c8c8);
-        cursor: not-allowed
+        cursor: not-allowed;
     }
 
 a.plainbtn {
