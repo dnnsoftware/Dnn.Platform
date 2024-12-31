@@ -1983,7 +1983,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
         height: 100%;
         width: 100%;
         list-style: none;
-        overflow: hidden
+        overflow: hidden;
     }
 
     .pb-dropdown.scrollable.open ul {
