@@ -49,7 +49,7 @@ body {
 }
 
 .mac select, .touch select, .safari select {
-    -webkit-appearance: none
+    -webkit-appearance: none;
 }
 
 select {
