@@ -87,7 +87,7 @@ a.primarybtn {
     a.primarybtn.disabledbtn, a.primarybtn.disabled {
         color: var(--dnn-color-neutral-dark, #959695);
         background: var(--dnn-color-light, #e5e7e6);
-        cursor: not-allowed
+        cursor: not-allowed;
     }
 
 a.secondarybtn {
