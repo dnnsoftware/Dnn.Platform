@@ -200,7 +200,7 @@ a.plainbtn {
 #notification-message {
     color: var(--dnn-color-tertiary-contrast, white);
     font-size: 15px;
-    line-height: 22px
+    line-height: 22px;
 }
 
 #notification-dialog.close-hidden #close-notification {
