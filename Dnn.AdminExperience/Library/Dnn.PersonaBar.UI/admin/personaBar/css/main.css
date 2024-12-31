@@ -1997,7 +1997,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     }
 
 .monaco-editor .view-lines * {
-    font-family: inherit
+    font-family: inherit;
 }
 
 @media screen and (-ms-high-contrast:active),screen and (-ms-high-contrast:none) {
