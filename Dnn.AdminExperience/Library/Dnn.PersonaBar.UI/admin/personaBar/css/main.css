@@ -45,7 +45,7 @@ body {
 }
 
 .hidden {
-    visibility: hidden
+    visibility: hidden;
 }
 
 .mac select, .touch select, .safari select {
