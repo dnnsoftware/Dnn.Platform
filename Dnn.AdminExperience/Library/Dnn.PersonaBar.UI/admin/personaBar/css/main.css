@@ -177,7 +177,7 @@ a.plainbtn {
     color: var(--dnn-color-tertiary-contrast, #fff);
     word-wrap: break-word;
     text-align: center;
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
     #notification-dialog > div.buttonpanel {
