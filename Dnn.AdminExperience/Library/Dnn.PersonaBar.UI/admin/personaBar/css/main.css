@@ -194,7 +194,7 @@ a.plainbtn {
     width: 100%;
     height: auto;
     max-height: 200px;
-    overflow: auto
+    overflow: auto;
 }
 
 #notification-message {
