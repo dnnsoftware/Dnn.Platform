@@ -210,7 +210,7 @@ a.plainbtn {
 #notification-dialog > img {
     width: 35px;
     height: 30px;
-    margin-bottom: 10px
+    margin-bottom: 10px;
 }
 
 #notification-dialog.errorMessage > .notify-check {
