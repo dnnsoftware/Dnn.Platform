@@ -253,7 +253,7 @@ a.plainbtn {
     #confirmation-dialog > img {
         width: 30px;
         height: 30px;
-        margin-bottom: 10px
+        margin-bottom: 10px;
     }
 
     #confirmation-dialog > p {
