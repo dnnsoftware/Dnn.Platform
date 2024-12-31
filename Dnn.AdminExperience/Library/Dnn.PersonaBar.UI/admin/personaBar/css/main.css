@@ -106,7 +106,7 @@ a.secondarybtn {
     cursor: pointer;
     font-family: inherit;
     text-align: center;
-    text-decoration: none
+    text-decoration: none;
 }
 
     a.secondarybtn:hover {
