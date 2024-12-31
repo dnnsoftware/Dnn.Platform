@@ -73,7 +73,7 @@ a.primarybtn {
     border: 0;
     color: var(--dnn-color-primary-contrast, #fff);
     text-align: center;
-    text-decoration: none
+    text-decoration: none;
 }
 
     a.primarybtn:hover {
