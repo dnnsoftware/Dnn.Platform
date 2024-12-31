@@ -214,7 +214,7 @@ a.plainbtn {
 }
 
 #notification-dialog.errorMessage > .notify-check {
-    display: none
+    display: none;
 }
 
 #notification-dialog.errorMessage > .notify-error {
