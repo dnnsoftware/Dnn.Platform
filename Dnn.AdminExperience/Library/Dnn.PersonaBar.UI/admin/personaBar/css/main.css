@@ -225,7 +225,7 @@ a.plainbtn {
 }
 
 #notification-dialog > .notify-error {
-    display: none
+    display: none;
 }
 
 .confirmation-dialog-full-width-center {
