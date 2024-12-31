@@ -204,7 +204,7 @@ a.plainbtn {
 }
 
 #notification-dialog.close-hidden #close-notification {
-    display: none
+    display: none;
 }
 
 #notification-dialog > img {
