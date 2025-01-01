@@ -14706,7 +14706,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.3, loader-utils@npm:~2.0.0":
+"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.3":
   version: 2.0.4
   resolution: "loader-utils@npm:2.0.4"
   dependencies:
@@ -20347,7 +20347,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^0.23.1"
-    svg-url-loader: "npm:^7.1.1"
+    svg-url-loader: "npm:^8.0.0"
     throttle-debounce: "npm:^5.0.0"
     url-loader: "npm:1.1.2"
     utils: "npm:^0.3.1"
@@ -21270,15 +21270,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svg-url-loader@npm:^7.1.1":
-  version: 7.1.1
-  resolution: "svg-url-loader@npm:7.1.1"
+"svg-url-loader@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "svg-url-loader@npm:8.0.0"
   dependencies:
     file-loader: "npm:~6.2.0"
-    loader-utils: "npm:~2.0.0"
   peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 10/1af23e34ecda9c99735237da97dff07b8af62640f575c7fc8859e8178856a4e8630e566c00a1b80f32fb24b0ffb4542d9a57029afdaddd3ab4180e61f72c30db
+    webpack: ^5.0.0
+  checksum: 10/c4fa2da32915807a79239dfc4ee09f9a875291108ba242cf1d971fb3e141b1f5886386c1f45a5261a0e825012fbc6cd04acc22c0f0611272747318e1c66e092e
   languageName: node
   linkType: hard
 
