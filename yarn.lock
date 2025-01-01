@@ -1528,7 +1528,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     interact.js: "npm:^1.2.8"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
@@ -4650,7 +4650,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     i18n-webpack-plugin: "npm:1.0.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
@@ -9056,7 +9056,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -10492,7 +10492,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     json-loader: "npm:^0.5.7"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
@@ -10621,7 +10621,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -10875,15 +10875,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-loader@npm:3.0.1":
-  version: 3.0.1
-  resolution: "file-loader@npm:3.0.1"
+"file-loader@npm:6.2.0, file-loader@npm:~6.2.0":
+  version: 6.2.0
+  resolution: "file-loader@npm:6.2.0"
   dependencies:
-    loader-utils: "npm:^1.0.2"
-    schema-utils: "npm:^1.0.0"
+    loader-utils: "npm:^2.0.0"
+    schema-utils: "npm:^3.0.0"
   peerDependencies:
-    webpack: ^4.0.0
-  checksum: 10/4d5cdbd60ae9170228aee13c65e7d85fd34b29eaaaa26397d844896497d7389fd726365ea3d6b908a14858b42c0608505ecd1f54518b596ddd28e2f74a9e8a38
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: 10/3a854be3a7501bdb0fd8a1c0d45c156c0dc8f0afced07cbdac0b13a79c2f2a03f7770d68cb555ff30b5ea7c20719df34e1b2bd896c93e3138ee31f0bdc560310
   languageName: node
   linkType: hard
 
@@ -10896,18 +10896,6 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0
   checksum: 10/289f4bb8263712dca113fadc50e7daa40048195d54ce49f05570face285302571d1e304c7e8330ce44e4cad8b2f71fb5c72de4a2a75d9bd116b4511d9b94bf63
-  languageName: node
-  linkType: hard
-
-"file-loader@npm:~6.2.0":
-  version: 6.2.0
-  resolution: "file-loader@npm:6.2.0"
-  dependencies:
-    loader-utils: "npm:^2.0.0"
-    schema-utils: "npm:^3.0.0"
-  peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 10/3a854be3a7501bdb0fd8a1c0d45c156c0dc8f0afced07cbdac0b13a79c2f2a03f7770d68cb555ff30b5ea7c20719df34e1b2bd896c93e3138ee31f0bdc560310
   languageName: node
   linkType: hard
 
@@ -14607,7 +14595,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -14695,7 +14683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^1.0.2, loader-utils@npm:^1.1.0, loader-utils@npm:^1.2.3":
+"loader-utils@npm:^1.1.0, loader-utils@npm:^1.2.3":
   version: 1.4.2
   resolution: "loader-utils@npm:1.4.2"
   dependencies:
@@ -16918,7 +16906,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     jest: "npm:^28.1.3"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
@@ -17764,7 +17752,7 @@ __metadata:
     extract-text-webpack-plugin: "npm:^3.0.2"
     fbjs: "npm:*"
     fetch-mock: "npm:^7.7.3"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     html-react-parser: "npm:^0.7.1"
     i18n-webpack-plugin: "npm:1.0.0"
     jest: "npm:^28.1.3"
@@ -19526,7 +19514,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -19779,7 +19767,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -19905,7 +19893,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -20010,7 +19998,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     null-loader: "npm:^4.0.1"
@@ -20379,7 +20367,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     jest: "npm:^28.1.3"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
@@ -20423,7 +20411,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -21408,7 +21396,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -21449,7 +21437,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     object-path: "npm:0.11.8"
@@ -21639,7 +21627,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     prop-types: "npm:^15.8.1"
@@ -22504,7 +22492,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.1"
     eslint-plugin-spellcheck: "npm:0.0.20"
     eslint-webpack-plugin: "npm:^4.2.0"
-    file-loader: "npm:3.0.1"
+    file-loader: "npm:6.2.0"
     jest: "npm:^28.1.3"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
