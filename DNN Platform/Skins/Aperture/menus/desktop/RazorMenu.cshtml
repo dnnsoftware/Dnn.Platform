@@ -17,17 +17,10 @@
     {
         var hasChildren = page.HasChildren();
         var attrTarget = !string.IsNullOrEmpty(page.Target) ? ("target=\"" + page.Target + "\"") :string.Empty;
+        var attrHref = page.Enabled ? page.Url : "javascript:void(0);";
 
         <li class="@(page.Selected ? "selected" : string.Empty)">
-            @if (page.Enabled)
-            {
-                <a href="@page.Url" @attrTarget>@page.Text</a>
-            }
-            else
-            {
-                <a href="javascript:void(0);" @attrTarget>@page</a>
-            }
-
+            <a href="@attrHref" @attrTarget>@page.Text</a>
             @if (hasChildren)
             {
                 <ul>
