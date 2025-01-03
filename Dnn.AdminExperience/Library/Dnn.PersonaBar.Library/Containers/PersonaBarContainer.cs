@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.Library.Containers
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Services.Personalization;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -143,6 +144,9 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("customModules", customModules);
 
             settings.Add("disableEditBar", Host.DisableEditBar);
+
+            var cssVariablesPath = $"{portalSettings.HomeSystemDirectory}{portalSettings.GetStyles().FileName}";
+            settings.Add("cssVariablesPath", cssVariablesPath);
 
             var customPersonaBarThemePath = HostingEnvironment.MapPath("~/Portals/_default/PersonaBarTheme.css");
             var customPersonaBarThemeExists = File.Exists(customPersonaBarThemePath);
