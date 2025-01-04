@@ -13,7 +13,6 @@
     <meta id="MetaGenerator" runat="Server" name="generator" Visible="False"/>
     <meta id="MetaAuthor" runat="Server" name="author" Visible="False"/>
     <meta id="MetaRobots" runat="server" name="robots" Visible="False" />
-    <asp:Literal runat="server" id="CssCustomProperties"></asp:Literal>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
     <asp:placeholder id="CSS" runat="server" />

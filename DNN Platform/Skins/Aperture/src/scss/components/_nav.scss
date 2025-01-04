@@ -36,7 +36,7 @@ header {
 	}
 
 	a {
-		@include font-size(16);
+		font-size: 0.89rem;
 		color: color('background-light');
 		font-weight: 600;
 		text-decoration: none;
@@ -106,7 +106,7 @@ header {
 
 					// border-top: 1px solid color('foreground-light');
 					a {
-						@include font-size(14);
+						font-size: 0.78rem;
 						font-weight: 700;
 						padding: .5rem .75rem .5rem 3rem;
 					}

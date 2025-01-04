@@ -615,8 +615,6 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            this.CssCustomProperties.Text = this.GenerateCssCustomProperties();
-
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
@@ -624,6 +622,10 @@ namespace DotNetNuke.Framework
                     $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
                 this.Title += versionString;
             }
+
+            // register css variables
+            var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
+            ClientResourceManager.RegisterStyleSheet(this, cssVariablesStyleSheet, FileOrder.Css.DefaultCss);
 
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
@@ -654,111 +656,6 @@ namespace DotNetNuke.Framework
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
                 ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
             }
-        }
-
-        private string GenerateCssCustomProperties()
-        {
-            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
-            var cacheArgs = new CacheItemArgs(
-                cacheKey,
-                DataCache.PortalStylesCacheTimeOut,
-                DataCache.PortalStylesCachePriority,
-                this.PortalSettings.GetStyles());
-            return DataCache.GetCachedData<string>(
-                cacheArgs,
-                static args =>
-                {
-                    var styles = (IPortalStyles)args.Params[0];
-                    return $$"""
-                             <style type="text/css">
-                                 :root {
-                                     --dnn-color-primary: #{{styles.ColorPrimary.MinifiedHex}};
-                                     --dnn-color-primary-light: #{{styles.ColorPrimaryLight.MinifiedHex}};
-                                     --dnn-color-primary-dark: #{{styles.ColorPrimaryDark.MinifiedHex}};
-                                     --dnn-color-primary-contrast: #{{styles.ColorPrimaryContrast.MinifiedHex}};
-                                     --dnn-color-primary-r: {{styles.ColorPrimary.Red}};
-                                     --dnn-color-primary-g: {{styles.ColorPrimary.Green}};
-                                     --dnn-color-primary-b: {{styles.ColorPrimary.Blue}};
-                                     
-                                     --dnn-color-secondary: #{{styles.ColorSecondary.MinifiedHex}};
-                                     --dnn-color-secondary-light: #{{styles.ColorSecondaryLight.MinifiedHex}};
-                                     --dnn-color-secondary-dark: #{{styles.ColorSecondaryDark.MinifiedHex}};
-                                     --dnn-color-secondary-contrast: #{{styles.ColorSecondaryContrast.MinifiedHex}};
-                                     --dnn-color-secondary-r: {{styles.ColorSecondary.Red}};
-                                     --dnn-color-secondary-g: {{styles.ColorSecondary.Green}};
-                                     --dnn-color-secondary-b: {{styles.ColorSecondary.Blue}};
-                                     
-                                     --dnn-color-tertiary: #{{styles.ColorTertiary.MinifiedHex}};
-                                     --dnn-color-tertiary-light: #{{styles.ColorTertiaryLight.MinifiedHex}};
-                                     --dnn-color-tertiary-dark: #{{styles.ColorTertiaryDark.MinifiedHex}};
-                                     --dnn-color-tertiary-contrast: #{{styles.ColorTertiaryContrast.MinifiedHex}};
-                                     --dnn-color-tertiary-r: {{styles.ColorTertiary.Red}};
-                                     --dnn-color-tertiary-g: {{styles.ColorTertiary.Green}};
-                                     --dnn-color-tertiary-b: {{styles.ColorTertiary.Blue}};
-                                     
-                                     --dnn-color-neutral: #{{styles.ColorNeutral.MinifiedHex}};
-                                     --dnn-color-neutral-light: #{{styles.ColorNeutralLight.MinifiedHex}};
-                                     --dnn-color-neutral-dark: #{{styles.ColorNeutralDark.MinifiedHex}};
-                                     --dnn-color-neutral-contrast: #{{styles.ColorNeutralContrast.MinifiedHex}};
-                                     --dnn-color-neutral-r: {{styles.ColorNeutral.Red}};
-                                     --dnn-color-neutral-g: {{styles.ColorNeutral.Green}};
-                                     --dnn-color-neutral-b: {{styles.ColorNeutral.Blue}};
-                                     
-                                     --dnn-color-background: #{{styles.ColorBackground.MinifiedHex}};
-                                     --dnn-color-background-light: #{{styles.ColorBackgroundLight.MinifiedHex}};
-                                     --dnn-color-background-dark: #{{styles.ColorBackgroundDark.MinifiedHex}};
-                                     --dnn-color-background-contrast: #{{styles.ColorBackgroundContrast.MinifiedHex}};
-                                     --dnn-color-background-r: {{styles.ColorBackground.Red}};
-                                     --dnn-color-background-g: {{styles.ColorBackground.Green}};
-                                     --dnn-color-background-b: {{styles.ColorBackground.Blue}};
-                                     
-                                     --dnn-color-foreground: #{{styles.ColorForeground.MinifiedHex}};
-                                     --dnn-color-foreground-light: #{{styles.ColorForegroundLight.MinifiedHex}};
-                                     --dnn-color-foreground-dark: #{{styles.ColorForegroundDark.MinifiedHex}};
-                                     --dnn-color-foreground-contrast: #{{styles.ColorForegroundContrast.MinifiedHex}};
-                                     --dnn-color-foreground-r: {{styles.ColorForeground.Red}};
-                                     --dnn-color-foreground-g: {{styles.ColorForeground.Green}};
-                                     --dnn-color-foreground-b: {{styles.ColorForeground.Blue}};
-             
-                                     --dnn-color-info: #{{styles.ColorInfo.MinifiedHex}};
-                                     --dnn-color-info-light: #{{styles.ColorInfoLight.MinifiedHex}};
-                                     --dnn-color-info-dark: #{{styles.ColorInfoDark.MinifiedHex}};
-                                     --dnn-color-info-contrast: #{{styles.ColorInfoContrast.MinifiedHex}};
-                                     --dnn-color-info-r: {{styles.ColorInfo.Red}};
-                                     --dnn-color-info-g: {{styles.ColorInfo.Green}};
-                                     --dnn-color-info-b: {{styles.ColorInfo.Blue}};
-             
-                                     --dnn-color-success: #{{styles.ColorSuccess.MinifiedHex}};
-                                     --dnn-color-success-light: #{{styles.ColorSuccessLight.MinifiedHex}};
-                                     --dnn-color-success-dark: #{{styles.ColorSuccessDark.MinifiedHex}};
-                                     --dnn-color-success-contrast: #{{styles.ColorSuccessContrast.MinifiedHex}};
-                                     --dnn-color-success-r: {{styles.ColorSuccess.Red}};
-                                     --dnn-color-success-g: {{styles.ColorSuccess.Green}};
-                                     --dnn-color-success-b: {{styles.ColorSuccess.Blue}};
-             
-                                     --dnn-color-warning: #{{styles.ColorWarning.MinifiedHex}};
-                                     --dnn-color-warning-light: #{{styles.ColorWarningLight.MinifiedHex}};
-                                     --dnn-color-warning-dark: #{{styles.ColorWarningDark.MinifiedHex}};
-                                     --dnn-color-warning-contrast: #{{styles.ColorWarningContrast.MinifiedHex}};
-                                     --dnn-color-warning-r: {{styles.ColorWarning.Red}};
-                                     --dnn-color-warning-g: {{styles.ColorWarning.Green}};
-                                     --dnn-color-warning-b: {{styles.ColorWarning.Blue}};
-             
-                                     --dnn-color-danger: #{{styles.ColorDanger.MinifiedHex}};
-                                     --dnn-color-danger-light: #{{styles.ColorDangerLight.MinifiedHex}};
-                                     --dnn-color-danger-dark: #{{styles.ColorDangerDark.MinifiedHex}};
-                                     --dnn-color-danger-contrast: #{{styles.ColorDangerContrast.MinifiedHex}};
-                                     --dnn-color-danger-r: {{styles.ColorDanger.Red}};
-                                     --dnn-color-danger-g: {{styles.ColorDanger.Green}};
-                                     --dnn-color-danger-b: {{styles.ColorDanger.Blue}};
-             
-                                     --dnn-controls-radius: {{styles.ControlsRadius}}px;
-                                     --dnn-controls-padding: {{styles.ControlsPadding}}px;
-                                     --dnn-base-font-size: {{styles.BaseFontSize}}px;
-                                 }
-                             </style>
-                             """;
-                });
         }
 
         /// <summary>
@@ -861,6 +758,42 @@ namespace DotNetNuke.Framework
         {
             var styleSheet = itemArgs.Params[0].ToString();
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, styleSheet);
+        }
+
+        private string GetCssVariablesStylesheet()
+        {
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheArgs = new CacheItemArgs(
+                cacheKey,
+                DataCache.PortalCacheTimeOut,
+                DataCache.PortalCachePriority,
+                this.PortalSettings.GetStyles());
+            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            return filePath;
+        }
+
+        private string GetCssVariablesStylesheetCallback(CacheItemArgs args)
+        {
+            var portalStyles = (PortalStyles)args.Params[0];
+
+            var directory = this.PortalSettings.HomeSystemDirectoryMapPath;
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var webPath = $"{this.PortalSettings.HomeSystemDirectory}{portalStyles.FileName}";
+
+            var physicalPath = $"{directory}{portalStyles.FileName}";
+            if (File.Exists(physicalPath))
+            {
+                return webPath;
+            }
+
+            var styles = portalStyles.ToString();
+            File.WriteAllText(physicalPath, styles);
+
+            return webPath;
         }
     }
 }

@@ -1,5 +1,5 @@
 $fonts: (
-    'base-font-size': 18,
+    'base-font-size': var(--dnn-base-font-size, 18px),
 );
 
 $var-base-font-size: #{map-get($fonts, 'base-font-size')};
@@ -9,12 +9,7 @@ $defaultlineheight: calc($var-base-font-size * 1.5);
 
 $ubuntu: 'Ubuntu', Helvetica, sans-serif;
 
-///TODO: Remove these in favor of those injected by DNN 10. The defaults in DNN 10 should match these.
-:root {
-    --dnn-base-font-size: #{map-get($fonts, 'base-font-size')};
-}
-
 // Font function
 @function font($font-name) {
-    @return var(--dnn-#{$font-name}, map-get($fonts, $font-name));
+    @return map-get($fonts, $font-name);
 }
