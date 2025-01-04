@@ -505,7 +505,7 @@ class MoreSettingsPanelBody extends Component {
                     }
                     <div className="buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             disabled={!this.getOverallFormDirty()}
                             onClick={this.onCancel.bind(this)}
                         >

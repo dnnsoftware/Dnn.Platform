@@ -3,7 +3,7 @@
     width: 100%;
     div.collapsible-header {
         text-transform: uppercase;
-        color: rgb(178, 189, 195);
+        color: var(--dnn-color-surface, rgb(178, 189, 195));
         width: 100%;
         float: left;
         position: relative;
@@ -31,7 +31,7 @@
             user-select: none;
             &:after {
                 border: 6px solid transparent;
-                border-bottom: 6px solid black;
+                border-bottom: 6px solid var(--dnn-color-foreground black);
                 content: "";
                 position: absolute;
                 left: -15px;
@@ -39,7 +39,7 @@
             }
             &.collapsed {
                 &:after {
-                    border-top: 6px solid black;
+                    border-top: 6px solid var(--dnn-color-foreground black);
                     border-bottom: 6px solid transparent;
                     top: 5px;
                 }

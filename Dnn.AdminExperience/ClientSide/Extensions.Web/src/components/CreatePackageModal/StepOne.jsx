@@ -60,7 +60,7 @@ const StepOne = ({packageManifest,
             </GridCell>
         </GridCell>
         <GridCell className="modal-footer">
-            <Button type="secondary" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>
+            <Button type="neutral" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>
             <Button type="primary" onClick={onNext}>{Localization.get("Next.Button")}</Button>
         </GridCell>
     </GridCell>

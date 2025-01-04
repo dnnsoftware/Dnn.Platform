@@ -649,7 +649,7 @@ class ProfilePropertyEditor extends Component {
                         <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                         <div className="editor-buttons-box">
                             <Button
-                                type="secondary"
+                                type="neutral"
                                 onClick={this.onCancel.bind(this)}>
                                 {resx.get("Cancel")}
                             </Button>
@@ -669,7 +669,7 @@ class ProfilePropertyEditor extends Component {
                             />
                             <div className="editor-buttons-box">
                                 <Button
-                                    type="secondary"
+                                    type="neutral"
                                     onClick={this.onCancel.bind(this)}>
                                     {resx.get("Cancel")}
                                 </Button>
@@ -697,7 +697,7 @@ class ProfilePropertyEditor extends Component {
                             <GridSystem numberOfColumns={2}>{[columnThree, columnFour]}</GridSystem>
                             <div className="editor-buttons-box">
                                 <Button
-                                    type="secondary"
+                                    type="neutral"
                                     onClick={this.onCancel.bind(this)}>
                                     {resx.get("Cancel")}
                                 </Button>

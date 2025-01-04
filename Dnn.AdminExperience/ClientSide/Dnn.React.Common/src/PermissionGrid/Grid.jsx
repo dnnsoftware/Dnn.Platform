@@ -105,7 +105,7 @@ class Grid extends Component {
 
         let self = this;
         return (
-            <GridCell style={{"display":"table"}}className={props.type + "-permissions-grid"}>
+            <GridCell style={{"display":"table"}} className={props.type + "-permissions-grid"}>
                 <GridCaption service={props.service} localization={props.localization} type={props.type} onSuggestion={this.onSuggestion.bind(this) } />
                 <GridHeader type={props.type} definitions={props.definitions}
                     roleColumnWidth={roleColumnWidth}

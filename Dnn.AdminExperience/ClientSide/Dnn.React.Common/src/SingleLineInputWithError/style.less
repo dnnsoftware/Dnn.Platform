@@ -5,13 +5,13 @@
     &.disabled {
         .dnn-label {
             label {
-                color: @mountainMist;
+                color: var(--dnn-color-foreground-light, @mountainMist);
                 cursor: not-allowed;
             }
         }
         .input-tooltip-container {
             .dnn-ui-common-single-line-input {
-                color: @mountainMist;
+                color: var(--dnn-color-foreground-light, @mountainMist);
                 cursor: not-allowed;
             }
         }
@@ -24,26 +24,26 @@
         }
     }
     input {
-        color: @bulgarianRose;
+        color: var(--dnn-color-foreground, @bulgarianRose);
     }
     &.error {
         input {
-            border-bottom: 2px solid @alizarinCrimson;
+            border-bottom: 2px solid var(--dnn-color-danger @alizarinCrimson);
         }
         .input-tooltip-container {
             .dnn-inline-counter {
-                color: @alizarinCrimson;
+                color: var(--dnn-color-danger @alizarinCrimson);
                 right: 26px;
             }
         }
     }
     &.warning {
         input {
-            border-bottom: 2px solid #EA9C00;
+            border-bottom: 2px solid var(--dnn-color-warning #EA9C00);
         }
         .input-tooltip-container {
             .dnn-inline-counter {
-                color: #EA9C00;
+                color: var(--dnn-color-warning #EA9C00);
                 right: 26px;
             }
         }
@@ -54,14 +54,14 @@
         width: 100%;
         .dnn-ui-common-single-line-input{
             width: 100%;
-            border-radius: 0px;
+            border-radius: var(--dnn-controls-radius, 0);
         }
         &.inline {
             width: auto;
         }
         .dnn-inline-counter {
             position: absolute;
-            color: @curiousBlue;
+            color: var(--dnn-color-primary, @curiousBlue);
             top: 9px;
             right: 7px;
         }

@@ -259,7 +259,7 @@ class EditThemeAttributes extends Component {
                                 {this.renderValueField()}
                             </GridCell>
                             <GridCell columnSize={100} className="actions-cell">
-                                <Button onClick={this.cancelEdit.bind(this)}>{Localization.get("Cancel")}</Button>
+                                <Button type="neutral" onClick={this.cancelEdit.bind(this)}>{Localization.get("Cancel")}</Button>
                                 <Button type="primary" onClick={this.Save.bind(this)}>{Localization.get("Apply")}</Button>
                             </GridCell>
                         </GridCell>

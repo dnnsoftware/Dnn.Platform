@@ -133,7 +133,7 @@ class More extends Component {
                                 />
                                 <Button
                                     disabled={this.props.cachedPageCount === 0}
-                                    type="secondary"
+                                    type="danger"
                                     onClick={this.onClearCache.bind(this)}>
                                     {Localization.get("ClearPageCache")}
                                 </Button>

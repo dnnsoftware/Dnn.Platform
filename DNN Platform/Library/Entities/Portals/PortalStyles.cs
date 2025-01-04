@@ -68,11 +68,11 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorNeutral { get; set; } = "EDEDED";
+        public string ColorNeutral { get; set; } = "DCDCDC";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorNeutralLight { get; set; } = "FFFFFF";
+        public string ColorNeutralLight { get; set; } = "F0F0F0";
 
         /// <inheritdoc/>
         [PortalSetting]
@@ -100,11 +100,11 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorForeground { get; set; } = "000000";
+        public string ColorForeground { get; set; } = "323232";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorForegroundLight { get; set; } = "333333";
+        public string ColorForegroundLight { get; set; } = "A2A2A2";
 
         /// <inheritdoc/>
         [PortalSetting]
@@ -180,11 +180,11 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSurface { get; set; } = "EEEEEE";
+        public string ColorSurface { get; set; } = "DDDDDD";
 
         /// <inheritdoc/>
         [PortalSetting]
-        public string ColorSurfaceLight { get; set; } = "F5F5F5";
+        public string ColorSurfaceLight { get; set; } = "EEEEEE";
 
         /// <inheritdoc/>
         [PortalSetting]

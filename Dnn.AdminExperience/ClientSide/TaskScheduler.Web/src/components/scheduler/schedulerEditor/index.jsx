@@ -421,9 +421,9 @@ class SchedulerEditor extends Component {
                         </div>
                     </div>
                     <div className="buttons-box">
-                        {props.scheduleId !== undefined && <Button type="secondary" onClick={props.onDelete.bind(this, props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
+                        {props.scheduleId !== undefined && <Button type="danger" onClick={props.onDelete.bind(this, props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
