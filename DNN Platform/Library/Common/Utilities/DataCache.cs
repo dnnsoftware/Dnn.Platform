@@ -76,12 +76,6 @@ namespace DotNetNuke.Common.Utilities
         /// <summary> The portal styles cache key.</summary>
         public const string PortalStylesCacheKey = "Dnn_Css_Custom_Properties_{0}";
 
-        /// <summary> The portal styles cache priority.</summary>
-        public const CacheItemPriority PortalStylesCachePriority = CacheItemPriority.High;
-
-        /// <summary>The portal styles cache time out.</summary>
-        public const int PortalStylesCacheTimeOut = 20;
-
         // Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
         public const string TabSettingsCacheKey = "TabSettings{0}";

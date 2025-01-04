@@ -27,42 +27,50 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  @include font-baseline(48, calc(48 * 1.15));
+  font-size: 2.67rem;
+  line-height: 1.15;
   margin-bottom: 1rem;
 }
 
 h2 {
-  @include font-baseline(48, calc(48 * 1.15));
+  font-size: 2.67rem;
+  line-height: 1.15;
   margin-bottom: 1rem;
 }
 
 h3 {
-  @include font-baseline(42, calc(42 * 1.15));
+  font-size: 2.33rem;
+  line-height: 1.15;
   margin-bottom: 1rem;
 }
 
 h4 {
-  @include font-baseline(36, calc(36 * 1.15));
+  font-size: 2rem;
+  line-height: 1.15;
   margin-bottom: 1.5rem;
 }
 
 h5 {
-  @include font-baseline(30, calc(30 * 1.15));
+  font-size: 2rem;
+  line-height: 1.15;
   margin-bottom: 1.5rem;
 }
 
 h6 {
-  @include font-baseline(24, calc(24 * 1.15));
+  font-size: 1.33rem;
+  line-height: 1.15;
   margin-bottom: 1.5rem;
 }
 
 .lead {
-  @include font-baseline(22, calc(22 * 1.5));
+  font-size: 1.22rem;
+  line-height: 1.5;
   margin-bottom: 2rem;
 }
 
 p {
-  @include font-baseline(18, calc(18 * 1.5));
+  font-size: 1rem;
+  line-height: 1.5;
   margin-bottom: 1.5rem;
 }
 
