@@ -100,7 +100,7 @@ class IgnoreWordsEditor extends Component {
                     </InputGroup>
                     <div className="editor-buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>                        

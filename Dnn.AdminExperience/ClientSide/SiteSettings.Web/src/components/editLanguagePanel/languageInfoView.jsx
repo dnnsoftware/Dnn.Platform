@@ -53,7 +53,7 @@ class LanguageInfoView extends Component {
                             value={highlightPendingTranslations} onChange={onHighlightPendingTranslations} />
                     </GridCell>
                     <GridCell columnSize={50} className="translation-action-buttons">
-                        <Button type="secondary" onClick={onCancel}>
+                        <Button type="neutral" onClick={onCancel}>
                             <TextOverflowWrapper text={resx.get("Cancel") } maxWidth={100}/>
                         </Button>
                         <Button type="primary" onClick={onSaveTranslations} disabled={!resxBeingEdited}>

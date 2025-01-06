@@ -36,8 +36,6 @@
             width: auto;
             max-width: 60%;
             float: right;
-            //top: -8px;
-            //position: relative;
             ul {
                 margin: 0;
                 padding: 0;
@@ -48,7 +46,7 @@
                     width: auto;
                     padding: 0px 5px;
                     height: 32px;
-                    border: 1px solid @alto;
+                    border: 1px solid var(--dnn-color-foreground-light, @alto);
                     float: left;
                     margin-left: -1px;
                     cursor: pointer;
@@ -56,9 +54,9 @@
                     text-align: center;
                 }
                 li.pages:not(.disabled):hover {
-                    color: @thunder;
+                    color: var(--dnn-color-foreground-light, @thunder);
                     svg {
-                        fill: @thunder;
+                        fill: var(--dnn-color-foreground-light, @thunder);
                     }
                 }
                 li.prev, li.next {
@@ -70,7 +68,7 @@
                     }
                 }
                 li.current {
-                    color: @curiousBlue;
+                    color: var(--dnn-color-primary, @curiousBlue);
                     cursor: auto;
                     font-weight: bold;
                 }
@@ -78,12 +76,12 @@
                     opacity: 0.5;
                 }
                 .text {
-                    color: @alto;
+                    color: var(--dnn-color-foreground-light, @thunder);
                     &:hover {
-                        color: @thunder
+                        color: var(--dnn-color-foreground-light, @thunder)
                     }
                     &:active {
-                        color: @curiousBlue;
+                        color: var(--dnn-color-primary, @curiousBlue);
                     }
                 }
                 .icon-button {
@@ -96,12 +94,12 @@
                     }
                     &:hover {
                         svg {
-                            fill: @thunder;
+                            fill: var(--dnn-color-foreground-light, @thunder);
                         }
                     }
                     &:active, &.activated {
                         svg {
-                            fill: @curiousBlue;
+                            fill: var(--dnn-color-primary, @curiousBlue);
                         }
                     }
                 }
@@ -109,7 +107,7 @@
                     display: inline-block;
                     svg {
                         vertical-align: top;
-                        fill: @alto;
+                        fill: var(--dnn-color-foreground-light, @alto);
                         width: 16px;
                         height: 16px;
                     }

@@ -3,18 +3,26 @@
     display: inline-block;
     svg{
         vertical-align: top;
-        fill: @alto;
+        fill: rgba(
+            var(--dnn-color-foreground-r, 0),
+            var(--dnn-color-foreground-g, 0),
+            var(--dnn-color-foreground-b, 0),
+            0.5);
     }
 
     &:hover{
         svg{
-            fill: @thunder;
+            fill: rgba(
+                var(--dnn-color-foreground-r, 0),
+                var(--dnn-color-foreground-g, 0),
+                var(--dnn-color-foreground-b, 0),
+                0.8)
         }
     }
 
     &:active, &.activated{
         svg{
-            fill: @curiousBlue;
+            fill: var(--dnn-color-primary, @curiousBlue);
         }
     }
 }
@@ -22,6 +30,10 @@
     display: inline-block;
     svg{
         vertical-align: top;
-        fill: @alto;
+        fill: rgba(
+            var(--dnn-color-foreground-r, 0),
+            var(--dnn-color-foreground-g, 0),
+            var(--dnn-color-foreground-b, 0),
+            0.5);
     }
 }

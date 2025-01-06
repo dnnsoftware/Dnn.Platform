@@ -1,13 +1,13 @@
 @import "../../styles/index";
 
 .dnn-uicommon-tags-field-input {
-    background: #fff;
+    background: var(--dnn-color-background, #fff);
     float: left;
     width: 100%;
-    border: 1px solid @mountainMist;
+    border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
     box-sizing: border-box;
     position: relative;
-    border-radius: 0px;
+    border-radius: var(--dnn-controls-radius, 0px);
     font-size: 13px !important;
     font-family: proxima_nova,Arial !important;
 
@@ -16,20 +16,20 @@
     }
 
     &.error {
-        border-bottom: 2px solid red;
+        border-bottom: 2px solid var(--dnn-color-danger, red);
     }
     &.disabled {
         &, * {
             pointer-events: none;
         }
-        background: @mercury;
-        border-color: @mercury;
+        background: var(--dnn-color-neutral, @mercury);
+        border-color: var(--dnn-color-neutral, @mercury);
         .tag {
-            background: @alto;
+            background: var(--dnn-color-neutral-dark, @alto);
         }
     }
     &.active {
-        border: 1px solid @curiousBlue;
+        border: 1px solid var(--dnn-color-primary, @curiousBlue);
     }
     div[type="text"] {
         width: 100%;
@@ -37,12 +37,6 @@
         height: auto;
         float: left;
         margin: 0 !important;
-    }
-
-    div.typing-text {
-        height: 16px;
-        padding: 9px;
-        color: #C8C8C8;
     }
 
     .input-container {
@@ -67,20 +61,20 @@
             .suggestion {
                 color: gray;
                 padding: 9px;
-                background-color: #FFFFFF;
+                background-color: var(--dnn-color-background, #FFFFFF);
                 cursor: pointer;
                 margin: 0px;
                 list-style: none;
                 height: 15px;
 
                 &:hover {
-                    background-color: @gallery;
-                    color: @curiousBlue;
+                    background-color: var(--dnn-color-primary-contrast, @gallery);
+                    color: var(--dnn-color-primary, @curiousBlue);
                 }
 
                 &.selected {
-                    background-color: @curiousBlue;
-                    color: @gallery;
+                    background-color: var(--dnn-color-primary, @curiousBlue);
+                    color: var(--dnn-color-primary-contrast, @gallery);
                 }
             }
         }
@@ -91,7 +85,7 @@
         padding: 9px 12px;
         background: transparent;
         border: none;
-        color: @bulgarianRose;
+        color: var(--dnn-color-foreground, @bulgarianRose);
         float: left;
         box-sizing: content-box !important;
         outline: none !important;
@@ -106,11 +100,11 @@
         position: relative;
         padding: 3px 18px 3px 7px !important;
         margin: 7px 0 5px 9px !important;
-        background: @seagull;
+        background: var(--dnn-color-primary, @seagull);
         border: none;
-        color: white;
+        border-radius: var(--dnn-controls-radius, 0px);
+        color: var(--dnn-color-primary-contrast, white);
         font-size: 11px;
-        border-radius: 0px;
         max-width: calc(100% - 18px);
         overflow: hidden;
         text-overflow: ellipsis;
@@ -130,19 +124,19 @@
     .tag-search-results {
         position: absolute;
         width: 100%;
-        border: 1px solid @mountainMist;
+        border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
         top: 100%;
         margin-top: 1px;
         border-top: none;
         left: -1px;
         padding: 6px 0px;
-        background: white;
+        background: var(--dnn-color-background, white);
         .result-item {
             padding: 6px 10px;
             cursor: pointer;
             &.selected {
-                background: @gallery;
-                color: @curiousBlue;
+                background: var(--dnn-color-primary-light, @gallery);
+                color: var(--dnn-color-primary-contrast, @curiousBlue);
             }
         }
     }

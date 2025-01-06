@@ -55,7 +55,7 @@ class SaveAsTemplate extends Component {
                     </div>
                     <div className="buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={onCancel}>
                             {Localization.get("Cancel") }
                         </Button>

@@ -139,7 +139,7 @@ class ApiTokenRow extends Component {
                 <Collapse className="logitem-collapsible" isOpened={!this.state.collapsed}>{!state.collapsed && props.children}
                     {!state.collapsed && <div className="buttons-box">
                         <Button
-                            type="secondary"
+                            type="danger"
                             onClick={() => {
                                 utils.utilities.confirm(resx.get("DeleteApiKey.Confirm"), resx.get("Yes"), resx.get("No"), () => {
                                     this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, true, (data) => {
@@ -150,7 +150,7 @@ class ApiTokenRow extends Component {
                             }}>
                             {resx.get("DeleteApiKey")}
                         </Button>
-                        {statusClass == "active" && (
+                        {statusClass === "active" && (
                             <Button
                                 type="secondary"
                                 onClick={() => {

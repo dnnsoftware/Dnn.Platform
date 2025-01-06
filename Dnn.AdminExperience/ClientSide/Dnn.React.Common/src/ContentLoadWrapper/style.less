@@ -14,7 +14,7 @@
     position: relative;
     width: 100%;
     &.upload-error {
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: var(--dnn-color-surface, rgba(255, 255, 255, 0.5));
         .try-load-again {
             position: absolute;
             top: 0;
@@ -36,22 +36,22 @@
                     height: 40px;
                     margin: 0 auto;
                     > svg {
-                        fill: @mountainMist;
+                        fill: var(--dnn-color-neutral, @mountainMist);
                         &:hover {
-                            fill: @mountainMist;
+                            fill: var(--dnn-color-neutral, @mountainMist);
                         }
                     }
                 }
             }
             span {
                 float: none;
-                color: @curiousBlue;
+                color: var(--dnn-color-primary, @curiousBlue);
                 cursor: pointer;
             }
         }
         .upload-bar-container {
             .upload-bar-box {
-                background: @alto;
+                background: var(--dnn-color-neutral-light, @alto);
             }
         }
     }
@@ -99,9 +99,9 @@
                 animation-name: placeHolderShimmer;
                 animation-timing-function: linear;
                 width: 105px;
-                background: @nonPhotoBlue;
-                background-image: -webkit-linear-gradient(to right, @nonPhotoBlue 0%, @solitude 35%, @nonPhotoBlue 100%);
-                background-image: linear-gradient(to right, @nonPhotoBlue 0%, @solitude 35%, @nonPhotoBlue 100%);
+                background: var(--dnn-color-primary-light, @nonPhotoBlue);
+                background-image: -webkit-linear-gradient(to right, var(--dnn-color-primary-light, @nonPhotoBlue) 0%, var(--dnn-color-background, @nonPhotoBlue) 35%, var(--dnn-color-primary-light, @nonPhotoBlue) 100%);
+                background-image: linear-gradient(to right, var(--dnn-color-primary-light, @nonPhotoBlue) 0%, var(--dnn-color-background, @nonPhotoBlue) 35%, var(--dnn-color-primary-light, @nonPhotoBlue) 100%);
                 background-size: 105px 5px;
                 height: 5px;
                 position: relative;

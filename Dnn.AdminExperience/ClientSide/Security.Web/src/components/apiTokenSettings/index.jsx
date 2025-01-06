@@ -183,7 +183,7 @@ class ApiTokenSettingsPanelBody extends Component {
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.apiTokenSettingsClientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}
                         >
                             {resx.get("Cancel")}

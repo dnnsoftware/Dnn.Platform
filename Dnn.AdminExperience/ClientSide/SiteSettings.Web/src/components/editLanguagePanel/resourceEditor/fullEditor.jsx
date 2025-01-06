@@ -86,7 +86,7 @@ class FullEditor extends Component {
 
     renderButtons() {
         return [
-            <Button type="secondary" onClick={this.onCancel.bind(this)} key="first">
+            <Button type="neutral" onClick={this.onCancel.bind(this)} key="first">
                 <TextOverflowWrapper text={resx.get("Cancel") } maxWidth={100} />
             </Button>,
             <Button type="primary" onClick={this.onSave.bind(this)} key="second">

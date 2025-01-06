@@ -326,7 +326,7 @@ class LanguageSettingsPanelBody extends Component {
                     <div className={this.isHost() ? "buttons-box-alter" : "buttons-box"}>
                         <Button
                             disabled={!this.props.languageSettingsClientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
