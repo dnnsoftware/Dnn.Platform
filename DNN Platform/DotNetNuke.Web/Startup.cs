@@ -28,7 +28,7 @@ namespace DotNetNuke.Web
             services.AddWebApi();
 
             services.AddTransient<IApiTokenController, ApiTokenController>();
-            services.AddTransient<IApiTokenRepository, ApiTokenRepository>(_ => new ApiTokenRepository());
+            services.AddTransient<IApiTokenRepository, ApiTokenRepository>();
         }
     }
 }
