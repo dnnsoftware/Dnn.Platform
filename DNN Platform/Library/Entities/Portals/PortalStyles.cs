@@ -14,200 +14,202 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     public class PortalStyles : IPortalStyles
     {
+        private const string Prefix = "DnnCssVars_";
+
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public bool AllowAdminEdits { get; set; } = false;
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorPrimary { get; set; } = "00A5E0";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorPrimaryLight { get; set; } = "1AAEE3";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorPrimaryDark { get; set; } = "0091C5";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorPrimaryContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSecondary { get; set; } = "ED3D46";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSecondaryLight { get; set; } = "EF5059";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSecondaryDark { get; set; } = "D1363E";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSecondaryContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorTertiary { get; set; } = "0E2936";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorTertiaryLight { get; set; } = "3C7A9A";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorTertiaryDark { get; set; } = "0B1C24";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorTertiaryContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorNeutral { get; set; } = "DCDCDC";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorNeutralLight { get; set; } = "F0F0F0";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorNeutralDark { get; set; } = "999999";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorNeutralContrast { get; set; } = "000000";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorBackground { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorBackgroundLight { get; set; } = "F5F5F5";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorBackgroundDark { get; set; } = "CCCCCC";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorBackgroundContrast { get; set; } = "000000";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorForeground { get; set; } = "323232";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorForegroundLight { get; set; } = "A2A2A2";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorForegroundDark { get; set; } = "000000";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorForegroundContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorInfo { get; set; } = "17A2B8";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorInfoLight { get; set; } = "23B8CF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorInfoDark { get; set; } = "00889E";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorInfoContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSuccess { get; set; } = "28A745";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSuccessLight { get; set; } = "49C25D";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSuccessDark { get; set; } = "00902F";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSuccessContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorWarning { get; set; } = "FFC107";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorWarningLight { get; set; } = "FFD42E";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorWarningDark { get; set; } = "E9AD00";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorWarningContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorDanger { get; set; } = "DC3545";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorDangerLight { get; set; } = "F14954";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorDangerDark { get; set; } = "C51535";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorDangerContrast { get; set; } = "FFFFFF";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSurface { get; set; } = "DDDDDD";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSurfaceLight { get; set; } = "EEEEEE";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSurfaceDark { get; set; } = "CCCCCC";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public string ColorSurfaceContrast { get; set; } = "000000";
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public double ControlsRadius { get; set; } = 0;
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public double ControlsPadding { get; set; } = 9;
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public double BaseFontSize { get; set; } = 16;
 
         /// <inheritdoc/>
-        [PortalSetting]
+        [PortalSetting(Prefix = Prefix)]
         public double VariationOpacity { get; set; } = 0.8;
 
         /// <inheritdoc/>
