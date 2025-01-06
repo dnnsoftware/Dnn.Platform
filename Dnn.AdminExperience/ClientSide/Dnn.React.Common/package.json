@@ -35,7 +35,7 @@
     "react-motion": "^0.5.2",
     "react-scrollbar": "^0.5.6",
     "react-slider": "2.0.6",
-    "react-tabs": "3.2.3",
+    "react-tabs": "6.1.0",
     "react-tooltip": "^4.5.1",
     "react-widgets": "^5.8.4",
     "redux-undo": "^1.0.0-beta9",

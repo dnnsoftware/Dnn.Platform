@@ -46,7 +46,7 @@
     "react-modal": "3.16.1",
     "react-motion": "0.5.2",
     "react-redux": "8.1.1",
-    "react-tabs": "3.2.3",
+    "react-tabs": "6.1.0",
     "react-tooltip": "4.5.1",
     "react-widgets": "^5.8.4",
     "redux": "4.2.1",
