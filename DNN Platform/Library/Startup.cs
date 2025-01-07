@@ -18,6 +18,7 @@ namespace DotNetNuke
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
@@ -54,10 +55,6 @@ namespace DotNetNuke
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
-            services.AddSingleton<IDataContext>((x) =>
-            {
-                return DataContext.Instance();
-            });
 
 #pragma warning disable CS0618
             services.AddScoped<IEventLogger, EventLogController>();
@@ -93,6 +90,13 @@ namespace DotNetNuke
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
+
+            services.AddSingleton<IDataContext>(x =>
+            {
+                var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+
+                return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+            });
 
             services.AddTransient<ModuleInjectionManager>();
             RegisterModuleInjectionFilters(services);
