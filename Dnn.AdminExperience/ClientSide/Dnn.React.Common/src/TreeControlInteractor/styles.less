@@ -1,6 +1,5 @@
 @import "../../styles/index";
 
-
 .page-picker {
     padding-left: 40px;
     svg {
@@ -8,7 +7,7 @@
     }
 
     .__react_component_tooltip {
-        border:1px solid @alto;
+        border:1px solid var(--dnn-color-background-dark, @alto);
         margin-left:20px;
         width:200px;
         white-space:normal;
@@ -29,7 +28,7 @@
         height: 0.3ex;
         top: 0.9ex;
         left: 0.4ex;
-        border: 3px solid white;
+        border: 3px solid var(--dnn-color-background, white);
         border-top: none;
         border-right: none;
         -webkit-transform: rotate(-45deg);
@@ -47,7 +46,7 @@
         height: 0.3ex;
         top: 0.9ex;
         left: 0.4ex;
-        border: 3px solid white;
+        border: 3px solid var(--dnn-color-background, white);
         border-top: none;
         border-right: none;
         -webkit-transform: rotate(-45deg);
@@ -78,7 +77,7 @@
         vertical-align: -25%;
         height: 2ex;
         width: 2ex;
-        border: 1px solid rgb(166, 166, 166);
+        border: 1px solid var(--dnn-color-neutral, rgb(166, 166, 166));
         margin-right: 0.5em;
     }
     input[type="checkbox"] + label.treecontrol-label-parent-unselected {
@@ -94,7 +93,7 @@
         vertical-align: -25%;
         height: 2ex;
         width: 2ex;
-        border: 2px solid  @curiousBlue;
+        border: 2px solid var(--dnn-color-primary, @curiousBlue);
         margin-right: 0.5em;
     }
 
@@ -105,8 +104,8 @@
         vertical-align: -25%;
         height: 2ex;
         width: 2ex;
-        border: 1px solid rgb(166, 166, 166);
-        background-color: @curiousBlue;
+        border: 1px solid var(--dnn-color-neutral, rgb(166, 166, 166));
+        background-color: var(--dnn-color-primary, @curiousBlue);
         margin-right: 0.5em;
     }
 
@@ -117,11 +116,11 @@
         vertical-align: -25%;
         height: 2ex;
         width: 2ex;
-        -webkit-box-shadow:inset 0px 0px 0px 1px @curiousBlue;
-        -moz-box-shadow:inset 0px 0px 0px 1px  @curiousBlue;
-        box-shadow:inset 0px 0px 0px 1px  @curiousBlue;
+        -webkit-box-shadow:inset 0px 0px 0px 1px var(--dnn-color-primary, @curiousBlue);
+        -moz-box-shadow:inset 0px 0px 0px 1px  var(--dnn-color-primary, @curiousBlue);
+        box-shadow:inset 0px 0px 0px 1px  var(--dnn-color-primary, @curiousBlue);
         border:1px solid white;
-        background-color: @curiousBlue;
+        background-color: var(--dnn-color-primary, @curiousBlue);
         margin-right: 0.5em;
     }
     input[type="checkbox"]:checked + span {

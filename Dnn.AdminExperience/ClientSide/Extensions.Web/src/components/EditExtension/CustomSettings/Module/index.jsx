@@ -232,7 +232,7 @@ class Module extends Component {
                 }
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        <Button type="neutral" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
                         <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>
                         <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>{Localization.get("Save.Button")}</Button>
                     </GridCell>

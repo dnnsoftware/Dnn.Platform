@@ -134,7 +134,7 @@ class CreateApiToken extends Component {
                 </Grid>
                 <div className="buttons-box">
                     <Button
-                        type="secondary"
+                        type="neutral"
                         onClick={() => {
                             this.props.onCancel();
                         }}>

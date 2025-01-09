@@ -104,7 +104,7 @@ class ProviderEditor extends Component {
                     <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="buttons-box-secondary">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.props.Collapse.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

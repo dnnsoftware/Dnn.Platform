@@ -362,14 +362,14 @@ class RolesEditor extends Component {
                     {
                         this.props.roleId > 0 && (!state.roleDetails.isSystem && state.roleDetails.id > -1) ?
                             <Button
-                                type="secondary"
+                                type="danger"
                                 onClick={this.deleteRole.bind(this)}>
                                 {resx.get("Delete")}
                             </Button>
                             : null
                     }
                     <Button
-                        type="secondary"
+                        type="neutral"
                         disabled={state.roleDetails.isSystem}
                         onClick={this.props.Collapse.bind(this)}>
                         {resx.get("Cancel")}

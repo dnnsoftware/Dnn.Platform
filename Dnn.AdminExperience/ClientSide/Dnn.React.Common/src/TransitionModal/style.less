@@ -18,7 +18,11 @@
         left: 0;
         bottom: 0;
         right: 0;
-        background: rgba(0, 0, 0, .7);
+        background: rgba(
+            var(--dnn-color-foreground-r, 0),
+            var(--dnn-color-foreground-g, 0),
+            var(--dnn-color-foreground-b, 0),
+            var(--dnn-variation-opacity, 0.7));
     }
     .modal-content {
         position: absolute;
@@ -27,7 +31,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: #fff;
+        background: var(--dnn-color-background, #fff);
         overflow: hidden;
         .close {
             position: absolute;
@@ -38,13 +42,13 @@
             cursor: pointer;
             width: 37px;
             &:hover {
-                color: #fff;
+                color: var(--dnn-color-background, #fff);
             }
         }
         .header {
             float: left;
             width: 100%;
-            background: #0c3b4f;
+            background: var(--dnn-color-primary, #0c3b4f);
             padding: 20px;
             font-size: 20px;
         }

@@ -4,13 +4,13 @@
     float: left;
     width: 304px;
     height: 162px;
-    background: @alabaster;
-    border: 12px solid white;
-    outline: 1px solid @mountainMist;
+    background: var(--dnn-color-surface, @alabaster);
+    border: 12px solid var(--dnn-color-background, white);
+    outline: 1px solid var(--dnn-color-foreground-light, @mountainMist);
     position: relative;
+    border-radius: var(--dnn-controls-radius, 0);
     .overlay {        
         position: absolute;
-        background: rgba(30, 136, 195, .0);
         top: -12px;
         bottom: -12px;
         left: -12px;
@@ -19,16 +19,20 @@
         transition: @transition;
         z-index: 1;
         &.hover {
-            background: rgba(30, 136, 195, .6);
+            background: rgba(
+                var(--dnn-color-primary-r, 30),
+                var(--dnn-color-primary-g, 136),
+                var(--dnn-color-primary-b, 195),
+                0.6);
             * {
                 pointer-events: none;
             }
             span {
-                color: white;
+                color: var(--dnn-color-background, white);
             }
             .buttons {
                 .button.upload {
-                    color: white;
+                    color: var(--dnn-color-background, white);
                 }
             }
         }
@@ -39,21 +43,25 @@
             }
         }
         &:hover {
-            background: rgba(30, 136, 195, .6);
+            background: rgba(
+                var(--dnn-color-primary-r, 30),
+                var(--dnn-color-primary-g, 136),
+                var(--dnn-color-primary-b, 195),
+                0.6);
             span {
-                color: white;
+                color: var(--dnn-color-background, white);
             }
             .buttons {
                 &:hover {
                     .button {
                         color: @alto;
                         &:hover {
-                            color: white;
+                            color: var(--dnn-color-background, white);
                         }
                     }
                 }
                 .button {
-                    color: white;
+                    color: var(--dnn-color-background, white);
                 }
             }
         }
@@ -62,7 +70,7 @@
             float: left;
             width: 128px;
             box-sizing: border-box;
-            color: @rollingStone;
+            color: var(--dnn-color-surface-contrast, @rollingStone);
             transition: @transition;
         }
         .buttons {
@@ -77,7 +85,7 @@
                 width: 32px;
                 height: 32px;
                 padding: 0 17.5px;
-                color: @alto;
+                color: var(--dnn-color-foreground, @alto);
                 cursor: pointer;
                 position: relative;
                 overflow: hidden;
@@ -109,18 +117,18 @@
         bottom: -12px;
         left: -12px;
         right: -12px;
-        background: white;
+        background: var(--dnn-color-background, white);
         padding: 14px 22px;
         z-index: 2;
         h4 {
             margin-bottom: 8px;
-            color: @bulgarianRose;
+            color: var(--dnn-color-foreground, @bulgarianRose);
         }
         .textarea-container {
             float: left;
             width: 100%;
             height: 90px;
-            border: 1px solid @mountainMist;
+            border: 1px solid var(--dnn-color-foreground, @mountainMist);
             position: relative;
             textarea {
                 resize: none;
@@ -130,19 +138,19 @@
                 outline: none !important;
                 padding: 10px;
                 box-sizing: border-box;
-                color: @bulgarianRose;
+                color: var(--dnn-color-foreground, @bulgarianRose);
             }
         }
         span {
             float: right;
             margin-right: 10px;
-            color: @curiousBlue;
+            color: var(--dnn-color-primary, @curiousBlue);
         }
         .drop-down {
             width: 100%;
             float: left;
             height: 30px;
-            border: 1px solid @mountainMist;
+            border: 1px solid var(--dnn-color-foreground, @mountainMist);
             margin-bottom: 16px;
             position: relative;
             &:after {
@@ -155,7 +163,7 @@
                 pointer-events: none;
                 border-left: 6px solid transparent;
                 border-right: 6px solid transparent;
-                border-top: 6px solid @rollingStone;
+                border-top: 6px solid var(--dnn-color-foreground, @rollingStone);
             }
         }
     }
@@ -190,7 +198,7 @@
         background-color: @alabaster;
         padding: 3px 10px;
         border-radius: 3px;
-        border: solid 1px lightgray;
+        border: solid 1px var(--dnn-color-background, lightgray);
         opacity: 0.8;
     }
 }
@@ -204,12 +212,12 @@
             opacity: 0;
         }
         .upload-bar-container {
-            color: @curiousBlue;
+            color: var(--dnn-color-primary, @curiousBlue);
             float: left;
             width: 100%;
             height: 100%;
-            border: 1px solid @curiousBlue;
-            background: #f4f6f7;
+            border: 1px solid var(--dnn-color-primary, @curiousBlue);
+            background: var(--dnn-color-background, #f4f6f7);
             padding: 5px 20px;
             box-sizing: border-box;
             .upload-file-name {
@@ -223,7 +231,7 @@
                 margin: auto;
             }
             h4 {
-                color: @curiousBlue;
+                color: var(--dnn-color-primary, @curiousBlue);
                 margin: auto;
                 text-align: center;
                 font-size: 14px;
@@ -234,12 +242,12 @@
                 float: left;
                 width: 100%;
                 height: 4px;
-                background: @alto;
+                background: var(--dnn-color-background, @alto);
                 margin-top: 5px;
                 .upload-bar {
                     width: 0;
                     float: left;
-                    background: @curiousBlue;
+                    background: var(--dnn-color-primary, @curiousBlue);
                     height: 100%;
                     left: 0px;
                     transition: .1s;
@@ -249,13 +257,13 @@
     }
     &.upload-error {
         .upload-bar-container {
-            border: 1px solid @alizarinCrimson;
-            color: @alizarinCrimson;
+            border: 1px solid var(--dnn-color-danger, @alizarinCrimson);
+            color: var(--dnn-color-danger, @alizarinCrimson);
             h4 {
-                color: @alizarinCrimson;
+                color: var(--dnn-color-danger, @alizarinCrimson);
             }
             .upload-bar-box {
-                background: @alizarinCrimson;
+                background: var(--dnn-color-danger, @alizarinCrimson);
             }
         }
     }

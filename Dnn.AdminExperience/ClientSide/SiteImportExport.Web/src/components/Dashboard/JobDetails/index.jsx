@@ -306,12 +306,12 @@ class JobDetails extends Component {
                         </div>
                         <GridCell className="action-buttons">
                             {props.jobDetail.Status < 2 && !state.cancelled &&
-                                <Button type="secondary" onClick={this.cancel.bind(this, props.jobId)}>
+                                <Button type="neutral" onClick={this.cancel.bind(this, props.jobId)}>
                                     {props.jobDetail.JobType.indexOf("Export") >= 0 ? Localization.get("CancelExport") : Localization.get("CancelImport")}
                                 </Button>
                             }
                             {(props.jobDetail.Status > 1 || state.cancelled) &&
-                                <Button type="secondary" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
+                                <Button type="danger" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
                             }
                         </GridCell>
                     </GridCell>

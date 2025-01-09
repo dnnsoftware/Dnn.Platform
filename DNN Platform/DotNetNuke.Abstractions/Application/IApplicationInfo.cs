@@ -24,7 +24,7 @@ namespace DotNetNuke.Abstractions.Application
         string Description { get; }
 
         /// <summary>Gets the help URL related to the DotNetNuke application.</summary>
-        /// <value>Fixed result: https://dnndocs.com/. </value>
+        /// <value>Fixed result: https://docs.dnncommunity.org/. </value>
         string HelpUrl { get; }
 
         /// <summary>Gets the legal copyright.</summary>

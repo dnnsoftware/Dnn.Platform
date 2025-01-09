@@ -40,7 +40,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={true}>
                     <PersonaBarPageHeader title="Servers">
                         {buttonVisible && 
-                            <Button type="secondary" size="large" 
+                            <Button type="danger" size="large" 
                                 onClick={props.onClearCacheClicked}>{localization.get("clearCacheButtonLabel")}</Button>
                         }
                         {buttonVisible && 
@@ -63,7 +63,8 @@ App.propTypes = {
     onRestartApplicationClicked: PropTypes.func.isRequired,
     reloadPage: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
-    infoMessage: PropTypes.string
+    infoMessage: PropTypes.string,
+    onClearCacheClicked: PropTypes.func
 };
 
 function mapStateToProps(state) {

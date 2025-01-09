@@ -19,6 +19,7 @@
     "lint": "eslint --fix",
     "test": "echo \"No tests script specified to run.\"",
     "build": "set NODE_ENV=production && webpack --mode production --config dist.webpack.config.js",
+    "watch": "set NODE_ENV=debug && webpack --mode development --config dist.webpack.config.js --watch",
     "debug": "set NODE_ENV=debug && webpack --mode production --config dist.webpack.config.js",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },

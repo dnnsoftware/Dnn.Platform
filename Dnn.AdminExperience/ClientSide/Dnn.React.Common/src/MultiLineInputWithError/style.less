@@ -10,15 +10,16 @@
         }
     }
     textarea {
-        color: @bulgarianRose;
+        color: var(--dnn-color-foreground, @bulgarianRose);
+        border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
     }
     &.error {
         .input-tooltip-container {
             .dnn-ui-common-multi-line-input {
-                border-bottom: 2px solid @alizarinCrimson;
+                border-bottom: 2px solid var(--dnn-color-danger, @alizarinCrimson);
             }
             .dnn-inline-counter {
-                color: @alizarinCrimson;
+                color: var(--dnn-color-danger, @alizarinCrimson);
                 right: 26px;
             }
         }
@@ -26,10 +27,10 @@
     &.warning {
         .input-tooltip-container {
             .dnn-ui-common-multi-line-input {
-                border-bottom: 2px solid #EA9C00;
+                border-bottom: 2px solid var(--dnn-color-warning, #EA9C00);
             }
             .dnn-inline-counter {
-                color: #EA9C00;
+                color: var(--dnn-color-warning, #EA9C00);
                 right: 26px;
             }
         }
@@ -37,13 +38,13 @@
     &.disabled {
         .dnn-label {
             label {
-                color: @mountainMist;
+                color: var(--dnn-color-neutral, @mountainMist);
                 cursor: not-allowed;
             }
         }
         .input-tooltip-container {
             .dnn-ui-common-multi-line-input {
-                color: @mountainMist;
+                color: var(--dnn-color-neutral, @mountainMist);
                 cursor: not-allowed;
             }
         }
@@ -54,11 +55,11 @@
         width: 100%;
         .dnn-ui-common-multi-line-input{
             width: 100%;
-            border-radius: 0px;
+            border-radius: var(--dnn-controls-radius, 0);
         }
         .dnn-inline-counter {
             position: absolute;
-            color: @curiousBlue;
+            color: var(--dnn-color-primary, @curiousBlue);
             bottom: 13px;
             right: 7px;
         }

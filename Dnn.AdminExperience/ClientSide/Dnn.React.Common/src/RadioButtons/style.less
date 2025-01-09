@@ -11,7 +11,7 @@
     }
     >label {
         float: left;
-        color: @bulgarianRose;
+        color: var(--dnn-color-foreground, @bulgarianRose);
     }
     .dnn-ui-common-tooltip {
         float: left;
@@ -43,7 +43,7 @@
                 word-wrap: break-word;
                 height: auto;
                 margin-bottom: 24px;
-                color: @thunder;
+                color: var(--dnn-color-foreground, @thunder);
             }
             .check {
                 display: block;
@@ -65,23 +65,23 @@
                 visibility: hidden;
             }
             input[type=radio]:checked ~ .check {
-                background: @curiousBlue;
+                background: var(--dnn-color-primary, @curiousBlue);
                 border: none !important;
-                box-shadow: inset 0 0 1px 1px @curiousBlue, inset 0 0 0 4px #fff;
+                box-shadow: inset 0 0 1px 1px var(--dnn-color-primary, @curiousBlue), inset 0 0 0 4px var(--dnn-color-primary-contrast, #fff);
             }
             &.disabled {
                 label {
-                    color: @alto;
+                    color: var(--dnn-color-neutral, @alto);
                     cursor: not-allowed;
                 }
                 &.checked {
                     input[type=radio]:checked ~ .check {
-                        background: @alto;
+                        background: var(--dnn-color-neutral, @alto);
                         box-shadow: inset 0 0 1px 1px @alto, inset 0 0 0 3px @gallery;
                     }
                 }
                 .check {
-                    box-shadow: inset 0 0 1px 1px  @mercury;
+                    box-shadow: inset 0 0 1px 1px var(--dnn-color-foreground-light, @mercury);
                     cursor: not-allowed;
                 }
             }

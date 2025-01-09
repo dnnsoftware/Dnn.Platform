@@ -245,7 +245,7 @@ class TranslatePageContent extends Component {
                         </Button>
                         <Button
                             disabled={!isEnabled || !localizablePages}
-                            type="secondary"
+                            type="danger"
                             onClick={this.onEraseAllLocalizedPages.bind(this) }>
                             <TextOverflowWrapper text={resx.get("EraseAllLocalizedPages") } maxWidth={150}/>
                         </Button>

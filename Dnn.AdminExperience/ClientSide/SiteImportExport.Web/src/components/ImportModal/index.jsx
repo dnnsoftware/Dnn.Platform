@@ -277,7 +277,7 @@ class ImportModal extends Component {
                     }
                 </div>
                 <GridCell className="action-buttons">
-                    <Button type="secondary" onClick={this.cancelImport.bind(this)}>{Localization.get("Cancel")}</Button>
+                    <Button type="neutral" onClick={this.cancelImport.bind(this)}>{Localization.get("Cancel")}</Button>
                     {props.wizardStep === 0 &&
                         <Button type="primary"
                             disabled={props.selectedPackage ? false : true}
