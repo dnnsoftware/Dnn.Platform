@@ -10,6 +10,8 @@ export namespace Components {
     }
     interface DnnBulkInstall {
     }
+    interface EventLog {
+    }
     interface IpSafelist {
     }
 }
@@ -26,6 +28,12 @@ declare global {
         prototype: HTMLDnnBulkInstallElement;
         new (): HTMLDnnBulkInstallElement;
     };
+    interface HTMLEventLogElement extends Components.EventLog, HTMLStencilElement {
+    }
+    var HTMLEventLogElement: {
+        prototype: HTMLEventLogElement;
+        new (): HTMLEventLogElement;
+    };
     interface HTMLIpSafelistElement extends Components.IpSafelist, HTMLStencilElement {
     }
     var HTMLIpSafelistElement: {
@@ -35,6 +43,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "api-users": HTMLApiUsersElement;
         "dnn-bulk-install": HTMLDnnBulkInstallElement;
+        "event-log": HTMLEventLogElement;
         "ip-safelist": HTMLIpSafelistElement;
     }
 }
@@ -43,11 +52,14 @@ declare namespace LocalJSX {
     }
     interface DnnBulkInstall {
     }
+    interface EventLog {
+    }
     interface IpSafelist {
     }
     interface IntrinsicElements {
         "api-users": ApiUsers;
         "dnn-bulk-install": DnnBulkInstall;
+        "event-log": EventLog;
         "ip-safelist": IpSafelist;
     }
 }
@@ -57,6 +69,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "api-users": LocalJSX.ApiUsers & JSXBase.HTMLAttributes<HTMLApiUsersElement>;
             "dnn-bulk-install": LocalJSX.DnnBulkInstall & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
+            "event-log": LocalJSX.EventLog & JSXBase.HTMLAttributes<HTMLEventLogElement>;
             "ip-safelist": LocalJSX.IpSafelist & JSXBase.HTMLAttributes<HTMLIpSafelistElement>;
         }
     }
